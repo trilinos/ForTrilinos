@@ -17,11 +17,9 @@ simpleEpetraExteranCInterface_LDADD = $(common_ldadd)
 simpleEpetraFortranInterface_SOURCES = \
   $(srcdir)/FEpetra_Map.cpp \
   $(srcdir)/FEpetra_Vector.cpp \
-  $(srcdir)/simpleEpetraFortranInterface.f90
+  $(srcdir)/simpleEpetraFortranInterface.f03
 simpleEpetraFortranInterface_DEPENDENCIES = $(common_dependencies)
 simpleEpetraFortranInterface_LDADD = $(common_ldadd)
-
-
 
 #
 # Common stuff
@@ -30,7 +28,7 @@ simpleEpetraFortranInterface_LDADD = $(common_ldadd)
 common_dependencies = \
   $(top_builddir)/../epetra/src/libepetra.a
 
-include $(top_builddir)/Makefile.export.epetraext
+include $(top_builddir)/../Makefile.export.epetraext
 
 if USING_GNUMAKE
 EXPORT_INCLUDES = $(shell $(PERL_EXE) $(top_srcdir)/config/strip_dup_incl_paths.pl $(EPETRAEXT_INCLUDES))
