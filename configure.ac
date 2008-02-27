@@ -117,16 +117,11 @@ AC_PROG_CXX(CC g++ c++ cxx)
 #if test "X$ac_cv_use_fortran90" != "Xno"; then
 AC_PROG_FC(gfortran f90 xlf90 f95)
 #fi
-AC_PROG_F77(f77 g77 gfortran f90 xlf90 f95)
+#AC_PROG_F77(f77 g77 gfortran f90 xlf90 f95)
 AC_PROG_RANLIB
 
 # ------------------------------------------------------------------------
 # Checks for extra flags
-# #np# - You can pull flag checks for languages not used in package.  Please 
-#	  note that if you use F77_FUNC to determine Fortran name mangling, 
-#	  you should not remove the Fortran compiler check or the check for 
-#	  Fortran flags.  Doing so will prevent the detection of the proper 
-#	  name mangling in some cases.
 # ------------------------------------------------------------------------
 # Check if --with-flags present, prepend any specs to FLAGS
 
@@ -136,7 +131,7 @@ TAC_ARG_WITH_FLAGS(cflags, CFLAGS)
 #if test "X$ac_cv_use_fortran90" != "Xno"; then
 TAC_ARG_WITH_FLAGS(fcflags, FCFLAGS)
 #fi
-TAC_ARG_WITH_FLAGS(fflags, FFLAGS)
+#TAC_ARG_WITH_FLAGS(fflags, FFLAGS)
 TAC_ARG_WITH_LIBS
 TAC_ARG_WITH_FLAGS(ldflags, LDFLAGS)
 
