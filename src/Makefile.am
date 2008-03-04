@@ -33,6 +33,14 @@ all-local:
 	@echo "Trilinos package ForTrilinos subdirectory src built successfully."
 	@echo ""
 
+# Automake does not know about the .f03 extension
+
+.f03.o:
+	$(FC) $(AM_FCFLAGS) $(FCFLAGS) -c -o $@ $<
+
+.f03.obj:
+	$(FC) $(AM_FCFLAGS) $(FCFLAGS) -c -o $@ `$(CYGPATH_W) '$<'`
+
 # ------------------------------------------------------------------------
 # For each category, create two variables - NAME and NAME_H. The
 # second is the list of headers to be installed, i.e., any header that

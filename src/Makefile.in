@@ -96,14 +96,12 @@ LIBRARIES = $(lib_LIBRARIES)
 AR = ar
 ARFLAGS = cru
 libfortrilinos_a_DEPENDENCIES =
-am__objects_1 =
-am_libfortrilinos_a_OBJECTS = $(am__objects_1) $(am__objects_1)
+am__dirstamp = $(am__leading_dot)dirstamp
+am__objects_1 = $(srcdir)/forepetraext.$(OBJEXT)
+am__objects_2 =
+am_libfortrilinos_a_OBJECTS = $(am__objects_1) $(am__objects_2)
 libfortrilinos_a_OBJECTS = $(am_libfortrilinos_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 SOURCES = $(libfortrilinos_a_SOURCES)
 DIST_SOURCES = $(libfortrilinos_a_SOURCES)
 includeHEADERS_INSTALL = $(INSTALL_HEADER)
@@ -301,6 +299,7 @@ MAINTAINERCLEANFILES = Makefile.in
 all: all-am
 
 .SUFFIXES:
+.SUFFIXES: .f03 .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -359,6 +358,14 @@ uninstall-libLIBRARIES:
 
 clean-libLIBRARIES:
 	-test -z "$(lib_LIBRARIES)" || rm -f $(lib_LIBRARIES)
+$(srcdir)/$(am__dirstamp):
+	@$(MKDIR_P) $(srcdir)
+	@: > $(srcdir)/$(am__dirstamp)
+$(srcdir)/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(srcdir)/$(DEPDIR)
+	@: > $(srcdir)/$(DEPDIR)/$(am__dirstamp)
+$(srcdir)/forepetraext.$(OBJEXT): $(srcdir)/$(am__dirstamp) \
+	$(srcdir)/$(DEPDIR)/$(am__dirstamp)
 libfortrilinos.a: $(libfortrilinos_a_OBJECTS) $(libfortrilinos_a_DEPENDENCIES) 
 	-rm -f libfortrilinos.a
 	$(libfortrilinos_a_AR) libfortrilinos.a $(libfortrilinos_a_OBJECTS) $(libfortrilinos_a_LIBADD)
@@ -366,6 +373,7 @@ libfortrilinos.a: $(libfortrilinos_a_OBJECTS) $(libfortrilinos_a_DEPENDENCIES)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f $(srcdir)/forepetraext.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
@@ -446,6 +454,8 @@ clean-generic:
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
+	-test -z "$(srcdir)/$(DEPDIR)/$(am__dirstamp)" || rm -f $(srcdir)/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(srcdir)/$(am__dirstamp)" || rm -f $(srcdir)/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -525,6 +535,14 @@ all-local:
 	@echo ""
 	@echo "Trilinos package ForTrilinos subdirectory src built successfully."
 	@echo ""
+
+# Automake does not know about the .f03 extension
+
+.f03.o:
+	$(FC) $(AM_FCFLAGS) $(FCFLAGS) -c -o $@ $<
+
+.f03.obj:
+	$(FC) $(AM_FCFLAGS) $(FCFLAGS) -c -o $@ `$(CYGPATH_W) '$<'`
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

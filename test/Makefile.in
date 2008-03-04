@@ -65,8 +65,10 @@ am__DEPENDENCIES_1 =
 @USING_GNUMAKE_TRUE@	$(top_srcdir)/config/strip_dup_libs.pl \
 @USING_GNUMAKE_TRUE@	$(EPETRAEXT_LIBS))
 am__DEPENDENCIES_3 = $(am__DEPENDENCIES_2)
+am__dirstamp = $(am__leading_dot)dirstamp
 am_simpleEpetraFortranInterface_OBJECTS = FEpetra_Map.$(OBJEXT) \
-	FEpetra_Vector.$(OBJEXT)
+	FEpetra_Vector.$(OBJEXT) \
+	$(srcdir)/simpleEpetraFortranInterface.$(OBJEXT)
 simpleEpetraFortranInterface_OBJECTS =  \
 	$(am_simpleEpetraFortranInterface_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
@@ -267,12 +269,21 @@ clean-noinstPROGRAMS:
 simpleEpetraExteranCInterface$(EXEEXT): $(simpleEpetraExteranCInterface_OBJECTS) $(simpleEpetraExteranCInterface_DEPENDENCIES) 
 	@rm -f simpleEpetraExteranCInterface$(EXEEXT)
 	$(CXXLINK) $(simpleEpetraExteranCInterface_OBJECTS) $(simpleEpetraExteranCInterface_LDADD) $(LIBS)
+$(srcdir)/$(am__dirstamp):
+	@$(MKDIR_P) $(srcdir)
+	@: > $(srcdir)/$(am__dirstamp)
+$(srcdir)/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(srcdir)/$(DEPDIR)
+	@: > $(srcdir)/$(DEPDIR)/$(am__dirstamp)
+$(srcdir)/simpleEpetraFortranInterface.$(OBJEXT):  \
+	$(srcdir)/$(am__dirstamp) $(srcdir)/$(DEPDIR)/$(am__dirstamp)
 simpleEpetraFortranInterface$(EXEEXT): $(simpleEpetraFortranInterface_OBJECTS) $(simpleEpetraFortranInterface_DEPENDENCIES) 
 	@rm -f simpleEpetraFortranInterface$(EXEEXT)
 	$(CXXLINK) $(simpleEpetraFortranInterface_OBJECTS) $(simpleEpetraFortranInterface_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f $(srcdir)/simpleEpetraFortranInterface.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
@@ -449,6 +460,8 @@ clean-generic:
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
+	-test -z "$(srcdir)/$(DEPDIR)/$(am__dirstamp)" || rm -f $(srcdir)/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(srcdir)/$(am__dirstamp)" || rm -f $(srcdir)/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
