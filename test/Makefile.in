@@ -233,7 +233,7 @@ common_ldadd = $(EXPORT_LIBS)
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .cpp .o .obj
+.SUFFIXES: .c .cpp .f03 .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -538,6 +538,18 @@ uninstall-am:
 	mostlyclean-generic pdf pdf-am ps ps-am tags uninstall \
 	uninstall-am
 
+
+#
+# Actual programs
+#
+
+# Automake does not know about the .f03 extension
+
+.f03.o:
+	$(FC) $(AM_FCFLAGS) $(FCFLAGS) -c -o $@ $<
+
+.f03.obj:
+	$(FC) $(AM_FCFLAGS) $(FCFLAGS) -c -o $@ `$(CYGPATH_W) '$<'`
 
 include $(top_builddir)/../epetraext/Makefile.export.epetraext
 

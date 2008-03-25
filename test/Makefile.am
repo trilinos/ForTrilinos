@@ -5,6 +5,14 @@ EXEEXT = .exe
 # Actual programs
 #
 
+# Automake does not know about the .f03 extension
+
+.f03.o:
+	$(FC) $(AM_FCFLAGS) $(FCFLAGS) -c -o $@ $<
+
+.f03.obj:
+	$(FC) $(AM_FCFLAGS) $(FCFLAGS) -c -o $@ `$(CYGPATH_W) '$<'`
+
 noinst_PROGRAMS = simpleEpetraExteranCInterface simpleEpetraFortranInterface
 
 simpleEpetraExteranCInterface_SOURCES = \
