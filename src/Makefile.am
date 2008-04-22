@@ -51,7 +51,7 @@ all-local:
 CORE_H =
 
 CORE = \
-	$(srcdir)/forepetraext.f03
+	forepetraext.f03
 
 UTIL_H =
 
