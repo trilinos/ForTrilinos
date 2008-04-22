@@ -96,8 +96,7 @@ LIBRARIES = $(lib_LIBRARIES)
 AR = ar
 ARFLAGS = cru
 libfortrilinos_a_DEPENDENCIES =
-am__dirstamp = $(am__leading_dot)dirstamp
-am__objects_1 = $(srcdir)/forepetraext.$(OBJEXT)
+am__objects_1 = forepetraext.$(OBJEXT)
 am__objects_2 =
 am_libfortrilinos_a_OBJECTS = $(am__objects_1) $(am__objects_2)
 libfortrilinos_a_OBJECTS = $(am_libfortrilinos_a_OBJECTS)
@@ -229,7 +228,7 @@ top_srcdir = @top_srcdir@
 # ------------------------------------------------------------------------
 CORE_H = 
 CORE = \
-	$(srcdir)/forepetraext.f03
+	forepetraext.f03
 
 UTIL_H = 
 UTIL = 
@@ -358,14 +357,6 @@ uninstall-libLIBRARIES:
 
 clean-libLIBRARIES:
 	-test -z "$(lib_LIBRARIES)" || rm -f $(lib_LIBRARIES)
-$(srcdir)/$(am__dirstamp):
-	@$(MKDIR_P) $(srcdir)
-	@: > $(srcdir)/$(am__dirstamp)
-$(srcdir)/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) $(srcdir)/$(DEPDIR)
-	@: > $(srcdir)/$(DEPDIR)/$(am__dirstamp)
-$(srcdir)/forepetraext.$(OBJEXT): $(srcdir)/$(am__dirstamp) \
-	$(srcdir)/$(DEPDIR)/$(am__dirstamp)
 libfortrilinos.a: $(libfortrilinos_a_OBJECTS) $(libfortrilinos_a_DEPENDENCIES) 
 	-rm -f libfortrilinos.a
 	$(libfortrilinos_a_AR) libfortrilinos.a $(libfortrilinos_a_OBJECTS) $(libfortrilinos_a_LIBADD)
@@ -373,7 +364,6 @@ libfortrilinos.a: $(libfortrilinos_a_OBJECTS) $(libfortrilinos_a_DEPENDENCIES)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
-	-rm -f $(srcdir)/forepetraext.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
@@ -454,8 +444,6 @@ clean-generic:
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
-	-test -z "$(srcdir)/$(DEPDIR)/$(am__dirstamp)" || rm -f $(srcdir)/$(DEPDIR)/$(am__dirstamp)
-	-test -z "$(srcdir)/$(am__dirstamp)" || rm -f $(srcdir)/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
