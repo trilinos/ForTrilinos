@@ -65,10 +65,9 @@ am__DEPENDENCIES_1 =
 @USING_GNUMAKE_TRUE@	$(top_srcdir)/config/strip_dup_libs.pl \
 @USING_GNUMAKE_TRUE@	$(EPETRAEXT_LIBS))
 am__DEPENDENCIES_3 = $(am__DEPENDENCIES_2)
-am__dirstamp = $(am__leading_dot)dirstamp
 am_simpleEpetraFortranInterface_OBJECTS = FEpetra_Map.$(OBJEXT) \
 	FEpetra_Vector.$(OBJEXT) \
-	$(srcdir)/simpleEpetraFortranInterface.$(OBJEXT)
+	simpleEpetraFortranInterface.$(OBJEXT)
 simpleEpetraFortranInterface_OBJECTS =  \
 	$(am_simpleEpetraFortranInterface_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
@@ -204,16 +203,16 @@ target_vendor = @target_vendor@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 simpleEpetraExteranCInterface_SOURCES = \
-  $(srcdir)/simpleEpetraExteranCInterface.c \
-  $(srcdir)/FEpetra_Map.cpp \
-  $(srcdir)/FEpetra_Vector.cpp
+  simpleEpetraExteranCInterface.c \
+  FEpetra_Map.cpp \
+  FEpetra_Vector.cpp
 
 simpleEpetraExteranCInterface_DEPENDENCIES = $(common_dependencies)
 simpleEpetraExteranCInterface_LDADD = $(common_ldadd)
 simpleEpetraFortranInterface_SOURCES = \
-  $(srcdir)/FEpetra_Map.cpp \
-  $(srcdir)/FEpetra_Vector.cpp \
-  $(srcdir)/simpleEpetraFortranInterface.f03
+  FEpetra_Map.cpp \
+  FEpetra_Vector.cpp \
+  simpleEpetraFortranInterface.f03
 
 simpleEpetraFortranInterface_DEPENDENCIES = $(common_dependencies)
 simpleEpetraFortranInterface_LDADD = $(common_ldadd)
@@ -269,21 +268,12 @@ clean-noinstPROGRAMS:
 simpleEpetraExteranCInterface$(EXEEXT): $(simpleEpetraExteranCInterface_OBJECTS) $(simpleEpetraExteranCInterface_DEPENDENCIES) 
 	@rm -f simpleEpetraExteranCInterface$(EXEEXT)
 	$(CXXLINK) $(simpleEpetraExteranCInterface_OBJECTS) $(simpleEpetraExteranCInterface_LDADD) $(LIBS)
-$(srcdir)/$(am__dirstamp):
-	@$(MKDIR_P) $(srcdir)
-	@: > $(srcdir)/$(am__dirstamp)
-$(srcdir)/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) $(srcdir)/$(DEPDIR)
-	@: > $(srcdir)/$(DEPDIR)/$(am__dirstamp)
-$(srcdir)/simpleEpetraFortranInterface.$(OBJEXT):  \
-	$(srcdir)/$(am__dirstamp) $(srcdir)/$(DEPDIR)/$(am__dirstamp)
 simpleEpetraFortranInterface$(EXEEXT): $(simpleEpetraFortranInterface_OBJECTS) $(simpleEpetraFortranInterface_DEPENDENCIES) 
 	@rm -f simpleEpetraFortranInterface$(EXEEXT)
 	$(CXXLINK) $(simpleEpetraFortranInterface_OBJECTS) $(simpleEpetraFortranInterface_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
-	-rm -f $(srcdir)/simpleEpetraFortranInterface.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
@@ -306,20 +296,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(COMPILE) -c `$(CYGPATH_W) '$<'`
 
-simpleEpetraExteranCInterface.o: $(srcdir)/simpleEpetraExteranCInterface.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT simpleEpetraExteranCInterface.o -MD -MP -MF $(DEPDIR)/simpleEpetraExteranCInterface.Tpo -c -o simpleEpetraExteranCInterface.o `test -f '$(srcdir)/simpleEpetraExteranCInterface.c' || echo '$(srcdir)/'`$(srcdir)/simpleEpetraExteranCInterface.c
-@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/simpleEpetraExteranCInterface.Tpo $(DEPDIR)/simpleEpetraExteranCInterface.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/simpleEpetraExteranCInterface.c' object='simpleEpetraExteranCInterface.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o simpleEpetraExteranCInterface.o `test -f '$(srcdir)/simpleEpetraExteranCInterface.c' || echo '$(srcdir)/'`$(srcdir)/simpleEpetraExteranCInterface.c
-
-simpleEpetraExteranCInterface.obj: $(srcdir)/simpleEpetraExteranCInterface.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT simpleEpetraExteranCInterface.obj -MD -MP -MF $(DEPDIR)/simpleEpetraExteranCInterface.Tpo -c -o simpleEpetraExteranCInterface.obj `if test -f '$(srcdir)/simpleEpetraExteranCInterface.c'; then $(CYGPATH_W) '$(srcdir)/simpleEpetraExteranCInterface.c'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/simpleEpetraExteranCInterface.c'; fi`
-@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/simpleEpetraExteranCInterface.Tpo $(DEPDIR)/simpleEpetraExteranCInterface.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/simpleEpetraExteranCInterface.c' object='simpleEpetraExteranCInterface.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o simpleEpetraExteranCInterface.obj `if test -f '$(srcdir)/simpleEpetraExteranCInterface.c'; then $(CYGPATH_W) '$(srcdir)/simpleEpetraExteranCInterface.c'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/simpleEpetraExteranCInterface.c'; fi`
-
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
 @am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
@@ -333,34 +309,6 @@ simpleEpetraExteranCInterface.obj: $(srcdir)/simpleEpetraExteranCInterface.c
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
-
-FEpetra_Map.o: $(srcdir)/FEpetra_Map.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT FEpetra_Map.o -MD -MP -MF $(DEPDIR)/FEpetra_Map.Tpo -c -o FEpetra_Map.o `test -f '$(srcdir)/FEpetra_Map.cpp' || echo '$(srcdir)/'`$(srcdir)/FEpetra_Map.cpp
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/FEpetra_Map.Tpo $(DEPDIR)/FEpetra_Map.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/FEpetra_Map.cpp' object='FEpetra_Map.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o FEpetra_Map.o `test -f '$(srcdir)/FEpetra_Map.cpp' || echo '$(srcdir)/'`$(srcdir)/FEpetra_Map.cpp
-
-FEpetra_Map.obj: $(srcdir)/FEpetra_Map.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT FEpetra_Map.obj -MD -MP -MF $(DEPDIR)/FEpetra_Map.Tpo -c -o FEpetra_Map.obj `if test -f '$(srcdir)/FEpetra_Map.cpp'; then $(CYGPATH_W) '$(srcdir)/FEpetra_Map.cpp'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/FEpetra_Map.cpp'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/FEpetra_Map.Tpo $(DEPDIR)/FEpetra_Map.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/FEpetra_Map.cpp' object='FEpetra_Map.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o FEpetra_Map.obj `if test -f '$(srcdir)/FEpetra_Map.cpp'; then $(CYGPATH_W) '$(srcdir)/FEpetra_Map.cpp'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/FEpetra_Map.cpp'; fi`
-
-FEpetra_Vector.o: $(srcdir)/FEpetra_Vector.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT FEpetra_Vector.o -MD -MP -MF $(DEPDIR)/FEpetra_Vector.Tpo -c -o FEpetra_Vector.o `test -f '$(srcdir)/FEpetra_Vector.cpp' || echo '$(srcdir)/'`$(srcdir)/FEpetra_Vector.cpp
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/FEpetra_Vector.Tpo $(DEPDIR)/FEpetra_Vector.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/FEpetra_Vector.cpp' object='FEpetra_Vector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o FEpetra_Vector.o `test -f '$(srcdir)/FEpetra_Vector.cpp' || echo '$(srcdir)/'`$(srcdir)/FEpetra_Vector.cpp
-
-FEpetra_Vector.obj: $(srcdir)/FEpetra_Vector.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT FEpetra_Vector.obj -MD -MP -MF $(DEPDIR)/FEpetra_Vector.Tpo -c -o FEpetra_Vector.obj `if test -f '$(srcdir)/FEpetra_Vector.cpp'; then $(CYGPATH_W) '$(srcdir)/FEpetra_Vector.cpp'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/FEpetra_Vector.cpp'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/FEpetra_Vector.Tpo $(DEPDIR)/FEpetra_Vector.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(srcdir)/FEpetra_Vector.cpp' object='FEpetra_Vector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o FEpetra_Vector.obj `if test -f '$(srcdir)/FEpetra_Vector.cpp'; then $(CYGPATH_W) '$(srcdir)/FEpetra_Vector.cpp'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/FEpetra_Vector.cpp'; fi`
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -460,8 +408,6 @@ clean-generic:
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
-	-test -z "$(srcdir)/$(DEPDIR)/$(am__dirstamp)" || rm -f $(srcdir)/$(DEPDIR)/$(am__dirstamp)
-	-test -z "$(srcdir)/$(am__dirstamp)" || rm -f $(srcdir)/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"

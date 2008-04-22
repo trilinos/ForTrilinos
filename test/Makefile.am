@@ -16,16 +16,16 @@ EXEEXT = .exe
 noinst_PROGRAMS = simpleEpetraExteranCInterface simpleEpetraFortranInterface
 
 simpleEpetraExteranCInterface_SOURCES = \
-  $(srcdir)/simpleEpetraExteranCInterface.c \
-  $(srcdir)/FEpetra_Map.cpp \
-  $(srcdir)/FEpetra_Vector.cpp
+  simpleEpetraExteranCInterface.c \
+  FEpetra_Map.cpp \
+  FEpetra_Vector.cpp
 simpleEpetraExteranCInterface_DEPENDENCIES = $(common_dependencies)
 simpleEpetraExteranCInterface_LDADD = $(common_ldadd)
 
 simpleEpetraFortranInterface_SOURCES = \
-  $(srcdir)/FEpetra_Map.cpp \
-  $(srcdir)/FEpetra_Vector.cpp \
-  $(srcdir)/simpleEpetraFortranInterface.f03
+  FEpetra_Map.cpp \
+  FEpetra_Vector.cpp \
+  simpleEpetraFortranInterface.f03
 simpleEpetraFortranInterface_DEPENDENCIES = $(common_dependencies)
 simpleEpetraFortranInterface_LDADD = $(common_ldadd)
 
