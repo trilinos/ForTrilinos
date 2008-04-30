@@ -74,35 +74,6 @@ all-local:
 	@echo "Trilinos package ForTrilinos built successfully"
 
 ## #######################################################################
-## Export Makefile Installation
-## #######################################################################
-if USING_EXPORT_MAKEFILES
-
-install-exec-hook:
-	cp $(top_builddir)/Makefile.export.ForTrilinos $(exec_prefix)/include/.
-	$(PERL_EXE) $(top_srcdir)/config/replace-install-prefix.pl \
-		--exec-prefix=$(exec_prefix) \
-		--my-export-makefile=Makefile.export.ForTrilinos \
-		--my-abs-top-srcdir=@abs_top_srcdir@ \
-		--my-abs-incl-dirs=@abs_top_builddir@/src:@abs_top_srcdir@/src \
-		--my-abs-lib-dirs=@abs_top_builddir@/src \
-		--dep-package-abs-builddirs=@abs_top_builddir@/../epetra
-	$(PERL_EXE) $(top_srcdir)/config/generate-makeoptions.pl $(top_builddir)/src/Makefile \
-		FORTRILINOS > $(exec_prefix)/include/Makefile.export.ForTrilinos.macros
-
-uninstall-hook:
-	rm -f $(exec_prefix)/include/Makefile.export.ForTrilinos
-	rm -f $(exec_prefix)/include/Makefile.export.ForTrilinos.macros
-
-else
-
-install-exec-hook:
-
-uninstall-hook:
-
-endif
-
-## #######################################################################
 ## Subdirectories to be make'd recursively
 ## #######################################################################
 #We now build tests and examples through separate make targets, rather than

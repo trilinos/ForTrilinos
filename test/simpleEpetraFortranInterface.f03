@@ -10,8 +10,10 @@ program main
   integer(c_int) :: numGlobalElements, numGlobalElements_rtn
   integer(c_int) :: mapID    ! TYPE(MapID)
   integer(c_int) :: xID, bID ! TYPE(VectorID)
-  real(c_double) :: bnorm, xnorm
-
+  real(c_double) :: bnorm, xnorm,err_tol,expected_bnorm,expected_xnorm,bnorm_err,xnorm_err 
+  real(c_double) :: two = 2.0, zero = 0.0
+  logical        :: success = .true.
+  
 ! /*
 !  * Executable code
 !  */
@@ -29,14 +31,25 @@ program main
   bID = FEpetra_Vector_Create(mapID)
 
 ! /* Do some vector operations */
-  call FEpetra_Vector_Random(bID)
-  call FEpetra_Vector_Update(xID,2.0_c_double,bID,0.0_c_double) ! /* x = 2*b */
+  call FEpetra_Vector_PutScalar(bID, two)
+  call FEpetra_Vector_Update(xID, two, bID, zero) ! /* x = 2*b */
 
   bnorm = FEpetra_Vector_Norm2(bID)
   xnorm = FEpetra_Vector_Norm2(xID)
 
   print *, "2 norm of x = ", xnorm 
   print *, "2 norm of b = ", bnorm 
+! /* Test the expected value */
+
+  err_tol = 1e-14;
+  expected_bnorm = sqrt( 2.0 * 2.0 * numGlobalElements );
+  expected_xnorm = sqrt( 4.0 * 4.0 * numGlobalElements );
+  bnorm_err = abs( expected_bnorm - bnorm ) / expected_bnorm;
+  xnorm_err = abs( expected_xnorm - xnorm ) / expected_xnorm;
+  print*, "error in 2 norm of x = ",bnorm_err
+  print*, "error in 2 norm of b = ",xnorm_err
+  if (bnorm_err > err_tol) success = .false.;
+  if (xnorm_err > err_tol) success = .false.;
 
 ! /* Clean up memory (in reverse order)! */
   call FEpetra_Vector_Destroy(bID)
@@ -45,5 +58,12 @@ program main
 
 ! /* This should throw an exception and print an error message! */
 ! /* FEpetra_Map_NumGlobalElements(mapID); */
+   if (success) then
+    print *  
+    print *, "End Result: TEST PASSED" 
+  else
+    print *  
+    print *, "End Result: TEST FAILED"
+  end if
 
 end program main

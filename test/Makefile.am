@@ -29,12 +29,15 @@ simpleEpetraFortranInterface_SOURCES = \
 simpleEpetraFortranInterface_DEPENDENCIES = $(common_dependencies)
 simpleEpetraFortranInterface_LDADD = $(common_ldadd)
 
+forepetraext.mod: ../src/forepetraext.mod
+	ln -sf ../src/forepetraext.mod .
+
 #
 # Common stuff
 #
 
 common_dependencies = \
-  $(top_builddir)/../epetra/src/libepetra.a
+  $(top_builddir)/../epetra/src/libepetra.a  forepetraext.mod
 
 include $(top_builddir)/../epetraext/Makefile.export.epetraext
 
@@ -52,3 +55,6 @@ common_ldadd = $(EXPORT_LIBS)
 
 # This is already added part of EPETRAEXT_LIBS and therefore automake does not need to add this again!
 #LIBS =
+
+
+EXTRA_DIST = definition

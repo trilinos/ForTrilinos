@@ -56,6 +56,12 @@ void FEpetra_Vector_Destroy( VectorID vectorID )
 }
 
 
+void FEpetra_Vector_PutScalar( VectorID vectorID, double scalarConstant )
+{
+  FEpetra::getVector(vectorID)->PutScalar(scalarConstant);
+}
+
+
 void FEpetra_Vector_Random( VectorID vectorID )
 {
   FEpetra::getVector(vectorID)->Random();

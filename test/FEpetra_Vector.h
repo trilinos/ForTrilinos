@@ -20,6 +20,8 @@ VectorID FEpetra_Vector_Create( MapID mapID );
 
 void FEpetra_Vector_Destroy( VectorID vectorID );
 
+void FEpetra_Vector_PutScalar( VectorID vectorID, double scalarConstant );
+
 void FEpetra_Vector_Random( VectorID vectorID );
 
 void FEpetra_Vector_Update(
