@@ -43,12 +43,15 @@ forepetraext.mod: ../src/forepetraext.mod
 epetra_map_module.mod: ../src/epetra_map_module.mod
 	ln -sf ../src/epetra_map_module.mod .
 
+epetra_vector_module.mod: ../src/epetra_vector_module.mod
+	ln -sf ../src/epetra_vector_module.mod .
+
 #
 # Common stuff
 #
 
 common_dependencies = \
-  $(top_builddir)/../epetra/src/libepetra.a  forepetraext.mod epetra_map_module.mod
+  $(top_builddir)/../epetra/src/libepetra.a  forepetraext.mod epetra_map_module.mod epetra_vector_module.mod
 
 include $(top_builddir)/../epetraext/Makefile.export.epetraext
 

@@ -238,7 +238,7 @@ simpleEpetraOOFortranExample_LDADD = $(common_ldadd)
 # Common stuff
 #
 common_dependencies = \
-  $(top_builddir)/../epetra/src/libepetra.a  forepetraext.mod epetra_map_module.mod
+  $(top_builddir)/../epetra/src/libepetra.a  forepetraext.mod epetra_map_module.mod epetra_vector_module.mod
 
 @USING_GNUMAKE_FALSE@EXPORT_INCLUDES = $(EPETRAEXT_INCLUDES)
 @USING_GNUMAKE_TRUE@EXPORT_INCLUDES = $(shell $(PERL_EXE) $(top_srcdir)/config/strip_dup_incl_paths.pl $(EPETRAEXT_INCLUDES))
@@ -525,6 +525,9 @@ forepetraext.mod: ../src/forepetraext.mod
 
 epetra_map_module.mod: ../src/epetra_map_module.mod
 	ln -sf ../src/epetra_map_module.mod .
+
+epetra_vector_module.mod: ../src/epetra_vector_module.mod
+	ln -sf ../src/epetra_vector_module.mod .
 
 include $(top_builddir)/../epetraext/Makefile.export.epetraext
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

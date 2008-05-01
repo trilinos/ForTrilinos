@@ -1,6 +1,7 @@
 program main
   use ,intrinsic :: iso_c_binding ,only : c_int,c_double
   use Epetra_Map_Module
+  use Epetra_Vector_Module
   !use :: forepetraext
   implicit none
 
@@ -10,7 +11,7 @@ program main
 
   integer(c_int)   :: numGlobalElements_loc, numGlobalElements_rtn
   type(Epetra_Map) :: map
-!  type(Epetra_Vector)  :: x, b
+  type(Epetra_Vector)  :: x, b
   real(c_double) :: bnorm, xnorm,err_tol,expected_bnorm,expected_xnorm,bnorm_err,xnorm_err 
   real(c_double) :: two = 2.0, zero = 0.0
   logical        :: success = .true.
@@ -23,13 +24,12 @@ program main
   numGlobalElements_loc = 4;
   map = Create(numGlobalElements_loc);
 
-  print *,NumGlobalElements(map)
-! numGlobalElements_rtn = NumGlobalElements(map)
-! print *,'NumGlobalElements = ', numGlobalElements_rtn
+  numGlobalElements_rtn = NumGlobalElements(map)
+  print *,'NumGlobalElements = ', numGlobalElements_rtn
 !! assert( numGlobalElements == numGlobalElements_rtn )
-!  
+   
 !! /* Create vectors */
-!  x = FEpetra_Vector::Create(map)
+   x = Create(map)
 !  b = FEpetra_Vector::Create(map)
 !
 !! /* Do some vector operations */
