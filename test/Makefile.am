@@ -13,7 +13,8 @@ EXEEXT = .exe
 .f03.obj:
 	$(FC) $(AM_FCFLAGS) $(FCFLAGS) -c -o $@ `$(CYGPATH_W) '$<'`
 
-noinst_PROGRAMS = simpleEpetraExteranCInterface simpleEpetraFortranInterface
+noinst_PROGRAMS = simpleEpetraExteranCInterface simpleEpetraFortranInterface \
+  simpleEpetraOOFortranExample
 
 simpleEpetraExteranCInterface_SOURCES = \
   simpleEpetraExteranCInterface.c \
@@ -29,15 +30,25 @@ simpleEpetraFortranInterface_SOURCES = \
 simpleEpetraFortranInterface_DEPENDENCIES = $(common_dependencies)
 simpleEpetraFortranInterface_LDADD = $(common_ldadd)
 
+simpleEpetraOOFortranExample_SOURCES =		\
+  FEpetra_Map.cpp				\
+  FEpetra_Vector.cpp				\
+  simpleEpetraOOFortranExample.f03		\
+simpleEpetraOOFortranExample_DEPENDENCIES = $(common_dependencies)
+simpleEpetraOOFortranExample_LDADD = $(common_ldadd)
+
 forepetraext.mod: ../src/forepetraext.mod
 	ln -sf ../src/forepetraext.mod .
+
+epetra_map_module.mod: ../src/epetra_map_module.mod
+	ln -sf ../src/epetra_map_module.mod .
 
 #
 # Common stuff
 #
 
 common_dependencies = \
-  $(top_builddir)/../epetra/src/libepetra.a  forepetraext.mod
+  $(top_builddir)/../epetra/src/libepetra.a  forepetraext.mod epetra_map_module.mod
 
 include $(top_builddir)/../epetraext/Makefile.export.epetraext
 
@@ -51,7 +62,7 @@ endif
 
 AM_CPPFLAGS = $(EXPORT_INCLUDES)
 
-common_ldadd = $(EXPORT_LIBS)
+common_ldadd = -L../src -lfortrilinos $(EXPORT_LIBS)
 
 # This is already added part of EPETRAEXT_LIBS and therefore automake does not need to add this again!
 #LIBS =

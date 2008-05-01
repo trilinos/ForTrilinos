@@ -51,7 +51,9 @@ all-local:
 CORE_H =
 
 CORE = \
-	forepetraext.f03
+  forepetraext.f03 \
+  Epetra_Map_Module.f03 \
+  Epetra_Vector_Module.f03
 
 UTIL_H =
 

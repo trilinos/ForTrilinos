@@ -1,14 +1,11 @@
 
 
-#
-# Main Thyra tests
-#
-
 (FRAMEWORK, INSTALL) {
     TESTS = ./simpleEpetraExteranCInterface.exe;
     ARGS = ;
     COMM = MPI,SERIAL;
 }
+
 
 (FRAMEWORK, INSTALL) {
     TESTS = ./simpleEpetraFortranInterface.exe;
@@ -16,3 +13,9 @@
     COMM = MPI,SERIAL;
 }
 
+
+(FRAMEWORK, INSTALL) {
+    TESTS = ./simpleEpetraOOFortranExample.exe;
+    ARGS = ;
+    COMM = MPI,SERIAL;
+}

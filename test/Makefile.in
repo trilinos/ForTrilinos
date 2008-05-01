@@ -34,7 +34,8 @@ build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
 noinst_PROGRAMS = simpleEpetraExteranCInterface$(EXEEXT) \
-	simpleEpetraFortranInterface$(EXEEXT)
+	simpleEpetraFortranInterface$(EXEEXT) \
+	simpleEpetraOOFortranExample$(EXEEXT)
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -70,6 +71,13 @@ am_simpleEpetraFortranInterface_OBJECTS = FEpetra_Map.$(OBJEXT) \
 	simpleEpetraFortranInterface.$(OBJEXT)
 simpleEpetraFortranInterface_OBJECTS =  \
 	$(am_simpleEpetraFortranInterface_OBJECTS)
+am__objects_1 =
+am_simpleEpetraOOFortranExample_OBJECTS = FEpetra_Map.$(OBJEXT) \
+	FEpetra_Vector.$(OBJEXT) \
+	simpleEpetraOOFortranExample.$(OBJEXT) $(am__objects_1)
+simpleEpetraOOFortranExample_OBJECTS =  \
+	$(am_simpleEpetraOOFortranExample_OBJECTS)
+simpleEpetraOOFortranExample_DEPENDENCIES = $(am__DEPENDENCIES_3)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
@@ -83,9 +91,11 @@ CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
 SOURCES = $(simpleEpetraExteranCInterface_SOURCES) \
-	$(simpleEpetraFortranInterface_SOURCES)
+	$(simpleEpetraFortranInterface_SOURCES) \
+	$(simpleEpetraOOFortranExample_SOURCES)
 DIST_SOURCES = $(simpleEpetraExteranCInterface_SOURCES) \
-	$(simpleEpetraFortranInterface_SOURCES)
+	$(simpleEpetraFortranInterface_SOURCES) \
+	$(simpleEpetraOOFortranExample_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -216,19 +226,26 @@ simpleEpetraFortranInterface_SOURCES = \
 
 simpleEpetraFortranInterface_DEPENDENCIES = $(common_dependencies)
 simpleEpetraFortranInterface_LDADD = $(common_ldadd)
+simpleEpetraOOFortranExample_SOURCES = \
+  FEpetra_Map.cpp				\
+  FEpetra_Vector.cpp				\
+  simpleEpetraOOFortranExample.f03		\
+simpleEpetraOOFortranExample_DEPENDENCIES = $(common_dependencies)
+
+simpleEpetraOOFortranExample_LDADD = $(common_ldadd)
 
 #
 # Common stuff
 #
 common_dependencies = \
-  $(top_builddir)/../epetra/src/libepetra.a  forepetraext.mod
+  $(top_builddir)/../epetra/src/libepetra.a  forepetraext.mod epetra_map_module.mod
 
 @USING_GNUMAKE_FALSE@EXPORT_INCLUDES = $(EPETRAEXT_INCLUDES)
 @USING_GNUMAKE_TRUE@EXPORT_INCLUDES = $(shell $(PERL_EXE) $(top_srcdir)/config/strip_dup_incl_paths.pl $(EPETRAEXT_INCLUDES))
 @USING_GNUMAKE_FALSE@EXPORT_LIBS = $(EPETRAEXT_LIBS)
 @USING_GNUMAKE_TRUE@EXPORT_LIBS = $(shell $(PERL_EXE) $(top_srcdir)/config/strip_dup_libs.pl $(EPETRAEXT_LIBS))
 AM_CPPFLAGS = $(EXPORT_INCLUDES)
-common_ldadd = $(EXPORT_LIBS)
+common_ldadd = -L../src -lfortrilinos $(EXPORT_LIBS)
 
 # This is already added part of EPETRAEXT_LIBS and therefore automake does not need to add this again!
 #LIBS =
@@ -275,6 +292,9 @@ simpleEpetraExteranCInterface$(EXEEXT): $(simpleEpetraExteranCInterface_OBJECTS)
 simpleEpetraFortranInterface$(EXEEXT): $(simpleEpetraFortranInterface_OBJECTS) $(simpleEpetraFortranInterface_DEPENDENCIES) 
 	@rm -f simpleEpetraFortranInterface$(EXEEXT)
 	$(CXXLINK) $(simpleEpetraFortranInterface_OBJECTS) $(simpleEpetraFortranInterface_LDADD) $(LIBS)
+simpleEpetraOOFortranExample$(EXEEXT): $(simpleEpetraOOFortranExample_OBJECTS) $(simpleEpetraOOFortranExample_DEPENDENCIES) 
+	@rm -f simpleEpetraOOFortranExample$(EXEEXT)
+	$(CXXLINK) $(simpleEpetraOOFortranExample_OBJECTS) $(simpleEpetraOOFortranExample_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -502,6 +522,9 @@ uninstall-am:
 
 forepetraext.mod: ../src/forepetraext.mod
 	ln -sf ../src/forepetraext.mod .
+
+epetra_map_module.mod: ../src/epetra_map_module.mod
+	ln -sf ../src/epetra_map_module.mod .
 
 include $(top_builddir)/../epetraext/Makefile.export.epetraext
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
