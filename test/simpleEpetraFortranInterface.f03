@@ -20,22 +20,22 @@ program main
   
 ! /* Create a map */
   numGlobalElements = 4;
-  mapID = FEpetra_Map_Create(numGlobalElements);
+  mapID = Epetra_Map_Create(numGlobalElements);
 
-  numGlobalElements_rtn = FEpetra_Map_NumGlobalElements(mapID)
+  numGlobalElements_rtn = Epetra_Map_NumGlobalElements(mapID)
   print *,'NumGlobalElements = ', numGlobalElements_rtn
 ! assert( numGlobalElements == numGlobalElements_rtn )
   
 ! /* Create vectors */
-  xID = FEpetra_Vector_Create(mapID)
-  bID = FEpetra_Vector_Create(mapID)
+  xID = Epetra_Vector_Create(mapID)
+  bID = Epetra_Vector_Create(mapID)
 
 ! /* Do some vector operations */
-  call FEpetra_Vector_PutScalar(bID, two)
-  call FEpetra_Vector_Update(xID, two, bID, zero) ! /* x = 2*b */
+  call Epetra_Vector_PutScalar(bID, two)
+  call Epetra_Vector_Update(xID, two, bID, zero) ! /* x = 2*b */
 
-  bnorm = FEpetra_Vector_Norm2(bID)
-  xnorm = FEpetra_Vector_Norm2(xID)
+  bnorm = Epetra_Vector_Norm2(bID)
+  xnorm = Epetra_Vector_Norm2(xID)
 
   print *, "2 norm of x = ", xnorm 
   print *, "2 norm of b = ", bnorm 
@@ -52,12 +52,12 @@ program main
   if (xnorm_err > err_tol) success = .false.;
 
 ! /* Clean up memory (in reverse order)! */
-  call FEpetra_Vector_Destroy(bID)
-  call FEpetra_Vector_Destroy(xID)
-  call FEpetra_Map_Destroy(mapID)
+  call Epetra_Vector_Destroy(bID)
+  call Epetra_Vector_Destroy(xID)
+  call Epetra_Map_Destroy(mapID)
 
 ! /* This should throw an exception and print an error message! */
-! /* FEpetra_Map_NumGlobalElements(mapID); */
+! /* Epetra_Map_NumGlobalElements(mapID); */
    if (success) then
     print *  
     print *, "End Result: TEST PASSED" 

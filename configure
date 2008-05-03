@@ -5901,7 +5901,7 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 # ------------------------------------------------------------------------
 # Output files
 # ------------------------------------------------------------------------
-ac_config_files="$ac_config_files Makefile src/Makefile test/Makefile"
+ac_config_files="$ac_config_files Makefile Makefile.export.ForTrilinos src/Makefile test/Makefile"
 
 
 # I will probably have to add this file later
@@ -6570,6 +6570,7 @@ do
   case $ac_config_target in
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
+    "Makefile.export.ForTrilinos") CONFIG_FILES="$CONFIG_FILES Makefile.export.ForTrilinos" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "test/Makefile") CONFIG_FILES="$CONFIG_FILES test/Makefile" ;;
 

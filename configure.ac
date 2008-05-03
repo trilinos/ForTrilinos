@@ -226,6 +226,7 @@ AC_SUBST(ac_aux_dir)
 # ------------------------------------------------------------------------
 AC_CONFIG_FILES([
 		Makefile
+		Makefile.export.ForTrilinos
 		src/Makefile
 		test/Makefile
 		])

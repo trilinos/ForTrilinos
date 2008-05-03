@@ -19,7 +19,7 @@ contains
   function Create_Epetra_Map(numGlobalElements) 
     integer(c_int) :: numGlobalElements
     type(Epetra_Map) :: Create_Epetra_Map
-    Create_Epetra_Map%id = FEpetra_Map_Create(numGlobalElements)
+    Create_Epetra_Map%id = Epetra_Map_Create(numGlobalElements)
   end function 
   
   function GetMapID(map) 
@@ -31,7 +31,7 @@ contains
   function NumGlobalElements(map) result(numGlobalElements_rtn)
     type(Epetra_Map) :: map
     integer(c_int) :: numGlobalElements_rtn
-    numGlobalElements_rtn = FEpetra_Map_NumGlobalElements(map%id)
+    numGlobalElements_rtn = Epetra_Map_NumGlobalElements(map%id)
   end function 
   
 end module Epetra_Map_Module

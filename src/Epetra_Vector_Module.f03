@@ -21,7 +21,7 @@ contains
   function Create_Epetra_Vector(map) 
     type(Epetra_Map) :: map
     type(Epetra_Vector) :: Create_Epetra_Vector
-    Create_Epetra_Vector%id = FEpetra_Vector_Create(GetMapID(map))
+    Create_Epetra_Vector%id = Epetra_Vector_Create(GetMapID(map))
   end function
 
 end module Epetra_Vector_Module
