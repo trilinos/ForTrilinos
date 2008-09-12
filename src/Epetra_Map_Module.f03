@@ -4,34 +4,38 @@ module Epetra_Map_Module
   implicit none
   private
 
-  type ,bind(C) ,public :: Epetra_Map 
+  type ,public :: Epetra_Map 
     private
     integer(c_int) :: id
+  contains
+    procedure :: Create
+    procedure :: NumGlobalElements
+    procedure :: GetMapID
+    procedure :: Destroy
   end type 
 
-  interface Create
-    module procedure Create_Epetra_Map
-  end interface
-
-  public :: Create ,NumGlobalElements ,GetMapID
 contains
 
-  function Create_Epetra_Map(numGlobalElements) 
-    integer(c_int) :: numGlobalElements
-    type(Epetra_Map) :: Create_Epetra_Map
-    Create_Epetra_Map%id = Epetra_Map_Create(numGlobalElements)
-  end function 
+  subroutine Create(map,numGlobalElements) 
+    type(Epetra_Map) ,intent(out) :: map
+    integer(c_int)   ,intent(in)  :: numGlobalElements
+    map%id = FEpetra_Map_Create(numGlobalElements)
+  end subroutine
   
   function GetMapID(map) 
-    type(Epetra_Map) :: map
-    integer(c_int)   :: GetMapID
+    type(Epetra_Map) ,intent(in) :: map
+    integer(c_int)               :: GetMapID
     GetMapID = map%id
   end function 
   
-  function NumGlobalElements(map) result(numGlobalElements_rtn)
-    type(Epetra_Map) :: map
-    integer(c_int) :: numGlobalElements_rtn
-    numGlobalElements_rtn = Epetra_Map_NumGlobalElements(map%id)
+  function NumGlobalElements(map)
+    type(Epetra_Map) ,intent(in) :: map
+    integer(c_int)               :: NumGlobalElements
+    NumGlobalElements = FEpetra_Map_NumGlobalElements(map%id)
   end function 
-  
+
+  subroutine Destroy(map) 
+    type(Epetra_Map) ,intent(inout) :: map
+    call FEpetra_Map_Destroy(map%id)
+  end subroutine 
 end module Epetra_Map_Module

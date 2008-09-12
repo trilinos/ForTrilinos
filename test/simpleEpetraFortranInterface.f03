@@ -20,22 +20,22 @@ program main
   
 ! /* Create a map */
   numGlobalElements = 4;
-  mapID = Epetra_Map_Create(numGlobalElements);
+  mapID = FEpetra_Map_Create(numGlobalElements);
 
-  numGlobalElements_rtn = Epetra_Map_NumGlobalElements(mapID)
+  numGlobalElements_rtn = FEpetra_Map_NumGlobalElements(mapID)
   print *,'NumGlobalElements = ', numGlobalElements_rtn
 ! assert( numGlobalElements == numGlobalElements_rtn )
   
 ! /* Create vectors */
-  xID = Epetra_Vector_Create(mapID)
-  bID = Epetra_Vector_Create(mapID)
+  xID = FEpetra_Vector_Create(mapID)
+  bID = FEpetra_Vector_Create(mapID)
 
 ! /* Do some vector operations */
   call Epetra_Vector_PutScalar(bID, two)
   call Epetra_Vector_Update(xID, two, bID, zero) ! /* x = 2*b */
 
-  bnorm = Epetra_Vector_Norm2(bID)
-  xnorm = Epetra_Vector_Norm2(xID)
+  bnorm = FEpetra_Vector_Norm2(bID)
+  xnorm = FEpetra_Vector_Norm2(xID)
 
   print *, "2 norm of x = ", xnorm 
   print *, "2 norm of b = ", bnorm 
