@@ -13,11 +13,12 @@ EXEEXT = .exe
 .f03.obj:
 	$(FC) $(AM_FCFLAGS) $(FCFLAGS) -c -o $@ `$(CYGPATH_W) '$<'`
 
-noinst_PROGRAMS = simpleEpetraFortranInterface simpleEpetraOOFortranExample
+#noinst_PROGRAMS = simpleEpetraFortranInterface simpleEpetraOOFortranExample
+noinst_PROGRAMS = simpleEpetraOOFortranExample
 
-simpleEpetraFortranInterface_SOURCES = simpleEpetraFortranInterface.f03 dummy.cpp
-simpleEpetraFortranInterface_DEPENDENCIES = $(common_dependencies)
-simpleEpetraFortranInterface_LDADD = $(common_ldadd)
+#simpleEpetraFortranInterface_SOURCES = simpleEpetraFortranInterface.f03 dummy.cpp
+#simpleEpetraFortranInterface_DEPENDENCIES = $(common_dependencies)
+#simpleEpetraFortranInterface_LDADD = $(common_ldadd)
 
 simpleEpetraOOFortranExample_SOURCES = simpleEpetraOOFortranExample.f03 dummy.cpp
 simpleEpetraOOFortranExample_DEPENDENCIES = $(common_dependencies)

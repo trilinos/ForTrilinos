@@ -33,8 +33,7 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-noinst_PROGRAMS = simpleEpetraFortranInterface$(EXEEXT) \
-	simpleEpetraOOFortranExample$(EXEEXT)
+noinst_PROGRAMS = simpleEpetraOOFortranExample$(EXEEXT)
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -55,19 +54,15 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES =
 PROGRAMS = $(noinst_PROGRAMS)
-am_simpleEpetraFortranInterface_OBJECTS =  \
-	simpleEpetraFortranInterface.$(OBJEXT) dummy.$(OBJEXT)
-simpleEpetraFortranInterface_OBJECTS =  \
-	$(am_simpleEpetraFortranInterface_OBJECTS)
+am_simpleEpetraOOFortranExample_OBJECTS =  \
+	simpleEpetraOOFortranExample.$(OBJEXT) dummy.$(OBJEXT)
+simpleEpetraOOFortranExample_OBJECTS =  \
+	$(am_simpleEpetraOOFortranExample_OBJECTS)
 am__DEPENDENCIES_1 =
 @USING_GNUMAKE_TRUE@am__DEPENDENCIES_2 = $(shell $(am__DEPENDENCIES_1) \
 @USING_GNUMAKE_TRUE@	$(top_srcdir)/config/strip_dup_libs.pl \
 @USING_GNUMAKE_TRUE@	$(FORTRILINOS_LIBS))
 am__DEPENDENCIES_3 = $(am__DEPENDENCIES_2)
-am_simpleEpetraOOFortranExample_OBJECTS =  \
-	simpleEpetraOOFortranExample.$(OBJEXT) dummy.$(OBJEXT)
-simpleEpetraOOFortranExample_OBJECTS =  \
-	$(am_simpleEpetraOOFortranExample_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
@@ -76,10 +71,8 @@ CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
-SOURCES = $(simpleEpetraFortranInterface_SOURCES) \
-	$(simpleEpetraOOFortranExample_SOURCES)
-DIST_SOURCES = $(simpleEpetraFortranInterface_SOURCES) \
-	$(simpleEpetraOOFortranExample_SOURCES)
+SOURCES = $(simpleEpetraOOFortranExample_SOURCES)
+DIST_SOURCES = $(simpleEpetraOOFortranExample_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -196,9 +189,10 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-simpleEpetraFortranInterface_SOURCES = simpleEpetraFortranInterface.f03 dummy.cpp
-simpleEpetraFortranInterface_DEPENDENCIES = $(common_dependencies)
-simpleEpetraFortranInterface_LDADD = $(common_ldadd)
+
+#simpleEpetraFortranInterface_SOURCES = simpleEpetraFortranInterface.f03 dummy.cpp
+#simpleEpetraFortranInterface_DEPENDENCIES = $(common_dependencies)
+#simpleEpetraFortranInterface_LDADD = $(common_ldadd)
 simpleEpetraOOFortranExample_SOURCES = simpleEpetraOOFortranExample.f03 dummy.cpp
 simpleEpetraOOFortranExample_DEPENDENCIES = $(common_dependencies)
 simpleEpetraOOFortranExample_LDADD = $(common_ldadd)
@@ -255,9 +249,6 @@ $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 
 clean-noinstPROGRAMS:
 	-test -z "$(noinst_PROGRAMS)" || rm -f $(noinst_PROGRAMS)
-simpleEpetraFortranInterface$(EXEEXT): $(simpleEpetraFortranInterface_OBJECTS) $(simpleEpetraFortranInterface_DEPENDENCIES) 
-	@rm -f simpleEpetraFortranInterface$(EXEEXT)
-	$(CXXLINK) $(simpleEpetraFortranInterface_OBJECTS) $(simpleEpetraFortranInterface_LDADD) $(LIBS)
 simpleEpetraOOFortranExample$(EXEEXT): $(simpleEpetraOOFortranExample_OBJECTS) $(simpleEpetraOOFortranExample_DEPENDENCIES) 
 	@rm -f simpleEpetraOOFortranExample$(EXEEXT)
 	$(CXXLINK) $(simpleEpetraOOFortranExample_OBJECTS) $(simpleEpetraOOFortranExample_LDADD) $(LIBS)
