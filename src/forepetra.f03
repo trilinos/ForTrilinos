@@ -1,4 +1,4 @@
-module forepetraext
+module forepetra
   use ,intrinsic :: iso_c_binding ,only : c_int,c_double
   implicit none
 
@@ -56,4 +56,4 @@ module forepetraext
       integer(c_int) ,value :: vectorID 
     end function 
   end interface
-end module forepetraext
+end module forepetra
