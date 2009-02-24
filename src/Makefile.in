@@ -96,7 +96,7 @@ LIBRARIES = $(lib_LIBRARIES)
 AR = ar
 ARFLAGS = cru
 libfortrilinos_a_DEPENDENCIES =
-am__objects_1 = forepetraext.$(OBJEXT) Epetra_Map_Module.$(OBJEXT) \
+am__objects_1 = forepetra.$(OBJEXT) Epetra_Map_Module.$(OBJEXT) \
 	Epetra_Vector_Module.$(OBJEXT)
 am__objects_2 =
 am_libfortrilinos_a_OBJECTS = $(am__objects_1) $(am__objects_2)
@@ -229,7 +229,7 @@ top_srcdir = @top_srcdir@
 # ------------------------------------------------------------------------
 CORE_H = 
 CORE = \
-  forepetraext.f03 \
+  forepetra.f03 \
   Epetra_Map_Module.f03 \
   Epetra_Vector_Module.f03
 

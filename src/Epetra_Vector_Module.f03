@@ -2,7 +2,7 @@ module Epetra_Vector_Module
 
   use ,intrinsic :: iso_c_binding     ,only : c_int ,c_double
   use            :: epetra_map_module ,only : Epetra_Map 
-  use            :: forepetraext
+  use            :: forepetra
   implicit none
   private
 

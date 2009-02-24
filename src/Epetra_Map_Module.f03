@@ -1,6 +1,6 @@
 module Epetra_Map_Module
   use ,intrinsic :: iso_c_binding ,only : c_int
-  use :: forepetraext
+  use :: forepetra
   implicit none
   private
 
