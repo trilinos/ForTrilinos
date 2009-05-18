@@ -44,7 +44,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 APPEND_SET(HEADERS
   )
 
-# Set sources
+# Set sources (add any source files that in the current directory [src])
 
 APPEND_SET(SOURCES
   )
@@ -54,7 +54,7 @@ APPEND_SET(SOURCES
 #
 
 PACKAGE_ADD_LIBRARY(
-  ctrilinos
+  fortrilinos
   HEADERS ${HEADERS}
   SOURCES ${SOURCES}
   )
