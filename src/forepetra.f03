@@ -4,7 +4,8 @@ module forepetra
 
   !
   ! C procedure bindings
-  !
+   
+  ! ____________________ Epetra_Map bindings ________________________
 
   interface 
     integer(c_int) function FEpetra_Map_Create( numGlobalElements ) bind(c,name='Epetra_Map_Create')
@@ -23,6 +24,8 @@ module forepetra
     end function 
   end interface
   
+  ! ___________________ Epetra_Vector bindings ____________________
+
   interface 
     integer(c_int) function FEpetra_Vector_Create( mapID ) bind(c,name='Epetra_Vector_Create')
       import :: c_int
@@ -56,4 +59,29 @@ module forepetra
       integer(c_int) ,value :: vectorID 
     end function 
   end interface
+
+  ! ___________________ Epetra_SerialComm bindings ____________________
+    interface
+      integer(c_int) function FEpetra_SerialComm_Create() bind(c,name='Epetra_SerialComm_Create')
+        import :: c_int
+      end function
+
+      subroutine FEpetra_SerialComm_Destroy(id) bind(c,name='Epetra_SerialComm_Destroy')
+        import :: c_int
+        integer(c_int) ,value :: id
+      end subroutine
+    end interface
+
+  ! ___________________ Epetra_MpiComm bindings ____________________
+    interface
+      integer(c_int) function FEpetra_MpiComm_Create() bind(c,name='Epetra_MpiComm_Create')
+        import :: c_int
+      end function
+
+      subroutine FEpetra_MpiComm_Destroy(id) bind(c,name='Epetra_MpiComm_Destroy')
+        import :: c_int
+        integer(c_int) ,value :: id
+      end subroutine
+    end interface
+
 end module forepetra

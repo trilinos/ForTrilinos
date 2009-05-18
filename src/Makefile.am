@@ -53,7 +53,9 @@ CORE_H =
 CORE = \
   forepetra.f03 \
   Epetra_Map_Module.f03 \
-  Epetra_Vector_Module.f03
+  Epetra_Vector_Module.f03 \
+  Epetra_SerialComm_Module.f03 \
+  Epetra_MpiComm_Module.f03
 
 UTIL_H =
 
