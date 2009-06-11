@@ -4,11 +4,10 @@ module Epetra_SerialComm_Module
   implicit none
   private
   public :: Epetra_SerialComm
-  type ,public :: Epetra_SerialComm 
+  type Epetra_SerialComm 
     private
     integer(c_int) :: id
   contains
-    procedure :: Create
     procedure :: NumGlobalElements
     procedure :: GetSerialCommID
     procedure :: Destroy
@@ -20,10 +19,15 @@ module Epetra_SerialComm_Module
  !end interface 
 contains
   ! Constructor
-  type(Epetra_SerialComm) Epetra_SerialComm_() 
+  type(Epetra_SerialComm) function Epetra_SerialComm_() 
     Epetra_SerialComm_%id = FEpetra_SerialComm_Create()
-  end subroutine
-  
+  end function
+
+  integer(c_int) function NumGlobalElements(this)
+    type(Epetra_SerialComm) ,intent(in) :: this
+    NumGlobalElements = FEpetra_Map_NumGlobalElements(this%id)
+  end function
+
   ! Destructor 
   subroutine Destroy(serial_comm) 
     type(Epetra_SerialComm) ,intent(inout) :: serial_comm

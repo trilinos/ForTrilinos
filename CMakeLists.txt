@@ -1,7 +1,7 @@
 
 INCLUDE(PackageMacros)
 
-PACKAGE(ForTrilinos)
+PACKAGE(ForTrilinos Fortran)
 
 ADD_SUBDIRECTORY(src)
 

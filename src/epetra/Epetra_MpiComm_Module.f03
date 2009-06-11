@@ -4,11 +4,10 @@ module Epetra_MpiComm_Module
   implicit none
   private
   public :: Epetra_MpiComm
-  type ,public :: Epetra_MpiComm 
+  type Epetra_MpiComm 
     private
     integer(c_int) :: id
   contains
-    procedure :: Create
     procedure :: NumGlobalElements
     procedure :: GetMpiCommID
     procedure :: Destroy
@@ -20,9 +19,14 @@ module Epetra_MpiComm_Module
  !end interface 
 contains
   ! Constructor
-  type(Epetra_MpiComm) Epetra_MpiComm_() 
+  type(Epetra_MpiComm) function Epetra_MpiComm_() 
     Epetra_MpiComm_%id = FEpetra_MpiComm_Create()
-  end subroutine
+  end function
+
+  integer(c_int) function NumGlobalElements(this)
+    type(Epetra_MpiComm) ,intent(in) :: this
+    NumGlobalElements = FEpetra_Map_NumGlobalElements(this%id)
+  end function
   
   ! Destructor 
   subroutine Destroy(mpi_comm) 
