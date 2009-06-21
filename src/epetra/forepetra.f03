@@ -1,12 +1,44 @@
 module forepetra
-  use ,intrinsic :: iso_c_binding ,only : c_int,c_double
+  use ,intrinsic    :: iso_c_binding ,only : c_int,c_double
+  use ,nonintrinsic :: ForTrilinos_enums
   implicit none
 
   !
   ! C procedure bindings
+
+  ! ____________________ Epetra_Data bindings ________________________
+  interface
+    type(FT_Epetra_Data_ID_t) function Epetra_Data_Cast(id) bind(C,name='Epetra_Data_Cast')
+      import :: c_int
+      integer(c_int) :: id ! CTrilinos_Object_ID_t
+    end function 
+  end interface
+
+  ! ____________________ Epetra_SerialCommData bindings ________________
+  interface
+    type(FT_Epetra_SerialCommData_ID_t) function Epetra_SerialCommData_Cast(id) bind(C,name='Epetra_SerialCommData_Cast')
+      import :: c_int
+      integer(c_int) :: id ! CTrilinos_Object_ID_t 
+    end function
+  end interface
+
+  ! ____________________ Epetra_MpiCommData bindings ________________
+  interface
+    type(FT_Epetra_MpiCommData_ID_t) function Epetra_MpiCommData_Cast(id) bind(C,name='Epetra_MpiCommDoata_Cast')
+      import :: c_int
+      integer(c_int) :: id ! CTrilinos_Object_ID_t 
+    end function
+  end interface
+   
+  ! ____________________ Epetra_BlockMapData bindings ________________
+  interface
+    type(CT_Epetra_BlockMapData_ID_t ) function Epetra_BlockMapData_Cast(id) bind(C,name='Epetra_BlockMapData_Cast')
+      import :: c_int
+      integer(c_int) :: id ! CTrilinos_Object_ID_t 
+    end function
+  end interface
    
   ! ____________________ Epetra_Map bindings ________________________
-
   interface 
     integer(c_int) function FEpetra_Map_Create( numGlobalElements ) bind(c,name='Epetra_Map_Create')
       import :: c_int
@@ -85,3 +117,4 @@ module forepetra
     end interface
 
 end module forepetra
+
