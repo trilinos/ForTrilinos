@@ -1,12 +1,11 @@
-module ForTrilinos_enums
+module ForTrilinos_enums          ! Companion to CTrilinos_enums.h
   use iso_c_binding ,only : c_int ! Kind parameter (precision specifier)
   implicit none                   ! Prevent implicit typing
 
   ! This file is the Fortran companion to CTrilinos/src/CTrilinos_enums.h.
   ! The definitions here are the nearest Fortran equivalents to the contents of that file.
   ! The Fortran 2003 standard guarantees that the types (e.g., 'integer(c_int)') and 
-  ! enumeration values are guaranteed by the Fortran 2003 standard to be interoperable with 
-  ! those employed by a companion C compiler.
+  ! enumeration values are interoperable with those employed by a companion C compiler.
 
   enum ,bind(C) 
     enumerator ::
