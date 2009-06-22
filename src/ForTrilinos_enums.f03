@@ -1,4 +1,4 @@
-module ForTrilinos_enums          ! Companion to CTrilinos_enums.h
+module ForTrilinos_enums          
   use iso_c_binding ,only : c_int ! Kind parameter (precision specifier)
   implicit none                   ! Prevent implicit typing
 
@@ -38,46 +38,49 @@ module ForTrilinos_enums          ! Companion to CTrilinos_enums.h
       FT_Epetra_BlockMap_ID, 
       FT_Epetra_Import_ID
   end enum 
-
-  type ,bind(C) :: ForTrilinos_Type_ID_t  
-    integer(c_int) :: id_t                 ! Companion to CTrilinos_Type_ID_t  
-  end type
   
-  type ,bind(C) :: ForTrilinos_Object_ID_t ! interoperable with CTrilinos_Object_ID_t
-   !type(ForTrilinos_Type_ID_t)  :: type   ! Could use this form if CTrilinos_Type_ID_t were a struct
-    integer(c_int)  :: type                ! Data type of the object (interoperable with CTrilinos_Type_ID_t)
-    integer(c_int)  :: index               ! Array index of the object 
+  ! Since the Fortran 2003 standard guarantees that enum values correspond to C int values, we can create
+  ! the alias below for c_int with certainty that it can be used as the Fortran kind parameter that 
+  ! makes Fortran integer values interoperable with C enumeration values. This alias is the Fortran 
+  ! counterpart to CTrilinos_Type_ID_t in CTrilinos/src/CTrilinos_enums.h:
+
+  integer(kind(c_int)) ,parameter :: ForTrilinos_Type_ID_t = c_int
+
+  !The type below is interoperable with CTrilinos_Object_ID_t in CTrilinos/src/CTrilinos_enums.h:
+  
+  type ,bind(C) :: ForTrilinos_Object_ID_t  
+    integer(ForTrilinos_Type_ID_t) :: type  ! Object data type (interoperable with CTrilinos_Type_ID_t)
+    integer(c_int)                 :: index ! Array index of the object 
   end type 
 
-  ! To keep the function interfaces readable... 
-  ! (each type_ID_t component interoperates with a CT_Epetra_*_ID_t type, *=Distributor,SerialCommData,...)
-  ! (each 'type FT_*_ID_t type would interoperate directly with CT_Epetra_*_ID_t if the latter were a struct)
-  type FT_Epetra_Distributor_ID_t   ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_SerialCommData_ID_t; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_SerialComm_ID_t    ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_BLAS_ID_t          ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_Comm_ID_t          ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_Operator_ID_t      ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_MultiVector_ID_t   ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_OffsetIndex_ID_t   ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_Object_ID_t        ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_Data_ID_t          ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_RowMatrix_ID_t     ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_CompObject_ID_t    ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_Directory_ID_t     ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_BlockMapData_ID_t  ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_Flops_ID_t         ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_SrcDistObject_ID_t ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_MpiComm_ID_t       ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_MpiCommData_ID_t   ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_CrsMatrix_ID_t     ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_CrsGraph_ID_t      ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_DistObject_ID_t    ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_Export_ID_t        ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_Vector_ID_t        ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_Map_ID_t           ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_CrsGraphData_ID_t  ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_BlockMap_ID_t      ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  type FT_Epetra_Import_ID_t        ; type(ForTrilinos_Object_ID_t) :: type_ID_t; end type
-  
+  ! Each type definition below is identical in form to the ForTrilinos_Object_ID_t definition but with a name corresponding
+  ! to the CT_Epetra_*_ID_t type (where *=Distributor,SerialCommData,...) with which it is designed to be interoperable.
+
+  type ,bind(C) :: FT_Epetra_Distributor_ID_t   ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_SerialCommData_ID_t; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_SerialComm_ID_t    ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_BLAS_ID_t          ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_Comm_ID_t          ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_Operator_ID_t      ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_MultiVector_ID_t   ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_OffsetIndex_ID_t   ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_Object_ID_t        ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_Data_ID_t          ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_RowMatrix_ID_t     ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_CompObject_ID_t    ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_Directory_ID_t     ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_BlockMapData_ID_t  ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_Flops_ID_t         ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_SrcDistObject_ID_t ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_MpiComm_ID_t       ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_MpiCommData_ID_t   ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_CrsMatrix_ID_t     ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_CrsGraph_ID_t      ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_DistObject_ID_t    ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_Export_ID_t        ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_Vector_ID_t        ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_Map_ID_t           ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_CrsGraphData_ID_t  ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_BlockMap_ID_t      ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+  type ,bind(C) :: FT_Epetra_Import_ID_t        ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
 end module ForTrilinos_enums
