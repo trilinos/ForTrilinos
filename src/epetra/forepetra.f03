@@ -92,6 +92,7 @@ module forepetra  ! Companion to CEpetra_*.h
   end function
  
   ! ____________________ Epetra_Distributor interface bodies ________________________________________________________
+
   !CT_Epetra_Distributor_ID_t Epetra_Distributor_Cast(
   !  CTrilinos_Object_ID_t id );
 
@@ -131,7 +132,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! const int * ExportPIDs, boolean Deterministic, 
   ! int * NumRemoteIDs );
 
-  ! Assuming that the C prototype will be modified to 'const int * NumExportIDs'
+  ! Assuming that the C prototype will be modified to 'const int * NumExportIDs':
  
   integer(c_int) function Epetra_Distributor_CreateFromSends ( selfID, NumExportIDs, ExportPIDs, Deterministic, NumRemoteIDs ) &
     bind(C,name='Epetra_Distributor_CreateFromSends')
@@ -153,7 +154,7 @@ module forepetra  ! Companion to CEpetra_*.h
   !   boolean Deterministic, int * NumExportIDs, int ** ExportGIDs, 
   !   int ** ExportPIDs );
  
-  ! Assuming that the C prototype will be modified to 'const int * NumRemoteIDs'
+  ! Assuming that the C prototype will be modified to 'const int * NumRemoteIDs':
 
   integer(c_int) function Epetra_Distributor_CreateFromRecvs ( &
     selfID, NumRemoteIDs, RemoteGIDs, RemotePIDs, Deterministic, NumExportIDs, ExportGIDs, ExportPIDs &
@@ -328,7 +329,465 @@ module forepetra  ! Companion to CEpetra_*.h
     integer(c_int) :: len_import_objs
     character(c_char) ,dimension(len_import_objs) :: import_objs 
   end function
+
+  ! ____________________ Epetra_Comm interface bodies ________________________________________________________
+
+  !CT_Epetra_Comm_ID_t Epetra_Comm_Cast(
+  !  CTrilinos_Object_ID_t id );
+
+  type(FT_Epetra_Comm_ID_t) function Epetra_Comm_Cast(FTrilinos_Object_ID_t id ) bind(C,name='Epetra_Comm_Cast')
+    import :: FT_Epetra_Comm_ID_t, FTrilinos_Object_ID_t 
+    type(CTrilinos_Object_ID_t) ,value :: id  
+  end function
+
+  !/* Original C++ prototype:
+  !   virtual Epetra_Comm * Clone() const = 0;
+  !*/
+  !CT_Epetra_Comm_ID_t Epetra_Comm_Clone ( CT_Epetra_Comm_ID_t selfID );
+
+  type(CT_Epetra_Comm_ID_t) function Epetra_Comm_Clone ( selfID ) bind(C,name='Epetra_Comm_Clone')
+    import :: CT_Epetra_Comm_ID_t 
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+  end function
+
+  !/* Original C++ prototype:
+  !  virtual ~Epetra_Comm();
+  !*/
+  !void Epetra_Comm_Destroy ( CT_Epetra_Comm_ID_t * selfID );
+
+  subroutine Epetra_Comm_Destroy( selfID ) bind(C,name='Epetra_Comm_Destroy') 
+    import :: CT_Epetra_Comm_ID_t
+    type(CT_Epetra_Comm_ID_t) :: selfID
+  end subroutine
+
+  !/* Original C++ prototype:
+  !   virtual void Barrier() const = 0;
+  !*/
+  !void Epetra_Comm_Barrier ( CT_Epetra_Comm_ID_t selfID );
+
+  subroutine Epetra_Comm_Barrier ( CT_Epetra_Comm_ID_t selfID ) bind(C,name='Epetra_Comm_Barrier')
+    import :: CT_Epetra_Comm_ID_t 
+    type(CT_Epetra_Comm_ID_t) ,vaue :: selfID 
+  end subroutine
+
+  !/* Original C++ prototype:
+  !   virtual int Broadcast(double * MyVals, int Count, int Root) const = 0;
+  !*/
+  !int Epetra_Comm_Broadcast_Double ( 
+  !  CT_Epetra_Comm_ID_t selfID, double * MyVals, int Count, int Root );
+
+  integter(c_int) function Epetra_Comm_Broadcast_Double( selfID, MyVals, Count, Root ) bind(C,name='Epetra_Comm_Broadcast_Double')
+    import :: c_int ,CT_Epetra_Comm_ID_t ,c_double 
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+    real(c_double) ,dimension(Count) :: MyVals
+    integer(c_int) ,value :: Count
+    integer(c_int) ,value :: Root 
+  end function
+
+  !/* Original C++ prototype:
+  !   virtual int Broadcast(int * MyVals, int Count, int Root) const = 0;
+  !*/
+  !int Epetra_Comm_Broadcast_Int ( 
+  !  CT_Epetra_Comm_ID_t selfID, int * MyVals, int Count, int Root );
+
+  integer(c_int) function Epetra_Comm_Broadcast_Int ( selfID, MyVals, Count, Root ) bind(C,name='Epetra_Comm_Broadcast_Int ')
+    import :: CT_Epetra_Comm_ID_t , c_int 
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+    integer(c_int) ,dimension(Count) :: MyVals
+    integer(c_int) ,value :: Count
+    integer(c_int) ,value ::  Root 
+  end function
+
+  !/* Original C++ prototype:
+  !   virtual int Broadcast(long * MyVals, int Count, int Root) const = 0;
+  !  */
+  !int Epetra_Comm_Broadcast_Long ( 
+  !  CT_Epetra_Comm_ID_t selfID, long * MyVals, int Count, int Root );
+
+  integer(c_int) function Epetra_Comm_Broadcast_Char ( selfID, MyVals, Count, Root ) bind(C,name='Epetra_Comm_Broadcast_Char')
+    import :: c_int ,CT_Epetra_Comm_ID_t selfID, c_long
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+    character(c_long) ,dimension(Count) :: MyVals
+    integer(c_int) ,value :: Count
+    integer(c_int) ,value :: Root 
+  end function
+
+  !/* Original C++ prototype:
+  !   virtual int Broadcast(char * MyVals, int Count, int Root) const = 0;
+  !*/
+  !int Epetra_Comm_Broadcast_Char ( 
+  !  CT_Epetra_Comm_ID_t selfID, char * MyVals, int Count, int Root );
+
+  integer(c_int) function Epetra_Comm_Broadcast_Char ( selfID, MyVals, Count, Root ) bind(C,name='Epetra_Comm_Broadcast_Char')
+    import :: c_int ,CT_Epetra_Comm_ID_t selfID, c_char 
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+    character(c_char) ,dimension(Count) :: MyVals
+    integer(c_int) ,value :: Count
+    integer(c_int) ,value :: Root 
+  end function
+
+  !/* Original C++ prototype:
+  !   virtual int GatherAll(double * MyVals, double * AllVals, int Count) const = 0;
+  !*/
+  !int Epetra_Comm_GatherAll_Double ( 
+  !  CT_Epetra_Comm_ID_t selfID, double * MyVals, double * AllVals, 
+  !  int Count );
+
+  integer(c_int) function Epetra_Comm_GatherAll_Double( selfID, MyVals, AllVals, Count ) bind(C,name='Epetra_Comm_GatherAll_Double')
+    import :: c_int ,CT_Epetra_Comm_ID_t , c_double
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+    real(c_double) ,dimension(Count) :: MyVals
+    real(c_double) ,dimension(*) :: AllVals 
+    integer(c_int) ,value :: Count 
+  end function
+
+  !/* Original C++ prototype:
+  !   virtual int GatherAll(int * MyVals, int * AllVals, int Count) const = 0;
+  !*/
+  !int Epetra_Comm_GatherAll_Int ( 
+  !  CT_Epetra_Comm_ID_t selfID, int * MyVals, int * AllVals, int Count );
+
+  integer(c_int) function Epetra_Comm_GatherAll_Int (selfID, MyVals, AllVals, Count ) bind(C,name='Epetra_Comm_GatherAll_Int')
+    import :: c_int ,CT_Epetra_Comm_ID_t 
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+    integer(c_int) ,dimension(Count) :: MyVals
+    integer(c_int) ,dimension(*) ::  AllVals
+    integer(c_int) ,value :: Count 
+  end function
+
+  !/* Original C++ prototype:
+  !   virtual int GatherAll(long * MyVals, long * AllVals, int Count) const = 0;
+  !*/
+  !int Epetra_Comm_GatherAll_Long ( 
+  !  CT_Epetra_Comm_ID_t selfID, long * MyVals, long * AllVals, 
+  !  int Count );
+
+  integer(c_int) function Epetra_Comm_GatherAll_Long ( selfID, MyVals, AllVals, Count ) bind(C,name='Epetra_Comm_GatherAll_Long')
+    import :: c_int ,CT_Epetra_Comm_ID_t ,c_long 
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+    integer(c_long) ,dimension(Count) * :: MyVals
+    integer(c_long) ,dimension(*) :: AllVals, 
+    integer(c_int) ,value :: Count
+  end function
+
+  !/* Original C++ prototype:
+  !   virtual int SumAll(double * PartialSums, double * GlobalSums, int Count) const = 0;
+  !*/
+  !int Epetra_Comm_SumAll_Double ( 
+  !  CT_Epetra_Comm_ID_t selfID, double * PartialSums, 
+  !  double * GlobalSums, int Count );
+
+  int Epetra_Comm_SumAll_Double( selfID, PartialSums, GlobalSums, Count ) bind(C,name='Epetra_Comm_SumAll_Double')
+    import :: c_int ,CT_Epetra_Comm_ID_t ,c_double
+    type()CT_Epetra_Comm_ID_t) ,value :: selfID
+    real(c_double) ,dimension(Count) :: PartialSums 
+    real(c_double) ,dimension(Count) :: GlobalSums
+    integer(c_int) ,value :: Count
+  end function
+
+  !/* Original C++ prototype:
+  !   virtual int SumAll(int * PartialSums, int * GlobalSums, int Count) const = 0;
+  !*/
+  !int Epetra_Comm_SumAll_Int ( 
+  !  CT_Epetra_Comm_ID_t selfID, int * PartialSums, int * GlobalSums, 
+  !  int Count );
+
+  integer(c_int) function Epetra_Comm_SumAll_Int ( selfID, PartialSums, GlobalSums, Count ) bind(C,name='Epetra_Comm_SumAll_Int')
+    import :: c_int ,CT_Epetra_Comm_ID_t 
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+    integer(c_int) ,dimension(Count) :: PartialSums
+    integer(c_int) ,dimension(Count) :: GlobalSums
+    integer(c_int) ,value :: Count
+  end function
+
+  !/* Original C++ prototype:
+  !   virtual int SumAll(long * PartialSums, long * GlobalSums, int Count) const = 0;
+  !*/
+  !int Epetra_Comm_SumAll_Long ( 
+  !  CT_Epetra_Comm_ID_t selfID, long * PartialSums, long * GlobalSums, 
+  !  int Count );
+
+  integer(c_int) function Epetra_Comm_SumAll_Long ( selfID, PartialSums, GlobalSums, Count ) bind(C,name='Epetra_Comm_SumAll_Long')
+    import :: c_int ,CT_Epetra_Comm_ID_t ,c_long 
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+    integer(c_long) ,dimension(Count) :: PartialSums
+    integer(c_long) ,dimension(Count) ;: GlobalSums 
+    integer(c_int) ,value :: Count 
+  end function
+
+  !/* Original C++ prototype:
+     virtual int MaxAll(double * PartialMaxs, double * GlobalMaxs, int Count) const = 0;
+  !*/
+  !int Epetra_Comm_MaxAll_Double ( 
+  !  CT_Epetra_Comm_ID_t selfID, double * PartialMaxs, 
+  !  double * GlobalMaxs, int Count );
   
+  int Epetra_Comm_MaxAll_Double ( selfID, PartialMaxs, GlobalMaxs, Count ) bind(C,name='Epetra_Comm_MaxAll_Double ')
+    import :: c_int ,CT_Epetra_Comm_ID_t ,c_double 
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+    real(c_double) ,dimension(Count) :: PartialMaxs
+    real(c_double) ,dimension(Count) :: GlobalMaxs
+    integer(c_int) ,value :: Count
+  end function
+
+  !/* Original C++ prototype:
+  !   virtual int MaxAll(int * PartialMaxs, int * GlobalMaxs, int Count) const = 0;
+  !*/
+  !int Epetra_Comm_MaxAll_Int ( 
+  !  CT_Epetra_Comm_ID_t selfID, int * PartialMaxs, int * GlobalMaxs, 
+  !  int Count );
+
+  integer(c_int) function Epetra_Comm_MaxAll_Int ( selfID, PartialMaxs, GlobalMaxs, Count ) bind(C,name='Epetra_Comm_MaxAll_Int')
+    import :: c_int ,CT_Epetra_Comm_ID_t
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+    integer(c_int) ,dimension(Count) :: PartialMaxs
+    integer(c_int) ,dimension(Count) :: GlobalMaxs
+    integer(c_int) ,value :: Count
+  end function
+  
+  !/* Original C++ prototype:
+  !   virtual int MaxAll(long * PartialMaxs, long * GlobalMaxs, int Count) const = 0;
+  !*/
+  !int Epetra_Comm_MaxAll_Long ( 
+  !  CT_Epetra_Comm_ID_t selfID, long * PartialMaxs, long * GlobalMaxs, 
+  !  int Count );
+
+  integer(c_int) function Epetra_Comm_MaxAll_Long ( selfID, PartialMaxs, GlobalMaxs, Count ) bind(C,name='Epetra_Comm_MaxAll_Long')
+    import :: c_int ,CT_Epetra_Comm_ID_t ,c_long
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+    integer(c_long) ,dimension(Count) :: PartialMaxs
+    integer(c_long) ,dimension(Count) :: GlobalMaxs
+    integer(c_int) ,value :: Count
+  end function
+  
+  !/* Original C++ prototype:
+  !   virtual int MinAll(double * PartialMins, double * GlobalMins, int Count) const = 0;
+  !*/
+  !int Epetra_Comm_MinAll_Double ( 
+  !  CT_Epetra_Comm_ID_t selfID, double * PartialMins, 
+  !  double * GlobalMins, int Count );
+    
+  integer(c_int) function Epetra_Comm_MinAll_Double(selfID, PartialMins, GlobalMins, Count) bind(C,name='Epetra_Comm_MinAll_Double')
+    import :: c_int ,CT_Epetra_Comm_ID_t ,c_double 
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+    real(c_double) ,dimension(Count) :: PartialMins
+    real(c_double) ,dimension(Count) :: GlobalMins
+    integer(c_int) ,value :: Count 
+  end function
+
+  !/* Original C++ prototype:
+  !   virtual int MinAll(int * PartialMins, int * GlobalMins, int Count) const = 0;
+  !*/
+  !int Epetra_Comm_MinAll_Int ( 
+  !  CT_Epetra_Comm_ID_t selfID, int * PartialMins, int * GlobalMins, 
+  !  int Count );
+  
+  integer(c_int) function Epetra_Comm_MinAll_Int ( selfID, PartialMins, GlobalMins, Count ) bind(C,name='Epetra_Comm_MinAll_Int')
+    import :: c_int ,CT_Epetra_Comm_ID_t 
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+    integer(c_int) ,dimension(Count) :: PartialMins
+    integer(c_int) ,dimension(Count) :: GlobalMins
+    integer(c_int) ,value :: Count
+  end function
+
+  !/* Original C++ prototype:
+  !   virtual int MinAll(long * PartialMins, long * GlobalMins, int Count) const = 0;
+  !*/
+  !int Epetra_Comm_MinAll_Long ( 
+  !  CT_Epetra_Comm_ID_t selfID, long * PartialMins, long * GlobalMins, 
+  !  int Count );
+
+  integer(c_int) function Epetra_Comm_MinAll_Long ( selfID, PartialMins, GlobalMins, Count ) bind(C,name='Epetra_Comm_MinAll_Long')
+    import :: c_int ,CT_Epetra_Comm_ID_t ,c_long 
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+    integer(c_long) ,dimension(Count) :: PartialMins
+    integer(c_long) ,dimension(Count) :: GlobalMins
+    integer(c_int) ,value :: Count
+  end function
+  
+  !/* Original C++ prototype:
+  !   virtual int ScanSum(double * MyVals, double * ScanSums, int Count) const = 0;
+  !*/
+  !int Epetra_Comm_ScanSum_Double ( 
+  !  CT_Epetra_Comm_ID_t selfID, double * MyVals, double * ScanSums, 
+  !  int Count );
+
+  integer(c_int) function Epetra_Comm_ScanSum_Double ( selfID, MyVals, ScanSums, Count ) bind(C,name='Epetra_Comm_ScanSum_Double')
+    import :: c_int ,CT_Epetra_Comm_ID_t ,c_double 
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+    real(c_double) ,dimension(Count) :: MyVals
+    real(c_double) ,dimension(Count) :: ScanSums
+    integer(c_int) ,value :: Count
+  end function
+  
+  !/* Original C++ prototype:
+  !   virtual int ScanSum(int * MyVals, int * ScanSums, int Count) const = 0;
+  !*/
+  !int Epetra_Comm_ScanSum_Int ( 
+  !CT_Epetra_Comm_ID_t selfID, int * MyVals, int * ScanSums, 
+  !  int Count );
+
+  integer(c_int) function Epetra_Comm_ScanSum_Int( selfID, MyVals, ScanSums, Count ) bind(C,name='Epetra_Comm_ScanSum_Int')
+    import :: c_int ,CT_Epetra_Comm_ID_t 
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+    integer(c_int) ,dimension(Count) :: MyVals
+    integer(c_int) ,dimension(Count) :: ScanSums
+    integer(c_int) ,value :: Count
+  end function
+  
+  !/* Original C++ prototype:
+  !   virtual int ScanSum(long * MyVals, long * ScanSums, int Count) const = 0;
+  !*/
+  !int Epetra_Comm_ScanSum_Long ( 
+  !  CT_Epetra_Comm_ID_t selfID, long * MyVals, long * ScanSums, 
+  !  int Count );
+  
+  integer(c_int) function Epetra_Comm_ScanSum_Long( selfID, MyVals, ScanSums, Count ) bind(C,name='Epetra_Comm_ScanSum_Long')
+    import :: c_int ,CT_Epetra_Comm_ID_t ,c_long
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID
+    integer(c_long) ,dimension(Count) :: MyVals
+    integer(c_long) ,dimension(Count) :: ScanSums
+    integer(c_int) ,value :: Count
+  end function
+  
+  !/* Original C++ prototype:
+  !  virtual int MyPID() const = 0;
+  !*/
+  !int Epetra_Comm_MyPID ( CT_Epetra_Comm_ID_t selfID );
+
+  integer(c_int) function Epetra_Comm_MyPID ( selfID ) bind(C,name='Epetra_Comm_MyPID')
+    import :: c_int ,CT_Epetra_Comm_ID_t
+    type(CT_Epetra_Comm_ID_t) ,value ;; selfID 
+  end function
+  
+  !/* Original C++ prototype:
+  !   virtual int NumProc() const = 0;
+  !*/
+  int Epetra_Comm_NumProc ( CT_Epetra_Comm_ID_t selfID );
+
+  integer(c_int) function Epetra_Comm_NumProc ( selfID ) bind(C,name='Epetra_Comm_NumProc')
+    import :: c_int ,CT_Epetra_Comm_ID_t 
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID 
+  end function
+  
+  !/* Original C++ prototype:
+  !   virtual Epetra_Distributor * CreateDistributor() const = 0;
+  !*/
+  !CT_Epetra_Distributor_ID_t Epetra_Comm_CreateDistributor ( 
+  !  CT_Epetra_Comm_ID_t selfID );
+  
+  type(CT_Epetra_Distributor_ID_t) function Epetra_Comm_CreateDistributor ( selfID ) bind(C,name='Epetra_Comm_CreateDistributor')
+    import :: CT_Epetra_Distributor_ID_t ,CT_Epetra_Comm_ID_t 
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID 
+  end function
+
+  !/* Original C++ prototype:
+  !   virtual Epetra_Directory * CreateDirectory(const Epetra_BlockMap & Map) const = 0;
+  !*/
+  !CT_Epetra_Directory_ID_t Epetra_Comm_CreateDirectory ( 
+  !  CT_Epetra_Comm_ID_t selfID, CT_Epetra_BlockMap_ID_t MapID );
+   
+  ! Assuming that the C prototype will be modified to 'const* CT_Epetra_BlockMap_ID_t':
+
+  type(CT_Epetra_Directory_ID_t) function Epetra_Comm_CreateDirectory ( selfID, MapID ) bind(C,name='Epetra_Comm_CreateDirectory') 
+    import :: CT_Epetra_Directory_ID_t ,CT_Epetra_Comm_ID_t ,CT_Epetra_BlockMap_ID_t 
+    type(CT_Epetra_Comm_ID_t) ,value :: selfID 
+    type(CT_Epetra_BlockMap_ID_t) ,value :: MapID 
+  end function
+
+  ! ___________________ Epetra_Map bindings ____________________________________________
+
+  !CT_Epetra_Map_ID_t Epetra_Map_Cast(
+  !  CTrilinos_Object_ID_t id );
+
+  type(CT_Epetra_Map_ID_t) function Epetra_Map_Cast(id ) bind(C,name='Epetra_Map_Cast')
+    import :: CT_Epetra_Map_ID_t ,CTrilinos_Object_ID_t 
+    type(CTrilinos_Object_ID_t) ,value :: id
+  end function 
+
+  !/* Original C++ prototype:
+  !   Epetra_Map(int NumGlobalElements, int IndexBase, const Epetra_Comm& Comm);
+  !*/
+  !CT_Epetra_Map_ID_t Epetra_Map_Create ( 
+  !  int NumGlobalElements, int IndexBase, CT_Epetra_Comm_ID_t CommID );
+
+  type(CT_Epetra_Map_ID_t) function Epetra_Map_Create ( NumGlobalElements, IndexBase, CommID ) bind(C,name='Epetra_Map_Create')
+    import :: CT_Epetra_Map_ID_t ,c_int ,CT_Epetra_Comm_ID_t 
+    integer(c_int) ,value :: NumGlobalElements
+    integer(c_int) ,value IndexBase
+    type(CT_Epetra_Comm_ID_t) :: CommID
+  end function 
+
+  !/* Original C++ prototype:
+  !   Epetra_Map(int NumGlobalElements, int NumMyElements, int IndexBase, const Epetra_Comm& Comm);
+  !*/
+  !CT_Epetra_Map_ID_t Epetra_Map_Create_Linear ( 
+  !  int NumGlobalElements, int NumMyElements, int IndexBase, 
+  !  CT_Epetra_Comm_ID_t CommID );
+
+  type(CT_Epetra_Map_ID_t) function Epetra_Map_Create_Linear ( NumGlobalElements, NumMyElements, IndexBase, CommID ) &
+    bind(C,name='Epetra_Map_Create_Linear')
+    import :: CT_Epetra_Map_ID_t ,c_int ,CT_Epetra_Comm_ID_t 
+    integer(c_int) ,value :: NumGlobalElements
+    integer(c_int) ,value :: NumMyElements
+    integer(c_int) ,value :: IndexBase
+    type(CT_Epetra_Comm_ID_t) ,value :: CommID 
+  end function 
+  
+  !/* Original C++ prototype:
+  !   Epetra_Map(int NumGlobalElements, int NumMyElements, const int *MyGlobalElements, int IndexBase, const Epetra_Comm& Comm);
+  !*/
+  !CT_Epetra_Map_ID_t Epetra_Map_Create_Arbitrary ( 
+  !  int NumGlobalElements, int NumMyElements, 
+  !  const int * MyGlobalElements, int IndexBase, 
+  !  CT_Epetra_Comm_ID_t CommID );
+  
+  type(CT_Epetra_Map_ID_t) function Epetra_Map_Create_Arbitrary ( &
+    NumGlobalElements, NumMyElements, MyGlobalElements, IndexBase, CommID ) bind(C,name='Epetra_Map_Create_Arbitrary') 
+    import :: CT_Epetra_Map_ID_t ,c_int ,CT_Epetra_Comm_ID_t 
+    integer(c_int) ,value :: NumGlobalElements
+    integer(c_int) ,value :: NumMyElements
+    integer(c_int) ,intent(in) ,dimension(NumMyElements) :: MyGlobalElements
+    integer(c_int) ,value :: IndexBase
+    type(CT_Epetra_Comm_ID_t) ,value :: CommID 
+  end function 
+
+  !/* Original C++ prototype:
+  !   Epetra_Map(const Epetra_Map& map);
+  !*/
+  !CT_Epetra_Map_ID_t Epetra_Map_Duplicate ( CT_Epetra_Map_ID_t mapID );
+
+  ! Assuming that the C prototype will be modified to 'const* CT_Epetra_Map_ID_t' for second argument:
+  
+  type(CT_Epetra_Map_ID_t) function Epetra_Map_Duplicate ( mapID ) bind(C,name='Epetra_Map_Duplicate')
+    import :: CT_Epetra_Map_ID_t
+    type(CT_Epetra_Map_ID_t) ,intent(in) :: mapID 
+  end function 
+
+  !/* Original C++ prototype:
+  !   virtual ~Epetra_Map(void);
+  !*/
+  !void Epetra_Map_Destroy ( CT_Epetra_Map_ID_t * selfID );
+
+  subroutine Epetra_Map_Destroy ( selfID ) bind(C,name='Epetra_Map_Destroy')
+    import :: CT_Epetra_Map_ID_t
+    type(CT_Epetra_Map_ID_t) :: selfID
+  end subroutine
+  
+  !/* Original C++ prototype:
+  !   Epetra_Map & operator=(const Epetra_Map & map);
+  !*/
+  !void Epetra_Map_Assign ( 
+  !  CT_Epetra_Map_ID_t selfID, CT_Epetra_Map_ID_t mapID );
+
+  ! Assuming that the C prototype will be modified to 'const* CT_Epetra_Map_ID_t' for second argument:
+
+  subroutine Epetra_Map_Assign ( selfID, mapID ) bind(C,name='Epetra_Map_Assign')
+    import :: CT_Epetra_Map_ID_t 
+    type(CT_Epetra_Map_ID_t) ,value :: selfID
+    type(CT_Epetra_Map_ID_t) ,intent(in) :: mapID 
+  end subroutine
+
   ! ___________________ Epetra_Vector bindings ____________________
 
     integer(c_int) function FEpetra_Vector_Create( mapID ) bind(c,name='Epetra_Vector_Create')
@@ -386,4 +845,3 @@ module forepetra  ! Companion to CEpetra_*.h
     end interface
 
 end module forepetra
-
