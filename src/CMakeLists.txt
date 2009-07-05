@@ -47,6 +47,7 @@ APPEND_SET(HEADERS
 # Set sources (add any source files that in the current directory [src])
 
 APPEND_SET(SOURCES
+  ForTrilinos_enums.f03
   )
 
 #
