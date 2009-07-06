@@ -48,6 +48,7 @@ APPEND_SET(HEADERS
 
 APPEND_SET(SOURCES
   ForTrilinos_enums.f03
+  ForTrilinos_utils.f03
   )
 
 #

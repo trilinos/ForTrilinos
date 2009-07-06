@@ -142,14 +142,12 @@ module forepetra  ! Companion to CEpetra_*.h
   ! const int * ExportPIDs, boolean Deterministic, 
   ! int * NumRemoteIDs );
 
-  ! Assuming that the C prototype will be modified to 'const int * NumExportIDs':
- 
   integer(c_int) function Epetra_Distributor_CreateFromSends ( selfID, NumExportIDs, ExportPIDs, Deterministic, NumRemoteIDs ) &
     bind(C,name='Epetra_Distributor_CreateFromSends')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_bool 
     implicit none
     type(FT_Epetra_Distributor_ID_t) ,value :: selfID
-    integer(c_int) ,intent(in) :: NumExportIDs
+    integer(c_int) ,intent(in) ,value :: NumExportIDs
     integer(c_int) ,intent(in) ,dimension(NumExportIDs) :: ExportPIDs
     logical(c_bool) ,value :: Deterministic
     integer(c_int) :: NumRemoteIDs
@@ -165,15 +163,13 @@ module forepetra  ! Companion to CEpetra_*.h
   !   boolean Deterministic, int * NumExportIDs, int ** ExportGIDs, 
   !   int ** ExportPIDs );
  
-  ! Assuming that the C prototype will be modified to 'const int * NumRemoteIDs':
-
   integer(c_int) function Epetra_Distributor_CreateFromRecvs ( &
     selfID, NumRemoteIDs, RemoteGIDs, RemotePIDs, Deterministic, NumExportIDs, ExportGIDs, ExportPIDs &
     ) bind(C,name='Epetra_Distributor_CreateFromRecvs') 
     import :: FT_Epetra_Distributor_ID_t ,c_int ,c_bool
     implicit none
     type(FT_Epetra_Distributor_ID_t) ,value :: selfID
-    integer(c_int) ,intent(in) :: NumRemoteIDs
+    integer(c_int) ,intent(in) ,value :: NumRemoteIDs
     integer(c_int) ,intent(in) ,dimension(NumRemoteIDs) :: RemoteGIDs
     integer(c_int) ,intent(in) ,dimension(NumRemoteIDs) :: RemotePIDs
     logical(c_bool),value :: Deterministic
@@ -735,8 +731,6 @@ module forepetra  ! Companion to CEpetra_*.h
   !CT_Epetra_Directory_ID_t Epetra_Comm_CreateDirectory ( 
   !  CT_Epetra_Comm_ID_t selfID, CT_Epetra_BlockMap_ID_t MapID );
    
-  ! Assuming that the C prototype will be modified to 'const* CT_Epetra_BlockMap_ID_t':
-
   type(FT_Epetra_Directory_ID_t) function Epetra_Comm_CreateDirectory ( selfID, MapID ) bind(C,name='Epetra_Comm_CreateDirectory') 
     import :: FT_Epetra_Directory_ID_t ,FT_Epetra_Comm_ID_t ,FT_Epetra_BlockMap_ID_t 
     implicit none
@@ -813,12 +807,10 @@ module forepetra  ! Companion to CEpetra_*.h
   !*/
   !CT_Epetra_Map_ID_t Epetra_Map_Duplicate ( CT_Epetra_Map_ID_t mapID );
 
-  ! Assuming that the C prototype will be modified to 'const* CT_Epetra_Map_ID_t' for second argument:
-  
   type(FT_Epetra_Map_ID_t) function Epetra_Map_Duplicate ( mapID ) bind(C,name='Epetra_Map_Duplicate')
     import :: FT_Epetra_Map_ID_t
     implicit none
-    type(FT_Epetra_Map_ID_t) ,intent(in) :: mapID 
+    type(FT_Epetra_Map_ID_t) ,intent(in) ,value :: mapID 
   end function 
 
   !/* Original C++ prototype:
@@ -838,13 +830,11 @@ module forepetra  ! Companion to CEpetra_*.h
   !void Epetra_Map_Assign ( 
   !  CT_Epetra_Map_ID_t selfID, CT_Epetra_Map_ID_t mapID );
 
-  ! Assuming that the C prototype will be modified to 'const* CT_Epetra_Map_ID_t' for second argument:
-
   subroutine Epetra_Map_Assign ( selfID, mapID ) bind(C,name='Epetra_Map_Assign')
     import :: FT_Epetra_Map_ID_t 
     implicit none
     type(FT_Epetra_Map_ID_t) ,value :: selfID
-    type(FT_Epetra_Map_ID_t) ,intent(in) :: mapID 
+    type(FT_Epetra_Map_ID_t) ,value ,intent(in) :: mapID 
   end subroutine
 
   end interface
@@ -866,8 +856,6 @@ end module forepetra
 ! !  int NumGlobalElements, int ElementSize, int IndexBase, 
 ! !  CT_Epetra_Comm_ID_t CommID );
 
-! ! Assuming final argument in C prototype will be changed to 'const CT_Epetra_Comm_ID_t* Comm':
-
 ! type(FT_Epetra_BlockMap_ID_t) Epetra_BlockMap_Create ( NumGlobalElements, ElementSize, IndexBase, CommID ) &
 !   bind(C,name='Epetra_BlockMap_Create') 
 !   import :: FT_Epetra_BlockMap_ID_t ,c_int ,FT_Epetra_Comm_ID_t 
@@ -875,10 +863,9 @@ end module forepetra
 !   integer(c_int) ,value :: NumGlobalElements
 !   integer(c_int) ,value :: ElementSize
 !   integer(c_int) ,value :: IndexBase, 
-!   type(FT_Epetra_Comm_ID_t) :: CommID 
+!   type(FT_Epetra_Comm_ID_t) ,value :: CommID 
 ! end function
 
-! ! Assuming final argument in C prototype will be changed to 'const CT_Epetra_Comm_ID_t* Comm':
 
 ! !/* Original C++ prototype:
 ! !   Epetra_BlockMap(int NumGlobalElements, int NumMyElements, int ElementSize, int IndexBase, const Epetra_Comm& Comm);
@@ -886,8 +873,6 @@ end module forepetra
 ! !CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create_Linear ( 
 ! !  int NumGlobalElements, int NumMyElements, int ElementSize, 
 ! !  int IndexBase, CT_Epetra_Comm_ID_t CommID );
-
-! ! Assuming final argument in C prototype will be changed to 'const CT_Epetra_Comm_ID_t* CommID':
 
 ! type(FT_Epetra_BlockMap_ID_t) function Epetra_BlockMap_Create_Linear( &
 !   NumGlobalElements, NumMyElements, ElementSize, IndexBase, CommID) bind(C,name='Epetra_BlockMap_Create_Linear')
@@ -897,7 +882,7 @@ end module forepetra
 !   integer(c_int) ,value :: NumMyElements
 !   integer(c_int) ,value :: ElementSize
 !   integer(c_int) ,value :: IndexBase
-!   type(FT_Epetra_Comm_ID_t) ,intent(in) :: CommID
+!   type(FT_Epetra_Comm_ID_t) ,value ,intent(in) :: CommID
 ! end function
 
 ! !/* Original C++ prototype:
@@ -907,8 +892,6 @@ end module forepetra
 ! !  int NumGlobalElements, int NumMyElements, 
 ! !  const int * MyGlobalElements, int ElementSize, int IndexBase, 
 ! !  CT_Epetra_Comm_ID_t CommID );
-
-! ! Assuming final argument in C prototype will be changed to 'const CT_Epetra_Comm_ID_t* Comm':
 
 ! type(CT_Epetra_BlockMap_ID_t) function Epetra_BlockMap_Create_Arbitrary ( &
 !   NumGlobalElements, NumMyElements, MyGlobalElements, ElementSize, IndexBase, CommID ) &
@@ -920,5 +903,5 @@ end module forepetra
 !   integer(c_int) ,intent(in) ,dimension(NumMyElements) :: MyGlobalElements
 !   integer(c_int) ,value :: ElementSize
 !   integer(c_int) ,vaue :: IndexBase
-!   type(CT_Epetra_Comm_ID_t) ,intent(in) :: CommID
+!   type(CT_Epetra_Comm_ID_t) ,intent(in) ,value :: CommID
 ! end function
