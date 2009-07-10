@@ -38,7 +38,7 @@ module ForTrilinos_enums
       FT_Epetra_BlockMap_ID,       &
       FT_Epetra_Import_ID
   end enum 
-  
+
   ! Since the Fortran 2003 standard guarantees that enum values correspond to C int values, we can create
   ! the alias below for c_int with certainty that it can be used as the Fortran kind parameter that 
   ! makes Fortran integer values interoperable with C enumeration values. This alias is the Fortran 
@@ -83,4 +83,29 @@ module ForTrilinos_enums
   type ,bind(C) :: FT_Epetra_CrsGraphData_ID_t  ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
   type ,bind(C) :: FT_Epetra_BlockMap_ID_t      ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
   type ,bind(C) :: FT_Epetra_Import_ID_t        ; integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; end type
+
+  ! Epetra_DataAcces
+
+  integer(kind(c_int)) ,parameter :: FT_Epetra_DataAccess_E_t = c_int
+
+  enum ,bind(C)
+    enumerator ::                  &
+      FT_Epetra_DataAccess_E_Copy, &
+      FT_Epetra_DataAccess_E_View
+  end enum
+
+  ! Epetra_CombineMode
+
+  integer(kind(c_int)) ,parameter :: FT_Epetra_CombineMode_E_t = c_int
+
+  enum ,bind(C)
+    enumerator ::                        &
+      FT_Epetra_CombineMode_E_Add,       &
+      FT_Epetra_CombineMode_E_Zero,      &
+      FT_Epetra_CombineMode_E_Insert,    &
+      FT_Epetra_CombineMode_E_InsertAdd, &
+      FT_Epetra_CombineMode_E_Average,   &
+      FT_Epetra_CombineMode_E_AbsMax
+  end enum
+
 end module ForTrilinos_enums
