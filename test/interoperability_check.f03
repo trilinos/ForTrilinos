@@ -37,23 +37,23 @@ program main
     case(-3)
       write(error_unit ,fmt='(2a)') 'c_double error: ',limited_and_imprecise
     case(-4)
-      write(error_unit ,fmt='(2a)') not_interoperable_nonspecific
+      write(error_unit ,fmt='(2a)') 'c_double error: ',not_interoperable_nonspecific
     case default
       write(output_unit,fmt='(2a)') 'c_double: ',interoperable
   end select
 
   select case(c_bool)
     case(-1)
-      write(error_unit ,fmt='(2a)') 'c_bool error: invalid value for a logical kind parameter on the processor.'
+      write(error_unit ,fmt='(a)') 'c_bool error: invalid value for a logical kind parameter on the processor.'
     case default
-      write(output_unit ,fmt='(2a)') 'c_bool:  valid value for a logical kind parameter on the processor.'
+      write(output_unit ,fmt='(a)') 'c_bool:  valid value for a logical kind parameter on the processor.'
   end select
 
   select case(c_char)
     case(-1)
-      write(error_unit ,fmt='(2a)') 'c_char error: invalid value for a character kind parameter on the processor.'
+      write(error_unit ,fmt='(a)') 'c_char error: invalid value for a character kind parameter on the processor.'
     case default
-      write(output_unit ,fmt='(2a)') 'c_char:  valid value for a character kind type parameter on the processor.'
+      write(output_unit ,fmt='(a)') 'c_char:  valid value for a character kind type parameter on the processor.'
   end select
 
 end program
