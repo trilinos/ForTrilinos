@@ -16,7 +16,7 @@ SET(SOURCES "")
 
 SET_AND_INC_DIRS(DIR ${CMAKE_CURRENT_SOURCE_DIR}/epetra)
 #APPEND_GLOB(HEADERS ${DIR}/*.hpp ${DIR}/*.h)
-APPEND_GLOB(SOURCES ${DIR}/*.f03)
+APPEND_GLOB(SOURCES ${DIR}/*.f90)
 
 # Set the base Trilinos directory in order to find Trilinos_version.h
 
@@ -47,8 +47,8 @@ APPEND_SET(HEADERS
 # Set sources (add any source files that in the current directory [src])
 
 APPEND_SET(SOURCES
-  ForTrilinos_enums.f03
-  ForTrilinos_utils.f03
+  ForTrilinos_enums.f90
+  ForTrilinos_utils.f90
   )
 
 #
