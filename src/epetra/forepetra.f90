@@ -28,6 +28,17 @@ module forepetra  ! Companion to CEpetra_*.h
   end function
 
 
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_Distributor_Abstract ( CT_Epetra_Distributor_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_Distributor_Abstract ( id ) &
+        bind(C,name='Epetra_Distributor_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Distributor_ID_t
+    implicit none
+    type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: id
+  end function
+
+
   ! Original C++ prototype:
   ! virtual Epetra_Distributor * Clone() = 0;
   ! CTrilinos prototype:
@@ -273,6 +284,17 @@ module forepetra  ! Companion to CEpetra_*.h
     import :: FT_Epetra_SerialComm_ID_t ,ForTrilinos_Object_ID_t
     implicit none
     type(ForTrilinos_Object_ID_t)  ,intent(in)   ,value              :: id
+  end function
+
+
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_SerialComm_Abstract ( CT_Epetra_SerialComm_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_SerialComm_Abstract ( id ) &
+        bind(C,name='Epetra_SerialComm_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_SerialComm_ID_t
+    implicit none
+    type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: id
   end function
 
 
@@ -720,6 +742,17 @@ module forepetra  ! Companion to CEpetra_*.h
     import :: FT_Epetra_BLAS_ID_t ,ForTrilinos_Object_ID_t
     implicit none
     type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+  end function
+
+
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_BLAS_Abstract ( CT_Epetra_BLAS_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_BLAS_Abstract ( id ) &
+        bind(C,name='Epetra_BLAS_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_BLAS_ID_t
+    implicit none
+    type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: id
   end function
 
 
@@ -1212,6 +1245,17 @@ module forepetra  ! Companion to CEpetra_*.h
   end function
 
 
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_Comm_Abstract ( CT_Epetra_Comm_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_Comm_Abstract ( id ) &
+        bind(C,name='Epetra_Comm_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Comm_ID_t
+    implicit none
+    type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: id
+  end function
+
+
   ! Original C++ prototype:
   ! virtual Epetra_Comm * Clone() const = 0;
   ! CTrilinos prototype:
@@ -1618,6 +1662,17 @@ module forepetra  ! Companion to CEpetra_*.h
   end function
 
 
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_Operator_Abstract ( CT_Epetra_Operator_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_Operator_Abstract ( id ) &
+        bind(C,name='Epetra_Operator_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Operator_ID_t
+    implicit none
+    type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: id
+  end function
+
+
   ! Original C++ prototype:
   ! virtual ~Epetra_Operator();
   ! CTrilinos prototype:
@@ -1776,6 +1831,17 @@ module forepetra  ! Companion to CEpetra_*.h
     import :: FT_Epetra_MultiVector_ID_t ,ForTrilinos_Object_ID_t
     implicit none
     type(ForTrilinos_Object_ID_t)   ,intent(in)   ,value              :: id
+  end function
+
+
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_MultiVector_Abstract ( CT_Epetra_MultiVector_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_MultiVector_Abstract ( id ) &
+        bind(C,name='Epetra_MultiVector_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_MultiVector_ID_t
+    implicit none
+    type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: id
   end function
 
 
@@ -2529,6 +2595,17 @@ module forepetra  ! Companion to CEpetra_*.h
   end function
 
 
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_OffsetIndex_Abstract ( CT_Epetra_OffsetIndex_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_OffsetIndex_Abstract ( id ) &
+        bind(C,name='Epetra_OffsetIndex_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_OffsetIndex_ID_t
+    implicit none
+    type(FT_Epetra_OffsetIndex_ID_t),intent(in)   ,value              :: id
+  end function
+
+
   ! Original C++ prototype:
   ! Epetra_OffsetIndex( const Epetra_CrsGraph & SourceGraph, const Epetra_CrsGraph & TargetGraph, Epetra_Import & Importer );
   ! CTrilinos prototype:
@@ -2640,6 +2717,17 @@ module forepetra  ! Companion to CEpetra_*.h
   end function
 
 
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_Object_Abstract ( CT_Epetra_Object_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_Object_Abstract ( id ) &
+        bind(C,name='Epetra_Object_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Object_ID_t
+    implicit none
+    type(FT_Epetra_Object_ID_t) ,intent(in)   ,value              :: id
+  end function
+
+
   ! Original C++ prototype:
   ! Epetra_Object(int TracebackModeIn = -1, bool set_label = true);
   ! CTrilinos prototype:
@@ -2721,7 +2809,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! virtual int ReportError(const string Message, int ErrorCode) const;
   ! CTrilinos prototype:
-  ! int Epetra_Object_ReportError ( CT_Epetra_Object_ID_t selfID, const char * Message, int ErrorCode );
+  ! int Epetra_Object_ReportError ( CT_Epetra_Object_ID_t selfID, const char * const Message, int ErrorCode );
 
   integer(c_int) function Epetra_Object_ReportError ( selfID, Message, ErrorCode ) &
         bind(C,name='Epetra_Object_ReportError')
@@ -2744,6 +2832,17 @@ module forepetra  ! Companion to CEpetra_*.h
     import :: FT_Epetra_RowMatrix_ID_t ,ForTrilinos_Object_ID_t
     implicit none
     type(ForTrilinos_Object_ID_t) ,intent(in)   ,value              :: id
+  end function
+
+
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_RowMatrix_Abstract ( CT_Epetra_RowMatrix_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_RowMatrix_Abstract ( id ) &
+        bind(C,name='Epetra_RowMatrix_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_RowMatrix_ID_t
+    implicit none
+    type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: id
   end function
 
 
@@ -3131,6 +3230,17 @@ module forepetra  ! Companion to CEpetra_*.h
   end function
 
 
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_CompObject_Abstract ( CT_Epetra_CompObject_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_CompObject_Abstract ( id ) &
+        bind(C,name='Epetra_CompObject_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_CompObject_ID_t
+    implicit none
+    type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: id
+  end function
+
+
   ! Original C++ prototype:
   ! Epetra_CompObject();
   ! CTrilinos prototype:
@@ -3332,6 +3442,17 @@ module forepetra  ! Companion to CEpetra_*.h
   end function
 
 
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_Directory_Abstract ( CT_Epetra_Directory_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_Directory_Abstract ( id ) &
+        bind(C,name='Epetra_Directory_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Directory_ID_t
+    implicit none
+    type(FT_Epetra_Directory_ID_t),intent(in)   ,value              :: id
+  end function
+
+
   ! Original C++ prototype:
   ! virtual ~Epetra_Directory();
   ! CTrilinos prototype:
@@ -3389,6 +3510,17 @@ module forepetra  ! Companion to CEpetra_*.h
     import :: FT_Epetra_Flops_ID_t ,ForTrilinos_Object_ID_t
     implicit none
     type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+  end function
+
+
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_Flops_Abstract ( CT_Epetra_Flops_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_Flops_Abstract ( id ) &
+        bind(C,name='Epetra_Flops_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Flops_ID_t
+    implicit none
+    type(FT_Epetra_Flops_ID_t)  ,intent(in)   ,value              :: id
   end function
 
 
@@ -3480,6 +3612,17 @@ module forepetra  ! Companion to CEpetra_*.h
   end function
 
 
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_SrcDistObject_Abstract ( CT_Epetra_SrcDistObject_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_SrcDistObject_Abstract ( id ) &
+        bind(C,name='Epetra_SrcDistObject_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_SrcDistObject_ID_t
+    implicit none
+    type(FT_Epetra_SrcDistObject_ID_t),intent(in)   ,value              :: id
+  end function
+
+
   ! Original C++ prototype:
   ! virtual ~Epetra_SrcDistObject();
   ! CTrilinos prototype:
@@ -3517,6 +3660,17 @@ module forepetra  ! Companion to CEpetra_*.h
     import :: FT_Epetra_CrsMatrix_ID_t ,ForTrilinos_Object_ID_t
     implicit none
     type(ForTrilinos_Object_ID_t) ,intent(in)   ,value              :: id
+  end function
+
+
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_CrsMatrix_Abstract ( CT_Epetra_CrsMatrix_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_CrsMatrix_Abstract ( id ) &
+        bind(C,name='Epetra_CrsMatrix_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_CrsMatrix_ID_t
+    implicit none
+    type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: id
   end function
 
 
@@ -5042,6 +5196,17 @@ module forepetra  ! Companion to CEpetra_*.h
   end function
 
 
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_CrsGraph_Abstract ( CT_Epetra_CrsGraph_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_CrsGraph_Abstract ( id ) &
+        bind(C,name='Epetra_CrsGraph_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_CrsGraph_ID_t
+    implicit none
+    type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: id
+  end function
+
+
   ! Original C++ prototype:
   ! Epetra_CrsGraph(Epetra_DataAccess CV, const Epetra_BlockMap& RowMap, const int* NumIndicesPerRow, bool StaticProfile = false);
   ! CTrilinos prototype:
@@ -6152,6 +6317,17 @@ module forepetra  ! Companion to CEpetra_*.h
   end function
 
 
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_DistObject_Abstract ( CT_Epetra_DistObject_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_DistObject_Abstract ( id ) &
+        bind(C,name='Epetra_DistObject_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_DistObject_ID_t
+    implicit none
+    type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: id
+  end function
+
+
   ! Original C++ prototype:
   ! virtual ~Epetra_DistObject();
   ! CTrilinos prototype:
@@ -6286,6 +6462,17 @@ module forepetra  ! Companion to CEpetra_*.h
     import :: FT_Epetra_Vector_ID_t ,ForTrilinos_Object_ID_t
     implicit none
     type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+  end function
+
+
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_Vector_Abstract ( CT_Epetra_Vector_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_Vector_Abstract ( id ) &
+        bind(C,name='Epetra_Vector_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Vector_ID_t
+    implicit none
+    type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: id
   end function
 
 
@@ -6552,6 +6739,17 @@ module forepetra  ! Companion to CEpetra_*.h
   end function
 
 
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_Export_Abstract ( CT_Epetra_Export_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_Export_Abstract ( id ) &
+        bind(C,name='Epetra_Export_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Export_ID_t
+    implicit none
+    type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: id
+  end function
+
+
   ! Original C++ prototype:
   ! Epetra_Export( const Epetra_BlockMap & SourceMap, const Epetra_BlockMap & TargetMap );
   ! CTrilinos prototype:
@@ -6786,6 +6984,17 @@ module forepetra  ! Companion to CEpetra_*.h
   end function
 
 
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_Map_Abstract ( CT_Epetra_Map_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_Map_Abstract ( id ) &
+        bind(C,name='Epetra_Map_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Map_ID_t
+    implicit none
+    type(FT_Epetra_Map_ID_t)    ,intent(in)   ,value              :: id
+  end function
+
+
   ! Original C++ prototype:
   ! Epetra_Map(int NumGlobalElements, int IndexBase, const Epetra_Comm& Comm);
   ! CTrilinos prototype:
@@ -6884,6 +7093,17 @@ module forepetra  ! Companion to CEpetra_*.h
     import :: FT_Epetra_BlockMap_ID_t ,ForTrilinos_Object_ID_t
     implicit none
     type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+  end function
+
+
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_BlockMap_Abstract ( CT_Epetra_BlockMap_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_BlockMap_Abstract ( id ) &
+        bind(C,name='Epetra_BlockMap_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_BlockMap_ID_t
+    implicit none
+    type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: id
   end function
 
 
@@ -7566,6 +7786,17 @@ module forepetra  ! Companion to CEpetra_*.h
     import :: FT_Epetra_Import_ID_t ,ForTrilinos_Object_ID_t
     implicit none
     type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+  end function
+
+
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_Import_Abstract ( CT_Epetra_Import_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_Import_Abstract ( id ) &
+        bind(C,name='Epetra_Import_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Import_ID_t
+    implicit none
+    type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: id
   end function
 
 
