@@ -1,5 +1,5 @@
 module Epetra_Map_Module
-  use ,intrinsic :: iso_c_binding ,only : c_int
+! use ,intrinsic :: iso_c_binding ,only : c_int
   use :: forepetra
   implicit none
   private
@@ -14,7 +14,7 @@ module Epetra_Map_Module
 !   procedure :: Destroy
 ! end type 
 
-contains
+! contains
 
 ! subroutine Create(map,numGlobalElements) 
 !   type(Epetra_Map) ,intent(out) :: map

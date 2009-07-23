@@ -1,8 +1,10 @@
-program main
+module interoperability_check
   use ,intrinsic :: iso_c_binding ,only : &
     c_int,c_char,c_double,c_ptr,c_long,c_bool,c_null_char
   use ,intrinsic :: iso_fortran_env ,only : error_unit ,output_unit
   implicit none
+  private
+  public :: valid_kind_parameters
 
   character(len=*) ,parameter :: no_fortran_kind= &
     'The companion C processor deﬁnes the corresponding C type, &
@@ -20,40 +22,47 @@ program main
   character(len=*) ,parameter :: not_interoperable_nonspecific = &
     'There is no interoperating Fortran processor kind for unspecified reasons.'
 
-  select case(c_long)
-    case(-1)
-      write(error_unit ,fmt='(2a)') 'c_long error: ',no_fortran_kind
-    case(-2)
-      write(error_unit ,fmt='(2a)') 'c_long error: ',no_c_type
-    case default
-      write(output_unit,fmt='(2a)') 'c_long: ',interoperable
-  end select
+contains
+  
+  logical function valid_kind_parameters()
+    select case(c_long)
+      case(-1)
+        write(error_unit ,fmt='(2a)') 'c_long error: ',no_fortran_kind
+      case(-2)
+        write(error_unit ,fmt='(2a)') 'c_long error: ',no_c_type
+      case default
+        write(output_unit,fmt='(2a)') 'c_long: ',interoperable
+    end select
+  
+    select case(c_double)
+      case(-1)
+        write(error_unit ,fmt='(2a)') 'c_double error: ',imprecise
+      case(-2)
+        write(error_unit ,fmt='(2a)') 'c_double error: ',limited
+      case(-3)
+        write(error_unit ,fmt='(2a)') 'c_double error: ',limited_and_imprecise
+      case(-4)
+        write(error_unit ,fmt='(2a)') 'c_double error: ',not_interoperable_nonspecific
+      case default
+        write(output_unit,fmt='(2a)') 'c_double: ',interoperable
+    end select
+  
+    select case(c_bool)
+      case(-1)
+        write(error_unit ,fmt='(a)') 'c_bool error: invalid value for a logical kind parameter on the processor.'
+      case default
+        write(output_unit ,fmt='(a)') 'c_bool:  valid value for a logical kind parameter on the processor.'
+    end select
+  
+    select case(c_char)
+      case(-1)
+        write(error_unit ,fmt='(a)') 'c_char error: invalid value for a character kind parameter on the processor.'
+      case default
+        write(output_unit ,fmt='(a)') 'c_char:  valid value for a character kind type parameter on the processor.'
+    end select
+   
+    valid_kind_parameters = .true.
+  
+  end function
 
-  select case(c_double)
-    case(-1)
-      write(error_unit ,fmt='(2a)') 'c_double error: ',imprecise
-    case(-2)
-      write(error_unit ,fmt='(2a)') 'c_double error: ',limited
-    case(-3)
-      write(error_unit ,fmt='(2a)') 'c_double error: ',limited_and_imprecise
-    case(-4)
-      write(error_unit ,fmt='(2a)') 'c_double error: ',not_interoperable_nonspecific
-    case default
-      write(output_unit,fmt='(2a)') 'c_double: ',interoperable
-  end select
-
-  select case(c_bool)
-    case(-1)
-      write(error_unit ,fmt='(a)') 'c_bool error: invalid value for a logical kind parameter on the processor.'
-    case default
-      write(output_unit ,fmt='(a)') 'c_bool:  valid value for a logical kind parameter on the processor.'
-  end select
-
-  select case(c_char)
-    case(-1)
-      write(error_unit ,fmt='(a)') 'c_char error: invalid value for a character kind parameter on the processor.'
-    case default
-      write(output_unit ,fmt='(a)') 'c_char:  valid value for a character kind type parameter on the processor.'
-  end select
-
-end program
+end module interoperability_check
