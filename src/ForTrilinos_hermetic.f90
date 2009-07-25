@@ -1,4 +1,5 @@
 module ForTilinos_hermetic
+  include ForTrilinos_config.h
   implicit none
   private
   public :: hermetic ! Expose type and type-bound procedures
@@ -12,12 +13,16 @@ module ForTilinos_hermetic
 
   type ,abstract :: hermetic
     private
-    integer, pointer :: temporary => null()  
+    integer, pointer :: temporary => null() ! Null symbolizes "non-temporary" data
   contains
-    procedure :: SetTemp   ! Mark object as temporary
-    procedure :: GuardTemp ! Increment the reference count
-    procedure :: CleanTemp ! Decrement ref count & destroy when zero
+    procedure :: SetTemp      ! Mark object as temporary
+    procedure :: GuardTemp    ! Increment the reference count
+    procedure :: CleanTemp    ! Decrement ref count & destroy when zero
+    procedure :: is_temporary ! Check for temporary mark
     procedure(destructor) ,deferred :: final_subroutine
+#ifdef FINALIZATION_SUPPORTED
+   final :: finalize_hermetic
+#endif FINALIZATION_SUPPORTED
   end type
 
   abstract interface
@@ -30,30 +35,39 @@ module ForTilinos_hermetic
 contains
   subroutine SetTemp(this) ! Mark object as temporary
     class(hermetic) ,intent(inout) :: this 
-    if (.not. associated (this%temporary)) allocate (this%temporary) 
+    if (.not. associated (this%temporary)) allocate(this%temporary) 
     this%temporary = 1 
   end subroutine 
 
-  subroutine GuardTemp (this) ! Increment reference count
+  subroutine GuardTemp (this) 
     class (hermetic) :: this 
     integer, pointer :: t 
-    if (associated (this%temporary)) then
+    if (this%is_temporary()) then ! If temporary,
       t => this% temporary 
-      t = t + 1 
+      t = t + 1                   ! then increment count.
     end if 
   end subroutine
 
-  subroutine CleanTemp(this) ! Decrement reference count and free temporary object
+  subroutine CleanTemp(this) 
     class(hermetic) :: this 
     integer, pointer :: t 
-    if (associated(this%temporary)) then  ! If temporary, 
+    if (this%is_temporary()) then         ! If temporary, 
       t=>this%temporary 
       if (t > 1) then
-        t = t - 1                         ! Then decrement reference count
-      else if (t == 1) then               ! If no references left,
-        call this%final_subroutine()      ! Then call destructor.
+        t = t - 1                         ! then decrement reference count
+      else if (t == 1) then               ! else if no references left,
+        call this%final_subroutine()      ! then call destructor.
         deallocate(t) 
       end if 
     end if 
   end subroutine 
+
+  logical function is_temporary(this)
+    class(hermetic) ,intent(in):: this
+    if (associated(this%temporary)) then  
+      is_temporary = .true.
+    else
+      is_temporary = .false.
+    end if
+  end function
 end module
