@@ -52,70 +52,70 @@ module ForTrilinos_enums
   ! Each type definition below is identical in form to the ForTrilinos_Object_ID_t definition but with a name corresponding
   ! to the CT_Epetra_*_ID_t type (where *=Distributor,SerialComm,...) with which it is designed to be interoperable.
 
-  type ,bind(C) :: FT_Epetra_Distributor_ID
+  type ,bind(C) :: FT_Epetra_Distributor_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_SerialComm_ID
+  type ,bind(C) :: FT_Epetra_SerialComm_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_BLAS_ID
+  type ,bind(C) :: FT_Epetra_BLAS_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_Comm_ID
+  type ,bind(C) :: FT_Epetra_Comm_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_Operator_ID
+  type ,bind(C) :: FT_Epetra_Operator_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_MultiVector_ID
+  type ,bind(C) :: FT_Epetra_MultiVector_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_OffsetIndex_ID
+  type ,bind(C) :: FT_Epetra_OffsetIndex_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_Object_ID
+  type ,bind(C) :: FT_Epetra_Object_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_RowMatrix_ID
+  type ,bind(C) :: FT_Epetra_RowMatrix_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_CompObject_ID
+  type ,bind(C) :: FT_Epetra_CompObject_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_Directory_ID
+  type ,bind(C) :: FT_Epetra_Directory_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_Flops_ID
+  type ,bind(C) :: FT_Epetra_Flops_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_SrcDistObject_ID
+  type ,bind(C) :: FT_Epetra_SrcDistObject_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_MpiComm_ID
+  type ,bind(C) :: FT_Epetra_MpiComm_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_CrsMatrix_ID
+  type ,bind(C) :: FT_Epetra_CrsMatrix_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_CrsGraph_ID
+  type ,bind(C) :: FT_Epetra_CrsGraph_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_DistObject_ID
+  type ,bind(C) :: FT_Epetra_DistObject_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_Vector_ID
+  type ,bind(C) :: FT_Epetra_Vector_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_Export_ID
+  type ,bind(C) :: FT_Epetra_Export_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_Map_ID
+  type ,bind(C) :: FT_Epetra_Map_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_BlockMap_ID
+  type ,bind(C) :: FT_Epetra_BlockMap_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
-  type ,bind(C) :: FT_Epetra_Import_ID
+  type ,bind(C) :: FT_Epetra_Import_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
 
