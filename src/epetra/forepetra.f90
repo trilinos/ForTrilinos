@@ -3649,6 +3649,512 @@ module forepetra  ! Companion to CEpetra_*.h
   end function
 
 
+  ! _________________ Epetra_MpiComm interface bodies _________________
+
+
+
+
+
+#ifdef HAVE_MPI
+
+
+  ! CTrilinos prototype:
+  ! CT_Epetra_MpiComm_ID_t Epetra_MpiComm_Cast ( CTrilinos_Object_ID_t id );
+
+  type(FT_Epetra_MpiComm_ID_t) function Epetra_MpiComm_Cast ( id ) &
+        bind(C,name='Epetra_MpiComm_Cast')
+    import :: FT_Epetra_MpiComm_ID_t ,ForTrilinos_Object_ID_t
+    implicit none
+    type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+  end function
+
+
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_MpiComm_Abstract ( CT_Epetra_MpiComm_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_MpiComm_Abstract ( id ) &
+        bind(C,name='Epetra_MpiComm_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_MpiComm_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: id
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_MpiComm(MPI_Comm comm);
+  ! CTrilinos prototype:
+  ! CT_Epetra_MpiComm_ID_t Epetra_MpiComm_Create ( MPI_Comm comm );
+
+  type(FT_Epetra_MpiComm_ID_t) function Epetra_MpiComm_Create ( comm ) &
+        bind(C,name='Epetra_MpiComm_Create')
+    import :: FT_Epetra_MpiComm_ID_t ,FT_MPI_Comm_E_t
+    implicit none
+    integer(FT_MPI_Comm_E_t)    ,intent(in)   ,value              :: comm
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_MpiComm(const Epetra_MpiComm & Comm);
+  ! CTrilinos prototype:
+  ! CT_Epetra_MpiComm_ID_t Epetra_MpiComm_Duplicate ( CT_Epetra_MpiComm_ID_t CommID );
+
+  type(FT_Epetra_MpiComm_ID_t) function Epetra_MpiComm_Duplicate ( CommID ) &
+        bind(C,name='Epetra_MpiComm_Duplicate')
+    import :: FT_Epetra_MpiComm_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: CommID
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_Comm * Clone() const;
+  ! CTrilinos prototype:
+  ! CT_Epetra_Comm_ID_t Epetra_MpiComm_Clone ( CT_Epetra_MpiComm_ID_t selfID );
+
+  type(FT_Epetra_Comm_ID_t) function Epetra_MpiComm_Clone ( selfID ) &
+        bind(C,name='Epetra_MpiComm_Clone')
+    import :: FT_Epetra_Comm_ID_t ,FT_Epetra_MpiComm_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  ! Original C++ prototype:
+  ! virtual ~Epetra_MpiComm();
+  ! CTrilinos prototype:
+  ! void Epetra_MpiComm_Destroy ( CT_Epetra_MpiComm_ID_t * selfID );
+
+  subroutine Epetra_MpiComm_Destroy ( selfID ) bind(C,name='Epetra_MpiComm_Destroy')
+    import :: FT_Epetra_MpiComm_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t)                                  :: selfID
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void Barrier() const;
+  ! CTrilinos prototype:
+  ! void Epetra_MpiComm_Barrier ( CT_Epetra_MpiComm_ID_t selfID );
+
+  subroutine Epetra_MpiComm_Barrier ( selfID ) bind(C,name='Epetra_MpiComm_Barrier')
+    import :: FT_Epetra_MpiComm_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! int Broadcast(double * MyVals, int Count, int Root) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_Broadcast_Double ( CT_Epetra_MpiComm_ID_t selfID, double * MyVals, int Count, int Root );
+
+  integer(c_int) function Epetra_MpiComm_Broadcast_Double ( selfID, MyVals, Count, Root ) &
+        bind(C,name='Epetra_MpiComm_Broadcast_Double')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_double
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    real(c_double)                                  ,dimension(*) :: MyVals
+    integer(c_int)              ,intent(in)   ,value              :: Count
+    integer(c_int)              ,intent(in)   ,value              :: Root
+  end function
+
+
+  ! Original C++ prototype:
+  ! int Broadcast(int * MyVals, int Count, int Root) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_Broadcast_Int ( CT_Epetra_MpiComm_ID_t selfID, int * MyVals, int Count, int Root );
+
+  integer(c_int) function Epetra_MpiComm_Broadcast_Int ( selfID, MyVals, Count, Root ) &
+        bind(C,name='Epetra_MpiComm_Broadcast_Int')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                                  ,dimension(*) :: MyVals
+    integer(c_int)              ,intent(in)   ,value              :: Count
+    integer(c_int)              ,intent(in)   ,value              :: Root
+  end function
+
+
+  ! Original C++ prototype:
+  ! int Broadcast(long * MyVals, int Count, int Root) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_Broadcast_Long ( CT_Epetra_MpiComm_ID_t selfID, long * MyVals, int Count, int Root );
+
+  integer(c_int) function Epetra_MpiComm_Broadcast_Long ( selfID, MyVals, Count, Root ) &
+        bind(C,name='Epetra_MpiComm_Broadcast_Long')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_long
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    integer(c_long)                                 ,dimension(*) :: MyVals
+    integer(c_int)              ,intent(in)   ,value              :: Count
+    integer(c_int)              ,intent(in)   ,value              :: Root
+  end function
+
+
+  ! Original C++ prototype:
+  ! int Broadcast(char * MyVals, int Count, int Root) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_Broadcast_Char ( CT_Epetra_MpiComm_ID_t selfID, char * MyVals, int Count, int Root );
+
+  integer(c_int) function Epetra_MpiComm_Broadcast_Char ( selfID, MyVals, Count, Root ) &
+        bind(C,name='Epetra_MpiComm_Broadcast_Char')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_char
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    character(kind=c_char)                          ,dimension(*) :: MyVals
+    integer(c_int)              ,intent(in)   ,value              :: Count
+    integer(c_int)              ,intent(in)   ,value              :: Root
+  end function
+
+
+  ! Original C++ prototype:
+  ! int GatherAll(double * MyVals, double * AllVals, int Count) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_GatherAll_Double ( CT_Epetra_MpiComm_ID_t selfID, double * MyVals, double * AllVals, int Count );
+
+  integer(c_int) function Epetra_MpiComm_GatherAll_Double ( selfID, MyVals, AllVals, Count ) &
+        bind(C,name='Epetra_MpiComm_GatherAll_Double')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_double
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    real(c_double)                                  ,dimension(*) :: MyVals
+    real(c_double)                                  ,dimension(*) :: AllVals
+    integer(c_int)              ,intent(in)   ,value              :: Count
+  end function
+
+
+  ! Original C++ prototype:
+  ! int GatherAll(int * MyVals, int * AllVals, int Count) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_GatherAll_Int ( CT_Epetra_MpiComm_ID_t selfID, int * MyVals, int * AllVals, int Count );
+
+  integer(c_int) function Epetra_MpiComm_GatherAll_Int ( selfID, MyVals, AllVals, Count ) &
+        bind(C,name='Epetra_MpiComm_GatherAll_Int')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                                  ,dimension(*) :: MyVals
+    integer(c_int)                                  ,dimension(*) :: AllVals
+    integer(c_int)              ,intent(in)   ,value              :: Count
+  end function
+
+
+  ! Original C++ prototype:
+  ! int GatherAll(long * MyVals, long * AllVals, int Count) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_GatherAll_Long ( CT_Epetra_MpiComm_ID_t selfID, long * MyVals, long * AllVals, int Count );
+
+  integer(c_int) function Epetra_MpiComm_GatherAll_Long ( selfID, MyVals, AllVals, Count ) &
+        bind(C,name='Epetra_MpiComm_GatherAll_Long')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_long
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    integer(c_long)                                 ,dimension(*) :: MyVals
+    integer(c_long)                                 ,dimension(*) :: AllVals
+    integer(c_int)              ,intent(in)   ,value              :: Count
+  end function
+
+
+  ! Original C++ prototype:
+  ! int SumAll(double * PartialSums, double * GlobalSums, int Count) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_SumAll_Double ( CT_Epetra_MpiComm_ID_t selfID, double * PartialSums, double * GlobalSums, int Count );
+
+  integer(c_int) function Epetra_MpiComm_SumAll_Double ( selfID, PartialSums, GlobalSums, &
+        Count ) bind(C,name='Epetra_MpiComm_SumAll_Double')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_double
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    real(c_double)                                  ,dimension(*) :: PartialSums
+    real(c_double)                                  ,dimension(*) :: GlobalSums
+    integer(c_int)              ,intent(in)   ,value              :: Count
+  end function
+
+
+  ! Original C++ prototype:
+  ! int SumAll(int * PartialSums, int * GlobalSums, int Count) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_SumAll_Int ( CT_Epetra_MpiComm_ID_t selfID, int * PartialSums, int * GlobalSums, int Count );
+
+  integer(c_int) function Epetra_MpiComm_SumAll_Int ( selfID, PartialSums, GlobalSums, &
+        Count ) bind(C,name='Epetra_MpiComm_SumAll_Int')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                                  ,dimension(*) :: PartialSums
+    integer(c_int)                                  ,dimension(*) :: GlobalSums
+    integer(c_int)              ,intent(in)   ,value              :: Count
+  end function
+
+
+  ! Original C++ prototype:
+  ! int SumAll(long * PartialSums, long * GlobalSums, int Count) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_SumAll_Long ( CT_Epetra_MpiComm_ID_t selfID, long * PartialSums, long * GlobalSums, int Count );
+
+  integer(c_int) function Epetra_MpiComm_SumAll_Long ( selfID, PartialSums, GlobalSums, &
+        Count ) bind(C,name='Epetra_MpiComm_SumAll_Long')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_long
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    integer(c_long)                                 ,dimension(*) :: PartialSums
+    integer(c_long)                                 ,dimension(*) :: GlobalSums
+    integer(c_int)              ,intent(in)   ,value              :: Count
+  end function
+
+
+  ! Original C++ prototype:
+  ! int MaxAll(double * PartialMaxs, double * GlobalMaxs, int Count) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_MaxAll_Double ( CT_Epetra_MpiComm_ID_t selfID, double * PartialMaxs, double * GlobalMaxs, int Count );
+
+  integer(c_int) function Epetra_MpiComm_MaxAll_Double ( selfID, PartialMaxs, GlobalMaxs, &
+        Count ) bind(C,name='Epetra_MpiComm_MaxAll_Double')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_double
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    real(c_double)                                  ,dimension(*) :: PartialMaxs
+    real(c_double)                                  ,dimension(*) :: GlobalMaxs
+    integer(c_int)              ,intent(in)   ,value              :: Count
+  end function
+
+
+  ! Original C++ prototype:
+  ! int MaxAll(int * PartialMaxs, int * GlobalMaxs, int Count) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_MaxAll_Int ( CT_Epetra_MpiComm_ID_t selfID, int * PartialMaxs, int * GlobalMaxs, int Count );
+
+  integer(c_int) function Epetra_MpiComm_MaxAll_Int ( selfID, PartialMaxs, GlobalMaxs, &
+        Count ) bind(C,name='Epetra_MpiComm_MaxAll_Int')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                                  ,dimension(*) :: PartialMaxs
+    integer(c_int)                                  ,dimension(*) :: GlobalMaxs
+    integer(c_int)              ,intent(in)   ,value              :: Count
+  end function
+
+
+  ! Original C++ prototype:
+  ! int MaxAll(long * PartialMaxs, long * GlobalMaxs, int Count) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_MaxAll_Long ( CT_Epetra_MpiComm_ID_t selfID, long * PartialMaxs, long * GlobalMaxs, int Count );
+
+  integer(c_int) function Epetra_MpiComm_MaxAll_Long ( selfID, PartialMaxs, GlobalMaxs, &
+        Count ) bind(C,name='Epetra_MpiComm_MaxAll_Long')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_long
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    integer(c_long)                                 ,dimension(*) :: PartialMaxs
+    integer(c_long)                                 ,dimension(*) :: GlobalMaxs
+    integer(c_int)              ,intent(in)   ,value              :: Count
+  end function
+
+
+  ! Original C++ prototype:
+  ! int MinAll(double * PartialMins, double * GlobalMins, int Count) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_MinAll_Double ( CT_Epetra_MpiComm_ID_t selfID, double * PartialMins, double * GlobalMins, int Count );
+
+  integer(c_int) function Epetra_MpiComm_MinAll_Double ( selfID, PartialMins, GlobalMins, &
+        Count ) bind(C,name='Epetra_MpiComm_MinAll_Double')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_double
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    real(c_double)                                  ,dimension(*) :: PartialMins
+    real(c_double)                                  ,dimension(*) :: GlobalMins
+    integer(c_int)              ,intent(in)   ,value              :: Count
+  end function
+
+
+  ! Original C++ prototype:
+  ! int MinAll(int * PartialMins, int * GlobalMins, int Count) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_MinAll_Int ( CT_Epetra_MpiComm_ID_t selfID, int * PartialMins, int * GlobalMins, int Count );
+
+  integer(c_int) function Epetra_MpiComm_MinAll_Int ( selfID, PartialMins, GlobalMins, &
+        Count ) bind(C,name='Epetra_MpiComm_MinAll_Int')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                                  ,dimension(*) :: PartialMins
+    integer(c_int)                                  ,dimension(*) :: GlobalMins
+    integer(c_int)              ,intent(in)   ,value              :: Count
+  end function
+
+
+  ! Original C++ prototype:
+  ! int MinAll(long * PartialMins, long * GlobalMins, int Count) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_MinAll_Long ( CT_Epetra_MpiComm_ID_t selfID, long * PartialMins, long * GlobalMins, int Count );
+
+  integer(c_int) function Epetra_MpiComm_MinAll_Long ( selfID, PartialMins, GlobalMins, &
+        Count ) bind(C,name='Epetra_MpiComm_MinAll_Long')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_long
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    integer(c_long)                                 ,dimension(*) :: PartialMins
+    integer(c_long)                                 ,dimension(*) :: GlobalMins
+    integer(c_int)              ,intent(in)   ,value              :: Count
+  end function
+
+
+  ! Original C++ prototype:
+  ! int ScanSum(double * MyVals, double * ScanSums, int Count) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_ScanSum_Double ( CT_Epetra_MpiComm_ID_t selfID, double * MyVals, double * ScanSums, int Count );
+
+  integer(c_int) function Epetra_MpiComm_ScanSum_Double ( selfID, MyVals, ScanSums, Count ) &
+        bind(C,name='Epetra_MpiComm_ScanSum_Double')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_double
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    real(c_double)                                  ,dimension(*) :: MyVals
+    real(c_double)                                  ,dimension(*) :: ScanSums
+    integer(c_int)              ,intent(in)   ,value              :: Count
+  end function
+
+
+  ! Original C++ prototype:
+  ! int ScanSum(int * MyVals, int * ScanSums, int Count) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_ScanSum_Int ( CT_Epetra_MpiComm_ID_t selfID, int * MyVals, int * ScanSums, int Count );
+
+  integer(c_int) function Epetra_MpiComm_ScanSum_Int ( selfID, MyVals, ScanSums, Count ) &
+        bind(C,name='Epetra_MpiComm_ScanSum_Int')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                                  ,dimension(*) :: MyVals
+    integer(c_int)                                  ,dimension(*) :: ScanSums
+    integer(c_int)              ,intent(in)   ,value              :: Count
+  end function
+
+
+  ! Original C++ prototype:
+  ! int ScanSum(long * MyVals, long * ScanSums, int Count) const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_ScanSum_Long ( CT_Epetra_MpiComm_ID_t selfID, long * MyVals, long * ScanSums, int Count );
+
+  integer(c_int) function Epetra_MpiComm_ScanSum_Long ( selfID, MyVals, ScanSums, Count ) &
+        bind(C,name='Epetra_MpiComm_ScanSum_Long')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_long
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    integer(c_long)                                 ,dimension(*) :: MyVals
+    integer(c_long)                                 ,dimension(*) :: ScanSums
+    integer(c_int)              ,intent(in)   ,value              :: Count
+  end function
+
+
+  ! Original C++ prototype:
+  ! MPI_Comm Comm() const;
+  ! CTrilinos prototype:
+  ! MPI_Comm Epetra_MpiComm_Comm ( CT_Epetra_MpiComm_ID_t selfID );
+
+  integer(FT_MPI_Comm_E_t) function Epetra_MpiComm_Comm ( selfID ) &
+        bind(C,name='Epetra_MpiComm_Comm')
+    import :: FT_MPI_Comm_E_t ,FT_Epetra_MpiComm_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  ! Original C++ prototype:
+  ! int MyPID() const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_MyPID ( CT_Epetra_MpiComm_ID_t selfID );
+
+  integer(c_int) function Epetra_MpiComm_MyPID ( selfID ) &
+        bind(C,name='Epetra_MpiComm_MyPID')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  ! Original C++ prototype:
+  ! int NumProc() const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_NumProc ( CT_Epetra_MpiComm_ID_t selfID );
+
+  integer(c_int) function Epetra_MpiComm_NumProc ( selfID ) &
+        bind(C,name='Epetra_MpiComm_NumProc')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_Distributor * CreateDistributor() const;
+  ! CTrilinos prototype:
+  ! CT_Epetra_Distributor_ID_t Epetra_MpiComm_CreateDistributor ( CT_Epetra_MpiComm_ID_t selfID );
+
+  type(FT_Epetra_Distributor_ID_t) function Epetra_MpiComm_CreateDistributor ( selfID ) &
+        bind(C,name='Epetra_MpiComm_CreateDistributor')
+    import :: FT_Epetra_Distributor_ID_t ,FT_Epetra_MpiComm_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_Directory * CreateDirectory(const Epetra_BlockMap & Map) const;
+  ! CTrilinos prototype:
+  ! CT_Epetra_Directory_ID_t Epetra_MpiComm_CreateDirectory ( CT_Epetra_MpiComm_ID_t selfID, CT_Epetra_BlockMap_ID_t MapID );
+
+  type(FT_Epetra_Directory_ID_t) function Epetra_MpiComm_CreateDirectory ( selfID, MapID ) &
+        bind(C,name='Epetra_MpiComm_CreateDirectory')
+    import :: FT_Epetra_Directory_ID_t ,FT_Epetra_MpiComm_ID_t ,FT_Epetra_BlockMap_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: MapID
+  end function
+
+
+  ! Original C++ prototype:
+  ! int GetMpiTag() const;
+  ! CTrilinos prototype:
+  ! int Epetra_MpiComm_GetMpiTag ( CT_Epetra_MpiComm_ID_t selfID );
+
+  integer(c_int) function Epetra_MpiComm_GetMpiTag ( selfID ) &
+        bind(C,name='Epetra_MpiComm_GetMpiTag')
+    import :: c_int ,FT_Epetra_MpiComm_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  ! Original C++ prototype:
+  ! MPI_Comm GetMpiComm() const;
+  ! CTrilinos prototype:
+  ! MPI_Comm Epetra_MpiComm_GetMpiComm ( CT_Epetra_MpiComm_ID_t selfID );
+
+  integer(FT_MPI_Comm_E_t) function Epetra_MpiComm_GetMpiComm ( selfID ) &
+        bind(C,name='Epetra_MpiComm_GetMpiComm')
+    import :: FT_MPI_Comm_E_t ,FT_Epetra_MpiComm_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_MpiComm & operator=(const Epetra_MpiComm & Comm);
+  ! CTrilinos prototype:
+  ! void Epetra_MpiComm_Assign ( CT_Epetra_MpiComm_ID_t selfID, CT_Epetra_MpiComm_ID_t CommID );
+
+  subroutine Epetra_MpiComm_Assign ( selfID, CommID ) bind(C,name='Epetra_MpiComm_Assign')
+    import :: FT_Epetra_MpiComm_ID_t
+    implicit none
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
+    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: CommID
+  end subroutine
+
+
+#endif /* HAVE_MPI */
+
+
   ! _________________ Epetra_CrsMatrix interface bodies _________________
 
 
