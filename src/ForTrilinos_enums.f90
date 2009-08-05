@@ -1,6 +1,6 @@
 module ForTrilinos_enums
-  use iso_c_binding ,only : c_int ! Kind parameter (precision specifier)
-  implicit none                   ! Prevent implicit typing
+  use iso_c_binding ,only : c_int,c_bool ! Kind parameter (precision specifier)
+  implicit none                          ! Prevent implicit typing
 
   ! This file is the Fortran companion to CTrilinos/src/CTrilinos_enums.h.
   ! The definitions here are the nearest Fortran equivalents to the contents of that file.

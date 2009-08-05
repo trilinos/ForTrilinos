@@ -57,8 +57,6 @@ APPEND_SET(SOURCES
 # C) Define the targets for package's library(s)
 #
 
-SET_SOURCE_FILES_PROPERTIES( ${SOURCES} PROPERTIES LANGUAGE Fortran )
-
 PACKAGE_ADD_LIBRARY(
   fortrilinos
   HEADERS ${HEADERS}
