@@ -49,7 +49,7 @@ APPEND_SET(HEADERS
 APPEND_SET(SOURCES
   ForTrilinos_enums.f90
   ForTrilinos_utils.f90
-  ForTrilinos_hermetic.f90
+  ForTrilinos_hermetic.F90
   ForTrilinos_universal.f90
   )
 

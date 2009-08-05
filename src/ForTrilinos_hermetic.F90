@@ -1,5 +1,5 @@
 module ForTilinos_hermetic
-  include ForTrilinos_config.h
+  include 'ForTrilinos_config.h'
   implicit none
   private
   public :: hermetic ! Expose type and type-bound procedures
@@ -22,7 +22,7 @@ module ForTilinos_hermetic
     procedure(destructor) ,deferred :: final_subroutine
 #ifdef FINALIZATION_SUPPORTED
    final :: finalize_hermetic
-#endif FINALIZATION_SUPPORTED
+#endif 
   end type
 
   abstract interface
