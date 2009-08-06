@@ -3,7 +3,9 @@ INCLUDE(PackageMacros)
 
 PACKAGE(ForTrilinos Fortran)
 
-SET(CMAKE_Fortran_COMPILER /usr/bin/xlf2003)
+IF("${CMAKE_Fortran_COMPILER_ID}" MATCHES "VisualAge|XL")
+  SET(CMAKE_Fortran_COMPILER xlf2003)
+ENDIF()
 
 ADD_SUBDIRECTORY(src)
 
