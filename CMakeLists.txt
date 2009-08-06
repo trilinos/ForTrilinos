@@ -3,6 +3,8 @@ INCLUDE(PackageMacros)
 
 PACKAGE(ForTrilinos Fortran)
 
+SET(CMAKE_Fortran_COMPILER /usr/bin/xlf2003)
+
 ADD_SUBDIRECTORY(src)
 
 PACKAGE_ADD_TEST_DIRECTORIES(test)

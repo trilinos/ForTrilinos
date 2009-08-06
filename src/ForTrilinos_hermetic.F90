@@ -1,5 +1,6 @@
-module ForTilinos_hermetic
-  include 'ForTrilinos_config.h'
+module ForTrilinos_hermetic
+! Can't use Fortran-style include due to  presence of C pre-processor directives in ForTrilinos_config.h:
+!#include "ForTrilinos_config.h"
   implicit none
   private
   public :: hermetic ! Expose type and type-bound procedures
