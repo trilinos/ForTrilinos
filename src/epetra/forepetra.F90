@@ -1,6 +1,6 @@
 module forepetra  ! Companion to CEpetra_*.h
-  use ,intrinsic     :: iso_c_binding ,only : c_int,c_double,c_char,c_bool,c_ptr,c_long,c_float ! Kind parameters
-  use ,non_intrinsic :: ForTrilinos_enums
+  use iso_c_binding ,only : c_int,c_double,c_char,c_bool,c_ptr,c_long,c_float 
+  use fortrilinos_enums
   implicit none   ! Prevent implicit typing
 
   ! This file provides Fortran interface blocks that bind the argument types,
@@ -23,7 +23,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Distributor_ID_t) function Epetra_Distributor_Cast ( id ) &
         bind(C,name='Epetra_Distributor_Cast')
     import :: FT_Epetra_Distributor_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t)   ,intent(in)   ,value              :: id
   end function
 
@@ -34,7 +34,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_Distributor_Abstract ( id ) &
         bind(C,name='Epetra_Distributor_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_Distributor_ID_t
-    implicit none
+    
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -47,7 +47,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Distributor_ID_t) function Epetra_Distributor_Clone ( selfID ) &
         bind(C,name='Epetra_Distributor_Clone')
     import :: FT_Epetra_Distributor_ID_t
-    implicit none
+    
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -60,7 +60,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_Distributor_Destroy ( selfID ) &
         bind(C,name='Epetra_Distributor_Destroy')
     import :: FT_Epetra_Distributor_ID_t
-    implicit none
+    
     type(FT_Epetra_Distributor_ID_t)                                  :: selfID
   end subroutine
 
@@ -74,7 +74,7 @@ module forepetra  ! Companion to CEpetra_*.h
         ExportPIDs, Deterministic, NumRemoteIDs ) &
         bind(C,name='Epetra_Distributor_CreateFromSends')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_bool
-    implicit none
+    
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: NumExportIDs
     integer(c_int)                  ,intent(in)         ,dimension(*) :: ExportPIDs
@@ -92,7 +92,7 @@ module forepetra  ! Companion to CEpetra_*.h
         RemoteGIDs, RemotePIDs, Deterministic, NumExportIDs, ExportGIDs, ExportPIDs ) &
         bind(C,name='Epetra_Distributor_CreateFromRecvs')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_bool
-    implicit none
+    
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: NumRemoteIDs
     integer(c_int)                  ,intent(in)         ,dimension(*) :: RemoteGIDs
@@ -112,7 +112,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Distributor_Do ( selfID, export_objs, obj_size, &
         len_import_objs, import_objs ) bind(C,name='Epetra_Distributor_Do')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_char
-    implicit none
+    
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                              ,dimension(*) :: export_objs
     integer(c_int)                  ,intent(in)   ,value              :: obj_size
@@ -129,7 +129,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Distributor_DoReverse ( selfID, export_objs, obj_size, &
         len_import_objs, import_objs ) bind(C,name='Epetra_Distributor_DoReverse')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_char
-    implicit none
+    
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                              ,dimension(*) :: export_objs
     integer(c_int)                  ,intent(in)   ,value              :: obj_size
@@ -146,7 +146,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Distributor_DoPosts ( selfID, export_objs, obj_size, &
         len_import_objs, import_objs ) bind(C,name='Epetra_Distributor_DoPosts')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_char
-    implicit none
+    
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                              ,dimension(*) :: export_objs
     integer(c_int)                  ,intent(in)   ,value              :: obj_size
@@ -163,7 +163,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Distributor_DoWaits ( selfID ) &
         bind(C,name='Epetra_Distributor_DoWaits')
     import :: c_int ,FT_Epetra_Distributor_ID_t
-    implicit none
+    
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -176,7 +176,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Distributor_DoReversePosts ( selfID, export_objs, obj_size, &
         len_import_objs, import_objs ) bind(C,name='Epetra_Distributor_DoReversePosts')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_char
-    implicit none
+    
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                              ,dimension(*) :: export_objs
     integer(c_int)                  ,intent(in)   ,value              :: obj_size
@@ -193,7 +193,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Distributor_DoReverseWaits ( selfID ) &
         bind(C,name='Epetra_Distributor_DoReverseWaits')
     import :: c_int ,FT_Epetra_Distributor_ID_t
-    implicit none
+    
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -206,7 +206,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Distributor_Do_VarLen ( selfID, export_objs, obj_size, &
         sizes, len_import_objs, import_objs ) bind(C,name='Epetra_Distributor_Do_VarLen')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_char
-    implicit none
+    
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                              ,dimension(*) :: export_objs
     integer(c_int)                  ,intent(in)   ,value              :: obj_size
@@ -225,7 +225,7 @@ module forepetra  ! Companion to CEpetra_*.h
         obj_size, sizes, len_import_objs, import_objs ) &
         bind(C,name='Epetra_Distributor_DoReverse_VarLen')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_char
-    implicit none
+    
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                              ,dimension(*) :: export_objs
     integer(c_int)                  ,intent(in)   ,value              :: obj_size
@@ -244,7 +244,7 @@ module forepetra  ! Companion to CEpetra_*.h
         sizes, len_import_objs, import_objs ) &
         bind(C,name='Epetra_Distributor_DoPosts_VarLen')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_char
-    implicit none
+    
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                              ,dimension(*) :: export_objs
     integer(c_int)                  ,intent(in)   ,value              :: obj_size
@@ -263,7 +263,7 @@ module forepetra  ! Companion to CEpetra_*.h
         obj_size, sizes, len_import_objs, import_objs ) &
         bind(C,name='Epetra_Distributor_DoReversePosts_VarLen')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_char
-    implicit none
+    
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                              ,dimension(*) :: export_objs
     integer(c_int)                  ,intent(in)   ,value              :: obj_size
@@ -282,7 +282,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_SerialComm_ID_t) function Epetra_SerialComm_Cast ( id ) &
         bind(C,name='Epetra_SerialComm_Cast')
     import :: FT_Epetra_SerialComm_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t)  ,intent(in)   ,value              :: id
   end function
 
@@ -293,7 +293,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_SerialComm_Abstract ( id ) &
         bind(C,name='Epetra_SerialComm_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_SerialComm_ID_t
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -306,7 +306,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_SerialComm_ID_t) function Epetra_SerialComm_Create (  ) &
         bind(C,name='Epetra_SerialComm_Create')
     import :: FT_Epetra_SerialComm_ID_t
-    implicit none
+    
   end function
 
 
@@ -318,7 +318,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_SerialComm_ID_t) function Epetra_SerialComm_Duplicate ( CommID ) &
         bind(C,name='Epetra_SerialComm_Duplicate')
     import :: FT_Epetra_SerialComm_ID_t
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: CommID
   end function
 
@@ -331,7 +331,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Comm_ID_t) function Epetra_SerialComm_Clone ( selfID ) &
         bind(C,name='Epetra_SerialComm_Clone')
     import :: FT_Epetra_Comm_ID_t ,FT_Epetra_SerialComm_ID_t
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -343,7 +343,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_SerialComm_Destroy ( selfID ) bind(C,name='Epetra_SerialComm_Destroy')
     import :: FT_Epetra_SerialComm_ID_t
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t)                                  :: selfID
   end subroutine
 
@@ -355,7 +355,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_SerialComm_Barrier ( selfID ) bind(C,name='Epetra_SerialComm_Barrier')
     import :: FT_Epetra_SerialComm_ID_t
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
   end subroutine
 
@@ -368,7 +368,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_Broadcast_Double ( selfID, MyVals, Count, Root ) &
         bind(C,name='Epetra_SerialComm_Broadcast_Double')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                     ,dimension(*) :: MyVals
     integer(c_int)                 ,intent(in)   ,value              :: Count
@@ -384,7 +384,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_Broadcast_Int ( selfID, MyVals, Count, Root ) &
         bind(C,name='Epetra_SerialComm_Broadcast_Int')
     import :: c_int ,FT_Epetra_SerialComm_ID_t
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                     ,dimension(*) :: MyVals
     integer(c_int)                 ,intent(in)   ,value              :: Count
@@ -400,7 +400,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_Broadcast_Long ( selfID, MyVals, Count, Root ) &
         bind(C,name='Epetra_SerialComm_Broadcast_Long')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_long
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                    ,dimension(*) :: MyVals
     integer(c_int)                 ,intent(in)   ,value              :: Count
@@ -416,7 +416,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_Broadcast_Char ( selfID, MyVals, Count, Root ) &
         bind(C,name='Epetra_SerialComm_Broadcast_Char')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_char
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                             ,dimension(*) :: MyVals
     integer(c_int)                 ,intent(in)   ,value              :: Count
@@ -432,7 +432,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_GatherAll_Double ( selfID, MyVals, AllVals, &
         Count ) bind(C,name='Epetra_SerialComm_GatherAll_Double')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                     ,dimension(*) :: MyVals
     real(c_double)                                     ,dimension(*) :: AllVals
@@ -448,7 +448,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_GatherAll_Int ( selfID, MyVals, AllVals, Count ) &
         bind(C,name='Epetra_SerialComm_GatherAll_Int')
     import :: c_int ,FT_Epetra_SerialComm_ID_t
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                     ,dimension(*) :: MyVals
     integer(c_int)                                     ,dimension(*) :: AllVals
@@ -464,7 +464,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_GatherAll_Long ( selfID, MyVals, AllVals, Count ) &
         bind(C,name='Epetra_SerialComm_GatherAll_Long')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_long
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                    ,dimension(*) :: MyVals
     integer(c_long)                                    ,dimension(*) :: AllVals
@@ -480,7 +480,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_SumAll_Double ( selfID, PartialSums, GlobalSums, &
         Count ) bind(C,name='Epetra_SerialComm_SumAll_Double')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                     ,dimension(*) :: PartialSums
     real(c_double)                                     ,dimension(*) :: GlobalSums
@@ -496,7 +496,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_SumAll_Int ( selfID, PartialSums, GlobalSums, &
         Count ) bind(C,name='Epetra_SerialComm_SumAll_Int')
     import :: c_int ,FT_Epetra_SerialComm_ID_t
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                     ,dimension(*) :: PartialSums
     integer(c_int)                                     ,dimension(*) :: GlobalSums
@@ -512,7 +512,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_SumAll_Long ( selfID, PartialSums, GlobalSums, &
         Count ) bind(C,name='Epetra_SerialComm_SumAll_Long')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_long
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                    ,dimension(*) :: PartialSums
     integer(c_long)                                    ,dimension(*) :: GlobalSums
@@ -528,7 +528,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_MaxAll_Double ( selfID, PartialMaxs, GlobalMaxs, &
         Count ) bind(C,name='Epetra_SerialComm_MaxAll_Double')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                     ,dimension(*) :: PartialMaxs
     real(c_double)                                     ,dimension(*) :: GlobalMaxs
@@ -544,7 +544,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_MaxAll_Int ( selfID, PartialMaxs, GlobalMaxs, &
         Count ) bind(C,name='Epetra_SerialComm_MaxAll_Int')
     import :: c_int ,FT_Epetra_SerialComm_ID_t
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                     ,dimension(*) :: PartialMaxs
     integer(c_int)                                     ,dimension(*) :: GlobalMaxs
@@ -560,7 +560,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_MaxAll_Long ( selfID, PartialMaxs, GlobalMaxs, &
         Count ) bind(C,name='Epetra_SerialComm_MaxAll_Long')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_long
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                    ,dimension(*) :: PartialMaxs
     integer(c_long)                                    ,dimension(*) :: GlobalMaxs
@@ -576,7 +576,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_MinAll_Double ( selfID, PartialMins, GlobalMins, &
         Count ) bind(C,name='Epetra_SerialComm_MinAll_Double')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                     ,dimension(*) :: PartialMins
     real(c_double)                                     ,dimension(*) :: GlobalMins
@@ -592,7 +592,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_MinAll_Int ( selfID, PartialMins, GlobalMins, &
         Count ) bind(C,name='Epetra_SerialComm_MinAll_Int')
     import :: c_int ,FT_Epetra_SerialComm_ID_t
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                     ,dimension(*) :: PartialMins
     integer(c_int)                                     ,dimension(*) :: GlobalMins
@@ -608,7 +608,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_MinAll_Long ( selfID, PartialMins, GlobalMins, &
         Count ) bind(C,name='Epetra_SerialComm_MinAll_Long')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_long
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                    ,dimension(*) :: PartialMins
     integer(c_long)                                    ,dimension(*) :: GlobalMins
@@ -624,7 +624,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_ScanSum_Double ( selfID, MyVals, ScanSums, &
         Count ) bind(C,name='Epetra_SerialComm_ScanSum_Double')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                     ,dimension(*) :: MyVals
     real(c_double)                                     ,dimension(*) :: ScanSums
@@ -640,7 +640,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_ScanSum_Int ( selfID, MyVals, ScanSums, Count ) &
         bind(C,name='Epetra_SerialComm_ScanSum_Int')
     import :: c_int ,FT_Epetra_SerialComm_ID_t
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                     ,dimension(*) :: MyVals
     integer(c_int)                                     ,dimension(*) :: ScanSums
@@ -656,7 +656,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_ScanSum_Long ( selfID, MyVals, ScanSums, Count ) &
         bind(C,name='Epetra_SerialComm_ScanSum_Long')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_long
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                    ,dimension(*) :: MyVals
     integer(c_long)                                    ,dimension(*) :: ScanSums
@@ -672,7 +672,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_MyPID ( selfID ) &
         bind(C,name='Epetra_SerialComm_MyPID')
     import :: c_int ,FT_Epetra_SerialComm_ID_t
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -685,7 +685,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_SerialComm_NumProc ( selfID ) &
         bind(C,name='Epetra_SerialComm_NumProc')
     import :: c_int ,FT_Epetra_SerialComm_ID_t
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -698,7 +698,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Distributor_ID_t) function Epetra_SerialComm_CreateDistributor ( selfID ) &
         bind(C,name='Epetra_SerialComm_CreateDistributor')
     import :: FT_Epetra_Distributor_ID_t ,FT_Epetra_SerialComm_ID_t
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -711,7 +711,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Directory_ID_t) function Epetra_SerialComm_CreateDirectory ( selfID, MapID ) &
         bind(C,name='Epetra_SerialComm_CreateDirectory')
     import :: FT_Epetra_Directory_ID_t ,FT_Epetra_SerialComm_ID_t ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t)  ,intent(in)   ,value              :: MapID
   end function
@@ -725,7 +725,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_SerialComm_Assign ( selfID, CommID ) &
         bind(C,name='Epetra_SerialComm_Assign')
     import :: FT_Epetra_SerialComm_ID_t
-    implicit none
+    
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: CommID
   end subroutine
@@ -740,7 +740,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_BLAS_ID_t) function Epetra_BLAS_Cast ( id ) &
         bind(C,name='Epetra_BLAS_Cast')
     import :: FT_Epetra_BLAS_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -751,7 +751,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_BLAS_Abstract ( id ) &
         bind(C,name='Epetra_BLAS_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_BLAS_ID_t
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: id
   end function
 
@@ -764,7 +764,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_BLAS_ID_t) function Epetra_BLAS_Create (  ) &
         bind(C,name='Epetra_BLAS_Create')
     import :: FT_Epetra_BLAS_ID_t
-    implicit none
+    
   end function
 
 
@@ -776,7 +776,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_BLAS_ID_t) function Epetra_BLAS_Duplicate ( BLASID ) &
         bind(C,name='Epetra_BLAS_Duplicate')
     import :: FT_Epetra_BLAS_ID_t
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: BLASID
   end function
 
@@ -788,7 +788,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_BLAS_Destroy ( selfID ) bind(C,name='Epetra_BLAS_Destroy')
     import :: FT_Epetra_BLAS_ID_t
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)                                     :: selfID
   end subroutine
 
@@ -801,7 +801,7 @@ module forepetra  ! Companion to CEpetra_*.h
   real(c_float) function Epetra_BLAS_ASUM_Float ( selfID, N, X, INCX ) &
         bind(C,name='Epetra_BLAS_ASUM_Float')
     import :: c_float ,FT_Epetra_BLAS_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_float)               ,intent(in)         ,dimension(*) :: X
@@ -817,7 +817,7 @@ module forepetra  ! Companion to CEpetra_*.h
   real(c_double) function Epetra_BLAS_ASUM_Double ( selfID, N, X, INCX ) &
         bind(C,name='Epetra_BLAS_ASUM_Double')
     import :: c_double ,FT_Epetra_BLAS_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_double)              ,intent(in)         ,dimension(*) :: X
@@ -833,7 +833,7 @@ module forepetra  ! Companion to CEpetra_*.h
   real(c_float) function Epetra_BLAS_DOT_Float ( selfID, N, X, Y, INCX, INCY ) &
         bind(C,name='Epetra_BLAS_DOT_Float')
     import :: c_float ,FT_Epetra_BLAS_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_float)               ,intent(in)         ,dimension(*) :: X
@@ -851,7 +851,7 @@ module forepetra  ! Companion to CEpetra_*.h
   real(c_double) function Epetra_BLAS_DOT_Double ( selfID, N, X, Y, INCX, INCY ) &
         bind(C,name='Epetra_BLAS_DOT_Double')
     import :: c_double ,FT_Epetra_BLAS_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_double)              ,intent(in)         ,dimension(*) :: X
@@ -869,7 +869,7 @@ module forepetra  ! Companion to CEpetra_*.h
   real(c_float) function Epetra_BLAS_NRM2_Float ( selfID, N, X, INCX ) &
         bind(C,name='Epetra_BLAS_NRM2_Float')
     import :: c_float ,FT_Epetra_BLAS_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_float)               ,intent(in)         ,dimension(*) :: X
@@ -885,7 +885,7 @@ module forepetra  ! Companion to CEpetra_*.h
   real(c_double) function Epetra_BLAS_NRM2_Double ( selfID, N, X, INCX ) &
         bind(C,name='Epetra_BLAS_NRM2_Double')
     import :: c_double ,FT_Epetra_BLAS_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_double)              ,intent(in)         ,dimension(*) :: X
@@ -901,7 +901,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_BLAS_SCAL_Float ( selfID, N, ALPHA, X, INCX ) &
         bind(C,name='Epetra_BLAS_SCAL_Float')
     import :: FT_Epetra_BLAS_ID_t ,c_int ,c_float
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_float)               ,intent(in)   ,value              :: ALPHA
@@ -918,7 +918,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_BLAS_SCAL_Double ( selfID, N, ALPHA, X, INCX ) &
         bind(C,name='Epetra_BLAS_SCAL_Double')
     import :: FT_Epetra_BLAS_ID_t ,c_int ,c_double
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_double)              ,intent(in)   ,value              :: ALPHA
@@ -935,7 +935,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_BLAS_COPY_Float ( selfID, N, X, Y, INCX, INCY ) &
         bind(C,name='Epetra_BLAS_COPY_Float')
     import :: FT_Epetra_BLAS_ID_t ,c_int ,c_float
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_float)               ,intent(in)         ,dimension(*) :: X
@@ -953,7 +953,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_BLAS_COPY_Double ( selfID, N, X, Y, INCX, INCY ) &
         bind(C,name='Epetra_BLAS_COPY_Double')
     import :: FT_Epetra_BLAS_ID_t ,c_int ,c_double
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_double)              ,intent(in)         ,dimension(*) :: X
@@ -971,7 +971,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BLAS_IAMAX_Float ( selfID, N, X, INCX ) &
         bind(C,name='Epetra_BLAS_IAMAX_Float')
     import :: c_int ,FT_Epetra_BLAS_ID_t ,c_float
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_float)               ,intent(in)         ,dimension(*) :: X
@@ -987,7 +987,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BLAS_IAMAX_Double ( selfID, N, X, INCX ) &
         bind(C,name='Epetra_BLAS_IAMAX_Double')
     import :: c_int ,FT_Epetra_BLAS_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_double)              ,intent(in)         ,dimension(*) :: X
@@ -1003,7 +1003,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_BLAS_AXPY_Float ( selfID, N, ALPHA, X, Y, INCX, INCY ) &
         bind(C,name='Epetra_BLAS_AXPY_Float')
     import :: FT_Epetra_BLAS_ID_t ,c_int ,c_float
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_float)               ,intent(in)   ,value              :: ALPHA
@@ -1022,7 +1022,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_BLAS_AXPY_Double ( selfID, N, ALPHA, X, Y, INCX, INCY ) &
         bind(C,name='Epetra_BLAS_AXPY_Double')
     import :: FT_Epetra_BLAS_ID_t ,c_int ,c_double
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_double)              ,intent(in)   ,value              :: ALPHA
@@ -1041,7 +1041,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_BLAS_GEMV_Float ( selfID, TRANS, M, N, ALPHA, A, LDA, X, BETA, Y, INCX, &
         INCY ) bind(C,name='Epetra_BLAS_GEMV_Float')
     import :: FT_Epetra_BLAS_ID_t ,c_char ,c_int ,c_float
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     character(kind=c_char)      ,intent(in)   ,value              :: TRANS
     integer(c_int)              ,intent(in)   ,value              :: M
@@ -1065,7 +1065,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_BLAS_GEMV_Double ( selfID, TRANS, M, N, ALPHA, A, LDA, X, BETA, Y, INCX, &
         INCY ) bind(C,name='Epetra_BLAS_GEMV_Double')
     import :: FT_Epetra_BLAS_ID_t ,c_char ,c_int ,c_double
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     character(kind=c_char)      ,intent(in)   ,value              :: TRANS
     integer(c_int)              ,intent(in)   ,value              :: M
@@ -1089,7 +1089,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_BLAS_GEMM_Float ( selfID, TRANSA, TRANSB, M, N, K, ALPHA, A, LDA, B, &
         LDB, BETA, C, LDC ) bind(C,name='Epetra_BLAS_GEMM_Float')
     import :: FT_Epetra_BLAS_ID_t ,c_char ,c_int ,c_float
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     character(kind=c_char)      ,intent(in)   ,value              :: TRANSA
     character(kind=c_char)      ,intent(in)   ,value              :: TRANSB
@@ -1115,7 +1115,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_BLAS_GEMM_Double ( selfID, TRANSA, TRANSB, M, N, K, ALPHA, A, LDA, B, &
         LDB, BETA, C, LDC ) bind(C,name='Epetra_BLAS_GEMM_Double')
     import :: FT_Epetra_BLAS_ID_t ,c_char ,c_int ,c_double
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     character(kind=c_char)      ,intent(in)   ,value              :: TRANSA
     character(kind=c_char)      ,intent(in)   ,value              :: TRANSB
@@ -1141,7 +1141,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_BLAS_SYMM_Float ( selfID, SIDE, UPLO, M, N, ALPHA, A, LDA, B, LDB, BETA, &
         C, LDC ) bind(C,name='Epetra_BLAS_SYMM_Float')
     import :: FT_Epetra_BLAS_ID_t ,c_char ,c_int ,c_float
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     character(kind=c_char)      ,intent(in)   ,value              :: SIDE
     character(kind=c_char)      ,intent(in)   ,value              :: UPLO
@@ -1166,7 +1166,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_BLAS_SYMM_Double ( selfID, SIDE, UPLO, M, N, ALPHA, A, LDA, B, LDB, &
         BETA, C, LDC ) bind(C,name='Epetra_BLAS_SYMM_Double')
     import :: FT_Epetra_BLAS_ID_t ,c_char ,c_int ,c_double
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     character(kind=c_char)      ,intent(in)   ,value              :: SIDE
     character(kind=c_char)      ,intent(in)   ,value              :: UPLO
@@ -1191,7 +1191,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_BLAS_TRMM_Float ( selfID, SIDE, UPLO, TRANSA, DIAG, M, N, ALPHA, A, LDA, &
         B, LDB ) bind(C,name='Epetra_BLAS_TRMM_Float')
     import :: FT_Epetra_BLAS_ID_t ,c_char ,c_int ,c_float
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     character(kind=c_char)      ,intent(in)   ,value              :: SIDE
     character(kind=c_char)      ,intent(in)   ,value              :: UPLO
@@ -1215,7 +1215,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_BLAS_TRMM_Double ( selfID, SIDE, UPLO, TRANSA, DIAG, M, N, ALPHA, A, &
         LDA, B, LDB ) bind(C,name='Epetra_BLAS_TRMM_Double')
     import :: FT_Epetra_BLAS_ID_t ,c_char ,c_int ,c_double
-    implicit none
+    
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     character(kind=c_char)      ,intent(in)   ,value              :: SIDE
     character(kind=c_char)      ,intent(in)   ,value              :: UPLO
@@ -1240,7 +1240,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Comm_ID_t) function Epetra_Comm_Cast ( id ) &
         bind(C,name='Epetra_Comm_Cast')
     import :: FT_Epetra_Comm_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -1251,7 +1251,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_Comm_Abstract ( id ) &
         bind(C,name='Epetra_Comm_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_Comm_ID_t
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: id
   end function
 
@@ -1264,7 +1264,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Comm_ID_t) function Epetra_Comm_Clone ( selfID ) &
         bind(C,name='Epetra_Comm_Clone')
     import :: FT_Epetra_Comm_ID_t
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
   end function
 
@@ -1276,7 +1276,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_Comm_Destroy ( selfID ) bind(C,name='Epetra_Comm_Destroy')
     import :: FT_Epetra_Comm_ID_t
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)                                     :: selfID
   end subroutine
 
@@ -1288,7 +1288,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_Comm_Barrier ( selfID ) bind(C,name='Epetra_Comm_Barrier')
     import :: FT_Epetra_Comm_ID_t
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
   end subroutine
 
@@ -1301,7 +1301,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_Broadcast_Double ( selfID, MyVals, Count, Root ) &
         bind(C,name='Epetra_Comm_Broadcast_Double')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: MyVals
     integer(c_int)              ,intent(in)   ,value              :: Count
@@ -1317,7 +1317,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_Broadcast_Int ( selfID, MyVals, Count, Root ) &
         bind(C,name='Epetra_Comm_Broadcast_Int')
     import :: c_int ,FT_Epetra_Comm_ID_t
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: MyVals
     integer(c_int)              ,intent(in)   ,value              :: Count
@@ -1333,7 +1333,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_Broadcast_Long ( selfID, MyVals, Count, Root ) &
         bind(C,name='Epetra_Comm_Broadcast_Long')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_long
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: MyVals
     integer(c_int)              ,intent(in)   ,value              :: Count
@@ -1349,7 +1349,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_Broadcast_Char ( selfID, MyVals, Count, Root ) &
         bind(C,name='Epetra_Comm_Broadcast_Char')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_char
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     character(kind=c_char)                          ,dimension(*) :: MyVals
     integer(c_int)              ,intent(in)   ,value              :: Count
@@ -1365,7 +1365,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_GatherAll_Double ( selfID, MyVals, AllVals, Count ) &
         bind(C,name='Epetra_Comm_GatherAll_Double')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: MyVals
     real(c_double)                                  ,dimension(*) :: AllVals
@@ -1381,7 +1381,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_GatherAll_Int ( selfID, MyVals, AllVals, Count ) &
         bind(C,name='Epetra_Comm_GatherAll_Int')
     import :: c_int ,FT_Epetra_Comm_ID_t
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: MyVals
     integer(c_int)                                  ,dimension(*) :: AllVals
@@ -1397,7 +1397,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_GatherAll_Long ( selfID, MyVals, AllVals, Count ) &
         bind(C,name='Epetra_Comm_GatherAll_Long')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_long
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: MyVals
     integer(c_long)                                 ,dimension(*) :: AllVals
@@ -1413,7 +1413,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_SumAll_Double ( selfID, PartialSums, GlobalSums, &
         Count ) bind(C,name='Epetra_Comm_SumAll_Double')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: PartialSums
     real(c_double)                                  ,dimension(*) :: GlobalSums
@@ -1429,7 +1429,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_SumAll_Int ( selfID, PartialSums, GlobalSums, Count ) &
         bind(C,name='Epetra_Comm_SumAll_Int')
     import :: c_int ,FT_Epetra_Comm_ID_t
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: PartialSums
     integer(c_int)                                  ,dimension(*) :: GlobalSums
@@ -1445,7 +1445,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_SumAll_Long ( selfID, PartialSums, GlobalSums, Count ) &
         bind(C,name='Epetra_Comm_SumAll_Long')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_long
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: PartialSums
     integer(c_long)                                 ,dimension(*) :: GlobalSums
@@ -1461,7 +1461,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_MaxAll_Double ( selfID, PartialMaxs, GlobalMaxs, &
         Count ) bind(C,name='Epetra_Comm_MaxAll_Double')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: PartialMaxs
     real(c_double)                                  ,dimension(*) :: GlobalMaxs
@@ -1477,7 +1477,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_MaxAll_Int ( selfID, PartialMaxs, GlobalMaxs, Count ) &
         bind(C,name='Epetra_Comm_MaxAll_Int')
     import :: c_int ,FT_Epetra_Comm_ID_t
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: PartialMaxs
     integer(c_int)                                  ,dimension(*) :: GlobalMaxs
@@ -1493,7 +1493,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_MaxAll_Long ( selfID, PartialMaxs, GlobalMaxs, Count ) &
         bind(C,name='Epetra_Comm_MaxAll_Long')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_long
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: PartialMaxs
     integer(c_long)                                 ,dimension(*) :: GlobalMaxs
@@ -1509,7 +1509,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_MinAll_Double ( selfID, PartialMins, GlobalMins, &
         Count ) bind(C,name='Epetra_Comm_MinAll_Double')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: PartialMins
     real(c_double)                                  ,dimension(*) :: GlobalMins
@@ -1525,7 +1525,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_MinAll_Int ( selfID, PartialMins, GlobalMins, Count ) &
         bind(C,name='Epetra_Comm_MinAll_Int')
     import :: c_int ,FT_Epetra_Comm_ID_t
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: PartialMins
     integer(c_int)                                  ,dimension(*) :: GlobalMins
@@ -1541,7 +1541,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_MinAll_Long ( selfID, PartialMins, GlobalMins, Count ) &
         bind(C,name='Epetra_Comm_MinAll_Long')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_long
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: PartialMins
     integer(c_long)                                 ,dimension(*) :: GlobalMins
@@ -1557,7 +1557,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_ScanSum_Double ( selfID, MyVals, ScanSums, Count ) &
         bind(C,name='Epetra_Comm_ScanSum_Double')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: MyVals
     real(c_double)                                  ,dimension(*) :: ScanSums
@@ -1573,7 +1573,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_ScanSum_Int ( selfID, MyVals, ScanSums, Count ) &
         bind(C,name='Epetra_Comm_ScanSum_Int')
     import :: c_int ,FT_Epetra_Comm_ID_t
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: MyVals
     integer(c_int)                                  ,dimension(*) :: ScanSums
@@ -1589,7 +1589,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Comm_ScanSum_Long ( selfID, MyVals, ScanSums, Count ) &
         bind(C,name='Epetra_Comm_ScanSum_Long')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_long
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: MyVals
     integer(c_long)                                 ,dimension(*) :: ScanSums
@@ -1604,7 +1604,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   integer(c_int) function Epetra_Comm_MyPID ( selfID ) bind(C,name='Epetra_Comm_MyPID')
     import :: c_int ,FT_Epetra_Comm_ID_t
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
   end function
 
@@ -1616,7 +1616,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   integer(c_int) function Epetra_Comm_NumProc ( selfID ) bind(C,name='Epetra_Comm_NumProc')
     import :: c_int ,FT_Epetra_Comm_ID_t
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
   end function
 
@@ -1629,7 +1629,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Distributor_ID_t) function Epetra_Comm_CreateDistributor ( selfID ) &
         bind(C,name='Epetra_Comm_CreateDistributor')
     import :: FT_Epetra_Distributor_ID_t ,FT_Epetra_Comm_ID_t
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
   end function
 
@@ -1642,7 +1642,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Directory_ID_t) function Epetra_Comm_CreateDirectory ( selfID, MapID ) &
         bind(C,name='Epetra_Comm_CreateDirectory')
     import :: FT_Epetra_Directory_ID_t ,FT_Epetra_Comm_ID_t ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: MapID
   end function
@@ -1657,7 +1657,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Operator_ID_t) function Epetra_Operator_Cast ( id ) &
         bind(C,name='Epetra_Operator_Cast')
     import :: FT_Epetra_Operator_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -1668,7 +1668,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_Operator_Abstract ( id ) &
         bind(C,name='Epetra_Operator_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_Operator_ID_t
-    implicit none
+    
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -1680,7 +1680,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_Operator_Destroy ( selfID ) bind(C,name='Epetra_Operator_Destroy')
     import :: FT_Epetra_Operator_ID_t
-    implicit none
+    
     type(FT_Epetra_Operator_ID_t)                                  :: selfID
   end subroutine
 
@@ -1693,7 +1693,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Operator_SetUseTranspose ( selfID, UseTranspose ) &
         bind(C,name='Epetra_Operator_SetUseTranspose')
     import :: c_int ,FT_Epetra_Operator_ID_t ,c_bool
-    implicit none
+    
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
     logical(c_bool)              ,intent(in)   ,value              :: UseTranspose
   end function
@@ -1707,7 +1707,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Operator_Apply ( selfID, XID, YID ) &
         bind(C,name='Epetra_Operator_Apply')
     import :: c_int ,FT_Epetra_Operator_ID_t ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: YID
@@ -1722,7 +1722,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Operator_ApplyInverse ( selfID, XID, YID ) &
         bind(C,name='Epetra_Operator_ApplyInverse')
     import :: c_int ,FT_Epetra_Operator_ID_t ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: YID
@@ -1737,7 +1737,7 @@ module forepetra  ! Companion to CEpetra_*.h
   real(c_double) function Epetra_Operator_NormInf ( selfID ) &
         bind(C,name='Epetra_Operator_NormInf')
     import :: c_double ,FT_Epetra_Operator_ID_t
-    implicit none
+    
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1750,7 +1750,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_Operator_Label ( selfID ) &
         bind(C,name='Epetra_Operator_Label')
     import :: c_ptr ,FT_Epetra_Operator_ID_t
-    implicit none
+    
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1763,7 +1763,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_Operator_UseTranspose ( selfID ) &
         bind(C,name='Epetra_Operator_UseTranspose')
     import :: c_bool ,FT_Epetra_Operator_ID_t
-    implicit none
+    
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1776,7 +1776,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_Operator_HasNormInf ( selfID ) &
         bind(C,name='Epetra_Operator_HasNormInf')
     import :: c_bool ,FT_Epetra_Operator_ID_t
-    implicit none
+    
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1789,7 +1789,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Comm_ID_t) function Epetra_Operator_Comm ( selfID ) &
         bind(C,name='Epetra_Operator_Comm')
     import :: FT_Epetra_Comm_ID_t ,FT_Epetra_Operator_ID_t
-    implicit none
+    
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1802,7 +1802,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Map_ID_t) function Epetra_Operator_OperatorDomainMap ( selfID ) &
         bind(C,name='Epetra_Operator_OperatorDomainMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_Operator_ID_t
-    implicit none
+    
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1815,7 +1815,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Map_ID_t) function Epetra_Operator_OperatorRangeMap ( selfID ) &
         bind(C,name='Epetra_Operator_OperatorRangeMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_Operator_ID_t
-    implicit none
+    
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1829,7 +1829,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_MultiVector_ID_t) function Epetra_MultiVector_Cast ( id ) &
         bind(C,name='Epetra_MultiVector_Cast')
     import :: FT_Epetra_MultiVector_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t)   ,intent(in)   ,value              :: id
   end function
 
@@ -1840,7 +1840,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_MultiVector_Abstract ( id ) &
         bind(C,name='Epetra_MultiVector_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -1853,7 +1853,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_MultiVector_ID_t) function Epetra_MultiVector_Create ( MapID, NumVectors, &
         zeroOut ) bind(C,name='Epetra_MultiVector_Create')
     import :: FT_Epetra_MultiVector_ID_t ,FT_Epetra_BlockMap_ID_t ,c_int ,c_bool
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t)   ,intent(in)   ,value              :: MapID
     integer(c_int)                  ,intent(in)   ,value              :: NumVectors
     logical(c_bool)                 ,intent(in)   ,value              :: zeroOut
@@ -1868,7 +1868,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_MultiVector_ID_t) function Epetra_MultiVector_Duplicate ( SourceID ) &
         bind(C,name='Epetra_MultiVector_Duplicate')
     import :: FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: SourceID
   end function
 
@@ -1882,7 +1882,7 @@ module forepetra  ! Companion to CEpetra_*.h
         A, MyLDA, NumVectors ) bind(C,name='Epetra_MultiVector_Create_From2DA')
     import :: FT_Epetra_MultiVector_ID_t ,FT_Epetra_DataAccess_E_t , &
           FT_Epetra_BlockMap_ID_t ,c_double ,c_int
-    implicit none
+    
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_BlockMap_ID_t)   ,intent(in)   ,value              :: MapID
     real(c_double)                                      ,dimension(*) :: A
@@ -1900,7 +1900,7 @@ module forepetra  ! Companion to CEpetra_*.h
         ArrayOfPointers, NumVectors ) bind(C,name='Epetra_MultiVector_Create_FromAOP')
     import :: FT_Epetra_MultiVector_ID_t ,FT_Epetra_DataAccess_E_t , &
           FT_Epetra_BlockMap_ID_t ,c_double ,c_int
-    implicit none
+    
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_BlockMap_ID_t)   ,intent(in)   ,value              :: MapID
     real(c_double)                                      ,dimension(*) :: ArrayOfPointers
@@ -1916,7 +1916,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_MultiVector_ID_t) function Epetra_MultiVector_Create_FromList ( CV, &
         SourceID, Indices, NumVectors ) bind(C,name='Epetra_MultiVector_Create_FromList')
     import :: FT_Epetra_MultiVector_ID_t ,FT_Epetra_DataAccess_E_t ,c_int
-    implicit none
+    
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: SourceID
     integer(c_int)                                      ,dimension(*) :: Indices
@@ -1933,7 +1933,7 @@ module forepetra  ! Companion to CEpetra_*.h
         SourceID, StartIndex, NumVectors ) &
         bind(C,name='Epetra_MultiVector_Create_FromRange')
     import :: FT_Epetra_MultiVector_ID_t ,FT_Epetra_DataAccess_E_t ,c_int
-    implicit none
+    
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: SourceID
     integer(c_int)                  ,intent(in)   ,value              :: StartIndex
@@ -1949,7 +1949,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_MultiVector_Destroy ( selfID ) &
         bind(C,name='Epetra_MultiVector_Destroy')
     import :: FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t)                                  :: selfID
   end subroutine
 
@@ -1962,7 +1962,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_ReplaceGlobalValue ( selfID, GlobalRow, &
         VectorIndex, ScalarValue ) bind(C,name='Epetra_MultiVector_ReplaceGlobalValue')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                  ,intent(in)   ,value              :: VectorIndex
@@ -1979,7 +1979,7 @@ module forepetra  ! Companion to CEpetra_*.h
         GlobalBlockRow, BlockRowOffset, VectorIndex, ScalarValue ) &
         bind(C,name='Epetra_MultiVector_ReplaceGlobalValue_BlockPos')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: GlobalBlockRow
     integer(c_int)                  ,intent(in)   ,value              :: BlockRowOffset
@@ -1996,7 +1996,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_SumIntoGlobalValue ( selfID, GlobalRow, &
         VectorIndex, ScalarValue ) bind(C,name='Epetra_MultiVector_SumIntoGlobalValue')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                  ,intent(in)   ,value              :: VectorIndex
@@ -2013,7 +2013,7 @@ module forepetra  ! Companion to CEpetra_*.h
         GlobalBlockRow, BlockRowOffset, VectorIndex, ScalarValue ) &
         bind(C,name='Epetra_MultiVector_SumIntoGlobalValue_BlockPos')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: GlobalBlockRow
     integer(c_int)                  ,intent(in)   ,value              :: BlockRowOffset
@@ -2030,7 +2030,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_ReplaceMyValue ( selfID, MyRow, VectorIndex, &
         ScalarValue ) bind(C,name='Epetra_MultiVector_ReplaceMyValue')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: MyRow
     integer(c_int)                  ,intent(in)   ,value              :: VectorIndex
@@ -2047,7 +2047,7 @@ module forepetra  ! Companion to CEpetra_*.h
         BlockRowOffset, VectorIndex, ScalarValue ) &
         bind(C,name='Epetra_MultiVector_ReplaceMyValue_BlockPos')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: MyBlockRow
     integer(c_int)                  ,intent(in)   ,value              :: BlockRowOffset
@@ -2064,7 +2064,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_SumIntoMyValue ( selfID, MyRow, VectorIndex, &
         ScalarValue ) bind(C,name='Epetra_MultiVector_SumIntoMyValue')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: MyRow
     integer(c_int)                  ,intent(in)   ,value              :: VectorIndex
@@ -2081,7 +2081,7 @@ module forepetra  ! Companion to CEpetra_*.h
         BlockRowOffset, VectorIndex, ScalarValue ) &
         bind(C,name='Epetra_MultiVector_SumIntoMyValue_BlockPos')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: MyBlockRow
     integer(c_int)                  ,intent(in)   ,value              :: BlockRowOffset
@@ -2098,7 +2098,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_PutScalar ( selfID, ScalarConstant ) &
         bind(C,name='Epetra_MultiVector_PutScalar')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                  ,intent(in)   ,value              :: ScalarConstant
   end function
@@ -2112,7 +2112,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_Random ( selfID ) &
         bind(C,name='Epetra_MultiVector_Random')
     import :: c_int ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2125,7 +2125,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_ExtractCopy_Fill2DA ( selfID, A, MyLDA ) &
         bind(C,name='Epetra_MultiVector_ExtractCopy_Fill2DA')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: A
     integer(c_int)                  ,intent(in)   ,value              :: MyLDA
@@ -2140,7 +2140,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_ExtractCopy_FillAOP ( selfID, ArrayOfPointers ) &
         bind(C,name='Epetra_MultiVector_ExtractCopy_FillAOP')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: ArrayOfPointers
   end function
@@ -2154,7 +2154,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_ExtractView_Set2DA ( selfID, A, MyLDA ) &
         bind(C,name='Epetra_MultiVector_ExtractView_Set2DA')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: A
     integer(c_int)                                      ,dimension(*) :: MyLDA
@@ -2169,7 +2169,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_ExtractView_SetAOP ( selfID, ArrayOfPointers ) &
         bind(C,name='Epetra_MultiVector_ExtractView_SetAOP')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: ArrayOfPointers
   end function
@@ -2183,7 +2183,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_Dot ( selfID, AID, Result ) &
         bind(C,name='Epetra_MultiVector_Dot')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: AID
     real(c_double)                                      ,dimension(*) :: Result
@@ -2198,7 +2198,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_Abs ( selfID, AID ) &
         bind(C,name='Epetra_MultiVector_Abs')
     import :: c_int ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: AID
   end function
@@ -2212,7 +2212,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_Reciprocal ( selfID, AID ) &
         bind(C,name='Epetra_MultiVector_Reciprocal')
     import :: c_int ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: AID
   end function
@@ -2226,7 +2226,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_Scale_Self ( selfID, ScalarValue ) &
         bind(C,name='Epetra_MultiVector_Scale_Self')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                  ,intent(in)   ,value              :: ScalarValue
   end function
@@ -2240,7 +2240,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_Scale ( selfID, ScalarA, AID ) &
         bind(C,name='Epetra_MultiVector_Scale')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                  ,intent(in)   ,value              :: ScalarA
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: AID
@@ -2255,7 +2255,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_Update_WithA ( selfID, ScalarA, AID, &
         ScalarThis ) bind(C,name='Epetra_MultiVector_Update_WithA')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                  ,intent(in)   ,value              :: ScalarA
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: AID
@@ -2271,7 +2271,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_Update_WithAB ( selfID, ScalarA, AID, ScalarB, &
         BID, ScalarThis ) bind(C,name='Epetra_MultiVector_Update_WithAB')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                  ,intent(in)   ,value              :: ScalarA
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: AID
@@ -2289,7 +2289,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_Norm1 ( selfID, Result ) &
         bind(C,name='Epetra_MultiVector_Norm1')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: Result
   end function
@@ -2303,7 +2303,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_Norm2 ( selfID, Result ) &
         bind(C,name='Epetra_MultiVector_Norm2')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: Result
   end function
@@ -2317,7 +2317,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_NormInf ( selfID, Result ) &
         bind(C,name='Epetra_MultiVector_NormInf')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: Result
   end function
@@ -2331,7 +2331,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_NormWeighted ( selfID, WeightsID, Result ) &
         bind(C,name='Epetra_MultiVector_NormWeighted')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: WeightsID
     real(c_double)                                      ,dimension(*) :: Result
@@ -2346,7 +2346,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_MinValue ( selfID, Result ) &
         bind(C,name='Epetra_MultiVector_MinValue')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: Result
   end function
@@ -2360,7 +2360,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_MaxValue ( selfID, Result ) &
         bind(C,name='Epetra_MultiVector_MaxValue')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: Result
   end function
@@ -2374,7 +2374,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_MeanValue ( selfID, Result ) &
         bind(C,name='Epetra_MultiVector_MeanValue')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: Result
   end function
@@ -2388,7 +2388,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_Multiply_Matrix ( selfID, TransA, TransB, &
         ScalarAB, AID, BID, ScalarThis ) bind(C,name='Epetra_MultiVector_Multiply_Matrix')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_char ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)          ,intent(in)   ,value              :: TransA
     character(kind=c_char)          ,intent(in)   ,value              :: TransB
@@ -2407,7 +2407,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_Multiply_ByEl ( selfID, ScalarAB, AID, BID, &
         ScalarThis ) bind(C,name='Epetra_MultiVector_Multiply_ByEl')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                  ,intent(in)   ,value              :: ScalarAB
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: AID
@@ -2424,7 +2424,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_ReciprocalMultiply ( selfID, ScalarAB, AID, &
         BID, ScalarThis ) bind(C,name='Epetra_MultiVector_ReciprocalMultiply')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                  ,intent(in)   ,value              :: ScalarAB
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: AID
@@ -2441,7 +2441,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_SetSeed ( selfID, Seed_in ) &
         bind(C,name='Epetra_MultiVector_SetSeed')
     import :: c_int ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: Seed_in
   end function
@@ -2455,7 +2455,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_Seed ( selfID ) &
         bind(C,name='Epetra_MultiVector_Seed')
     import :: c_int ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2468,7 +2468,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_MultiVector_Assign ( selfID, SourceID ) &
         bind(C,name='Epetra_MultiVector_Assign')
     import :: FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: SourceID
   end subroutine
@@ -2482,7 +2482,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_MultiVector_getArray ( selfID, i ) &
         bind(C,name='Epetra_MultiVector_getArray')
     import :: c_ptr ,FT_Epetra_MultiVector_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: i
   end function
@@ -2496,7 +2496,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Vector_ID_t) function Epetra_MultiVector_getVector ( selfID, i ) &
         bind(C,name='Epetra_MultiVector_getVector')
     import :: FT_Epetra_Vector_ID_t ,FT_Epetra_MultiVector_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: i
   end function
@@ -2510,7 +2510,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_NumVectors ( selfID ) &
         bind(C,name='Epetra_MultiVector_NumVectors')
     import :: c_int ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2523,7 +2523,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_MyLength ( selfID ) &
         bind(C,name='Epetra_MultiVector_MyLength')
     import :: c_int ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2536,7 +2536,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_GlobalLength ( selfID ) &
         bind(C,name='Epetra_MultiVector_GlobalLength')
     import :: c_int ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2549,7 +2549,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_Stride ( selfID ) &
         bind(C,name='Epetra_MultiVector_Stride')
     import :: c_int ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2562,7 +2562,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_MultiVector_ConstantStride ( selfID ) &
         bind(C,name='Epetra_MultiVector_ConstantStride')
     import :: c_bool ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2575,7 +2575,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MultiVector_ReplaceMap ( selfID, mapID ) &
         bind(C,name='Epetra_MultiVector_ReplaceMap')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t)   ,intent(in)   ,value              :: mapID
   end function
@@ -2590,7 +2590,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_OffsetIndex_ID_t) function Epetra_OffsetIndex_Cast ( id ) &
         bind(C,name='Epetra_OffsetIndex_Cast')
     import :: FT_Epetra_OffsetIndex_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t)   ,intent(in)   ,value              :: id
   end function
 
@@ -2601,7 +2601,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_OffsetIndex_Abstract ( id ) &
         bind(C,name='Epetra_OffsetIndex_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_OffsetIndex_ID_t
-    implicit none
+    
     type(FT_Epetra_OffsetIndex_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -2615,7 +2615,7 @@ module forepetra  ! Companion to CEpetra_*.h
         SourceGraphID, TargetGraphID, ImporterID ) &
         bind(C,name='Epetra_OffsetIndex_Create_FromImporter')
     import :: FT_Epetra_OffsetIndex_ID_t ,FT_Epetra_CrsGraph_ID_t ,FT_Epetra_Import_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t)   ,intent(in)   ,value              :: SourceGraphID
     type(FT_Epetra_CrsGraph_ID_t)   ,intent(in)   ,value              :: TargetGraphID
     type(FT_Epetra_Import_ID_t)     ,intent(in)   ,value              :: ImporterID
@@ -2631,7 +2631,7 @@ module forepetra  ! Companion to CEpetra_*.h
         SourceGraphID, TargetGraphID, ExporterID ) &
         bind(C,name='Epetra_OffsetIndex_Create_FromExporter')
     import :: FT_Epetra_OffsetIndex_ID_t ,FT_Epetra_CrsGraph_ID_t ,FT_Epetra_Export_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t)   ,intent(in)   ,value              :: SourceGraphID
     type(FT_Epetra_CrsGraph_ID_t)   ,intent(in)   ,value              :: TargetGraphID
     type(FT_Epetra_Export_ID_t)     ,intent(in)   ,value              :: ExporterID
@@ -2646,7 +2646,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_OffsetIndex_ID_t) function Epetra_OffsetIndex_Duplicate ( IndexorID ) &
         bind(C,name='Epetra_OffsetIndex_Duplicate')
     import :: FT_Epetra_OffsetIndex_ID_t
-    implicit none
+    
     type(FT_Epetra_OffsetIndex_ID_t),intent(in)   ,value              :: IndexorID
   end function
 
@@ -2659,7 +2659,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_OffsetIndex_Destroy ( selfID ) &
         bind(C,name='Epetra_OffsetIndex_Destroy')
     import :: FT_Epetra_OffsetIndex_ID_t
-    implicit none
+    
     type(FT_Epetra_OffsetIndex_ID_t)                                  :: selfID
   end subroutine
 
@@ -2672,7 +2672,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_OffsetIndex_SameOffsets ( selfID ) &
         bind(C,name='Epetra_OffsetIndex_SameOffsets')
     import :: c_ptr ,FT_Epetra_OffsetIndex_ID_t
-    implicit none
+    
     type(FT_Epetra_OffsetIndex_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2685,7 +2685,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_OffsetIndex_PermuteOffsets ( selfID ) &
         bind(C,name='Epetra_OffsetIndex_PermuteOffsets')
     import :: c_ptr ,FT_Epetra_OffsetIndex_ID_t
-    implicit none
+    
     type(FT_Epetra_OffsetIndex_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2698,7 +2698,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_OffsetIndex_RemoteOffsets ( selfID ) &
         bind(C,name='Epetra_OffsetIndex_RemoteOffsets')
     import :: c_ptr ,FT_Epetra_OffsetIndex_ID_t
-    implicit none
+    
     type(FT_Epetra_OffsetIndex_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2712,7 +2712,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Object_ID_t) function Epetra_Object_Cast ( id ) &
         bind(C,name='Epetra_Object_Cast')
     import :: FT_Epetra_Object_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -2723,7 +2723,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_Object_Abstract ( id ) &
         bind(C,name='Epetra_Object_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_Object_ID_t
-    implicit none
+    
     type(FT_Epetra_Object_ID_t) ,intent(in)   ,value              :: id
   end function
 
@@ -2736,7 +2736,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Object_ID_t) function Epetra_Object_Create ( TracebackModeIn, set_label ) &
         bind(C,name='Epetra_Object_Create')
     import :: FT_Epetra_Object_ID_t ,c_int ,c_bool
-    implicit none
+    
     integer(c_int)              ,intent(in)   ,value              :: TracebackModeIn
     logical(c_bool)             ,intent(in)   ,value              :: set_label
   end function
@@ -2750,7 +2750,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Object_ID_t) function Epetra_Object_Create_WithLabel ( Label, &
         TracebackModeIn ) bind(C,name='Epetra_Object_Create_WithLabel')
     import :: FT_Epetra_Object_ID_t ,c_char ,c_int
-    implicit none
+    
     character(kind=c_char)      ,intent(in)         ,dimension(*) :: Label
     integer(c_int)              ,intent(in)   ,value              :: TracebackModeIn
   end function
@@ -2764,7 +2764,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Object_ID_t) function Epetra_Object_Duplicate ( ObjectID ) &
         bind(C,name='Epetra_Object_Duplicate')
     import :: FT_Epetra_Object_ID_t
-    implicit none
+    
     type(FT_Epetra_Object_ID_t) ,intent(in)   ,value              :: ObjectID
   end function
 
@@ -2776,7 +2776,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_Object_Destroy ( selfID ) bind(C,name='Epetra_Object_Destroy')
     import :: FT_Epetra_Object_ID_t
-    implicit none
+    
     type(FT_Epetra_Object_ID_t)                                   :: selfID
   end subroutine
 
@@ -2788,7 +2788,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_Object_SetLabel ( selfID, Label ) bind(C,name='Epetra_Object_SetLabel')
     import :: FT_Epetra_Object_ID_t ,c_char
-    implicit none
+    
     type(FT_Epetra_Object_ID_t) ,intent(in)   ,value              :: selfID
     character(kind=c_char)      ,intent(in)         ,dimension(*) :: Label
   end subroutine
@@ -2801,7 +2801,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   type(c_ptr) function Epetra_Object_Label ( selfID ) bind(C,name='Epetra_Object_Label')
     import :: c_ptr ,FT_Epetra_Object_ID_t
-    implicit none
+    
     type(FT_Epetra_Object_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -2814,7 +2814,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Object_ReportError ( selfID, Message, ErrorCode ) &
         bind(C,name='Epetra_Object_ReportError')
     import :: c_int ,FT_Epetra_Object_ID_t ,c_char
-    implicit none
+    
     type(FT_Epetra_Object_ID_t) ,intent(in)   ,value              :: selfID
     character(kind=c_char)      ,intent(in)         ,dimension(*) :: Message
     integer(c_int)              ,intent(in)   ,value              :: ErrorCode
@@ -2830,7 +2830,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_RowMatrix_ID_t) function Epetra_RowMatrix_Cast ( id ) &
         bind(C,name='Epetra_RowMatrix_Cast')
     import :: FT_Epetra_RowMatrix_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t) ,intent(in)   ,value              :: id
   end function
 
@@ -2841,7 +2841,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_RowMatrix_Abstract ( id ) &
         bind(C,name='Epetra_RowMatrix_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -2853,7 +2853,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_RowMatrix_Destroy ( selfID ) bind(C,name='Epetra_RowMatrix_Destroy')
     import :: FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t)                                  :: selfID
   end subroutine
 
@@ -2866,7 +2866,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_RowMatrix_NumMyRowEntries ( selfID, MyRow, NumEntries ) &
         bind(C,name='Epetra_RowMatrix_NumMyRowEntries')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(inout)                    :: NumEntries
@@ -2881,7 +2881,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_RowMatrix_MaxNumEntries ( selfID ) &
         bind(C,name='Epetra_RowMatrix_MaxNumEntries')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2894,7 +2894,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_RowMatrix_ExtractMyRowCopy ( selfID, MyRow, Length, &
         NumEntries, Values, Indices ) bind(C,name='Epetra_RowMatrix_ExtractMyRowCopy')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(in)   ,value              :: Length
@@ -2912,7 +2912,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_RowMatrix_ExtractDiagonalCopy ( selfID, DiagonalID ) &
         bind(C,name='Epetra_RowMatrix_ExtractDiagonalCopy')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t ,FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: DiagonalID
   end function
@@ -2926,7 +2926,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_RowMatrix_Multiply ( selfID, TransA, XID, YID ) &
         bind(C,name='Epetra_RowMatrix_Multiply')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t ,c_bool ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
     logical(c_bool)               ,intent(in)   ,value              :: TransA
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
@@ -2942,7 +2942,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_RowMatrix_Solve ( selfID, Upper, Trans, UnitDiagonal, XID, &
         YID ) bind(C,name='Epetra_RowMatrix_Solve')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t ,c_bool ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
     logical(c_bool)               ,intent(in)   ,value              :: Upper
     logical(c_bool)               ,intent(in)   ,value              :: Trans
@@ -2960,7 +2960,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_RowMatrix_InvRowSums ( selfID, xID ) &
         bind(C,name='Epetra_RowMatrix_InvRowSums')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t ,FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -2974,7 +2974,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_RowMatrix_LeftScale ( selfID, xID ) &
         bind(C,name='Epetra_RowMatrix_LeftScale')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t ,FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -2988,7 +2988,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_RowMatrix_InvColSums ( selfID, xID ) &
         bind(C,name='Epetra_RowMatrix_InvColSums')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t ,FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -3002,7 +3002,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_RowMatrix_RightScale ( selfID, xID ) &
         bind(C,name='Epetra_RowMatrix_RightScale')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t ,FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -3016,7 +3016,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_RowMatrix_Filled ( selfID ) &
         bind(C,name='Epetra_RowMatrix_Filled')
     import :: c_bool ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3029,7 +3029,7 @@ module forepetra  ! Companion to CEpetra_*.h
   real(c_double) function Epetra_RowMatrix_NormInf ( selfID ) &
         bind(C,name='Epetra_RowMatrix_NormInf')
     import :: c_double ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3042,7 +3042,7 @@ module forepetra  ! Companion to CEpetra_*.h
   real(c_double) function Epetra_RowMatrix_NormOne ( selfID ) &
         bind(C,name='Epetra_RowMatrix_NormOne')
     import :: c_double ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3055,7 +3055,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_RowMatrix_NumGlobalNonzeros ( selfID ) &
         bind(C,name='Epetra_RowMatrix_NumGlobalNonzeros')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3068,7 +3068,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_RowMatrix_NumGlobalRows ( selfID ) &
         bind(C,name='Epetra_RowMatrix_NumGlobalRows')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3081,7 +3081,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_RowMatrix_NumGlobalCols ( selfID ) &
         bind(C,name='Epetra_RowMatrix_NumGlobalCols')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3094,7 +3094,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_RowMatrix_NumGlobalDiagonals ( selfID ) &
         bind(C,name='Epetra_RowMatrix_NumGlobalDiagonals')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3107,7 +3107,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_RowMatrix_NumMyNonzeros ( selfID ) &
         bind(C,name='Epetra_RowMatrix_NumMyNonzeros')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3120,7 +3120,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_RowMatrix_NumMyRows ( selfID ) &
         bind(C,name='Epetra_RowMatrix_NumMyRows')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3133,7 +3133,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_RowMatrix_NumMyCols ( selfID ) &
         bind(C,name='Epetra_RowMatrix_NumMyCols')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3146,7 +3146,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_RowMatrix_NumMyDiagonals ( selfID ) &
         bind(C,name='Epetra_RowMatrix_NumMyDiagonals')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3159,7 +3159,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_RowMatrix_LowerTriangular ( selfID ) &
         bind(C,name='Epetra_RowMatrix_LowerTriangular')
     import :: c_bool ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3172,7 +3172,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_RowMatrix_UpperTriangular ( selfID ) &
         bind(C,name='Epetra_RowMatrix_UpperTriangular')
     import :: c_bool ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3185,7 +3185,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Map_ID_t) function Epetra_RowMatrix_RowMatrixRowMap ( selfID ) &
         bind(C,name='Epetra_RowMatrix_RowMatrixRowMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3198,7 +3198,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Map_ID_t) function Epetra_RowMatrix_RowMatrixColMap ( selfID ) &
         bind(C,name='Epetra_RowMatrix_RowMatrixColMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3211,7 +3211,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Import_ID_t) function Epetra_RowMatrix_RowMatrixImporter ( selfID ) &
         bind(C,name='Epetra_RowMatrix_RowMatrixImporter')
     import :: FT_Epetra_Import_ID_t ,FT_Epetra_RowMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3225,7 +3225,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_CompObject_ID_t) function Epetra_CompObject_Cast ( id ) &
         bind(C,name='Epetra_CompObject_Cast')
     import :: FT_Epetra_CompObject_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t)  ,intent(in)   ,value              :: id
   end function
 
@@ -3236,7 +3236,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_CompObject_Abstract ( id ) &
         bind(C,name='Epetra_CompObject_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_CompObject_ID_t
-    implicit none
+    
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -3249,7 +3249,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_CompObject_ID_t) function Epetra_CompObject_Create (  ) &
         bind(C,name='Epetra_CompObject_Create')
     import :: FT_Epetra_CompObject_ID_t
-    implicit none
+    
   end function
 
 
@@ -3261,7 +3261,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_CompObject_ID_t) function Epetra_CompObject_Duplicate ( SourceID ) &
         bind(C,name='Epetra_CompObject_Duplicate')
     import :: FT_Epetra_CompObject_ID_t
-    implicit none
+    
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: SourceID
   end function
 
@@ -3273,7 +3273,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_CompObject_Destroy ( selfID ) bind(C,name='Epetra_CompObject_Destroy')
     import :: FT_Epetra_CompObject_ID_t
-    implicit none
+    
     type(FT_Epetra_CompObject_ID_t)                                  :: selfID
   end subroutine
 
@@ -3286,7 +3286,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_CompObject_SetFlopCounter ( selfID, FlopCounter_inID ) &
         bind(C,name='Epetra_CompObject_SetFlopCounter')
     import :: FT_Epetra_CompObject_ID_t ,FT_Epetra_Flops_ID_t
-    implicit none
+    
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Flops_ID_t)     ,intent(in)   ,value              :: FlopCounter_inID
   end subroutine
@@ -3300,7 +3300,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_CompObject_SetFlopCounter_Matching ( selfID, CompObjectID ) &
         bind(C,name='Epetra_CompObject_SetFlopCounter_Matching')
     import :: FT_Epetra_CompObject_ID_t
-    implicit none
+    
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: CompObjectID
   end subroutine
@@ -3314,7 +3314,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_CompObject_UnsetFlopCounter ( selfID ) &
         bind(C,name='Epetra_CompObject_UnsetFlopCounter')
     import :: FT_Epetra_CompObject_ID_t
-    implicit none
+    
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: selfID
   end subroutine
 
@@ -3327,7 +3327,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Flops_ID_t) function Epetra_CompObject_GetFlopCounter ( selfID ) &
         bind(C,name='Epetra_CompObject_GetFlopCounter')
     import :: FT_Epetra_Flops_ID_t ,FT_Epetra_CompObject_ID_t
-    implicit none
+    
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3340,7 +3340,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_CompObject_ResetFlops ( selfID ) &
         bind(C,name='Epetra_CompObject_ResetFlops')
     import :: FT_Epetra_CompObject_ID_t
-    implicit none
+    
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: selfID
   end subroutine
 
@@ -3353,7 +3353,7 @@ module forepetra  ! Companion to CEpetra_*.h
   real(c_double) function Epetra_CompObject_Flops ( selfID ) &
         bind(C,name='Epetra_CompObject_Flops')
     import :: c_double ,FT_Epetra_CompObject_ID_t
-    implicit none
+    
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3366,7 +3366,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_CompObject_UpdateFlops_Int ( selfID, Flops_in ) &
         bind(C,name='Epetra_CompObject_UpdateFlops_Int')
     import :: FT_Epetra_CompObject_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                 ,intent(in)   ,value              :: Flops_in
   end subroutine
@@ -3380,7 +3380,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_CompObject_UpdateFlops_Long ( selfID, Flops_in ) &
         bind(C,name='Epetra_CompObject_UpdateFlops_Long')
     import :: FT_Epetra_CompObject_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                 ,intent(in)   ,value              :: Flops_in
   end subroutine
@@ -3394,7 +3394,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_CompObject_UpdateFlops_Double ( selfID, Flops_in ) &
         bind(C,name='Epetra_CompObject_UpdateFlops_Double')
     import :: FT_Epetra_CompObject_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                 ,intent(in)   ,value              :: Flops_in
   end subroutine
@@ -3408,7 +3408,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_CompObject_UpdateFlops_Float ( selfID, Flops_in ) &
         bind(C,name='Epetra_CompObject_UpdateFlops_Float')
     import :: FT_Epetra_CompObject_ID_t ,c_float
-    implicit none
+    
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: selfID
     real(c_float)                  ,intent(in)   ,value              :: Flops_in
   end subroutine
@@ -3422,7 +3422,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_CompObject_Assign ( selfID, srcID ) &
         bind(C,name='Epetra_CompObject_Assign')
     import :: FT_Epetra_CompObject_ID_t
-    implicit none
+    
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: srcID
   end subroutine
@@ -3437,7 +3437,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Directory_ID_t) function Epetra_Directory_Cast ( id ) &
         bind(C,name='Epetra_Directory_Cast')
     import :: FT_Epetra_Directory_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t) ,intent(in)   ,value              :: id
   end function
 
@@ -3448,7 +3448,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_Directory_Abstract ( id ) &
         bind(C,name='Epetra_Directory_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_Directory_ID_t
-    implicit none
+    
     type(FT_Epetra_Directory_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -3460,7 +3460,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_Directory_Destroy ( selfID ) bind(C,name='Epetra_Directory_Destroy')
     import :: FT_Epetra_Directory_ID_t
-    implicit none
+    
     type(FT_Epetra_Directory_ID_t)                                  :: selfID
   end subroutine
 
@@ -3474,7 +3474,7 @@ module forepetra  ! Companion to CEpetra_*.h
         GlobalEntries, Procs, LocalEntries, EntrySizes, high_rank_sharing_procs ) &
         bind(C,name='Epetra_Directory_GetDirectoryEntries')
     import :: c_int ,FT_Epetra_Directory_ID_t ,FT_Epetra_BlockMap_ID_t ,c_bool
-    implicit none
+    
     type(FT_Epetra_Directory_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t) ,intent(in)   ,value              :: MapID
     integer(c_int)                ,intent(in)   ,value              :: NumEntries
@@ -3494,7 +3494,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_Directory_GIDsAllUniquelyOwned ( selfID ) &
         bind(C,name='Epetra_Directory_GIDsAllUniquelyOwned')
     import :: c_bool ,FT_Epetra_Directory_ID_t
-    implicit none
+    
     type(FT_Epetra_Directory_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3508,7 +3508,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Flops_ID_t) function Epetra_Flops_Cast ( id ) &
         bind(C,name='Epetra_Flops_Cast')
     import :: FT_Epetra_Flops_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -3519,7 +3519,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_Flops_Abstract ( id ) &
         bind(C,name='Epetra_Flops_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_Flops_ID_t
-    implicit none
+    
     type(FT_Epetra_Flops_ID_t)  ,intent(in)   ,value              :: id
   end function
 
@@ -3532,7 +3532,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Flops_ID_t) function Epetra_Flops_Create (  ) &
         bind(C,name='Epetra_Flops_Create')
     import :: FT_Epetra_Flops_ID_t
-    implicit none
+    
   end function
 
 
@@ -3544,7 +3544,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Flops_ID_t) function Epetra_Flops_Duplicate ( Flops_inID ) &
         bind(C,name='Epetra_Flops_Duplicate')
     import :: FT_Epetra_Flops_ID_t
-    implicit none
+    
     type(FT_Epetra_Flops_ID_t)  ,intent(in)   ,value              :: Flops_inID
   end function
 
@@ -3556,7 +3556,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   real(c_double) function Epetra_Flops_Flops ( selfID ) bind(C,name='Epetra_Flops_Flops')
     import :: c_double ,FT_Epetra_Flops_ID_t
-    implicit none
+    
     type(FT_Epetra_Flops_ID_t)  ,intent(in)   ,value              :: selfID
   end function
 
@@ -3568,7 +3568,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_Flops_ResetFlops ( selfID ) bind(C,name='Epetra_Flops_ResetFlops')
     import :: FT_Epetra_Flops_ID_t
-    implicit none
+    
     type(FT_Epetra_Flops_ID_t)  ,intent(in)   ,value              :: selfID
   end subroutine
 
@@ -3580,7 +3580,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_Flops_Destroy ( selfID ) bind(C,name='Epetra_Flops_Destroy')
     import :: FT_Epetra_Flops_ID_t
-    implicit none
+    
     type(FT_Epetra_Flops_ID_t)                                    :: selfID
   end subroutine
 
@@ -3592,7 +3592,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_Flops_Assign ( selfID, srcID ) bind(C,name='Epetra_Flops_Assign')
     import :: FT_Epetra_Flops_ID_t
-    implicit none
+    
     type(FT_Epetra_Flops_ID_t)  ,intent(in)   ,value              :: selfID
     type(FT_Epetra_Flops_ID_t)  ,intent(in)   ,value              :: srcID
   end subroutine
@@ -3607,7 +3607,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_SrcDistObject_ID_t) function Epetra_SrcDistObject_Cast ( id ) &
         bind(C,name='Epetra_SrcDistObject_Cast')
     import :: FT_Epetra_SrcDistObject_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t)     ,intent(in)   ,value              :: id
   end function
 
@@ -3618,7 +3618,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_SrcDistObject_Abstract ( id ) &
         bind(C,name='Epetra_SrcDistObject_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_SrcDistObject_ID_t
-    implicit none
+    
     type(FT_Epetra_SrcDistObject_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -3631,7 +3631,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_SrcDistObject_Destroy ( selfID ) &
         bind(C,name='Epetra_SrcDistObject_Destroy')
     import :: FT_Epetra_SrcDistObject_ID_t
-    implicit none
+    
     type(FT_Epetra_SrcDistObject_ID_t)                                  :: selfID
   end subroutine
 
@@ -3644,7 +3644,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_BlockMap_ID_t) function Epetra_SrcDistObject_Map ( selfID ) &
         bind(C,name='Epetra_SrcDistObject_Map')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_SrcDistObject_ID_t
-    implicit none
+    
     type(FT_Epetra_SrcDistObject_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3664,7 +3664,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_MpiComm_ID_t) function Epetra_MpiComm_Cast ( id ) &
         bind(C,name='Epetra_MpiComm_Cast')
     import :: FT_Epetra_MpiComm_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -3675,7 +3675,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_MpiComm_Abstract ( id ) &
         bind(C,name='Epetra_MpiComm_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_MpiComm_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -3688,7 +3688,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_MpiComm_ID_t) function Epetra_MpiComm_Create ( comm ) &
         bind(C,name='Epetra_MpiComm_Create')
     import :: FT_Epetra_MpiComm_ID_t ,FT_MPI_Comm_E_t
-    implicit none
+    
     integer(FT_MPI_Comm_E_t)    ,intent(in)   ,value              :: comm
   end function
 
@@ -3701,7 +3701,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_MpiComm_ID_t) function Epetra_MpiComm_Duplicate ( CommID ) &
         bind(C,name='Epetra_MpiComm_Duplicate')
     import :: FT_Epetra_MpiComm_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: CommID
   end function
 
@@ -3714,7 +3714,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Comm_ID_t) function Epetra_MpiComm_Clone ( selfID ) &
         bind(C,name='Epetra_MpiComm_Clone')
     import :: FT_Epetra_Comm_ID_t ,FT_Epetra_MpiComm_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3726,7 +3726,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_MpiComm_Destroy ( selfID ) bind(C,name='Epetra_MpiComm_Destroy')
     import :: FT_Epetra_MpiComm_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t)                                  :: selfID
   end subroutine
 
@@ -3738,7 +3738,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_MpiComm_Barrier ( selfID ) bind(C,name='Epetra_MpiComm_Barrier')
     import :: FT_Epetra_MpiComm_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
   end subroutine
 
@@ -3751,7 +3751,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_Broadcast_Double ( selfID, MyVals, Count, Root ) &
         bind(C,name='Epetra_MpiComm_Broadcast_Double')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: MyVals
     integer(c_int)              ,intent(in)   ,value              :: Count
@@ -3767,7 +3767,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_Broadcast_Int ( selfID, MyVals, Count, Root ) &
         bind(C,name='Epetra_MpiComm_Broadcast_Int')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: MyVals
     integer(c_int)              ,intent(in)   ,value              :: Count
@@ -3783,7 +3783,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_Broadcast_Long ( selfID, MyVals, Count, Root ) &
         bind(C,name='Epetra_MpiComm_Broadcast_Long')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_long
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: MyVals
     integer(c_int)              ,intent(in)   ,value              :: Count
@@ -3799,7 +3799,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_Broadcast_Char ( selfID, MyVals, Count, Root ) &
         bind(C,name='Epetra_MpiComm_Broadcast_Char')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_char
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                          ,dimension(*) :: MyVals
     integer(c_int)              ,intent(in)   ,value              :: Count
@@ -3815,7 +3815,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_GatherAll_Double ( selfID, MyVals, AllVals, Count ) &
         bind(C,name='Epetra_MpiComm_GatherAll_Double')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: MyVals
     real(c_double)                                  ,dimension(*) :: AllVals
@@ -3831,7 +3831,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_GatherAll_Int ( selfID, MyVals, AllVals, Count ) &
         bind(C,name='Epetra_MpiComm_GatherAll_Int')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: MyVals
     integer(c_int)                                  ,dimension(*) :: AllVals
@@ -3847,7 +3847,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_GatherAll_Long ( selfID, MyVals, AllVals, Count ) &
         bind(C,name='Epetra_MpiComm_GatherAll_Long')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_long
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: MyVals
     integer(c_long)                                 ,dimension(*) :: AllVals
@@ -3863,7 +3863,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_SumAll_Double ( selfID, PartialSums, GlobalSums, &
         Count ) bind(C,name='Epetra_MpiComm_SumAll_Double')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: PartialSums
     real(c_double)                                  ,dimension(*) :: GlobalSums
@@ -3879,7 +3879,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_SumAll_Int ( selfID, PartialSums, GlobalSums, &
         Count ) bind(C,name='Epetra_MpiComm_SumAll_Int')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: PartialSums
     integer(c_int)                                  ,dimension(*) :: GlobalSums
@@ -3895,7 +3895,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_SumAll_Long ( selfID, PartialSums, GlobalSums, &
         Count ) bind(C,name='Epetra_MpiComm_SumAll_Long')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_long
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: PartialSums
     integer(c_long)                                 ,dimension(*) :: GlobalSums
@@ -3911,7 +3911,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_MaxAll_Double ( selfID, PartialMaxs, GlobalMaxs, &
         Count ) bind(C,name='Epetra_MpiComm_MaxAll_Double')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: PartialMaxs
     real(c_double)                                  ,dimension(*) :: GlobalMaxs
@@ -3927,7 +3927,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_MaxAll_Int ( selfID, PartialMaxs, GlobalMaxs, &
         Count ) bind(C,name='Epetra_MpiComm_MaxAll_Int')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: PartialMaxs
     integer(c_int)                                  ,dimension(*) :: GlobalMaxs
@@ -3943,7 +3943,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_MaxAll_Long ( selfID, PartialMaxs, GlobalMaxs, &
         Count ) bind(C,name='Epetra_MpiComm_MaxAll_Long')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_long
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: PartialMaxs
     integer(c_long)                                 ,dimension(*) :: GlobalMaxs
@@ -3959,7 +3959,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_MinAll_Double ( selfID, PartialMins, GlobalMins, &
         Count ) bind(C,name='Epetra_MpiComm_MinAll_Double')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: PartialMins
     real(c_double)                                  ,dimension(*) :: GlobalMins
@@ -3975,7 +3975,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_MinAll_Int ( selfID, PartialMins, GlobalMins, &
         Count ) bind(C,name='Epetra_MpiComm_MinAll_Int')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: PartialMins
     integer(c_int)                                  ,dimension(*) :: GlobalMins
@@ -3991,7 +3991,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_MinAll_Long ( selfID, PartialMins, GlobalMins, &
         Count ) bind(C,name='Epetra_MpiComm_MinAll_Long')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_long
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: PartialMins
     integer(c_long)                                 ,dimension(*) :: GlobalMins
@@ -4007,7 +4007,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_ScanSum_Double ( selfID, MyVals, ScanSums, Count ) &
         bind(C,name='Epetra_MpiComm_ScanSum_Double')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: MyVals
     real(c_double)                                  ,dimension(*) :: ScanSums
@@ -4023,7 +4023,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_ScanSum_Int ( selfID, MyVals, ScanSums, Count ) &
         bind(C,name='Epetra_MpiComm_ScanSum_Int')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: MyVals
     integer(c_int)                                  ,dimension(*) :: ScanSums
@@ -4039,7 +4039,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_ScanSum_Long ( selfID, MyVals, ScanSums, Count ) &
         bind(C,name='Epetra_MpiComm_ScanSum_Long')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_long
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: MyVals
     integer(c_long)                                 ,dimension(*) :: ScanSums
@@ -4055,7 +4055,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(FT_MPI_Comm_E_t) function Epetra_MpiComm_Comm ( selfID ) &
         bind(C,name='Epetra_MpiComm_Comm')
     import :: FT_MPI_Comm_E_t ,FT_Epetra_MpiComm_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4068,7 +4068,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_MyPID ( selfID ) &
         bind(C,name='Epetra_MpiComm_MyPID')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4081,7 +4081,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_NumProc ( selfID ) &
         bind(C,name='Epetra_MpiComm_NumProc')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4094,7 +4094,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Distributor_ID_t) function Epetra_MpiComm_CreateDistributor ( selfID ) &
         bind(C,name='Epetra_MpiComm_CreateDistributor')
     import :: FT_Epetra_Distributor_ID_t ,FT_Epetra_MpiComm_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4107,7 +4107,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Directory_ID_t) function Epetra_MpiComm_CreateDirectory ( selfID, MapID ) &
         bind(C,name='Epetra_MpiComm_CreateDirectory')
     import :: FT_Epetra_Directory_ID_t ,FT_Epetra_MpiComm_ID_t ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: MapID
   end function
@@ -4121,7 +4121,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_MpiComm_GetMpiTag ( selfID ) &
         bind(C,name='Epetra_MpiComm_GetMpiTag')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4134,7 +4134,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(FT_MPI_Comm_E_t) function Epetra_MpiComm_GetMpiComm ( selfID ) &
         bind(C,name='Epetra_MpiComm_GetMpiComm')
     import :: FT_MPI_Comm_E_t ,FT_Epetra_MpiComm_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4146,7 +4146,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_MpiComm_Assign ( selfID, CommID ) bind(C,name='Epetra_MpiComm_Assign')
     import :: FT_Epetra_MpiComm_ID_t
-    implicit none
+    
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: CommID
   end subroutine
@@ -4164,7 +4164,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Cast ( id ) &
         bind(C,name='Epetra_CrsMatrix_Cast')
     import :: FT_Epetra_CrsMatrix_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t) ,intent(in)   ,value              :: id
   end function
 
@@ -4175,7 +4175,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_CrsMatrix_Abstract ( id ) &
         bind(C,name='Epetra_CrsMatrix_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -4189,7 +4189,7 @@ module forepetra  ! Companion to CEpetra_*.h
         NumEntriesPerRow, StaticProfile ) bind(C,name='Epetra_CrsMatrix_Create_VarPerRow')
     import :: FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
           c_int ,c_bool
-    implicit none
+    
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: RowMapID
     integer(c_int)                ,intent(in)         ,dimension(*) :: NumEntriesPerRow
@@ -4206,7 +4206,7 @@ module forepetra  ! Companion to CEpetra_*.h
         NumEntriesPerRow, StaticProfile ) bind(C,name='Epetra_CrsMatrix_Create')
     import :: FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
           c_int ,c_bool
-    implicit none
+    
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: RowMapID
     integer(c_int)                ,intent(in)   ,value              :: NumEntriesPerRow
@@ -4224,7 +4224,7 @@ module forepetra  ! Companion to CEpetra_*.h
         bind(C,name='Epetra_CrsMatrix_Create_VarPerRow_WithColMap')
     import :: FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
           c_int ,c_bool
-    implicit none
+    
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: RowMapID
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: ColMapID
@@ -4243,7 +4243,7 @@ module forepetra  ! Companion to CEpetra_*.h
         bind(C,name='Epetra_CrsMatrix_Create_WithColMap')
     import :: FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
           c_int ,c_bool
-    implicit none
+    
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: RowMapID
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: ColMapID
@@ -4260,7 +4260,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Create_FromGraph ( CV, GraphID ) &
         bind(C,name='Epetra_CrsMatrix_Create_FromGraph')
     import :: FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_CrsGraph_ID_t) ,intent(in)   ,value              :: GraphID
   end function
@@ -4274,7 +4274,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Duplicate ( MatrixID ) &
         bind(C,name='Epetra_CrsMatrix_Duplicate')
     import :: FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: MatrixID
   end function
 
@@ -4286,7 +4286,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_CrsMatrix_Destroy ( selfID ) bind(C,name='Epetra_CrsMatrix_Destroy')
     import :: FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t)                                  :: selfID
   end subroutine
 
@@ -4299,7 +4299,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_CrsMatrix_Assign ( selfID, srcID ) &
         bind(C,name='Epetra_CrsMatrix_Assign')
     import :: FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: srcID
   end subroutine
@@ -4313,7 +4313,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_PutScalar ( selfID, ScalarConstant ) &
         bind(C,name='Epetra_CrsMatrix_PutScalar')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                ,intent(in)   ,value              :: ScalarConstant
   end function
@@ -4327,7 +4327,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_Scale ( selfID, ScalarConstant ) &
         bind(C,name='Epetra_CrsMatrix_Scale')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                ,intent(in)   ,value              :: ScalarConstant
   end function
@@ -4341,7 +4341,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_InsertGlobalValues ( selfID, GlobalRow, &
         NumEntries, Values, Indices ) bind(C,name='Epetra_CrsMatrix_InsertGlobalValues')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                ,intent(in)   ,value              :: NumEntries
@@ -4358,7 +4358,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_ReplaceGlobalValues ( selfID, GlobalRow, &
         NumEntries, Values, Indices ) bind(C,name='Epetra_CrsMatrix_ReplaceGlobalValues')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                ,intent(in)   ,value              :: NumEntries
@@ -4375,7 +4375,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_SumIntoGlobalValues ( selfID, GlobalRow, &
         NumEntries, Values, Indices ) bind(C,name='Epetra_CrsMatrix_SumIntoGlobalValues')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                ,intent(in)   ,value              :: NumEntries
@@ -4392,7 +4392,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_InsertMyValues ( selfID, MyRow, NumEntries, &
         Values, Indices ) bind(C,name='Epetra_CrsMatrix_InsertMyValues')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(in)   ,value              :: NumEntries
@@ -4409,7 +4409,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_ReplaceMyValues ( selfID, MyRow, NumEntries, &
         Values, Indices ) bind(C,name='Epetra_CrsMatrix_ReplaceMyValues')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(in)   ,value              :: NumEntries
@@ -4426,7 +4426,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_SumIntoMyValues ( selfID, MyRow, NumEntries, &
         Values, Indices ) bind(C,name='Epetra_CrsMatrix_SumIntoMyValues')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(in)   ,value              :: NumEntries
@@ -4443,7 +4443,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_ReplaceDiagonalValues ( selfID, DiagonalID ) &
         bind(C,name='Epetra_CrsMatrix_ReplaceDiagonalValues')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: DiagonalID
   end function
@@ -4457,7 +4457,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_FillComplete ( selfID, OptimizeDataStorage ) &
         bind(C,name='Epetra_CrsMatrix_FillComplete')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_bool
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     logical(c_bool)               ,intent(in)   ,value              :: OptimizeDataStorage
   end function
@@ -4472,7 +4472,7 @@ module forepetra  ! Companion to CEpetra_*.h
         RangeMapID, OptimizeDataStorage ) &
         bind(C,name='Epetra_CrsMatrix_FillComplete_UsingMaps')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Map_ID_t ,c_bool
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: DomainMapID
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: RangeMapID
@@ -4488,7 +4488,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_OptimizeStorage ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_OptimizeStorage')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4501,7 +4501,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_MakeDataContiguous ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_MakeDataContiguous')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4515,7 +4515,7 @@ module forepetra  ! Companion to CEpetra_*.h
         GlobalRow, Length, NumEntries, Values, Indices ) &
         bind(C,name='Epetra_CrsMatrix_ExtractGlobalRowCopy_WithIndices')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                ,intent(in)   ,value              :: Length
@@ -4534,7 +4534,7 @@ module forepetra  ! Companion to CEpetra_*.h
         Length, NumEntries, Values, Indices ) &
         bind(C,name='Epetra_CrsMatrix_ExtractMyRowCopy_WithIndices')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(in)   ,value              :: Length
@@ -4552,7 +4552,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_ExtractGlobalRowCopy ( selfID, GlobalRow, Length, &
         NumEntries, Values ) bind(C,name='Epetra_CrsMatrix_ExtractGlobalRowCopy')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                ,intent(in)   ,value              :: Length
@@ -4569,7 +4569,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_ExtractMyRowCopy ( selfID, MyRow, Length, &
         NumEntries, Values ) bind(C,name='Epetra_CrsMatrix_ExtractMyRowCopy')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(in)   ,value              :: Length
@@ -4586,7 +4586,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_ExtractDiagonalCopy ( selfID, DiagonalID ) &
         bind(C,name='Epetra_CrsMatrix_ExtractDiagonalCopy')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: DiagonalID
   end function
@@ -4601,7 +4601,7 @@ module forepetra  ! Companion to CEpetra_*.h
         GlobalRow, NumEntries, Values, Indices ) &
         bind(C,name='Epetra_CrsMatrix_ExtractGlobalRowView_WithIndices')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                ,intent(inout)                    :: NumEntries
@@ -4619,7 +4619,7 @@ module forepetra  ! Companion to CEpetra_*.h
         NumEntries, Values, Indices ) &
         bind(C,name='Epetra_CrsMatrix_ExtractMyRowView_WithIndices')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(inout)                    :: NumEntries
@@ -4636,7 +4636,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_ExtractGlobalRowView ( selfID, GlobalRow, &
         NumEntries, Values ) bind(C,name='Epetra_CrsMatrix_ExtractGlobalRowView')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                ,intent(inout)                    :: NumEntries
@@ -4652,7 +4652,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_ExtractMyRowView ( selfID, MyRow, NumEntries, &
         Values ) bind(C,name='Epetra_CrsMatrix_ExtractMyRowView')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(inout)                    :: NumEntries
@@ -4668,7 +4668,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_Multiply_Vector ( selfID, TransA, xID, yID ) &
         bind(C,name='Epetra_CrsMatrix_Multiply_Vector')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_bool ,FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     logical(c_bool)               ,intent(in)   ,value              :: TransA
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
@@ -4684,7 +4684,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_Multiply1_Vector ( selfID, TransA, xID, yID ) &
         bind(C,name='Epetra_CrsMatrix_Multiply1_Vector')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_bool ,FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     logical(c_bool)               ,intent(in)   ,value              :: TransA
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
@@ -4700,7 +4700,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_Multiply_MultiVector ( selfID, TransA, XID, YID ) &
         bind(C,name='Epetra_CrsMatrix_Multiply_MultiVector')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_bool ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     logical(c_bool)               ,intent(in)   ,value              :: TransA
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
@@ -4716,7 +4716,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_Multiply1_MultiVector ( selfID, TransA, XID, YID ) &
         bind(C,name='Epetra_CrsMatrix_Multiply1_MultiVector')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_bool ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     logical(c_bool)               ,intent(in)   ,value              :: TransA
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
@@ -4732,7 +4732,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_Solve_Vector ( selfID, Upper, Trans, &
         UnitDiagonal, xID, yID ) bind(C,name='Epetra_CrsMatrix_Solve_Vector')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_bool ,FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     logical(c_bool)               ,intent(in)   ,value              :: Upper
     logical(c_bool)               ,intent(in)   ,value              :: Trans
@@ -4750,7 +4750,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_Solve_MultiVector ( selfID, Upper, Trans, &
         UnitDiagonal, XID, YID ) bind(C,name='Epetra_CrsMatrix_Solve_MultiVector')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_bool ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     logical(c_bool)               ,intent(in)   ,value              :: Upper
     logical(c_bool)               ,intent(in)   ,value              :: Trans
@@ -4768,7 +4768,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_InvRowSums ( selfID, xID ) &
         bind(C,name='Epetra_CrsMatrix_InvRowSums')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -4782,7 +4782,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_InvRowMaxs ( selfID, xID ) &
         bind(C,name='Epetra_CrsMatrix_InvRowMaxs')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -4796,7 +4796,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_LeftScale ( selfID, xID ) &
         bind(C,name='Epetra_CrsMatrix_LeftScale')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -4810,7 +4810,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_InvColSums ( selfID, xID ) &
         bind(C,name='Epetra_CrsMatrix_InvColSums')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -4824,7 +4824,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_InvColMaxs ( selfID, xID ) &
         bind(C,name='Epetra_CrsMatrix_InvColMaxs')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -4838,7 +4838,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_RightScale ( selfID, xID ) &
         bind(C,name='Epetra_CrsMatrix_RightScale')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -4852,7 +4852,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsMatrix_Filled ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_Filled')
     import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4865,7 +4865,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsMatrix_StorageOptimized ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_StorageOptimized')
     import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4878,7 +4878,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsMatrix_IndicesAreGlobal ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_IndicesAreGlobal')
     import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4891,7 +4891,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsMatrix_IndicesAreLocal ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_IndicesAreLocal')
     import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4904,7 +4904,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsMatrix_IndicesAreContiguous ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_IndicesAreContiguous')
     import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4917,7 +4917,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsMatrix_LowerTriangular ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_LowerTriangular')
     import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4930,7 +4930,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsMatrix_UpperTriangular ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_UpperTriangular')
     import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4943,7 +4943,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsMatrix_NoDiagonal ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_NoDiagonal')
     import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4956,7 +4956,7 @@ module forepetra  ! Companion to CEpetra_*.h
   real(c_double) function Epetra_CrsMatrix_NormInf ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_NormInf')
     import :: c_double ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4969,7 +4969,7 @@ module forepetra  ! Companion to CEpetra_*.h
   real(c_double) function Epetra_CrsMatrix_NormOne ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_NormOne')
     import :: c_double ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4982,7 +4982,7 @@ module forepetra  ! Companion to CEpetra_*.h
   real(c_double) function Epetra_CrsMatrix_NormFrobenius ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_NormFrobenius')
     import :: c_double ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4995,7 +4995,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_NumGlobalNonzeros ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_NumGlobalNonzeros')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5008,7 +5008,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_NumGlobalRows ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_NumGlobalRows')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5021,7 +5021,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_NumGlobalCols ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_NumGlobalCols')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5034,7 +5034,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_NumGlobalDiagonals ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_NumGlobalDiagonals')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5047,7 +5047,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_NumMyNonzeros ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_NumMyNonzeros')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5060,7 +5060,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_NumMyRows ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_NumMyRows')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5073,7 +5073,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_NumMyCols ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_NumMyCols')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5086,7 +5086,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_NumMyDiagonals ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_NumMyDiagonals')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5099,7 +5099,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_NumGlobalEntries ( selfID, Row ) &
         bind(C,name='Epetra_CrsMatrix_NumGlobalEntries')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: Row
   end function
@@ -5113,7 +5113,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_NumAllocatedGlobalEntries ( selfID, Row ) &
         bind(C,name='Epetra_CrsMatrix_NumAllocatedGlobalEntries')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: Row
   end function
@@ -5127,7 +5127,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_MaxNumEntries ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_MaxNumEntries')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5140,7 +5140,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_GlobalMaxNumEntries ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_GlobalMaxNumEntries')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5153,7 +5153,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_NumMyEntries ( selfID, Row ) &
         bind(C,name='Epetra_CrsMatrix_NumMyEntries')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: Row
   end function
@@ -5167,7 +5167,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_NumAllocatedMyEntries ( selfID, Row ) &
         bind(C,name='Epetra_CrsMatrix_NumAllocatedMyEntries')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: Row
   end function
@@ -5181,7 +5181,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_IndexBase ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_IndexBase')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5194,7 +5194,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsMatrix_StaticGraph ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_StaticGraph')
     import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5207,7 +5207,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_CrsGraph_ID_t) function Epetra_CrsMatrix_Graph ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_Graph')
     import :: FT_Epetra_CrsGraph_ID_t ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5220,7 +5220,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Map_ID_t) function Epetra_CrsMatrix_RowMap ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_RowMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5233,7 +5233,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_ReplaceRowMap ( selfID, newmapID ) &
         bind(C,name='Epetra_CrsMatrix_ReplaceRowMap')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t) ,intent(in)   ,value              :: newmapID
   end function
@@ -5247,7 +5247,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsMatrix_HaveColMap ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_HaveColMap')
     import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5260,7 +5260,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_ReplaceColMap ( selfID, newmapID ) &
         bind(C,name='Epetra_CrsMatrix_ReplaceColMap')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t) ,intent(in)   ,value              :: newmapID
   end function
@@ -5274,7 +5274,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Map_ID_t) function Epetra_CrsMatrix_ColMap ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_ColMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5287,7 +5287,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Map_ID_t) function Epetra_CrsMatrix_DomainMap ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_DomainMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5300,7 +5300,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Map_ID_t) function Epetra_CrsMatrix_RangeMap ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_RangeMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5313,7 +5313,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Import_ID_t) function Epetra_CrsMatrix_Importer ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_Importer')
     import :: FT_Epetra_Import_ID_t ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5326,7 +5326,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Export_ID_t) function Epetra_CrsMatrix_Exporter ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_Exporter')
     import :: FT_Epetra_Export_ID_t ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5339,7 +5339,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Comm_ID_t) function Epetra_CrsMatrix_Comm ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_Comm')
     import :: FT_Epetra_Comm_ID_t ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5352,7 +5352,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_LRID ( selfID, GRID_in ) &
         bind(C,name='Epetra_CrsMatrix_LRID')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GRID_in
   end function
@@ -5366,7 +5366,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_GRID ( selfID, LRID_in ) &
         bind(C,name='Epetra_CrsMatrix_GRID')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: LRID_in
   end function
@@ -5380,7 +5380,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_LCID ( selfID, GCID_in ) &
         bind(C,name='Epetra_CrsMatrix_LCID')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GCID_in
   end function
@@ -5394,7 +5394,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_GCID ( selfID, LCID_in ) &
         bind(C,name='Epetra_CrsMatrix_GCID')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: LCID_in
   end function
@@ -5408,7 +5408,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsMatrix_MyGRID ( selfID, GRID_in ) &
         bind(C,name='Epetra_CrsMatrix_MyGRID')
     import :: c_bool ,FT_Epetra_CrsMatrix_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GRID_in
   end function
@@ -5422,7 +5422,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsMatrix_MyLRID ( selfID, LRID_in ) &
         bind(C,name='Epetra_CrsMatrix_MyLRID')
     import :: c_bool ,FT_Epetra_CrsMatrix_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: LRID_in
   end function
@@ -5436,7 +5436,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsMatrix_MyGCID ( selfID, GCID_in ) &
         bind(C,name='Epetra_CrsMatrix_MyGCID')
     import :: c_bool ,FT_Epetra_CrsMatrix_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GCID_in
   end function
@@ -5450,7 +5450,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsMatrix_MyLCID ( selfID, LCID_in ) &
         bind(C,name='Epetra_CrsMatrix_MyLCID')
     import :: c_bool ,FT_Epetra_CrsMatrix_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: LCID_in
   end function
@@ -5464,7 +5464,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsMatrix_MyGlobalRow ( selfID, GID ) &
         bind(C,name='Epetra_CrsMatrix_MyGlobalRow')
     import :: c_bool ,FT_Epetra_CrsMatrix_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GID
   end function
@@ -5478,7 +5478,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_CrsMatrix_Label ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_Label')
     import :: c_ptr ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5491,7 +5491,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_SetUseTranspose ( selfID, UseTranspose_in ) &
         bind(C,name='Epetra_CrsMatrix_SetUseTranspose')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_bool
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     logical(c_bool)               ,intent(in)   ,value              :: UseTranspose_in
   end function
@@ -5505,7 +5505,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_Apply ( selfID, XID, YID ) &
         bind(C,name='Epetra_CrsMatrix_Apply')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: YID
@@ -5520,7 +5520,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_ApplyInverse ( selfID, XID, YID ) &
         bind(C,name='Epetra_CrsMatrix_ApplyInverse')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_MultiVector_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: YID
@@ -5535,7 +5535,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsMatrix_HasNormInf ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_HasNormInf')
     import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5548,7 +5548,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsMatrix_UseTranspose ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_UseTranspose')
     import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5561,7 +5561,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Map_ID_t) function Epetra_CrsMatrix_OperatorDomainMap ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_OperatorDomainMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5574,7 +5574,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Map_ID_t) function Epetra_CrsMatrix_OperatorRangeMap ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_OperatorRangeMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5587,7 +5587,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_NumMyRowEntries ( selfID, MyRow, NumEntries ) &
         bind(C,name='Epetra_CrsMatrix_NumMyRowEntries')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(inout)                    :: NumEntries
@@ -5602,7 +5602,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Map_ID_t) function Epetra_CrsMatrix_RowMatrixRowMap ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_RowMatrixRowMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5615,7 +5615,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Map_ID_t) function Epetra_CrsMatrix_RowMatrixColMap ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_RowMatrixColMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5628,7 +5628,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Import_ID_t) function Epetra_CrsMatrix_RowMatrixImporter ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_RowMatrixImporter')
     import :: FT_Epetra_Import_ID_t ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5641,7 +5641,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_CrsMatrix_getRow ( selfID, Loc ) &
         bind(C,name='Epetra_CrsMatrix_getRow')
     import :: c_ptr ,FT_Epetra_CrsMatrix_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: Loc
   end function
@@ -5655,7 +5655,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Map_ID_t) function Epetra_CrsMatrix_ImportMap ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_ImportMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5668,7 +5668,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_TransformToLocal ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_TransformToLocal')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5681,7 +5681,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsMatrix_TransformToLocal_UsingMaps ( selfID, DomainMapID, &
         RangeMapID ) bind(C,name='Epetra_CrsMatrix_TransformToLocal_UsingMaps')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Map_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: DomainMapID
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: RangeMapID
@@ -5697,7 +5697,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_CrsGraph_ID_t) function Epetra_CrsGraph_Cast ( id ) &
         bind(C,name='Epetra_CrsGraph_Cast')
     import :: FT_Epetra_CrsGraph_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -5708,7 +5708,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_CrsGraph_Abstract ( id ) &
         bind(C,name='Epetra_CrsGraph_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -5722,7 +5722,7 @@ module forepetra  ! Companion to CEpetra_*.h
         NumIndicesPerRow, StaticProfile ) bind(C,name='Epetra_CrsGraph_Create_VarPerRow')
     import :: FT_Epetra_CrsGraph_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_BlockMap_ID_t , &
           c_int ,c_bool
-    implicit none
+    
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: RowMapID
     integer(c_int)               ,intent(in)         ,dimension(*) :: NumIndicesPerRow
@@ -5739,7 +5739,7 @@ module forepetra  ! Companion to CEpetra_*.h
         NumIndicesPerRow, StaticProfile ) bind(C,name='Epetra_CrsGraph_Create')
     import :: FT_Epetra_CrsGraph_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_BlockMap_ID_t , &
           c_int ,c_bool
-    implicit none
+    
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: RowMapID
     integer(c_int)               ,intent(in)   ,value              :: NumIndicesPerRow
@@ -5757,7 +5757,7 @@ module forepetra  ! Companion to CEpetra_*.h
         bind(C,name='Epetra_CrsGraph_Create_VarPerRow_WithColMap')
     import :: FT_Epetra_CrsGraph_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_BlockMap_ID_t , &
           c_int ,c_bool
-    implicit none
+    
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: RowMapID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: ColMapID
@@ -5776,7 +5776,7 @@ module forepetra  ! Companion to CEpetra_*.h
         bind(C,name='Epetra_CrsGraph_Create_With_ColMap')
     import :: FT_Epetra_CrsGraph_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_BlockMap_ID_t , &
           c_int ,c_bool
-    implicit none
+    
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: RowMapID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: ColMapID
@@ -5793,7 +5793,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_CrsGraph_ID_t) function Epetra_CrsGraph_Duplicate ( GraphID ) &
         bind(C,name='Epetra_CrsGraph_Duplicate')
     import :: FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: GraphID
   end function
 
@@ -5805,7 +5805,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_CrsGraph_Destroy ( selfID ) bind(C,name='Epetra_CrsGraph_Destroy')
     import :: FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t)                                  :: selfID
   end subroutine
 
@@ -5818,7 +5818,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_InsertGlobalIndices ( selfID, GlobalRow, &
         NumIndices, Indices ) bind(C,name='Epetra_CrsGraph_InsertGlobalIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GlobalRow
     integer(c_int)               ,intent(in)   ,value              :: NumIndices
@@ -5834,7 +5834,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_RemoveGlobalIndices ( selfID, GlobalRow, &
         NumIndices, Indices ) bind(C,name='Epetra_CrsGraph_RemoveGlobalIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GlobalRow
     integer(c_int)               ,intent(in)   ,value              :: NumIndices
@@ -5850,7 +5850,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_RemoveGlobalIndices_LocalRow ( selfID, Row ) &
         bind(C,name='Epetra_CrsGraph_RemoveGlobalIndices_LocalRow')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: Row
   end function
@@ -5864,7 +5864,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_InsertMyIndices ( selfID, LocalRow, NumIndices, &
         Indices ) bind(C,name='Epetra_CrsGraph_InsertMyIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LocalRow
     integer(c_int)               ,intent(in)   ,value              :: NumIndices
@@ -5880,7 +5880,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_RemoveMyIndices ( selfID, LocalRow, NumIndices, &
         Indices ) bind(C,name='Epetra_CrsGraph_RemoveMyIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LocalRow
     integer(c_int)               ,intent(in)   ,value              :: NumIndices
@@ -5896,7 +5896,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_RemoveMyIndices_LocalRow ( selfID, Row ) &
         bind(C,name='Epetra_CrsGraph_RemoveMyIndices_LocalRow')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: Row
   end function
@@ -5910,7 +5910,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_FillComplete ( selfID ) &
         bind(C,name='Epetra_CrsGraph_FillComplete')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5923,7 +5923,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_FillComplete_UsingMaps ( selfID, DomainMapID, &
         RangeMapID ) bind(C,name='Epetra_CrsGraph_FillComplete_UsingMaps')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: DomainMapID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: RangeMapID
@@ -5938,7 +5938,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_OptimizeStorage ( selfID ) &
         bind(C,name='Epetra_CrsGraph_OptimizeStorage')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5952,7 +5952,7 @@ module forepetra  ! Companion to CEpetra_*.h
         LenOfIndices, NumIndices, Indices ) &
         bind(C,name='Epetra_CrsGraph_ExtractGlobalRowCopy')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GlobalRow
     integer(c_int)               ,intent(in)   ,value              :: LenOfIndices
@@ -5969,7 +5969,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_ExtractMyRowCopy ( selfID, LocalRow, LenOfIndices, &
         NumIndices, Indices ) bind(C,name='Epetra_CrsGraph_ExtractMyRowCopy')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LocalRow
     integer(c_int)               ,intent(in)   ,value              :: LenOfIndices
@@ -5986,7 +5986,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_ExtractGlobalRowView ( selfID, GlobalRow, &
         NumIndices, Indices ) bind(C,name='Epetra_CrsGraph_ExtractGlobalRowView')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GlobalRow
     integer(c_int)               ,intent(inout)                    :: NumIndices
@@ -6002,7 +6002,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_ExtractMyRowView ( selfID, LocalRow, NumIndices, &
         Indices ) bind(C,name='Epetra_CrsGraph_ExtractMyRowView')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LocalRow
     integer(c_int)               ,intent(inout)                    :: NumIndices
@@ -6018,7 +6018,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsGraph_Filled ( selfID ) &
         bind(C,name='Epetra_CrsGraph_Filled')
     import :: c_bool ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6031,7 +6031,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsGraph_StorageOptimized ( selfID ) &
         bind(C,name='Epetra_CrsGraph_StorageOptimized')
     import :: c_bool ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6044,7 +6044,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsGraph_IndicesAreGlobal ( selfID ) &
         bind(C,name='Epetra_CrsGraph_IndicesAreGlobal')
     import :: c_bool ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6057,7 +6057,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsGraph_IndicesAreLocal ( selfID ) &
         bind(C,name='Epetra_CrsGraph_IndicesAreLocal')
     import :: c_bool ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6070,7 +6070,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsGraph_LowerTriangular ( selfID ) &
         bind(C,name='Epetra_CrsGraph_LowerTriangular')
     import :: c_bool ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6083,7 +6083,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsGraph_UpperTriangular ( selfID ) &
         bind(C,name='Epetra_CrsGraph_UpperTriangular')
     import :: c_bool ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6096,7 +6096,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsGraph_NoDiagonal ( selfID ) &
         bind(C,name='Epetra_CrsGraph_NoDiagonal')
     import :: c_bool ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6109,7 +6109,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsGraph_MyGlobalRow ( selfID, GID ) &
         bind(C,name='Epetra_CrsGraph_MyGlobalRow')
     import :: c_bool ,FT_Epetra_CrsGraph_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GID
   end function
@@ -6123,7 +6123,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsGraph_HaveColMap ( selfID ) &
         bind(C,name='Epetra_CrsGraph_HaveColMap')
     import :: c_bool ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6136,7 +6136,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumMyRows ( selfID ) &
         bind(C,name='Epetra_CrsGraph_NumMyRows')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6149,7 +6149,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumGlobalRows ( selfID ) &
         bind(C,name='Epetra_CrsGraph_NumGlobalRows')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6162,7 +6162,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumMyCols ( selfID ) &
         bind(C,name='Epetra_CrsGraph_NumMyCols')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6175,7 +6175,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumGlobalCols ( selfID ) &
         bind(C,name='Epetra_CrsGraph_NumGlobalCols')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6188,7 +6188,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumGlobalNonzeros ( selfID ) &
         bind(C,name='Epetra_CrsGraph_NumGlobalNonzeros')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6201,7 +6201,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumGlobalDiagonals ( selfID ) &
         bind(C,name='Epetra_CrsGraph_NumGlobalDiagonals')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6214,7 +6214,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumMyDiagonals ( selfID ) &
         bind(C,name='Epetra_CrsGraph_NumMyDiagonals')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6227,7 +6227,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumMyBlockRows ( selfID ) &
         bind(C,name='Epetra_CrsGraph_NumMyBlockRows')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6240,7 +6240,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumGlobalBlockRows ( selfID ) &
         bind(C,name='Epetra_CrsGraph_NumGlobalBlockRows')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6253,7 +6253,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumMyBlockCols ( selfID ) &
         bind(C,name='Epetra_CrsGraph_NumMyBlockCols')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6266,7 +6266,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumGlobalBlockCols ( selfID ) &
         bind(C,name='Epetra_CrsGraph_NumGlobalBlockCols')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6279,7 +6279,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumMyBlockDiagonals ( selfID ) &
         bind(C,name='Epetra_CrsGraph_NumMyBlockDiagonals')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6292,7 +6292,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumGlobalBlockDiagonals ( selfID ) &
         bind(C,name='Epetra_CrsGraph_NumGlobalBlockDiagonals')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6305,7 +6305,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumGlobalEntries ( selfID ) &
         bind(C,name='Epetra_CrsGraph_NumGlobalEntries')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6318,7 +6318,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumMyEntries ( selfID ) &
         bind(C,name='Epetra_CrsGraph_NumMyEntries')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6331,7 +6331,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_MaxRowDim ( selfID ) &
         bind(C,name='Epetra_CrsGraph_MaxRowDim')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6344,7 +6344,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_GlobalMaxRowDim ( selfID ) &
         bind(C,name='Epetra_CrsGraph_GlobalMaxRowDim')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6357,7 +6357,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_MaxColDim ( selfID ) &
         bind(C,name='Epetra_CrsGraph_MaxColDim')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6370,7 +6370,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_GlobalMaxColDim ( selfID ) &
         bind(C,name='Epetra_CrsGraph_GlobalMaxColDim')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6383,7 +6383,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumMyNonzeros ( selfID ) &
         bind(C,name='Epetra_CrsGraph_NumMyNonzeros')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6396,7 +6396,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumGlobalIndices ( selfID, Row ) &
         bind(C,name='Epetra_CrsGraph_NumGlobalIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: Row
   end function
@@ -6410,7 +6410,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumAllocatedGlobalIndices ( selfID, Row ) &
         bind(C,name='Epetra_CrsGraph_NumAllocatedGlobalIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: Row
   end function
@@ -6424,7 +6424,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_MaxNumIndices ( selfID ) &
         bind(C,name='Epetra_CrsGraph_MaxNumIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6437,7 +6437,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_GlobalMaxNumIndices ( selfID ) &
         bind(C,name='Epetra_CrsGraph_GlobalMaxNumIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6450,7 +6450,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_MaxNumNonzeros ( selfID ) &
         bind(C,name='Epetra_CrsGraph_MaxNumNonzeros')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6463,7 +6463,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_GlobalMaxNumNonzeros ( selfID ) &
         bind(C,name='Epetra_CrsGraph_GlobalMaxNumNonzeros')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6476,7 +6476,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumMyIndices ( selfID, Row ) &
         bind(C,name='Epetra_CrsGraph_NumMyIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: Row
   end function
@@ -6490,7 +6490,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_NumAllocatedMyIndices ( selfID, Row ) &
         bind(C,name='Epetra_CrsGraph_NumAllocatedMyIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: Row
   end function
@@ -6504,7 +6504,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_IndexBase ( selfID ) &
         bind(C,name='Epetra_CrsGraph_IndexBase')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6517,7 +6517,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_BlockMap_ID_t) function Epetra_CrsGraph_RowMap ( selfID ) &
         bind(C,name='Epetra_CrsGraph_RowMap')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6530,7 +6530,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_ReplaceRowMap ( selfID, newmapID ) &
         bind(C,name='Epetra_CrsGraph_ReplaceRowMap')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: newmapID
   end function
@@ -6544,7 +6544,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_ReplaceColMap ( selfID, newmapID ) &
         bind(C,name='Epetra_CrsGraph_ReplaceColMap')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: newmapID
   end function
@@ -6558,7 +6558,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_BlockMap_ID_t) function Epetra_CrsGraph_ColMap ( selfID ) &
         bind(C,name='Epetra_CrsGraph_ColMap')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6571,7 +6571,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_BlockMap_ID_t) function Epetra_CrsGraph_DomainMap ( selfID ) &
         bind(C,name='Epetra_CrsGraph_DomainMap')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6584,7 +6584,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_BlockMap_ID_t) function Epetra_CrsGraph_RangeMap ( selfID ) &
         bind(C,name='Epetra_CrsGraph_RangeMap')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6597,7 +6597,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Import_ID_t) function Epetra_CrsGraph_Importer ( selfID ) &
         bind(C,name='Epetra_CrsGraph_Importer')
     import :: FT_Epetra_Import_ID_t ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6610,7 +6610,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Export_ID_t) function Epetra_CrsGraph_Exporter ( selfID ) &
         bind(C,name='Epetra_CrsGraph_Exporter')
     import :: FT_Epetra_Export_ID_t ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6623,7 +6623,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Comm_ID_t) function Epetra_CrsGraph_Comm ( selfID ) &
         bind(C,name='Epetra_CrsGraph_Comm')
     import :: FT_Epetra_Comm_ID_t ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6636,7 +6636,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_LRID ( selfID, GRID_in ) &
         bind(C,name='Epetra_CrsGraph_LRID')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GRID_in
   end function
@@ -6650,7 +6650,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_GRID ( selfID, LRID_in ) &
         bind(C,name='Epetra_CrsGraph_GRID')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LRID_in
   end function
@@ -6664,7 +6664,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_LCID ( selfID, GCID_in ) &
         bind(C,name='Epetra_CrsGraph_LCID')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GCID_in
   end function
@@ -6678,7 +6678,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_GCID ( selfID, LCID_in ) &
         bind(C,name='Epetra_CrsGraph_GCID')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LCID_in
   end function
@@ -6692,7 +6692,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsGraph_MyGRID ( selfID, GRID_in ) &
         bind(C,name='Epetra_CrsGraph_MyGRID')
     import :: c_bool ,FT_Epetra_CrsGraph_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GRID_in
   end function
@@ -6706,7 +6706,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsGraph_MyLRID ( selfID, LRID_in ) &
         bind(C,name='Epetra_CrsGraph_MyLRID')
     import :: c_bool ,FT_Epetra_CrsGraph_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LRID_in
   end function
@@ -6720,7 +6720,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsGraph_MyGCID ( selfID, GCID_in ) &
         bind(C,name='Epetra_CrsGraph_MyGCID')
     import :: c_bool ,FT_Epetra_CrsGraph_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GCID_in
   end function
@@ -6734,7 +6734,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_CrsGraph_MyLCID ( selfID, LCID_in ) &
         bind(C,name='Epetra_CrsGraph_MyLCID')
     import :: c_bool ,FT_Epetra_CrsGraph_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LCID_in
   end function
@@ -6748,7 +6748,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_CrsGraph_getRow ( selfID, Loc ) &
         bind(C,name='Epetra_CrsGraph_getRow')
     import :: c_ptr ,FT_Epetra_CrsGraph_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: Loc
   end function
@@ -6762,7 +6762,7 @@ module forepetra  ! Companion to CEpetra_*.h
   subroutine Epetra_CrsGraph_Assign ( selfID, SourceID ) &
         bind(C,name='Epetra_CrsGraph_Assign')
     import :: FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: SourceID
   end subroutine
@@ -6776,7 +6776,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_BlockMap_ID_t) function Epetra_CrsGraph_ImportMap ( selfID ) &
         bind(C,name='Epetra_CrsGraph_ImportMap')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6789,7 +6789,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_TransformToLocal ( selfID ) &
         bind(C,name='Epetra_CrsGraph_TransformToLocal')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6802,7 +6802,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_CrsGraph_TransformToLocal_UsingMaps ( selfID, DomainMapID, &
         RangeMapID ) bind(C,name='Epetra_CrsGraph_TransformToLocal_UsingMaps')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: DomainMapID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: RangeMapID
@@ -6818,7 +6818,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_DistObject_ID_t) function Epetra_DistObject_Cast ( id ) &
         bind(C,name='Epetra_DistObject_Cast')
     import :: FT_Epetra_DistObject_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t)  ,intent(in)   ,value              :: id
   end function
 
@@ -6829,7 +6829,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_DistObject_Abstract ( id ) &
         bind(C,name='Epetra_DistObject_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_DistObject_ID_t
-    implicit none
+    
     type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -6841,7 +6841,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_DistObject_Destroy ( selfID ) bind(C,name='Epetra_DistObject_Destroy')
     import :: FT_Epetra_DistObject_ID_t
-    implicit none
+    
     type(FT_Epetra_DistObject_ID_t)                                  :: selfID
   end subroutine
 
@@ -6855,7 +6855,7 @@ module forepetra  ! Companion to CEpetra_*.h
         IndexorID ) bind(C,name='Epetra_DistObject_Import')
     import :: c_int ,FT_Epetra_DistObject_ID_t ,FT_Epetra_SrcDistObject_ID_t , &
           FT_Epetra_Import_ID_t ,FT_Epetra_CombineMode_E_t ,FT_Epetra_OffsetIndex_ID_t
-    implicit none
+    
     type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_SrcDistObject_ID_t),intent(in)   ,value              :: AID
     type(FT_Epetra_Import_ID_t)    ,intent(in)   ,value              :: ImporterID
@@ -6873,7 +6873,7 @@ module forepetra  ! Companion to CEpetra_*.h
         CombineMode, IndexorID ) bind(C,name='Epetra_DistObject_Import_UsingExporter')
     import :: c_int ,FT_Epetra_DistObject_ID_t ,FT_Epetra_SrcDistObject_ID_t , &
           FT_Epetra_Export_ID_t ,FT_Epetra_CombineMode_E_t ,FT_Epetra_OffsetIndex_ID_t
-    implicit none
+    
     type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_SrcDistObject_ID_t),intent(in)   ,value              :: AID
     type(FT_Epetra_Export_ID_t)    ,intent(in)   ,value              :: ExporterID
@@ -6891,7 +6891,7 @@ module forepetra  ! Companion to CEpetra_*.h
         CombineMode, IndexorID ) bind(C,name='Epetra_DistObject_Export_UsingImporter')
     import :: c_int ,FT_Epetra_DistObject_ID_t ,FT_Epetra_SrcDistObject_ID_t , &
           FT_Epetra_Import_ID_t ,FT_Epetra_CombineMode_E_t ,FT_Epetra_OffsetIndex_ID_t
-    implicit none
+    
     type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_SrcDistObject_ID_t),intent(in)   ,value              :: AID
     type(FT_Epetra_Import_ID_t)    ,intent(in)   ,value              :: ImporterID
@@ -6909,7 +6909,7 @@ module forepetra  ! Companion to CEpetra_*.h
         IndexorID ) bind(C,name='Epetra_DistObject_Export')
     import :: c_int ,FT_Epetra_DistObject_ID_t ,FT_Epetra_SrcDistObject_ID_t , &
           FT_Epetra_Export_ID_t ,FT_Epetra_CombineMode_E_t ,FT_Epetra_OffsetIndex_ID_t
-    implicit none
+    
     type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_SrcDistObject_ID_t),intent(in)   ,value              :: AID
     type(FT_Epetra_Export_ID_t)    ,intent(in)   ,value              :: ExporterID
@@ -6926,7 +6926,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_BlockMap_ID_t) function Epetra_DistObject_Map ( selfID ) &
         bind(C,name='Epetra_DistObject_Map')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_DistObject_ID_t
-    implicit none
+    
     type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6939,7 +6939,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Comm_ID_t) function Epetra_DistObject_Comm ( selfID ) &
         bind(C,name='Epetra_DistObject_Comm')
     import :: FT_Epetra_Comm_ID_t ,FT_Epetra_DistObject_ID_t
-    implicit none
+    
     type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6952,7 +6952,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_DistObject_DistributedGlobal ( selfID ) &
         bind(C,name='Epetra_DistObject_DistributedGlobal')
     import :: c_bool ,FT_Epetra_DistObject_ID_t
-    implicit none
+    
     type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6966,7 +6966,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Vector_ID_t) function Epetra_Vector_Cast ( id ) &
         bind(C,name='Epetra_Vector_Cast')
     import :: FT_Epetra_Vector_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -6977,7 +6977,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_Vector_Abstract ( id ) &
         bind(C,name='Epetra_Vector_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: id
   end function
 
@@ -6990,7 +6990,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Vector_ID_t) function Epetra_Vector_Create ( MapID, zeroOut ) &
         bind(C,name='Epetra_Vector_Create')
     import :: FT_Epetra_Vector_ID_t ,FT_Epetra_BlockMap_ID_t ,c_bool
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: MapID
     logical(c_bool)             ,intent(in)   ,value              :: zeroOut
   end function
@@ -7004,7 +7004,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Vector_ID_t) function Epetra_Vector_Duplicate ( SourceID ) &
         bind(C,name='Epetra_Vector_Duplicate')
     import :: FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: SourceID
   end function
 
@@ -7018,7 +7018,7 @@ module forepetra  ! Companion to CEpetra_*.h
         bind(C,name='Epetra_Vector_Create_FromArray')
     import :: FT_Epetra_Vector_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_BlockMap_ID_t , &
           c_double
-    implicit none
+    
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: MapID
     real(c_double)                                  ,dimension(*) :: V
@@ -7034,7 +7034,7 @@ module forepetra  ! Companion to CEpetra_*.h
         bind(C,name='Epetra_Vector_FromSource')
     import :: FT_Epetra_Vector_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_MultiVector_ID_t , &
           c_int
-    implicit none
+    
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: SourceID
     integer(c_int)              ,intent(in)   ,value              :: Index
@@ -7048,7 +7048,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_Vector_Destroy ( selfID ) bind(C,name='Epetra_Vector_Destroy')
     import :: FT_Epetra_Vector_ID_t
-    implicit none
+    
     type(FT_Epetra_Vector_ID_t)                                   :: selfID
   end subroutine
 
@@ -7061,7 +7061,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Vector_ReplaceGlobalValues ( selfID, NumEntries, Values, &
         Indices ) bind(C,name='Epetra_Vector_ReplaceGlobalValues')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: NumEntries
     real(c_double)                                  ,dimension(*) :: Values
@@ -7077,7 +7077,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Vector_ReplaceMyValues ( selfID, NumEntries, Values, &
         Indices ) bind(C,name='Epetra_Vector_ReplaceMyValues')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: NumEntries
     real(c_double)                                  ,dimension(*) :: Values
@@ -7093,7 +7093,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Vector_SumIntoGlobalValues ( selfID, NumEntries, Values, &
         Indices ) bind(C,name='Epetra_Vector_SumIntoGlobalValues')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: NumEntries
     real(c_double)                                  ,dimension(*) :: Values
@@ -7109,7 +7109,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Vector_SumIntoMyValues ( selfID, NumEntries, Values, &
         Indices ) bind(C,name='Epetra_Vector_SumIntoMyValues')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: NumEntries
     real(c_double)                                  ,dimension(*) :: Values
@@ -7126,7 +7126,7 @@ module forepetra  ! Companion to CEpetra_*.h
         BlockOffset, Values, Indices ) &
         bind(C,name='Epetra_Vector_ReplaceGlobalValues_BlockPos')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: NumEntries
     integer(c_int)              ,intent(in)   ,value              :: BlockOffset
@@ -7144,7 +7144,7 @@ module forepetra  ! Companion to CEpetra_*.h
         BlockOffset, Values, Indices ) &
         bind(C,name='Epetra_Vector_ReplaceMyValues_BlockPos')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: NumEntries
     integer(c_int)              ,intent(in)   ,value              :: BlockOffset
@@ -7162,7 +7162,7 @@ module forepetra  ! Companion to CEpetra_*.h
         BlockOffset, Values, Indices ) &
         bind(C,name='Epetra_Vector_SumIntoGlobalValues_BlockPos')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: NumEntries
     integer(c_int)              ,intent(in)   ,value              :: BlockOffset
@@ -7180,7 +7180,7 @@ module forepetra  ! Companion to CEpetra_*.h
         BlockOffset, Values, Indices ) &
         bind(C,name='Epetra_Vector_SumIntoMyValues_BlockPos')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: NumEntries
     integer(c_int)              ,intent(in)   ,value              :: BlockOffset
@@ -7197,7 +7197,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Vector_ExtractCopy ( selfID, V ) &
         bind(C,name='Epetra_Vector_ExtractCopy')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: V
   end function
@@ -7211,7 +7211,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Vector_ExtractView ( selfID, V ) &
         bind(C,name='Epetra_Vector_ExtractView')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
-    implicit none
+    
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: V
   end function
@@ -7225,7 +7225,7 @@ module forepetra  ! Companion to CEpetra_*.h
   real(c_double) function Epetra_Vector_getElement ( selfID, index ) &
         bind(C,name='Epetra_Vector_getElement')
     import :: c_double ,FT_Epetra_Vector_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: index
   end function
@@ -7240,7 +7240,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Export_ID_t) function Epetra_Export_Cast ( id ) &
         bind(C,name='Epetra_Export_Cast')
     import :: FT_Epetra_Export_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -7251,7 +7251,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_Export_Abstract ( id ) &
         bind(C,name='Epetra_Export_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_Export_ID_t
-    implicit none
+    
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: id
   end function
 
@@ -7264,7 +7264,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Export_ID_t) function Epetra_Export_Create ( SourceMapID, TargetMapID ) &
         bind(C,name='Epetra_Export_Create')
     import :: FT_Epetra_Export_ID_t ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: SourceMapID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: TargetMapID
   end function
@@ -7278,7 +7278,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Export_ID_t) function Epetra_Export_Duplicate ( ExporterID ) &
         bind(C,name='Epetra_Export_Duplicate')
     import :: FT_Epetra_Export_ID_t
-    implicit none
+    
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: ExporterID
   end function
 
@@ -7290,7 +7290,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_Export_Destroy ( selfID ) bind(C,name='Epetra_Export_Destroy')
     import :: FT_Epetra_Export_ID_t
-    implicit none
+    
     type(FT_Epetra_Export_ID_t)                                   :: selfID
   end subroutine
 
@@ -7303,7 +7303,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Export_NumSameIDs ( selfID ) &
         bind(C,name='Epetra_Export_NumSameIDs')
     import :: c_int ,FT_Epetra_Export_ID_t
-    implicit none
+    
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7316,7 +7316,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Export_NumPermuteIDs ( selfID ) &
         bind(C,name='Epetra_Export_NumPermuteIDs')
     import :: c_int ,FT_Epetra_Export_ID_t
-    implicit none
+    
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7329,7 +7329,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_Export_PermuteFromLIDs ( selfID ) &
         bind(C,name='Epetra_Export_PermuteFromLIDs')
     import :: c_ptr ,FT_Epetra_Export_ID_t
-    implicit none
+    
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7342,7 +7342,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_Export_PermuteToLIDs ( selfID ) &
         bind(C,name='Epetra_Export_PermuteToLIDs')
     import :: c_ptr ,FT_Epetra_Export_ID_t
-    implicit none
+    
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7355,7 +7355,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Export_NumRemoteIDs ( selfID ) &
         bind(C,name='Epetra_Export_NumRemoteIDs')
     import :: c_int ,FT_Epetra_Export_ID_t
-    implicit none
+    
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7368,7 +7368,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_Export_RemoteLIDs ( selfID ) &
         bind(C,name='Epetra_Export_RemoteLIDs')
     import :: c_ptr ,FT_Epetra_Export_ID_t
-    implicit none
+    
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7381,7 +7381,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Export_NumExportIDs ( selfID ) &
         bind(C,name='Epetra_Export_NumExportIDs')
     import :: c_int ,FT_Epetra_Export_ID_t
-    implicit none
+    
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7394,7 +7394,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_Export_ExportLIDs ( selfID ) &
         bind(C,name='Epetra_Export_ExportLIDs')
     import :: c_ptr ,FT_Epetra_Export_ID_t
-    implicit none
+    
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7407,7 +7407,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_Export_ExportPIDs ( selfID ) &
         bind(C,name='Epetra_Export_ExportPIDs')
     import :: c_ptr ,FT_Epetra_Export_ID_t
-    implicit none
+    
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7420,7 +7420,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Export_NumSend ( selfID ) &
         bind(C,name='Epetra_Export_NumSend')
     import :: c_int ,FT_Epetra_Export_ID_t
-    implicit none
+    
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7433,7 +7433,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Export_NumRecv ( selfID ) &
         bind(C,name='Epetra_Export_NumRecv')
     import :: c_int ,FT_Epetra_Export_ID_t
-    implicit none
+    
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7446,7 +7446,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_BlockMap_ID_t) function Epetra_Export_SourceMap ( selfID ) &
         bind(C,name='Epetra_Export_SourceMap')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_Export_ID_t
-    implicit none
+    
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7459,7 +7459,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_BlockMap_ID_t) function Epetra_Export_TargetMap ( selfID ) &
         bind(C,name='Epetra_Export_TargetMap')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_Export_ID_t
-    implicit none
+    
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7472,7 +7472,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Distributor_ID_t) function Epetra_Export_Distributor ( selfID ) &
         bind(C,name='Epetra_Export_Distributor')
     import :: FT_Epetra_Distributor_ID_t ,FT_Epetra_Export_ID_t
-    implicit none
+    
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7485,7 +7485,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   type(FT_Epetra_Map_ID_t) function Epetra_Map_Cast ( id ) bind(C,name='Epetra_Map_Cast')
     import :: FT_Epetra_Map_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -7496,7 +7496,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_Map_Abstract ( id ) &
         bind(C,name='Epetra_Map_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_Map_ID_t
-    implicit none
+    
     type(FT_Epetra_Map_ID_t)    ,intent(in)   ,value              :: id
   end function
 
@@ -7509,7 +7509,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Map_ID_t) function Epetra_Map_Create ( NumGlobalElements, IndexBase, &
         CommID ) bind(C,name='Epetra_Map_Create')
     import :: FT_Epetra_Map_ID_t ,c_int ,FT_Epetra_Comm_ID_t
-    implicit none
+    
     integer(c_int)              ,intent(in)   ,value              :: NumGlobalElements
     integer(c_int)              ,intent(in)   ,value              :: IndexBase
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: CommID
@@ -7524,7 +7524,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Map_ID_t) function Epetra_Map_Create_Linear ( NumGlobalElements, &
         NumMyElements, IndexBase, CommID ) bind(C,name='Epetra_Map_Create_Linear')
     import :: FT_Epetra_Map_ID_t ,c_int ,FT_Epetra_Comm_ID_t
-    implicit none
+    
     integer(c_int)              ,intent(in)   ,value              :: NumGlobalElements
     integer(c_int)              ,intent(in)   ,value              :: NumMyElements
     integer(c_int)              ,intent(in)   ,value              :: IndexBase
@@ -7541,7 +7541,7 @@ module forepetra  ! Companion to CEpetra_*.h
         NumMyElements, MyGlobalElements, IndexBase, CommID ) &
         bind(C,name='Epetra_Map_Create_Arbitrary')
     import :: FT_Epetra_Map_ID_t ,c_int ,FT_Epetra_Comm_ID_t
-    implicit none
+    
     integer(c_int)              ,intent(in)   ,value              :: NumGlobalElements
     integer(c_int)              ,intent(in)   ,value              :: NumMyElements
     integer(c_int)              ,intent(in)         ,dimension(*) :: MyGlobalElements
@@ -7558,7 +7558,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Map_ID_t) function Epetra_Map_Duplicate ( mapID ) &
         bind(C,name='Epetra_Map_Duplicate')
     import :: FT_Epetra_Map_ID_t
-    implicit none
+    
     type(FT_Epetra_Map_ID_t)    ,intent(in)   ,value              :: mapID
   end function
 
@@ -7570,7 +7570,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_Map_Destroy ( selfID ) bind(C,name='Epetra_Map_Destroy')
     import :: FT_Epetra_Map_ID_t
-    implicit none
+    
     type(FT_Epetra_Map_ID_t)                                      :: selfID
   end subroutine
 
@@ -7582,7 +7582,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_Map_Assign ( selfID, mapID ) bind(C,name='Epetra_Map_Assign')
     import :: FT_Epetra_Map_ID_t
-    implicit none
+    
     type(FT_Epetra_Map_ID_t)    ,intent(in)   ,value              :: selfID
     type(FT_Epetra_Map_ID_t)    ,intent(in)   ,value              :: mapID
   end subroutine
@@ -7597,7 +7597,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_BlockMap_ID_t) function Epetra_BlockMap_Cast ( id ) &
         bind(C,name='Epetra_BlockMap_Cast')
     import :: FT_Epetra_BlockMap_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -7608,7 +7608,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_BlockMap_Abstract ( id ) &
         bind(C,name='Epetra_BlockMap_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -7621,7 +7621,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_BlockMap_ID_t) function Epetra_BlockMap_Create ( NumGlobalElements, &
         ElementSize, IndexBase, CommID ) bind(C,name='Epetra_BlockMap_Create')
     import :: FT_Epetra_BlockMap_ID_t ,c_int ,FT_Epetra_Comm_ID_t
-    implicit none
+    
     integer(c_int)               ,intent(in)   ,value              :: NumGlobalElements
     integer(c_int)               ,intent(in)   ,value              :: ElementSize
     integer(c_int)               ,intent(in)   ,value              :: IndexBase
@@ -7638,7 +7638,7 @@ module forepetra  ! Companion to CEpetra_*.h
         NumMyElements, ElementSize, IndexBase, CommID ) &
         bind(C,name='Epetra_BlockMap_Create_Linear')
     import :: FT_Epetra_BlockMap_ID_t ,c_int ,FT_Epetra_Comm_ID_t
-    implicit none
+    
     integer(c_int)               ,intent(in)   ,value              :: NumGlobalElements
     integer(c_int)               ,intent(in)   ,value              :: NumMyElements
     integer(c_int)               ,intent(in)   ,value              :: ElementSize
@@ -7656,7 +7656,7 @@ module forepetra  ! Companion to CEpetra_*.h
         NumGlobalElements, NumMyElements, MyGlobalElements, ElementSize, IndexBase, CommID ) &
         bind(C,name='Epetra_BlockMap_Create_Arbitrary')
     import :: FT_Epetra_BlockMap_ID_t ,c_int ,FT_Epetra_Comm_ID_t
-    implicit none
+    
     integer(c_int)               ,intent(in)   ,value              :: NumGlobalElements
     integer(c_int)               ,intent(in)   ,value              :: NumMyElements
     integer(c_int)               ,intent(in)         ,dimension(*) :: MyGlobalElements
@@ -7675,7 +7675,7 @@ module forepetra  ! Companion to CEpetra_*.h
         NumGlobalElements, NumMyElements, MyGlobalElements, ElementSizeList, IndexBase, &
         CommID ) bind(C,name='Epetra_BlockMap_Create_Variable')
     import :: FT_Epetra_BlockMap_ID_t ,c_int ,FT_Epetra_Comm_ID_t
-    implicit none
+    
     integer(c_int)               ,intent(in)   ,value              :: NumGlobalElements
     integer(c_int)               ,intent(in)   ,value              :: NumMyElements
     integer(c_int)               ,intent(in)         ,dimension(*) :: MyGlobalElements
@@ -7693,7 +7693,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_BlockMap_ID_t) function Epetra_BlockMap_Duplicate ( mapID ) &
         bind(C,name='Epetra_BlockMap_Duplicate')
     import :: FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: mapID
   end function
 
@@ -7705,7 +7705,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_BlockMap_Destroy ( selfID ) bind(C,name='Epetra_BlockMap_Destroy')
     import :: FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t)                                  :: selfID
   end subroutine
 
@@ -7718,7 +7718,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_RemoteIDList ( selfID, NumIDs, GIDList, PIDList, &
         LIDList ) bind(C,name='Epetra_BlockMap_RemoteIDList')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: NumIDs
     integer(c_int)               ,intent(in)         ,dimension(*) :: GIDList
@@ -7735,7 +7735,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_RemoteIDList_WithSize ( selfID, NumIDs, GIDList, &
         PIDList, LIDList, SizeList ) bind(C,name='Epetra_BlockMap_RemoteIDList_WithSize')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: NumIDs
     integer(c_int)               ,intent(in)         ,dimension(*) :: GIDList
@@ -7753,7 +7753,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_LID ( selfID, GID ) &
         bind(C,name='Epetra_BlockMap_LID')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GID
   end function
@@ -7767,7 +7767,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_GID ( selfID, LID ) &
         bind(C,name='Epetra_BlockMap_GID')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LID
   end function
@@ -7781,7 +7781,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_FindLocalElementID ( selfID, PointID, ElementID, &
         ElementOffset ) bind(C,name='Epetra_BlockMap_FindLocalElementID')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: PointID
     integer(c_int)               ,intent(inout)                    :: ElementID
@@ -7797,7 +7797,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_BlockMap_MyGID ( selfID, GID_in ) &
         bind(C,name='Epetra_BlockMap_MyGID')
     import :: c_bool ,FT_Epetra_BlockMap_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GID_in
   end function
@@ -7811,7 +7811,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_BlockMap_MyLID ( selfID, LID_in ) &
         bind(C,name='Epetra_BlockMap_MyLID')
     import :: c_bool ,FT_Epetra_BlockMap_ID_t ,c_int
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LID_in
   end function
@@ -7825,7 +7825,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_MinAllGID ( selfID ) &
         bind(C,name='Epetra_BlockMap_MinAllGID')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -7838,7 +7838,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_MaxAllGID ( selfID ) &
         bind(C,name='Epetra_BlockMap_MaxAllGID')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -7851,7 +7851,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_MinMyGID ( selfID ) &
         bind(C,name='Epetra_BlockMap_MinMyGID')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -7864,7 +7864,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_MaxMyGID ( selfID ) &
         bind(C,name='Epetra_BlockMap_MaxMyGID')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -7877,7 +7877,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_MinLID ( selfID ) &
         bind(C,name='Epetra_BlockMap_MinLID')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -7890,7 +7890,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_MaxLID ( selfID ) &
         bind(C,name='Epetra_BlockMap_MaxLID')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -7903,7 +7903,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_NumGlobalElements ( selfID ) &
         bind(C,name='Epetra_BlockMap_NumGlobalElements')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -7916,7 +7916,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_NumMyElements ( selfID ) &
         bind(C,name='Epetra_BlockMap_NumMyElements')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -7929,7 +7929,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_MyGlobalElements_Fill ( selfID, &
         MyGlobalElementList ) bind(C,name='Epetra_BlockMap_MyGlobalElements_Fill')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                   ,dimension(*) :: MyGlobalElementList
   end function
@@ -7943,7 +7943,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_ElementSize_Const ( selfID ) &
         bind(C,name='Epetra_BlockMap_ElementSize_Const')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -7956,7 +7956,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_ElementSize ( selfID, LID ) &
         bind(C,name='Epetra_BlockMap_ElementSize')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LID
   end function
@@ -7970,7 +7970,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_FirstPointInElement ( selfID, LID ) &
         bind(C,name='Epetra_BlockMap_FirstPointInElement')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LID
   end function
@@ -7984,7 +7984,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_IndexBase ( selfID ) &
         bind(C,name='Epetra_BlockMap_IndexBase')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -7997,7 +7997,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_NumGlobalPoints ( selfID ) &
         bind(C,name='Epetra_BlockMap_NumGlobalPoints')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8010,7 +8010,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_NumMyPoints ( selfID ) &
         bind(C,name='Epetra_BlockMap_NumMyPoints')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8023,7 +8023,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_MinMyElementSize ( selfID ) &
         bind(C,name='Epetra_BlockMap_MinMyElementSize')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8036,7 +8036,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_MaxMyElementSize ( selfID ) &
         bind(C,name='Epetra_BlockMap_MaxMyElementSize')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8049,7 +8049,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_MinElementSize ( selfID ) &
         bind(C,name='Epetra_BlockMap_MinElementSize')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8062,7 +8062,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_MaxElementSize ( selfID ) &
         bind(C,name='Epetra_BlockMap_MaxElementSize')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8075,7 +8075,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_BlockMap_UniqueGIDs ( selfID ) &
         bind(C,name='Epetra_BlockMap_UniqueGIDs')
     import :: c_bool ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8088,7 +8088,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_BlockMap_ConstantElementSize ( selfID ) &
         bind(C,name='Epetra_BlockMap_ConstantElementSize')
     import :: c_bool ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8101,7 +8101,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_BlockMap_SameAs ( selfID, MapID ) &
         bind(C,name='Epetra_BlockMap_SameAs')
     import :: c_bool ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: MapID
   end function
@@ -8115,7 +8115,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_BlockMap_PointSameAs ( selfID, MapID ) &
         bind(C,name='Epetra_BlockMap_PointSameAs')
     import :: c_bool ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: MapID
   end function
@@ -8129,7 +8129,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_BlockMap_LinearMap ( selfID ) &
         bind(C,name='Epetra_BlockMap_LinearMap')
     import :: c_bool ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8142,7 +8142,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_BlockMap_DistributedGlobal ( selfID ) &
         bind(C,name='Epetra_BlockMap_DistributedGlobal')
     import :: c_bool ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8155,7 +8155,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_BlockMap_MyGlobalElements ( selfID ) &
         bind(C,name='Epetra_BlockMap_MyGlobalElements')
     import :: c_ptr ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8168,7 +8168,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_BlockMap_FirstPointInElementList ( selfID ) &
         bind(C,name='Epetra_BlockMap_FirstPointInElementList')
     import :: c_ptr ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8181,7 +8181,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_BlockMap_ElementSizeList ( selfID ) &
         bind(C,name='Epetra_BlockMap_ElementSizeList')
     import :: c_ptr ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8194,7 +8194,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_BlockMap_PointToElementList ( selfID ) &
         bind(C,name='Epetra_BlockMap_PointToElementList')
     import :: c_ptr ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8207,7 +8207,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_ElementSizeList_Fill ( selfID, ElementSizeList ) &
         bind(C,name='Epetra_BlockMap_ElementSizeList_Fill')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                   ,dimension(*) :: ElementSizeList
   end function
@@ -8222,7 +8222,7 @@ module forepetra  ! Companion to CEpetra_*.h
         FirstPointInElementList ) &
         bind(C,name='Epetra_BlockMap_FirstPointInElementList_Fill')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                   ,dimension(*) :: FirstPointInElementList
   end function
@@ -8236,7 +8236,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_BlockMap_PointToElementList_Fill ( selfID, &
         PointToElementList ) bind(C,name='Epetra_BlockMap_PointToElementList_Fill')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                   ,dimension(*) :: PointToElementList
   end function
@@ -8250,7 +8250,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Comm_ID_t) function Epetra_BlockMap_Comm ( selfID ) &
         bind(C,name='Epetra_BlockMap_Comm')
     import :: FT_Epetra_Comm_ID_t ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8263,7 +8263,7 @@ module forepetra  ! Companion to CEpetra_*.h
   logical(c_bool) function Epetra_BlockMap_IsOneToOne ( selfID ) &
         bind(C,name='Epetra_BlockMap_IsOneToOne')
     import :: c_bool ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8275,7 +8275,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_BlockMap_Assign ( selfID, mapID ) bind(C,name='Epetra_BlockMap_Assign')
     import :: FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: mapID
   end subroutine
@@ -8290,7 +8290,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Import_ID_t) function Epetra_Import_Cast ( id ) &
         bind(C,name='Epetra_Import_Cast')
     import :: FT_Epetra_Import_ID_t ,ForTrilinos_Object_ID_t
-    implicit none
+    
     type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -8301,7 +8301,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(ForTrilinos_Object_ID_t) function Epetra_Import_Abstract ( id ) &
         bind(C,name='Epetra_Import_Abstract')
     import :: ForTrilinos_Object_ID_t ,FT_Epetra_Import_ID_t
-    implicit none
+    
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: id
   end function
 
@@ -8314,7 +8314,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Import_ID_t) function Epetra_Import_Create ( TargetMapID, SourceMapID ) &
         bind(C,name='Epetra_Import_Create')
     import :: FT_Epetra_Import_ID_t ,FT_Epetra_BlockMap_ID_t
-    implicit none
+    
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: TargetMapID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: SourceMapID
   end function
@@ -8328,7 +8328,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Import_ID_t) function Epetra_Import_Duplicate ( ImporterID ) &
         bind(C,name='Epetra_Import_Duplicate')
     import :: FT_Epetra_Import_ID_t
-    implicit none
+    
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: ImporterID
   end function
 
@@ -8340,7 +8340,7 @@ module forepetra  ! Companion to CEpetra_*.h
 
   subroutine Epetra_Import_Destroy ( selfID ) bind(C,name='Epetra_Import_Destroy')
     import :: FT_Epetra_Import_ID_t
-    implicit none
+    
     type(FT_Epetra_Import_ID_t)                                   :: selfID
   end subroutine
 
@@ -8353,7 +8353,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Import_NumSameIDs ( selfID ) &
         bind(C,name='Epetra_Import_NumSameIDs')
     import :: c_int ,FT_Epetra_Import_ID_t
-    implicit none
+    
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8366,7 +8366,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Import_NumPermuteIDs ( selfID ) &
         bind(C,name='Epetra_Import_NumPermuteIDs')
     import :: c_int ,FT_Epetra_Import_ID_t
-    implicit none
+    
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8379,7 +8379,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_Import_PermuteFromLIDs ( selfID ) &
         bind(C,name='Epetra_Import_PermuteFromLIDs')
     import :: c_ptr ,FT_Epetra_Import_ID_t
-    implicit none
+    
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8392,7 +8392,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_Import_PermuteToLIDs ( selfID ) &
         bind(C,name='Epetra_Import_PermuteToLIDs')
     import :: c_ptr ,FT_Epetra_Import_ID_t
-    implicit none
+    
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8405,7 +8405,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Import_NumRemoteIDs ( selfID ) &
         bind(C,name='Epetra_Import_NumRemoteIDs')
     import :: c_int ,FT_Epetra_Import_ID_t
-    implicit none
+    
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8418,7 +8418,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_Import_RemoteLIDs ( selfID ) &
         bind(C,name='Epetra_Import_RemoteLIDs')
     import :: c_ptr ,FT_Epetra_Import_ID_t
-    implicit none
+    
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8431,7 +8431,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Import_NumExportIDs ( selfID ) &
         bind(C,name='Epetra_Import_NumExportIDs')
     import :: c_int ,FT_Epetra_Import_ID_t
-    implicit none
+    
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8444,7 +8444,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_Import_ExportLIDs ( selfID ) &
         bind(C,name='Epetra_Import_ExportLIDs')
     import :: c_ptr ,FT_Epetra_Import_ID_t
-    implicit none
+    
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8457,7 +8457,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(c_ptr) function Epetra_Import_ExportPIDs ( selfID ) &
         bind(C,name='Epetra_Import_ExportPIDs')
     import :: c_ptr ,FT_Epetra_Import_ID_t
-    implicit none
+    
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8470,7 +8470,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Import_NumSend ( selfID ) &
         bind(C,name='Epetra_Import_NumSend')
     import :: c_int ,FT_Epetra_Import_ID_t
-    implicit none
+    
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8483,7 +8483,7 @@ module forepetra  ! Companion to CEpetra_*.h
   integer(c_int) function Epetra_Import_NumRecv ( selfID ) &
         bind(C,name='Epetra_Import_NumRecv')
     import :: c_int ,FT_Epetra_Import_ID_t
-    implicit none
+    
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8496,7 +8496,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_BlockMap_ID_t) function Epetra_Import_SourceMap ( selfID ) &
         bind(C,name='Epetra_Import_SourceMap')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_Import_ID_t
-    implicit none
+    
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8509,7 +8509,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_BlockMap_ID_t) function Epetra_Import_TargetMap ( selfID ) &
         bind(C,name='Epetra_Import_TargetMap')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_Import_ID_t
-    implicit none
+    
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8522,7 +8522,7 @@ module forepetra  ! Companion to CEpetra_*.h
   type(FT_Epetra_Distributor_ID_t) function Epetra_Import_Distributor ( selfID ) &
         bind(C,name='Epetra_Import_Distributor')
     import :: FT_Epetra_Distributor_ID_t ,FT_Epetra_Import_ID_t
-    implicit none
+    
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 

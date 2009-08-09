@@ -1,5 +1,7 @@
 module FEpetra_Comm
-use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t
+use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t ,ForTrilinos_Object_ID_t
+use ForTrilinos_universal ,only : universal
+use forepetra
 implicit none
 
 type ,extends(universal) :: epetra_comm
@@ -8,15 +10,26 @@ type ,extends(universal) :: epetra_comm
 contains
   procedure :: clone
   procedure :: generalize => epetra_comm_generalize
-  procedure :: final_subroutine => finalize
+  procedure :: invoke_final_subroutine => call_final
   final :: finalize
 end type
 
-interface epetra_comm_ ! We can remove trailing underscore on Fortran 2003-compliant compilers
+interface epetra_comm
   procedure constructor
 end interface
 
 contains
+  subroutine call_final(this)
+    class(epetra_comm) ,intent(inout) :: this
+    call finalize(this)
+  end subroutine
+
+  ! CTrilinos_Object_ID_t Epetra_Comm_Abstract (CT_Epetra_Comm_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function epetra_comm_generalize(this) 
+    class(epetra_comm) ,intent(in) :: this
+    epetra_comm_generalize = Epetra_Comm_Abstract ( this%selfID )
+  end function
   
   type(epetra_comm) function constructor(comm)
     class(universal) ,intent(in) :: comm
@@ -42,5 +55,4 @@ contains
     type(epetra_comm) :: this
     call Epetra_Comm_Destroy ( this%selfID ) 
   end subroutine
-
 end module 

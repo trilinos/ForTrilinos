@@ -1,4 +1,4 @@
-module universal_module
+module ForTrilinos_universal
   use ForTrilinos_hermetic ,only : hermetic
   implicit none
   type ,abstract ,public ,extends(hermetic) :: universal

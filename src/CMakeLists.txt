@@ -1,4 +1,8 @@
 
+IF("${CMAKE_Fortran_COMPILER_ID}" MATCHES "VisualAge|XL")
+    SET(CMAKE_Fortran_FLAGS "${CMake_Fortran_FLAGS} -qxlf2003=polymorphic -qxlf2003=autorealloc -WF,-C!")
+ENDIF()
+
 INCLUDE(PackageLibraryMacros)
 
 #
@@ -17,6 +21,7 @@ SET(SOURCES "")
 SET_AND_INC_DIRS(DIR ${CMAKE_CURRENT_SOURCE_DIR}/epetra)
 #APPEND_GLOB(HEADERS ${DIR}/*.hpp ${DIR}/*.h)
 APPEND_GLOB(SOURCES ${DIR}/*.f90)
+APPEND_GLOB(SOURCES ${DIR}/*.F90)
 
 # Set the base Trilinos directory in order to find Trilinos_version.h
 
