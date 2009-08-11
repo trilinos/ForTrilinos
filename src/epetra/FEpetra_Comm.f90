@@ -1,22 +1,22 @@
 module FEpetra_Comm
-use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t ,ForTrilinos_Object_ID_t
-use ForTrilinos_universal ,only : universal
-use forepetra
-implicit none
+  use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t ,ForTrilinos_Object_ID_t
+  use ForTrilinos_universal ,only : universal
+  use forepetra
+  implicit none
 
-type ,extends(universal) :: epetra_comm
-  private
-  type(FT_Epetra_Comm_ID_t) :: selfID
-contains
-  procedure :: clone
-  procedure :: generalize => epetra_comm_generalize
-  procedure :: invoke_final_subroutine => call_final
-  final :: finalize
-end type
-
-interface epetra_comm
-  procedure constructor
-end interface
+  type ,extends(universal) :: epetra_comm
+    private
+    type(FT_Epetra_Comm_ID_t) :: selfID
+  contains
+    procedure :: clone
+    procedure :: generalize => epetra_comm_generalize
+    procedure :: invoke_final_subroutine => call_final
+    final :: finalize
+  end type
+  
+  interface epetra_comm
+    procedure constructor
+  end interface
 
 contains
   subroutine call_final(this)

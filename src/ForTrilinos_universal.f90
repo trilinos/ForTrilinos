@@ -1,5 +1,6 @@
 module ForTrilinos_universal
   use ForTrilinos_hermetic ,only : hermetic
+  use ForTrilinos_enums ,only : ForTrilinos_Object_ID_t
   implicit none
   type ,abstract ,public ,extends(hermetic) :: universal
   contains
@@ -11,8 +12,7 @@ module ForTrilinos_universal
 
   abstract interface
     type(ForTrilinos_Object_ID_t) function generalize_interface(this)
-      use ForTrilinos_enums ,only : ForTrilinos_Object_ID_t
-      import :: universal
+      import :: universal,ForTrilinos_Object_ID_t
       class(universal) ,intent(in) :: this
     end function
   end interface

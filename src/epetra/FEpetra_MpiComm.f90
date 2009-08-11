@@ -1,4 +1,4 @@
-module FEpetra_Comm
+module FEpetra_MpiComm
 use ForTrilinos_enums ,only : FT_Epetra_MpiComm_ID_t
 implicit none
 
