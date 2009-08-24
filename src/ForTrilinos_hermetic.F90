@@ -20,7 +20,7 @@ module ForTrilinos_hermetic
     procedure :: GuardTemp    ! Increment the reference count
     procedure :: CleanTemp    ! Decrement ref count & destroy when zero
     procedure :: is_temporary ! Check for temporary mark
-    procedure(final_interface) ,deferred :: invoke_final_subroutine
+    procedure(final_interface) ,deferred :: force_finalization
   end type
 
   abstract interface
@@ -49,12 +49,12 @@ contains
   subroutine CleanTemp(this) 
     class(hermetic) :: this 
     integer, pointer :: t 
-    if (this%is_temporary()) then           ! If temporary, 
+    if (this%is_temporary()) then      ! If temporary, 
       t=>this%temporary 
       if (t > 1) then
-        t = t - 1                           ! then decrement reference count
-      else if (t == 1) then                 ! else if no references left,
-        call this%invoke_final_subroutine() ! then call destructor.
+        t = t - 1                      ! then decrement reference count
+      else if (t == 1) then            ! else if no references left,
+        call this%force_finalization() ! then call destructor.
         deallocate(t) 
       end if 
     end if 
