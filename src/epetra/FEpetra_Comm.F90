@@ -48,7 +48,7 @@ contains
    !  end function
    !end interface
 
-    epetra_comm_generalize = Epetra_Comm_Abstract ( this%selfID )
+    epetra_comm_generalize =  Epetra_Comm_Abstract (      this%selfID  )
    !epetra_comm_generalize = FEpetra_Comm_Abstract( c_loc(this%selfID) )
   end function
   
@@ -56,9 +56,12 @@ contains
     class(universal) ,intent(in) :: comm
    !constructor%self_ID = Epetra_Comm_Cast(comm%generalize())
     select type(comm)
-     !class is (epetra_comm)
       type is (epetra_comm)
         constructor%selfID = Epetra_Comm_Cast( comm%generalize() )
+     !type is (epetra_mpicomm)
+     !  constructor%selfID = Epetra_Comm_Cast( comm%generalize() )
+     !type is (epetra_serialcomm)
+     !  constructor%selfID = Epetra_Comm_Cast( comm%generalize() )
       class default
         stop 'epetra_comm constructor: argument type not supported'
     end select

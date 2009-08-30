@@ -6,10 +6,14 @@ program main
  ! As such, it makes direct use of the procedural bindings in forepetra.F90.
  ! This style of accessing Trilinos is recommended for Fortran users whose
  ! compilers do not support the object-oriented features of Fortran 2003.
+ ! 
   
  !/*
  ! * Data declarations 
  ! */
+
+  if (.not. valid_kind_parameters()) &
+    stop 'In ForTrilinos (verySimple.F90): C interoperability not supported on this platform.'
 
   integer(c_int) numGlobalElements, numGlobalElements_rtn ;
 

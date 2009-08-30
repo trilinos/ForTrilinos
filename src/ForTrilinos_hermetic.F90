@@ -5,12 +5,11 @@ module ForTrilinos_hermetic
   private
   public :: hermetic ! Expose type and type-bound procedures
 
-  ! This module provides a base type that all ForTrilinos types should extend
-  ! in order to inherit its memory management utilities that are useful in compilers
-  ! that do not yet support Fortran 2003 final subroutines (destructors).
-  ! The type-bound proceures are modeled after those published by 
-  ! G. W. Stewart (2003) "Memory leaks in derived types revisited,"
-  ! ACM Fortran Forum 22:3, 25-27.
+  ! This module provides a base type that all ForTrilinos types should extend in order to
+  ! inherit its memory management utilities.  These utilities are useful to work around 
+  ! compilers that do not yet support Fortran 2003 final subroutines.  The type-bound
+  ! procedures are modeled after those published by G. W. Stewart (2003) "Memory leaks in
+  ! derived types revisited," ACM Fortran Forum 22:3, 25-27.
 
   type ,abstract :: hermetic
     private
