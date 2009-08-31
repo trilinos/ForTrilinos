@@ -4,7 +4,8 @@ INCLUDE(PackageAddExecutableAndTest)
 
 PACKAGE_ADD_EXECUTABLE_AND_TEST(
   simpleEpetraOOFortranExample
-  SOURCES simpleEpetraOOFortranExample.f90 interoperability_check.f90
+#  SOURCES simpleEpetraOOFortranExample.F90 interoperability_check.F90
+  SOURCES interoperability_check.F90
   COMM serial mpi
   NUM_MPI_PROCS 1
   ARGS -v
