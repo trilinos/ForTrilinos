@@ -2305,7 +2305,7 @@ module forepetra  ! Companion to CEpetra_*.h
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
-    real(c_double)                                      ,dimension(*) :: Result
+    real(c_double)                                                    :: Result
   end function
 
 
