@@ -31,7 +31,11 @@ module ForTrilinos_enums
       FT_Epetra_Export_ID,            &
       FT_Epetra_Map_ID,               &
       FT_Epetra_BlockMap_ID,          &
-      FT_Epetra_Import_ID
+      FT_Epetra_Import_ID,            &
+      FT_Epetra_Time_ID,              &
+      FT_Epetra_JadMatrix_ID,         &
+      FT_Epetra_LinearProblem_ID,     &
+      FT_Epetra_LAPACK_ID
   end enum
 
   ! Since the Fortran 2003 standard guarantees that enum values correspond to C int values, we can create
@@ -118,6 +122,18 @@ module ForTrilinos_enums
   type ,bind(C) :: FT_Epetra_Import_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
+  type ,bind(C) :: FT_Epetra_Time_ID_t
+    integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
+  end type
+  type ,bind(C) :: FT_Epetra_JadMatrix_ID_t
+    integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
+  end type
+  type ,bind(C) :: FT_Epetra_LinearProblem_ID_t
+    integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
+  end type
+  type ,bind(C) :: FT_Epetra_LAPACK_ID_t
+    integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
+  end type
 
   ! Epetra_DataAcces
 
@@ -141,6 +157,64 @@ module ForTrilinos_enums
       FT_Epetra_CombineMode_E_InsertAdd, &
       FT_Epetra_CombineMode_E_Average,   &
       FT_Epetra_CombineMode_E_AbsMax
+  end enum
+
+  ! ProblemDifficultyLevel
+
+  integer(kind(c_int)) ,parameter :: FT_ProblemDifficultyLevel_E_t = c_int
+
+  enum ,bind(C)
+    enumerator ::                           &
+      FT_ProblemDifficultyLevel_E_easy,     &
+      FT_ProblemDifficultyLevel_E_moderate, &
+      FT_ProblemDifficultyLevel_E_hard,     &
+      FT_ProblemDifficultyLevel_E_unsure
+  end enum
+
+  ! EParseCommandLineReturn
+
+  integer(kind(c_int)) ,parameter :: FT_EParseCommandLineReturn_E_t = c_int
+
+  enum ,bind(C)
+    enumerator ::             &
+      FT_EParseCommandLineReturn_E_PARSE_SUCCESSFUL = 0,   &
+      FT_EParseCommandLineReturn_E_PARSE_HELP_PRINTED = 1, &
+      FT_EParseCommandLineReturn_E_UNRECOGNIZED_OPTION = 2
+  end enum
+
+  ! EOptType
+
+  integer(kind(c_int)) ,parameter :: FT_EOptType_E_t = c_int
+
+  enum ,bind(C)
+    enumerator ::     &
+      FT_EOptType_E_OPT_NONE,       &
+      FT_EOptType_E_OPT_BOOL_TRUE,  &
+      FT_EOptType_E_OPT_BOOL_FALSE, &
+      FT_EOptType_E_OPT_INT,        &
+      FT_EOptType_E_OPT_DOUBLE,     &
+      FT_EOptType_E_OPT_STRING,     &
+      FT_EOptType_E_OPT_ENUM_INT
+  end enum
+
+  ! EValidateUsed
+
+  integer(kind(c_int)) ,parameter :: FT_EValidateUsed_E_t = c_int
+
+  enum ,bind(C)
+    enumerator ::            &
+      FT_EValidateUsed_E_VALIDATE_USED_ENABLED, &
+      FT_EValidateUsed_E_VALIDATE_USED_DISABLED
+  end enum
+
+  ! EValidateDefaults
+
+  integer(kind(c_int)) ,parameter :: FT_EValidateDefaults_E_t = c_int
+
+  enum ,bind(C)
+    enumerator ::                &
+      FT_EValidateDefaults_E_VALIDATE_DEFAULTS_ENABLED, &
+      FT_EValidateDefaults_E_VALIDATE_DEFAULTS_DISABLED
   end enum
 
 end module ForTrilinos_enums

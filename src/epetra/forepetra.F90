@@ -1,6 +1,6 @@
-module forepetra  ! Companion to CEpetra_*.h
-  use iso_c_binding ,only : c_int,c_double,c_char,c_bool,c_ptr,c_long,c_float 
-  use fortrilinos_enums
+module forepetra
+  use iso_c_binding ,only : c_int,c_double,c_char,c_bool,c_ptr,c_long,c_float
+  use ForTrilinos_enums
   implicit none   ! Prevent implicit typing
 
   ! This file provides Fortran interface blocks that bind the argument types,
@@ -1876,7 +1876,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! Epetra_MultiVector(Epetra_DataAccess CV, const Epetra_BlockMap& Map, double *A, int MyLDA, int NumVectors);
   ! CTrilinos prototype:
-  ! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_From2DA ( Epetra_DataAccess CV, CT_Epetra_BlockMap_ID_t MapID, double * A, int MyLDA, int NumVectors );
+  ! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_From2DA ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t MapID, double * A, int MyLDA, int NumVectors );
 
   type(FT_Epetra_MultiVector_ID_t) function Epetra_MultiVector_Create_From2DA ( CV, MapID, &
         A, MyLDA, NumVectors ) bind(C,name='Epetra_MultiVector_Create_From2DA')
@@ -1894,7 +1894,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! Epetra_MultiVector(Epetra_DataAccess CV, const Epetra_BlockMap& Map, double **ArrayOfPointers, int NumVectors);
   ! CTrilinos prototype:
-  ! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_FromAOP ( Epetra_DataAccess CV, CT_Epetra_BlockMap_ID_t MapID, double ** ArrayOfPointers, int NumVectors );
+  ! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_FromAOP ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t MapID, double ** ArrayOfPointers, int NumVectors );
 
   type(FT_Epetra_MultiVector_ID_t) function Epetra_MultiVector_Create_FromAOP ( CV, MapID, &
         ArrayOfPointers, NumVectors ) bind(C,name='Epetra_MultiVector_Create_FromAOP')
@@ -1911,7 +1911,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! Epetra_MultiVector(Epetra_DataAccess CV, const Epetra_MultiVector& Source, int *Indices, int NumVectors);
   ! CTrilinos prototype:
-  ! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_FromList ( Epetra_DataAccess CV, CT_Epetra_MultiVector_ID_t SourceID, int * Indices, int NumVectors );
+  ! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_FromList ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_MultiVector_ID_t SourceID, int * Indices, int NumVectors );
 
   type(FT_Epetra_MultiVector_ID_t) function Epetra_MultiVector_Create_FromList ( CV, &
         SourceID, Indices, NumVectors ) bind(C,name='Epetra_MultiVector_Create_FromList')
@@ -1927,7 +1927,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! Epetra_MultiVector(Epetra_DataAccess CV, const Epetra_MultiVector& Source, int StartIndex, int NumVectors);
   ! CTrilinos prototype:
-  ! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_FromRange ( Epetra_DataAccess CV, CT_Epetra_MultiVector_ID_t SourceID, int StartIndex, int NumVectors );
+  ! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_FromRange ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_MultiVector_ID_t SourceID, int StartIndex, int NumVectors );
 
   type(FT_Epetra_MultiVector_ID_t) function Epetra_MultiVector_Create_FromRange ( CV, &
         SourceID, StartIndex, NumVectors ) &
@@ -2305,7 +2305,7 @@ module forepetra  ! Companion to CEpetra_*.h
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
-    real(c_double)                                                    :: Result
+    real(c_double)                                      ,dimension(*) :: Result
   end function
 
 
@@ -2807,9 +2807,34 @@ module forepetra  ! Companion to CEpetra_*.h
 
 
   ! Original C++ prototype:
+  ! static void SetTracebackMode(int TracebackModeValue);
+  ! CTrilinos prototype:
+  ! void Epetra_Object_SetTracebackMode ( int TracebackModeValue );
+
+  subroutine Epetra_Object_SetTracebackMode ( TracebackModeValue ) &
+        bind(C,name='Epetra_Object_SetTracebackMode')
+    import :: c_int
+    
+    integer(c_int)              ,intent(in)   ,value              :: TracebackModeValue
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! static int GetTracebackMode();
+  ! CTrilinos prototype:
+  ! int Epetra_Object_GetTracebackMode (  );
+
+  integer(c_int) function Epetra_Object_GetTracebackMode (  ) &
+        bind(C,name='Epetra_Object_GetTracebackMode')
+    import :: c_int
+    
+  end function
+
+
+  ! Original C++ prototype:
   ! virtual int ReportError(const string Message, int ErrorCode) const;
   ! CTrilinos prototype:
-  ! int Epetra_Object_ReportError ( CT_Epetra_Object_ID_t selfID, const char * const Message, int ErrorCode );
+  ! int Epetra_Object_ReportError ( CT_Epetra_Object_ID_t selfID, const char Message[], int ErrorCode );
 
   integer(c_int) function Epetra_Object_ReportError ( selfID, Message, ErrorCode ) &
         bind(C,name='Epetra_Object_ReportError')
@@ -3687,9 +3712,9 @@ module forepetra  ! Companion to CEpetra_*.h
 
   type(FT_Epetra_MpiComm_ID_t) function Epetra_MpiComm_Create ( comm ) &
         bind(C,name='Epetra_MpiComm_Create')
-    import :: FT_Epetra_MpiComm_ID_t ,FT_MPI_Comm_E_t
+    import :: FT_Epetra_MpiComm_ID_t ,MPI_Comm
     
-    integer(FT_MPI_Comm_E_t)    ,intent(in)   ,value              :: comm
+    MPI_Comm                    ,intent(in)   ,value              :: comm
   end function
 
 
@@ -4052,9 +4077,8 @@ module forepetra  ! Companion to CEpetra_*.h
   ! CTrilinos prototype:
   ! MPI_Comm Epetra_MpiComm_Comm ( CT_Epetra_MpiComm_ID_t selfID );
 
-  integer(FT_MPI_Comm_E_t) function Epetra_MpiComm_Comm ( selfID ) &
-        bind(C,name='Epetra_MpiComm_Comm')
-    import :: FT_MPI_Comm_E_t ,FT_Epetra_MpiComm_ID_t
+  MPI_Comm function Epetra_MpiComm_Comm ( selfID ) bind(C,name='Epetra_MpiComm_Comm')
+    import :: MPI_Comm ,FT_Epetra_MpiComm_ID_t
     
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -4131,9 +4155,9 @@ module forepetra  ! Companion to CEpetra_*.h
   ! CTrilinos prototype:
   ! MPI_Comm Epetra_MpiComm_GetMpiComm ( CT_Epetra_MpiComm_ID_t selfID );
 
-  integer(FT_MPI_Comm_E_t) function Epetra_MpiComm_GetMpiComm ( selfID ) &
+  MPI_Comm function Epetra_MpiComm_GetMpiComm ( selfID ) &
         bind(C,name='Epetra_MpiComm_GetMpiComm')
-    import :: FT_MPI_Comm_E_t ,FT_Epetra_MpiComm_ID_t
+    import :: MPI_Comm ,FT_Epetra_MpiComm_ID_t
     
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -4183,7 +4207,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const int* NumEntriesPerRow, bool StaticProfile = false);
   ! CTrilinos prototype:
-  ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_VarPerRow ( Epetra_DataAccess CV, CT_Epetra_Map_ID_t RowMapID, const int * NumEntriesPerRow, boolean StaticProfile );
+  ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_VarPerRow ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, const int * NumEntriesPerRow, boolean StaticProfile );
 
   type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Create_VarPerRow ( CV, RowMapID, &
         NumEntriesPerRow, StaticProfile ) bind(C,name='Epetra_CrsMatrix_Create_VarPerRow')
@@ -4200,7 +4224,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, int NumEntriesPerRow, bool StaticProfile = false);
   ! CTrilinos prototype:
-  ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create ( Epetra_DataAccess CV, CT_Epetra_Map_ID_t RowMapID, int NumEntriesPerRow, boolean StaticProfile );
+  ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, int NumEntriesPerRow, boolean StaticProfile );
 
   type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Create ( CV, RowMapID, &
         NumEntriesPerRow, StaticProfile ) bind(C,name='Epetra_CrsMatrix_Create')
@@ -4217,7 +4241,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const Epetra_Map& ColMap, const int* NumEntriesPerRow, bool StaticProfile = false);
   ! CTrilinos prototype:
-  ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_VarPerRow_WithColMap ( Epetra_DataAccess CV, CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, const int * NumEntriesPerRow, boolean StaticProfile );
+  ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_VarPerRow_WithColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, const int * NumEntriesPerRow, boolean StaticProfile );
 
   type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Create_VarPerRow_WithColMap ( CV, &
         RowMapID, ColMapID, NumEntriesPerRow, StaticProfile ) &
@@ -4236,7 +4260,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const Epetra_Map& ColMap, int NumEntriesPerRow, bool StaticProfile = false);
   ! CTrilinos prototype:
-  ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_WithColMap ( Epetra_DataAccess CV, CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, int NumEntriesPerRow, boolean StaticProfile );
+  ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_WithColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, int NumEntriesPerRow, boolean StaticProfile );
 
   type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Create_WithColMap ( CV, RowMapID, &
         ColMapID, NumEntriesPerRow, StaticProfile ) &
@@ -4255,7 +4279,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_CrsGraph& Graph);
   ! CTrilinos prototype:
-  ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_FromGraph ( Epetra_DataAccess CV, CT_Epetra_CrsGraph_ID_t GraphID );
+  ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_FromGraph ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_CrsGraph_ID_t GraphID );
 
   type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Create_FromGraph ( CV, GraphID ) &
         bind(C,name='Epetra_CrsMatrix_Create_FromGraph')
@@ -5716,7 +5740,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! Epetra_CrsGraph(Epetra_DataAccess CV, const Epetra_BlockMap& RowMap, const int* NumIndicesPerRow, bool StaticProfile = false);
   ! CTrilinos prototype:
-  ! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create_VarPerRow ( Epetra_DataAccess CV, CT_Epetra_BlockMap_ID_t RowMapID, const int * NumIndicesPerRow, boolean StaticProfile );
+  ! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create_VarPerRow ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t RowMapID, const int * NumIndicesPerRow, boolean StaticProfile );
 
   type(FT_Epetra_CrsGraph_ID_t) function Epetra_CrsGraph_Create_VarPerRow ( CV, RowMapID, &
         NumIndicesPerRow, StaticProfile ) bind(C,name='Epetra_CrsGraph_Create_VarPerRow')
@@ -5733,7 +5757,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! Epetra_CrsGraph(Epetra_DataAccess CV, const Epetra_BlockMap& RowMap, int NumIndicesPerRow, bool StaticProfile = false);
   ! CTrilinos prototype:
-  ! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create ( Epetra_DataAccess CV, CT_Epetra_BlockMap_ID_t RowMapID, int NumIndicesPerRow, boolean StaticProfile );
+  ! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t RowMapID, int NumIndicesPerRow, boolean StaticProfile );
 
   type(FT_Epetra_CrsGraph_ID_t) function Epetra_CrsGraph_Create ( CV, RowMapID, &
         NumIndicesPerRow, StaticProfile ) bind(C,name='Epetra_CrsGraph_Create')
@@ -5750,7 +5774,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! Epetra_CrsGraph(Epetra_DataAccess CV, const Epetra_BlockMap& RowMap, const Epetra_BlockMap& ColMap, const int* NumIndicesPerRow, bool StaticProfile = false);
   ! CTrilinos prototype:
-  ! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create_VarPerRow_WithColMap ( Epetra_DataAccess CV, CT_Epetra_BlockMap_ID_t RowMapID, CT_Epetra_BlockMap_ID_t ColMapID, const int * NumIndicesPerRow, boolean StaticProfile );
+  ! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create_VarPerRow_WithColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t RowMapID, CT_Epetra_BlockMap_ID_t ColMapID, const int * NumIndicesPerRow, boolean StaticProfile );
 
   type(FT_Epetra_CrsGraph_ID_t) function Epetra_CrsGraph_Create_VarPerRow_WithColMap ( CV, &
         RowMapID, ColMapID, NumIndicesPerRow, StaticProfile ) &
@@ -5769,7 +5793,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! Epetra_CrsGraph(Epetra_DataAccess CV, const Epetra_BlockMap& RowMap, const Epetra_BlockMap& ColMap, int NumIndicesPerRow, bool StaticProfile = false);
   ! CTrilinos prototype:
-  ! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create_With_ColMap ( Epetra_DataAccess CV, CT_Epetra_BlockMap_ID_t RowMapID, CT_Epetra_BlockMap_ID_t ColMapID, int NumIndicesPerRow, boolean StaticProfile );
+  ! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create_With_ColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t RowMapID, CT_Epetra_BlockMap_ID_t ColMapID, int NumIndicesPerRow, boolean StaticProfile );
 
   type(FT_Epetra_CrsGraph_ID_t) function Epetra_CrsGraph_Create_With_ColMap ( CV, RowMapID, &
         ColMapID, NumIndicesPerRow, StaticProfile ) &
@@ -6849,7 +6873,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! int Import(const Epetra_SrcDistObject& A, const Epetra_Import& Importer, Epetra_CombineMode CombineMode, const Epetra_OffsetIndex * Indexor = 0);
   ! CTrilinos prototype:
-  ! int Epetra_DistObject_Import ( CT_Epetra_DistObject_ID_t selfID, CT_Epetra_SrcDistObject_ID_t AID, CT_Epetra_Import_ID_t ImporterID, Epetra_CombineMode CombineMode, CT_Epetra_OffsetIndex_ID_t IndexorID );
+  ! int Epetra_DistObject_Import ( CT_Epetra_DistObject_ID_t selfID, CT_Epetra_SrcDistObject_ID_t AID, CT_Epetra_Import_ID_t ImporterID, CT_Epetra_CombineMode_E_t CombineMode, CT_Epetra_OffsetIndex_ID_t IndexorID );
 
   integer(c_int) function Epetra_DistObject_Import ( selfID, AID, ImporterID, CombineMode, &
         IndexorID ) bind(C,name='Epetra_DistObject_Import')
@@ -6867,7 +6891,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! int Import(const Epetra_SrcDistObject& A, const Epetra_Export& Exporter, Epetra_CombineMode CombineMode, const Epetra_OffsetIndex * Indexor = 0);
   ! CTrilinos prototype:
-  ! int Epetra_DistObject_Import_UsingExporter ( CT_Epetra_DistObject_ID_t selfID, CT_Epetra_SrcDistObject_ID_t AID, CT_Epetra_Export_ID_t ExporterID, Epetra_CombineMode CombineMode, CT_Epetra_OffsetIndex_ID_t IndexorID );
+  ! int Epetra_DistObject_Import_UsingExporter ( CT_Epetra_DistObject_ID_t selfID, CT_Epetra_SrcDistObject_ID_t AID, CT_Epetra_Export_ID_t ExporterID, CT_Epetra_CombineMode_E_t CombineMode, CT_Epetra_OffsetIndex_ID_t IndexorID );
 
   integer(c_int) function Epetra_DistObject_Import_UsingExporter ( selfID, AID, ExporterID, &
         CombineMode, IndexorID ) bind(C,name='Epetra_DistObject_Import_UsingExporter')
@@ -6885,7 +6909,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! int Export(const Epetra_SrcDistObject& A, const Epetra_Import & Importer, Epetra_CombineMode CombineMode, const Epetra_OffsetIndex * Indexor = 0);
   ! CTrilinos prototype:
-  ! int Epetra_DistObject_Export_UsingImporter ( CT_Epetra_DistObject_ID_t selfID, CT_Epetra_SrcDistObject_ID_t AID, CT_Epetra_Import_ID_t ImporterID, Epetra_CombineMode CombineMode, CT_Epetra_OffsetIndex_ID_t IndexorID );
+  ! int Epetra_DistObject_Export_UsingImporter ( CT_Epetra_DistObject_ID_t selfID, CT_Epetra_SrcDistObject_ID_t AID, CT_Epetra_Import_ID_t ImporterID, CT_Epetra_CombineMode_E_t CombineMode, CT_Epetra_OffsetIndex_ID_t IndexorID );
 
   integer(c_int) function Epetra_DistObject_Export_UsingImporter ( selfID, AID, ImporterID, &
         CombineMode, IndexorID ) bind(C,name='Epetra_DistObject_Export_UsingImporter')
@@ -6903,7 +6927,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! int Export(const Epetra_SrcDistObject& A, const Epetra_Export& Exporter, Epetra_CombineMode CombineMode, const Epetra_OffsetIndex * Indexor = 0);
   ! CTrilinos prototype:
-  ! int Epetra_DistObject_Export ( CT_Epetra_DistObject_ID_t selfID, CT_Epetra_SrcDistObject_ID_t AID, CT_Epetra_Export_ID_t ExporterID, Epetra_CombineMode CombineMode, CT_Epetra_OffsetIndex_ID_t IndexorID );
+  ! int Epetra_DistObject_Export ( CT_Epetra_DistObject_ID_t selfID, CT_Epetra_SrcDistObject_ID_t AID, CT_Epetra_Export_ID_t ExporterID, CT_Epetra_CombineMode_E_t CombineMode, CT_Epetra_OffsetIndex_ID_t IndexorID );
 
   integer(c_int) function Epetra_DistObject_Export ( selfID, AID, ExporterID, CombineMode, &
         IndexorID ) bind(C,name='Epetra_DistObject_Export')
@@ -7012,7 +7036,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! Epetra_Vector(Epetra_DataAccess CV, const Epetra_BlockMap& Map, double *V);
   ! CTrilinos prototype:
-  ! CT_Epetra_Vector_ID_t Epetra_Vector_Create_FromArray ( Epetra_DataAccess CV, CT_Epetra_BlockMap_ID_t MapID, double * V );
+  ! CT_Epetra_Vector_ID_t Epetra_Vector_Create_FromArray ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t MapID, double * V );
 
   type(FT_Epetra_Vector_ID_t) function Epetra_Vector_Create_FromArray ( CV, MapID, V ) &
         bind(C,name='Epetra_Vector_Create_FromArray')
@@ -7028,7 +7052,7 @@ module forepetra  ! Companion to CEpetra_*.h
   ! Original C++ prototype:
   ! Epetra_Vector(Epetra_DataAccess CV, const Epetra_MultiVector& Source, int Index);
   ! CTrilinos prototype:
-  ! CT_Epetra_Vector_ID_t Epetra_Vector_FromSource ( Epetra_DataAccess CV, CT_Epetra_MultiVector_ID_t SourceID, int Index );
+  ! CT_Epetra_Vector_ID_t Epetra_Vector_FromSource ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_MultiVector_ID_t SourceID, int Index );
 
   type(FT_Epetra_Vector_ID_t) function Epetra_Vector_FromSource ( CV, SourceID, Index ) &
         bind(C,name='Epetra_Vector_FromSource')
@@ -8525,6 +8549,2751 @@ module forepetra  ! Companion to CEpetra_*.h
     
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
+
+
+  ! _________________ Epetra_Time interface bodies _________________
+
+
+  ! CTrilinos prototype:
+  ! CT_Epetra_Time_ID_t Epetra_Time_Cast ( CTrilinos_Object_ID_t id );
+
+  type(FT_Epetra_Time_ID_t) function Epetra_Time_Cast ( id ) &
+        bind(C,name='Epetra_Time_Cast')
+    import :: FT_Epetra_Time_ID_t ,ForTrilinos_Object_ID_t
+    
+    type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+  end function
+
+
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_Time_Abstract ( CT_Epetra_Time_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_Time_Abstract ( id ) &
+        bind(C,name='Epetra_Time_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Time_ID_t
+    
+    type(FT_Epetra_Time_ID_t)   ,intent(in)   ,value              :: id
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_Time(const Epetra_Comm & Comm);
+  ! CTrilinos prototype:
+  ! CT_Epetra_Time_ID_t Epetra_Time_Create ( CT_Epetra_Comm_ID_t CommID );
+
+  type(FT_Epetra_Time_ID_t) function Epetra_Time_Create ( CommID ) &
+        bind(C,name='Epetra_Time_Create')
+    import :: FT_Epetra_Time_ID_t ,FT_Epetra_Comm_ID_t
+    
+    type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: CommID
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_Time(const Epetra_Time& Time);
+  ! CTrilinos prototype:
+  ! CT_Epetra_Time_ID_t Epetra_Time_Duplicate ( CT_Epetra_Time_ID_t TimeID );
+
+  type(FT_Epetra_Time_ID_t) function Epetra_Time_Duplicate ( TimeID ) &
+        bind(C,name='Epetra_Time_Duplicate')
+    import :: FT_Epetra_Time_ID_t
+    
+    type(FT_Epetra_Time_ID_t)   ,intent(in)   ,value              :: TimeID
+  end function
+
+
+  ! Original C++ prototype:
+  ! double WallTime(void) const;
+  ! CTrilinos prototype:
+  ! double Epetra_Time_WallTime ( CT_Epetra_Time_ID_t selfID );
+
+  real(c_double) function Epetra_Time_WallTime ( selfID ) &
+        bind(C,name='Epetra_Time_WallTime')
+    import :: c_double ,FT_Epetra_Time_ID_t
+    
+    type(FT_Epetra_Time_ID_t)   ,intent(in)   ,value              :: selfID
+  end function
+
+
+  ! Original C++ prototype:
+  ! void ResetStartTime(void);
+  ! CTrilinos prototype:
+  ! void Epetra_Time_ResetStartTime ( CT_Epetra_Time_ID_t selfID );
+
+  subroutine Epetra_Time_ResetStartTime ( selfID ) &
+        bind(C,name='Epetra_Time_ResetStartTime')
+    import :: FT_Epetra_Time_ID_t
+    
+    type(FT_Epetra_Time_ID_t)   ,intent(in)   ,value              :: selfID
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! double ElapsedTime(void) const;
+  ! CTrilinos prototype:
+  ! double Epetra_Time_ElapsedTime ( CT_Epetra_Time_ID_t selfID );
+
+  real(c_double) function Epetra_Time_ElapsedTime ( selfID ) &
+        bind(C,name='Epetra_Time_ElapsedTime')
+    import :: c_double ,FT_Epetra_Time_ID_t
+    
+    type(FT_Epetra_Time_ID_t)   ,intent(in)   ,value              :: selfID
+  end function
+
+
+  ! Original C++ prototype:
+  ! virtual ~Epetra_Time(void);
+  ! CTrilinos prototype:
+  ! void Epetra_Time_Destroy ( CT_Epetra_Time_ID_t * selfID );
+
+  subroutine Epetra_Time_Destroy ( selfID ) bind(C,name='Epetra_Time_Destroy')
+    import :: FT_Epetra_Time_ID_t
+    
+    type(FT_Epetra_Time_ID_t)                                     :: selfID
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! Epetra_Time& operator=(const Epetra_Time& src);
+  ! CTrilinos prototype:
+  ! void Epetra_Time_Assign ( CT_Epetra_Time_ID_t selfID, CT_Epetra_Time_ID_t srcID );
+
+  subroutine Epetra_Time_Assign ( selfID, srcID ) bind(C,name='Epetra_Time_Assign')
+    import :: FT_Epetra_Time_ID_t
+    
+    type(FT_Epetra_Time_ID_t)   ,intent(in)   ,value              :: selfID
+    type(FT_Epetra_Time_ID_t)   ,intent(in)   ,value              :: srcID
+  end subroutine
+
+
+  ! _________________ Epetra_JadMatrix interface bodies _________________
+
+
+  ! CTrilinos prototype:
+  ! CT_Epetra_JadMatrix_ID_t Epetra_JadMatrix_Cast ( CTrilinos_Object_ID_t id );
+
+  type(FT_Epetra_JadMatrix_ID_t) function Epetra_JadMatrix_Cast ( id ) &
+        bind(C,name='Epetra_JadMatrix_Cast')
+    import :: FT_Epetra_JadMatrix_ID_t ,ForTrilinos_Object_ID_t
+    
+    type(ForTrilinos_Object_ID_t) ,intent(in)   ,value              :: id
+  end function
+
+
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_JadMatrix_Abstract ( CT_Epetra_JadMatrix_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_JadMatrix_Abstract ( id ) &
+        bind(C,name='Epetra_JadMatrix_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_JadMatrix_ID_t
+    
+    type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: id
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_JadMatrix(const Epetra_RowMatrix & Matrix);
+  ! CTrilinos prototype:
+  ! CT_Epetra_JadMatrix_ID_t Epetra_JadMatrix_Create ( CT_Epetra_RowMatrix_ID_t MatrixID );
+
+  type(FT_Epetra_JadMatrix_ID_t) function Epetra_JadMatrix_Create ( MatrixID ) &
+        bind(C,name='Epetra_JadMatrix_Create')
+    import :: FT_Epetra_JadMatrix_ID_t ,FT_Epetra_RowMatrix_ID_t
+    
+    type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: MatrixID
+  end function
+
+
+  ! Original C++ prototype:
+  ! virtual ~Epetra_JadMatrix();
+  ! CTrilinos prototype:
+  ! void Epetra_JadMatrix_Destroy ( CT_Epetra_JadMatrix_ID_t * selfID );
+
+  subroutine Epetra_JadMatrix_Destroy ( selfID ) bind(C,name='Epetra_JadMatrix_Destroy')
+    import :: FT_Epetra_JadMatrix_ID_t
+    
+    type(FT_Epetra_JadMatrix_ID_t)                                  :: selfID
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! int UpdateValues(const Epetra_RowMatrix & Matrix, bool CheckStructure = false);
+  ! CTrilinos prototype:
+  ! int Epetra_JadMatrix_UpdateValues ( CT_Epetra_JadMatrix_ID_t selfID, CT_Epetra_RowMatrix_ID_t MatrixID, boolean CheckStructure );
+
+  integer(c_int) function Epetra_JadMatrix_UpdateValues ( selfID, MatrixID, CheckStructure ) &
+        bind(C,name='Epetra_JadMatrix_UpdateValues')
+    import :: c_int ,FT_Epetra_JadMatrix_ID_t ,FT_Epetra_RowMatrix_ID_t ,c_bool
+    
+    type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: selfID
+    type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: MatrixID
+    logical(c_bool)               ,intent(in)   ,value              :: CheckStructure
+  end function
+
+
+  ! Original C++ prototype:
+  ! int ExtractMyRowCopy(int MyRow, int Length, int & NumEntries, double *Values, int * Indices) const;
+  ! CTrilinos prototype:
+  ! int Epetra_JadMatrix_ExtractMyRowCopy ( CT_Epetra_JadMatrix_ID_t selfID, int MyRow, int Length, int * NumEntries, double * Values, int * Indices );
+
+  integer(c_int) function Epetra_JadMatrix_ExtractMyRowCopy ( selfID, MyRow, Length, &
+        NumEntries, Values, Indices ) bind(C,name='Epetra_JadMatrix_ExtractMyRowCopy')
+    import :: c_int ,FT_Epetra_JadMatrix_ID_t ,c_double
+    
+    type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                ,intent(in)   ,value              :: MyRow
+    integer(c_int)                ,intent(in)   ,value              :: Length
+    integer(c_int)                ,intent(inout)                    :: NumEntries
+    real(c_double)                                    ,dimension(*) :: Values
+    integer(c_int)                                    ,dimension(*) :: Indices
+  end function
+
+
+  ! Original C++ prototype:
+  ! int ExtractMyEntryView(int CurEntry, double * &Value, int & RowIndex, int & ColIndex);
+  ! CTrilinos prototype:
+  ! int Epetra_JadMatrix_ExtractMyEntryView ( CT_Epetra_JadMatrix_ID_t selfID, int CurEntry, double * * Value, int * RowIndex, int * ColIndex );
+
+  integer(c_int) function Epetra_JadMatrix_ExtractMyEntryView ( selfID, CurEntry, Value, &
+        RowIndex, ColIndex ) bind(C,name='Epetra_JadMatrix_ExtractMyEntryView')
+    import :: c_int ,FT_Epetra_JadMatrix_ID_t ,c_double
+    
+    type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                ,intent(in)   ,value              :: CurEntry
+    real(c_double)                ,intent(inout)      ,dimension(*) :: Value
+    integer(c_int)                ,intent(inout)                    :: RowIndex
+    integer(c_int)                ,intent(inout)                    :: ColIndex
+  end function
+
+
+  ! Original C++ prototype:
+  ! int ExtractMyEntryView(int CurEntry, double const * & Value, int & RowIndex, int & ColIndex) const;
+  ! CTrilinos prototype:
+  ! int Epetra_JadMatrix_ExtractMyEntryView_Const ( CT_Epetra_JadMatrix_ID_t selfID, int CurEntry, double const ** Value, int * RowIndex, int * ColIndex );
+
+  integer(c_int) function Epetra_JadMatrix_ExtractMyEntryView_Const ( selfID, CurEntry, &
+        Value, RowIndex, ColIndex ) &
+        bind(C,name='Epetra_JadMatrix_ExtractMyEntryView_Const')
+    import :: c_int ,FT_Epetra_JadMatrix_ID_t ,c_double
+    
+    type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                ,intent(in)   ,value              :: CurEntry
+    real(c_double)                ,intent(in)         ,dimension(*) :: Value
+    integer(c_int)                ,intent(inout)                    :: RowIndex
+    integer(c_int)                ,intent(inout)                    :: ColIndex
+  end function
+
+
+  ! Original C++ prototype:
+  ! int NumMyRowEntries(int MyRow, int & NumEntries) const;
+  ! CTrilinos prototype:
+  ! int Epetra_JadMatrix_NumMyRowEntries ( CT_Epetra_JadMatrix_ID_t selfID, int MyRow, int * NumEntries );
+
+  integer(c_int) function Epetra_JadMatrix_NumMyRowEntries ( selfID, MyRow, NumEntries ) &
+        bind(C,name='Epetra_JadMatrix_NumMyRowEntries')
+    import :: c_int ,FT_Epetra_JadMatrix_ID_t
+    
+    type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                ,intent(in)   ,value              :: MyRow
+    integer(c_int)                ,intent(inout)                    :: NumEntries
+  end function
+
+
+  ! Original C++ prototype:
+  ! int Multiply(bool TransA, const Epetra_MultiVector& X, Epetra_MultiVector& Y) const;
+  ! CTrilinos prototype:
+  ! int Epetra_JadMatrix_Multiply ( CT_Epetra_JadMatrix_ID_t selfID, boolean TransA, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
+
+  integer(c_int) function Epetra_JadMatrix_Multiply ( selfID, TransA, XID, YID ) &
+        bind(C,name='Epetra_JadMatrix_Multiply')
+    import :: c_int ,FT_Epetra_JadMatrix_ID_t ,c_bool ,FT_Epetra_MultiVector_ID_t
+    
+    type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: selfID
+    logical(c_bool)               ,intent(in)   ,value              :: TransA
+    type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
+    type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: YID
+  end function
+
+
+  ! Original C++ prototype:
+  ! int Solve(bool Upper, bool Trans, bool UnitDiagonal, const Epetra_MultiVector& X, Epetra_MultiVector& Y) const;
+  ! CTrilinos prototype:
+  ! int Epetra_JadMatrix_Solve ( CT_Epetra_JadMatrix_ID_t selfID, boolean Upper, boolean Trans, boolean UnitDiagonal, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
+
+  integer(c_int) function Epetra_JadMatrix_Solve ( selfID, Upper, Trans, UnitDiagonal, XID, &
+        YID ) bind(C,name='Epetra_JadMatrix_Solve')
+    import :: c_int ,FT_Epetra_JadMatrix_ID_t ,c_bool ,FT_Epetra_MultiVector_ID_t
+    
+    type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: selfID
+    logical(c_bool)               ,intent(in)   ,value              :: Upper
+    logical(c_bool)               ,intent(in)   ,value              :: Trans
+    logical(c_bool)               ,intent(in)   ,value              :: UnitDiagonal
+    type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
+    type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: YID
+  end function
+
+
+  ! _________________ Epetra_LinearProblem interface bodies _________________
+
+
+  ! CTrilinos prototype:
+  ! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Cast ( CTrilinos_Object_ID_t id );
+
+  type(FT_Epetra_LinearProblem_ID_t) function Epetra_LinearProblem_Cast ( id ) &
+        bind(C,name='Epetra_LinearProblem_Cast')
+    import :: FT_Epetra_LinearProblem_ID_t ,ForTrilinos_Object_ID_t
+    
+    type(ForTrilinos_Object_ID_t)     ,intent(in)   ,value              :: id
+  end function
+
+
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_LinearProblem_Abstract ( CT_Epetra_LinearProblem_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_LinearProblem_Abstract ( id ) &
+        bind(C,name='Epetra_LinearProblem_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_LinearProblem_ID_t
+    
+    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: id
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_LinearProblem(void);
+  ! CTrilinos prototype:
+  ! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Create (  );
+
+  type(FT_Epetra_LinearProblem_ID_t) function Epetra_LinearProblem_Create (  ) &
+        bind(C,name='Epetra_LinearProblem_Create')
+    import :: FT_Epetra_LinearProblem_ID_t
+    
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_LinearProblem(Epetra_RowMatrix * A, Epetra_MultiVector * X, Epetra_MultiVector * B);
+  ! CTrilinos prototype:
+  ! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Create_FromMatrix ( CT_Epetra_RowMatrix_ID_t AID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID );
+
+  type(FT_Epetra_LinearProblem_ID_t) function Epetra_LinearProblem_Create_FromMatrix ( AID, &
+        XID, BID ) bind(C,name='Epetra_LinearProblem_Create_FromMatrix')
+    import :: FT_Epetra_LinearProblem_ID_t ,FT_Epetra_RowMatrix_ID_t , &
+          FT_Epetra_MultiVector_ID_t
+    
+    type(FT_Epetra_RowMatrix_ID_t)    ,intent(in)   ,value              :: AID
+    type(FT_Epetra_MultiVector_ID_t)  ,intent(in)   ,value              :: XID
+    type(FT_Epetra_MultiVector_ID_t)  ,intent(in)   ,value              :: BID
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_LinearProblem(Epetra_Operator * A, Epetra_MultiVector * X, Epetra_MultiVector * B);
+  ! CTrilinos prototype:
+  ! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Create_FromOperator ( CT_Epetra_Operator_ID_t AID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID );
+
+  type(FT_Epetra_LinearProblem_ID_t) function Epetra_LinearProblem_Create_FromOperator ( &
+        AID, XID, BID ) bind(C,name='Epetra_LinearProblem_Create_FromOperator')
+    import :: FT_Epetra_LinearProblem_ID_t ,FT_Epetra_Operator_ID_t , &
+          FT_Epetra_MultiVector_ID_t
+    
+    type(FT_Epetra_Operator_ID_t)     ,intent(in)   ,value              :: AID
+    type(FT_Epetra_MultiVector_ID_t)  ,intent(in)   ,value              :: XID
+    type(FT_Epetra_MultiVector_ID_t)  ,intent(in)   ,value              :: BID
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_LinearProblem(const Epetra_LinearProblem& Problem);
+  ! CTrilinos prototype:
+  ! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Duplicate ( CT_Epetra_LinearProblem_ID_t ProblemID );
+
+  type(FT_Epetra_LinearProblem_ID_t) function Epetra_LinearProblem_Duplicate ( ProblemID ) &
+        bind(C,name='Epetra_LinearProblem_Duplicate')
+    import :: FT_Epetra_LinearProblem_ID_t
+    
+    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: ProblemID
+  end function
+
+
+  ! Original C++ prototype:
+  ! virtual ~Epetra_LinearProblem(void);
+  ! CTrilinos prototype:
+  ! void Epetra_LinearProblem_Destroy ( CT_Epetra_LinearProblem_ID_t * selfID );
+
+  subroutine Epetra_LinearProblem_Destroy ( selfID ) &
+        bind(C,name='Epetra_LinearProblem_Destroy')
+    import :: FT_Epetra_LinearProblem_ID_t
+    
+    type(FT_Epetra_LinearProblem_ID_t)                                  :: selfID
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! int CheckInput() const;
+  ! CTrilinos prototype:
+  ! int Epetra_LinearProblem_CheckInput ( CT_Epetra_LinearProblem_ID_t selfID );
+
+  integer(c_int) function Epetra_LinearProblem_CheckInput ( selfID ) &
+        bind(C,name='Epetra_LinearProblem_CheckInput')
+    import :: c_int ,FT_Epetra_LinearProblem_ID_t
+    
+    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  ! Original C++ prototype:
+  ! void AssertSymmetric();
+  ! CTrilinos prototype:
+  ! void Epetra_LinearProblem_AssertSymmetric ( CT_Epetra_LinearProblem_ID_t selfID );
+
+  subroutine Epetra_LinearProblem_AssertSymmetric ( selfID ) &
+        bind(C,name='Epetra_LinearProblem_AssertSymmetric')
+    import :: FT_Epetra_LinearProblem_ID_t
+    
+    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SetPDL(ProblemDifficultyLevel PDL);
+  ! CTrilinos prototype:
+  ! void Epetra_LinearProblem_SetPDL ( CT_Epetra_LinearProblem_ID_t selfID, CT_ProblemDifficultyLevel_E_t PDL );
+
+  subroutine Epetra_LinearProblem_SetPDL ( selfID, PDL ) &
+        bind(C,name='Epetra_LinearProblem_SetPDL')
+    import :: FT_Epetra_LinearProblem_ID_t ,FT_ProblemDifficultyLevel_E_t
+    
+    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
+    integer(FT_ProblemDifficultyLevel_E_t),intent(in)   ,value              :: PDL
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SetOperator(Epetra_RowMatrix * A);
+  ! CTrilinos prototype:
+  ! void Epetra_LinearProblem_SetOperator_Matrix ( CT_Epetra_LinearProblem_ID_t selfID, CT_Epetra_RowMatrix_ID_t AID );
+
+  subroutine Epetra_LinearProblem_SetOperator_Matrix ( selfID, AID ) &
+        bind(C,name='Epetra_LinearProblem_SetOperator_Matrix')
+    import :: FT_Epetra_LinearProblem_ID_t ,FT_Epetra_RowMatrix_ID_t
+    
+    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
+    type(FT_Epetra_RowMatrix_ID_t)    ,intent(in)   ,value              :: AID
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SetOperator(Epetra_Operator * A);
+  ! CTrilinos prototype:
+  ! void Epetra_LinearProblem_SetOperator ( CT_Epetra_LinearProblem_ID_t selfID, CT_Epetra_Operator_ID_t AID );
+
+  subroutine Epetra_LinearProblem_SetOperator ( selfID, AID ) &
+        bind(C,name='Epetra_LinearProblem_SetOperator')
+    import :: FT_Epetra_LinearProblem_ID_t ,FT_Epetra_Operator_ID_t
+    
+    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
+    type(FT_Epetra_Operator_ID_t)     ,intent(in)   ,value              :: AID
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SetLHS(Epetra_MultiVector * X);
+  ! CTrilinos prototype:
+  ! void Epetra_LinearProblem_SetLHS ( CT_Epetra_LinearProblem_ID_t selfID, CT_Epetra_MultiVector_ID_t XID );
+
+  subroutine Epetra_LinearProblem_SetLHS ( selfID, XID ) &
+        bind(C,name='Epetra_LinearProblem_SetLHS')
+    import :: FT_Epetra_LinearProblem_ID_t ,FT_Epetra_MultiVector_ID_t
+    
+    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
+    type(FT_Epetra_MultiVector_ID_t)  ,intent(in)   ,value              :: XID
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SetRHS(Epetra_MultiVector * B);
+  ! CTrilinos prototype:
+  ! void Epetra_LinearProblem_SetRHS ( CT_Epetra_LinearProblem_ID_t selfID, CT_Epetra_MultiVector_ID_t BID );
+
+  subroutine Epetra_LinearProblem_SetRHS ( selfID, BID ) &
+        bind(C,name='Epetra_LinearProblem_SetRHS')
+    import :: FT_Epetra_LinearProblem_ID_t ,FT_Epetra_MultiVector_ID_t
+    
+    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
+    type(FT_Epetra_MultiVector_ID_t)  ,intent(in)   ,value              :: BID
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! int LeftScale(const Epetra_Vector & D);
+  ! CTrilinos prototype:
+  ! int Epetra_LinearProblem_LeftScale ( CT_Epetra_LinearProblem_ID_t selfID, CT_Epetra_Vector_ID_t DID );
+
+  integer(c_int) function Epetra_LinearProblem_LeftScale ( selfID, DID ) &
+        bind(C,name='Epetra_LinearProblem_LeftScale')
+    import :: c_int ,FT_Epetra_LinearProblem_ID_t ,FT_Epetra_Vector_ID_t
+    
+    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
+    type(FT_Epetra_Vector_ID_t)       ,intent(in)   ,value              :: DID
+  end function
+
+
+  ! Original C++ prototype:
+  ! int RightScale(const Epetra_Vector & D);
+  ! CTrilinos prototype:
+  ! int Epetra_LinearProblem_RightScale ( CT_Epetra_LinearProblem_ID_t selfID, CT_Epetra_Vector_ID_t DID );
+
+  integer(c_int) function Epetra_LinearProblem_RightScale ( selfID, DID ) &
+        bind(C,name='Epetra_LinearProblem_RightScale')
+    import :: c_int ,FT_Epetra_LinearProblem_ID_t ,FT_Epetra_Vector_ID_t
+    
+    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
+    type(FT_Epetra_Vector_ID_t)       ,intent(in)   ,value              :: DID
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_Operator * GetOperator() const;
+  ! CTrilinos prototype:
+  ! CT_Epetra_Operator_ID_t Epetra_LinearProblem_GetOperator ( CT_Epetra_LinearProblem_ID_t selfID );
+
+  type(FT_Epetra_Operator_ID_t) function Epetra_LinearProblem_GetOperator ( selfID ) &
+        bind(C,name='Epetra_LinearProblem_GetOperator')
+    import :: FT_Epetra_Operator_ID_t ,FT_Epetra_LinearProblem_ID_t
+    
+    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_RowMatrix * GetMatrix() const;
+  ! CTrilinos prototype:
+  ! CT_Epetra_RowMatrix_ID_t Epetra_LinearProblem_GetMatrix ( CT_Epetra_LinearProblem_ID_t selfID );
+
+  type(FT_Epetra_RowMatrix_ID_t) function Epetra_LinearProblem_GetMatrix ( selfID ) &
+        bind(C,name='Epetra_LinearProblem_GetMatrix')
+    import :: FT_Epetra_RowMatrix_ID_t ,FT_Epetra_LinearProblem_ID_t
+    
+    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_MultiVector * GetLHS() const;
+  ! CTrilinos prototype:
+  ! CT_Epetra_MultiVector_ID_t Epetra_LinearProblem_GetLHS ( CT_Epetra_LinearProblem_ID_t selfID );
+
+  type(FT_Epetra_MultiVector_ID_t) function Epetra_LinearProblem_GetLHS ( selfID ) &
+        bind(C,name='Epetra_LinearProblem_GetLHS')
+    import :: FT_Epetra_MultiVector_ID_t ,FT_Epetra_LinearProblem_ID_t
+    
+    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_MultiVector * GetRHS() const;
+  ! CTrilinos prototype:
+  ! CT_Epetra_MultiVector_ID_t Epetra_LinearProblem_GetRHS ( CT_Epetra_LinearProblem_ID_t selfID );
+
+  type(FT_Epetra_MultiVector_ID_t) function Epetra_LinearProblem_GetRHS ( selfID ) &
+        bind(C,name='Epetra_LinearProblem_GetRHS')
+    import :: FT_Epetra_MultiVector_ID_t ,FT_Epetra_LinearProblem_ID_t
+    
+    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  ! Original C++ prototype:
+  ! ProblemDifficultyLevel GetPDL() const;
+  ! CTrilinos prototype:
+  ! CT_ProblemDifficultyLevel_E_t Epetra_LinearProblem_GetPDL ( CT_Epetra_LinearProblem_ID_t selfID );
+
+  integer(FT_ProblemDifficultyLevel_E_t) function Epetra_LinearProblem_GetPDL ( selfID ) &
+        bind(C,name='Epetra_LinearProblem_GetPDL')
+    import :: FT_ProblemDifficultyLevel_E_t ,FT_Epetra_LinearProblem_ID_t
+    
+    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  ! Original C++ prototype:
+  ! bool IsOperatorSymmetric() const;
+  ! CTrilinos prototype:
+  ! boolean Epetra_LinearProblem_IsOperatorSymmetric ( CT_Epetra_LinearProblem_ID_t selfID );
+
+  logical(c_bool) function Epetra_LinearProblem_IsOperatorSymmetric ( selfID ) &
+        bind(C,name='Epetra_LinearProblem_IsOperatorSymmetric')
+    import :: c_bool ,FT_Epetra_LinearProblem_ID_t
+    
+    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  ! _________________ Epetra_LAPACK interface bodies _________________
+
+
+  ! CTrilinos prototype:
+  ! CT_Epetra_LAPACK_ID_t Epetra_LAPACK_Cast ( CTrilinos_Object_ID_t id );
+
+  type(FT_Epetra_LAPACK_ID_t) function Epetra_LAPACK_Cast ( id ) &
+        bind(C,name='Epetra_LAPACK_Cast')
+    import :: FT_Epetra_LAPACK_ID_t ,ForTrilinos_Object_ID_t
+    
+    type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+  end function
+
+
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_LAPACK_Abstract ( CT_Epetra_LAPACK_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_LAPACK_Abstract ( id ) &
+        bind(C,name='Epetra_LAPACK_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_LAPACK_ID_t
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: id
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_LAPACK(void);
+  ! CTrilinos prototype:
+  ! CT_Epetra_LAPACK_ID_t Epetra_LAPACK_Create (  );
+
+  type(FT_Epetra_LAPACK_ID_t) function Epetra_LAPACK_Create (  ) &
+        bind(C,name='Epetra_LAPACK_Create')
+    import :: FT_Epetra_LAPACK_ID_t
+    
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_LAPACK(const Epetra_LAPACK& LAPACK);
+  ! CTrilinos prototype:
+  ! CT_Epetra_LAPACK_ID_t Epetra_LAPACK_Duplicate ( CT_Epetra_LAPACK_ID_t LAPACKID );
+
+  type(FT_Epetra_LAPACK_ID_t) function Epetra_LAPACK_Duplicate ( LAPACKID ) &
+        bind(C,name='Epetra_LAPACK_Duplicate')
+    import :: FT_Epetra_LAPACK_ID_t
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: LAPACKID
+  end function
+
+
+  ! Original C++ prototype:
+  ! virtual ~Epetra_LAPACK(void);
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_Destroy ( CT_Epetra_LAPACK_ID_t * selfID );
+
+  subroutine Epetra_LAPACK_Destroy ( selfID ) bind(C,name='Epetra_LAPACK_Destroy')
+    import :: FT_Epetra_LAPACK_ID_t
+    
+    type(FT_Epetra_LAPACK_ID_t)                                   :: selfID
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void POTRF( const char UPLO, const int N, float * A, const int LDA, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_POTRF_float ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, float * A, const int LDA, int * INFO );
+
+  subroutine Epetra_LAPACK_POTRF_float ( selfID, UPLO, N, A, LDA, INFO ) &
+        bind(C,name='Epetra_LAPACK_POTRF_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void POTRF( const char UPLO, const int N, double * A, const int LDA, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_POTRF_double ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, double * A, const int LDA, int * INFO );
+
+  subroutine Epetra_LAPACK_POTRF_double ( selfID, UPLO, N, A, LDA, INFO ) &
+        bind(C,name='Epetra_LAPACK_POTRF_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void POTRS( const char UPLO, const int N, const int NRHS, const float * A, const int LDA, float * X, const int LDX, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_POTRS_float ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, const int NRHS, const float * A, const int LDA, float * X, const int LDX, int * INFO );
+
+  subroutine Epetra_LAPACK_POTRS_float ( selfID, UPLO, N, NRHS, A, LDA, X, LDX, INFO ) &
+        bind(C,name='Epetra_LAPACK_POTRS_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: NRHS
+    real(c_float)               ,intent(in)         ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: X
+    integer(c_int)              ,intent(in)   ,value              :: LDX
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void POTRS( const char UPLO, const int N, const int NRHS, const double * A, const int LDA, double * X, const int LDX, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_POTRS_double ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, const int NRHS, const double * A, const int LDA, double * X, const int LDX, int * INFO );
+
+  subroutine Epetra_LAPACK_POTRS_double ( selfID, UPLO, N, NRHS, A, LDA, X, LDX, INFO ) &
+        bind(C,name='Epetra_LAPACK_POTRS_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: NRHS
+    real(c_double)              ,intent(in)         ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: X
+    integer(c_int)              ,intent(in)   ,value              :: LDX
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void POTRI( const char UPLO, const int N, float * A, const int LDA, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_POTRI_float ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, float * A, const int LDA, int * INFO );
+
+  subroutine Epetra_LAPACK_POTRI_float ( selfID, UPLO, N, A, LDA, INFO ) &
+        bind(C,name='Epetra_LAPACK_POTRI_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void POTRI( const char UPLO, const int N, double * A, const int LDA, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_POTRI_double ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, double * A, const int LDA, int * INFO );
+
+  subroutine Epetra_LAPACK_POTRI_double ( selfID, UPLO, N, A, LDA, INFO ) &
+        bind(C,name='Epetra_LAPACK_POTRI_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void POCON( const char UPLO, const int N, const float * A, const int LDA, const float ANORM, float * RCOND, float * WORK, int * IWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_POCON_float ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, const float * A, const int LDA, const float ANORM, float * RCOND, float * WORK, int * IWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_POCON_float ( selfID, UPLO, N, A, LDA, ANORM, RCOND, WORK, IWORK, &
+        INFO ) bind(C,name='Epetra_LAPACK_POCON_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)               ,intent(in)         ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)               ,intent(in)   ,value              :: ANORM
+    real(c_float)                                   ,dimension(*) :: RCOND
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void POCON( const char UPLO, const int N, const double * A, const int LDA, const double ANORM, double * RCOND, double * WORK, int * IWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_POCON_double ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, const double * A, const int LDA, const double ANORM, double * RCOND, double * WORK, int * IWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_POCON_double ( selfID, UPLO, N, A, LDA, ANORM, RCOND, WORK, &
+        IWORK, INFO ) bind(C,name='Epetra_LAPACK_POCON_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)              ,intent(in)         ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)              ,intent(in)   ,value              :: ANORM
+    real(c_double)                                  ,dimension(*) :: RCOND
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void POSV( const char UPLO, const int N, const int NRHS, float * A, const int LDA, float * X, const int LDX, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_POSV_float ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, const int NRHS, float * A, const int LDA, float * X, const int LDX, int * INFO );
+
+  subroutine Epetra_LAPACK_POSV_float ( selfID, UPLO, N, NRHS, A, LDA, X, LDX, INFO ) &
+        bind(C,name='Epetra_LAPACK_POSV_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: NRHS
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: X
+    integer(c_int)              ,intent(in)   ,value              :: LDX
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void POSV( const char UPLO, const int N, const int NRHS, double * A, const int LDA, double * X, const int LDX, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_POSV_double ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, const int NRHS, double * A, const int LDA, double * X, const int LDX, int * INFO );
+
+  subroutine Epetra_LAPACK_POSV_double ( selfID, UPLO, N, NRHS, A, LDA, X, LDX, INFO ) &
+        bind(C,name='Epetra_LAPACK_POSV_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: NRHS
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: X
+    integer(c_int)              ,intent(in)   ,value              :: LDX
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void POEQU(const int N, const float * A, const int LDA, float * S, float * SCOND, float * AMAX, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_POEQU_float ( CT_Epetra_LAPACK_ID_t selfID, const int N, const float * A, const int LDA, float * S, float * SCOND, float * AMAX, int * INFO );
+
+  subroutine Epetra_LAPACK_POEQU_float ( selfID, N, A, LDA, S, SCOND, AMAX, INFO ) &
+        bind(C,name='Epetra_LAPACK_POEQU_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)               ,intent(in)         ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: S
+    real(c_float)                                   ,dimension(*) :: SCOND
+    real(c_float)                                   ,dimension(*) :: AMAX
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void POEQU(const int N, const double * A, const int LDA, double * S, double * SCOND, double * AMAX, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_POEQU_double ( CT_Epetra_LAPACK_ID_t selfID, const int N, const double * A, const int LDA, double * S, double * SCOND, double * AMAX, int * INFO );
+
+  subroutine Epetra_LAPACK_POEQU_double ( selfID, N, A, LDA, S, SCOND, AMAX, INFO ) &
+        bind(C,name='Epetra_LAPACK_POEQU_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)              ,intent(in)         ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: S
+    real(c_double)                                  ,dimension(*) :: SCOND
+    real(c_double)                                  ,dimension(*) :: AMAX
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void PORFS(const char UPLO, const int N, const int NRHS, const float * A, const int LDA, const float * AF, const int LDAF, const float * B, const int LDB, float * X, const int LDX, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_PORFS_float ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, const int NRHS, const float * A, const int LDA, const float * AF, const int LDAF, const float * B, const int LDB, float * X, const int LDX, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_PORFS_float ( selfID, UPLO, N, NRHS, A, LDA, AF, LDAF, B, LDB, X, &
+        LDX, FERR, BERR, WORK, IWORK, INFO ) bind(C,name='Epetra_LAPACK_PORFS_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: NRHS
+    real(c_float)               ,intent(in)         ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)               ,intent(in)         ,dimension(*) :: AF
+    integer(c_int)              ,intent(in)   ,value              :: LDAF
+    real(c_float)               ,intent(in)         ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_float)                                   ,dimension(*) :: X
+    integer(c_int)              ,intent(in)   ,value              :: LDX
+    real(c_float)                                   ,dimension(*) :: FERR
+    real(c_float)                                   ,dimension(*) :: BERR
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void PORFS(const char UPLO, const int N, const int NRHS, const double * A, const int LDA, const double * AF, const int LDAF, const double * B, const int LDB, double * X, const int LDX, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_PORFS_double ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, const int NRHS, const double * A, const int LDA, const double * AF, const int LDAF, const double * B, const int LDB, double * X, const int LDX, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_PORFS_double ( selfID, UPLO, N, NRHS, A, LDA, AF, LDAF, B, LDB, &
+        X, LDX, FERR, BERR, WORK, IWORK, INFO ) bind(C,name='Epetra_LAPACK_PORFS_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: NRHS
+    real(c_double)              ,intent(in)         ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)              ,intent(in)         ,dimension(*) :: AF
+    integer(c_int)              ,intent(in)   ,value              :: LDAF
+    real(c_double)              ,intent(in)         ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_double)                                  ,dimension(*) :: X
+    integer(c_int)              ,intent(in)   ,value              :: LDX
+    real(c_double)                                  ,dimension(*) :: FERR
+    real(c_double)                                  ,dimension(*) :: BERR
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void POSVX(const char FACT, const char UPLO, const int N, const int NRHS, float * A, const int LDA, float * AF, const int LDAF, const char EQUED, float * S, float * B, const int LDB, float * X, const int LDX, float * RCOND, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_POSVX_float ( CT_Epetra_LAPACK_ID_t selfID, const char FACT, const char UPLO, const int N, const int NRHS, float * A, const int LDA, float * AF, const int LDAF, const char EQUED, float * S, float * B, const int LDB, float * X, const int LDX, float * RCOND, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_POSVX_float ( selfID, FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, &
+        EQUED, S, B, LDB, X, LDX, RCOND, FERR, BERR, WORK, IWORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_POSVX_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: FACT
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: NRHS
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: AF
+    integer(c_int)              ,intent(in)   ,value              :: LDAF
+    character(kind=c_char)      ,intent(in)   ,value              :: EQUED
+    real(c_float)                                   ,dimension(*) :: S
+    real(c_float)                                   ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_float)                                   ,dimension(*) :: X
+    integer(c_int)              ,intent(in)   ,value              :: LDX
+    real(c_float)                                   ,dimension(*) :: RCOND
+    real(c_float)                                   ,dimension(*) :: FERR
+    real(c_float)                                   ,dimension(*) :: BERR
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void POSVX(const char FACT, const char UPLO, const int N, const int NRHS, double * A, const int LDA, double * AF, const int LDAF, const char EQUED, double * S, double * B, const int LDB, double * X, const int LDX, double * RCOND, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_POSVX_double ( CT_Epetra_LAPACK_ID_t selfID, const char FACT, const char UPLO, const int N, const int NRHS, double * A, const int LDA, double * AF, const int LDAF, const char EQUED, double * S, double * B, const int LDB, double * X, const int LDX, double * RCOND, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_POSVX_double ( selfID, FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, &
+        EQUED, S, B, LDB, X, LDX, RCOND, FERR, BERR, WORK, IWORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_POSVX_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: FACT
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: NRHS
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: AF
+    integer(c_int)              ,intent(in)   ,value              :: LDAF
+    character(kind=c_char)      ,intent(in)   ,value              :: EQUED
+    real(c_double)                                  ,dimension(*) :: S
+    real(c_double)                                  ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_double)                                  ,dimension(*) :: X
+    integer(c_int)              ,intent(in)   ,value              :: LDX
+    real(c_double)                                  ,dimension(*) :: RCOND
+    real(c_double)                                  ,dimension(*) :: FERR
+    real(c_double)                                  ,dimension(*) :: BERR
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GELS( const char TRANS, const int M, const int N, const int NRHS, double* A, const int LDA, double* B, const int LDB, double* WORK, const int LWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GELS_double ( CT_Epetra_LAPACK_ID_t selfID, const char TRANS, const int M, const int N, const int NRHS, double * A, const int LDA, double * B, const int LDB, double * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GELS_double ( selfID, TRANS, M, N, NRHS, A, LDA, B, LDB, WORK, &
+        LWORK, INFO ) bind(C,name='Epetra_LAPACK_GELS_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: TRANS
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: NRHS
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GETRF( const int M, const int N, float * A, const int LDA, int * IPIV, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GETRF_float ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, float * A, const int LDA, int * IPIV, int * INFO );
+
+  subroutine Epetra_LAPACK_GETRF_float ( selfID, M, N, A, LDA, IPIV, INFO ) &
+        bind(C,name='Epetra_LAPACK_GETRF_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    integer(c_int)                                  ,dimension(*) :: IPIV
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GETRF( const int M, const int N, double * A, const int LDA, int * IPIV, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GETRF_double ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, double * A, const int LDA, int * IPIV, int * INFO );
+
+  subroutine Epetra_LAPACK_GETRF_double ( selfID, M, N, A, LDA, IPIV, INFO ) &
+        bind(C,name='Epetra_LAPACK_GETRF_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    integer(c_int)                                  ,dimension(*) :: IPIV
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GEQRF( const int M, const int N, float * A, const int LDA, float * TAU, float * WORK, const int lwork, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GEQRF_float ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, float * A, const int LDA, float * TAU, float * WORK, const int lwork, int * INFO );
+
+  subroutine Epetra_LAPACK_GEQRF_float ( selfID, M, N, A, LDA, TAU, WORK, lwork, INFO ) &
+        bind(C,name='Epetra_LAPACK_GEQRF_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: TAU
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: lwork
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GEQRF( const int M, const int N, double * A, const int LDA, double * TAU, double * WORK, const int lwork, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GEQRF_double ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, double * A, const int LDA, double * TAU, double * WORK, const int lwork, int * INFO );
+
+  subroutine Epetra_LAPACK_GEQRF_double ( selfID, M, N, A, LDA, TAU, WORK, lwork, INFO ) &
+        bind(C,name='Epetra_LAPACK_GEQRF_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: TAU
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: lwork
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GETRS( const char TRANS, const int N, const int NRHS, const float * A, const int LDA, const int * IPIV, float * X, const int LDX, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GETRS_float ( CT_Epetra_LAPACK_ID_t selfID, const char TRANS, const int N, const int NRHS, const float * A, const int LDA, const int * IPIV, float * X, const int LDX, int * INFO );
+
+  subroutine Epetra_LAPACK_GETRS_float ( selfID, TRANS, N, NRHS, A, LDA, IPIV, X, LDX, INFO ) &
+        bind(C,name='Epetra_LAPACK_GETRS_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: TRANS
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: NRHS
+    real(c_float)               ,intent(in)         ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    integer(c_int)              ,intent(in)         ,dimension(*) :: IPIV
+    real(c_float)                                   ,dimension(*) :: X
+    integer(c_int)              ,intent(in)   ,value              :: LDX
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GETRS( const char TRANS, const int N, const int NRHS, const double * A, const int LDA, const int * IPIV, double * X, const int LDX, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GETRS_double ( CT_Epetra_LAPACK_ID_t selfID, const char TRANS, const int N, const int NRHS, const double * A, const int LDA, const int * IPIV, double * X, const int LDX, int * INFO );
+
+  subroutine Epetra_LAPACK_GETRS_double ( selfID, TRANS, N, NRHS, A, LDA, IPIV, X, LDX, &
+        INFO ) bind(C,name='Epetra_LAPACK_GETRS_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: TRANS
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: NRHS
+    real(c_double)              ,intent(in)         ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    integer(c_int)              ,intent(in)         ,dimension(*) :: IPIV
+    real(c_double)                                  ,dimension(*) :: X
+    integer(c_int)              ,intent(in)   ,value              :: LDX
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GETRI( const int N, float * A, const int LDA, int * IPIV, float * WORK, const int * LWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GETRI_float ( CT_Epetra_LAPACK_ID_t selfID, const int N, float * A, const int LDA, int * IPIV, float * WORK, const int * LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GETRI_float ( selfID, N, A, LDA, IPIV, WORK, LWORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_GETRI_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    integer(c_int)                                  ,dimension(*) :: IPIV
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)         ,dimension(*) :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GETRI( const int N, double * A, const int LDA, int * IPIV, double * WORK, const int * LWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GETRI_double ( CT_Epetra_LAPACK_ID_t selfID, const int N, double * A, const int LDA, int * IPIV, double * WORK, const int * LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GETRI_double ( selfID, N, A, LDA, IPIV, WORK, LWORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_GETRI_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    integer(c_int)                                  ,dimension(*) :: IPIV
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)         ,dimension(*) :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GECON( const char NORM, const int N, const float * A, const int LDA, const float ANORM, float * RCOND, float * WORK, int * IWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GECON_float ( CT_Epetra_LAPACK_ID_t selfID, const char NORM, const int N, const float * A, const int LDA, const float ANORM, float * RCOND, float * WORK, int * IWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GECON_float ( selfID, NORM, N, A, LDA, ANORM, RCOND, WORK, IWORK, &
+        INFO ) bind(C,name='Epetra_LAPACK_GECON_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: NORM
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)               ,intent(in)         ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)               ,intent(in)   ,value              :: ANORM
+    real(c_float)                                   ,dimension(*) :: RCOND
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GECON( const char NORM, const int N, const double * A, const int LDA, const double ANORM, double * RCOND, double * WORK, int * IWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GECON_double ( CT_Epetra_LAPACK_ID_t selfID, const char NORM, const int N, const double * A, const int LDA, const double ANORM, double * RCOND, double * WORK, int * IWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GECON_double ( selfID, NORM, N, A, LDA, ANORM, RCOND, WORK, &
+        IWORK, INFO ) bind(C,name='Epetra_LAPACK_GECON_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: NORM
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)              ,intent(in)         ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)              ,intent(in)   ,value              :: ANORM
+    real(c_double)                                  ,dimension(*) :: RCOND
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GESV( const int N, const int NRHS, float * A, const int LDA, int * IPIV, float * X, const int LDX, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GESV_float ( CT_Epetra_LAPACK_ID_t selfID, const int N, const int NRHS, float * A, const int LDA, int * IPIV, float * X, const int LDX, int * INFO );
+
+  subroutine Epetra_LAPACK_GESV_float ( selfID, N, NRHS, A, LDA, IPIV, X, LDX, INFO ) &
+        bind(C,name='Epetra_LAPACK_GESV_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: NRHS
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    integer(c_int)                                  ,dimension(*) :: IPIV
+    real(c_float)                                   ,dimension(*) :: X
+    integer(c_int)              ,intent(in)   ,value              :: LDX
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GESV( const int N, const int NRHS, double * A, const int LDA, int * IPIV, double * X, const int LDX, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GESV_double ( CT_Epetra_LAPACK_ID_t selfID, const int N, const int NRHS, double * A, const int LDA, int * IPIV, double * X, const int LDX, int * INFO );
+
+  subroutine Epetra_LAPACK_GESV_double ( selfID, N, NRHS, A, LDA, IPIV, X, LDX, INFO ) &
+        bind(C,name='Epetra_LAPACK_GESV_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: NRHS
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    integer(c_int)                                  ,dimension(*) :: IPIV
+    real(c_double)                                  ,dimension(*) :: X
+    integer(c_int)              ,intent(in)   ,value              :: LDX
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GEEQU(const int M, const int N, const float * A, const int LDA, float * R, float * C, float * ROWCND, float * COLCND, float * AMAX, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GEEQU_float ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, const float * A, const int LDA, float * R, float * C, float * ROWCND, float * COLCND, float * AMAX, int * INFO );
+
+  subroutine Epetra_LAPACK_GEEQU_float ( selfID, M, N, A, LDA, R, C, ROWCND, COLCND, AMAX, &
+        INFO ) bind(C,name='Epetra_LAPACK_GEEQU_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)               ,intent(in)         ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: R
+    real(c_float)                                   ,dimension(*) :: C
+    real(c_float)                                   ,dimension(*) :: ROWCND
+    real(c_float)                                   ,dimension(*) :: COLCND
+    real(c_float)                                   ,dimension(*) :: AMAX
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GEEQU(const int M, const int N, const double * A, const int LDA, double * R, double * C, double * ROWCND, double * COLCND, double * AMAX, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GEEQU_double ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, const double * A, const int LDA, double * R, double * C, double * ROWCND, double * COLCND, double * AMAX, int * INFO );
+
+  subroutine Epetra_LAPACK_GEEQU_double ( selfID, M, N, A, LDA, R, C, ROWCND, COLCND, AMAX, &
+        INFO ) bind(C,name='Epetra_LAPACK_GEEQU_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)              ,intent(in)         ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: R
+    real(c_double)                                  ,dimension(*) :: C
+    real(c_double)                                  ,dimension(*) :: ROWCND
+    real(c_double)                                  ,dimension(*) :: COLCND
+    real(c_double)                                  ,dimension(*) :: AMAX
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GERFS(const char TRANS, const int N, const int NRHS, const float * A, const int LDA, const float * AF, const int LDAF, const int * IPIV, const float * B, const int LDB, float * X, const int LDX, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GERFS_float ( CT_Epetra_LAPACK_ID_t selfID, const char TRANS, const int N, const int NRHS, const float * A, const int LDA, const float * AF, const int LDAF, const int * IPIV, const float * B, const int LDB, float * X, const int LDX, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GERFS_float ( selfID, TRANS, N, NRHS, A, LDA, AF, LDAF, IPIV, B, &
+        LDB, X, LDX, FERR, BERR, WORK, IWORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_GERFS_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: TRANS
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: NRHS
+    real(c_float)               ,intent(in)         ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)               ,intent(in)         ,dimension(*) :: AF
+    integer(c_int)              ,intent(in)   ,value              :: LDAF
+    integer(c_int)              ,intent(in)         ,dimension(*) :: IPIV
+    real(c_float)               ,intent(in)         ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_float)                                   ,dimension(*) :: X
+    integer(c_int)              ,intent(in)   ,value              :: LDX
+    real(c_float)                                   ,dimension(*) :: FERR
+    real(c_float)                                   ,dimension(*) :: BERR
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GERFS(const char TRANS, const int N, const int NRHS, const double * A, const int LDA, const double * AF, const int LDAF, const int * IPIV, const double * B, const int LDB, double * X, const int LDX, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GERFS_double ( CT_Epetra_LAPACK_ID_t selfID, const char TRANS, const int N, const int NRHS, const double * A, const int LDA, const double * AF, const int LDAF, const int * IPIV, const double * B, const int LDB, double * X, const int LDX, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GERFS_double ( selfID, TRANS, N, NRHS, A, LDA, AF, LDAF, IPIV, B, &
+        LDB, X, LDX, FERR, BERR, WORK, IWORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_GERFS_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: TRANS
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: NRHS
+    real(c_double)              ,intent(in)         ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)              ,intent(in)         ,dimension(*) :: AF
+    integer(c_int)              ,intent(in)   ,value              :: LDAF
+    integer(c_int)              ,intent(in)         ,dimension(*) :: IPIV
+    real(c_double)              ,intent(in)         ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_double)                                  ,dimension(*) :: X
+    integer(c_int)              ,intent(in)   ,value              :: LDX
+    real(c_double)                                  ,dimension(*) :: FERR
+    real(c_double)                                  ,dimension(*) :: BERR
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GESVX(const char FACT, const char TRANS, const int N, const int NRHS, float * A, const int LDA, float * AF, const int LDAF, int * IPIV, const char EQUED, float * R, float * C, float * B, const int LDB, float * X, const int LDX, float * RCOND, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GESVX_float ( CT_Epetra_LAPACK_ID_t selfID, const char FACT, const char TRANS, const int N, const int NRHS, float * A, const int LDA, float * AF, const int LDAF, int * IPIV, const char EQUED, float * R, float * C, float * B, const int LDB, float * X, const int LDX, float * RCOND, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GESVX_float ( selfID, FACT, TRANS, N, NRHS, A, LDA, AF, LDAF, &
+        IPIV, EQUED, R, C, B, LDB, X, LDX, RCOND, FERR, BERR, WORK, IWORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_GESVX_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: FACT
+    character(kind=c_char)      ,intent(in)   ,value              :: TRANS
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: NRHS
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: AF
+    integer(c_int)              ,intent(in)   ,value              :: LDAF
+    integer(c_int)                                  ,dimension(*) :: IPIV
+    character(kind=c_char)      ,intent(in)   ,value              :: EQUED
+    real(c_float)                                   ,dimension(*) :: R
+    real(c_float)                                   ,dimension(*) :: C
+    real(c_float)                                   ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_float)                                   ,dimension(*) :: X
+    integer(c_int)              ,intent(in)   ,value              :: LDX
+    real(c_float)                                   ,dimension(*) :: RCOND
+    real(c_float)                                   ,dimension(*) :: FERR
+    real(c_float)                                   ,dimension(*) :: BERR
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GESVX(const char FACT, const char TRANS, const int N, const int NRHS, double * A, const int LDA, double * AF, const int LDAF, int * IPIV, const char EQUED, double * R, double * C, double * B, const int LDB, double * X, const int LDX, double * RCOND, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GESVX_double ( CT_Epetra_LAPACK_ID_t selfID, const char FACT, const char TRANS, const int N, const int NRHS, double * A, const int LDA, double * AF, const int LDAF, int * IPIV, const char EQUED, double * R, double * C, double * B, const int LDB, double * X, const int LDX, double * RCOND, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GESVX_double ( selfID, FACT, TRANS, N, NRHS, A, LDA, AF, LDAF, &
+        IPIV, EQUED, R, C, B, LDB, X, LDX, RCOND, FERR, BERR, WORK, IWORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_GESVX_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: FACT
+    character(kind=c_char)      ,intent(in)   ,value              :: TRANS
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: NRHS
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: AF
+    integer(c_int)              ,intent(in)   ,value              :: LDAF
+    integer(c_int)                                  ,dimension(*) :: IPIV
+    character(kind=c_char)      ,intent(in)   ,value              :: EQUED
+    real(c_double)                                  ,dimension(*) :: R
+    real(c_double)                                  ,dimension(*) :: C
+    real(c_double)                                  ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_double)                                  ,dimension(*) :: X
+    integer(c_int)              ,intent(in)   ,value              :: LDX
+    real(c_double)                                  ,dimension(*) :: RCOND
+    real(c_double)                                  ,dimension(*) :: FERR
+    real(c_double)                                  ,dimension(*) :: BERR
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GEHRD(const int N, const int ILO, const int IHI, float * A, const int LDA, float * TAU, float * WORK, const int LWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GEHRD_float ( CT_Epetra_LAPACK_ID_t selfID, const int N, const int ILO, const int IHI, float * A, const int LDA, float * TAU, float * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GEHRD_float ( selfID, N, ILO, IHI, A, LDA, TAU, WORK, LWORK, &
+        INFO ) bind(C,name='Epetra_LAPACK_GEHRD_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: ILO
+    integer(c_int)              ,intent(in)   ,value              :: IHI
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: TAU
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GEHRD(const int N, const int ILO, const int IHI, double * A, const int LDA, double * TAU, double * WORK, const int LWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GEHRD_double ( CT_Epetra_LAPACK_ID_t selfID, const int N, const int ILO, const int IHI, double * A, const int LDA, double * TAU, double * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GEHRD_double ( selfID, N, ILO, IHI, A, LDA, TAU, WORK, LWORK, &
+        INFO ) bind(C,name='Epetra_LAPACK_GEHRD_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: ILO
+    integer(c_int)              ,intent(in)   ,value              :: IHI
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: TAU
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void HSEQR( const char JOB, const char COMPZ, const int N, const int ILO, const int IHI, float * H, const int LDH, float * WR, float * WI, float * Z, const int LDZ, float * WORK, const int LWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_HSEQR_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOB, const char COMPZ, const int N, const int ILO, const int IHI, float * H, const int LDH, float * WR, float * WI, float * Z, const int LDZ, float * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_HSEQR_float ( selfID, JOB, COMPZ, N, ILO, IHI, H, LDH, WR, WI, Z, &
+        LDZ, WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_HSEQR_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOB
+    character(kind=c_char)      ,intent(in)   ,value              :: COMPZ
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: ILO
+    integer(c_int)              ,intent(in)   ,value              :: IHI
+    real(c_float)                                   ,dimension(*) :: H
+    integer(c_int)              ,intent(in)   ,value              :: LDH
+    real(c_float)                                   ,dimension(*) :: WR
+    real(c_float)                                   ,dimension(*) :: WI
+    real(c_float)                                   ,dimension(*) :: Z
+    integer(c_int)              ,intent(in)   ,value              :: LDZ
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void HSEQR( const char JOB, const char COMPZ, const int N, const int ILO, const int IHI, double * H, const int LDH, double * WR, double * WI, double * Z, const int LDZ, double * WORK, const int LWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_HSEQR_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOB, const char COMPZ, const int N, const int ILO, const int IHI, double * H, const int LDH, double * WR, double * WI, double * Z, const int LDZ, double * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_HSEQR_double ( selfID, JOB, COMPZ, N, ILO, IHI, H, LDH, WR, WI, &
+        Z, LDZ, WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_HSEQR_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOB
+    character(kind=c_char)      ,intent(in)   ,value              :: COMPZ
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: ILO
+    integer(c_int)              ,intent(in)   ,value              :: IHI
+    real(c_double)                                  ,dimension(*) :: H
+    integer(c_int)              ,intent(in)   ,value              :: LDH
+    real(c_double)                                  ,dimension(*) :: WR
+    real(c_double)                                  ,dimension(*) :: WI
+    real(c_double)                                  ,dimension(*) :: Z
+    integer(c_int)              ,intent(in)   ,value              :: LDZ
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void ORGQR( const int M, const int N, const int K, float * A, const int LDA, float * TAU, float * WORK, const int LWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_ORGQR_float ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, const int K, float * A, const int LDA, float * TAU, float * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_ORGQR_float ( selfID, M, N, K, A, LDA, TAU, WORK, LWORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_ORGQR_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: K
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: TAU
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void ORGQR( const int M, const int N, const int K, double * A, const int LDA, double * TAU, double * WORK, const int LWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_ORGQR_double ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, const int K, double * A, const int LDA, double * TAU, double * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_ORGQR_double ( selfID, M, N, K, A, LDA, TAU, WORK, LWORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_ORGQR_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: K
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: TAU
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void ORGHR( const int N, const int ILO, const int IHI, float * A, const int LDA, float * TAU, float * WORK, const int LWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_ORGHR_float ( CT_Epetra_LAPACK_ID_t selfID, const int N, const int ILO, const int IHI, float * A, const int LDA, float * TAU, float * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_ORGHR_float ( selfID, N, ILO, IHI, A, LDA, TAU, WORK, LWORK, &
+        INFO ) bind(C,name='Epetra_LAPACK_ORGHR_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: ILO
+    integer(c_int)              ,intent(in)   ,value              :: IHI
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: TAU
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void ORGHR( const int N, const int ILO, const int IHI, double * A, const int LDA, double * TAU, double * WORK, const int LWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_ORGHR_double ( CT_Epetra_LAPACK_ID_t selfID, const int N, const int ILO, const int IHI, double * A, const int LDA, double * TAU, double * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_ORGHR_double ( selfID, N, ILO, IHI, A, LDA, TAU, WORK, LWORK, &
+        INFO ) bind(C,name='Epetra_LAPACK_ORGHR_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: ILO
+    integer(c_int)              ,intent(in)   ,value              :: IHI
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: TAU
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void ORMHR( const char SIDE, const char TRANS, const int M, const int N, const int ILO, const int IHI, const float * A, const int LDA, const float * TAU, float * C, const int LDC, float * WORK, const int LWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_ORMHR_float ( CT_Epetra_LAPACK_ID_t selfID, const char SIDE, const char TRANS, const int M, const int N, const int ILO, const int IHI, const float * A, const int LDA, const float * TAU, float * C, const int LDC, float * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_ORMHR_float ( selfID, SIDE, TRANS, M, N, ILO, IHI, A, LDA, TAU, &
+        C, LDC, WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_ORMHR_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: SIDE
+    character(kind=c_char)      ,intent(in)   ,value              :: TRANS
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: ILO
+    integer(c_int)              ,intent(in)   ,value              :: IHI
+    real(c_float)               ,intent(in)         ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)               ,intent(in)         ,dimension(*) :: TAU
+    real(c_float)                                   ,dimension(*) :: C
+    integer(c_int)              ,intent(in)   ,value              :: LDC
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void ORMHR( const char SIDE, const char TRANS, const int M, const int N, const int ILO, const int IHI, const double * A, const int LDA, const double * TAU, double * C, const int LDC, double * WORK, const int LWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_ORMHR_double ( CT_Epetra_LAPACK_ID_t selfID, const char SIDE, const char TRANS, const int M, const int N, const int ILO, const int IHI, const double * A, const int LDA, const double * TAU, double * C, const int LDC, double * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_ORMHR_double ( selfID, SIDE, TRANS, M, N, ILO, IHI, A, LDA, TAU, &
+        C, LDC, WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_ORMHR_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: SIDE
+    character(kind=c_char)      ,intent(in)   ,value              :: TRANS
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: ILO
+    integer(c_int)              ,intent(in)   ,value              :: IHI
+    real(c_double)              ,intent(in)         ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)              ,intent(in)         ,dimension(*) :: TAU
+    real(c_double)                                  ,dimension(*) :: C
+    integer(c_int)              ,intent(in)   ,value              :: LDC
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void LARFT( const char DIRECT, const char STOREV, const int N, const int K, double * V, const int LDV, double * TAU, double * T, const int LDT) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_LARFT_float ( CT_Epetra_LAPACK_ID_t selfID, const char DIRECT, const char STOREV, const int N, const int K, double * V, const int LDV, double * TAU, double * T, const int LDT );
+
+  subroutine Epetra_LAPACK_LARFT_float ( selfID, DIRECT, STOREV, N, K, V, LDV, TAU, T, LDT ) &
+        bind(C,name='Epetra_LAPACK_LARFT_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: DIRECT
+    character(kind=c_char)      ,intent(in)   ,value              :: STOREV
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: K
+    real(c_double)                                  ,dimension(*) :: V
+    integer(c_int)              ,intent(in)   ,value              :: LDV
+    real(c_double)                                  ,dimension(*) :: TAU
+    real(c_double)                                  ,dimension(*) :: T
+    integer(c_int)              ,intent(in)   ,value              :: LDT
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void LARFT( const char DIRECT, const char STOREV, const int N, const int K, float * V, const int LDV, float * TAU, float * T, const int LDT) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_LARFT_double ( CT_Epetra_LAPACK_ID_t selfID, const char DIRECT, const char STOREV, const int N, const int K, float * V, const int LDV, float * TAU, float * T, const int LDT );
+
+  subroutine Epetra_LAPACK_LARFT_double ( selfID, DIRECT, STOREV, N, K, V, LDV, TAU, T, LDT ) &
+        bind(C,name='Epetra_LAPACK_LARFT_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: DIRECT
+    character(kind=c_char)      ,intent(in)   ,value              :: STOREV
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: K
+    real(c_float)                                   ,dimension(*) :: V
+    integer(c_int)              ,intent(in)   ,value              :: LDV
+    real(c_float)                                   ,dimension(*) :: TAU
+    real(c_float)                                   ,dimension(*) :: T
+    integer(c_int)              ,intent(in)   ,value              :: LDT
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void TREVC( const char SIDE, const char HOWMNY, int * SELECT, const int N, const float * T, const int LDT, float *VL, const int LDVL, float * VR, const int LDVR, const int MM, int * M, float * WORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_TREVC_float ( CT_Epetra_LAPACK_ID_t selfID, const char SIDE, const char HOWMNY, int * SELECT, const int N, const float * T, const int LDT, float * VL, const int LDVL, float * VR, const int LDVR, const int MM, int * M, float * WORK, int * INFO );
+
+  subroutine Epetra_LAPACK_TREVC_float ( selfID, SIDE, HOWMNY, SELECT, N, T, LDT, VL, LDVL, &
+        VR, LDVR, MM, M, WORK, INFO ) bind(C,name='Epetra_LAPACK_TREVC_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: SIDE
+    character(kind=c_char)      ,intent(in)   ,value              :: HOWMNY
+    integer(c_int)                                  ,dimension(*) :: SELECT
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)               ,intent(in)         ,dimension(*) :: T
+    integer(c_int)              ,intent(in)   ,value              :: LDT
+    real(c_float)                                   ,dimension(*) :: VL
+    integer(c_int)              ,intent(in)   ,value              :: LDVL
+    real(c_float)                                   ,dimension(*) :: VR
+    integer(c_int)              ,intent(in)   ,value              :: LDVR
+    integer(c_int)              ,intent(in)   ,value              :: MM
+    integer(c_int)                                  ,dimension(*) :: M
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void TREVC( const char SIDE, const char HOWMNY, int * SELECT, const int N, const double * T, const int LDT, double *VL, const int LDVL, double * VR, const int LDVR, const int MM, int *M, double * WORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_TREVC_double ( CT_Epetra_LAPACK_ID_t selfID, const char SIDE, const char HOWMNY, int * SELECT, const int N, const double * T, const int LDT, double * VL, const int LDVL, double * VR, const int LDVR, const int MM, int * M, double * WORK, int * INFO );
+
+  subroutine Epetra_LAPACK_TREVC_double ( selfID, SIDE, HOWMNY, SELECT, N, T, LDT, VL, LDVL, &
+        VR, LDVR, MM, M, WORK, INFO ) bind(C,name='Epetra_LAPACK_TREVC_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: SIDE
+    character(kind=c_char)      ,intent(in)   ,value              :: HOWMNY
+    integer(c_int)                                  ,dimension(*) :: SELECT
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)              ,intent(in)         ,dimension(*) :: T
+    integer(c_int)              ,intent(in)   ,value              :: LDT
+    real(c_double)                                  ,dimension(*) :: VL
+    integer(c_int)              ,intent(in)   ,value              :: LDVL
+    real(c_double)                                  ,dimension(*) :: VR
+    integer(c_int)              ,intent(in)   ,value              :: LDVR
+    integer(c_int)              ,intent(in)   ,value              :: MM
+    integer(c_int)                                  ,dimension(*) :: M
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void TREXC( const char COMPQ, const int N, float * T, const int LDT, float * Q, const int LDQ, int IFST, int ILST, float * WORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_TREXC_float ( CT_Epetra_LAPACK_ID_t selfID, const char COMPQ, const int N, float * T, const int LDT, float * Q, const int LDQ, int IFST, int ILST, float * WORK, int * INFO );
+
+  subroutine Epetra_LAPACK_TREXC_float ( selfID, COMPQ, N, T, LDT, Q, LDQ, IFST, ILST, WORK, &
+        INFO ) bind(C,name='Epetra_LAPACK_TREXC_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: COMPQ
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: T
+    integer(c_int)              ,intent(in)   ,value              :: LDT
+    real(c_float)                                   ,dimension(*) :: Q
+    integer(c_int)              ,intent(in)   ,value              :: LDQ
+    integer(c_int)              ,intent(in)   ,value              :: IFST
+    integer(c_int)              ,intent(in)   ,value              :: ILST
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void TREXC( const char COMPQ, const int N, double * T, const int LDT, double * Q, const int LDQ, int IFST, int ILST, double * WORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_TREXC_double ( CT_Epetra_LAPACK_ID_t selfID, const char COMPQ, const int N, double * T, const int LDT, double * Q, const int LDQ, int IFST, int ILST, double * WORK, int * INFO );
+
+  subroutine Epetra_LAPACK_TREXC_double ( selfID, COMPQ, N, T, LDT, Q, LDQ, IFST, ILST, &
+        WORK, INFO ) bind(C,name='Epetra_LAPACK_TREXC_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: COMPQ
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: T
+    integer(c_int)              ,intent(in)   ,value              :: LDT
+    real(c_double)                                  ,dimension(*) :: Q
+    integer(c_int)              ,intent(in)   ,value              :: LDQ
+    integer(c_int)              ,intent(in)   ,value              :: IFST
+    integer(c_int)              ,intent(in)   ,value              :: ILST
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GESVD( const char JOBU, const char JOBVT, const int M, const int N, float * A, const int LDA, float * S, float * U, const int LDU, float * VT, const int LDVT, float * WORK, const int * LWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GESVD_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBU, const char JOBVT, const int M, const int N, float * A, const int LDA, float * S, float * U, const int LDU, float * VT, const int LDVT, float * WORK, const int * LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GESVD_float ( selfID, JOBU, JOBVT, M, N, A, LDA, S, U, LDU, VT, &
+        LDVT, WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_GESVD_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBU
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBVT
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: S
+    real(c_float)                                   ,dimension(*) :: U
+    integer(c_int)              ,intent(in)   ,value              :: LDU
+    real(c_float)                                   ,dimension(*) :: VT
+    integer(c_int)              ,intent(in)   ,value              :: LDVT
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)         ,dimension(*) :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GESVD( const char JOBU, const char JOBVT, const int M, const int N, double * A, const int LDA, double * S, double * U, const int LDU, double * VT, const int LDVT, double * WORK, const int * LWORK, int * INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GESVD_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBU, const char JOBVT, const int M, const int N, double * A, const int LDA, double * S, double * U, const int LDU, double * VT, const int LDVT, double * WORK, const int * LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GESVD_double ( selfID, JOBU, JOBVT, M, N, A, LDA, S, U, LDU, VT, &
+        LDVT, WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_GESVD_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBU
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBVT
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: S
+    real(c_double)                                  ,dimension(*) :: U
+    integer(c_int)              ,intent(in)   ,value              :: LDU
+    real(c_double)                                  ,dimension(*) :: VT
+    integer(c_int)              ,intent(in)   ,value              :: LDVT
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)         ,dimension(*) :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GGSVD(const char JOBU, const char JOBV, const char JOBQ, const int M, const int N, const int P, int * K, int * L, double* A, const int LDA, double* B, const int LDB, double* ALPHA, double* BETA, double* U, const int LDU, double* V, const int LDV, double* Q, const int LDQ, double* WORK, int* IWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GGSVD_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBU, const char JOBV, const char JOBQ, const int M, const int N, const int P, int * K, int * L, double * A, const int LDA, double * B, const int LDB, double * ALPHA, double * BETA, double * U, const int LDU, double * V, const int LDV, double * Q, const int LDQ, double * WORK, int * IWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GGSVD_double ( selfID, JOBU, JOBV, JOBQ, M, N, P, K, L, A, LDA, &
+        B, LDB, ALPHA, BETA, U, LDU, V, LDV, Q, LDQ, WORK, IWORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_GGSVD_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBU
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBV
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBQ
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: P
+    integer(c_int)                                  ,dimension(*) :: K
+    integer(c_int)                                  ,dimension(*) :: L
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_double)                                  ,dimension(*) :: ALPHA
+    real(c_double)                                  ,dimension(*) :: BETA
+    real(c_double)                                  ,dimension(*) :: U
+    integer(c_int)              ,intent(in)   ,value              :: LDU
+    real(c_double)                                  ,dimension(*) :: V
+    integer(c_int)              ,intent(in)   ,value              :: LDV
+    real(c_double)                                  ,dimension(*) :: Q
+    integer(c_int)              ,intent(in)   ,value              :: LDQ
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GGSVD(const char JOBU, const char JOBV, const char JOBQ, const int M, const int N, const int P, int * K, int * L, float* A, const int LDA, float* B, const int LDB, float* ALPHA, float* BETA, float* U, const int LDU, float* V, const int LDV, float* Q, const int LDQ, float* WORK, int* IWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GGSVD_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBU, const char JOBV, const char JOBQ, const int M, const int N, const int P, int * K, int * L, float * A, const int LDA, float * B, const int LDB, float * ALPHA, float * BETA, float * U, const int LDU, float * V, const int LDV, float * Q, const int LDQ, float * WORK, int * IWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GGSVD_float ( selfID, JOBU, JOBV, JOBQ, M, N, P, K, L, A, LDA, B, &
+        LDB, ALPHA, BETA, U, LDU, V, LDV, Q, LDQ, WORK, IWORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_GGSVD_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBU
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBV
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBQ
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: P
+    integer(c_int)                                  ,dimension(*) :: K
+    integer(c_int)                                  ,dimension(*) :: L
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_float)                                   ,dimension(*) :: ALPHA
+    real(c_float)                                   ,dimension(*) :: BETA
+    real(c_float)                                   ,dimension(*) :: U
+    integer(c_int)              ,intent(in)   ,value              :: LDU
+    real(c_float)                                   ,dimension(*) :: V
+    integer(c_int)              ,intent(in)   ,value              :: LDV
+    real(c_float)                                   ,dimension(*) :: Q
+    integer(c_int)              ,intent(in)   ,value              :: LDQ
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GEEV(const char JOBVL, const char JOBVR, const int N, double* A, const int LDA, double* WR, double* WI, double* VL, const int LDVL, double* VR, const int LDVR, double* WORK, const int LWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GEEV_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBVL, const char JOBVR, const int N, double * A, const int LDA, double * WR, double * WI, double * VL, const int LDVL, double * VR, const int LDVR, double * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GEEV_double ( selfID, JOBVL, JOBVR, N, A, LDA, WR, WI, VL, LDVL, &
+        VR, LDVR, WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_GEEV_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBVL
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBVR
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: WR
+    real(c_double)                                  ,dimension(*) :: WI
+    real(c_double)                                  ,dimension(*) :: VL
+    integer(c_int)              ,intent(in)   ,value              :: LDVL
+    real(c_double)                                  ,dimension(*) :: VR
+    integer(c_int)              ,intent(in)   ,value              :: LDVR
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GEEV(const char JOBVL, const char JOBVR, const int N, float* A, const int LDA, float* WR, float* WI, float* VL, const int LDVL, float* VR, const int LDVR, float* WORK, const int LWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GEEV_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBVL, const char JOBVR, const int N, float * A, const int LDA, float * WR, float * WI, float * VL, const int LDVL, float * VR, const int LDVR, float * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GEEV_float ( selfID, JOBVL, JOBVR, N, A, LDA, WR, WI, VL, LDVL, &
+        VR, LDVR, WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_GEEV_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBVL
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBVR
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: WR
+    real(c_float)                                   ,dimension(*) :: WI
+    real(c_float)                                   ,dimension(*) :: VL
+    integer(c_int)              ,intent(in)   ,value              :: LDVL
+    real(c_float)                                   ,dimension(*) :: VR
+    integer(c_int)              ,intent(in)   ,value              :: LDVR
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SPEV(const char JOBZ, const char UPLO, const int N, double* AP, double* W, double* Z, int LDZ, double* WORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_SPEV_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char UPLO, const int N, double * AP, double * W, double * Z, int LDZ, double * WORK, int * INFO );
+
+  subroutine Epetra_LAPACK_SPEV_double ( selfID, JOBZ, UPLO, N, AP, W, Z, LDZ, WORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_SPEV_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBZ
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: AP
+    real(c_double)                                  ,dimension(*) :: W
+    real(c_double)                                  ,dimension(*) :: Z
+    integer(c_int)              ,intent(in)   ,value              :: LDZ
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SPEV(const char JOBZ, const char UPLO, const int N, float* AP, float* W, float* Z, int LDZ, float* WORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_SPEV_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char UPLO, const int N, float * AP, float * W, float * Z, int LDZ, float * WORK, int * INFO );
+
+  subroutine Epetra_LAPACK_SPEV_float ( selfID, JOBZ, UPLO, N, AP, W, Z, LDZ, WORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_SPEV_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBZ
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: AP
+    real(c_float)                                   ,dimension(*) :: W
+    real(c_float)                                   ,dimension(*) :: Z
+    integer(c_int)              ,intent(in)   ,value              :: LDZ
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SPGV(const int ITYPE, const char JOBZ, const char UPLO, const int N, double* AP, double* BP, double* W, double* Z, const int LDZ, double* WORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_SPGV_double ( CT_Epetra_LAPACK_ID_t selfID, const int ITYPE, const char JOBZ, const char UPLO, const int N, double * AP, double * BP, double * W, double * Z, const int LDZ, double * WORK, int * INFO );
+
+  subroutine Epetra_LAPACK_SPGV_double ( selfID, ITYPE, JOBZ, UPLO, N, AP, BP, W, Z, LDZ, &
+        WORK, INFO ) bind(C,name='Epetra_LAPACK_SPGV_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_char ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: ITYPE
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBZ
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: AP
+    real(c_double)                                  ,dimension(*) :: BP
+    real(c_double)                                  ,dimension(*) :: W
+    real(c_double)                                  ,dimension(*) :: Z
+    integer(c_int)              ,intent(in)   ,value              :: LDZ
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SPGV(const int ITYPE, const char JOBZ, const char UPLO, const int N, float* AP, float* BP, float* W, float* Z, const int LDZ, float* WORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_SPGV_float ( CT_Epetra_LAPACK_ID_t selfID, const int ITYPE, const char JOBZ, const char UPLO, const int N, float * AP, float * BP, float * W, float * Z, const int LDZ, float * WORK, int * INFO );
+
+  subroutine Epetra_LAPACK_SPGV_float ( selfID, ITYPE, JOBZ, UPLO, N, AP, BP, W, Z, LDZ, &
+        WORK, INFO ) bind(C,name='Epetra_LAPACK_SPGV_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_char ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: ITYPE
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBZ
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: AP
+    real(c_float)                                   ,dimension(*) :: BP
+    real(c_float)                                   ,dimension(*) :: W
+    real(c_float)                                   ,dimension(*) :: Z
+    integer(c_int)              ,intent(in)   ,value              :: LDZ
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SYEV(const char JOBZ, const char UPLO, const int N, double* A, const int LDA, double* W, double* WORK, const int LWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_SYEV_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char UPLO, const int N, double * A, const int LDA, double * W, double * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_SYEV_double ( selfID, JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, &
+        INFO ) bind(C,name='Epetra_LAPACK_SYEV_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBZ
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: W
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SYEV(const char JOBZ, const char UPLO, const int N, float* A, const int LDA, float* W, float* WORK, const int LWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_SYEV_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char UPLO, const int N, float * A, const int LDA, float * W, float * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_SYEV_float ( selfID, JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_SYEV_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBZ
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: W
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SYEVD(const char JOBZ, const char UPLO, const int N, double* A, const int LDA, double* W, double* WORK, const int LWORK, int* IWORK, const int LIWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_SYEVD_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char UPLO, const int N, double * A, const int LDA, double * W, double * WORK, const int LWORK, int * IWORK, const int LIWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_SYEVD_double ( selfID, JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, &
+        IWORK, LIWORK, INFO ) bind(C,name='Epetra_LAPACK_SYEVD_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBZ
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: W
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)              ,intent(in)   ,value              :: LIWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SYEVD(const char JOBZ, const char UPLO, const int N, float* A, const int LDA, float* W, float* WORK, const int LWORK, int* IWORK, const int LIWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_SYEVD_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char UPLO, const int N, float * A, const int LDA, float * W, float * WORK, const int LWORK, int * IWORK, const int LIWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_SYEVD_float ( selfID, JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, &
+        IWORK, LIWORK, INFO ) bind(C,name='Epetra_LAPACK_SYEVD_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBZ
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: W
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)              ,intent(in)   ,value              :: LIWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SYEVX(const char JOBZ, const char RANGE, const char UPLO, const int N, double* A, const int LDA, const double* VL, const double* VU, const int* IL, const int* IU, const double ABSTOL, int * M, double* W, double* Z, const int LDZ, double* WORK, const int LWORK, int* IWORK, int* IFAIL, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_SYEVX_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char RANGE, const char UPLO, const int N, double * A, const int LDA, const double * VL, const double * VU, const int * IL, const int * IU, const double ABSTOL, int * M, double * W, double * Z, const int LDZ, double * WORK, const int LWORK, int * IWORK, int * IFAIL, int * INFO );
+
+  subroutine Epetra_LAPACK_SYEVX_double ( selfID, JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, &
+        IU, ABSTOL, M, W, Z, LDZ, WORK, LWORK, IWORK, IFAIL, INFO ) &
+        bind(C,name='Epetra_LAPACK_SYEVX_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBZ
+    character(kind=c_char)      ,intent(in)   ,value              :: RANGE
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)              ,intent(in)         ,dimension(*) :: VL
+    real(c_double)              ,intent(in)         ,dimension(*) :: VU
+    integer(c_int)              ,intent(in)         ,dimension(*) :: IL
+    integer(c_int)              ,intent(in)         ,dimension(*) :: IU
+    real(c_double)              ,intent(in)   ,value              :: ABSTOL
+    integer(c_int)                                  ,dimension(*) :: M
+    real(c_double)                                  ,dimension(*) :: W
+    real(c_double)                                  ,dimension(*) :: Z
+    integer(c_int)              ,intent(in)   ,value              :: LDZ
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: IFAIL
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SYEVX(const char JOBZ, const char RANGE, const char UPLO, const int N, float* A, const int LDA, const float* VL, const float* VU, const int* IL, const int* IU, const float ABSTOL, int * M, float* W, float* Z, const int LDZ, float* WORK, const int LWORK, int* IWORK, int* IFAIL, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_SYEVX_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char RANGE, const char UPLO, const int N, float * A, const int LDA, const float * VL, const float * VU, const int * IL, const int * IU, const float ABSTOL, int * M, float * W, float * Z, const int LDZ, float * WORK, const int LWORK, int * IWORK, int * IFAIL, int * INFO );
+
+  subroutine Epetra_LAPACK_SYEVX_float ( selfID, JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, &
+        IU, ABSTOL, M, W, Z, LDZ, WORK, LWORK, IWORK, IFAIL, INFO ) &
+        bind(C,name='Epetra_LAPACK_SYEVX_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBZ
+    character(kind=c_char)      ,intent(in)   ,value              :: RANGE
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)               ,intent(in)         ,dimension(*) :: VL
+    real(c_float)               ,intent(in)         ,dimension(*) :: VU
+    integer(c_int)              ,intent(in)         ,dimension(*) :: IL
+    integer(c_int)              ,intent(in)         ,dimension(*) :: IU
+    real(c_float)               ,intent(in)   ,value              :: ABSTOL
+    integer(c_int)                                  ,dimension(*) :: M
+    real(c_float)                                   ,dimension(*) :: W
+    real(c_float)                                   ,dimension(*) :: Z
+    integer(c_int)              ,intent(in)   ,value              :: LDZ
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: IFAIL
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SYGV(const int ITYPE, const char JOBZ, const char UPLO, const int N, double* A, const int LDA, double* B, const int LDB, double* W, double* WORK, const int LWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_SYGV_double ( CT_Epetra_LAPACK_ID_t selfID, const int ITYPE, const char JOBZ, const char UPLO, const int N, double * A, const int LDA, double * B, const int LDB, double * W, double * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_SYGV_double ( selfID, ITYPE, JOBZ, UPLO, N, A, LDA, B, LDB, W, &
+        WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_SYGV_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_char ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: ITYPE
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBZ
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_double)                                  ,dimension(*) :: W
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SYGV(const int ITYPE, const char JOBZ, const char UPLO, const int N, float* A, const int LDA, float* B, const int LDB, float* W, float* WORK, const int LWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_SYGV_float ( CT_Epetra_LAPACK_ID_t selfID, const int ITYPE, const char JOBZ, const char UPLO, const int N, float * A, const int LDA, float * B, const int LDB, float * W, float * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_SYGV_float ( selfID, ITYPE, JOBZ, UPLO, N, A, LDA, B, LDB, W, &
+        WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_SYGV_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_char ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: ITYPE
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBZ
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_float)                                   ,dimension(*) :: W
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SYGVX(const int ITYPE, const char JOBZ, const char RANGE, const char UPLO, const int N, double* A, const int LDA, double* B, const int LDB, const double* VL, const double* VU, const int* IL, const int* IU, const double ABSTOL, int* M, double* W, double* Z, const int LDZ, double* WORK, const int LWORK, int* IWORK, int* IFAIL, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_SYGVX_double ( CT_Epetra_LAPACK_ID_t selfID, const int ITYPE, const char JOBZ, const char RANGE, const char UPLO, const int N, double * A, const int LDA, double * B, const int LDB, const double * VL, const double * VU, const int * IL, const int * IU, const double ABSTOL, int * M, double * W, double * Z, const int LDZ, double * WORK, const int LWORK, int * IWORK, int * IFAIL, int * INFO );
+
+  subroutine Epetra_LAPACK_SYGVX_double ( selfID, ITYPE, JOBZ, RANGE, UPLO, N, A, LDA, B, &
+        LDB, VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, LWORK, IWORK, IFAIL, INFO ) &
+        bind(C,name='Epetra_LAPACK_SYGVX_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_char ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: ITYPE
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBZ
+    character(kind=c_char)      ,intent(in)   ,value              :: RANGE
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_double)              ,intent(in)         ,dimension(*) :: VL
+    real(c_double)              ,intent(in)         ,dimension(*) :: VU
+    integer(c_int)              ,intent(in)         ,dimension(*) :: IL
+    integer(c_int)              ,intent(in)         ,dimension(*) :: IU
+    real(c_double)              ,intent(in)   ,value              :: ABSTOL
+    integer(c_int)                                  ,dimension(*) :: M
+    real(c_double)                                  ,dimension(*) :: W
+    real(c_double)                                  ,dimension(*) :: Z
+    integer(c_int)              ,intent(in)   ,value              :: LDZ
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: IFAIL
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SYGVX(const int ITYPE, const char JOBZ, const char RANGE, const char UPLO, const int N, float* A, const int LDA, float* B, const int LDB, const float* VL, const float* VU, const int* IL, const int* IU, const float ABSTOL, int* M, float* W, float* Z, const int LDZ, float* WORK, const int LWORK, int* IWORK, int* IFAIL, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_SYGVX_float ( CT_Epetra_LAPACK_ID_t selfID, const int ITYPE, const char JOBZ, const char RANGE, const char UPLO, const int N, float * A, const int LDA, float * B, const int LDB, const float * VL, const float * VU, const int * IL, const int * IU, const float ABSTOL, int * M, float * W, float * Z, const int LDZ, float * WORK, const int LWORK, int * IWORK, int * IFAIL, int * INFO );
+
+  subroutine Epetra_LAPACK_SYGVX_float ( selfID, ITYPE, JOBZ, RANGE, UPLO, N, A, LDA, B, &
+        LDB, VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, LWORK, IWORK, IFAIL, INFO ) &
+        bind(C,name='Epetra_LAPACK_SYGVX_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_char ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: ITYPE
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBZ
+    character(kind=c_char)      ,intent(in)   ,value              :: RANGE
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_float)               ,intent(in)         ,dimension(*) :: VL
+    real(c_float)               ,intent(in)         ,dimension(*) :: VU
+    integer(c_int)              ,intent(in)         ,dimension(*) :: IL
+    integer(c_int)              ,intent(in)         ,dimension(*) :: IU
+    real(c_float)               ,intent(in)   ,value              :: ABSTOL
+    integer(c_int)                                  ,dimension(*) :: M
+    real(c_float)                                   ,dimension(*) :: W
+    real(c_float)                                   ,dimension(*) :: Z
+    integer(c_int)              ,intent(in)   ,value              :: LDZ
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: IFAIL
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SYEVR(const char JOBZ, const char RANGE, const char UPLO, const int N, double* A, const int LDA, const double* VL, const double* VU, const int *IL, const int *IU, const double ABSTOL, int* M, double* W, double* Z, const int LDZ, int* ISUPPZ, double* WORK, const int LWORK, int* IWORK, const int LIWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_SYEVR_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char RANGE, const char UPLO, const int N, double * A, const int LDA, const double * VL, const double * VU, const int * IL, const int * IU, const double ABSTOL, int * M, double * W, double * Z, const int LDZ, int * ISUPPZ, double * WORK, const int LWORK, int * IWORK, const int LIWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_SYEVR_double ( selfID, JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, &
+        IU, ABSTOL, M, W, Z, LDZ, ISUPPZ, WORK, LWORK, IWORK, LIWORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_SYEVR_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBZ
+    character(kind=c_char)      ,intent(in)   ,value              :: RANGE
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)              ,intent(in)         ,dimension(*) :: VL
+    real(c_double)              ,intent(in)         ,dimension(*) :: VU
+    integer(c_int)              ,intent(in)         ,dimension(*) :: IL
+    integer(c_int)              ,intent(in)         ,dimension(*) :: IU
+    real(c_double)              ,intent(in)   ,value              :: ABSTOL
+    integer(c_int)                                  ,dimension(*) :: M
+    real(c_double)                                  ,dimension(*) :: W
+    real(c_double)                                  ,dimension(*) :: Z
+    integer(c_int)              ,intent(in)   ,value              :: LDZ
+    integer(c_int)                                  ,dimension(*) :: ISUPPZ
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)              ,intent(in)   ,value              :: LIWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void SYEVR(const char JOBZ, const char RANGE, const char UPLO, const int N, float* A, const int LDA, const float* VL, const float* VU, const int *IL, const int *IU, const float ABSTOL, int* M, float* W, float* Z, const int LDZ, int* ISUPPZ, float* WORK, const int LWORK, int* IWORK, const int LIWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_SYEVR_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char RANGE, const char UPLO, const int N, float * A, const int LDA, const float * VL, const float * VU, const int * IL, const int * IU, const float ABSTOL, int * M, float * W, float * Z, const int LDZ, int * ISUPPZ, float * WORK, const int LWORK, int * IWORK, const int LIWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_SYEVR_float ( selfID, JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, &
+        IU, ABSTOL, M, W, Z, LDZ, ISUPPZ, WORK, LWORK, IWORK, LIWORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_SYEVR_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBZ
+    character(kind=c_char)      ,intent(in)   ,value              :: RANGE
+    character(kind=c_char)      ,intent(in)   ,value              :: UPLO
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)               ,intent(in)         ,dimension(*) :: VL
+    real(c_float)               ,intent(in)         ,dimension(*) :: VU
+    integer(c_int)              ,intent(in)         ,dimension(*) :: IL
+    integer(c_int)              ,intent(in)         ,dimension(*) :: IU
+    real(c_float)               ,intent(in)   ,value              :: ABSTOL
+    integer(c_int)                                  ,dimension(*) :: M
+    real(c_float)                                   ,dimension(*) :: W
+    real(c_float)                                   ,dimension(*) :: Z
+    integer(c_int)              ,intent(in)   ,value              :: LDZ
+    integer(c_int)                                  ,dimension(*) :: ISUPPZ
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)              ,intent(in)   ,value              :: LIWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GEEVX(const char BALANC, const char JOBVL, const char JOBVR, const char SENSE, const int N, double* A, const int LDA, double* WR, double* WI, double* VL, const int LDVL, double* VR, const int LDVR, int* ILO, int* IHI, double* SCALE, double* ABNRM, double* RCONDE, double* RCONDV, double* WORK, const int LWORK, int* IWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GEEVX_double ( CT_Epetra_LAPACK_ID_t selfID, const char BALANC, const char JOBVL, const char JOBVR, const char SENSE, const int N, double * A, const int LDA, double * WR, double * WI, double * VL, const int LDVL, double * VR, const int LDVR, int * ILO, int * IHI, double * SCALE, double * ABNRM, double * RCONDE, double * RCONDV, double * WORK, const int LWORK, int * IWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GEEVX_double ( selfID, BALANC, JOBVL, JOBVR, SENSE, N, A, LDA, &
+        WR, WI, VL, LDVL, VR, LDVR, ILO, IHI, SCALE, ABNRM, RCONDE, RCONDV, WORK, LWORK, &
+        IWORK, INFO ) bind(C,name='Epetra_LAPACK_GEEVX_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: BALANC
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBVL
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBVR
+    character(kind=c_char)      ,intent(in)   ,value              :: SENSE
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: WR
+    real(c_double)                                  ,dimension(*) :: WI
+    real(c_double)                                  ,dimension(*) :: VL
+    integer(c_int)              ,intent(in)   ,value              :: LDVL
+    real(c_double)                                  ,dimension(*) :: VR
+    integer(c_int)              ,intent(in)   ,value              :: LDVR
+    integer(c_int)                                  ,dimension(*) :: ILO
+    integer(c_int)                                  ,dimension(*) :: IHI
+    real(c_double)                                  ,dimension(*) :: SCALE
+    real(c_double)                                  ,dimension(*) :: ABNRM
+    real(c_double)                                  ,dimension(*) :: RCONDE
+    real(c_double)                                  ,dimension(*) :: RCONDV
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GEEVX(const char BALANC, const char JOBVL, const char JOBVR, const char SENSE, const int N, float* A, const int LDA, float* WR, float* WI, float* VL, const int LDVL, float* VR, const int LDVR, int* ILO, int* IHI, float* SCALE, float* ABNRM, float* RCONDE, float* RCONDV, float* WORK, const int LWORK, int* IWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GEEVX_float ( CT_Epetra_LAPACK_ID_t selfID, const char BALANC, const char JOBVL, const char JOBVR, const char SENSE, const int N, float * A, const int LDA, float * WR, float * WI, float * VL, const int LDVL, float * VR, const int LDVR, int * ILO, int * IHI, float * SCALE, float * ABNRM, float * RCONDE, float * RCONDV, float * WORK, const int LWORK, int * IWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GEEVX_float ( selfID, BALANC, JOBVL, JOBVR, SENSE, N, A, LDA, WR, &
+        WI, VL, LDVL, VR, LDVR, ILO, IHI, SCALE, ABNRM, RCONDE, RCONDV, WORK, LWORK, IWORK, &
+        INFO ) bind(C,name='Epetra_LAPACK_GEEVX_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: BALANC
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBVL
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBVR
+    character(kind=c_char)      ,intent(in)   ,value              :: SENSE
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: WR
+    real(c_float)                                   ,dimension(*) :: WI
+    real(c_float)                                   ,dimension(*) :: VL
+    integer(c_int)              ,intent(in)   ,value              :: LDVL
+    real(c_float)                                   ,dimension(*) :: VR
+    integer(c_int)              ,intent(in)   ,value              :: LDVR
+    integer(c_int)                                  ,dimension(*) :: ILO
+    integer(c_int)                                  ,dimension(*) :: IHI
+    real(c_float)                                   ,dimension(*) :: SCALE
+    real(c_float)                                   ,dimension(*) :: ABNRM
+    real(c_float)                                   ,dimension(*) :: RCONDE
+    real(c_float)                                   ,dimension(*) :: RCONDV
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GESDD(const char JOBZ, const int M, const int N, double* A, const int LDA, double* S, double* U, const int LDU, double* VT, const int LDVT, double* WORK, const int LWORK, int* IWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GESDD_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const int M, const int N, double * A, const int LDA, double * S, double * U, const int LDU, double * VT, const int LDVT, double * WORK, const int LWORK, int * IWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GESDD_double ( selfID, JOBZ, M, N, A, LDA, S, U, LDU, VT, LDVT, &
+        WORK, LWORK, IWORK, INFO ) bind(C,name='Epetra_LAPACK_GESDD_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBZ
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: S
+    real(c_double)                                  ,dimension(*) :: U
+    integer(c_int)              ,intent(in)   ,value              :: LDU
+    real(c_double)                                  ,dimension(*) :: VT
+    integer(c_int)              ,intent(in)   ,value              :: LDVT
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GESDD(const char JOBZ, const int M, const int N, float* A, const int LDA, float* S, float* U, const int LDU, float* VT, const int LDVT, float* WORK, const int LWORK, int* IWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GESDD_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const int M, const int N, float * A, const int LDA, float * S, float * U, const int LDU, float * VT, const int LDVT, float * WORK, const int LWORK, int * IWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GESDD_float ( selfID, JOBZ, M, N, A, LDA, S, U, LDU, VT, LDVT, &
+        WORK, LWORK, IWORK, INFO ) bind(C,name='Epetra_LAPACK_GESDD_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBZ
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: S
+    real(c_float)                                   ,dimension(*) :: U
+    integer(c_int)              ,intent(in)   ,value              :: LDU
+    real(c_float)                                   ,dimension(*) :: VT
+    integer(c_int)              ,intent(in)   ,value              :: LDVT
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: IWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GGEV(const char JOBVL, const char JOBVR, const int N, double* A, const int LDA, double* B, const int LDB, double* ALPHAR, double* ALPHAI, double* BETA, double* VL, const int LDVL, double* VR, const int LDVR, double* WORK, const int LWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GGEV_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBVL, const char JOBVR, const int N, double * A, const int LDA, double * B, const int LDB, double * ALPHAR, double * ALPHAI, double * BETA, double * VL, const int LDVL, double * VR, const int LDVR, double * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GGEV_double ( selfID, JOBVL, JOBVR, N, A, LDA, B, LDB, ALPHAR, &
+        ALPHAI, BETA, VL, LDVL, VR, LDVR, WORK, LWORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_GGEV_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBVL
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBVR
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_double)                                  ,dimension(*) :: ALPHAR
+    real(c_double)                                  ,dimension(*) :: ALPHAI
+    real(c_double)                                  ,dimension(*) :: BETA
+    real(c_double)                                  ,dimension(*) :: VL
+    integer(c_int)              ,intent(in)   ,value              :: LDVL
+    real(c_double)                                  ,dimension(*) :: VR
+    integer(c_int)              ,intent(in)   ,value              :: LDVR
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GGEV(const char JOBVL, const char JOBVR, const int N, float* A, const int LDA, float* B, const int LDB, float* ALPHAR, float* ALPHAI, float* BETA, float* VL, const int LDVL, float* VR, const int LDVR, float* WORK, const int LWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GGEV_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBVL, const char JOBVR, const int N, float * A, const int LDA, float * B, const int LDB, float * ALPHAR, float * ALPHAI, float * BETA, float * VL, const int LDVL, float * VR, const int LDVR, float * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GGEV_float ( selfID, JOBVL, JOBVR, N, A, LDA, B, LDB, ALPHAR, &
+        ALPHAI, BETA, VL, LDVL, VR, LDVR, WORK, LWORK, INFO ) &
+        bind(C,name='Epetra_LAPACK_GGEV_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBVL
+    character(kind=c_char)      ,intent(in)   ,value              :: JOBVR
+    integer(c_int)              ,intent(in)   ,value              :: N
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_float)                                   ,dimension(*) :: ALPHAR
+    real(c_float)                                   ,dimension(*) :: ALPHAI
+    real(c_float)                                   ,dimension(*) :: BETA
+    real(c_float)                                   ,dimension(*) :: VL
+    integer(c_int)              ,intent(in)   ,value              :: LDVL
+    real(c_float)                                   ,dimension(*) :: VR
+    integer(c_int)              ,intent(in)   ,value              :: LDVR
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GGLSE(const int M, const int N, const int P, double* A, const int LDA, double* B, const int LDB, double* C, double* D, double* X, double* WORK, const int LWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GGLSE_double ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, const int P, double * A, const int LDA, double * B, const int LDB, double * C, double * D, double * X, double * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GGLSE_double ( selfID, M, N, P, A, LDA, B, LDB, C, D, X, WORK, &
+        LWORK, INFO ) bind(C,name='Epetra_LAPACK_GGLSE_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: P
+    real(c_double)                                  ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_double)                                  ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_double)                                  ,dimension(*) :: C
+    real(c_double)                                  ,dimension(*) :: D
+    real(c_double)                                  ,dimension(*) :: X
+    real(c_double)                                  ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void GGLSE(const int M, const int N, const int P, float* A, const int LDA, float* B, const int LDB, float* C, float* D, float* X, float* WORK, const int LWORK, int* INFO) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_GGLSE_float ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, const int P, float * A, const int LDA, float * B, const int LDB, float * C, float * D, float * X, float * WORK, const int LWORK, int * INFO );
+
+  subroutine Epetra_LAPACK_GGLSE_float ( selfID, M, N, P, A, LDA, B, LDB, C, D, X, WORK, &
+        LWORK, INFO ) bind(C,name='Epetra_LAPACK_GGLSE_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_int ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: M
+    integer(c_int)              ,intent(in)   ,value              :: N
+    integer(c_int)              ,intent(in)   ,value              :: P
+    real(c_float)                                   ,dimension(*) :: A
+    integer(c_int)              ,intent(in)   ,value              :: LDA
+    real(c_float)                                   ,dimension(*) :: B
+    integer(c_int)              ,intent(in)   ,value              :: LDB
+    real(c_float)                                   ,dimension(*) :: C
+    real(c_float)                                   ,dimension(*) :: D
+    real(c_float)                                   ,dimension(*) :: X
+    real(c_float)                                   ,dimension(*) :: WORK
+    integer(c_int)              ,intent(in)   ,value              :: LWORK
+    integer(c_int)                                  ,dimension(*) :: INFO
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void LAMCH ( const char CMACH, float & T) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_LAMCH_float ( CT_Epetra_LAPACK_ID_t selfID, const char CMACH, float * T );
+
+  subroutine Epetra_LAPACK_LAMCH_float ( selfID, CMACH, T ) &
+        bind(C,name='Epetra_LAPACK_LAMCH_float')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_float
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: CMACH
+    real(c_float)               ,intent(inout)                    :: T
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! void LAMCH ( const char CMACH, double & T) const;
+  ! CTrilinos prototype:
+  ! void Epetra_LAPACK_LAMCH_double ( CT_Epetra_LAPACK_ID_t selfID, const char CMACH, double * T );
+
+  subroutine Epetra_LAPACK_LAMCH_double ( selfID, CMACH, T ) &
+        bind(C,name='Epetra_LAPACK_LAMCH_double')
+    import :: FT_Epetra_LAPACK_ID_t ,c_char ,c_double
+    
+    type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)   ,value              :: CMACH
+    real(c_double)              ,intent(inout)                    :: T
+  end subroutine
 
 
   end interface
