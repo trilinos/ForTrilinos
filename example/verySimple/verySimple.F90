@@ -25,7 +25,7 @@ program main
   type(FT_Epetra_Vector_ID_t) xID, bID;
   type(FT_Epetra_MultiVector_ID_t) mxID, mbID;
 
-  real(c_double) bnorm, xnorm, expected_bnorm, expected_xnorm, bnorm_err, xnorm_err ;
+  real(c_double) bnorm(1), xnorm(1), expected_bnorm, expected_xnorm, bnorm_err, xnorm_err ;
   real(c_double) ,parameter :: err_tol=0.0
 
   logical(c_bool) :: success = .TRUE.;
