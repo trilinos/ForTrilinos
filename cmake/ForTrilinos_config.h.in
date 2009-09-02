@@ -23,3 +23,7 @@
 
 /* Define if want to build teuchos-complex */
 #cmakedefine HAVE_TEUCHOS_COMPLEX
+
+/* If Amesos is built */
+#cmakedefine HAVE_FORTRILINOS_AMESOS
+#cmakedefine FORTRILINOS_ENABLE_AMESOS
