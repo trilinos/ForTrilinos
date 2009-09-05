@@ -39,10 +39,10 @@ module ForTrilinos_enums
       FT_Teuchos_CommandLineProcessor_ID,& 
       FT_Teuchos_ParameterList_ID,    &
       FT_Teuchos_ParameterEntry_ID,   &
-      FT_Teuchos_any_ID,              &
+      FT_Teuchos_any_ID               
 #ifdef HAVE_FORTRILINOS_AMESOS
-      FT_Amesos_BaseSolver_ID,        &
-      FT_Amesos_ID
+   &, FT_Amesos_BaseSolver_ID         
+   &, FT_Amesos_ID
 #endif
   end enum
 
