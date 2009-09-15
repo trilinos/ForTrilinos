@@ -82,8 +82,8 @@ program main
   !/* Test the expected value */
   expected_bnorm = sqrt( 2.0 * 2.0 * numGlobalElements );
   expected_xnorm = sqrt( 4.0 * 4.0 * numGlobalElements );
-  bnorm_err = fabs( expected_bnorm - bnorm ) / expected_bnorm;
-  xnorm_err = fabs( expected_xnorm - xnorm ) / expected_xnorm;
+  bnorm_err = abs( expected_bnorm - bnorm(1) ) / expected_bnorm;
+  xnorm_err = abs( expected_xnorm - xnorm(1) ) / expected_xnorm;
   print *,"error in 2 norm of x = ", bnorm_err ;
   print *,"error in 2 norm of b = ", xnorm_err ;
 
