@@ -3,6 +3,7 @@ program main
   use iso_fortran_env ,only : error_unit ,output_unit
   use fortrilinos_utils ,only : valid_kind_parameters
   use forepetra 
+  implicit none
 
   ! This file is the Fortran equivalent of CTrilionos/example/verySimple.c.
   ! As such, it makes direct use of the procedural bindings in forepetra.F90.

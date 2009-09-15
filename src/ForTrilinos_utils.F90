@@ -121,7 +121,7 @@ contains
         write(error_unit ,fmt='(a)') 'c_char error: invalid value for a character kind parameter on the processor.'
         valid_kind_parameters = .false.
       case default
-        if (verbose_output) write(output_unit ,fmt='(a)') 'c_char:  valid value for a character kind type parameter on the processor.'
+        if (verbose_output) write(output_unit ,fmt='(a)') 'c_char:  valid value for a character kind parameter on the processor.'
     end select
   end function
 
