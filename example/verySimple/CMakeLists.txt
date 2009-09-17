@@ -12,5 +12,3 @@ PACKAGE_ADD_EXECUTABLE_AND_TEST(
 
 #SET_SOURCE_FILES_PROPERTIES( ${SOURCES} PROPERTIES LANGUAGE Fortran )
 
-# linker flag below only needed for gfortran!
-SET_TARGET_PROPERTIES(ForTrilinos_verySimple PROPERTIES LINK_FLAGS -lgfortranbegin)
