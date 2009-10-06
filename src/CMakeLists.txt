@@ -18,6 +18,12 @@ PACKAGE_CONFIGURE_FILE(${PACKAGE_NAME}_config.h)
 SET(HEADERS "")
 SET(SOURCES "")
 
+SET_AND_INC_DIRS(DIR ${CMAKE_CURRENT_SOURCE_DIR}/epetra
+                     ${CMAKE_CURRENT_SOURCE_DIR}/teuchos
+                     ${CMAKE_CURRENT_SOURCE_DIR}/amesos)
+#APPEND_GLOB(SOURCES ${DIR}/*.f90)
+APPEND_GLOB(SOURCES ${DIR}/*.F90)
+
 # Set the base Trilinos directory in order to find Trilinos_version.h
 
 ASSERT_DEFINED(PROJECT_SOURCE_DIR)
@@ -48,12 +54,9 @@ APPEND_SET(HEADERS
 
 APPEND_SET(SOURCES
   ForTrilinos_enums.F90
-  epetra/forepetra.F90
-  teuchos/forteuchos.F90
-  amesos/foramesos.F90
   ForTrilinos_utils.F90
-#  ForTrilinos_hermetic.F90
-#  ForTrilinos_universal.F90
+  ForTrilinos_hermetic.F90
+  ForTrilinos_universal.F90
   )
 
 #
