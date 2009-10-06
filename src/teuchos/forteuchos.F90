@@ -5,7 +5,7 @@ module forteuchos
 
   ! This file provides Fortran interface blocks that bind the argument types,
   ! return value types, and procedure names to those in the C function prototypes
-  ! in each of the CTrilinos/src/epetra/CEpetra_*.h header files.  The Fortran
+  ! in each of the CTrilinos/src/teuchos/CTeuchos*.h header files.  The Fortran
   ! 2003 standard guarantees that the types and names used in these bindings
   ! interoperate with a standard-conforming, companion C compiler.
 
@@ -426,7 +426,7 @@ module forteuchos
 
   character(kind=c_char) function Teuchos_ParameterList_get_char_def ( selfID, name, &
         def_value ) bind(C,name='Teuchos_ParameterList_get_char_def')
-    import :: kind=c_char ,FT_Teuchos_ParameterList_ID_t ,c_char
+    import :: c_char ,FT_Teuchos_ParameterList_ID_t
     
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)             ,intent(in)         ,dimension(*) :: name
@@ -441,7 +441,7 @@ module forteuchos
 
   character(kind=c_char) function Teuchos_ParameterList_get_const_char_def ( selfID, name, &
         def_value ) bind(C,name='Teuchos_ParameterList_get_const_char_def')
-    import :: kind=c_char ,FT_Teuchos_ParameterList_ID_t ,c_char
+    import :: c_char ,FT_Teuchos_ParameterList_ID_t
     
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)             ,intent(in)         ,dimension(*) :: name
@@ -669,7 +669,7 @@ module forteuchos
 
   character(kind=c_char) function Teuchos_ParameterList_name_it ( selfID ) &
         bind(C,name='Teuchos_ParameterList_name_it')
-    import :: kind=c_char ,FT_Teuchos_ParameterList_ID_t
+    import :: c_char ,FT_Teuchos_ParameterList_ID_t
     
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -768,7 +768,7 @@ module forteuchos
 
   character(kind=c_char) function Teuchos_ParameterList_currentParametersString ( selfID ) &
         bind(C,name='Teuchos_ParameterList_currentParametersString')
-    import :: kind=c_char ,FT_Teuchos_ParameterList_ID_t
+    import :: c_char ,FT_Teuchos_ParameterList_ID_t
     
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -1037,7 +1037,7 @@ module forteuchos
 
   character(kind=c_char) function Teuchos_ParameterEntry_docString ( selfID ) &
         bind(C,name='Teuchos_ParameterEntry_docString')
-    import :: kind=c_char ,FT_Teuchos_ParameterEntry_ID_t
+    import :: c_char ,FT_Teuchos_ParameterEntry_ID_t
     
     type(FT_Teuchos_ParameterEntry_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -1129,7 +1129,7 @@ module forteuchos
 
   character(kind=c_char) function Teuchos_any_typeName ( selfID ) &
         bind(C,name='Teuchos_any_typeName')
-    import :: kind=c_char ,FT_Teuchos_any_ID_t
+    import :: c_char ,FT_Teuchos_any_ID_t
     
     type(FT_Teuchos_any_ID_t)   ,intent(in)   ,value              :: selfID
   end function

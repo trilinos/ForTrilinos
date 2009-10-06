@@ -3,6 +3,7 @@ program main
   use iso_fortran_env ,only : error_unit ,output_unit
   use fortrilinos_utils ,only : valid_kind_parameters
   use forepetra 
+  implicit none
 
   ! This file is the Fortran equivalent of CTrilionos/example/verySimple.c.
   ! As such, it makes direct use of the procedural bindings in forepetra.F90.
@@ -81,8 +82,8 @@ program main
   !/* Test the expected value */
   expected_bnorm = sqrt( 2.0 * 2.0 * numGlobalElements );
   expected_xnorm = sqrt( 4.0 * 4.0 * numGlobalElements );
-  bnorm_err = fabs( expected_bnorm - bnorm ) / expected_bnorm;
-  xnorm_err = fabs( expected_xnorm - xnorm ) / expected_xnorm;
+  bnorm_err = abs( expected_bnorm - bnorm(1) ) / expected_bnorm;
+  xnorm_err = abs( expected_xnorm - xnorm(1) ) / expected_xnorm;
   print *,"error in 2 norm of x = ", bnorm_err ;
   print *,"error in 2 norm of b = ", xnorm_err ;
 

@@ -7,7 +7,7 @@ module foramesos
 
   ! This file provides Fortran interface blocks that bind the argument types,
   ! return value types, and procedure names to those in the C function prototypes
-  ! in each of the CTrilinos/src/epetra/CEpetra_*.h header files.  The Fortran
+  ! in each of the CTrilinos/src/amesos/CAmesos*.h header files.  The Fortran
   ! 2003 standard guarantees that the types and names used in these bindings
   ! interoperate with a standard-conforming, companion C compiler.
 
