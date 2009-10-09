@@ -41,7 +41,8 @@ module ForTrilinos_enums
       FT_Teuchos_ParameterEntry_ID,   &
       FT_Teuchos_any_ID,              &
       FT_Amesos_BaseSolver_ID,        &
-      FT_Amesos_ID
+      FT_Amesos_ID,                   &
+      FT_Epetra_FECrsMatrix_ID
   end enum
 
   ! Since the Fortran 2003 standard guarantees that enum values correspond to C int values, we can create
@@ -164,6 +165,9 @@ module ForTrilinos_enums
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
   end type
 #endif /* HAVE_FORTRILINOS_AMESOS */
+  type ,bind(C) :: FT_Epetra_FECrsMatrix_ID_t
+    integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; logical(c_bool) :: is_const
+  end type
 
   ! Epetra_DataAcces
 

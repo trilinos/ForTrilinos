@@ -11296,6 +11296,484 @@ module forepetra
   end subroutine
 
 
+  ! _________________ Epetra_FECrsMatrix interface bodies _________________
+
+
+  ! CTrilinos prototype:
+  ! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Cast ( CTrilinos_Object_ID_t id );
+
+  type(FT_Epetra_FECrsMatrix_ID_t) function Epetra_FECrsMatrix_Cast ( id ) &
+        bind(C,name='Epetra_FECrsMatrix_Cast')
+    import :: FT_Epetra_FECrsMatrix_ID_t ,ForTrilinos_Object_ID_t
+    
+    type(ForTrilinos_Object_ID_t)   ,intent(in)   ,value              :: id
+  end function
+
+
+  ! CTrilinos prototype:
+  ! CTrilinos_Object_ID_t Epetra_FECrsMatrix_Abstract ( CT_Epetra_FECrsMatrix_ID_t id );
+
+  type(ForTrilinos_Object_ID_t) function Epetra_FECrsMatrix_Abstract ( id ) &
+        bind(C,name='Epetra_FECrsMatrix_Abstract')
+    import :: ForTrilinos_Object_ID_t ,FT_Epetra_FECrsMatrix_ID_t
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: id
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_FECrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, int* NumEntriesPerRow, bool ignoreNonLocalEntries=false);
+  ! CTrilinos prototype:
+  ! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create_Var ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, int * NumEntriesPerRow, boolean ignoreNonLocalEntries );
+
+  type(FT_Epetra_FECrsMatrix_ID_t) function Epetra_FECrsMatrix_Create_Var ( CV, RowMapID, &
+        NumEntriesPerRow, ignoreNonLocalEntries ) &
+        bind(C,name='Epetra_FECrsMatrix_Create_Var')
+    import :: FT_Epetra_FECrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
+          c_int ,c_bool
+    
+    integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
+    type(FT_Epetra_Map_ID_t)        ,intent(in)   ,value              :: RowMapID
+    integer(c_int)                                      ,dimension(*) :: NumEntriesPerRow
+    logical(c_bool)                 ,intent(in)   ,value              :: ignoreNonLocalEntries
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_FECrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, int NumEntriesPerRow, bool ignoreNonLocalEntries=false);
+  ! CTrilinos prototype:
+  ! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, int NumEntriesPerRow, boolean ignoreNonLocalEntries );
+
+  type(FT_Epetra_FECrsMatrix_ID_t) function Epetra_FECrsMatrix_Create ( CV, RowMapID, &
+        NumEntriesPerRow, ignoreNonLocalEntries ) bind(C,name='Epetra_FECrsMatrix_Create')
+    import :: FT_Epetra_FECrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
+          c_int ,c_bool
+    
+    integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
+    type(FT_Epetra_Map_ID_t)        ,intent(in)   ,value              :: RowMapID
+    integer(c_int)                  ,intent(in)   ,value              :: NumEntriesPerRow
+    logical(c_bool)                 ,intent(in)   ,value              :: ignoreNonLocalEntries
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_FECrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const Epetra_Map& ColMap, int* NumEntriesPerRow, bool ignoreNonLocalEntries=false);
+  ! CTrilinos prototype:
+  ! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create_WithColMap_Var ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, int * NumEntriesPerRow, boolean ignoreNonLocalEntries );
+
+  type(FT_Epetra_FECrsMatrix_ID_t) function Epetra_FECrsMatrix_Create_WithColMap_Var ( CV, &
+        RowMapID, ColMapID, NumEntriesPerRow, ignoreNonLocalEntries ) &
+        bind(C,name='Epetra_FECrsMatrix_Create_WithColMap_Var')
+    import :: FT_Epetra_FECrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
+          c_int ,c_bool
+    
+    integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
+    type(FT_Epetra_Map_ID_t)        ,intent(in)   ,value              :: RowMapID
+    type(FT_Epetra_Map_ID_t)        ,intent(in)   ,value              :: ColMapID
+    integer(c_int)                                      ,dimension(*) :: NumEntriesPerRow
+    logical(c_bool)                 ,intent(in)   ,value              :: ignoreNonLocalEntries
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_FECrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const Epetra_Map& ColMap, int NumEntriesPerRow, bool ignoreNonLocalEntries=false);
+  ! CTrilinos prototype:
+  ! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create_WithColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, int NumEntriesPerRow, boolean ignoreNonLocalEntries );
+
+  type(FT_Epetra_FECrsMatrix_ID_t) function Epetra_FECrsMatrix_Create_WithColMap ( CV, &
+        RowMapID, ColMapID, NumEntriesPerRow, ignoreNonLocalEntries ) &
+        bind(C,name='Epetra_FECrsMatrix_Create_WithColMap')
+    import :: FT_Epetra_FECrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
+          c_int ,c_bool
+    
+    integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
+    type(FT_Epetra_Map_ID_t)        ,intent(in)   ,value              :: RowMapID
+    type(FT_Epetra_Map_ID_t)        ,intent(in)   ,value              :: ColMapID
+    integer(c_int)                  ,intent(in)   ,value              :: NumEntriesPerRow
+    logical(c_bool)                 ,intent(in)   ,value              :: ignoreNonLocalEntries
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_FECrsMatrix(Epetra_DataAccess CV, const Epetra_CrsGraph& Graph, bool ignoreNonLocalEntries=false);
+  ! CTrilinos prototype:
+  ! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create_FromGraph ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_CrsGraph_ID_t GraphID, boolean ignoreNonLocalEntries );
+
+  type(FT_Epetra_FECrsMatrix_ID_t) function Epetra_FECrsMatrix_Create_FromGraph ( CV, &
+        GraphID, ignoreNonLocalEntries ) bind(C,name='Epetra_FECrsMatrix_Create_FromGraph')
+    import :: FT_Epetra_FECrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t , &
+          FT_Epetra_CrsGraph_ID_t ,c_bool
+    
+    integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
+    type(FT_Epetra_CrsGraph_ID_t)   ,intent(in)   ,value              :: GraphID
+    logical(c_bool)                 ,intent(in)   ,value              :: ignoreNonLocalEntries
+  end function
+
+
+  ! Original C++ prototype:
+  ! Epetra_FECrsMatrix(const Epetra_FECrsMatrix& src);
+  ! CTrilinos prototype:
+  ! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Duplicate ( CT_Epetra_FECrsMatrix_ID_t srcID );
+
+  type(FT_Epetra_FECrsMatrix_ID_t) function Epetra_FECrsMatrix_Duplicate ( srcID ) &
+        bind(C,name='Epetra_FECrsMatrix_Duplicate')
+    import :: FT_Epetra_FECrsMatrix_ID_t
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: srcID
+  end function
+
+
+  ! Original C++ prototype:
+  ! virtual ~Epetra_FECrsMatrix();
+  ! CTrilinos prototype:
+  ! void Epetra_FECrsMatrix_Destroy ( CT_Epetra_FECrsMatrix_ID_t * selfID );
+
+  subroutine Epetra_FECrsMatrix_Destroy ( selfID ) &
+        bind(C,name='Epetra_FECrsMatrix_Destroy')
+    import :: FT_Epetra_FECrsMatrix_ID_t
+    
+    type(FT_Epetra_FECrsMatrix_ID_t)                                  :: selfID
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! Epetra_FECrsMatrix& operator=(const Epetra_FECrsMatrix& src);
+  ! CTrilinos prototype:
+  ! void Epetra_FECrsMatrix_Assign ( CT_Epetra_FECrsMatrix_ID_t selfID, CT_Epetra_FECrsMatrix_ID_t srcID );
+
+  subroutine Epetra_FECrsMatrix_Assign ( selfID, srcID ) &
+        bind(C,name='Epetra_FECrsMatrix_Assign')
+    import :: FT_Epetra_FECrsMatrix_ID_t
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: srcID
+  end subroutine
+
+
+  ! Original C++ prototype:
+  ! int SumIntoGlobalValues(int GlobalRow, int NumEntries, double* Values, int* Indices);
+  ! CTrilinos prototype:
+  ! int Epetra_FECrsMatrix_SumIntoGlobalValues ( CT_Epetra_FECrsMatrix_ID_t selfID, int GlobalRow, int NumEntries, double * Values, int * Indices );
+
+  integer(c_int) function Epetra_FECrsMatrix_SumIntoGlobalValues ( selfID, GlobalRow, &
+        NumEntries, Values, Indices ) bind(C,name='Epetra_FECrsMatrix_SumIntoGlobalValues')
+    import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                  ,intent(in)   ,value              :: GlobalRow
+    integer(c_int)                  ,intent(in)   ,value              :: NumEntries
+    real(c_double)                                      ,dimension(*) :: Values
+    integer(c_int)                                      ,dimension(*) :: Indices
+  end function
+
+
+  ! Original C++ prototype:
+  ! int InsertGlobalValues(int GlobalRow, int NumEntries, double* Values, int* Indices);
+  ! CTrilinos prototype:
+  ! int Epetra_FECrsMatrix_InsertGlobalValues ( CT_Epetra_FECrsMatrix_ID_t selfID, int GlobalRow, int NumEntries, double * Values, int * Indices );
+
+  integer(c_int) function Epetra_FECrsMatrix_InsertGlobalValues ( selfID, GlobalRow, &
+        NumEntries, Values, Indices ) bind(C,name='Epetra_FECrsMatrix_InsertGlobalValues')
+    import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                  ,intent(in)   ,value              :: GlobalRow
+    integer(c_int)                  ,intent(in)   ,value              :: NumEntries
+    real(c_double)                                      ,dimension(*) :: Values
+    integer(c_int)                                      ,dimension(*) :: Indices
+  end function
+
+
+  ! Original C++ prototype:
+  ! int ReplaceGlobalValues(int GlobalRow, int NumEntries, double* Values, int* Indices);
+  ! CTrilinos prototype:
+  ! int Epetra_FECrsMatrix_ReplaceGlobalValues ( CT_Epetra_FECrsMatrix_ID_t selfID, int GlobalRow, int NumEntries, double * Values, int * Indices );
+
+  integer(c_int) function Epetra_FECrsMatrix_ReplaceGlobalValues ( selfID, GlobalRow, &
+        NumEntries, Values, Indices ) bind(C,name='Epetra_FECrsMatrix_ReplaceGlobalValues')
+    import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                  ,intent(in)   ,value              :: GlobalRow
+    integer(c_int)                  ,intent(in)   ,value              :: NumEntries
+    real(c_double)                                      ,dimension(*) :: Values
+    integer(c_int)                                      ,dimension(*) :: Indices
+  end function
+
+
+  ! Original C++ prototype:
+  ! int SumIntoGlobalValues(int numIndices, const int* indices, const double* values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
+  ! CTrilinos prototype:
+  ! int Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, int numIndices, const int * indices, const double * values, int format );
+
+  integer(c_int) function Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable_Square ( selfID, &
+        numIndices, indices, values, format ) &
+        bind(C,name='Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable_Square')
+    import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                  ,intent(in)   ,value              :: numIndices
+    integer(c_int)                  ,intent(in)         ,dimension(*) :: indices
+    real(c_double)                  ,intent(in)         ,dimension(*) :: values
+    integer(c_int)                  ,intent(in)   ,value              :: format
+  end function
+
+
+  ! Original C++ prototype:
+  ! int SumIntoGlobalValues(int numRows, const int* rows, int numCols, const int* cols, const double* values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
+  ! CTrilinos prototype:
+  ! int Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, const int * rows, int numCols, const int * cols, const double * values, int format );
+
+  integer(c_int) function Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable ( selfID, numRows, &
+        rows, numCols, cols, values, format ) &
+        bind(C,name='Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable')
+    import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                  ,intent(in)   ,value              :: numRows
+    integer(c_int)                  ,intent(in)         ,dimension(*) :: rows
+    integer(c_int)                  ,intent(in)   ,value              :: numCols
+    integer(c_int)                  ,intent(in)         ,dimension(*) :: cols
+    real(c_double)                  ,intent(in)         ,dimension(*) :: values
+    integer(c_int)                  ,intent(in)   ,value              :: format
+  end function
+
+
+  ! Original C++ prototype:
+  ! int SumIntoGlobalValues(int numIndices, const int* indices, const double* const* values, int format=Epetra_FECrsMatrix::ROW_MAJOR);
+  ! CTrilinos prototype:
+  ! int Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, int numIndices, const int * indices, const double* const * values, int format );
+
+  integer(c_int) function Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable_Square ( selfID, &
+        numIndices, indices, values, format ) &
+        bind(C,name='Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable_Square')
+    import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                  ,intent(in)   ,value              :: numIndices
+    integer(c_int)                  ,intent(in)         ,dimension(*) :: indices
+    real(c_double)                  ,intent(in)         ,dimension(*) :: values
+    integer(c_int)                  ,intent(in)   ,value              :: format
+  end function
+
+
+  ! Original C++ prototype:
+  ! int SumIntoGlobalValues(int numRows, const int* rows, int numCols, const int* cols, const double* const* values, int format=Epetra_FECrsMatrix::ROW_MAJOR);
+  ! CTrilinos prototype:
+  ! int Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, const int * rows, int numCols, const int * cols, const double* const * values, int format );
+
+  integer(c_int) function Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable ( selfID, numRows, &
+        rows, numCols, cols, values, format ) &
+        bind(C,name='Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable')
+    import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                  ,intent(in)   ,value              :: numRows
+    integer(c_int)                  ,intent(in)         ,dimension(*) :: rows
+    integer(c_int)                  ,intent(in)   ,value              :: numCols
+    integer(c_int)                  ,intent(in)         ,dimension(*) :: cols
+    real(c_double)                  ,intent(in)         ,dimension(*) :: values
+    integer(c_int)                  ,intent(in)   ,value              :: format
+  end function
+
+
+  ! Original C++ prototype:
+  ! int InsertGlobalValues(int numIndices, const int* indices, const double* values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
+  ! CTrilinos prototype:
+  ! int Epetra_FECrsMatrix_InsertGlobalValues_Ftable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, int numIndices, const int * indices, const double * values, int format );
+
+  integer(c_int) function Epetra_FECrsMatrix_InsertGlobalValues_Ftable_Square ( selfID, &
+        numIndices, indices, values, format ) &
+        bind(C,name='Epetra_FECrsMatrix_InsertGlobalValues_Ftable_Square')
+    import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                  ,intent(in)   ,value              :: numIndices
+    integer(c_int)                  ,intent(in)         ,dimension(*) :: indices
+    real(c_double)                  ,intent(in)         ,dimension(*) :: values
+    integer(c_int)                  ,intent(in)   ,value              :: format
+  end function
+
+
+  ! Original C++ prototype:
+  ! int InsertGlobalValues(int numRows, const int* rows, int numCols, const int* cols, const double* values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
+  ! CTrilinos prototype:
+  ! int Epetra_FECrsMatrix_InsertGlobalValues_Ftable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, const int * rows, int numCols, const int * cols, const double * values, int format );
+
+  integer(c_int) function Epetra_FECrsMatrix_InsertGlobalValues_Ftable ( selfID, numRows, &
+        rows, numCols, cols, values, format ) &
+        bind(C,name='Epetra_FECrsMatrix_InsertGlobalValues_Ftable')
+    import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                  ,intent(in)   ,value              :: numRows
+    integer(c_int)                  ,intent(in)         ,dimension(*) :: rows
+    integer(c_int)                  ,intent(in)   ,value              :: numCols
+    integer(c_int)                  ,intent(in)         ,dimension(*) :: cols
+    real(c_double)                  ,intent(in)         ,dimension(*) :: values
+    integer(c_int)                  ,intent(in)   ,value              :: format
+  end function
+
+
+  ! Original C++ prototype:
+  ! int InsertGlobalValues(int numIndices, const int* indices, const double* const* values, int format=Epetra_FECrsMatrix::ROW_MAJOR);
+  ! CTrilinos prototype:
+  ! int Epetra_FECrsMatrix_InsertGlobalValues_Ctable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, int numIndices, const int * indices, const double* const * values, int format );
+
+  integer(c_int) function Epetra_FECrsMatrix_InsertGlobalValues_Ctable_Square ( selfID, &
+        numIndices, indices, values, format ) &
+        bind(C,name='Epetra_FECrsMatrix_InsertGlobalValues_Ctable_Square')
+    import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                  ,intent(in)   ,value              :: numIndices
+    integer(c_int)                  ,intent(in)         ,dimension(*) :: indices
+    real(c_double)                  ,intent(in)         ,dimension(*) :: values
+    integer(c_int)                  ,intent(in)   ,value              :: format
+  end function
+
+
+  ! Original C++ prototype:
+  ! int InsertGlobalValues(int numRows, const int* rows, int numCols, const int* cols, const double* const* values, int format=Epetra_FECrsMatrix::ROW_MAJOR);
+  ! CTrilinos prototype:
+  ! int Epetra_FECrsMatrix_InsertGlobalValues_Ctable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, const int * rows, int numCols, const int * cols, const double* const * values, int format );
+
+  integer(c_int) function Epetra_FECrsMatrix_InsertGlobalValues_Ctable ( selfID, numRows, &
+        rows, numCols, cols, values, format ) &
+        bind(C,name='Epetra_FECrsMatrix_InsertGlobalValues_Ctable')
+    import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                  ,intent(in)   ,value              :: numRows
+    integer(c_int)                  ,intent(in)         ,dimension(*) :: rows
+    integer(c_int)                  ,intent(in)   ,value              :: numCols
+    integer(c_int)                  ,intent(in)         ,dimension(*) :: cols
+    real(c_double)                  ,intent(in)         ,dimension(*) :: values
+    integer(c_int)                  ,intent(in)   ,value              :: format
+  end function
+
+
+  ! Original C++ prototype:
+  ! int ReplaceGlobalValues(int numIndices, const int* indices, const double* values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
+  ! CTrilinos prototype:
+  ! int Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, int numIndices, const int * indices, const double * values, int format );
+
+  integer(c_int) function Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable_Square ( selfID, &
+        numIndices, indices, values, format ) &
+        bind(C,name='Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable_Square')
+    import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                  ,intent(in)   ,value              :: numIndices
+    integer(c_int)                  ,intent(in)         ,dimension(*) :: indices
+    real(c_double)                  ,intent(in)         ,dimension(*) :: values
+    integer(c_int)                  ,intent(in)   ,value              :: format
+  end function
+
+
+  ! Original C++ prototype:
+  ! int ReplaceGlobalValues(int numRows, const int* rows, int numCols, const int* cols, const double* values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
+  ! CTrilinos prototype:
+  ! int Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, const int * rows, int numCols, const int * cols, const double * values, int format );
+
+  integer(c_int) function Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable ( selfID, numRows, &
+        rows, numCols, cols, values, format ) &
+        bind(C,name='Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable')
+    import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                  ,intent(in)   ,value              :: numRows
+    integer(c_int)                  ,intent(in)         ,dimension(*) :: rows
+    integer(c_int)                  ,intent(in)   ,value              :: numCols
+    integer(c_int)                  ,intent(in)         ,dimension(*) :: cols
+    real(c_double)                  ,intent(in)         ,dimension(*) :: values
+    integer(c_int)                  ,intent(in)   ,value              :: format
+  end function
+
+
+  ! Original C++ prototype:
+  ! int ReplaceGlobalValues(int numIndices, const int* indices, const double* const* values, int format=Epetra_FECrsMatrix::ROW_MAJOR);
+  ! CTrilinos prototype:
+  ! int Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, int numIndices, const int * indices, const double* const * values, int format );
+
+  integer(c_int) function Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable_Square ( selfID, &
+        numIndices, indices, values, format ) &
+        bind(C,name='Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable_Square')
+    import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                  ,intent(in)   ,value              :: numIndices
+    integer(c_int)                  ,intent(in)         ,dimension(*) :: indices
+    real(c_double)                  ,intent(in)         ,dimension(*) :: values
+    integer(c_int)                  ,intent(in)   ,value              :: format
+  end function
+
+
+  ! Original C++ prototype:
+  ! int ReplaceGlobalValues(int numRows, const int* rows, int numCols, const int* cols, const double* const* values, int format=Epetra_FECrsMatrix::ROW_MAJOR);
+  ! CTrilinos prototype:
+  ! int Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, const int * rows, int numCols, const int * cols, const double* const * values, int format );
+
+  integer(c_int) function Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable ( selfID, numRows, &
+        rows, numCols, cols, values, format ) &
+        bind(C,name='Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable')
+    import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                  ,intent(in)   ,value              :: numRows
+    integer(c_int)                  ,intent(in)         ,dimension(*) :: rows
+    integer(c_int)                  ,intent(in)   ,value              :: numCols
+    integer(c_int)                  ,intent(in)         ,dimension(*) :: cols
+    real(c_double)                  ,intent(in)         ,dimension(*) :: values
+    integer(c_int)                  ,intent(in)   ,value              :: format
+  end function
+
+
+  ! Original C++ prototype:
+  ! int GlobalAssemble(bool callFillComplete=true);
+  ! CTrilinos prototype:
+  ! int Epetra_FECrsMatrix_GlobalAssemble ( CT_Epetra_FECrsMatrix_ID_t selfID, boolean callFillComplete );
+
+  integer(c_int) function Epetra_FECrsMatrix_GlobalAssemble ( selfID, callFillComplete ) &
+        bind(C,name='Epetra_FECrsMatrix_GlobalAssemble')
+    import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_bool
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    logical(c_bool)                 ,intent(in)   ,value              :: callFillComplete
+  end function
+
+
+  ! Original C++ prototype:
+  ! int GlobalAssemble(const Epetra_Map& domain_map, const Epetra_Map& range_map, bool callFillComplete=true);
+  ! CTrilinos prototype:
+  ! int Epetra_FECrsMatrix_GlobalAssemble_WithMaps ( CT_Epetra_FECrsMatrix_ID_t selfID, CT_Epetra_Map_ID_t domain_mapID, CT_Epetra_Map_ID_t range_mapID, boolean callFillComplete );
+
+  integer(c_int) function Epetra_FECrsMatrix_GlobalAssemble_WithMaps ( selfID, domain_mapID, &
+        range_mapID, callFillComplete ) &
+        bind(C,name='Epetra_FECrsMatrix_GlobalAssemble_WithMaps')
+    import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,FT_Epetra_Map_ID_t ,c_bool
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    type(FT_Epetra_Map_ID_t)        ,intent(in)   ,value              :: domain_mapID
+    type(FT_Epetra_Map_ID_t)        ,intent(in)   ,value              :: range_mapID
+    logical(c_bool)                 ,intent(in)   ,value              :: callFillComplete
+  end function
+
+
+  ! Original C++ prototype:
+  ! void setIgnoreNonLocalEntries(bool flag);
+  ! CTrilinos prototype:
+  ! void Epetra_FECrsMatrix_setIgnoreNonLocalEntries ( CT_Epetra_FECrsMatrix_ID_t selfID, boolean flag );
+
+  subroutine Epetra_FECrsMatrix_setIgnoreNonLocalEntries ( selfID, flag ) &
+        bind(C,name='Epetra_FECrsMatrix_setIgnoreNonLocalEntries')
+    import :: FT_Epetra_FECrsMatrix_ID_t ,c_bool
+    
+    type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
+    logical(c_bool)                 ,intent(in)   ,value              :: flag
+  end subroutine
+
+
   end interface
 end module forepetra
 
