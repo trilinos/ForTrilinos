@@ -38,11 +38,11 @@ module forteuchos
   type(FT_Teuchos_CommandLineProcessor_ID_t) function Teuchos_CommandLineProcessor_Create ( &
         throwExceptions, recogniseAllOptions, addOutputSetupOptions ) &
         bind(C,name='Teuchos_CommandLineProcessor_Create')
-    import :: FT_Teuchos_CommandLineProcessor_ID_t ,c_bool
+    import :: FT_Teuchos_CommandLineProcessor_ID_t ,FT_boolean_t
     
-    logical(c_bool)                           ,intent(in)   ,value              :: throwExceptions
-    logical(c_bool)                           ,intent(in)   ,value              :: recogniseAllOptions
-    logical(c_bool)                           ,intent(in)   ,value              :: addOutputSetupOptions
+    integer(FT_boolean_t)                     ,intent(in)   ,value              :: throwExceptions
+    integer(FT_boolean_t)                     ,intent(in)   ,value              :: recogniseAllOptions
+    integer(FT_boolean_t)                     ,intent(in)   ,value              :: addOutputSetupOptions
   end function
 
 
@@ -53,10 +53,10 @@ module forteuchos
 
   subroutine Teuchos_CommandLineProcessor_throwExceptions_set ( selfID, throwExceptions ) &
         bind(C,name='Teuchos_CommandLineProcessor_throwExceptions_set')
-    import :: FT_Teuchos_CommandLineProcessor_ID_t ,c_bool
+    import :: FT_Teuchos_CommandLineProcessor_ID_t ,FT_boolean_t
     
     type(FT_Teuchos_CommandLineProcessor_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)                           ,intent(in)   ,value              :: throwExceptions
+    integer(FT_boolean_t)                     ,intent(in)   ,value              :: throwExceptions
   end subroutine
 
 
@@ -65,9 +65,9 @@ module forteuchos
   ! CTrilinos prototype:
   ! boolean Teuchos_CommandLineProcessor_throwExceptions_get ( CT_Teuchos_CommandLineProcessor_ID_t selfID );
 
-  logical(c_bool) function Teuchos_CommandLineProcessor_throwExceptions_get ( selfID ) &
+  integer(FT_boolean_t) function Teuchos_CommandLineProcessor_throwExceptions_get ( selfID ) &
         bind(C,name='Teuchos_CommandLineProcessor_throwExceptions_get')
-    import :: c_bool ,FT_Teuchos_CommandLineProcessor_ID_t
+    import :: FT_boolean_t ,FT_Teuchos_CommandLineProcessor_ID_t
     
     type(FT_Teuchos_CommandLineProcessor_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -81,10 +81,10 @@ module forteuchos
   subroutine Teuchos_CommandLineProcessor_recogniseAllOptions_set ( selfID, &
         recogniseAllOptions ) &
         bind(C,name='Teuchos_CommandLineProcessor_recogniseAllOptions_set')
-    import :: FT_Teuchos_CommandLineProcessor_ID_t ,c_bool
+    import :: FT_Teuchos_CommandLineProcessor_ID_t ,FT_boolean_t
     
     type(FT_Teuchos_CommandLineProcessor_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)                           ,intent(in)   ,value              :: recogniseAllOptions
+    integer(FT_boolean_t)                     ,intent(in)   ,value              :: recogniseAllOptions
   end subroutine
 
 
@@ -93,9 +93,9 @@ module forteuchos
   ! CTrilinos prototype:
   ! boolean Teuchos_CommandLineProcessor_recogniseAllOptions_get ( CT_Teuchos_CommandLineProcessor_ID_t selfID );
 
-  logical(c_bool) function Teuchos_CommandLineProcessor_recogniseAllOptions_get ( selfID ) &
-        bind(C,name='Teuchos_CommandLineProcessor_recogniseAllOptions_get')
-    import :: c_bool ,FT_Teuchos_CommandLineProcessor_ID_t
+  integer(FT_boolean_t) function Teuchos_CommandLineProcessor_recogniseAllOptions_get ( &
+        selfID ) bind(C,name='Teuchos_CommandLineProcessor_recogniseAllOptions_get')
+    import :: FT_boolean_t ,FT_Teuchos_CommandLineProcessor_ID_t
     
     type(FT_Teuchos_CommandLineProcessor_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -109,10 +109,10 @@ module forteuchos
   subroutine Teuchos_CommandLineProcessor_addOutputSetupOptions_set ( selfID, &
         addOutputSetupOptions ) &
         bind(C,name='Teuchos_CommandLineProcessor_addOutputSetupOptions_set')
-    import :: FT_Teuchos_CommandLineProcessor_ID_t ,c_bool
+    import :: FT_Teuchos_CommandLineProcessor_ID_t ,FT_boolean_t
     
     type(FT_Teuchos_CommandLineProcessor_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)                           ,intent(in)   ,value              :: addOutputSetupOptions
+    integer(FT_boolean_t)                     ,intent(in)   ,value              :: addOutputSetupOptions
   end subroutine
 
 
@@ -121,9 +121,9 @@ module forteuchos
   ! CTrilinos prototype:
   ! boolean Teuchos_CommandLineProcessor_addOutputSetupOptions_get ( CT_Teuchos_CommandLineProcessor_ID_t selfID );
 
-  logical(c_bool) function Teuchos_CommandLineProcessor_addOutputSetupOptions_get ( selfID ) &
-        bind(C,name='Teuchos_CommandLineProcessor_addOutputSetupOptions_get')
-    import :: c_bool ,FT_Teuchos_CommandLineProcessor_ID_t
+  integer(FT_boolean_t) function Teuchos_CommandLineProcessor_addOutputSetupOptions_get ( &
+        selfID ) bind(C,name='Teuchos_CommandLineProcessor_addOutputSetupOptions_get')
+    import :: FT_boolean_t ,FT_Teuchos_CommandLineProcessor_ID_t
     
     type(FT_Teuchos_CommandLineProcessor_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -151,12 +151,12 @@ module forteuchos
   subroutine Teuchos_CommandLineProcessor_setOption_bool ( selfID, option_true, &
         option_false, option_val, documentation ) &
         bind(C,name='Teuchos_CommandLineProcessor_setOption_bool')
-    import :: FT_Teuchos_CommandLineProcessor_ID_t ,c_char ,c_bool
+    import :: FT_Teuchos_CommandLineProcessor_ID_t ,c_char ,FT_boolean_t
     
     type(FT_Teuchos_CommandLineProcessor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                    ,intent(in)         ,dimension(*) :: option_true
     character(kind=c_char)                    ,intent(in)         ,dimension(*) :: option_false
-    logical(c_bool)                                               ,dimension(*) :: option_val
+    integer(FT_boolean_t)                                         ,dimension(*) :: option_val
     character(kind=c_char)                    ,intent(in)         ,dimension(*) :: documentation
   end subroutine
 
@@ -168,13 +168,13 @@ module forteuchos
 
   subroutine Teuchos_CommandLineProcessor_setOption_int ( selfID, option_name, option_val, &
         documentation, required ) bind(C,name='Teuchos_CommandLineProcessor_setOption_int')
-    import :: FT_Teuchos_CommandLineProcessor_ID_t ,c_char ,c_int ,c_bool
+    import :: FT_Teuchos_CommandLineProcessor_ID_t ,c_char ,c_int ,FT_boolean_t
     
     type(FT_Teuchos_CommandLineProcessor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                    ,intent(in)         ,dimension(*) :: option_name
     integer(c_int)                                                ,dimension(*) :: option_val
     character(kind=c_char)                    ,intent(in)         ,dimension(*) :: documentation
-    logical(c_bool)                           ,intent(in)   ,value              :: required
+    integer(FT_boolean_t)                     ,intent(in)   ,value              :: required
   end subroutine
 
 
@@ -186,13 +186,13 @@ module forteuchos
   subroutine Teuchos_CommandLineProcessor_setOption_double ( selfID, option_name, &
         option_val, documentation, required ) &
         bind(C,name='Teuchos_CommandLineProcessor_setOption_double')
-    import :: FT_Teuchos_CommandLineProcessor_ID_t ,c_char ,c_double ,c_bool
+    import :: FT_Teuchos_CommandLineProcessor_ID_t ,c_char ,c_double ,FT_boolean_t
     
     type(FT_Teuchos_CommandLineProcessor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                    ,intent(in)         ,dimension(*) :: option_name
     real(c_double)                                                ,dimension(*) :: option_val
     character(kind=c_char)                    ,intent(in)         ,dimension(*) :: documentation
-    logical(c_bool)                           ,intent(in)   ,value              :: required
+    integer(FT_boolean_t)                     ,intent(in)   ,value              :: required
   end subroutine
 
 
@@ -203,13 +203,13 @@ module forteuchos
 
   subroutine Teuchos_CommandLineProcessor_setOption_str ( selfID, option_name, option_val, &
         documentation, required ) bind(C,name='Teuchos_CommandLineProcessor_setOption_str')
-    import :: FT_Teuchos_CommandLineProcessor_ID_t ,c_char ,c_bool
+    import :: FT_Teuchos_CommandLineProcessor_ID_t ,c_char ,FT_boolean_t
     
     type(FT_Teuchos_CommandLineProcessor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                    ,intent(in)         ,dimension(*) :: option_name
     character(kind=c_char)                                        ,dimension(*) :: option_val
     character(kind=c_char)                    ,intent(in)         ,dimension(*) :: documentation
-    logical(c_bool)                           ,intent(in)   ,value              :: required
+    integer(FT_boolean_t)                     ,intent(in)   ,value              :: required
   end subroutine
 
 
@@ -622,13 +622,13 @@ module forteuchos
   ! CTrilinos prototype:
   ! boolean Teuchos_ParameterList_remove ( CT_Teuchos_ParameterList_ID_t selfID, char const name[], boolean throwIfNotExists );
 
-  logical(c_bool) function Teuchos_ParameterList_remove ( selfID, name, throwIfNotExists ) &
-        bind(C,name='Teuchos_ParameterList_remove')
-    import :: c_bool ,FT_Teuchos_ParameterList_ID_t ,c_char
+  integer(FT_boolean_t) function Teuchos_ParameterList_remove ( selfID, name, &
+        throwIfNotExists ) bind(C,name='Teuchos_ParameterList_remove')
+    import :: FT_boolean_t ,FT_Teuchos_ParameterList_ID_t ,c_char
     
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)             ,intent(in)         ,dimension(*) :: name
-    logical(c_bool)                    ,intent(in)   ,value              :: throwIfNotExists
+    integer(FT_boolean_t)              ,intent(in)   ,value              :: throwIfNotExists
   end function
 
 
@@ -639,11 +639,11 @@ module forteuchos
 
   type(FT_Teuchos_ParameterList_ID_t) function Teuchos_ParameterList_sublist ( selfID, name, &
         mustAlreadyExist, docString ) bind(C,name='Teuchos_ParameterList_sublist')
-    import :: FT_Teuchos_ParameterList_ID_t ,c_char ,c_bool
+    import :: FT_Teuchos_ParameterList_ID_t ,c_char ,FT_boolean_t
     
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)             ,intent(in)         ,dimension(*) :: name
-    logical(c_bool)                    ,intent(in)   ,value              :: mustAlreadyExist
+    integer(FT_boolean_t)              ,intent(in)   ,value              :: mustAlreadyExist
     character(kind=c_char)             ,intent(in)         ,dimension(*) :: docString
   end function
 
@@ -680,9 +680,9 @@ module forteuchos
   ! CTrilinos prototype:
   ! boolean Teuchos_ParameterList_isParameter ( CT_Teuchos_ParameterList_ID_t selfID, const char name[] );
 
-  logical(c_bool) function Teuchos_ParameterList_isParameter ( selfID, name ) &
+  integer(FT_boolean_t) function Teuchos_ParameterList_isParameter ( selfID, name ) &
         bind(C,name='Teuchos_ParameterList_isParameter')
-    import :: c_bool ,FT_Teuchos_ParameterList_ID_t ,c_char
+    import :: FT_boolean_t ,FT_Teuchos_ParameterList_ID_t ,c_char
     
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)             ,intent(in)         ,dimension(*) :: name
@@ -694,9 +694,9 @@ module forteuchos
   ! CTrilinos prototype:
   ! boolean Teuchos_ParameterList_isSublist ( CT_Teuchos_ParameterList_ID_t selfID, const char name[] );
 
-  logical(c_bool) function Teuchos_ParameterList_isSublist ( selfID, name ) &
+  integer(FT_boolean_t) function Teuchos_ParameterList_isSublist ( selfID, name ) &
         bind(C,name='Teuchos_ParameterList_isSublist')
-    import :: c_bool ,FT_Teuchos_ParameterList_ID_t ,c_char
+    import :: FT_boolean_t ,FT_Teuchos_ParameterList_ID_t ,c_char
     
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)             ,intent(in)         ,dimension(*) :: name
@@ -708,9 +708,9 @@ module forteuchos
   ! CTrilinos prototype:
   ! boolean Teuchos_ParameterList_isType_double ( CT_Teuchos_ParameterList_ID_t selfID, const char name[] );
 
-  logical(c_bool) function Teuchos_ParameterList_isType_double ( selfID, name ) &
+  integer(FT_boolean_t) function Teuchos_ParameterList_isType_double ( selfID, name ) &
         bind(C,name='Teuchos_ParameterList_isType_double')
-    import :: c_bool ,FT_Teuchos_ParameterList_ID_t ,c_char
+    import :: FT_boolean_t ,FT_Teuchos_ParameterList_ID_t ,c_char
     
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)             ,intent(in)         ,dimension(*) :: name
@@ -722,9 +722,9 @@ module forteuchos
   ! CTrilinos prototype:
   ! boolean Teuchos_ParameterList_isType_int ( CT_Teuchos_ParameterList_ID_t selfID, const char name[] );
 
-  logical(c_bool) function Teuchos_ParameterList_isType_int ( selfID, name ) &
+  integer(FT_boolean_t) function Teuchos_ParameterList_isType_int ( selfID, name ) &
         bind(C,name='Teuchos_ParameterList_isType_int')
-    import :: c_bool ,FT_Teuchos_ParameterList_ID_t ,c_char
+    import :: FT_boolean_t ,FT_Teuchos_ParameterList_ID_t ,c_char
     
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)             ,intent(in)         ,dimension(*) :: name
@@ -736,9 +736,9 @@ module forteuchos
   ! CTrilinos prototype:
   ! boolean Teuchos_ParameterList_isType_double_type ( CT_Teuchos_ParameterList_ID_t selfID, const char name[], double * ptr );
 
-  logical(c_bool) function Teuchos_ParameterList_isType_double_type ( selfID, name, ptr ) &
-        bind(C,name='Teuchos_ParameterList_isType_double_type')
-    import :: c_bool ,FT_Teuchos_ParameterList_ID_t ,c_char ,c_double
+  integer(FT_boolean_t) function Teuchos_ParameterList_isType_double_type ( selfID, name, &
+        ptr ) bind(C,name='Teuchos_ParameterList_isType_double_type')
+    import :: FT_boolean_t ,FT_Teuchos_ParameterList_ID_t ,c_char ,c_double
     
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)             ,intent(in)         ,dimension(*) :: name
@@ -751,9 +751,9 @@ module forteuchos
   ! CTrilinos prototype:
   ! boolean Teuchos_ParameterList_isType_int_type ( CT_Teuchos_ParameterList_ID_t selfID, const char name[], int * ptr );
 
-  logical(c_bool) function Teuchos_ParameterList_isType_int_type ( selfID, name, ptr ) &
+  integer(FT_boolean_t) function Teuchos_ParameterList_isType_int_type ( selfID, name, ptr ) &
         bind(C,name='Teuchos_ParameterList_isType_int_type')
-    import :: c_bool ,FT_Teuchos_ParameterList_ID_t ,c_char ,c_int
+    import :: FT_boolean_t ,FT_Teuchos_ParameterList_ID_t ,c_char ,c_int
     
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)             ,intent(in)         ,dimension(*) :: name
@@ -871,11 +871,11 @@ module forteuchos
 
   subroutine Teuchos_ParameterEntry_setAnyValue ( selfID, valueID, isDefault ) &
         bind(C,name='Teuchos_ParameterEntry_setAnyValue')
-    import :: FT_Teuchos_ParameterEntry_ID_t ,FT_Teuchos_any_ID_t ,c_bool
+    import :: FT_Teuchos_ParameterEntry_ID_t ,FT_Teuchos_any_ID_t ,FT_boolean_t
     
     type(FT_Teuchos_ParameterEntry_ID_t),intent(in)   ,value              :: selfID
     type(FT_Teuchos_any_ID_t)           ,intent(in)   ,value              :: valueID
-    logical(c_bool)                     ,intent(in)   ,value              :: isDefault
+    integer(FT_boolean_t)               ,intent(in)   ,value              :: isDefault
   end subroutine
 
 
@@ -900,11 +900,11 @@ module forteuchos
 
   type(FT_Teuchos_ParameterList_ID_t) function Teuchos_ParameterEntry_setList ( selfID, &
         isDefault, docString ) bind(C,name='Teuchos_ParameterEntry_setList')
-    import :: FT_Teuchos_ParameterList_ID_t ,FT_Teuchos_ParameterEntry_ID_t ,c_bool , &
+    import :: FT_Teuchos_ParameterList_ID_t ,FT_Teuchos_ParameterEntry_ID_t ,FT_boolean_t , &
           c_char
     
     type(FT_Teuchos_ParameterEntry_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)                     ,intent(in)   ,value              :: isDefault
+    integer(FT_boolean_t)               ,intent(in)   ,value              :: isDefault
     character(kind=c_char)              ,intent(in)         ,dimension(*) :: docString
   end function
 
@@ -944,10 +944,10 @@ module forteuchos
 
   type(FT_Teuchos_any_ID_t) function Teuchos_ParameterEntry_getAny ( selfID, activeQry ) &
         bind(C,name='Teuchos_ParameterEntry_getAny')
-    import :: FT_Teuchos_any_ID_t ,FT_Teuchos_ParameterEntry_ID_t ,c_bool
+    import :: FT_Teuchos_any_ID_t ,FT_Teuchos_ParameterEntry_ID_t ,FT_boolean_t
     
     type(FT_Teuchos_ParameterEntry_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)                     ,intent(in)   ,value              :: activeQry
+    integer(FT_boolean_t)               ,intent(in)   ,value              :: activeQry
   end function
 
 
@@ -958,10 +958,10 @@ module forteuchos
 
   type(FT_Teuchos_any_ID_t) function Teuchos_ParameterEntry_getAny_const ( selfID, &
         activeQry ) bind(C,name='Teuchos_ParameterEntry_getAny_const')
-    import :: FT_Teuchos_any_ID_t ,FT_Teuchos_ParameterEntry_ID_t ,c_bool
+    import :: FT_Teuchos_any_ID_t ,FT_Teuchos_ParameterEntry_ID_t ,FT_boolean_t
     
     type(FT_Teuchos_ParameterEntry_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)                     ,intent(in)   ,value              :: activeQry
+    integer(FT_boolean_t)               ,intent(in)   ,value              :: activeQry
   end function
 
 
@@ -970,9 +970,9 @@ module forteuchos
   ! CTrilinos prototype:
   ! boolean Teuchos_ParameterEntry_isUsed ( CT_Teuchos_ParameterEntry_ID_t selfID );
 
-  logical(c_bool) function Teuchos_ParameterEntry_isUsed ( selfID ) &
+  integer(FT_boolean_t) function Teuchos_ParameterEntry_isUsed ( selfID ) &
         bind(C,name='Teuchos_ParameterEntry_isUsed')
-    import :: c_bool ,FT_Teuchos_ParameterEntry_ID_t
+    import :: FT_boolean_t ,FT_Teuchos_ParameterEntry_ID_t
     
     type(FT_Teuchos_ParameterEntry_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -983,9 +983,9 @@ module forteuchos
   ! CTrilinos prototype:
   ! boolean Teuchos_ParameterEntry_isList ( CT_Teuchos_ParameterEntry_ID_t selfID );
 
-  logical(c_bool) function Teuchos_ParameterEntry_isList ( selfID ) &
+  integer(FT_boolean_t) function Teuchos_ParameterEntry_isList ( selfID ) &
         bind(C,name='Teuchos_ParameterEntry_isList')
-    import :: c_bool ,FT_Teuchos_ParameterEntry_ID_t
+    import :: FT_boolean_t ,FT_Teuchos_ParameterEntry_ID_t
     
     type(FT_Teuchos_ParameterEntry_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -996,9 +996,9 @@ module forteuchos
   ! CTrilinos prototype:
   ! boolean Teuchos_ParameterEntry_isType_double ( CT_Teuchos_ParameterEntry_ID_t selfID );
 
-  logical(c_bool) function Teuchos_ParameterEntry_isType_double ( selfID ) &
+  integer(FT_boolean_t) function Teuchos_ParameterEntry_isType_double ( selfID ) &
         bind(C,name='Teuchos_ParameterEntry_isType_double')
-    import :: c_bool ,FT_Teuchos_ParameterEntry_ID_t
+    import :: FT_boolean_t ,FT_Teuchos_ParameterEntry_ID_t
     
     type(FT_Teuchos_ParameterEntry_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -1009,9 +1009,9 @@ module forteuchos
   ! CTrilinos prototype:
   ! boolean Teuchos_ParameterEntry_isType_int ( CT_Teuchos_ParameterEntry_ID_t selfID );
 
-  logical(c_bool) function Teuchos_ParameterEntry_isType_int ( selfID ) &
+  integer(FT_boolean_t) function Teuchos_ParameterEntry_isType_int ( selfID ) &
         bind(C,name='Teuchos_ParameterEntry_isType_int')
-    import :: c_bool ,FT_Teuchos_ParameterEntry_ID_t
+    import :: FT_boolean_t ,FT_Teuchos_ParameterEntry_ID_t
     
     type(FT_Teuchos_ParameterEntry_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -1022,9 +1022,9 @@ module forteuchos
   ! CTrilinos prototype:
   ! boolean Teuchos_ParameterEntry_isDefault ( CT_Teuchos_ParameterEntry_ID_t selfID );
 
-  logical(c_bool) function Teuchos_ParameterEntry_isDefault ( selfID ) &
+  integer(FT_boolean_t) function Teuchos_ParameterEntry_isDefault ( selfID ) &
         bind(C,name='Teuchos_ParameterEntry_isDefault')
-    import :: c_bool ,FT_Teuchos_ParameterEntry_ID_t
+    import :: FT_boolean_t ,FT_Teuchos_ParameterEntry_ID_t
     
     type(FT_Teuchos_ParameterEntry_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -1115,8 +1115,9 @@ module forteuchos
   ! CTrilinos prototype:
   ! boolean Teuchos_any_empty ( CT_Teuchos_any_ID_t selfID );
 
-  logical(c_bool) function Teuchos_any_empty ( selfID ) bind(C,name='Teuchos_any_empty')
-    import :: c_bool ,FT_Teuchos_any_ID_t
+  integer(FT_boolean_t) function Teuchos_any_empty ( selfID ) &
+        bind(C,name='Teuchos_any_empty')
+    import :: FT_boolean_t ,FT_Teuchos_any_ID_t
     
     type(FT_Teuchos_any_ID_t)   ,intent(in)   ,value              :: selfID
   end function
@@ -1140,9 +1141,9 @@ module forteuchos
   ! CTrilinos prototype:
   ! boolean Teuchos_any_same ( CT_Teuchos_any_ID_t selfID, CT_Teuchos_any_ID_t otherID );
 
-  logical(c_bool) function Teuchos_any_same ( selfID, otherID ) &
+  integer(FT_boolean_t) function Teuchos_any_same ( selfID, otherID ) &
         bind(C,name='Teuchos_any_same')
-    import :: c_bool ,FT_Teuchos_any_ID_t
+    import :: FT_boolean_t ,FT_Teuchos_any_ID_t
     
     type(FT_Teuchos_any_ID_t)   ,intent(in)   ,value              :: selfID
     type(FT_Teuchos_any_ID_t)   ,intent(in)   ,value              :: otherID
