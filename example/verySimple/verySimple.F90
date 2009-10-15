@@ -62,11 +62,11 @@ program main
   
   !/* Create an Epetra_Vector and cast to an Epetra_MultiVector so that
   ! * methods implemented only in MultiVector can be invoked on the Vector */
-  xID = Epetra_Vector_Create(bmapID, .TRUE._c_bool); !/* zero this one */
+  xID = Epetra_Vector_Create(bmapID, FT_TRUE); !/* zero this one */
   mxID = Epetra_MultiVector_Cast(Epetra_Vector_Abstract(xID));
 
   !/* Do the same thing, but do not initialize this one to zero */
-  bID = Epetra_Vector_Create(bmapID, .FALSE._c_bool);
+  bID = Epetra_Vector_Create(bmapID, FT_FALSE);
   mbID = Epetra_MultiVector_Cast(Epetra_Vector_Abstract(bID));
 
   !/* Do some vector operations */

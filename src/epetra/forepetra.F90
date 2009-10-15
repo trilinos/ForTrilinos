@@ -73,12 +73,12 @@ module forepetra
   integer(c_int) function Epetra_Distributor_CreateFromSends ( selfID, NumExportIDs, &
         ExportPIDs, Deterministic, NumRemoteIDs ) &
         bind(C,name='Epetra_Distributor_CreateFromSends')
-    import :: c_int ,FT_Epetra_Distributor_ID_t ,c_bool
+    import :: c_int ,FT_Epetra_Distributor_ID_t ,FT_boolean_t
     
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: NumExportIDs
     integer(c_int)                  ,intent(in)         ,dimension(*) :: ExportPIDs
-    logical(c_bool)                 ,intent(in)   ,value              :: Deterministic
+    integer(FT_boolean_t)           ,intent(in)   ,value              :: Deterministic
     integer(c_int)                  ,intent(inout)                    :: NumRemoteIDs
   end function
 
@@ -91,13 +91,13 @@ module forepetra
   integer(c_int) function Epetra_Distributor_CreateFromRecvs ( selfID, NumRemoteIDs, &
         RemoteGIDs, RemotePIDs, Deterministic, NumExportIDs, ExportGIDs, ExportPIDs ) &
         bind(C,name='Epetra_Distributor_CreateFromRecvs')
-    import :: c_int ,FT_Epetra_Distributor_ID_t ,c_bool
+    import :: c_int ,FT_Epetra_Distributor_ID_t ,FT_boolean_t
     
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: NumRemoteIDs
     integer(c_int)                  ,intent(in)         ,dimension(*) :: RemoteGIDs
     integer(c_int)                  ,intent(in)         ,dimension(*) :: RemotePIDs
-    logical(c_bool)                 ,intent(in)   ,value              :: Deterministic
+    integer(FT_boolean_t)           ,intent(in)   ,value              :: Deterministic
     integer(c_int)                  ,intent(inout)                    :: NumExportIDs
     integer(c_int)                  ,intent(inout)      ,dimension(*) :: ExportGIDs
     integer(c_int)                  ,intent(inout)      ,dimension(*) :: ExportPIDs
@@ -1692,10 +1692,10 @@ module forepetra
 
   integer(c_int) function Epetra_Operator_SetUseTranspose ( selfID, UseTranspose ) &
         bind(C,name='Epetra_Operator_SetUseTranspose')
-    import :: c_int ,FT_Epetra_Operator_ID_t ,c_bool
+    import :: c_int ,FT_Epetra_Operator_ID_t ,FT_boolean_t
     
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)              ,intent(in)   ,value              :: UseTranspose
+    integer(FT_boolean_t)        ,intent(in)   ,value              :: UseTranspose
   end function
 
 
@@ -1760,9 +1760,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_Operator_UseTranspose ( CT_Epetra_Operator_ID_t selfID );
 
-  logical(c_bool) function Epetra_Operator_UseTranspose ( selfID ) &
+  integer(FT_boolean_t) function Epetra_Operator_UseTranspose ( selfID ) &
         bind(C,name='Epetra_Operator_UseTranspose')
-    import :: c_bool ,FT_Epetra_Operator_ID_t
+    import :: FT_boolean_t ,FT_Epetra_Operator_ID_t
     
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -1773,9 +1773,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_Operator_HasNormInf ( CT_Epetra_Operator_ID_t selfID );
 
-  logical(c_bool) function Epetra_Operator_HasNormInf ( selfID ) &
+  integer(FT_boolean_t) function Epetra_Operator_HasNormInf ( selfID ) &
         bind(C,name='Epetra_Operator_HasNormInf')
-    import :: c_bool ,FT_Epetra_Operator_ID_t
+    import :: FT_boolean_t ,FT_Epetra_Operator_ID_t
     
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -1852,11 +1852,11 @@ module forepetra
 
   type(FT_Epetra_MultiVector_ID_t) function Epetra_MultiVector_Create ( MapID, NumVectors, &
         zeroOut ) bind(C,name='Epetra_MultiVector_Create')
-    import :: FT_Epetra_MultiVector_ID_t ,FT_Epetra_BlockMap_ID_t ,c_int ,c_bool
+    import :: FT_Epetra_MultiVector_ID_t ,FT_Epetra_BlockMap_ID_t ,c_int ,FT_boolean_t
     
     type(FT_Epetra_BlockMap_ID_t)   ,intent(in)   ,value              :: MapID
     integer(c_int)                  ,intent(in)   ,value              :: NumVectors
-    logical(c_bool)                 ,intent(in)   ,value              :: zeroOut
+    integer(FT_boolean_t)           ,intent(in)   ,value              :: zeroOut
   end function
 
 
@@ -2559,9 +2559,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_MultiVector_ConstantStride ( CT_Epetra_MultiVector_ID_t selfID );
 
-  logical(c_bool) function Epetra_MultiVector_ConstantStride ( selfID ) &
+  integer(FT_boolean_t) function Epetra_MultiVector_ConstantStride ( selfID ) &
         bind(C,name='Epetra_MultiVector_ConstantStride')
-    import :: c_bool ,FT_Epetra_MultiVector_ID_t
+    import :: FT_boolean_t ,FT_Epetra_MultiVector_ID_t
     
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -2735,10 +2735,10 @@ module forepetra
 
   type(FT_Epetra_Object_ID_t) function Epetra_Object_Create ( TracebackModeIn, set_label ) &
         bind(C,name='Epetra_Object_Create')
-    import :: FT_Epetra_Object_ID_t ,c_int ,c_bool
+    import :: FT_Epetra_Object_ID_t ,c_int ,FT_boolean_t
     
     integer(c_int)              ,intent(in)   ,value              :: TracebackModeIn
-    logical(c_bool)             ,intent(in)   ,value              :: set_label
+    integer(FT_boolean_t)       ,intent(in)   ,value              :: set_label
   end function
 
 
@@ -2950,10 +2950,10 @@ module forepetra
 
   integer(c_int) function Epetra_RowMatrix_Multiply ( selfID, TransA, XID, YID ) &
         bind(C,name='Epetra_RowMatrix_Multiply')
-    import :: c_int ,FT_Epetra_RowMatrix_ID_t ,c_bool ,FT_Epetra_MultiVector_ID_t
+    import :: c_int ,FT_Epetra_RowMatrix_ID_t ,FT_boolean_t ,FT_Epetra_MultiVector_ID_t
     
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)               ,intent(in)   ,value              :: TransA
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: TransA
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: YID
   end function
@@ -2966,12 +2966,12 @@ module forepetra
 
   integer(c_int) function Epetra_RowMatrix_Solve ( selfID, Upper, Trans, UnitDiagonal, XID, &
         YID ) bind(C,name='Epetra_RowMatrix_Solve')
-    import :: c_int ,FT_Epetra_RowMatrix_ID_t ,c_bool ,FT_Epetra_MultiVector_ID_t
+    import :: c_int ,FT_Epetra_RowMatrix_ID_t ,FT_boolean_t ,FT_Epetra_MultiVector_ID_t
     
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)               ,intent(in)   ,value              :: Upper
-    logical(c_bool)               ,intent(in)   ,value              :: Trans
-    logical(c_bool)               ,intent(in)   ,value              :: UnitDiagonal
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: Upper
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: Trans
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: UnitDiagonal
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: YID
   end function
@@ -3038,9 +3038,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_RowMatrix_Filled ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  logical(c_bool) function Epetra_RowMatrix_Filled ( selfID ) &
+  integer(FT_boolean_t) function Epetra_RowMatrix_Filled ( selfID ) &
         bind(C,name='Epetra_RowMatrix_Filled')
-    import :: c_bool ,FT_Epetra_RowMatrix_ID_t
+    import :: FT_boolean_t ,FT_Epetra_RowMatrix_ID_t
     
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -3181,9 +3181,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_RowMatrix_LowerTriangular ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  logical(c_bool) function Epetra_RowMatrix_LowerTriangular ( selfID ) &
+  integer(FT_boolean_t) function Epetra_RowMatrix_LowerTriangular ( selfID ) &
         bind(C,name='Epetra_RowMatrix_LowerTriangular')
-    import :: c_bool ,FT_Epetra_RowMatrix_ID_t
+    import :: FT_boolean_t ,FT_Epetra_RowMatrix_ID_t
     
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -3194,9 +3194,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_RowMatrix_UpperTriangular ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  logical(c_bool) function Epetra_RowMatrix_UpperTriangular ( selfID ) &
+  integer(FT_boolean_t) function Epetra_RowMatrix_UpperTriangular ( selfID ) &
         bind(C,name='Epetra_RowMatrix_UpperTriangular')
-    import :: c_bool ,FT_Epetra_RowMatrix_ID_t
+    import :: FT_boolean_t ,FT_Epetra_RowMatrix_ID_t
     
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -3498,7 +3498,7 @@ module forepetra
   integer(c_int) function Epetra_Directory_GetDirectoryEntries ( selfID, MapID, NumEntries, &
         GlobalEntries, Procs, LocalEntries, EntrySizes, high_rank_sharing_procs ) &
         bind(C,name='Epetra_Directory_GetDirectoryEntries')
-    import :: c_int ,FT_Epetra_Directory_ID_t ,FT_Epetra_BlockMap_ID_t ,c_bool
+    import :: c_int ,FT_Epetra_Directory_ID_t ,FT_Epetra_BlockMap_ID_t ,FT_boolean_t
     
     type(FT_Epetra_Directory_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t) ,intent(in)   ,value              :: MapID
@@ -3507,7 +3507,7 @@ module forepetra
     integer(c_int)                                    ,dimension(*) :: Procs
     integer(c_int)                                    ,dimension(*) :: LocalEntries
     integer(c_int)                                    ,dimension(*) :: EntrySizes
-    logical(c_bool)               ,intent(in)   ,value              :: high_rank_sharing_procs
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: high_rank_sharing_procs
   end function
 
 
@@ -3516,9 +3516,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_Directory_GIDsAllUniquelyOwned ( CT_Epetra_Directory_ID_t selfID );
 
-  logical(c_bool) function Epetra_Directory_GIDsAllUniquelyOwned ( selfID ) &
+  integer(FT_boolean_t) function Epetra_Directory_GIDsAllUniquelyOwned ( selfID ) &
         bind(C,name='Epetra_Directory_GIDsAllUniquelyOwned')
-    import :: c_bool ,FT_Epetra_Directory_ID_t
+    import :: FT_boolean_t ,FT_Epetra_Directory_ID_t
     
     type(FT_Epetra_Directory_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -4212,12 +4212,12 @@ module forepetra
   type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Create_VarPerRow ( CV, RowMapID, &
         NumEntriesPerRow, StaticProfile ) bind(C,name='Epetra_CrsMatrix_Create_VarPerRow')
     import :: FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
-          c_int ,c_bool
+          c_int ,FT_boolean_t
     
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: RowMapID
     integer(c_int)                ,intent(in)         ,dimension(*) :: NumEntriesPerRow
-    logical(c_bool)               ,intent(in)   ,value              :: StaticProfile
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: StaticProfile
   end function
 
 
@@ -4229,12 +4229,12 @@ module forepetra
   type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Create ( CV, RowMapID, &
         NumEntriesPerRow, StaticProfile ) bind(C,name='Epetra_CrsMatrix_Create')
     import :: FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
-          c_int ,c_bool
+          c_int ,FT_boolean_t
     
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: RowMapID
     integer(c_int)                ,intent(in)   ,value              :: NumEntriesPerRow
-    logical(c_bool)               ,intent(in)   ,value              :: StaticProfile
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: StaticProfile
   end function
 
 
@@ -4247,13 +4247,13 @@ module forepetra
         RowMapID, ColMapID, NumEntriesPerRow, StaticProfile ) &
         bind(C,name='Epetra_CrsMatrix_Create_VarPerRow_WithColMap')
     import :: FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
-          c_int ,c_bool
+          c_int ,FT_boolean_t
     
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: RowMapID
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: ColMapID
     integer(c_int)                ,intent(in)         ,dimension(*) :: NumEntriesPerRow
-    logical(c_bool)               ,intent(in)   ,value              :: StaticProfile
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: StaticProfile
   end function
 
 
@@ -4266,13 +4266,13 @@ module forepetra
         ColMapID, NumEntriesPerRow, StaticProfile ) &
         bind(C,name='Epetra_CrsMatrix_Create_WithColMap')
     import :: FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
-          c_int ,c_bool
+          c_int ,FT_boolean_t
     
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: RowMapID
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: ColMapID
     integer(c_int)                ,intent(in)   ,value              :: NumEntriesPerRow
-    logical(c_bool)               ,intent(in)   ,value              :: StaticProfile
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: StaticProfile
   end function
 
 
@@ -4480,10 +4480,10 @@ module forepetra
 
   integer(c_int) function Epetra_CrsMatrix_FillComplete ( selfID, OptimizeDataStorage ) &
         bind(C,name='Epetra_CrsMatrix_FillComplete')
-    import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_bool
+    import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_boolean_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)               ,intent(in)   ,value              :: OptimizeDataStorage
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: OptimizeDataStorage
   end function
 
 
@@ -4495,12 +4495,12 @@ module forepetra
   integer(c_int) function Epetra_CrsMatrix_FillComplete_UsingMaps ( selfID, DomainMapID, &
         RangeMapID, OptimizeDataStorage ) &
         bind(C,name='Epetra_CrsMatrix_FillComplete_UsingMaps')
-    import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Map_ID_t ,c_bool
+    import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Map_ID_t ,FT_boolean_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: DomainMapID
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: RangeMapID
-    logical(c_bool)               ,intent(in)   ,value              :: OptimizeDataStorage
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: OptimizeDataStorage
   end function
 
 
@@ -4691,10 +4691,10 @@ module forepetra
 
   integer(c_int) function Epetra_CrsMatrix_Multiply_Vector ( selfID, TransA, xID, yID ) &
         bind(C,name='Epetra_CrsMatrix_Multiply_Vector')
-    import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_bool ,FT_Epetra_Vector_ID_t
+    import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_boolean_t ,FT_Epetra_Vector_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)               ,intent(in)   ,value              :: TransA
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: TransA
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: yID
   end function
@@ -4707,10 +4707,10 @@ module forepetra
 
   integer(c_int) function Epetra_CrsMatrix_Multiply1_Vector ( selfID, TransA, xID, yID ) &
         bind(C,name='Epetra_CrsMatrix_Multiply1_Vector')
-    import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_bool ,FT_Epetra_Vector_ID_t
+    import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_boolean_t ,FT_Epetra_Vector_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)               ,intent(in)   ,value              :: TransA
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: TransA
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: yID
   end function
@@ -4723,10 +4723,10 @@ module forepetra
 
   integer(c_int) function Epetra_CrsMatrix_Multiply_MultiVector ( selfID, TransA, XID, YID ) &
         bind(C,name='Epetra_CrsMatrix_Multiply_MultiVector')
-    import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_bool ,FT_Epetra_MultiVector_ID_t
+    import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_boolean_t ,FT_Epetra_MultiVector_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)               ,intent(in)   ,value              :: TransA
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: TransA
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: YID
   end function
@@ -4739,10 +4739,10 @@ module forepetra
 
   integer(c_int) function Epetra_CrsMatrix_Multiply1_MultiVector ( selfID, TransA, XID, YID ) &
         bind(C,name='Epetra_CrsMatrix_Multiply1_MultiVector')
-    import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_bool ,FT_Epetra_MultiVector_ID_t
+    import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_boolean_t ,FT_Epetra_MultiVector_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)               ,intent(in)   ,value              :: TransA
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: TransA
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: YID
   end function
@@ -4755,12 +4755,12 @@ module forepetra
 
   integer(c_int) function Epetra_CrsMatrix_Solve_Vector ( selfID, Upper, Trans, &
         UnitDiagonal, xID, yID ) bind(C,name='Epetra_CrsMatrix_Solve_Vector')
-    import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_bool ,FT_Epetra_Vector_ID_t
+    import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_boolean_t ,FT_Epetra_Vector_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)               ,intent(in)   ,value              :: Upper
-    logical(c_bool)               ,intent(in)   ,value              :: Trans
-    logical(c_bool)               ,intent(in)   ,value              :: UnitDiagonal
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: Upper
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: Trans
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: UnitDiagonal
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: yID
   end function
@@ -4773,12 +4773,12 @@ module forepetra
 
   integer(c_int) function Epetra_CrsMatrix_Solve_MultiVector ( selfID, Upper, Trans, &
         UnitDiagonal, XID, YID ) bind(C,name='Epetra_CrsMatrix_Solve_MultiVector')
-    import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_bool ,FT_Epetra_MultiVector_ID_t
+    import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_boolean_t ,FT_Epetra_MultiVector_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)               ,intent(in)   ,value              :: Upper
-    logical(c_bool)               ,intent(in)   ,value              :: Trans
-    logical(c_bool)               ,intent(in)   ,value              :: UnitDiagonal
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: Upper
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: Trans
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: UnitDiagonal
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: YID
   end function
@@ -4873,9 +4873,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsMatrix_Filled ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsMatrix_Filled ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsMatrix_Filled ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_Filled')
-    import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -4886,9 +4886,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsMatrix_StorageOptimized ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsMatrix_StorageOptimized ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsMatrix_StorageOptimized ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_StorageOptimized')
-    import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -4899,9 +4899,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsMatrix_IndicesAreGlobal ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsMatrix_IndicesAreGlobal ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsMatrix_IndicesAreGlobal ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_IndicesAreGlobal')
-    import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -4912,9 +4912,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsMatrix_IndicesAreLocal ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsMatrix_IndicesAreLocal ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsMatrix_IndicesAreLocal ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_IndicesAreLocal')
-    import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -4925,9 +4925,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsMatrix_IndicesAreContiguous ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsMatrix_IndicesAreContiguous ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsMatrix_IndicesAreContiguous ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_IndicesAreContiguous')
-    import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -4938,9 +4938,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsMatrix_LowerTriangular ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsMatrix_LowerTriangular ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsMatrix_LowerTriangular ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_LowerTriangular')
-    import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -4951,9 +4951,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsMatrix_UpperTriangular ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsMatrix_UpperTriangular ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsMatrix_UpperTriangular ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_UpperTriangular')
-    import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -4964,9 +4964,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsMatrix_NoDiagonal ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsMatrix_NoDiagonal ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsMatrix_NoDiagonal ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_NoDiagonal')
-    import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -5215,9 +5215,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsMatrix_StaticGraph ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsMatrix_StaticGraph ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsMatrix_StaticGraph ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_StaticGraph')
-    import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -5268,9 +5268,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsMatrix_HaveColMap ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsMatrix_HaveColMap ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsMatrix_HaveColMap ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_HaveColMap')
-    import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -5429,9 +5429,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsMatrix_MyGRID ( CT_Epetra_CrsMatrix_ID_t selfID, int GRID_in );
 
-  logical(c_bool) function Epetra_CrsMatrix_MyGRID ( selfID, GRID_in ) &
+  integer(FT_boolean_t) function Epetra_CrsMatrix_MyGRID ( selfID, GRID_in ) &
         bind(C,name='Epetra_CrsMatrix_MyGRID')
-    import :: c_bool ,FT_Epetra_CrsMatrix_ID_t ,c_int
+    import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t ,c_int
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GRID_in
@@ -5443,9 +5443,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsMatrix_MyLRID ( CT_Epetra_CrsMatrix_ID_t selfID, int LRID_in );
 
-  logical(c_bool) function Epetra_CrsMatrix_MyLRID ( selfID, LRID_in ) &
+  integer(FT_boolean_t) function Epetra_CrsMatrix_MyLRID ( selfID, LRID_in ) &
         bind(C,name='Epetra_CrsMatrix_MyLRID')
-    import :: c_bool ,FT_Epetra_CrsMatrix_ID_t ,c_int
+    import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t ,c_int
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: LRID_in
@@ -5457,9 +5457,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsMatrix_MyGCID ( CT_Epetra_CrsMatrix_ID_t selfID, int GCID_in );
 
-  logical(c_bool) function Epetra_CrsMatrix_MyGCID ( selfID, GCID_in ) &
+  integer(FT_boolean_t) function Epetra_CrsMatrix_MyGCID ( selfID, GCID_in ) &
         bind(C,name='Epetra_CrsMatrix_MyGCID')
-    import :: c_bool ,FT_Epetra_CrsMatrix_ID_t ,c_int
+    import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t ,c_int
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GCID_in
@@ -5471,9 +5471,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsMatrix_MyLCID ( CT_Epetra_CrsMatrix_ID_t selfID, int LCID_in );
 
-  logical(c_bool) function Epetra_CrsMatrix_MyLCID ( selfID, LCID_in ) &
+  integer(FT_boolean_t) function Epetra_CrsMatrix_MyLCID ( selfID, LCID_in ) &
         bind(C,name='Epetra_CrsMatrix_MyLCID')
-    import :: c_bool ,FT_Epetra_CrsMatrix_ID_t ,c_int
+    import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t ,c_int
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: LCID_in
@@ -5485,9 +5485,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsMatrix_MyGlobalRow ( CT_Epetra_CrsMatrix_ID_t selfID, int GID );
 
-  logical(c_bool) function Epetra_CrsMatrix_MyGlobalRow ( selfID, GID ) &
+  integer(FT_boolean_t) function Epetra_CrsMatrix_MyGlobalRow ( selfID, GID ) &
         bind(C,name='Epetra_CrsMatrix_MyGlobalRow')
-    import :: c_bool ,FT_Epetra_CrsMatrix_ID_t ,c_int
+    import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t ,c_int
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GID
@@ -5514,10 +5514,10 @@ module forepetra
 
   integer(c_int) function Epetra_CrsMatrix_SetUseTranspose ( selfID, UseTranspose_in ) &
         bind(C,name='Epetra_CrsMatrix_SetUseTranspose')
-    import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_bool
+    import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_boolean_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)               ,intent(in)   ,value              :: UseTranspose_in
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: UseTranspose_in
   end function
 
 
@@ -5556,9 +5556,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsMatrix_HasNormInf ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsMatrix_HasNormInf ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsMatrix_HasNormInf ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_HasNormInf')
-    import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -5569,9 +5569,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsMatrix_UseTranspose ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsMatrix_UseTranspose ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsMatrix_UseTranspose ( selfID ) &
         bind(C,name='Epetra_CrsMatrix_UseTranspose')
-    import :: c_bool ,FT_Epetra_CrsMatrix_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -5745,12 +5745,12 @@ module forepetra
   type(FT_Epetra_CrsGraph_ID_t) function Epetra_CrsGraph_Create_VarPerRow ( CV, RowMapID, &
         NumIndicesPerRow, StaticProfile ) bind(C,name='Epetra_CrsGraph_Create_VarPerRow')
     import :: FT_Epetra_CrsGraph_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_BlockMap_ID_t , &
-          c_int ,c_bool
+          c_int ,FT_boolean_t
     
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: RowMapID
     integer(c_int)               ,intent(in)         ,dimension(*) :: NumIndicesPerRow
-    logical(c_bool)              ,intent(in)   ,value              :: StaticProfile
+    integer(FT_boolean_t)        ,intent(in)   ,value              :: StaticProfile
   end function
 
 
@@ -5762,12 +5762,12 @@ module forepetra
   type(FT_Epetra_CrsGraph_ID_t) function Epetra_CrsGraph_Create ( CV, RowMapID, &
         NumIndicesPerRow, StaticProfile ) bind(C,name='Epetra_CrsGraph_Create')
     import :: FT_Epetra_CrsGraph_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_BlockMap_ID_t , &
-          c_int ,c_bool
+          c_int ,FT_boolean_t
     
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: RowMapID
     integer(c_int)               ,intent(in)   ,value              :: NumIndicesPerRow
-    logical(c_bool)              ,intent(in)   ,value              :: StaticProfile
+    integer(FT_boolean_t)        ,intent(in)   ,value              :: StaticProfile
   end function
 
 
@@ -5780,13 +5780,13 @@ module forepetra
         RowMapID, ColMapID, NumIndicesPerRow, StaticProfile ) &
         bind(C,name='Epetra_CrsGraph_Create_VarPerRow_WithColMap')
     import :: FT_Epetra_CrsGraph_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_BlockMap_ID_t , &
-          c_int ,c_bool
+          c_int ,FT_boolean_t
     
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: RowMapID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: ColMapID
     integer(c_int)               ,intent(in)         ,dimension(*) :: NumIndicesPerRow
-    logical(c_bool)              ,intent(in)   ,value              :: StaticProfile
+    integer(FT_boolean_t)        ,intent(in)   ,value              :: StaticProfile
   end function
 
 
@@ -5799,13 +5799,13 @@ module forepetra
         ColMapID, NumIndicesPerRow, StaticProfile ) &
         bind(C,name='Epetra_CrsGraph_Create_With_ColMap')
     import :: FT_Epetra_CrsGraph_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_BlockMap_ID_t , &
-          c_int ,c_bool
+          c_int ,FT_boolean_t
     
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: RowMapID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: ColMapID
     integer(c_int)               ,intent(in)   ,value              :: NumIndicesPerRow
-    logical(c_bool)              ,intent(in)   ,value              :: StaticProfile
+    integer(FT_boolean_t)        ,intent(in)   ,value              :: StaticProfile
   end function
 
 
@@ -6039,9 +6039,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsGraph_Filled ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsGraph_Filled ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsGraph_Filled ( selfID ) &
         bind(C,name='Epetra_CrsGraph_Filled')
-    import :: c_bool ,FT_Epetra_CrsGraph_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t
     
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -6052,9 +6052,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsGraph_StorageOptimized ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsGraph_StorageOptimized ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsGraph_StorageOptimized ( selfID ) &
         bind(C,name='Epetra_CrsGraph_StorageOptimized')
-    import :: c_bool ,FT_Epetra_CrsGraph_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t
     
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -6065,9 +6065,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsGraph_IndicesAreGlobal ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsGraph_IndicesAreGlobal ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsGraph_IndicesAreGlobal ( selfID ) &
         bind(C,name='Epetra_CrsGraph_IndicesAreGlobal')
-    import :: c_bool ,FT_Epetra_CrsGraph_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t
     
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -6078,9 +6078,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsGraph_IndicesAreLocal ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsGraph_IndicesAreLocal ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsGraph_IndicesAreLocal ( selfID ) &
         bind(C,name='Epetra_CrsGraph_IndicesAreLocal')
-    import :: c_bool ,FT_Epetra_CrsGraph_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t
     
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -6091,9 +6091,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsGraph_LowerTriangular ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsGraph_LowerTriangular ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsGraph_LowerTriangular ( selfID ) &
         bind(C,name='Epetra_CrsGraph_LowerTriangular')
-    import :: c_bool ,FT_Epetra_CrsGraph_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t
     
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -6104,9 +6104,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsGraph_UpperTriangular ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsGraph_UpperTriangular ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsGraph_UpperTriangular ( selfID ) &
         bind(C,name='Epetra_CrsGraph_UpperTriangular')
-    import :: c_bool ,FT_Epetra_CrsGraph_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t
     
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -6117,9 +6117,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsGraph_NoDiagonal ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsGraph_NoDiagonal ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsGraph_NoDiagonal ( selfID ) &
         bind(C,name='Epetra_CrsGraph_NoDiagonal')
-    import :: c_bool ,FT_Epetra_CrsGraph_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t
     
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -6130,9 +6130,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsGraph_MyGlobalRow ( CT_Epetra_CrsGraph_ID_t selfID, int GID );
 
-  logical(c_bool) function Epetra_CrsGraph_MyGlobalRow ( selfID, GID ) &
+  integer(FT_boolean_t) function Epetra_CrsGraph_MyGlobalRow ( selfID, GID ) &
         bind(C,name='Epetra_CrsGraph_MyGlobalRow')
-    import :: c_bool ,FT_Epetra_CrsGraph_ID_t ,c_int
+    import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t ,c_int
     
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GID
@@ -6144,9 +6144,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsGraph_HaveColMap ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  logical(c_bool) function Epetra_CrsGraph_HaveColMap ( selfID ) &
+  integer(FT_boolean_t) function Epetra_CrsGraph_HaveColMap ( selfID ) &
         bind(C,name='Epetra_CrsGraph_HaveColMap')
-    import :: c_bool ,FT_Epetra_CrsGraph_ID_t
+    import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t
     
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -6713,9 +6713,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsGraph_MyGRID ( CT_Epetra_CrsGraph_ID_t selfID, int GRID_in );
 
-  logical(c_bool) function Epetra_CrsGraph_MyGRID ( selfID, GRID_in ) &
+  integer(FT_boolean_t) function Epetra_CrsGraph_MyGRID ( selfID, GRID_in ) &
         bind(C,name='Epetra_CrsGraph_MyGRID')
-    import :: c_bool ,FT_Epetra_CrsGraph_ID_t ,c_int
+    import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t ,c_int
     
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GRID_in
@@ -6727,9 +6727,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsGraph_MyLRID ( CT_Epetra_CrsGraph_ID_t selfID, int LRID_in );
 
-  logical(c_bool) function Epetra_CrsGraph_MyLRID ( selfID, LRID_in ) &
+  integer(FT_boolean_t) function Epetra_CrsGraph_MyLRID ( selfID, LRID_in ) &
         bind(C,name='Epetra_CrsGraph_MyLRID')
-    import :: c_bool ,FT_Epetra_CrsGraph_ID_t ,c_int
+    import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t ,c_int
     
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LRID_in
@@ -6741,9 +6741,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsGraph_MyGCID ( CT_Epetra_CrsGraph_ID_t selfID, int GCID_in );
 
-  logical(c_bool) function Epetra_CrsGraph_MyGCID ( selfID, GCID_in ) &
+  integer(FT_boolean_t) function Epetra_CrsGraph_MyGCID ( selfID, GCID_in ) &
         bind(C,name='Epetra_CrsGraph_MyGCID')
-    import :: c_bool ,FT_Epetra_CrsGraph_ID_t ,c_int
+    import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t ,c_int
     
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GCID_in
@@ -6755,9 +6755,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_CrsGraph_MyLCID ( CT_Epetra_CrsGraph_ID_t selfID, int LCID_in );
 
-  logical(c_bool) function Epetra_CrsGraph_MyLCID ( selfID, LCID_in ) &
+  integer(FT_boolean_t) function Epetra_CrsGraph_MyLCID ( selfID, LCID_in ) &
         bind(C,name='Epetra_CrsGraph_MyLCID')
-    import :: c_bool ,FT_Epetra_CrsGraph_ID_t ,c_int
+    import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t ,c_int
     
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LCID_in
@@ -6973,9 +6973,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_DistObject_DistributedGlobal ( CT_Epetra_DistObject_ID_t selfID );
 
-  logical(c_bool) function Epetra_DistObject_DistributedGlobal ( selfID ) &
+  integer(FT_boolean_t) function Epetra_DistObject_DistributedGlobal ( selfID ) &
         bind(C,name='Epetra_DistObject_DistributedGlobal')
-    import :: c_bool ,FT_Epetra_DistObject_ID_t
+    import :: FT_boolean_t ,FT_Epetra_DistObject_ID_t
     
     type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -7013,10 +7013,10 @@ module forepetra
 
   type(FT_Epetra_Vector_ID_t) function Epetra_Vector_Create ( MapID, zeroOut ) &
         bind(C,name='Epetra_Vector_Create')
-    import :: FT_Epetra_Vector_ID_t ,FT_Epetra_BlockMap_ID_t ,c_bool
+    import :: FT_Epetra_Vector_ID_t ,FT_Epetra_BlockMap_ID_t ,FT_boolean_t
     
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: MapID
-    logical(c_bool)             ,intent(in)   ,value              :: zeroOut
+    integer(FT_boolean_t)       ,intent(in)   ,value              :: zeroOut
   end function
 
 
@@ -7818,9 +7818,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_BlockMap_MyGID ( CT_Epetra_BlockMap_ID_t selfID, int GID_in );
 
-  logical(c_bool) function Epetra_BlockMap_MyGID ( selfID, GID_in ) &
+  integer(FT_boolean_t) function Epetra_BlockMap_MyGID ( selfID, GID_in ) &
         bind(C,name='Epetra_BlockMap_MyGID')
-    import :: c_bool ,FT_Epetra_BlockMap_ID_t ,c_int
+    import :: FT_boolean_t ,FT_Epetra_BlockMap_ID_t ,c_int
     
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GID_in
@@ -7832,9 +7832,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_BlockMap_MyLID ( CT_Epetra_BlockMap_ID_t selfID, int LID_in );
 
-  logical(c_bool) function Epetra_BlockMap_MyLID ( selfID, LID_in ) &
+  integer(FT_boolean_t) function Epetra_BlockMap_MyLID ( selfID, LID_in ) &
         bind(C,name='Epetra_BlockMap_MyLID')
-    import :: c_bool ,FT_Epetra_BlockMap_ID_t ,c_int
+    import :: FT_boolean_t ,FT_Epetra_BlockMap_ID_t ,c_int
     
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LID_in
@@ -8096,9 +8096,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_BlockMap_UniqueGIDs ( CT_Epetra_BlockMap_ID_t selfID );
 
-  logical(c_bool) function Epetra_BlockMap_UniqueGIDs ( selfID ) &
+  integer(FT_boolean_t) function Epetra_BlockMap_UniqueGIDs ( selfID ) &
         bind(C,name='Epetra_BlockMap_UniqueGIDs')
-    import :: c_bool ,FT_Epetra_BlockMap_ID_t
+    import :: FT_boolean_t ,FT_Epetra_BlockMap_ID_t
     
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -8109,9 +8109,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_BlockMap_ConstantElementSize ( CT_Epetra_BlockMap_ID_t selfID );
 
-  logical(c_bool) function Epetra_BlockMap_ConstantElementSize ( selfID ) &
+  integer(FT_boolean_t) function Epetra_BlockMap_ConstantElementSize ( selfID ) &
         bind(C,name='Epetra_BlockMap_ConstantElementSize')
-    import :: c_bool ,FT_Epetra_BlockMap_ID_t
+    import :: FT_boolean_t ,FT_Epetra_BlockMap_ID_t
     
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -8122,9 +8122,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_BlockMap_SameAs ( CT_Epetra_BlockMap_ID_t selfID, CT_Epetra_BlockMap_ID_t MapID );
 
-  logical(c_bool) function Epetra_BlockMap_SameAs ( selfID, MapID ) &
+  integer(FT_boolean_t) function Epetra_BlockMap_SameAs ( selfID, MapID ) &
         bind(C,name='Epetra_BlockMap_SameAs')
-    import :: c_bool ,FT_Epetra_BlockMap_ID_t
+    import :: FT_boolean_t ,FT_Epetra_BlockMap_ID_t
     
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: MapID
@@ -8136,9 +8136,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_BlockMap_PointSameAs ( CT_Epetra_BlockMap_ID_t selfID, CT_Epetra_BlockMap_ID_t MapID );
 
-  logical(c_bool) function Epetra_BlockMap_PointSameAs ( selfID, MapID ) &
+  integer(FT_boolean_t) function Epetra_BlockMap_PointSameAs ( selfID, MapID ) &
         bind(C,name='Epetra_BlockMap_PointSameAs')
-    import :: c_bool ,FT_Epetra_BlockMap_ID_t
+    import :: FT_boolean_t ,FT_Epetra_BlockMap_ID_t
     
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: MapID
@@ -8150,9 +8150,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_BlockMap_LinearMap ( CT_Epetra_BlockMap_ID_t selfID );
 
-  logical(c_bool) function Epetra_BlockMap_LinearMap ( selfID ) &
+  integer(FT_boolean_t) function Epetra_BlockMap_LinearMap ( selfID ) &
         bind(C,name='Epetra_BlockMap_LinearMap')
-    import :: c_bool ,FT_Epetra_BlockMap_ID_t
+    import :: FT_boolean_t ,FT_Epetra_BlockMap_ID_t
     
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -8163,9 +8163,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_BlockMap_DistributedGlobal ( CT_Epetra_BlockMap_ID_t selfID );
 
-  logical(c_bool) function Epetra_BlockMap_DistributedGlobal ( selfID ) &
+  integer(FT_boolean_t) function Epetra_BlockMap_DistributedGlobal ( selfID ) &
         bind(C,name='Epetra_BlockMap_DistributedGlobal')
-    import :: c_bool ,FT_Epetra_BlockMap_ID_t
+    import :: FT_boolean_t ,FT_Epetra_BlockMap_ID_t
     
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -8284,9 +8284,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_BlockMap_IsOneToOne ( CT_Epetra_BlockMap_ID_t selfID );
 
-  logical(c_bool) function Epetra_BlockMap_IsOneToOne ( selfID ) &
+  integer(FT_boolean_t) function Epetra_BlockMap_IsOneToOne ( selfID ) &
         bind(C,name='Epetra_BlockMap_IsOneToOne')
-    import :: c_bool ,FT_Epetra_BlockMap_ID_t
+    import :: FT_boolean_t ,FT_Epetra_BlockMap_ID_t
     
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -8723,11 +8723,11 @@ module forepetra
 
   integer(c_int) function Epetra_JadMatrix_UpdateValues ( selfID, MatrixID, CheckStructure ) &
         bind(C,name='Epetra_JadMatrix_UpdateValues')
-    import :: c_int ,FT_Epetra_JadMatrix_ID_t ,FT_Epetra_RowMatrix_ID_t ,c_bool
+    import :: c_int ,FT_Epetra_JadMatrix_ID_t ,FT_Epetra_RowMatrix_ID_t ,FT_boolean_t
     
     type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: MatrixID
-    logical(c_bool)               ,intent(in)   ,value              :: CheckStructure
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: CheckStructure
   end function
 
 
@@ -8806,10 +8806,10 @@ module forepetra
 
   integer(c_int) function Epetra_JadMatrix_Multiply ( selfID, TransA, XID, YID ) &
         bind(C,name='Epetra_JadMatrix_Multiply')
-    import :: c_int ,FT_Epetra_JadMatrix_ID_t ,c_bool ,FT_Epetra_MultiVector_ID_t
+    import :: c_int ,FT_Epetra_JadMatrix_ID_t ,FT_boolean_t ,FT_Epetra_MultiVector_ID_t
     
     type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)               ,intent(in)   ,value              :: TransA
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: TransA
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: YID
   end function
@@ -8822,12 +8822,12 @@ module forepetra
 
   integer(c_int) function Epetra_JadMatrix_Solve ( selfID, Upper, Trans, UnitDiagonal, XID, &
         YID ) bind(C,name='Epetra_JadMatrix_Solve')
-    import :: c_int ,FT_Epetra_JadMatrix_ID_t ,c_bool ,FT_Epetra_MultiVector_ID_t
+    import :: c_int ,FT_Epetra_JadMatrix_ID_t ,FT_boolean_t ,FT_Epetra_MultiVector_ID_t
     
     type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)               ,intent(in)   ,value              :: Upper
-    logical(c_bool)               ,intent(in)   ,value              :: Trans
-    logical(c_bool)               ,intent(in)   ,value              :: UnitDiagonal
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: Upper
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: Trans
+    integer(FT_boolean_t)         ,intent(in)   ,value              :: UnitDiagonal
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: YID
   end function
@@ -9122,9 +9122,9 @@ module forepetra
   ! CTrilinos prototype:
   ! boolean Epetra_LinearProblem_IsOperatorSymmetric ( CT_Epetra_LinearProblem_ID_t selfID );
 
-  logical(c_bool) function Epetra_LinearProblem_IsOperatorSymmetric ( selfID ) &
+  integer(FT_boolean_t) function Epetra_LinearProblem_IsOperatorSymmetric ( selfID ) &
         bind(C,name='Epetra_LinearProblem_IsOperatorSymmetric')
-    import :: c_bool ,FT_Epetra_LinearProblem_ID_t
+    import :: FT_boolean_t ,FT_Epetra_LinearProblem_ID_t
     
     type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
   end function

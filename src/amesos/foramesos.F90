@@ -100,10 +100,10 @@ module foramesos
 
   integer(c_int) function Amesos_BaseSolver_SetUseTranspose ( selfID, UseTranspose ) &
         bind(C,name='Amesos_BaseSolver_SetUseTranspose')
-    import :: c_int ,FT_Amesos_BaseSolver_ID_t ,c_bool
+    import :: c_int ,FT_Amesos_BaseSolver_ID_t ,FT_boolean_t
     
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-    logical(c_bool)                ,intent(in)   ,value              :: UseTranspose
+    integer(FT_boolean_t)          ,intent(in)   ,value              :: UseTranspose
   end function
 
 
@@ -112,9 +112,9 @@ module foramesos
   ! CTrilinos prototype:
   ! boolean Amesos_BaseSolver_UseTranspose ( CT_Amesos_BaseSolver_ID_t selfID );
 
-  logical(c_bool) function Amesos_BaseSolver_UseTranspose ( selfID ) &
+  integer(FT_boolean_t) function Amesos_BaseSolver_UseTranspose ( selfID ) &
         bind(C,name='Amesos_BaseSolver_UseTranspose')
-    import :: c_bool ,FT_Amesos_BaseSolver_ID_t
+    import :: FT_boolean_t ,FT_Amesos_BaseSolver_ID_t
     
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -152,9 +152,9 @@ module foramesos
   ! CTrilinos prototype:
   ! boolean Amesos_BaseSolver_MatrixShapeOK ( CT_Amesos_BaseSolver_ID_t selfID );
 
-  logical(c_bool) function Amesos_BaseSolver_MatrixShapeOK ( selfID ) &
+  integer(FT_boolean_t) function Amesos_BaseSolver_MatrixShapeOK ( selfID ) &
         bind(C,name='Amesos_BaseSolver_MatrixShapeOK')
-    import :: c_bool ,FT_Amesos_BaseSolver_ID_t
+    import :: FT_boolean_t ,FT_Amesos_BaseSolver_ID_t
     
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
   end function
@@ -339,8 +339,9 @@ module foramesos
   ! CTrilinos prototype:
   ! boolean Amesos_Query ( CT_Amesos_ID_t selfID, const char * ClassType );
 
-  logical(c_bool) function Amesos_Query ( selfID, ClassType ) bind(C,name='Amesos_Query')
-    import :: c_bool ,FT_Amesos_ID_t ,c_char
+  integer(FT_boolean_t) function Amesos_Query ( selfID, ClassType ) &
+        bind(C,name='Amesos_Query')
+    import :: FT_boolean_t ,FT_Amesos_ID_t ,c_char
     
     type(FT_Amesos_ID_t)        ,intent(in)   ,value              :: selfID
     character(kind=c_char)      ,intent(in)         ,dimension(*) :: ClassType
