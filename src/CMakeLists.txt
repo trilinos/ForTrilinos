@@ -18,11 +18,10 @@ PACKAGE_CONFIGURE_FILE(${PACKAGE_NAME}_config.h)
 SET(HEADERS "")
 SET(SOURCES "")
 
-SET_AND_INC_DIRS(DIR ${CMAKE_CURRENT_SOURCE_DIR}/epetra
-                     ${CMAKE_CURRENT_SOURCE_DIR}/teuchos
-                     ${CMAKE_CURRENT_SOURCE_DIR}/amesos)
-#APPEND_GLOB(SOURCES ${DIR}/*.f90)
-APPEND_GLOB(SOURCES ${DIR}/*.F90)
+SET_AND_INC_DIRS(DIREPETRA ${CMAKE_CURRENT_SOURCE_DIR}/epetra)
+SET_AND_INC_DIRS(DIRTEUCHOS ${CMAKE_CURRENT_SOURCE_DIR}/teuchos)
+SET_AND_INC_DIRS(DIRAMESOS ${CMAKE_CURRENT_SOURCE_DIR}/amesos)
+SET_AND_INC_DIRS(DIRAZTECOO ${CMAKE_CURRENT_SOURCE_DIR}/aztecoo)
 
 # Set the base Trilinos directory in order to find Trilinos_version.h
 
@@ -50,14 +49,56 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 APPEND_SET(HEADERS
   )
 
-# Set sources (add any source files that in the current directory [src])
+# Set sources for link-layer build
 
 APPEND_SET(SOURCES
   ForTrilinos_enums.F90
   ForTrilinos_utils.F90
-  ForTrilinos_hermetic.F90
-  ForTrilinos_universal.F90
+  ${DIREPETRA}/forepetra.F90
+  ${DIRTEUCHOS}/forteuchos.F90
   )
+
+IF (${PACKAGE_NAME}_ENABLE_Amesos)
+
+  APPEND_SET(SOURCES
+    ${DIRAMESOS}/foramesos.F90
+    )
+
+ENDIF()
+
+IF (${PACKAGE_NAME}_ENABLE_AztecOO)
+
+  APPEND_SET(SOURCES
+    ${DIRAZTECOO}/foraztecoo.F90
+    )
+
+ENDIF()
+
+# Set additional sources for object-oriented build
+
+IF(${PACKAGE_NAME}_ENABLE_EXTENDED)
+
+  APPEND_SET(SOURCES
+    ForTrilinos_hermetic.F90
+    ForTrilinos_universal.F90
+    )
+
+  APPEND_GLOB(SOURCES ${DIREPETRA}/FEpetra*.F90
+                      ${DIRTEUCHOS}/FTeuchos*.F90)
+
+  IF (${PACKAGE_NAME}_ENABLE_Amesos)
+
+    APPEND_GLOB(SOURCES ${DIRAMESOS}/FAmesos*.F90)
+
+  ENDIF()
+
+  IF (${PACKAGE_NAME}_ENABLE_AztecOO)
+
+    APPEND_GLOB(SOURCES ${DIRAZTECOO}/FAztecOO*.F90)
+
+  ENDIF()
+
+ENDIF()
 
 #
 # C) Define the targets for package's library(s)
