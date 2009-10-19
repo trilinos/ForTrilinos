@@ -8,47 +8,47 @@ module ForTrilinos_enums
   ! enumeration values are interoperable with those employed by a companion C compiler.
 
   enum ,bind(C)
-    enumerator ::                     &
-      FT_Invalid_ID,                  &
-      FT_Epetra_Distributor_ID,       &
-      FT_Epetra_SerialComm_ID,        &
-      FT_Epetra_BLAS_ID,              &
-      FT_Epetra_Comm_ID,              &
-      FT_Epetra_Operator_ID,          &
-      FT_Epetra_MultiVector_ID,       &
-      FT_Epetra_OffsetIndex_ID,       &
-      FT_Epetra_Object_ID,            &
-      FT_Epetra_RowMatrix_ID,         &
-      FT_Epetra_CompObject_ID,        &
-      FT_Epetra_Directory_ID,         &
-      FT_Epetra_Flops_ID,             &
-      FT_Epetra_SrcDistObject_ID,     &
-      FT_Epetra_MpiComm_ID,           &
-      FT_Epetra_CrsMatrix_ID,         &
-      FT_Epetra_CrsGraph_ID,          &
-      FT_Epetra_DistObject_ID,        &
-      FT_Epetra_Vector_ID,            &
-      FT_Epetra_Export_ID,            &
-      FT_Epetra_Map_ID,               &
-      FT_Epetra_BlockMap_ID,          &
-      FT_Epetra_Import_ID,            &
-      FT_Epetra_Time_ID,              &
-      FT_Epetra_JadMatrix_ID,         &
-      FT_Epetra_LinearProblem_ID,     &
-      FT_Epetra_LAPACK_ID,            &
-      FT_Teuchos_CommandLineProcessor_ID,& 
-      FT_Teuchos_ParameterList_ID,    &
-      FT_Teuchos_ParameterEntry_ID,   &
-      FT_Teuchos_any_ID,              &
-      FT_Amesos_BaseSolver_ID,        &
-      FT_Amesos_ID,                   &
-      FT_Epetra_FECrsMatrix_ID,       &
-      FT_Epetra_IntSerialDenseVector_ID,&
-      FT_Epetra_SerialDenseMatrix_ID, &
-      FT_AztecOO_ID,                  &
-      FT_AztecOO_StatusTest_ID,       &
-      FT_AztecOO_StatusTestCombo_ID,  &
-      FT_AztecOO_StatusTestMaxIters_ID,&
+    enumerator ::                             &
+      FT_Invalid_ID,                          &
+      FT_Epetra_Distributor_ID,               &
+      FT_Epetra_SerialComm_ID,                &
+      FT_Epetra_BLAS_ID,                      &
+      FT_Epetra_Comm_ID,                      &
+      FT_Epetra_Operator_ID,                  &
+      FT_Epetra_MultiVector_ID,               &
+      FT_Epetra_OffsetIndex_ID,               &
+      FT_Epetra_Object_ID,                    &
+      FT_Epetra_RowMatrix_ID,                 &
+      FT_Epetra_CompObject_ID,                &
+      FT_Epetra_Directory_ID,                 &
+      FT_Epetra_Flops_ID,                     &
+      FT_Epetra_SrcDistObject_ID,             &
+      FT_Epetra_MpiComm_ID,                   &
+      FT_Epetra_CrsMatrix_ID,                 &
+      FT_Epetra_CrsGraph_ID,                  &
+      FT_Epetra_DistObject_ID,                &
+      FT_Epetra_Vector_ID,                    &
+      FT_Epetra_Export_ID,                    &
+      FT_Epetra_Map_ID,                       &
+      FT_Epetra_BlockMap_ID,                  &
+      FT_Epetra_Import_ID,                    &
+      FT_Epetra_Time_ID,                      &
+      FT_Epetra_JadMatrix_ID,                 &
+      FT_Epetra_LinearProblem_ID,             &
+      FT_Epetra_LAPACK_ID,                    &
+      FT_Teuchos_CommandLineProcessor_ID,     &
+      FT_Teuchos_ParameterList_ID,            &
+      FT_Teuchos_ParameterEntry_ID,           &
+      FT_Teuchos_any_ID,                      &
+      FT_Amesos_BaseSolver_ID,                &
+      FT_Amesos_ID,                           &
+      FT_Epetra_FECrsMatrix_ID,               &
+      FT_Epetra_IntSerialDenseVector_ID,      &
+      FT_Epetra_SerialDenseMatrix_ID,         &
+      FT_AztecOO_ID,                          &
+      FT_AztecOO_StatusTest_ID,               &
+      FT_AztecOO_StatusTestCombo_ID,          &
+      FT_AztecOO_StatusTestMaxIters_ID,       &
       FT_AztecOO_StatusTestResNorm_ID
   end enum
 
@@ -215,86 +215,142 @@ module ForTrilinos_enums
   end type
 #endif /* HAVE_FORTRILINOS_AZTECOO */
 
-  ! Epetra_DataAcces
-
+  ! Epetra_DataAccess
   integer(kind(c_int)) ,parameter :: FT_Epetra_DataAccess_E_t = c_int
 
   enum ,bind(C)
-    enumerator ::                  &
-      FT_Epetra_DataAccess_E_Copy, &
-      FT_Epetra_DataAccess_E_View
+    enumerator ::                                                     &
+      FT_Epetra_DataAccess_E_Copy,                                    &
+      FT_Epetra_DataAccess_E_View                                     
   end enum
 
   ! Epetra_CombineMode
-
   integer(kind(c_int)) ,parameter :: FT_Epetra_CombineMode_E_t = c_int
 
   enum ,bind(C)
-    enumerator ::                        &
-      FT_Epetra_CombineMode_E_Add,       &
-      FT_Epetra_CombineMode_E_Zero,      &
-      FT_Epetra_CombineMode_E_Insert,    &
-      FT_Epetra_CombineMode_E_InsertAdd, &
-      FT_Epetra_CombineMode_E_Average,   &
-      FT_Epetra_CombineMode_E_AbsMax
+    enumerator ::                                                     &
+      FT_Epetra_CombineMode_E_Add,                                    &
+      FT_Epetra_CombineMode_E_Zero,                                   &
+      FT_Epetra_CombineMode_E_Insert,                                 &
+      FT_Epetra_CombineMode_E_InsertAdd,                              &
+      FT_Epetra_CombineMode_E_Average,                                &
+      FT_Epetra_CombineMode_E_AbsMax                                  
   end enum
 
   ! ProblemDifficultyLevel
-
   integer(kind(c_int)) ,parameter :: FT_ProblemDifficultyLevel_E_t = c_int
 
   enum ,bind(C)
-    enumerator ::                           &
-      FT_ProblemDifficultyLevel_E_easy,     &
-      FT_ProblemDifficultyLevel_E_moderate, &
-      FT_ProblemDifficultyLevel_E_hard,     &
-      FT_ProblemDifficultyLevel_E_unsure
+    enumerator ::                                                     &
+      FT_ProblemDifficultyLevel_E_easy,                               &
+      FT_ProblemDifficultyLevel_E_moderate,                           &
+      FT_ProblemDifficultyLevel_E_hard,                               &
+      FT_ProblemDifficultyLevel_E_unsure                              
   end enum
 
-  ! EParseCommandLineReturn
-
-  integer(kind(c_int)) ,parameter :: FT_EParseCommandLineReturn_E_t = c_int
-
-  enum ,bind(C)
-    enumerator ::             &
-      FT_EParseCommandLineReturn_E_PARSE_SUCCESSFUL = 0,   &
-      FT_EParseCommandLineReturn_E_PARSE_HELP_PRINTED = 1, &
-      FT_EParseCommandLineReturn_E_UNRECOGNIZED_OPTION = 2
-  end enum
-
-  ! EOptType
-
-  integer(kind(c_int)) ,parameter :: FT_EOptType_E_t = c_int
-
-  enum ,bind(C)
-    enumerator ::     &
-      FT_EOptType_E_OPT_NONE,       &
-      FT_EOptType_E_OPT_BOOL_TRUE,  &
-      FT_EOptType_E_OPT_BOOL_FALSE, &
-      FT_EOptType_E_OPT_INT,        &
-      FT_EOptType_E_OPT_DOUBLE,     &
-      FT_EOptType_E_OPT_STRING,     &
-      FT_EOptType_E_OPT_ENUM_INT
-  end enum
-
-  ! EValidateUsed
-
+  ! Teuchos::EValidateUsed
   integer(kind(c_int)) ,parameter :: FT_EValidateUsed_E_t = c_int
 
   enum ,bind(C)
-    enumerator ::            &
-      FT_EValidateUsed_E_VALIDATE_USED_ENABLED, &
-      FT_EValidateUsed_E_VALIDATE_USED_DISABLED
+    enumerator ::                                                     &
+      FT_EValidateUsed_E_VALIDATE_USED_ENABLED,                       &
+      FT_EValidateUsed_E_VALIDATE_USED_DISABLED                       
   end enum
 
-  ! EValidateDefaults
-
+  ! Teuchos::EValidateDefaults
   integer(kind(c_int)) ,parameter :: FT_EValidateDefaults_E_t = c_int
 
   enum ,bind(C)
-    enumerator ::                &
-      FT_EValidateDefaults_E_VALIDATE_DEFAULTS_ENABLED, &
-      FT_EValidateDefaults_E_VALIDATE_DEFAULTS_DISABLED
+    enumerator ::                                                     &
+      FT_EValidateDefaults_E_VALIDATE_DEFAULTS_ENABLED,               &
+      FT_EValidateDefaults_E_VALIDATE_DEFAULTS_DISABLED               
   end enum
+
+  ! Teuchos::CommandLineProcessor::EParseCommandLineReturn
+  integer(kind(c_int)) ,parameter :: FT_EParseCommandLineReturn_E_t = c_int
+
+  enum ,bind(C)
+    enumerator ::                                                     &
+      FT_EParseCommandLineReturn_E_PARSE_SUCCESSFUL = 0,              &
+      FT_EParseCommandLineReturn_E_PARSE_HELP_PRINTED = 1,            &
+      FT_EParseCommandLineReturn_E_PARSE_UNRECOGNIZED_OPTION = 2      
+  end enum
+
+  ! Teuchos::CommandLineProcessor::EOptType
+  integer(kind(c_int)) ,parameter :: FT_EOptType_E_t = c_int
+
+  enum ,bind(C)
+    enumerator ::                                                     &
+      FT_EOptType_E_OPT_NONE,                                         &
+      FT_EOptType_E_OPT_BOOL_TRUE,                                    &
+      FT_EOptType_E_OPT_BOOL_FALSE,                                   &
+      FT_EOptType_E_OPT_INT,                                          &
+      FT_EOptType_E_OPT_DOUBLE,                                       &
+      FT_EOptType_E_OPT_STRING,                                       &
+      FT_EOptType_E_OPT_ENUM_INT                                      
+  end enum
+
+#ifdef HAVE_CTRILINOS_AZTECOO
+  ! AztecOO_StatusType
+  integer(kind(c_int)) ,parameter :: FT_AztecOO_StatusType_E_t = c_int
+
+  enum ,bind(C)
+    enumerator ::                                                     &
+      FT_AztecOO_StatusType_E_Unchecked = 2,                          &
+      FT_AztecOO_StatusType_E_Unconverged = 1,                        &
+      FT_AztecOO_StatusType_E_Converged = 0,                          &
+      FT_AztecOO_StatusType_E_Failed = -1,                            &
+      FT_AztecOO_StatusType_E_NaN = -2,                               &
+      FT_AztecOO_StatusType_E_PartialFailed = -3                      
+  end enum
+#endif /* HAVE_CTRILINOS_AZTECOO */
+
+#ifdef HAVE_CTRILINOS_AZTECOO
+  ! AztecOO_StatusTestCombo::ComboType
+  integer(kind(c_int)) ,parameter :: FT_ComboType_E_t = c_int
+
+  enum ,bind(C)
+    enumerator ::                                                     &
+      FT_ComboType_E_AND,                                             &
+      FT_ComboType_E_OR,                                              &
+      FT_ComboType_E_SEQ                                              
+  end enum
+#endif /* HAVE_CTRILINOS_AZTECOO */
+
+#ifdef HAVE_CTRILINOS_AZTECOO
+  ! AztecOO_StatusTestResNorm::ResType
+  integer(kind(c_int)) ,parameter :: FT_ResType_E_t = c_int
+
+  enum ,bind(C)
+    enumerator ::                                                     &
+      FT_ResType_E_Implicit,                                          &
+      FT_ResType_E_Explicit                                           
+  end enum
+#endif /* HAVE_CTRILINOS_AZTECOO */
+
+#ifdef HAVE_CTRILINOS_AZTECOO
+  ! AztecOO_StatusTestResNorm::NormType
+  integer(kind(c_int)) ,parameter :: FT_NormType_E_t = c_int
+
+  enum ,bind(C)
+    enumerator ::                                                     &
+      FT_NormType_E_OneNorm,                                          &
+      FT_NormType_E_TwoNorm,                                          &
+      FT_NormType_E_InfNorm                                           
+  end enum
+#endif /* HAVE_CTRILINOS_AZTECOO */
+
+#ifdef HAVE_CTRILINOS_AZTECOO
+  ! AztecOO_StatusTestResNorm::ScaleType
+  integer(kind(c_int)) ,parameter :: FT_ScaleType_E_t = c_int
+
+  enum ,bind(C)
+    enumerator ::                                                     &
+      FT_ScaleType_E_NormOfRHS,                                       &
+      FT_ScaleType_E_NormOfInitRes,                                   &
+      FT_ScaleType_E_None,                                            &
+      FT_ScaleType_E_UserProvided                                     
+  end enum
+#endif /* HAVE_CTRILINOS_AZTECOO */
 
 end module ForTrilinos_enums
