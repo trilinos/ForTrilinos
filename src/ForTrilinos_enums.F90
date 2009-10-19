@@ -42,7 +42,14 @@ module ForTrilinos_enums
       FT_Teuchos_any_ID,              &
       FT_Amesos_BaseSolver_ID,        &
       FT_Amesos_ID,                   &
-      FT_Epetra_FECrsMatrix_ID
+      FT_Epetra_FECrsMatrix_ID,       &
+      FT_Epetra_IntSerialDenseVector_ID,&
+      FT_Epetra_SerialDenseMatrix_ID, &
+      FT_AztecOO_ID,                  &
+      FT_AztecOO_StatusTest_ID,       &
+      FT_AztecOO_StatusTestCombo_ID,  &
+      FT_AztecOO_StatusTestMaxIters_ID,&
+      FT_AztecOO_StatusTestResNorm_ID
   end enum
 
   ! Since the Fortran 2003 standard guarantees that enum values correspond to C int values, we can create
@@ -176,6 +183,37 @@ module ForTrilinos_enums
   type ,bind(C) :: FT_Epetra_FECrsMatrix_ID_t
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; integer(FT_boolean_t) :: is_const
   end type
+  type ,bind(C) :: FT_Epetra_IntSerialDenseVector_ID_t
+    integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; integer(FT_boolean_t) :: is_const
+  end type
+  type ,bind(C) :: FT_Epetra_SerialDenseMatrix_ID_t
+    integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; integer(FT_boolean_t) :: is_const
+  end type
+#ifdef HAVE_FORTRILINOS_AZTECOO
+  type ,bind(C) :: FT_AztecOO_ID_t
+    integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; integer(FT_boolean_t) :: is_const
+  end type
+#endif /* HAVE_FORTRILINOS_AZTECOO */
+#ifdef HAVE_FORTRILINOS_AZTECOO
+  type ,bind(C) :: FT_AztecOO_StatusTest_ID_t
+    integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; integer(FT_boolean_t) :: is_const
+  end type
+#endif /* HAVE_FORTRILINOS_AZTECOO */
+#ifdef HAVE_FORTRILINOS_AZTECOO
+  type ,bind(C) :: FT_AztecOO_StatusTestCombo_ID_t
+    integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; integer(FT_boolean_t) :: is_const
+  end type
+#endif /* HAVE_FORTRILINOS_AZTECOO */
+#ifdef HAVE_FORTRILINOS_AZTECOO
+  type ,bind(C) :: FT_AztecOO_StatusTestMaxIters_ID_t
+    integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; integer(FT_boolean_t) :: is_const
+  end type
+#endif /* HAVE_FORTRILINOS_AZTECOO */
+#ifdef HAVE_FORTRILINOS_AZTECOO
+  type ,bind(C) :: FT_AztecOO_StatusTestResNorm_ID_t
+    integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; integer(FT_boolean_t) :: is_const
+  end type
+#endif /* HAVE_FORTRILINOS_AZTECOO */
 
   ! Epetra_DataAcces
 

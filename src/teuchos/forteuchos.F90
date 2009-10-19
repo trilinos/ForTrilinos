@@ -49,7 +49,7 @@ module forteuchos
   ! Original C++ prototype:
   ! void throwExceptions( const bool & throwExceptions );
   ! CTrilinos prototype:
-  ! void Teuchos_CommandLineProcessor_throwExceptions_set ( CT_Teuchos_CommandLineProcessor_ID_t selfID, boolean throwExceptions );
+  ! void Teuchos_CommandLineProcessor_throwExceptions_set ( CT_Teuchos_CommandLineProcessor_ID_t selfID, const boolean throwExceptions );
 
   subroutine Teuchos_CommandLineProcessor_throwExceptions_set ( selfID, throwExceptions ) &
         bind(C,name='Teuchos_CommandLineProcessor_throwExceptions_set')
@@ -76,7 +76,7 @@ module forteuchos
   ! Original C++ prototype:
   ! void recogniseAllOptions( const bool & recogniseAllOptions );
   ! CTrilinos prototype:
-  ! void Teuchos_CommandLineProcessor_recogniseAllOptions_set ( CT_Teuchos_CommandLineProcessor_ID_t selfID, boolean recogniseAllOptions );
+  ! void Teuchos_CommandLineProcessor_recogniseAllOptions_set ( CT_Teuchos_CommandLineProcessor_ID_t selfID, const boolean recogniseAllOptions );
 
   subroutine Teuchos_CommandLineProcessor_recogniseAllOptions_set ( selfID, &
         recogniseAllOptions ) &
@@ -104,7 +104,7 @@ module forteuchos
   ! Original C++ prototype:
   ! void addOutputSetupOptions( const bool &addOutputSetupOptions );
   ! CTrilinos prototype:
-  ! void Teuchos_CommandLineProcessor_addOutputSetupOptions_set ( CT_Teuchos_CommandLineProcessor_ID_t selfID, boolean addOutputSetupOptions );
+  ! void Teuchos_CommandLineProcessor_addOutputSetupOptions_set ( CT_Teuchos_CommandLineProcessor_ID_t selfID, const boolean addOutputSetupOptions );
 
   subroutine Teuchos_CommandLineProcessor_addOutputSetupOptions_set ( selfID, &
         addOutputSetupOptions ) &
@@ -1055,6 +1055,32 @@ module forteuchos
         bind(C,name='Teuchos_any_Create')
     import :: FT_Teuchos_any_ID_t
     
+  end function
+
+
+  ! Original C++ prototype:
+  ! template<typename ValueType> explicit any(const ValueType & value);
+  ! CTrilinos prototype:
+  ! CT_Teuchos_any_ID_t Teuchos_any_Create_double ( double value );
+
+  type(FT_Teuchos_any_ID_t) function Teuchos_any_Create_double ( value ) &
+        bind(C,name='Teuchos_any_Create_double')
+    import :: FT_Teuchos_any_ID_t ,c_double
+    
+    real(c_double)              ,intent(in)   ,value              :: value
+  end function
+
+
+  ! Original C++ prototype:
+  ! template<typename ValueType> explicit any(const ValueType & value);
+  ! CTrilinos prototype:
+  ! CT_Teuchos_any_ID_t Teuchos_any_Create_int ( int value );
+
+  type(FT_Teuchos_any_ID_t) function Teuchos_any_Create_int ( value ) &
+        bind(C,name='Teuchos_any_Create_int')
+    import :: FT_Teuchos_any_ID_t ,c_int
+    
+    integer(c_int)              ,intent(in)   ,value              :: value
   end function
 
 
