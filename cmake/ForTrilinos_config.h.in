@@ -24,6 +24,14 @@
 /* Define if want to build teuchos-complex */
 #cmakedefine HAVE_TEUCHOS_COMPLEX
 
+/* If OO-Fortran features should be built */
+#cmakedefine FORTRILINOS_ENABLE_EXTENDED
+
 /* If Amesos is built */
 #cmakedefine HAVE_FORTRILINOS_AMESOS
-#cmakedefine FORTRILINOS_ENABLE_AMESOS
+#cmakedefine ForTrilinos_ENABLE_Amesos
+
+/* If AztecOO is built */
+#cmakedefine HAVE_FORTRILINOS_AZTECOO
+#cmakedefine ForTrilinos_ENABLE_AztecOO
+
