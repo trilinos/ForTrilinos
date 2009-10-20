@@ -35,3 +35,7 @@
 #cmakedefine HAVE_FORTRILINOS_AZTECOO
 #cmakedefine ForTrilinos_ENABLE_AztecOO
 
+/* If Galeri is built */
+#cmakedefine HAVE_FORTRILINOS_GALERI
+#cmakedefine ForTrilinos_ENABLE_Galeri
+
