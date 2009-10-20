@@ -359,6 +359,54 @@ module forteuchos
 
 
   ! Original C++ prototype:
+  ! template<typename T> ParameterList& set( std::string const& name, T const& value, std::string const& docString = "" ,RCP<const ParameterEntryValidator> const& validator = null );
+  ! CTrilinos prototype:
+  ! CT_Teuchos_ParameterList_ID_t Teuchos_ParameterList_set_double ( CT_Teuchos_ParameterList_ID_t selfID, char const name[], double value, char const docString[] );
+
+  type(FT_Teuchos_ParameterList_ID_t) function Teuchos_ParameterList_set_double ( selfID, &
+        name, value, docString ) bind(C,name='Teuchos_ParameterList_set_double')
+    import :: FT_Teuchos_ParameterList_ID_t ,c_char ,c_double
+    
+    type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: selfID
+    character(kind=c_char)             ,intent(in)         ,dimension(*) :: name
+    real(c_double)                     ,intent(in)   ,value              :: value
+    character(kind=c_char)             ,intent(in)         ,dimension(*) :: docString
+  end function
+
+
+  ! Original C++ prototype:
+  ! template<typename T> ParameterList& set( std::string const& name, T const& value, std::string const& docString = "" ,RCP<const ParameterEntryValidator> const& validator = null );
+  ! CTrilinos prototype:
+  ! CT_Teuchos_ParameterList_ID_t Teuchos_ParameterList_set_int ( CT_Teuchos_ParameterList_ID_t selfID, char const name[], int value, char const docString[] );
+
+  type(FT_Teuchos_ParameterList_ID_t) function Teuchos_ParameterList_set_int ( selfID, name, &
+        value, docString ) bind(C,name='Teuchos_ParameterList_set_int')
+    import :: FT_Teuchos_ParameterList_ID_t ,c_char ,c_int
+    
+    type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: selfID
+    character(kind=c_char)             ,intent(in)         ,dimension(*) :: name
+    integer(c_int)                     ,intent(in)   ,value              :: value
+    character(kind=c_char)             ,intent(in)         ,dimension(*) :: docString
+  end function
+
+
+  ! Original C++ prototype:
+  ! ParameterList& set( std::string const& name, char value[], std::string const& docString = "" ,RCP<const ParameterEntryValidator> const& validator = null );
+  ! CTrilinos prototype:
+  ! CT_Teuchos_ParameterList_ID_t Teuchos_ParameterList_set_str ( CT_Teuchos_ParameterList_ID_t selfID, char const name[], char value[], char const docString[] );
+
+  type(FT_Teuchos_ParameterList_ID_t) function Teuchos_ParameterList_set_str ( selfID, name, &
+        value, docString ) bind(C,name='Teuchos_ParameterList_set_str')
+    import :: FT_Teuchos_ParameterList_ID_t ,c_char
+    
+    type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: selfID
+    character(kind=c_char)             ,intent(in)         ,dimension(*) :: name
+    character(kind=c_char)                                 ,dimension(*) :: value
+    character(kind=c_char)             ,intent(in)         ,dimension(*) :: docString
+  end function
+
+
+  ! Original C++ prototype:
   ! ParameterList& set( std::string const& name, ParameterList const& value, std::string const& docString = "" );
   ! CTrilinos prototype:
   ! CT_Teuchos_ParameterList_ID_t Teuchos_ParameterList_set ( CT_Teuchos_ParameterList_ID_t selfID, char const name[], CT_Teuchos_ParameterList_ID_t valueID, char const docString[] );
