@@ -1,3 +1,5 @@
+#ifdef HAVE_FORTRILINOS_AZTECOO
+
 module foraztecoo
   use iso_c_binding ,only : c_int,c_double,c_char,c_bool,c_ptr,c_long,c_float
   use ForTrilinos_enums
@@ -15,12 +17,6 @@ module foraztecoo
   interface
 
   ! _________________ AztecOO interface bodies _________________
-
-
-
-
-
-#ifdef HAVE_FORTRILINOS_AZTECOO
 
 
   ! Original C++ prototype:
@@ -670,16 +666,7 @@ module foraztecoo
   end function
 
 
-#endif /* HAVE_FORTRILINOS_AZTECOO */
-
-
   ! _________________ AztecOO_StatusTest interface bodies _________________
-
-
-
-
-
-#ifdef HAVE_FORTRILINOS_AZTECOO
 
 
   ! CTrilinos prototype:
@@ -762,16 +749,7 @@ module foraztecoo
   end function
 
 
-#endif /* HAVE_FORTRILINOS_AZTECOO */
-
-
   ! _________________ AztecOO_StatusTestCombo interface bodies _________________
-
-
-
-
-
-#ifdef HAVE_FORTRILINOS_AZTECOO
 
 
   ! CTrilinos prototype:
@@ -925,16 +903,7 @@ module foraztecoo
   end function
 
 
-#endif /* HAVE_FORTRILINOS_AZTECOO */
-
-
   ! _________________ AztecOO_StatusTestMaxIters interface bodies _________________
-
-
-
-
-
-#ifdef HAVE_FORTRILINOS_AZTECOO
 
 
   ! CTrilinos prototype:
@@ -1056,16 +1025,7 @@ module foraztecoo
   end function
 
 
-#endif /* HAVE_FORTRILINOS_AZTECOO */
-
-
   ! _________________ AztecOO_StatusTestResNorm interface bodies _________________
-
-
-
-
-
-#ifdef HAVE_FORTRILINOS_AZTECOO
 
 
   ! CTrilinos prototype:
@@ -1309,9 +1269,7 @@ module foraztecoo
   end function
 
 
-#endif /* HAVE_FORTRILINOS_AZTECOO */
-
-
   end interface
 end module foraztecoo
 
+#endif /* HAVE_FORTRILINOS_AZTECOO */

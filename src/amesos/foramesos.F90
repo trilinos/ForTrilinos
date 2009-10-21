@@ -19,7 +19,6 @@ module foramesos
   ! _________________ Amesos_BaseSolver interface bodies _________________
 
 
-
   ! CTrilinos prototype:
   ! CT_Amesos_BaseSolver_ID_t Amesos_BaseSolver_Cast ( CTrilinos_Object_ID_t id );
 

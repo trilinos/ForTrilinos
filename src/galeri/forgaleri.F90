@@ -19,7 +19,6 @@ module forgaleri
   ! _________________ Galeri_Utils interface bodies _________________
 
 
-
   ! Original C++ prototype:
   ! Epetra_MultiVector* CreateCartesianCoordinates(const string CoordType, const Epetra_BlockMap* BlockMap, Teuchos::ParameterList& List);
   ! CTrilinos prototype:

@@ -49,7 +49,9 @@ module ForTrilinos_enums
       FT_AztecOO_StatusTest_ID,               &
       FT_AztecOO_StatusTestCombo_ID,          &
       FT_AztecOO_StatusTestMaxIters_ID,       &
-      FT_AztecOO_StatusTestResNorm_ID
+      FT_AztecOO_StatusTestResNorm_ID,        &
+      FT_Ifpack_ID,                           &
+      FT_Ifpack_Preconditioner_ID
   end enum
 
   ! Since the Fortran 2003 standard guarantees that enum values correspond to C int values, we can create
@@ -214,6 +216,16 @@ module ForTrilinos_enums
     integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; integer(FT_boolean_t) :: is_const
   end type
 #endif /* HAVE_FORTRILINOS_AZTECOO */
+#ifdef HAVE_FORTRILINOS_IFPACK
+  type ,bind(C) :: FT_Ifpack_ID_t
+    integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; integer(FT_boolean_t) :: is_const
+  end type
+#endif /* HAVE_FORTRILINOS_IFPACK */
+#ifdef HAVE_FORTRILINOS_IFPACK
+  type ,bind(C) :: FT_Ifpack_Preconditioner_ID_t
+    integer(ForTrilinos_Type_ID_t) :: type; integer(c_int) :: index; integer(FT_boolean_t) :: is_const
+  end type
+#endif /* HAVE_FORTRILINOS_IFPACK */
 
   ! Epetra_DataAccess
   integer(kind(c_int)) ,parameter :: FT_Epetra_DataAccess_E_t = c_int
@@ -352,5 +364,35 @@ module ForTrilinos_enums
       FT_ScaleType_E_UserProvided                                     
   end enum
 #endif /* HAVE_CTRILINOS_AZTECOO */
+
+#ifdef HAVE_CTRILINOS_IFPACK
+  ! Ifpack::EPrecType
+  integer(kind(c_int)) ,parameter :: FT_EPrecType_E_t = c_int
+
+  enum ,bind(C)
+    enumerator ::                                                     &
+      FT_EPrecType_E_POINT_RELAXATION,                                &
+      FT_EPrecType_E_POINT_RELAXATION_STAND_ALONE,                    &
+      FT_EPrecType_E_BLOCK_RELAXATION,                                &
+      FT_EPrecType_E_BLOCK_RELAXATION_STAND_ALONE,                    &
+      FT_EPrecType_E_BLOCK_RELAXATION_STAND_ALONE_ILU,                &
+      FT_EPrecType_E_BLOCK_RELAXATION_STAND_ALONE_AMESOS,             &
+      FT_EPrecType_E_BLOCK_RELAXATION_AMESOS,                         &
+      FT_EPrecType_E_AMESOS,                                          &
+      FT_EPrecType_E_AMESOS_STAND_ALONE,                              &
+      FT_EPrecType_E_IC,                                              &
+      FT_EPrecType_E_IC_STAND_ALONE,                                  &
+      FT_EPrecType_E_ICT,                                             &
+      FT_EPrecType_E_ICT_STAND_ALONE,                                 &
+      FT_EPrecType_E_ILU,                                             &
+      FT_EPrecType_E_ILU_STAND_ALONE,                                 &
+      FT_EPrecType_E_ILUT,                                            &
+      FT_EPrecType_E_ILUT_STAND_ALONE,                                &
+      FT_EPrecType_E_SPARSKIT,                                        &
+      FT_EPrecType_E_HIPS,                                            &
+      FT_EPrecType_E_HYPRE,                                           &
+      FT_EPrecType_E_CHEBYSHEV                                        
+  end enum
+#endif /* HAVE_CTRILINOS_IFPACK */
 
 end module ForTrilinos_enums
