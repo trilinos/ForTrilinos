@@ -1,6 +1,6 @@
 
 IF("${CMAKE_Fortran_COMPILER_ID}" MATCHES "VisualAge|XL")
-    SET(CMAKE_Fortran_FLAGS "${CMake_Fortran_FLAGS} -qxlf2003=polymorphic -qxlf2003=autorealloc -WF,-C!")
+    SET(CMAKE_Fortran_FLAGS "${CMake_Fortran_FLAGS} -qxlf2003=polymorphic -qxlf2003=autorealloc -WF,-C! -tchbI -B/opt/local/hotfix/091023/exe/")
 ENDIF()
 
 INCLUDE(PackageLibraryMacros)
