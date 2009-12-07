@@ -5,7 +5,9 @@ module FEpetra_Comm
   implicit none
   private               ! Hide everything by default
   public :: epetra_comm ! Expose type/constructor/methods
+!
 ! Change to cocoon shell kernel approach
+!
   type ,extends(universal) :: epetra_comm
     private
     type(FT_Epetra_Comm_ID_t) :: selfID
