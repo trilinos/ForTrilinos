@@ -54,6 +54,7 @@ APPEND_SET(HEADERS
 # Set sources for link-layer build
 
 APPEND_SET(SOURCES
+  ForTrilinos_enum_wrappers.F90
   ForTrilinos_enums.F90
   ForTrilinos_utils.F90
   ${DIREPETRA}/forepetra.F90
