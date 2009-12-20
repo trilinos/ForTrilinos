@@ -18,16 +18,18 @@ program main
   ! are commented but included to exemplify the style we expect to support in a subsequent release.
  
   use ,intrinsic :: iso_c_binding ,only : c_int,c_double
-! use epetra_map_module           ,only : epetra_map
+  use FEpetra_SerialComm   ,only : epetra_serialcomm
+  use FEpetra_Map          ,only : epetra_map
 ! use epetra_vector_module        ,only : epetra_vector
-  use interoperability_check      ,only : valid_kind_parameters
+!  use interoperability_check      ,only : valid_kind_parameters
   implicit none
 
-  if (.not. valid_kind_parameters()) stop 'C interoperability not supported on this platform.'
+!  if (.not. valid_kind_parameters()) stop 'C interoperability not supported on this platform.'
 
   ! Data declarations 
-
-! type(epetra_map)    :: map
+  
+  type(epetra_serialcomm) :: comm
+  type(epetra_map)    :: map
 ! type(epetra_vector) :: x, b
   integer(c_int) :: numGlobalElements_local, numGlobalElements_return
   real(c_double) :: bnorm, xnorm,err_tol,expected_bnorm,expected_xnorm,bnorm_err,xnorm_err 
@@ -35,12 +37,15 @@ program main
   logical        :: success = .true.
   
   ! Executable code
+  
+! Create a serial comm
+  comm = epetra_serialcomm() 
    
 ! Create a map 
   numGlobalElements_local = 4;
-! map = epetra_map(numGlobalElements_local);
-
-! numGlobalElements_return = map%NumGlobalElements()
+  map = epetra_map(numGlobalElements_local,1,comm);
+  stop 'Map was created'
+  numGlobalElements_return = map%NumGlobalElements()
   print *,'NumGlobalElements = ', numGlobalElements_return
   if ( numGlobalElements /= numGlobalElements_return ) &
     stop 'In ForTrilinos (verySimpleObjectOriented.F90: return mismatch'

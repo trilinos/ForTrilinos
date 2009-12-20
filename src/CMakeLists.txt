@@ -58,6 +58,7 @@ APPEND_SET(SOURCES
   ForTrilinos_enums.F90
   ForTrilinos_table_man.F90
   ForTrilinos_utils.F90
+  interoperability_check.F90
   ${DIREPETRA}/forepetra.F90
   ${DIRTEUCHOS}/forteuchos.F90
   )
