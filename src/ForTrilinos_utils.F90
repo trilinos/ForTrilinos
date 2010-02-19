@@ -29,11 +29,11 @@ contains
   ! to a general type that can represent any of the Epetra derived types in 
   ! ForTrilinos/src/ForTrilinos_enums.F90.
 
-  type(ForTrilinos_Object_ID_t) function generalize_all(object_id) bind(C,name="for_linking_only") 
-    use ForTrilinos_enums ,only : ForTrilinos_Object_ID_t
+  type(ForTrilinos_Universal_ID_t) function generalize_all(object_id) bind(C,name="for_linking_only") 
+    use ForTrilinos_enums ,only : ForTrilinos_Universal_ID_t
     use ,intrinsic :: iso_c_binding ,only: c_ptr,c_f_pointer
     type(c_ptr) ,value :: object_id
-    type(ForTrilinos_Object_ID_t), pointer :: local_ptr
+    type(ForTrilinos_Universal_ID_t), pointer :: local_ptr
 
     call c_f_pointer (object_id, local_ptr)
     generalize_all = local_ptr

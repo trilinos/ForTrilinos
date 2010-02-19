@@ -3,6 +3,8 @@
 module foraztecoo
   use iso_c_binding ,only : c_int,c_double,c_char,c_bool,c_ptr,c_long,c_float
   use ForTrilinos_enums
+  use ForTrilinos_enum_wrappers
+
   implicit none   ! Prevent implicit typing
 
   ! This file provides Fortran interface blocks that bind the argument types,
@@ -670,22 +672,22 @@ module foraztecoo
 
 
   ! CTrilinos prototype:
-  ! CT_AztecOO_StatusTest_ID_t AztecOO_StatusTest_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_AztecOO_StatusTest_ID_t AztecOO_StatusTest_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_AztecOO_StatusTest_ID_t) function AztecOO_StatusTest_Cast ( id ) &
-        bind(C,name='AztecOO_StatusTest_Cast')
-    import :: FT_AztecOO_StatusTest_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_AztecOO_StatusTest_ID_t) function AztecOO_StatusTest_Degeneralize ( id ) &
+        bind(C,name='AztecOO_StatusTest_Degeneralize')
+    import :: FT_AztecOO_StatusTest_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t)   ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t AztecOO_StatusTest_Abstract ( CT_AztecOO_StatusTest_ID_t id );
+  ! CTrilinos_Universal_ID_t AztecOO_StatusTest_Generalize ( CT_AztecOO_StatusTest_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function AztecOO_StatusTest_Abstract ( id ) &
-        bind(C,name='AztecOO_StatusTest_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_AztecOO_StatusTest_ID_t
+  type(ForTrilinos_Universal_ID_t) function AztecOO_StatusTest_Generalize ( id ) &
+        bind(C,name='AztecOO_StatusTest_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_AztecOO_StatusTest_ID_t
     
     type(FT_AztecOO_StatusTest_ID_t),intent(in)   ,value              :: id
   end function
@@ -753,22 +755,22 @@ module foraztecoo
 
 
   ! CTrilinos prototype:
-  ! CT_AztecOO_StatusTestCombo_ID_t AztecOO_StatusTestCombo_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_AztecOO_StatusTestCombo_ID_t AztecOO_StatusTestCombo_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_AztecOO_StatusTestCombo_ID_t) function AztecOO_StatusTestCombo_Cast ( id ) &
-        bind(C,name='AztecOO_StatusTestCombo_Cast')
-    import :: FT_AztecOO_StatusTestCombo_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_AztecOO_StatusTestCombo_ID_t) function AztecOO_StatusTestCombo_Degeneralize ( id ) &
+        bind(C,name='AztecOO_StatusTestCombo_Degeneralize')
+    import :: FT_AztecOO_StatusTestCombo_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t)        ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t)     ,intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t AztecOO_StatusTestCombo_Abstract ( CT_AztecOO_StatusTestCombo_ID_t id );
+  ! CTrilinos_Universal_ID_t AztecOO_StatusTestCombo_Generalize ( CT_AztecOO_StatusTestCombo_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function AztecOO_StatusTestCombo_Abstract ( id ) &
-        bind(C,name='AztecOO_StatusTestCombo_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_AztecOO_StatusTestCombo_ID_t
+  type(ForTrilinos_Universal_ID_t) function AztecOO_StatusTestCombo_Generalize ( id ) &
+        bind(C,name='AztecOO_StatusTestCombo_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_AztecOO_StatusTestCombo_ID_t
     
     type(FT_AztecOO_StatusTestCombo_ID_t),intent(in)   ,value              :: id
   end function
@@ -907,22 +909,22 @@ module foraztecoo
 
 
   ! CTrilinos prototype:
-  ! CT_AztecOO_StatusTestMaxIters_ID_t AztecOO_StatusTestMaxIters_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_AztecOO_StatusTestMaxIters_ID_t AztecOO_StatusTestMaxIters_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_AztecOO_StatusTestMaxIters_ID_t) function AztecOO_StatusTestMaxIters_Cast ( id ) &
-        bind(C,name='AztecOO_StatusTestMaxIters_Cast')
-    import :: FT_AztecOO_StatusTestMaxIters_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_AztecOO_StatusTestMaxIters_ID_t) function AztecOO_StatusTestMaxIters_Degeneralize ( &
+        id ) bind(C,name='AztecOO_StatusTestMaxIters_Degeneralize')
+    import :: FT_AztecOO_StatusTestMaxIters_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t)           ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t)        ,intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t AztecOO_StatusTestMaxIters_Abstract ( CT_AztecOO_StatusTestMaxIters_ID_t id );
+  ! CTrilinos_Universal_ID_t AztecOO_StatusTestMaxIters_Generalize ( CT_AztecOO_StatusTestMaxIters_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function AztecOO_StatusTestMaxIters_Abstract ( id ) &
-        bind(C,name='AztecOO_StatusTestMaxIters_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_AztecOO_StatusTestMaxIters_ID_t
+  type(ForTrilinos_Universal_ID_t) function AztecOO_StatusTestMaxIters_Generalize ( id ) &
+        bind(C,name='AztecOO_StatusTestMaxIters_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_AztecOO_StatusTestMaxIters_ID_t
     
     type(FT_AztecOO_StatusTestMaxIters_ID_t),intent(in)   ,value              :: id
   end function
@@ -1029,22 +1031,22 @@ module foraztecoo
 
 
   ! CTrilinos prototype:
-  ! CT_AztecOO_StatusTestResNorm_ID_t AztecOO_StatusTestResNorm_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_AztecOO_StatusTestResNorm_ID_t AztecOO_StatusTestResNorm_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_AztecOO_StatusTestResNorm_ID_t) function AztecOO_StatusTestResNorm_Cast ( id ) &
-        bind(C,name='AztecOO_StatusTestResNorm_Cast')
-    import :: FT_AztecOO_StatusTestResNorm_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_AztecOO_StatusTestResNorm_ID_t) function AztecOO_StatusTestResNorm_Degeneralize ( &
+        id ) bind(C,name='AztecOO_StatusTestResNorm_Degeneralize')
+    import :: FT_AztecOO_StatusTestResNorm_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t)          ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t)       ,intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t AztecOO_StatusTestResNorm_Abstract ( CT_AztecOO_StatusTestResNorm_ID_t id );
+  ! CTrilinos_Universal_ID_t AztecOO_StatusTestResNorm_Generalize ( CT_AztecOO_StatusTestResNorm_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function AztecOO_StatusTestResNorm_Abstract ( id ) &
-        bind(C,name='AztecOO_StatusTestResNorm_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_AztecOO_StatusTestResNorm_ID_t
+  type(ForTrilinos_Universal_ID_t) function AztecOO_StatusTestResNorm_Generalize ( id ) &
+        bind(C,name='AztecOO_StatusTestResNorm_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_AztecOO_StatusTestResNorm_ID_t
     
     type(FT_AztecOO_StatusTestResNorm_ID_t),intent(in)   ,value              :: id
   end function

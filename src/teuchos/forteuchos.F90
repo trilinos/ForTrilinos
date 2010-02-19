@@ -2,6 +2,7 @@ module forteuchos
   use iso_c_binding ,only : c_int,c_double,c_char,c_bool,c_ptr,c_long,c_float
   use ForTrilinos_enums
   use ForTrilinos_enum_wrappers
+
   implicit none   ! Prevent implicit typing
 
   ! This file provides Fortran interface blocks that bind the argument types,
@@ -218,22 +219,22 @@ module forteuchos
 
 
   ! CTrilinos prototype:
-  ! CT_Teuchos_ParameterList_ID_t Teuchos_ParameterList_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Teuchos_ParameterList_ID_t Teuchos_ParameterList_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Teuchos_ParameterList_ID_t) function Teuchos_ParameterList_Cast ( id ) &
-        bind(C,name='Teuchos_ParameterList_Cast')
-    import :: FT_Teuchos_ParameterList_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Teuchos_ParameterList_ID_t) function Teuchos_ParameterList_Degeneralize ( id ) &
+        bind(C,name='Teuchos_ParameterList_Degeneralize')
+    import :: FT_Teuchos_ParameterList_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t)      ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t)   ,intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Teuchos_ParameterList_Abstract ( CT_Teuchos_ParameterList_ID_t id );
+  ! CTrilinos_Universal_ID_t Teuchos_ParameterList_Generalize ( CT_Teuchos_ParameterList_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Teuchos_ParameterList_Abstract ( id ) &
-        bind(C,name='Teuchos_ParameterList_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Teuchos_ParameterList_ID_t
+  type(ForTrilinos_Universal_ID_t) function Teuchos_ParameterList_Generalize ( id ) &
+        bind(C,name='Teuchos_ParameterList_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Teuchos_ParameterList_ID_t
     
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: id
   end function

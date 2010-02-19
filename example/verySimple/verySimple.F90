@@ -17,10 +17,8 @@ program main
   integer(c_int) numGlobalElements, numGlobalElements_rtn ;
   integer(c_int) junk;
 
-  type(FT_Epetra_SerialComm_ID_t) scommID;
   type(FT_Epetra_Comm_ID_t) commID;
 
-  type(FT_Epetra_Map_ID_t) mapID;
   type(FT_Epetra_BlockMap_ID_t) bmapID;
 
   type(FT_Epetra_Vector_ID_t) xID, bID;
@@ -38,20 +36,18 @@ program main
   if (.not. valid_kind_parameters()) &
      stop 'In ForTrilinos (verySimple.F90): C interoperability not supported on this platform.'
   
-  !/* Create an Epetra_SerialComm and cast to an Epetra_Comm so that
+  !/* Create an Epetra_SerialComm but store it as an Epetra_Comm so that
   ! * it can be passed to functions expecting the latter */
 
-  scommID = Epetra_SerialComm_Create();
-  commID = Epetra_Comm_Cast(Epetra_SerialComm_Abstract(scommID));
+  commID = Epetra_Comm_Degeneralize(Epetra_SerialComm_Generalize(Epetra_SerialComm_Create()));
 
-  !/* Create an Epetra_Map and cast to an Epetra_BlockMap so that
+  !/* Create an Epetra_Map and store it as an Epetra_BlockMap so that
   ! * a) it can be passed to functions expecting the latter and
   ! * b) methods implemented only in BlockMap can be invoked on the Map */
 
   numGlobalElements = 4;
   !/* use indexBase = 0 unless you know what you're doing! */
-  mapID = Epetra_Map_Create(numGlobalElements, indexBase=0, CommID=commID);
-  bmapID = Epetra_BlockMap_Cast(Epetra_Map_Abstract(mapID));
+  bmapID = Epetra_BlockMap_Degeneralize(Epetra_Map_Generalize(Epetra_Map_Create(numGlobalElements, indexBase=0,CommID=commID)));
 
   !/* Check the properties of the map */
   numGlobalElements_rtn = Epetra_BlockMap_NumGlobalElements(bmapID);
@@ -60,14 +56,13 @@ program main
 
   print *,"NumMyElements = ", Epetra_BlockMap_NumMyElements(bmapID);
   
-  !/* Create an Epetra_Vector and cast to an Epetra_MultiVector so that
+  !/* Create an Epetra_Vector and store it as an Epetra_MultiVector so that
   ! * methods implemented only in MultiVector can be invoked on the Vector */
-  xID = Epetra_Vector_Create(bmapID, FT_TRUE); !/* zero this one */
-  mxID = Epetra_MultiVector_Cast(Epetra_Vector_Abstract(xID));
+  !/* zero this one */
+  mxID = Epetra_MultiVector_Degeneralize(Epetra_Vector_Generalize(Epetra_Vector_Create(bmapID, FT_TRUE)));
 
   !/* Do the same thing, but do not initialize this one to zero */
-  bID = Epetra_Vector_Create(bmapID, FT_FALSE);
-  mbID = Epetra_MultiVector_Cast(Epetra_Vector_Abstract(bID));
+  mbID = Epetra_MultiVector_Degeneralize(Epetra_Vector_Generalize(Epetra_Vector_Create(bmapID, FT_FALSE)));
 
   !/* Do some vector operations */
   junk = Epetra_MultiVector_PutScalar(mbID, 2.0_c_double);
@@ -93,14 +88,8 @@ program main
   !/* Clean up memory (in reverse order)! */
   call Epetra_MultiVector_Destroy(mxID);
   call Epetra_MultiVector_Destroy(mbID);
-  call Epetra_Vector_Destroy(bID);
-  call Epetra_Vector_Destroy(xID);
-
   call Epetra_BlockMap_Destroy(bmapID);
-  call Epetra_Map_Destroy(mapID);
-
   call Epetra_Comm_Destroy(commID);
-  call Epetra_SerialComm_Destroy(scommID);
 
   !/* This should throw an exception and print an error message
   ! * since the object has already been destroyed! */

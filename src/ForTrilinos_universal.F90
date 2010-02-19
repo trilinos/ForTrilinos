@@ -4,11 +4,11 @@ module ForTrilinos_universal
   ! It provides a universal dummy argument class to which any actual argument can be passed in an 
   ! Epetra type-bound procedure.  The deferred binding "generalize" ensures that each Epetra derived
   ! type implements a type-bound procedure that can be invoked to create an equivalent general
-  ! entity of derived type ForTrilinos_Object_ID_t, which can then be converted to any other Epetra
+  ! entity of derived type ForTrilinos_Universal_ID_t, which can then be converted to any other Epetra
   ! derived type.
 
   use ForTrilinos_hermetic ,only : hermetic
-  use ForTrilinos_enums ,only : ForTrilinos_Object_ID_t
+  use ForTrilinos_enums ,only : ForTrilinos_Universal_ID_t
   implicit none
   type ,abstract ,public ,extends(hermetic) :: universal
   contains
@@ -19,8 +19,8 @@ module ForTrilinos_universal
   ! a generic struct that can be used to call a casting function.
 
   abstract interface
-    type(ForTrilinos_Object_ID_t) function generalize_interface(this)
-      import :: universal,ForTrilinos_Object_ID_t
+    type(ForTrilinos_Universal_ID_t) function generalize_interface(this)
+      import :: universal,ForTrilinos_Universal_ID_t
       class(universal) ,intent(in) ,target :: this
     end function
   end interface

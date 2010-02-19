@@ -20,22 +20,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_Distributor_ID_t Epetra_Distributor_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_Distributor_ID_t Epetra_Distributor_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Distributor_ID_t) function Epetra_Distributor_Cast ( id ) &
-        bind(C,name='Epetra_Distributor_Cast')
-    import :: FT_Epetra_Distributor_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_Distributor_ID_t) function Epetra_Distributor_Degeneralize ( id ) &
+        bind(C,name='Epetra_Distributor_Degeneralize')
+    import :: FT_Epetra_Distributor_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t)   ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_Distributor_Abstract ( CT_Epetra_Distributor_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_Distributor_Generalize ( CT_Epetra_Distributor_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_Distributor_Abstract ( id ) &
-        bind(C,name='Epetra_Distributor_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Distributor_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_Distributor_Generalize ( id ) &
+        bind(C,name='Epetra_Distributor_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Distributor_ID_t
     
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: id
   end function
@@ -279,22 +279,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_SerialComm_ID_t Epetra_SerialComm_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_SerialComm_ID_t Epetra_SerialComm_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_SerialComm_ID_t) function Epetra_SerialComm_Cast ( id ) &
-        bind(C,name='Epetra_SerialComm_Cast')
-    import :: FT_Epetra_SerialComm_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_SerialComm_ID_t) function Epetra_SerialComm_Degeneralize ( id ) &
+        bind(C,name='Epetra_SerialComm_Degeneralize')
+    import :: FT_Epetra_SerialComm_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t)  ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_SerialComm_Abstract ( CT_Epetra_SerialComm_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_SerialComm_Generalize ( CT_Epetra_SerialComm_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_SerialComm_Abstract ( id ) &
-        bind(C,name='Epetra_SerialComm_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_SerialComm_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_SerialComm_Generalize ( id ) &
+        bind(C,name='Epetra_SerialComm_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_SerialComm_ID_t
     
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: id
   end function
@@ -737,22 +737,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_BLAS_ID_t Epetra_BLAS_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_BLAS_ID_t Epetra_BLAS_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_BLAS_ID_t) function Epetra_BLAS_Cast ( id ) &
-        bind(C,name='Epetra_BLAS_Cast')
-    import :: FT_Epetra_BLAS_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_BLAS_ID_t) function Epetra_BLAS_Degeneralize ( id ) &
+        bind(C,name='Epetra_BLAS_Degeneralize')
+    import :: FT_Epetra_BLAS_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_BLAS_Abstract ( CT_Epetra_BLAS_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_BLAS_Generalize ( CT_Epetra_BLAS_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_BLAS_Abstract ( id ) &
-        bind(C,name='Epetra_BLAS_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_BLAS_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_BLAS_Generalize ( id ) &
+        bind(C,name='Epetra_BLAS_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_BLAS_ID_t
     
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: id
   end function
@@ -1237,22 +1237,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_Comm_ID_t Epetra_Comm_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_Comm_ID_t Epetra_Comm_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Comm_ID_t) function Epetra_Comm_Cast ( id ) &
-        bind(C,name='Epetra_Comm_Cast')
-    import :: FT_Epetra_Comm_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_Comm_ID_t) function Epetra_Comm_Degeneralize ( id ) &
+        bind(C,name='Epetra_Comm_Degeneralize')
+    import :: FT_Epetra_Comm_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_Comm_Abstract ( CT_Epetra_Comm_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_Comm_Generalize ( CT_Epetra_Comm_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_Comm_Abstract ( id ) &
-        bind(C,name='Epetra_Comm_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Comm_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_Comm_Generalize ( id ) &
+        bind(C,name='Epetra_Comm_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Comm_ID_t
     
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: id
   end function
@@ -1654,22 +1654,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_Operator_ID_t Epetra_Operator_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_Operator_ID_t Epetra_Operator_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Operator_ID_t) function Epetra_Operator_Cast ( id ) &
-        bind(C,name='Epetra_Operator_Cast')
-    import :: FT_Epetra_Operator_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_Operator_ID_t) function Epetra_Operator_Degeneralize ( id ) &
+        bind(C,name='Epetra_Operator_Degeneralize')
+    import :: FT_Epetra_Operator_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_Operator_Abstract ( CT_Epetra_Operator_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_Operator_Generalize ( CT_Epetra_Operator_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_Operator_Abstract ( id ) &
-        bind(C,name='Epetra_Operator_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Operator_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_Operator_Generalize ( id ) &
+        bind(C,name='Epetra_Operator_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Operator_ID_t
     
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: id
   end function
@@ -1826,22 +1826,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_MultiVector_ID_t) function Epetra_MultiVector_Cast ( id ) &
-        bind(C,name='Epetra_MultiVector_Cast')
-    import :: FT_Epetra_MultiVector_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_MultiVector_ID_t) function Epetra_MultiVector_Degeneralize ( id ) &
+        bind(C,name='Epetra_MultiVector_Degeneralize')
+    import :: FT_Epetra_MultiVector_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t)   ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_MultiVector_Abstract ( CT_Epetra_MultiVector_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_MultiVector_Generalize ( CT_Epetra_MultiVector_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_MultiVector_Abstract ( id ) &
-        bind(C,name='Epetra_MultiVector_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_MultiVector_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_MultiVector_Generalize ( id ) &
+        bind(C,name='Epetra_MultiVector_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_MultiVector_ID_t
     
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: id
   end function
@@ -2587,22 +2587,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_OffsetIndex_ID_t Epetra_OffsetIndex_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_OffsetIndex_ID_t Epetra_OffsetIndex_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_OffsetIndex_ID_t) function Epetra_OffsetIndex_Cast ( id ) &
-        bind(C,name='Epetra_OffsetIndex_Cast')
-    import :: FT_Epetra_OffsetIndex_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_OffsetIndex_ID_t) function Epetra_OffsetIndex_Degeneralize ( id ) &
+        bind(C,name='Epetra_OffsetIndex_Degeneralize')
+    import :: FT_Epetra_OffsetIndex_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t)   ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_OffsetIndex_Abstract ( CT_Epetra_OffsetIndex_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_OffsetIndex_Generalize ( CT_Epetra_OffsetIndex_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_OffsetIndex_Abstract ( id ) &
-        bind(C,name='Epetra_OffsetIndex_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_OffsetIndex_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_OffsetIndex_Generalize ( id ) &
+        bind(C,name='Epetra_OffsetIndex_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_OffsetIndex_ID_t
     
     type(FT_Epetra_OffsetIndex_ID_t),intent(in)   ,value              :: id
   end function
@@ -2709,22 +2709,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_Object_ID_t Epetra_Object_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_Object_ID_t Epetra_Object_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Object_ID_t) function Epetra_Object_Cast ( id ) &
-        bind(C,name='Epetra_Object_Cast')
-    import :: FT_Epetra_Object_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_Object_ID_t) function Epetra_Object_Degeneralize ( id ) &
+        bind(C,name='Epetra_Object_Degeneralize')
+    import :: FT_Epetra_Object_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_Object_Abstract ( CT_Epetra_Object_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_Object_Generalize ( CT_Epetra_Object_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_Object_Abstract ( id ) &
-        bind(C,name='Epetra_Object_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Object_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_Object_Generalize ( id ) &
+        bind(C,name='Epetra_Object_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Object_ID_t
     
     type(FT_Epetra_Object_ID_t) ,intent(in)   ,value              :: id
   end function
@@ -2852,22 +2852,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_RowMatrix_ID_t Epetra_RowMatrix_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_RowMatrix_ID_t Epetra_RowMatrix_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_RowMatrix_ID_t) function Epetra_RowMatrix_Cast ( id ) &
-        bind(C,name='Epetra_RowMatrix_Cast')
-    import :: FT_Epetra_RowMatrix_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_RowMatrix_ID_t) function Epetra_RowMatrix_Degeneralize ( id ) &
+        bind(C,name='Epetra_RowMatrix_Degeneralize')
+    import :: FT_Epetra_RowMatrix_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t) ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_RowMatrix_Abstract ( CT_Epetra_RowMatrix_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_RowMatrix_Generalize ( CT_Epetra_RowMatrix_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_RowMatrix_Abstract ( id ) &
-        bind(C,name='Epetra_RowMatrix_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_RowMatrix_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_RowMatrix_Generalize ( id ) &
+        bind(C,name='Epetra_RowMatrix_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_RowMatrix_ID_t
     
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: id
   end function
@@ -3247,22 +3247,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_CompObject_ID_t Epetra_CompObject_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_CompObject_ID_t Epetra_CompObject_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_CompObject_ID_t) function Epetra_CompObject_Cast ( id ) &
-        bind(C,name='Epetra_CompObject_Cast')
-    import :: FT_Epetra_CompObject_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_CompObject_ID_t) function Epetra_CompObject_Degeneralize ( id ) &
+        bind(C,name='Epetra_CompObject_Degeneralize')
+    import :: FT_Epetra_CompObject_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t)  ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_CompObject_Abstract ( CT_Epetra_CompObject_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_CompObject_Generalize ( CT_Epetra_CompObject_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_CompObject_Abstract ( id ) &
-        bind(C,name='Epetra_CompObject_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_CompObject_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_CompObject_Generalize ( id ) &
+        bind(C,name='Epetra_CompObject_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_CompObject_ID_t
     
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: id
   end function
@@ -3459,22 +3459,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_Directory_ID_t Epetra_Directory_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_Directory_ID_t Epetra_Directory_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Directory_ID_t) function Epetra_Directory_Cast ( id ) &
-        bind(C,name='Epetra_Directory_Cast')
-    import :: FT_Epetra_Directory_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_Directory_ID_t) function Epetra_Directory_Degeneralize ( id ) &
+        bind(C,name='Epetra_Directory_Degeneralize')
+    import :: FT_Epetra_Directory_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t) ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_Directory_Abstract ( CT_Epetra_Directory_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_Directory_Generalize ( CT_Epetra_Directory_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_Directory_Abstract ( id ) &
-        bind(C,name='Epetra_Directory_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Directory_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_Directory_Generalize ( id ) &
+        bind(C,name='Epetra_Directory_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Directory_ID_t
     
     type(FT_Epetra_Directory_ID_t),intent(in)   ,value              :: id
   end function
@@ -3530,22 +3530,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_Flops_ID_t Epetra_Flops_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_Flops_ID_t Epetra_Flops_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Flops_ID_t) function Epetra_Flops_Cast ( id ) &
-        bind(C,name='Epetra_Flops_Cast')
-    import :: FT_Epetra_Flops_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_Flops_ID_t) function Epetra_Flops_Degeneralize ( id ) &
+        bind(C,name='Epetra_Flops_Degeneralize')
+    import :: FT_Epetra_Flops_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_Flops_Abstract ( CT_Epetra_Flops_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_Flops_Generalize ( CT_Epetra_Flops_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_Flops_Abstract ( id ) &
-        bind(C,name='Epetra_Flops_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Flops_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_Flops_Generalize ( id ) &
+        bind(C,name='Epetra_Flops_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Flops_ID_t
     
     type(FT_Epetra_Flops_ID_t)  ,intent(in)   ,value              :: id
   end function
@@ -3629,22 +3629,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_SrcDistObject_ID_t Epetra_SrcDistObject_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_SrcDistObject_ID_t Epetra_SrcDistObject_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_SrcDistObject_ID_t) function Epetra_SrcDistObject_Cast ( id ) &
-        bind(C,name='Epetra_SrcDistObject_Cast')
-    import :: FT_Epetra_SrcDistObject_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_SrcDistObject_ID_t) function Epetra_SrcDistObject_Degeneralize ( id ) &
+        bind(C,name='Epetra_SrcDistObject_Degeneralize')
+    import :: FT_Epetra_SrcDistObject_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t)     ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t)  ,intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_SrcDistObject_Abstract ( CT_Epetra_SrcDistObject_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_SrcDistObject_Generalize ( CT_Epetra_SrcDistObject_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_SrcDistObject_Abstract ( id ) &
-        bind(C,name='Epetra_SrcDistObject_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_SrcDistObject_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_SrcDistObject_Generalize ( id ) &
+        bind(C,name='Epetra_SrcDistObject_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_SrcDistObject_ID_t
     
     type(FT_Epetra_SrcDistObject_ID_t),intent(in)   ,value              :: id
   end function
@@ -3686,22 +3686,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_MpiComm_ID_t Epetra_MpiComm_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_MpiComm_ID_t Epetra_MpiComm_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_MpiComm_ID_t) function Epetra_MpiComm_Cast ( id ) &
-        bind(C,name='Epetra_MpiComm_Cast')
-    import :: FT_Epetra_MpiComm_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_MpiComm_ID_t) function Epetra_MpiComm_Degeneralize ( id ) &
+        bind(C,name='Epetra_MpiComm_Degeneralize')
+    import :: FT_Epetra_MpiComm_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_MpiComm_Abstract ( CT_Epetra_MpiComm_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_MpiComm_Generalize ( CT_Epetra_MpiComm_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_MpiComm_Abstract ( id ) &
-        bind(C,name='Epetra_MpiComm_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_MpiComm_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_MpiComm_Generalize ( id ) &
+        bind(C,name='Epetra_MpiComm_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_MpiComm_ID_t
     
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: id
   end function
@@ -4185,22 +4185,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Cast ( id ) &
-        bind(C,name='Epetra_CrsMatrix_Cast')
-    import :: FT_Epetra_CrsMatrix_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Degeneralize ( id ) &
+        bind(C,name='Epetra_CrsMatrix_Degeneralize')
+    import :: FT_Epetra_CrsMatrix_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t) ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_CrsMatrix_Abstract ( CT_Epetra_CrsMatrix_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_CrsMatrix_Generalize ( CT_Epetra_CrsMatrix_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_CrsMatrix_Abstract ( id ) &
-        bind(C,name='Epetra_CrsMatrix_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_CrsMatrix_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_CrsMatrix_Generalize ( id ) &
+        bind(C,name='Epetra_CrsMatrix_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_CrsMatrix_ID_t
     
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: id
   end function
@@ -5718,22 +5718,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_CrsGraph_ID_t) function Epetra_CrsGraph_Cast ( id ) &
-        bind(C,name='Epetra_CrsGraph_Cast')
-    import :: FT_Epetra_CrsGraph_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_CrsGraph_ID_t) function Epetra_CrsGraph_Degeneralize ( id ) &
+        bind(C,name='Epetra_CrsGraph_Degeneralize')
+    import :: FT_Epetra_CrsGraph_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_CrsGraph_Abstract ( CT_Epetra_CrsGraph_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_CrsGraph_Generalize ( CT_Epetra_CrsGraph_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_CrsGraph_Abstract ( id ) &
-        bind(C,name='Epetra_CrsGraph_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_CrsGraph_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_CrsGraph_Generalize ( id ) &
+        bind(C,name='Epetra_CrsGraph_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_CrsGraph_ID_t
     
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: id
   end function
@@ -6839,22 +6839,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_DistObject_ID_t Epetra_DistObject_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_DistObject_ID_t Epetra_DistObject_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_DistObject_ID_t) function Epetra_DistObject_Cast ( id ) &
-        bind(C,name='Epetra_DistObject_Cast')
-    import :: FT_Epetra_DistObject_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_DistObject_ID_t) function Epetra_DistObject_Degeneralize ( id ) &
+        bind(C,name='Epetra_DistObject_Degeneralize')
+    import :: FT_Epetra_DistObject_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t)  ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_DistObject_Abstract ( CT_Epetra_DistObject_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_DistObject_Generalize ( CT_Epetra_DistObject_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_DistObject_Abstract ( id ) &
-        bind(C,name='Epetra_DistObject_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_DistObject_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_DistObject_Generalize ( id ) &
+        bind(C,name='Epetra_DistObject_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_DistObject_ID_t
     
     type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: id
   end function
@@ -6987,22 +6987,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_Vector_ID_t Epetra_Vector_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_Vector_ID_t Epetra_Vector_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Vector_ID_t) function Epetra_Vector_Cast ( id ) &
-        bind(C,name='Epetra_Vector_Cast')
-    import :: FT_Epetra_Vector_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_Vector_ID_t) function Epetra_Vector_Degeneralize ( id ) &
+        bind(C,name='Epetra_Vector_Degeneralize')
+    import :: FT_Epetra_Vector_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_Vector_Abstract ( CT_Epetra_Vector_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_Vector_Generalize ( CT_Epetra_Vector_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_Vector_Abstract ( id ) &
-        bind(C,name='Epetra_Vector_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Vector_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_Vector_Generalize ( id ) &
+        bind(C,name='Epetra_Vector_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Vector_ID_t
     
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: id
   end function
@@ -7261,22 +7261,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_Export_ID_t Epetra_Export_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_Export_ID_t Epetra_Export_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Export_ID_t) function Epetra_Export_Cast ( id ) &
-        bind(C,name='Epetra_Export_Cast')
-    import :: FT_Epetra_Export_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_Export_ID_t) function Epetra_Export_Degeneralize ( id ) &
+        bind(C,name='Epetra_Export_Degeneralize')
+    import :: FT_Epetra_Export_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_Export_Abstract ( CT_Epetra_Export_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_Export_Generalize ( CT_Epetra_Export_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_Export_Abstract ( id ) &
-        bind(C,name='Epetra_Export_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Export_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_Export_Generalize ( id ) &
+        bind(C,name='Epetra_Export_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Export_ID_t
     
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: id
   end function
@@ -7507,21 +7507,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_Map_ID_t Epetra_Map_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_Map_ID_t Epetra_Map_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_Map_Cast ( id ) bind(C,name='Epetra_Map_Cast')
-    import :: FT_Epetra_Map_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_Map_ID_t) function Epetra_Map_Degeneralize ( id ) &
+        bind(C,name='Epetra_Map_Degeneralize')
+    import :: FT_Epetra_Map_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_Map_Abstract ( CT_Epetra_Map_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_Map_Generalize ( CT_Epetra_Map_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_Map_Abstract ( id ) &
-        bind(C,name='Epetra_Map_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Map_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_Map_Generalize ( id ) &
+        bind(C,name='Epetra_Map_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Map_ID_t
     
     type(FT_Epetra_Map_ID_t)    ,intent(in)   ,value              :: id
   end function
@@ -7618,22 +7619,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_BlockMap_ID_t) function Epetra_BlockMap_Cast ( id ) &
-        bind(C,name='Epetra_BlockMap_Cast')
-    import :: FT_Epetra_BlockMap_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_BlockMap_ID_t) function Epetra_BlockMap_Degeneralize ( id ) &
+        bind(C,name='Epetra_BlockMap_Degeneralize')
+    import :: FT_Epetra_BlockMap_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_BlockMap_Abstract ( CT_Epetra_BlockMap_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_BlockMap_Generalize ( CT_Epetra_BlockMap_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_BlockMap_Abstract ( id ) &
-        bind(C,name='Epetra_BlockMap_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_BlockMap_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_BlockMap_Generalize ( id ) &
+        bind(C,name='Epetra_BlockMap_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_BlockMap_ID_t
     
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: id
   end function
@@ -8311,22 +8312,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_Import_ID_t Epetra_Import_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_Import_ID_t Epetra_Import_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Import_ID_t) function Epetra_Import_Cast ( id ) &
-        bind(C,name='Epetra_Import_Cast')
-    import :: FT_Epetra_Import_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_Import_ID_t) function Epetra_Import_Degeneralize ( id ) &
+        bind(C,name='Epetra_Import_Degeneralize')
+    import :: FT_Epetra_Import_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_Import_Abstract ( CT_Epetra_Import_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_Import_Generalize ( CT_Epetra_Import_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_Import_Abstract ( id ) &
-        bind(C,name='Epetra_Import_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Import_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_Import_Generalize ( id ) &
+        bind(C,name='Epetra_Import_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Import_ID_t
     
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: id
   end function
@@ -8557,22 +8558,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_Time_ID_t Epetra_Time_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_Time_ID_t Epetra_Time_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Time_ID_t) function Epetra_Time_Cast ( id ) &
-        bind(C,name='Epetra_Time_Cast')
-    import :: FT_Epetra_Time_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_Time_ID_t) function Epetra_Time_Degeneralize ( id ) &
+        bind(C,name='Epetra_Time_Degeneralize')
+    import :: FT_Epetra_Time_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_Time_Abstract ( CT_Epetra_Time_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_Time_Generalize ( CT_Epetra_Time_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_Time_Abstract ( id ) &
-        bind(C,name='Epetra_Time_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_Time_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_Time_Generalize ( id ) &
+        bind(C,name='Epetra_Time_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Time_ID_t
     
     type(FT_Epetra_Time_ID_t)   ,intent(in)   ,value              :: id
   end function
@@ -8672,22 +8673,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_JadMatrix_ID_t Epetra_JadMatrix_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_JadMatrix_ID_t Epetra_JadMatrix_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_JadMatrix_ID_t) function Epetra_JadMatrix_Cast ( id ) &
-        bind(C,name='Epetra_JadMatrix_Cast')
-    import :: FT_Epetra_JadMatrix_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_JadMatrix_ID_t) function Epetra_JadMatrix_Degeneralize ( id ) &
+        bind(C,name='Epetra_JadMatrix_Degeneralize')
+    import :: FT_Epetra_JadMatrix_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t) ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_JadMatrix_Abstract ( CT_Epetra_JadMatrix_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_JadMatrix_Generalize ( CT_Epetra_JadMatrix_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_JadMatrix_Abstract ( id ) &
-        bind(C,name='Epetra_JadMatrix_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_JadMatrix_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_JadMatrix_Generalize ( id ) &
+        bind(C,name='Epetra_JadMatrix_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_JadMatrix_ID_t
     
     type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: id
   end function
@@ -8839,22 +8840,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_LinearProblem_ID_t) function Epetra_LinearProblem_Cast ( id ) &
-        bind(C,name='Epetra_LinearProblem_Cast')
-    import :: FT_Epetra_LinearProblem_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_LinearProblem_ID_t) function Epetra_LinearProblem_Degeneralize ( id ) &
+        bind(C,name='Epetra_LinearProblem_Degeneralize')
+    import :: FT_Epetra_LinearProblem_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t)     ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t)  ,intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_LinearProblem_Abstract ( CT_Epetra_LinearProblem_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_LinearProblem_Generalize ( CT_Epetra_LinearProblem_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_LinearProblem_Abstract ( id ) &
-        bind(C,name='Epetra_LinearProblem_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_LinearProblem_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_LinearProblem_Generalize ( id ) &
+        bind(C,name='Epetra_LinearProblem_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_LinearProblem_ID_t
     
     type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: id
   end function
@@ -9136,22 +9137,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_LAPACK_ID_t Epetra_LAPACK_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_LAPACK_ID_t Epetra_LAPACK_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_LAPACK_ID_t) function Epetra_LAPACK_Cast ( id ) &
-        bind(C,name='Epetra_LAPACK_Cast')
-    import :: FT_Epetra_LAPACK_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_LAPACK_ID_t) function Epetra_LAPACK_Degeneralize ( id ) &
+        bind(C,name='Epetra_LAPACK_Degeneralize')
+    import :: FT_Epetra_LAPACK_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t),intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_LAPACK_Abstract ( CT_Epetra_LAPACK_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_LAPACK_Generalize ( CT_Epetra_LAPACK_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_LAPACK_Abstract ( id ) &
-        bind(C,name='Epetra_LAPACK_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_LAPACK_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_LAPACK_Generalize ( id ) &
+        bind(C,name='Epetra_LAPACK_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_LAPACK_ID_t
     
     type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: id
   end function
@@ -11302,22 +11303,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_FECrsMatrix_ID_t) function Epetra_FECrsMatrix_Cast ( id ) &
-        bind(C,name='Epetra_FECrsMatrix_Cast')
-    import :: FT_Epetra_FECrsMatrix_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_FECrsMatrix_ID_t) function Epetra_FECrsMatrix_Degeneralize ( id ) &
+        bind(C,name='Epetra_FECrsMatrix_Degeneralize')
+    import :: FT_Epetra_FECrsMatrix_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t)   ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_FECrsMatrix_Abstract ( CT_Epetra_FECrsMatrix_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_FECrsMatrix_Generalize ( CT_Epetra_FECrsMatrix_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_FECrsMatrix_Abstract ( id ) &
-        bind(C,name='Epetra_FECrsMatrix_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_FECrsMatrix_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_FECrsMatrix_Generalize ( id ) &
+        bind(C,name='Epetra_FECrsMatrix_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_FECrsMatrix_ID_t
     
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: id
   end function
@@ -11891,22 +11892,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_IntSerialDenseVector_ID_t Epetra_IntSerialDenseVector_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_IntSerialDenseVector_ID_t Epetra_IntSerialDenseVector_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_IntSerialDenseVector_ID_t) function Epetra_IntSerialDenseVector_Cast ( id ) &
-        bind(C,name='Epetra_IntSerialDenseVector_Cast')
-    import :: FT_Epetra_IntSerialDenseVector_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_IntSerialDenseVector_ID_t) function Epetra_IntSerialDenseVector_Degeneralize ( &
+        id ) bind(C,name='Epetra_IntSerialDenseVector_Degeneralize')
+    import :: FT_Epetra_IntSerialDenseVector_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t)            ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t)         ,intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_IntSerialDenseVector_Abstract ( CT_Epetra_IntSerialDenseVector_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_IntSerialDenseVector_Generalize ( CT_Epetra_IntSerialDenseVector_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_IntSerialDenseVector_Abstract ( id ) &
-        bind(C,name='Epetra_IntSerialDenseVector_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_IntSerialDenseVector_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_IntSerialDenseVector_Generalize ( id ) &
+        bind(C,name='Epetra_IntSerialDenseVector_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_IntSerialDenseVector_ID_t
     
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: id
   end function
@@ -12162,22 +12163,22 @@ module forepetra
 
 
   ! CTrilinos prototype:
-  ! CT_Epetra_SerialDenseMatrix_ID_t Epetra_SerialDenseMatrix_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Epetra_SerialDenseMatrix_ID_t Epetra_SerialDenseMatrix_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_SerialDenseMatrix_ID_t) function Epetra_SerialDenseMatrix_Cast ( id ) &
-        bind(C,name='Epetra_SerialDenseMatrix_Cast')
-    import :: FT_Epetra_SerialDenseMatrix_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Epetra_SerialDenseMatrix_ID_t) function Epetra_SerialDenseMatrix_Degeneralize ( &
+        id ) bind(C,name='Epetra_SerialDenseMatrix_Degeneralize')
+    import :: FT_Epetra_SerialDenseMatrix_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t)         ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t)      ,intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Epetra_SerialDenseMatrix_Abstract ( CT_Epetra_SerialDenseMatrix_ID_t id );
+  ! CTrilinos_Universal_ID_t Epetra_SerialDenseMatrix_Generalize ( CT_Epetra_SerialDenseMatrix_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Epetra_SerialDenseMatrix_Abstract ( id ) &
-        bind(C,name='Epetra_SerialDenseMatrix_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Epetra_SerialDenseMatrix_ID_t
+  type(ForTrilinos_Universal_ID_t) function Epetra_SerialDenseMatrix_Generalize ( id ) &
+        bind(C,name='Epetra_SerialDenseMatrix_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_SerialDenseMatrix_ID_t
     
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: id
   end function

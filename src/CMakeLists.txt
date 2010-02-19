@@ -56,6 +56,7 @@ APPEND_SET(HEADERS
 APPEND_SET(SOURCES
   ForTrilinos_enum_wrappers.F90
   ForTrilinos_enums.F90
+  ForTrilinos_table_man.F90
   ForTrilinos_utils.F90
   ${DIREPETRA}/forepetra.F90
   ${DIRTEUCHOS}/forteuchos.F90

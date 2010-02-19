@@ -3,6 +3,8 @@
 module foramesos
   use iso_c_binding ,only : c_int,c_double,c_char,c_bool,c_ptr,c_long,c_float
   use ForTrilinos_enums
+  use ForTrilinos_enum_wrappers
+
   implicit none   ! Prevent implicit typing
 
   ! This file provides Fortran interface blocks that bind the argument types,
@@ -20,22 +22,22 @@ module foramesos
 
 
   ! CTrilinos prototype:
-  ! CT_Amesos_BaseSolver_ID_t Amesos_BaseSolver_Cast ( CTrilinos_Object_ID_t id );
+  ! CT_Amesos_BaseSolver_ID_t Amesos_BaseSolver_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Amesos_BaseSolver_ID_t) function Amesos_BaseSolver_Cast ( id ) &
-        bind(C,name='Amesos_BaseSolver_Cast')
-    import :: FT_Amesos_BaseSolver_ID_t ,ForTrilinos_Object_ID_t
+  type(FT_Amesos_BaseSolver_ID_t) function Amesos_BaseSolver_Degeneralize ( id ) &
+        bind(C,name='Amesos_BaseSolver_Degeneralize')
+    import :: FT_Amesos_BaseSolver_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(ForTrilinos_Object_ID_t)  ,intent(in)   ,value              :: id
+    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
 
   ! CTrilinos prototype:
-  ! CTrilinos_Object_ID_t Amesos_BaseSolver_Abstract ( CT_Amesos_BaseSolver_ID_t id );
+  ! CTrilinos_Universal_ID_t Amesos_BaseSolver_Generalize ( CT_Amesos_BaseSolver_ID_t id );
 
-  type(ForTrilinos_Object_ID_t) function Amesos_BaseSolver_Abstract ( id ) &
-        bind(C,name='Amesos_BaseSolver_Abstract')
-    import :: ForTrilinos_Object_ID_t ,FT_Amesos_BaseSolver_ID_t
+  type(ForTrilinos_Universal_ID_t) function Amesos_BaseSolver_Generalize ( id ) &
+        bind(C,name='Amesos_BaseSolver_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Amesos_BaseSolver_ID_t
     
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: id
   end function
