@@ -1,5 +1,6 @@
 module FEpetra_BlockMap
   use ForTrilinos_enums ,only: FT_Epetra_Comm_ID_t,FT_Epetra_BlockMap_ID_t,FT_Epetra_Map_ID_t,ForTrilinos_Universal_ID_t
+  use ForTrilinos_table_man
   use ForTrilinos_universal
   use FEpetra_Comm  ,only: epetra_comm
   use iso_c_binding ,only: c_int
@@ -129,7 +130,7 @@ contains
   end function
   
   type(FT_Epetra_BlockMap_ID_t) function alias_EpetraBlockMap_ID(generic_id)
-    use ForTrilinos_utils
+    use ForTrilinos_table_man
     use ForTrilinos_enums ,only: ForTrilinos_Universal_ID_t,FT_Epetra_BlockMap_ID
     use iso_c_binding     ,only: c_loc
     type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
@@ -170,8 +171,8 @@ contains
   end function
  
   subroutine assign_to_epetra_BlockMap(lhs,rhs)
-    class(epetra_BlockMap)        ,intent(out) :: lhs
-    type(FT_Epetra_BlockMap_ID_t) ,intent(in)  :: rhs
+    class(epetra_BlockMap)        ,intent(inout) :: lhs
+    type(FT_Epetra_BlockMap_ID_t) ,intent(in)    :: rhs
     allocate(lhs%BlockMap_id,source=rhs)
   end subroutine
 
@@ -208,7 +209,6 @@ contains
     class(epetra_BlockMap) ,intent(inout) :: this
     if (associated(this%BlockMap_id)) then
       call finalize(this) 
-      deallocate(this%BlockMap_id)
     else
       print *,' finalization for epetra_BlockMap received  with unassociated object'
     end if

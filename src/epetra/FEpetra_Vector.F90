@@ -1,5 +1,6 @@
 module FEpetra_Vector
   use ForTrilinos_enums   ,only: FT_Epetra_MultiVector_ID_t,FT_Epetra_Vector_ID_t,FT_Epetra_BlockMap_ID_t,ForTrilinos_Universal_ID_t,FT_boolean_t 
+  use ForTrilinos_table_man
   use FEpetra_MultiVector ,only: epetra_MultiVector
   use FEpetra_BlockMap    !,only: epetra_BlockMap !use to circumvent reported compiler bug
   use iso_c_binding       ,only: c_int
@@ -71,9 +72,9 @@ contains
   end function
  
   type(FT_Epetra_Vector_ID_t) function alias_EpetraVector_ID(generic_id)
-    use iso_c_binding     ,only: c_loc
-    use ForTrilinos_enums ,only: ForTrilinos_Universal_ID_t, FT_Epetra_Vector_ID
-    use ForTrilinos_utils ,only: CT_Alias 
+    use iso_c_binding        ,only: c_loc
+    use ForTrilinos_enums    ,only: ForTrilinos_Universal_ID_t, FT_Epetra_Vector_ID
+    use ForTrilinos_table_man,only: CT_Alias 
     type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
     type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id
     allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_Vector_ID))
@@ -128,7 +129,6 @@ contains
     class(epetra_vector) ,intent(inout) :: this
     if (associated(this%vector_id)) then
       call finalize(this) 
-      deallocate(this%vector_id)
     else
       print *,' finalization for epetra_vector received object with unassociated vector_id'
     end if

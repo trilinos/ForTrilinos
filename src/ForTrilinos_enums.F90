@@ -72,15 +72,9 @@ module ForTrilinos_enums
   ! The type below is interoperable with CTrilinos_Universal_ID_t in CTrilinos/src/CTrilinos_enums.h:
 
   type ,bind(C) :: ForTrilinos_Universal_ID_t
-<<<<<<< HEAD
     integer(ForTrilinos_Table_ID_t) :: table     ! Object data type (interoperable with CTrilinos_Table_ID_t)
     integer(c_int)                  :: index     ! Array index of the object
     integer(FT_boolean_t)           :: is_const  ! Whether or not object is declared const
-=======
-    integer(ForTrilinos_Table_ID_t) :: table     ! Object data type (interoperable with CTrilinos_Table_ID_t)
-    integer(c_int)                  :: index     ! Array index of the object
-    integer(FT_boolean_t)           :: is_const  ! Whether or not object is declared const
->>>>>>> ForTrilinos new function constructors implementation. Stub implementations of CTrilinos functionalities have not been removed.
   end type
 
   ! Each type definition below is identical in form to the ForTrilinos_Universal_ID_t definition but with a name corresponding

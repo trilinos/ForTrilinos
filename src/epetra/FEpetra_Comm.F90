@@ -1,6 +1,7 @@
 module FEpetra_Comm
   use ForTrilinos_universal ,only : universal
   use ForTrilinos_enums !,only: FT_Epetra_Comm_ID_t,ForTrilinos_Universal_ID_t
+  use ForTrilinos_table_man
   use forepetra
   implicit none
   private               ! Hide everything by default
@@ -136,7 +137,7 @@ module FEpetra_Comm
   
   type(FT_Epetra_Comm_ID_t) function alias_EpetraComm_ID(generic_id)
     use iso_c_binding, only : c_loc
-    use ForTrilinos_utils
+    use ForTrilinos_table_man
     use ForTrilinos_enums
     type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
     type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id

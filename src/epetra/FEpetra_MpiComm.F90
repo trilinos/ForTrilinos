@@ -1,6 +1,7 @@
 module FEpetra_MpiComm
 #ifdef HAVE_MPI
   use ForTrilinos_enums ,only: FT_Epetra_MpiComm_ID_t,ForTrilinos_Universal_ID_t
+  use ForTrilinos_table_man
   use FEpetra_Comm      ,only: epetra_comm
   use iso_c_binding     ,only: c_int,c_double,c_long,c_char
   use forepetra
@@ -80,9 +81,9 @@ contains
   end function
  
   type(FT_Epetra_MpiComm_ID_t) function alias_EpetraMpiComm_ID(generic_id)
-    use iso_c_binding     ,only: c_loc
-    use ForTrilinos_enums ,only: FT_Epetra_MpiComm_ID,ForTrilinos_Universal_ID_t
-    use ForTrilinos_utils ,only: CT_Alias
+    use iso_c_binding        ,only: c_loc
+    use ForTrilinos_enums    ,only: FT_Epetra_MpiComm_ID,ForTrilinos_Universal_ID_t
+    use ForTrilinos_table_man,only: CT_Alias
     type(Fortrilinos_Universal_ID_t) ,intent(in) :: generic_id
     type(Fortrilinos_Universal_ID_t) ,pointer    :: alias_id
     allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_MpiComm_ID))
@@ -191,7 +192,6 @@ contains
     class(epetra_mpicomm) ,intent(inout) :: this
     if (associated(this%MpiComm_id)) then
       call finalize(this) 
-      deallocate(this%MpiComm_id)
     else
       print *,'finalization for epetra_mpicomm received object with unassociated MpiComm_id'
     end if

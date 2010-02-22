@@ -14,7 +14,6 @@ program main
   ! somewhat immature and buggy.)  ForTrilinos/src/ForTrilinos_hermetic.F90 contains utilities 
   ! that help users work around the lack of final subroutines.
 
- 
   use ,intrinsic :: iso_c_binding ,only : c_int,c_double
   use FEpetra_SerialComm   ,only : epetra_serialcomm
   use FEpetra_Map          ,only : epetra_map
@@ -29,8 +28,8 @@ program main
   type(epetra_vector) :: x, b
   integer(c_int) :: numGlobalElements_local, numGlobalElements_return
   integer(c_int) :: Index_Base=1
-  real(c_double) ,allocatable ,dimension(:) :: bnorm, xnorm
-  real(c_double) ,allocatable ,dimension(:) :: err_tol,expected_bnorm,expected_xnorm,bnorm_err,xnorm_err 
+  real(c_double) :: bnorm(1), xnorm(1)
+  real(c_double) :: err_tol,expected_bnorm,expected_xnorm,bnorm_err,xnorm_err 
   real(c_double) :: two = 2.0, zero = 0.0
   logical        :: success = .true.,zero_initial=.true.
   
@@ -42,7 +41,7 @@ program main
   communicator= epetra_serialcomm() 
 
 ! Create a map 
-  numGlobalElements_local = 4
+  numGlobalElements_local = 4 
   map = epetra_map(numGlobalElements_local,Index_Base,communicator)
   numGlobalElements_return = map%NumGlobalElements()
   print *,'NumGlobalElements = ', numGlobalElements_return
@@ -54,28 +53,29 @@ program main
   b = epetra_vector(map,zero_initial)
  
   ! Do some vector operations
-  call b%Random()
+  call b%PutScalar(two)
+  !call b%Random()
   call x%Update(two, b, zero) ! /* x = 2*b */
  
-  bnorm = b%Norm1()
-  xnorm = x%Norm1()
+  bnorm = b%Norm2()
+  xnorm = x%Norm2()
  
-   print *, "2 norm of x = ", xnorm 
-   print *, "2 norm of b = ", bnorm 
+   print *, "2 norm of x = ", xnorm(1) 
+   print *, "2 norm of b = ", bnorm(1) 
 
 ! Test the expected value 
    err_tol = 1.0e-14
-   expected_bnorm = [sqrt( 2.0 * 2.0 * numGlobalElements_return )]
-   expected_xnorm = [sqrt( 4.0 * 4.0 * numGlobalElements_return )]
-   bnorm_err = abs( expected_bnorm - bnorm ) / expected_bnorm
-   xnorm_err = abs( expected_xnorm - xnorm ) / expected_xnorm
+   expected_bnorm = sqrt( 2.0 * 2.0 * numGlobalElements_return )
+   expected_xnorm = sqrt( 4.0 * 4.0 * numGlobalElements_return )
+   bnorm_err = abs( expected_bnorm - bnorm(1) ) / expected_bnorm
+   xnorm_err = abs( expected_xnorm - xnorm(1) ) / expected_xnorm
    print*, "error in 2 norm of x = ",bnorm_err
    print*, "error in 2 norm of b = ",xnorm_err
-   if (any(bnorm_err > err_tol)) success = .false.
-   if (any(xnorm_err > err_tol)) success = .false.
+   if (bnorm_err > err_tol) success = .false.
+   if (xnorm_err > err_tol) success = .false.
  
   ! Clean up memory (in reverse order).  This step is not required
-  ! with compilers that fupport Fortran 2003 type finalization:
+  ! with compilers that support Fortran 2003 type finalization:
   call b%force_finalization()
   call x%force_finalization()
   call map%force_finalization()

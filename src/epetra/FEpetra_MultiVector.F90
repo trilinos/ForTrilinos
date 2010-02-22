@@ -1,5 +1,6 @@
 module FEpetra_MultiVector
   use ForTrilinos_enums ,only: FT_Epetra_MultiVector_ID_t,FT_Epetra_Map_ID_t,ForTrilinos_Universal_ID_t
+  use ForTrilinos_table_man
   use ForTrilinos_universal
   use FEpetra_BlockMap  ,only: epetra_BlockMap
   use iso_c_binding     ,only: c_int,c_double
@@ -18,6 +19,7 @@ module FEpetra_MultiVector
      procedure         :: assign_to_epetra_MultiVector
      generic :: assignment(=) => assign_to_epetra_MultiVector
      ! Post-construction modification procedure 
+     procedure         :: PutScalar
      procedure         :: Random
      ! Extraction Methods
      ! Mathematical Methods
@@ -83,9 +85,9 @@ contains
   end function
   
   type(FT_Epetra_MultiVector_ID_t) function alias_EpetraMultiVector_ID(generic_id)
-    use ForTrilinos_utils ,only: CT_Alias
-    use iso_c_binding     ,only: c_loc
-    use ForTrilinos_enums ,only: ForTrilinos_Universal_ID_t,FT_Epetra_MultiVector_ID
+    use ForTrilinos_table_man,only: CT_Alias
+    use iso_c_binding        ,only: c_loc
+    use ForTrilinos_enums    ,only: ForTrilinos_Universal_ID_t,FT_Epetra_MultiVector_ID
     type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
     type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id
     allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_MultiVector_ID))
@@ -124,15 +126,24 @@ contains
   end function
  
   subroutine assign_to_epetra_MultiVector(lhs,rhs)
-    class(epetra_MultiVector), intent(out) :: lhs
-    type(FT_Epetra_MultiVector_ID_t), intent(in) :: rhs
+    class(epetra_MultiVector)       ,intent(inout):: lhs
+    type(FT_Epetra_MultiVector_ID_t),intent(in)   :: rhs
     allocate(lhs%MultiVector_id,source=rhs)
   end subroutine
   
+  subroutine PutScalar(this,scalar,error)
+   class(epetra_MultiVector) ,intent(inout) :: this
+   integer(c_int) ,optional  ,intent(out)   :: error
+   real(c_double)            ,intent(in)    :: scalar
+   integer(c_int)                           :: error_out
+   error_out=Epetra_MultiVector_PutScalar(this%MultiVector_id,scalar)
+   if(present(error)) error=error_out
+  end subroutine
+ 
   subroutine Random(this,error)
    class(epetra_MultiVector) ,intent(inout) :: this
-   integer(c_int),intent(out),optional :: error
-   integer(c_int)                      :: error_out
+   integer(c_int) ,optional  ,intent(out)   :: error
+   integer(c_int)                           :: error_out
    error_out = Epetra_MultiVector_Random (this%MultiVector_id)
    if(present(error)) error=error_out
   end subroutine
@@ -238,7 +249,6 @@ contains
     class(epetra_MultiVector) ,intent(inout) :: this
     if (associated(this%MultiVector_id)) then
       call finalize(this) 
-      deallocate(this%MultiVector_id)
     else
       print *,' finalization for epetra_MultiVector received  with unassociated object'
     end if
