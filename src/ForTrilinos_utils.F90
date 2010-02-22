@@ -3,6 +3,7 @@ module fortrilinos_utils
   private
   public :: count
   public :: generalize_all
+  public :: CT_Alias
   public :: valid_kind_parameters
 contains
   
@@ -29,7 +30,12 @@ contains
   ! to a general type that can represent any of the Epetra derived types in 
   ! ForTrilinos/src/ForTrilinos_enums.F90.
 
+<<<<<<< HEAD
   type(ForTrilinos_Universal_ID_t) function generalize_all(object_id) bind(C,name="for_linking_only") 
+=======
+  !type(ForTrilinos_Universal_ID_t) function generalize_all(object_id) bind(C,name="for_linking_only") 
+  type(ForTrilinos_Universal_ID_t) function generalize_all(object_id) bind(C) 
+>>>>>>> ForTrilinos new function constructors implementation. Stub implementations of CTrilinos functionalities have not been removed.
     use ForTrilinos_enums ,only : ForTrilinos_Universal_ID_t
     use ,intrinsic :: iso_c_binding ,only: c_ptr,c_f_pointer
     type(c_ptr) ,value :: object_id
@@ -37,6 +43,21 @@ contains
 
     call c_f_pointer (object_id, local_ptr)
     generalize_all = local_ptr
+  end function
+
+   function CT_Alias(object_struct,object_id) 
+    use ForTrilinos_enums
+    type(ForTrilinos_Universal_ID_t) :: CT_Alias
+    type(ForTrilinos_Universal_ID_t) , intent(in)  :: object_struct
+    integer(ForTrilinos_Table_ID_t), intent(in) :: object_id
+    PRINT *,'object_id=',object_id
+    PRINT *,'object_struct%table=',object_struct%table
+    PRINT *,'object_struct%index=',object_struct%index
+    PRINT *,'object_struct%is_const=',object_struct%is_const
+    CT_Alias%table=object_id
+    CT_Alias%index=object_struct%index
+    CT_Alias%is_const=object_struct%is_const
+    PRINT *,'End of CT_Alias'
   end function
 
   ! This procedure checks the values of parameters required to interoperate with CTrilinos.  The Fortran 2003 

@@ -14,72 +14,72 @@ program main
   ! somewhat immature and buggy.)  ForTrilinos/src/ForTrilinos_hermetic.F90 contains utilities 
   ! that help users work around the lack of final subroutines.
 
-  ! Parts of this file that will not yet compile (in the absence of unimplemented modules) 
-  ! are commented but included to exemplify the style we expect to support in a subsequent release.
  
   use ,intrinsic :: iso_c_binding ,only : c_int,c_double
   use FEpetra_SerialComm   ,only : epetra_serialcomm
   use FEpetra_Map          ,only : epetra_map
-! use epetra_vector_module        ,only : epetra_vector
-!  use interoperability_check      ,only : valid_kind_parameters
+  use FEpetra_Vector       ,only : epetra_vector
+  use ForTrilinos_utils    ,only : valid_kind_parameters
   implicit none
-
-!  if (.not. valid_kind_parameters()) stop 'C interoperability not supported on this platform.'
 
   ! Data declarations 
   
-  type(epetra_serialcomm) :: comm
+  type(epetra_serialcomm) :: communicator
   type(epetra_map)    :: map
-! type(epetra_vector) :: x, b
+  type(epetra_vector) :: x, b
   integer(c_int) :: numGlobalElements_local, numGlobalElements_return
-  real(c_double) :: bnorm, xnorm,err_tol,expected_bnorm,expected_xnorm,bnorm_err,xnorm_err 
+  integer(c_int) :: Index_Base=1
+  real(c_double) ,allocatable ,dimension(:) :: bnorm, xnorm
+  real(c_double) ,allocatable ,dimension(:) :: err_tol,expected_bnorm,expected_xnorm,bnorm_err,xnorm_err 
   real(c_double) :: two = 2.0, zero = 0.0
-  logical        :: success = .true.
+  logical        :: success = .true.,zero_initial=.true.
+  
+  if (.not. valid_kind_parameters()) stop 'C interoperability not supported on this platform.'
   
   ! Executable code
   
 ! Create a serial comm
-  comm = epetra_serialcomm() 
-   
+  communicator= epetra_serialcomm() 
+
 ! Create a map 
-  numGlobalElements_local = 4;
-  map = epetra_map(numGlobalElements_local,1,comm);
-  stop 'Map was created'
+  numGlobalElements_local = 4
+  map = epetra_map(numGlobalElements_local,Index_Base,communicator)
   numGlobalElements_return = map%NumGlobalElements()
   print *,'NumGlobalElements = ', numGlobalElements_return
-  if ( numGlobalElements /= numGlobalElements_return ) &
+  if ( numGlobalElements_local /= numGlobalElements_return ) &
     stop 'In ForTrilinos (verySimpleObjectOriented.F90: return mismatch'
    
   ! Create vectors
-! x = epetra_vector(map)
-! b = epetra_vector(map)
+  x = epetra_vector(map,zero_initial)
+  b = epetra_vector(map,zero_initial)
  
   ! Do some vector operations
-! call b%PutScalar(two)
-! call x%Update(two, b, zero) ! /* x = 2*b */
+  call b%Random()
+  call x%Update(two, b, zero) ! /* x = 2*b */
  
-!  bnorm = b%Norm2()
-!  xnorm = x%Norm2()
+  bnorm = b%Norm1()
+  xnorm = x%Norm1()
  
    print *, "2 norm of x = ", xnorm 
    print *, "2 norm of b = ", bnorm 
 
 ! Test the expected value 
- 
-   err_tol = 1.0e-14;
-   expected_bnorm = sqrt( 2.0 * 2.0 * numGlobalElements_return );
-   expected_xnorm = sqrt( 4.0 * 4.0 * numGlobalElements_return );
-   bnorm_err = abs( expected_bnorm - bnorm ) / expected_bnorm;
-   xnorm_err = abs( expected_xnorm - xnorm ) / expected_xnorm;
+   err_tol = 1.0e-14
+   expected_bnorm = [sqrt( 2.0 * 2.0 * numGlobalElements_return )]
+   expected_xnorm = [sqrt( 4.0 * 4.0 * numGlobalElements_return )]
+   bnorm_err = abs( expected_bnorm - bnorm ) / expected_bnorm
+   xnorm_err = abs( expected_xnorm - xnorm ) / expected_xnorm
    print*, "error in 2 norm of x = ",bnorm_err
    print*, "error in 2 norm of b = ",xnorm_err
-   if (bnorm_err > err_tol) success = .false.;
-   if (xnorm_err > err_tol) success = .false.;
+   if (any(bnorm_err > err_tol)) success = .false.
+   if (any(xnorm_err > err_tol)) success = .false.
  
-   ! Clean up memory (in reverse order)
-!  call b%finalize()
-!  call x%finalize()
-!  call map%finalize()
+  ! Clean up memory (in reverse order).  This step is not required
+  ! with compilers that fupport Fortran 2003 type finalization:
+  call b%force_finalization()
+  call x%force_finalization()
+  call map%force_finalization()
+  call communicator%force_finalization()
  
    if (success) then
      print *  
