@@ -46,12 +46,7 @@ contains
     integer(c_int) ,intent(in) :: Num_GlobalElements
     integer(c_int) ,intent(in) :: IndexBase
     class(epetra_comm)         :: comm
-    type(FT_Epetra_Comm_ID_t) :: test   ! test line
-    PRINT *,'start create map'          ! test line
-    test=comm%get_EpetraComm_ID()       ! test line
-    PRINT *,test%table,test%index,test%is_const ! test line
     from_scratch = Epetra_Map_Create(Num_GlobalElements,IndexBase,comm%get_EpetraComm_ID())
-    PRINT *,'end create map'
   end function
 
 ! Original C++ prototype:

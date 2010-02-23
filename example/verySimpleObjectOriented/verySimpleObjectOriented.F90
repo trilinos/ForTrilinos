@@ -45,6 +45,7 @@ program main
   map = epetra_map(numGlobalElements_local,Index_Base,communicator)
   numGlobalElements_return = map%NumGlobalElements()
   print *,'NumGlobalElements = ', numGlobalElements_return
+  print *,'NumMyElements=', map%NumMyElements()
   if ( numGlobalElements_local /= numGlobalElements_return ) &
     stop 'In ForTrilinos (verySimpleObjectOriented.F90: return mismatch'
    
@@ -54,25 +55,24 @@ program main
  
   ! Do some vector operations
   call b%PutScalar(two)
-  !call b%Random()
   call x%Update(two, b, zero) ! /* x = 2*b */
  
   bnorm = b%Norm2()
   xnorm = x%Norm2()
  
-   print *, "2 norm of x = ", xnorm(1) 
-   print *, "2 norm of b = ", bnorm(1) 
+  print *, "2 norm of x = ", xnorm(1) 
+  print *, "2 norm of b = ", bnorm(1) 
 
 ! Test the expected value 
-   err_tol = 1.0e-14
-   expected_bnorm = sqrt( 2.0 * 2.0 * numGlobalElements_return )
-   expected_xnorm = sqrt( 4.0 * 4.0 * numGlobalElements_return )
-   bnorm_err = abs( expected_bnorm - bnorm(1) ) / expected_bnorm
-   xnorm_err = abs( expected_xnorm - xnorm(1) ) / expected_xnorm
-   print*, "error in 2 norm of x = ",bnorm_err
-   print*, "error in 2 norm of b = ",xnorm_err
-   if (bnorm_err > err_tol) success = .false.
-   if (xnorm_err > err_tol) success = .false.
+  err_tol = 1.0e-14
+  expected_bnorm = sqrt( 2.0 * 2.0 * numGlobalElements_return )
+  expected_xnorm = sqrt( 4.0 * 4.0 * numGlobalElements_return )
+  bnorm_err = abs( expected_bnorm - bnorm(1) ) / expected_bnorm
+  xnorm_err = abs( expected_xnorm - xnorm(1) ) / expected_xnorm
+  print *, "error in 2 norm of x = ",bnorm_err
+  print *, "error in 2 norm of b = ",xnorm_err
+  if (bnorm_err > err_tol) success = .false.
+  if (xnorm_err > err_tol) success = .false.
  
   ! Clean up memory (in reverse order).  This step is not required
   ! with compilers that support Fortran 2003 type finalization:
@@ -81,11 +81,11 @@ program main
   call map%force_finalization()
   call communicator%force_finalization()
  
-   if (success) then
-     print *  
-     print *, "End Result: TEST PASSED" 
-   else
-     print *  
-     print *, "End Result: TEST FAILED"
-   end if
+  if (success) then
+    print *  
+    print *, "End Result: TEST PASSED" 
+  else
+    print *  
+    print *, "End Result: TEST FAILED"
+  end if
 end program main

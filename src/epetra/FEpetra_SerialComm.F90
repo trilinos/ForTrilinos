@@ -126,13 +126,8 @@ contains
   subroutine assign_to_epetra_SerialComm(lhs,rhs)
     class(epetra_serialcomm)        ,intent(inout) :: lhs
     type(FT_Epetra_SerialComm_ID_t) ,intent(in)    :: rhs
-    type(FT_Epetra_Comm_ID_t)                      :: test  ! test line
     allocate( lhs%SerialComm_id, source=rhs)
-    PRINT *,'assignment after serial part'
-    PRINT *,lhs%SerialComm_id%table,lhs%SerialComm_id%index,lhs%SerialComm_id%is_const
     call lhs%set_EpetraComm_ID(lhs%alias_EpetraComm_ID(lhs%generalize()))
-    test=lhs%get_EpetraComm_ID()  ! test line
-    PRINT *,test%table,test%index,test%is_const
   end subroutine
 
   subroutine assign_to_epetra_Comm(lhs,rhs)

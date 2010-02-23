@@ -3,7 +3,6 @@ module fortrilinos_utils
   private
   public :: count
   public :: generalize_all
-!  public :: CT_Alias
   public :: valid_kind_parameters
 contains
   
@@ -40,21 +39,6 @@ contains
     call c_f_pointer (object_id, local_ptr)
     generalize_all = local_ptr
   end function
-
-!   function CT_Alias(object_struct,object_id) 
-!    use ForTrilinos_enums
-!    type(ForTrilinos_Universal_ID_t) :: CT_Alias
-!    type(ForTrilinos_Universal_ID_t) , intent(in)  :: object_struct
-!    integer(ForTrilinos_Table_ID_t), intent(in) :: object_id
-!    PRINT *,'object_id=',object_id
-!    PRINT *,'object_struct%table=',object_struct%table
-!    PRINT *,'object_struct%index=',object_struct%index
-!    PRINT *,'object_struct%is_const=',object_struct%is_const
-!    CT_Alias%table=object_id
-!    CT_Alias%index=object_struct%index
-!    CT_Alias%is_const=object_struct%is_const
-!    PRINT *,'End of CT_Alias'
-!  end function
 
   ! This procedure checks the values of parameters required to interoperate with CTrilinos.  The Fortran 2003 
   ! standard requires that these parameters be defined in the intrinsic module iso_c_binding with values

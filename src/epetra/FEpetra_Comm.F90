@@ -132,7 +132,6 @@ module FEpetra_Comm
     class(epetra_comm)        ,intent(inout) :: this
     type(FT_Epetra_Comm_ID_t) ,intent(in)    :: id 
     this%comm_id=id
-    PRINT *,'set_EpetraComm_ID:end'
   end subroutine 
   
   type(FT_Epetra_Comm_ID_t) function alias_EpetraComm_ID(generic_id)
@@ -144,7 +143,6 @@ module FEpetra_Comm
     allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_Comm_ID))
     alias_EpetraComm_ID=degeneralize_EpetraComm(c_loc(alias_id))
     deallocate(alias_id)
-    PRINT *,'alias_EpetraComm_ID:end with deallocation'
   end function
 
   type(ForTrilinos_Universal_ID_t) function generalize_Comm(this)
