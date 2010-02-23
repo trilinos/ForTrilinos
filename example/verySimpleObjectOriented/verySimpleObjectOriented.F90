@@ -14,7 +14,7 @@ program main
   ! somewhat immature and buggy.)  ForTrilinos/src/ForTrilinos_hermetic.F90 contains utilities 
   ! that help users work around the lack of final subroutines.
 
-  use ,intrinsic :: iso_c_binding ,only : c_int,c_double
+  use iso_c_binding        ,only : c_int,c_double
   use FEpetra_SerialComm   ,only : epetra_serialcomm
   use FEpetra_Map          ,only : epetra_map
   use FEpetra_Vector       ,only : epetra_vector
