@@ -31,7 +31,20 @@ module ForTrilinos_table_man
     import :: ForTrilinos_Universal_ID_t, ForTrilinos_Table_ID_t
 
     type(ForTrilinos_Universal_ID_t)                  :: selfID
-    integer(ForTrilinos_Table_ID_t), intent(in),value :: new_table
+    integer(ForTrilinos_Table_ID_t) ,intent(in),value :: new_table
+  end subroutine
+
+  ! /*! Checks to see if the underlying object referenced by a table
+  !  *  entry is dynamic_cast'able to a given type (can be used to
+  !  *  distinguish, e.g., an Epetra_SerialComm from an Epetra_MpiComm). */
+  ! boolean CT_TypeCheck(CTrilinos_Universal_ID_t aid, CTrilinos_Table_ID_t type);
+
+  subroutine CT_TypeCheck( selfID, typeid ) &
+        bind(C,name='CT_TypeCheck')
+    import :: ForTrilinos_Universal_ID_t, ForTrilinos_Table_ID_t
+
+    type(ForTrilinos_Universal_ID_t),intent(in),value :: selfID
+    integer(ForTrilinos_Table_ID_t) ,intent(in),value :: typeid
   end subroutine
 
   end interface
