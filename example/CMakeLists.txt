@@ -4,5 +4,10 @@ INCLUDE(AddSubdirectories)
 
 ADD_SUBDIRECTORIES(
   verySimple
-  verySimpleObjectOriented
   )
+
+IF(${PACKAGE_NAME}_ENABLE_EXTENDED)
+  ADD_SUBDIRECTORIES(
+    verySimpleObjectOriented
+    )
+ENDIF()
