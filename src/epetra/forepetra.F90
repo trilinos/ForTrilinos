@@ -2,7 +2,10 @@ module forepetra
   use iso_c_binding ,only : c_int,c_double,c_char,c_bool,c_ptr,c_long,c_float
   use ForTrilinos_enums
   use ForTrilinos_enum_wrappers
-
+#include "ForTrilinos_config.h"
+#ifdef HAVE_MPI
+#include "mpif.h"
+#endif
   implicit none   ! Prevent implicit typing
 
   ! This file provides Fortran interface blocks that bind the argument types,

@@ -3,6 +3,7 @@ module FEpetra_Comm
   use ForTrilinos_enums !,only: FT_Epetra_Comm_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
   use forepetra
+#include "ForTrilinos_config.h"
   implicit none
   private               ! Hide everything by default
   public :: epetra_comm ! Expose type/methods
@@ -17,7 +18,7 @@ module FEpetra_Comm
     procedure                                     :: get_EpetraComm_ID
     procedure                                     :: set_EpetraComm_ID
     procedure                 ,nopass             :: alias_EpetraComm_ID
-    procedure ,non_overridable                    :: generalize_Comm
+    procedure ,non_overridable                    :: generalize_EpetraComm
     procedure(EpetraComm_assign)        ,deferred :: Comm_assign 
     procedure                                     :: Comm_assign_ID
     procedure(EpetraSerialComm_assign)  ,deferred :: SerialComm_assign 
@@ -30,10 +31,10 @@ module FEpetra_Comm
     !Barrier Methods
     procedure(barrier_interface)          ,deferred          ::barrier
     !Broadcast Methods
-    procedure(broadcast_double_interface) ,deferred ,private ::broadcast_double
-    procedure(broadcast_int_interface)    ,deferred ,private ::broadcast_int
-    !procedure(broadcast_long_interface)   ,deferred ,private ::broadcast_long
-    procedure(broadcast_char_interface)   ,deferred ,private ::broadcast_char
+    procedure(broadcast_double_interface) ,deferred  ::broadcast_double
+    procedure(broadcast_int_interface)    ,deferred  ::broadcast_int
+    procedure(broadcast_long_interface)   ,deferred  ::broadcast_long
+    procedure(broadcast_char_interface)   ,deferred  ::broadcast_char
     !generic :: broadcast=>broadcast_double,broadcast_int,broadcast_long,broadcast_char
     generic :: broadcast=>broadcast_double,broadcast_int,broadcast_char
     !Gather Methods
@@ -49,6 +50,8 @@ module FEpetra_Comm
     !procedure(NumProc_interface)         ,deferred::NumProc
     !Gather/catter and Directory Constructors
     !I/O methods
+    !Memory Management
+    procedure,non_overridable :: force_finalization_EpetraComm
   end type
   
   abstract interface
@@ -103,14 +106,14 @@ module FEpetra_Comm
       integer(c_int)               ,intent(in)    :: count
       integer(c_int)               ,intent(in)    :: root
     end subroutine
-    !subroutine broadcast_long_interface(this,MyVals,count,root) 
-    !  use iso_c_binding ,only: c_int,c_long
-    !  import:: epetra_comm
-    !  class(epetra_comm)           ,intent(in)    :: this
-    !  integer(c_long),dimension(:) ,intent(inout) :: MyVals
-    !  integer(c_int)               ,intent(in)    :: count
-    !  integer(c_int)               ,intent(in)    :: root
-    !end subroutine
+    subroutine broadcast_long_interface(this,MyVals,count,root) 
+      use iso_c_binding ,only: c_int,c_long
+      import:: epetra_comm
+      class(epetra_comm)           ,intent(in)    :: this
+      integer(c_long),dimension(:) ,intent(inout) :: MyVals
+      integer(c_int)               ,intent(in)    :: count
+      integer(c_int)               ,intent(in)    :: root
+    end subroutine
     subroutine broadcast_char_interface(this,MyVals,count,root) 
       use iso_c_binding ,only: c_int,c_char
       import:: epetra_comm
@@ -145,17 +148,17 @@ module FEpetra_Comm
     deallocate(alias_id)
   end function
 
-  type(ForTrilinos_Universal_ID_t) function generalize_Comm(this)
+  type(ForTrilinos_Universal_ID_t) function generalize_EpetraComm(this)
    ! ____ Use for ForTrilinos function implementation ______
    use ForTrilinos_utils ,only: generalize_all
    use iso_c_binding ,only : c_loc
    class(epetra_comm) ,intent(in) ,target :: this
-   generalize_Comm = generalize_all( c_loc(this%comm_id) )
+   generalize_EpetraComm = generalize_all( c_loc(this%comm_id) )
    ! ____ Use for ForTrilinos function implementation ______
 
    ! ____ Use for CTrilinos function implementation ______
    ! class(epetra_comm) ,intent(in) ,target :: this
-   ! generalize_Comm = Epetra_Comm_Generalize ( this%comm_id )
+   ! generalize_EpetraComm = Epetra_Comm_Generalize ( this%comm_id )
    ! ____ Use for CTrilinos function implementation ______
   end function
   
@@ -172,6 +175,13 @@ module FEpetra_Comm
     use ForTrilinos_enums
     type(FT_Epetra_Comm_ID_t) ,intent(in)   :: rhs
     class(epetra_comm)        ,intent(inout):: lhs
+    print *,'Comm_assign_ID'
     lhs%comm_id=rhs
+  end subroutine
+ 
+  subroutine force_finalization_EpetraComm(this)
+    class(epetra_comm) ,intent(inout) :: this
+    print *,'Destroy_Comm'
+    call Epetra_Comm_Destroy( this%comm_id )
   end subroutine
 end module 

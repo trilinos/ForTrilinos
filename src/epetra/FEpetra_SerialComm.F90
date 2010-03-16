@@ -4,6 +4,7 @@ module FEpetra_SerialComm
   use FEpetra_Comm      ,only : epetra_comm
   use iso_c_binding     ,only : c_int,c_long,c_double,c_char
   use forepetra
+#include "ForTrilinos_config.h"
   implicit none
   private                     ! Hide everything by default
   public :: epetra_serialcomm ! Expose type/constructors/methods
@@ -20,15 +21,18 @@ module FEpetra_SerialComm
      procedure         :: generalize 
      procedure         :: SerialComm_assign => assign_to_epetra_SerialComm
      procedure         :: Comm_assign => assign_to_epetra_Comm
+#ifdef HAVE_MPI
+     procedure         :: MpiComm_assign
+#endif
      !Barrier Methods
      procedure         :: barrier
      !Broadcast Methods
-     procedure,private :: broadcast_double
-     procedure,private :: broadcast_int
-     !procedure,private :: broadcast_long
-     procedure,private :: broadcast_char
+     procedure         :: broadcast_double
+     procedure         :: broadcast_int
+     procedure         :: broadcast_long
+     procedure         :: broadcast_char
      !generic :: broadcast=>broadcast_double,broadcast_int,broadcast_long,broadcast_char
-     generic :: broadcast=>broadcast_double,broadcast_int,broadcast_char
+     !generic :: broadcast=>broadcast_double,broadcast_int,broadcast_char
      !Memory Management
      procedure         :: force_finalization 
      final :: finalize
@@ -43,6 +47,7 @@ contains
   type(FT_Epetra_SerialComm_ID_t) function from_struct(id)
      type(FT_Epetra_SerialComm_ID_t) ,intent(in) :: id
      from_struct = id
+     print *,'serialcomm from_Struct:',id%table,id%index
   end function
 
   ! Original C++ prototype:
@@ -52,6 +57,7 @@ contains
   
   type(FT_Epetra_SerialComm_ID_t) function from_scratch()
     from_scratch = Epetra_SerialComm_Create()
+     print *,'serialcomm from_Scratch'
   end function
 
   ! Original C++ prototype:
@@ -62,14 +68,29 @@ contains
   type(FT_Epetra_SerialComm_ID_t) function duplicate(this)
     type(epetra_serialcomm) ,intent(in) :: this 
     duplicate = Epetra_SerialComm_Duplicate(this%SerialComm_id)
+     print *,'serialcomm from_duplicate'
   end function
 
   function clone(this)
     class(epetra_serialcomm) ,intent(in)  :: this
     class(epetra_comm)       ,allocatable :: clone
+    class(epetra_comm)       ,allocatable :: clone_temp
+    type(FT_Epetra_SerialComm_ID_t) :: test
+    type(FT_Epetra_Comm_ID_t) :: test1
     allocate(epetra_serialcomm :: clone) 
-    clone = Epetra_SerialComm_Clone(this%SerialComm_id)
-    !allocate(clone%SerialComm_id,source=clone%alias_EpetraSerialComm(clone%generalize_Comm()))
+    allocate(epetra_serialcomm :: clone_temp) 
+    clone_temp = Epetra_SerialComm_Clone(this%SerialComm_id)
+   ! test = clone_temp%SerialComm_id
+   ! print *,'clone_temp%serialcom',test%table,test%index
+    test1 = clone_temp%get_EpetraComm_ID()
+    print *,'clone_temp%comm',test1%table,test1%index
+    clone=epetra_serialcomm(alias_EpetraSerialComm_ID(clone_temp%generalize_EpetraComm()))
+    !test = clone%SerialComm_id
+   ! test = clone%get_EpetraSerialComm_ID()
+   ! print *,'clone%serialcomm',test%table,test%index
+    test1 = clone%get_EpetraComm_ID()
+    print *,'clone%comm',test1%table,test1%index
+    call clone_temp%force_finalization_EpetraComm()
   end function
 
   type(FT_Epetra_SerialComm_ID_t) function get_EpetraSerialComm_ID(this)
@@ -95,15 +116,15 @@ contains
 
   type(ForTrilinos_Universal_ID_t) function generalize(this)
    ! ____ Use for ForTrilinos function implementation ______
-   use ForTrilinos_utils ,only: generalize_all
-   use iso_c_binding ,only : c_loc
-   class(epetra_serialcomm) ,intent(in) ,target :: this
-   generalize = generalize_all( c_loc(this%SerialComm_id) )
+   !use ForTrilinos_utils ,only: generalize_all
+   !use iso_c_binding ,only : c_loc
+   !class(epetra_serialcomm) ,intent(in) ,target :: this
+   !generalize = generalize_all( c_loc(this%SerialComm_id) )
    ! ____ Use for ForTrilinos function implementation ______
    
    ! ____ Use for CTrilinos function implementation ______
-   ! class(epetra_serialcomm) ,intent(in) ,target :: this
-   ! generalize = Epetra_SerialComm_Generalize ( this%SerialComm_id ) 
+    class(epetra_serialcomm) ,intent(in) ,target :: this
+    generalize = Epetra_SerialComm_Generalize ( this%SerialComm_id ) 
    ! ____ Use for CTrilinos function implementation ______
   end function
  
@@ -126,17 +147,41 @@ contains
   subroutine assign_to_epetra_SerialComm(lhs,rhs)
     class(epetra_serialcomm)        ,intent(inout) :: lhs
     type(FT_Epetra_SerialComm_ID_t) ,intent(in)    :: rhs
+    type(FT_Epetra_SerialComm_ID_t) :: test_serial
+    type(FT_Epetra_Comm_ID_t) :: test_comm
+    print *,'assign_to_epetra_SerialComm'
     allocate( lhs%SerialComm_id, source=rhs)
     call lhs%set_EpetraComm_ID(lhs%alias_EpetraComm_ID(lhs%generalize()))
+    test_serial=lhs%SerialComm_id
+    test_comm=lhs%get_EpetraComm_ID()
+    print *,'serial=',test_serial%table, test_serial%index
+    print *,'comm=',test_comm%table, test_comm%index
   end subroutine
 
+#ifdef HAVE_MPI 
+  subroutine MpiComm_assign(lhs,rhs)
+    use ForTrilinos_enums, only : FT_Epetra_MpiComm_ID_t
+    class(epetra_serialcomm),      intent(inout) :: lhs
+    type(FT_Epetra_MpiComm_ID_t), intent(in) :: rhs 
+    print *, 'MpiComm_assign in FEpetra_SerialComm no-op'
+  end subroutine
+#endif
   subroutine assign_to_epetra_Comm(lhs,rhs)
     class(epetra_serialcomm) ,intent(inout) :: lhs
     class(epetra_comm)       ,intent(in)    :: rhs
+    type(FT_Epetra_SerialComm_ID_t) :: test_serial
+    type(FT_Epetra_Comm_ID_t) :: test_comm
+    print *,'assign_to_epetra_Comm'
     select type(rhs)
       class is (epetra_serialcomm)
-        allocate(lhs%SerialComm_id,source=rhs%SerialComm_id)
+        allocate(lhs%SerialComm_id,source=alias_EpetraSerialComm_ID(rhs%generalize()))
         call lhs%set_EpetraComm_ID(lhs%alias_EpetraComm_ID(lhs%generalize()))
+        !allocate(epetra_serialcomm :: lhs)
+        !lhs=epetra_serialcomm(alias_EpetraSerialComm_ID(rhs%generalize()))
+    !test_serial=lhs%SerialComm_id
+    test_comm=lhs%get_EpetraComm_ID()
+    print *,'serial=',test_serial%table, test_serial%index
+    print *,'comm=',test_comm%table, test_comm%index
      class default
         stop 'assign_to_epetra_Comm: unsupported class'
      end select
@@ -165,14 +210,14 @@ contains
    error = Epetra_SerialComm_Broadcast_Int(this%SerialComm_id,MyVals,count,root)
   end subroutine
 
-  !subroutine broadcast_long(this,MyVals,count,root)
-  ! class(epetra_serialcomm)     ,intent(in)    :: this
-  ! integer(c_long),dimension(:) ,intent(inout) :: MyVals
-  ! integer(c_int)               ,intent(in)    :: count
-  ! integer(c_int)               ,intent(in)    :: root
-  ! integer(c_int)                              :: error 
-  ! error = Epetra_SerialComm_Broadcast_Long(this%SerialComm_id,MyVals,count,root)
-  !end subroutine
+  subroutine broadcast_long(this,MyVals,count,root)
+   class(epetra_serialcomm)     ,intent(in)    :: this
+   integer(c_long),dimension(:) ,intent(inout) :: MyVals
+   integer(c_int)               ,intent(in)    :: count
+   integer(c_int)               ,intent(in)    :: root
+   integer(c_int)                              :: error 
+   error = Epetra_SerialComm_Broadcast_Long(this%SerialComm_id,MyVals,count,root)
+  end subroutine
  
   subroutine broadcast_char(this,MyVals,count,root)
    class(epetra_serialcomm)           ,intent(in)    :: this
@@ -184,7 +229,9 @@ contains
   end subroutine
 
   subroutine finalize(this)
-    type(epetra_serialcomm) :: this
+    type(epetra_serialcomm)     :: this
+    print *,'finalize_SerialComm'
+    call this%force_finalization_EpetraComm()
     call Epetra_SerialComm_Destroy( this%SerialComm_id ) 
     deallocate(this%SerialComm_id)
   end subroutine
@@ -192,6 +239,7 @@ contains
   subroutine force_finalization(this)
     class(epetra_serialcomm) ,intent(inout) :: this
     if (associated(this%SerialComm_id)) then
+      print *,'force_finalization_SerialComm'
       call finalize(this) 
     else
       print *,' finalization for epetra_serialcomm received object with unassociated SerialComm_id'
