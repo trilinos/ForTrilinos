@@ -3708,19 +3708,6 @@ module forepetra
 
 
   ! Original C++ prototype:
-  ! Epetra_MpiComm(MPI_Comm comm);
-  ! CTrilinos prototype:
-  ! CT_Epetra_MpiComm_ID_t Epetra_MpiComm_Create ( MPI_Comm comm );
-
-  type(FT_Epetra_MpiComm_ID_t) function Epetra_MpiComm_Create ( comm ) &
-        bind(C,name='Epetra_MpiComm_Create')
-    import :: FT_Epetra_MpiComm_ID_t ,MPI_Comm
-    
-    MPI_Comm                    ,intent(in)   ,value              :: comm
-  end function
-
-
-  ! Original C++ prototype:
   ! Epetra_MpiComm(const Epetra_MpiComm & Comm);
   ! CTrilinos prototype:
   ! CT_Epetra_MpiComm_ID_t Epetra_MpiComm_Duplicate ( CT_Epetra_MpiComm_ID_t CommID );
@@ -4075,18 +4062,6 @@ module forepetra
 
 
   ! Original C++ prototype:
-  ! MPI_Comm Comm() const;
-  ! CTrilinos prototype:
-  ! MPI_Comm Epetra_MpiComm_Comm ( CT_Epetra_MpiComm_ID_t selfID );
-
-  MPI_Comm function Epetra_MpiComm_Comm ( selfID ) bind(C,name='Epetra_MpiComm_Comm')
-    import :: MPI_Comm ,FT_Epetra_MpiComm_ID_t
-    
-    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  ! Original C++ prototype:
   ! int MyPID() const;
   ! CTrilinos prototype:
   ! int Epetra_MpiComm_MyPID ( CT_Epetra_MpiComm_ID_t selfID );
@@ -4147,19 +4122,6 @@ module forepetra
   integer(c_int) function Epetra_MpiComm_GetMpiTag ( selfID ) &
         bind(C,name='Epetra_MpiComm_GetMpiTag')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
-    
-    type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  ! Original C++ prototype:
-  ! MPI_Comm GetMpiComm() const;
-  ! CTrilinos prototype:
-  ! MPI_Comm Epetra_MpiComm_GetMpiComm ( CT_Epetra_MpiComm_ID_t selfID );
-
-  MPI_Comm function Epetra_MpiComm_GetMpiComm ( selfID ) &
-        bind(C,name='Epetra_MpiComm_GetMpiComm')
-    import :: MPI_Comm ,FT_Epetra_MpiComm_ID_t
     
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
   end function
