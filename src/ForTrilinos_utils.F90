@@ -1,4 +1,5 @@
 module fortrilinos_utils
+#include "ForTrilinos_config.h"
   implicit none
   private
   public :: count

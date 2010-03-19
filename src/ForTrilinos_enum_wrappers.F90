@@ -1,4 +1,5 @@
 module ForTrilinos_enum_wrappers
+#include "ForTrilinos_config.h"
   use iso_c_binding ,only : c_int        ! Kind parameter (precision specifier)
   implicit none                          ! Prevent implicit typing
 

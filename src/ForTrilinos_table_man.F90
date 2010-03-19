@@ -1,4 +1,5 @@
 module ForTrilinos_table_man
+#include "ForTrilinos_config.h"
   use iso_c_binding ,only : c_int        ! Kind parameter (precision specifier)
   use ForTrilinos_enums
 

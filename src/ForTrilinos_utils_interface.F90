@@ -1,4 +1,5 @@
 interface 
+#include "ForTrilinos_config.h"
 
   integer(c_int) function string_length(ptr) bind(C,name="forLinkingOnly") 
     use iso_c_binding, only: c_ptr, c_int 
