@@ -4,6 +4,7 @@ module FEpetra_MpiComm
 !#include "mpif.h"
   use ForTrilinos_enums ,only: FT_Epetra_MpiComm_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
+  use ForTrilinos_external_utils
   use FEpetra_Comm      ,only: epetra_comm
   use iso_c_binding     ,only: c_int,c_double,c_long,c_char
   use forepetra
@@ -68,9 +69,8 @@ contains
   ! CT_Epetra_MpiComm_ID_t Epetra_MpiComm_Create ( MPI_Comm comm );
 
   type(FT_Epetra_MpiComm_ID_t) function from_scratch(comm)
- !   MPI_Comm ,intent(in) :: comm
     integer(c_int) ,intent(in) :: comm
-    from_scratch = Epetra_MpiComm_Create(comm)
+    from_scratch = Epetra_MpiComm_Fortran_Create(comm)
   end function
 
   ! Original C++ prototype:
