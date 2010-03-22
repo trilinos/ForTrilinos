@@ -23,7 +23,7 @@ module FEpetra_BlockMap
      !Size and dimension acccessor functions
      procedure         :: NumGlobalElements
      procedure         :: NumMyElements
-     !prodedure         :: MyGlobalElements
+     procedure         :: MyGlobalElements
      procedure         :: ElementSize_Const
      procedure         :: ElementSize_LID
      generic :: ElementSize=>ElementSize_Const,ElementSize_LID
@@ -186,7 +186,13 @@ contains
     NumMyElements=Epetra_BlockMap_NumMyElements(this%BlockMap_id)
   end function 
  
- ! here goes MyGlobalElemenst
+  function MyGlobalElements(this) result(MyGlobalElementsList)
+    class(epetra_BlockMap)     ,intent(in)    :: this
+    integer(c_int),dimension(:),allocatable   :: MyGlobalElementsList
+    integer(c_int)                            :: junk
+    allocate(MyGlobalElementsList(this%NumMyElements()))
+    junk=Epetra_BlockMap_MyGlobalElements_Fill(this%BlockMap_id,MyGlobalElementsList)
+  end function 
 
   integer(c_int) function ElementSize_Const(this)
     class(epetra_BlockMap) ,intent(in) :: this

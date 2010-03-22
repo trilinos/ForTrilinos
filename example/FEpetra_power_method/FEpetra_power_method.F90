@@ -1,5 +1,4 @@
 program main
-
   ! This file is the object-oriented equivalent of verySimple.F90.  In Trilinos 10.0,
   ! this is a snapshot of an unstable (evolving) file expected to become stable in a
   ! subsequent release.  This file exercises the derived types defined in 
@@ -14,40 +13,79 @@ program main
   ! somewhat immature and buggy.)  ForTrilinos/src/ForTrilinos_hermetic.F90 contains utilities 
   ! that help users work around the lack of final subroutines.
 
-  use iso_c_binding        ,only : c_int,c_double
+#include "ForTrilinos_config.h"
+#ifdef HAVE_MPI
+  use FEpetra_MpiComm      ,only : epetra_mpicomm
+#else
   use FEpetra_SerialComm   ,only : epetra_serialcomm
+#endif
   use FEpetra_Map          ,only : epetra_map
   use FEpetra_Vector       ,only : epetra_vector
   use ForTrilinos_utils    ,only : valid_kind_parameters
+  use iso_c_binding        ,only : c_int,c_double
   implicit none
-
+  interface 
+   subroutine power_method(A,lambda,niters,tolerance,verbose)
+    use iso_c_binding        ,only : c_int,c_double
+    use FEpetra_Vector, only : epetra_Vector
+    !use FEpetra_CrsMatrix, only : epetra_CrsMatrix
+    !type(epetra_CrsMatrix), intent(inout) :: A
+    type(epetra_Vector) :: q,z,resid,A
+    real(c_double) :: lambda
+    integer(c_int) :: niters
+    real(c_double) :: tolerance
+    logical        :: verbose
+   end subroutine
+  end interface
   ! Data declarations 
-  
+#ifdef HAVE_MPI  
+  type(epetra_mpicomm) :: communicator
+  integer(c_int)       :: ierror
+#else
   type(epetra_serialcomm) :: communicator
+#endif
   type(epetra_map)    :: map
   type(epetra_vector) :: x, b
-  integer(c_int) :: numGlobalElements_local, numGlobalElements_return
+  integer(c_int) :: NumGlobalElements, NumGlobalElements_return
+  integer(c_int),dimension(:),allocatable :: MyGlobalElements
+  integer(c_int) :: NumMyElements
   integer(c_int) :: Index_Base=1
   real(c_double) :: bnorm(1), xnorm(1)
   real(c_double) :: err_tol,expected_bnorm,expected_xnorm,bnorm_err,xnorm_err 
   real(c_double) :: two = 2.0, zero = 0.0
   logical        :: success = .true.,zero_initial=.true.
-  
+  integer,parameter:: MPI_COMM_WORLD=91
+  integer        :: MyPID, NumProc
+  logical        :: verbose
+
   if (.not. valid_kind_parameters()) stop 'C interoperability not supported on this platform.'
   
   ! Executable code
   
-! Create a serial comm
+! Create a comm
+#ifdef HAVE_MPI
+  call MPI_INIT(ierror)
+  communicator= epetra_mpicomm(MPI_COMM_WORLD) 
+# else
   communicator= epetra_serialcomm() 
+#endif
 
+  MyPID   = communicator%MyPID()
+  NumProc = communicator%NumProc()
+  verbose = MyPID==0
+  print *,MyPID,NumProc
 ! Create a map 
-  numGlobalElements_local = 4 
-  map = epetra_map(numGlobalElements_local,Index_Base,communicator)
-  numGlobalElements_return = map%NumGlobalElements()
+  NumGlobalElements = 100 
+  if (NumGlobalElements < NumProc) stop 'Number of global elements cannot be less that number of processors'
+  map = epetra_map(NumGlobalElements,Index_Base,communicator)
+  NumGlobalElements_return = map%NumGlobalElements()
+  NumMyElements = map%NumMyElements()
   print *,'NumGlobalElements = ', numGlobalElements_return
   print *,'NumMyElements=', map%NumMyElements()
-  if ( numGlobalElements_local /= numGlobalElements_return ) &
+  if ( NumGlobalElements /= NumGlobalElements_return ) &
     stop 'In ForTrilinos (verySimpleObjectOriented.F90: return mismatch'
+  allocate(MyGlobalElements(NumMyElements))
+  MyGlobalElements = map%MyGlobalElements()
    
   ! Create vectors
   x = epetra_vector(map,zero_initial)
@@ -88,4 +126,24 @@ program main
     print *  
     print *, "End Result: TEST FAILED"
   end if
+#ifdef HAVE_MPI
+  call MPI_Finalize(ierror)
+#endif
 end program main
+
+subroutine power_method(A,lambda,niters,tolerance,verbose)
+ use iso_c_binding        ,only : c_int,c_double
+ use FEpetra_Vector, only : epetra_Vector
+ !use FEpetra_CrsMatrix, only : epetra_CrsMatrix
+ !type(epetra_CrsMatrix), intent(inout) :: A
+ type(epetra_Vector) :: q,z,resid,A
+ real(c_double) :: lambda
+ integer(c_int) :: niters
+ real(c_double) :: tolerance 
+ logical        :: verbose
+ 
+
+ !q = epetra_vector(A%RowMap()) 
+ !z = epetra_vector(A%RowMap()) 
+ !resid = epetra_vector(A%RowMap()) 
+end subroutine

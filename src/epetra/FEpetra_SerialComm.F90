@@ -33,6 +33,19 @@ module FEpetra_SerialComm
      procedure         :: broadcast_char
      !generic :: broadcast=>broadcast_double,broadcast_int,broadcast_long,broadcast_char
      !generic :: broadcast=>broadcast_double,broadcast_int,broadcast_char
+     !Gather Methods
+     !generic :: GatherAll=>
+     !Sum Methods
+     !generic :: SumAll=>
+     !Max/Min Methods
+     !generic :: MaxAll=>
+     !generic :: MinAll=>
+     !Parallel Prefix Methods
+     !Attribute Accessor Methods
+     procedure         :: MyPID
+     procedure         :: NumProc
+     !Gather/catter and Directory Constructors
+     !I/O methods
      !Memory Management
      procedure         :: force_finalization 
      final :: finalize
@@ -227,6 +240,16 @@ contains
    integer(c_int)                                    :: error 
    error = Epetra_SerialComm_Broadcast_Char(this%SerialComm_id,MyVals,count,root)
   end subroutine
+ 
+  integer(c_int) function MyPID(this)
+   class(epetra_serialcomm)     , intent(in) :: this
+   MyPID=Epetra_SerialComm_MyPID(this%SerialComm_id)
+  end function
+
+  integer(c_int) function NumProc(this)
+   class(epetra_serialcomm)     , intent(in) :: this
+   NumProc=Epetra_SerialComm_NumProc(this%SerialComm_id)
+  end function
 
   subroutine finalize(this)
     type(epetra_serialcomm)     :: this

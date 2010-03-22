@@ -1,7 +1,7 @@
 module FEpetra_MpiComm
 #include "ForTrilinos_config.h"
 #ifdef HAVE_MPI
-#include "mpif.h"
+!#include "mpif.h"
   use ForTrilinos_enums ,only: FT_Epetra_MpiComm_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
   use FEpetra_Comm      ,only: epetra_comm
@@ -33,6 +33,19 @@ module FEpetra_MpiComm
     procedure         :: broadcast_char
     !generic :: broadcast=>broadcast_double,broadcast_int,broadcast_char
     !generic :: broadcast=>broadcast_double,broadcast_int,broadcast_long,broadcast_char
+    !Gather Methods
+    !generic :: GatherAll=>
+    !Sum Methods
+    !generic :: SumAll=>
+    !Max/Min Methods
+    !generic :: MaxAll=>
+    !generic :: MinAll=>
+    !Parallel Prefix Methods
+    !Attribute Accessor Methods
+    procedure         :: MyPID
+    procedure         :: NumProc
+    !Gather/catter and Directory Constructors
+    !I/O methods
     !Memory Management 
     procedure :: force_finalization 
     final :: finalize
@@ -56,7 +69,7 @@ contains
 
   type(FT_Epetra_MpiComm_ID_t) function from_scratch(comm)
  !   MPI_Comm ,intent(in) :: comm
-    integer ,intent(in) :: comm
+    integer(c_int) ,intent(in) :: comm
     from_scratch = Epetra_MpiComm_Create(comm)
   end function
 
@@ -155,11 +168,11 @@ contains
     type(FT_Epetra_MpiComm_ID_t) ,intent(in)    :: rhs
     type(FT_Epetra_Comm_ID_t)                   :: test  ! test line
     allocate( lhs%MpiComm_id, source=rhs)
-    PRINT *,'assignment after mpi  part'
-    PRINT *,lhs%MpiComm_id%table,lhs%MpiComm_id%index,lhs%MpiComm_id%is_const
+    print *,'assignment after mpi  part'
+    print *,lhs%MpiComm_id%table,lhs%MpiComm_id%index,lhs%MpiComm_id%is_const
     call lhs%set_EpetraComm_ID(lhs%alias_EpetraComm_ID(lhs%generalize()))
     test=lhs%get_EpetraComm_ID()  ! test line
-    PRINT *,test%table,test%index,test%is_const
+    print *,test%table,test%index,test%is_const
   end subroutine
 
   subroutine SerialComm_assign(lhs,rhs)
@@ -218,6 +231,16 @@ contains
     integer(c_int)                                    :: error_out
     error_out=Epetra_MpiComm_Broadcast_Char(this%MpiComm_id,MyVals,count,root)
   end subroutine
+
+  integer(c_int) function MyPID(this)
+   class(epetra_mpicomm)     , intent(in) :: this
+   MyPID=Epetra_MpiComm_MyPID(this%MpiComm_id)
+  end function
+
+  integer(c_int) function NumProc(this)
+   class(epetra_mpicomm)     , intent(in) :: this
+   NumProc=Epetra_MpiComm_NumProc(this%MpiComm_id)
+  end function
 
   subroutine finalize(this)
     type(epetra_mpicomm) :: this

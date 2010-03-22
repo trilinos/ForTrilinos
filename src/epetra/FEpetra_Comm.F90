@@ -46,8 +46,8 @@ module FEpetra_Comm
     !generic :: MinAll=>
     !Parallel Prefix Methods
     !Attribute Accessor Methods
-    !procedure(MyPID_interface)           ,deferred::MyPID
-    !procedure(NumProc_interface)         ,deferred::NumProc
+    procedure(MyPID_interface)           ,deferred::MyPID
+    procedure(NumProc_interface)         ,deferred::NumProc
     !Gather/catter and Directory Constructors
     !I/O methods
     !Memory Management
@@ -122,6 +122,16 @@ module FEpetra_Comm
       integer(c_int)                     ,intent(in)    :: count
       integer(c_int)                     ,intent(in)    :: root
     end subroutine
+    integer(c_int) function MyPID_interface(this)
+      use iso_c_binding ,only: c_int
+      import:: epetra_comm
+      class(epetra_comm), intent(in) :: this
+    end function
+    integer(c_int) function NumProc_interface(this)
+      use iso_c_binding ,only: c_int
+      import:: epetra_comm
+      class(epetra_comm), intent(in) :: this
+    end function
   end interface
 
   contains
