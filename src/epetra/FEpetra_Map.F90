@@ -158,6 +158,8 @@ contains
 
   subroutine finalize(this)
     type(epetra_map) :: this
+    print *,'finalize_map'
+    call this%epetra_BlockMap%force_finalization()
     call Epetra_Map_Destroy( this%map_id ) 
     deallocate(this%map_id)
   end subroutine

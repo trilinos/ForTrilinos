@@ -60,7 +60,7 @@ contains
   type(FT_Epetra_SerialComm_ID_t) function from_struct(id)
      type(FT_Epetra_SerialComm_ID_t) ,intent(in) :: id
      from_struct = id
-     print *,'serialcomm from_Struct:',id%table,id%index
+     !print *,'serialcomm from_Struct:',id%table,id%index
   end function
 
   ! Original C++ prototype:
@@ -99,8 +99,7 @@ contains
     print *,'clone_temp%comm',test1%table,test1%index
     clone=epetra_serialcomm(alias_EpetraSerialComm_ID(clone_temp%generalize_EpetraComm()))
     !test = clone%SerialComm_id
-   ! test = clone%get_EpetraSerialComm_ID()
-   ! print *,'clone%serialcomm',test%table,test%index
+    !print *,'clone%serialcomm',test%table,test%index
     test1 = clone%get_EpetraComm_ID()
     print *,'clone%comm',test1%table,test1%index
     call clone_temp%force_finalization_EpetraComm()
@@ -167,8 +166,8 @@ contains
     call lhs%set_EpetraComm_ID(lhs%alias_EpetraComm_ID(lhs%generalize()))
     test_serial=lhs%SerialComm_id
     test_comm=lhs%get_EpetraComm_ID()
-    print *,'serial=',test_serial%table, test_serial%index
-    print *,'comm=',test_comm%table, test_comm%index
+    !print *,'serial=',test_serial%table, test_serial%index
+    !print *,'comm=',test_comm%table, test_comm%index
   end subroutine
 
 #ifdef HAVE_MPI 
@@ -193,8 +192,8 @@ contains
         !lhs=epetra_serialcomm(alias_EpetraSerialComm_ID(rhs%generalize()))
     !test_serial=lhs%SerialComm_id
     test_comm=lhs%get_EpetraComm_ID()
-    print *,'serial=',test_serial%table, test_serial%index
-    print *,'comm=',test_comm%table, test_comm%index
+    !print *,'serial=',test_serial%table, test_serial%index
+    !print *,'comm=',test_comm%table, test_comm%index
      class default
         stop 'assign_to_epetra_Comm: unsupported class'
      end select

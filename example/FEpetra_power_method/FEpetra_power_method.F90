@@ -1,5 +1,5 @@
 program main
-  ! This file is the object-oriented equivalent of verySimple.F90.  In Trilinos 10.0,
+  ! This file is the object-oriented fortran equivalent of Epetra_power_method.cpp. In Trilinos 10.0,
   ! this is a snapshot of an unstable (evolving) file expected to become stable in a
   ! subsequent release.  This file exercises the derived types defined in 
   ! ForTrilinos/src/epetra/Epetra*.F90, which wrap the interface bodies in 
@@ -15,6 +15,7 @@ program main
 
 #include "ForTrilinos_config.h"
 #ifdef HAVE_MPI
+  use mpi
   use FEpetra_MpiComm      ,only : epetra_mpicomm
 #else
   use FEpetra_SerialComm   ,only : epetra_serialcomm
@@ -24,39 +25,30 @@ program main
   use ForTrilinos_utils    ,only : valid_kind_parameters
   use iso_c_binding        ,only : c_int,c_double
   implicit none
-  interface 
-   subroutine power_method(A,lambda,niters,tolerance,verbose)
-    use iso_c_binding        ,only : c_int,c_double
-    use FEpetra_Vector, only : epetra_Vector
-    !use FEpetra_CrsMatrix, only : epetra_CrsMatrix
-    !type(epetra_CrsMatrix), intent(inout) :: A
-    type(epetra_Vector) :: q,z,resid,A
-    real(c_double) :: lambda
-    integer(c_int) :: niters
-    real(c_double) :: tolerance
-    logical        :: verbose
-   end subroutine
-  end interface
-  ! Data declarations 
+! Data declarations 
 #ifdef HAVE_MPI  
   type(epetra_mpicomm) :: communicator
-  integer(c_int)       :: ierror
 #else
   type(epetra_serialcomm) :: communicator
 #endif
   type(epetra_map)    :: map
   type(epetra_vector) :: x, b
-  integer(c_int) :: NumGlobalElements, NumGlobalElements_return
+  integer(c_int)      :: NumGlobalElements, NumGlobalElements_return
   integer(c_int),dimension(:),allocatable :: MyGlobalElements
-  integer(c_int) :: NumMyElements
-  integer(c_int) :: Index_Base=1
-  real(c_double) :: bnorm(1), xnorm(1)
-  real(c_double) :: err_tol,expected_bnorm,expected_xnorm,bnorm_err,xnorm_err 
-  real(c_double) :: two = 2.0, zero = 0.0
-  logical        :: success = .true.,zero_initial=.true.
-  integer,parameter:: MPI_COMM_WORLD=91
-  integer        :: MyPID, NumProc
-  logical        :: verbose
+  integer(c_int),dimension(:),allocatable :: NumNz
+  integer(c_int)      :: NumMyElements,i,error
+  integer(c_int)      :: Index_Base=1
+  integer             :: MyPID, NumProc
+  logical             :: verbose
+  real(c_double)      :: indices(2)
+  integer(c_int)      :: values(2), NumEntries
+  real(c_double)      :: two = 2.0
+  integer             :: rc, ierr 
+
+  real(c_double)      :: bnorm(1), xnorm(1)
+  real(c_double)      :: err_tol,expected_bnorm,expected_xnorm,bnorm_err,xnorm_err 
+  real(c_double)      :: zero = 0.0
+  logical             :: success = .true.,zero_initial=.true.
 
   if (.not. valid_kind_parameters()) stop 'C interoperability not supported on this platform.'
   
@@ -64,7 +56,7 @@ program main
   
 ! Create a comm
 #ifdef HAVE_MPI
-  call MPI_INIT(ierror)
+  call MPI_INIT(ierr)
   communicator= epetra_mpicomm(MPI_COMM_WORLD) 
 # else
   communicator= epetra_serialcomm() 
@@ -74,19 +66,61 @@ program main
   NumProc = communicator%NumProc()
   verbose = MyPID==0
   print *,MyPID,NumProc
+
 ! Create a map 
   NumGlobalElements = 100 
   if (NumGlobalElements < NumProc) stop 'Number of global elements cannot be less that number of processors'
   map = epetra_map(NumGlobalElements,Index_Base,communicator)
-  NumGlobalElements_return = map%NumGlobalElements()
+  NumGlobalElements_return = map%NumGlobalElements()   ! test line
+
+! Get update list and number of local equations from newly created Map
   NumMyElements = map%NumMyElements()
-  print *,'NumGlobalElements = ', numGlobalElements_return
-  print *,'NumMyElements=', map%NumMyElements()
+  print *,'NumGlobalElements = ', numGlobalElements_return  ! test line
+  print *,'NumMyElements=', map%NumMyElements()             ! test line
   if ( NumGlobalElements /= NumGlobalElements_return ) &
     stop 'In ForTrilinos (verySimpleObjectOriented.F90: return mismatch'
   allocate(MyGlobalElements(NumMyElements))
   MyGlobalElements = map%MyGlobalElements()
-   
+
+! Create an integer vector NumNz tat is used to build the Epetra Matrix
+! NumNz(i) is the number of OFF-DIAGONAL term for the ith global equation
+! on this processor
+  allocate(NumNz(NumMyElements))
+
+! We are building a tridiagonal matrix where each row has (-1 2 -1)
+! So we need 2 off-diagonal terms (except for the first and last equation)
+  do i=1,NumMyElements
+   if(MyGlobalElements(i)==1.or.MyGlobalElements(i)==NumGlobalElements) then
+     NumNz(i) = 2_c_int
+   else
+     NumNz(i) = 3_c_int
+   end if
+  end do
+  
+! Create a Epetra_Matrix
+!  A = epetra_CrsMatrix(copy,map,NumNz)
+
+! Add rows one at a time
+! Need some vectors to help
+! off diagonal values will always be -1
+  values(1) = -1.0
+  values(2) = -1.0
+  do i=1,NumMyElements
+    if (MyGlobalElements(i)==1) then
+      indices(1) = 1
+      NumEntries = 1
+    else if(MyGlobalElements(i)==NumGlobalElements) then
+      indices(1) = NumGlobalElements-1
+      NumEntries = 1
+    else
+      indices(1) = MyGlobalElements(i)-1
+      indices(2) = MyGlobalElements(i)+1
+      NumEntries = 2
+    end if
+  end do
+  
+  !call A%InsertGlobalValues(MyGlobalElements(i),NumEntries,values,indices,error)
+  
   ! Create vectors
   x = epetra_vector(map,zero_initial)
   b = epetra_vector(map,zero_initial)
@@ -127,9 +161,10 @@ program main
     print *, "End Result: TEST FAILED"
   end if
 #ifdef HAVE_MPI
-  call MPI_Finalize(ierror)
+  call MPI_FINALIZE(rc)
 #endif
-end program main
+
+contains
 
 subroutine power_method(A,lambda,niters,tolerance,verbose)
  use iso_c_binding        ,only : c_int,c_double
@@ -147,3 +182,5 @@ subroutine power_method(A,lambda,niters,tolerance,verbose)
  !z = epetra_vector(A%RowMap()) 
  !resid = epetra_vector(A%RowMap()) 
 end subroutine
+
+end 

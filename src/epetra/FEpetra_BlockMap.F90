@@ -207,6 +207,7 @@ contains
 
   subroutine finalize(this)
     type(epetra_BlockMap) :: this
+    print *,'finalize_BlockMap'
     call Epetra_BlockMap_Destroy( this%BlockMap_id ) 
     deallocate (this%BlockMap_id)
   end subroutine
