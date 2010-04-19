@@ -59,6 +59,7 @@ APPEND_SET(SOURCES
   ForTrilinos_table_man.F90
   ForTrilinos_external_utils.F90
   ForTrilinos_utils.F90
+  assertion_utility.F90
   ${DIREPETRA}/forepetra.F90
   ${DIRTEUCHOS}/forteuchos.F90
   )

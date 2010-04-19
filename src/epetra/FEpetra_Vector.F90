@@ -1,28 +1,28 @@
 module FEpetra_Vector
   use ForTrilinos_enums   ,only: FT_Epetra_MultiVector_ID_t,FT_Epetra_Vector_ID_t,FT_Epetra_BlockMap_ID_t,ForTrilinos_Universal_ID_t,FT_boolean_t 
   use ForTrilinos_table_man
-  use FEpetra_MultiVector ,only: epetra_MultiVector
-  use FEpetra_BlockMap    !,only: epetra_BlockMap !use to circumvent reported compiler bug
+  use FEpetra_MultiVector ,only: Epetra_MultiVector
+  use FEpetra_BlockMap    !,only: Epetra_BlockMap !use to circumvent reported compiler bug
   use iso_c_binding       ,only: c_int
   use forepetra
   private                                    ! Hide everything by default
-  public :: epetra_vector,epetra_MultiVector ! Expose type/constructors/methods
+  public :: Epetra_Vector,Epetra_MultiVector ! Expose type/constructors/methods
   implicit none
 
-  type ,extends(epetra_MultiVector)      :: epetra_vector !"shell"
+  type ,extends(Epetra_MultiVector)      :: Epetra_Vector !"shell"
     private
     type(FT_Epetra_Vector_ID_t) ,pointer :: vector_id => null()
   contains
      procedure         :: get_EpetraVector_ID 
      procedure ,nopass :: alias_EpetraVector_ID
      procedure         :: generalize 
-     procedure         :: assign_to_epetra_Vector
-     generic :: assignment(=) => assign_to_epetra_Vector
+     procedure         :: assign_to_Epetra_Vector
+     generic :: assignment(=) => assign_to_Epetra_Vector
      procedure         :: force_finalization 
      final :: finalize
   end type
 
-   interface epetra_vector ! constructors
+   interface Epetra_Vector ! constructors
      module procedure from_scratch,duplicate,from_struct
    end interface
  
@@ -40,8 +40,8 @@ contains
 
   type(FT_Epetra_Vector_ID_t) function from_scratch(BlockMap,zero_initial)
     use ForTrilinos_enums ,only: FT_boolean_t,FT_FALSE,FT_TRUE,FT_Epetra_BlockMap_ID_t
-    use FEpetra_BlockMap  ,only: epetra_BlockMap
-    class(epetra_BlockMap) ,intent(in) :: BlockMap
+    use FEpetra_BlockMap  ,only: Epetra_BlockMap
+    class(Epetra_BlockMap) ,intent(in) :: BlockMap
     logical ,optional      ,intent(in) :: zero_initial
     integer(FT_boolean_t)              :: zero_out
     if (present(zero_initial).and.zero_initial) then
@@ -58,12 +58,12 @@ contains
   ! CT_Epetra_Vector_ID_t Epetra_Vector_Duplicate ( CT_Epetra_Vector_ID_t SourceID );
 
   type(FT_Epetra_Vector_ID_t) function duplicate(original)
-    type(epetra_vector) ,intent(in) :: original
+    type(Epetra_Vector) ,intent(in) :: original
     duplicate = Epetra_Vector_Duplicate(original%vector_id)
   end function
 
   type(FT_Epetra_Vector_ID_t) function get_EpetraVector_ID(this)
-    class(epetra_vector) ,intent(in) :: this 
+    class(Epetra_Vector) ,intent(in) :: this 
     if (associated(this%vector_id)) then
      get_EpetraVector_ID=this%vector_id
     else
@@ -86,12 +86,12 @@ contains
    ! ____ Use for ForTrilinos function implementation ______
    use ForTrilinos_utils ,only: generalize_all
    use iso_c_binding     ,only: c_loc
-   class(epetra_vector) ,intent(in) ,target :: this
+   class(Epetra_Vector) ,intent(in) ,target :: this
    generalize = generalize_all(c_loc(this%vector_id))
    ! ____ Use for ForTrilinos function implementation ______
 
    ! ____ Use for CTrilinos function implementation ______
-   ! class(epetra_vector) ,intent(in) ,target :: this
+   ! class(Epetra_Vector) ,intent(in) ,target :: this
    ! generalize = Epetra_Vector_Generalize ( this%vector_id )
    ! ____ Use for CTrilinos function implementation ______
   end function
@@ -112,25 +112,26 @@ contains
    ! ____ Use for CTrilinos function implementation ______
   end function
 
-  subroutine assign_to_epetra_Vector(lhs,rhs)
-    class(epetra_vector)        ,intent(inout) :: lhs
+  subroutine assign_to_Epetra_Vector(lhs,rhs)
+    class(Epetra_Vector)        ,intent(inout) :: lhs
     type(FT_Epetra_Vector_ID_t) ,intent(in)    :: rhs
     allocate(lhs%vector_id,source=rhs)
-    lhs%epetra_MultiVector=epetra_MultiVector(lhs%alias_EpetraMultiVector_ID(lhs%generalize()))
+    lhs%Epetra_MultiVector=Epetra_MultiVector(lhs%alias_EpetraMultiVector_ID(lhs%generalize()))
   end subroutine
 
   subroutine finalize(this)
-    type(epetra_vector) :: this
+    type(Epetra_Vector) :: this
     call Epetra_Vector_Destroy( this%vector_id ) 
     deallocate(this%vector_id)
   end subroutine
 
   subroutine force_finalization(this)
-    class(epetra_vector) ,intent(inout) :: this
+    class(Epetra_Vector) ,intent(inout) :: this
+    call this%Epetra_MultiVector%force_finalization()
     if (associated(this%vector_id)) then
       call finalize(this) 
     else
-      print *,' finalization for epetra_vector received object with unassociated vector_id'
+      print *,' finalization for Epetra_Vector received object with unassociated vector_id'
     end if
   end subroutine
 

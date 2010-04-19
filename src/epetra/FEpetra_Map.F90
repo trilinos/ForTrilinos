@@ -1,15 +1,15 @@
 module FEpetra_Map
   use ForTrilinos_enums !,only: FT_Epetra_BlockMap_ID,FT_Epetra_Map_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
-  use FEpetra_Comm       ,only: epetra_comm
-  use FEpetra_BlockMap   ,only: epetra_BlockMap
+  use FEpetra_Comm       ,only: Epetra_Comm
+  use FEpetra_BlockMap   ,only: Epetra_BlockMap
   use iso_c_binding      ,only: c_int
   use forepetra
   private                     ! Hide everything by default
-  public :: epetra_map,epetra_BlockMap ! Expose type/constructors/methods
+  public :: Epetra_Map,Epetra_BlockMap ! Expose type/constructors/methods
   implicit none
 
-  type, extends(epetra_BlockMap)      :: epetra_map !"shell"
+  type, extends(Epetra_BlockMap)      :: Epetra_Map !"shell"
     private
     type(FT_Epetra_Map_ID_t) ,pointer :: map_id => null()
   contains
@@ -17,15 +17,15 @@ module FEpetra_Map
      procedure         :: get_EpetraMap_ID 
      procedure ,nopass :: alias_EpetraMap_ID
      procedure         :: generalize 
-     procedure         :: assign_to_epetra_Map
-     procedure         :: epetraMap_assign_to_epetraMap  
-     generic :: assignment(=) => assign_to_epetra_Map,epetraMap_assign_to_epetraMap
+     procedure         :: assign_to_Epetra_Map
+     procedure         :: EpetraMap_assign_to_EpetraMap  
+     generic :: assignment(=) => assign_to_Epetra_Map,EpetraMap_assign_to_EpetraMap
      !Memory Management
      procedure         :: force_finalization 
      final :: finalize
   end type
 
-   interface epetra_map ! constructors
+   interface Epetra_Map ! constructors
      module procedure from_scratch,duplicate,from_struct,from_scratch_linear,from_scratch_arbitrary
    end interface
  
@@ -45,7 +45,7 @@ contains
     use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
     integer(c_int) ,intent(in) :: Num_GlobalElements
     integer(c_int) ,intent(in) :: IndexBase
-    class(epetra_comm)         :: comm
+    class(Epetra_Comm)         :: comm
     from_scratch = Epetra_Map_Create(Num_GlobalElements,IndexBase,comm%get_EpetraComm_ID())
   end function
 
@@ -60,7 +60,7 @@ contains
     integer(c_int) ,intent(in) :: Num_GlobalElements
     integer(c_int) ,intent(in) :: Num_MyElements
     integer(c_int) ,intent(in) :: IndexBase
-    class(epetra_comm)         :: comm
+    class(Epetra_Comm)         :: comm
     from_scratch_linear = Epetra_Map_Create_Linear(Num_GlobalElements,Num_MyElements,IndexBase,comm%get_EpetraComm_ID())
   end function
 
@@ -77,7 +77,7 @@ contains
     integer(c_int) ,intent(in)              :: Num_MyElements
     integer(c_int) ,intent(in) ,dimension(:),allocatable:: My_GlobalElements
     integer(c_int) ,intent(in)              :: IndexBase
-    class(epetra_comm)                      :: comm
+    class(Epetra_Comm)                      :: comm
     from_scratch_arbitrary = Epetra_Map_Create_Arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm%get_EpetraComm_ID())
   end function
 
@@ -87,12 +87,12 @@ contains
   ! CT_Epetra_Map_ID_t Epetra_Map_Duplicate ( CT_Epetra_Map_ID_t mapID );
 
   type(FT_Epetra_Map_ID_t) function duplicate(original)
-    type(epetra_map) ,intent(in) :: original
+    type(Epetra_Map) ,intent(in) :: original
     duplicate = Epetra_Map_Duplicate(original%map_id)
   end function
 
   type(FT_Epetra_Map_ID_t) function get_EpetraMap_ID(this)
-    class(epetra_map) ,intent(in) :: this 
+    class(Epetra_Map) ,intent(in) :: this 
     if (associated(this%map_id)) then
      get_EpetraMap_ID=this%map_id
     else
@@ -115,12 +115,12 @@ contains
    ! ____ Use for ForTrilinos function implementation ______
    use ForTrilinos_utils ,only: generalize_all 
    use iso_c_binding     ,only: c_loc
-   class(epetra_map) ,intent(in) ,target :: this
+   class(Epetra_Map) ,intent(in) ,target :: this
    generalize =generalize_all(c_loc(this%map_id))
    ! ____ Use for ForTrilinos function implementation ______
 
    ! ____ Use for CTrilinos function implementation ______
-   !class(epetra_map) ,intent(in) ,target :: this
+   !class(Epetra_Map) ,intent(in) ,target :: this
    !generalize = Epetra_Map_Generalize ( this%map_id )
    ! ____ Use for CTrilinos function implementation ______
   
@@ -142,34 +142,34 @@ contains
    ! ____ Use for CTrilinos function implementation ______
   end function
 
-  subroutine assign_to_epetra_Map(lhs,rhs)
-    class(epetra_map)        ,intent(inout):: lhs
+  subroutine assign_to_Epetra_Map(lhs,rhs)
+    class(Epetra_Map)        ,intent(inout):: lhs
     type(FT_Epetra_Map_ID_t) ,intent(in)   :: rhs
     allocate(lhs%map_id,source=rhs)
-    lhs%epetra_BlockMap=epetra_BlockMap(lhs%alias_EpetraBlockMap_ID(lhs%generalize()))
+    lhs%Epetra_BlockMap=Epetra_BlockMap(lhs%alias_EpetraBlockMap_ID(lhs%generalize()))
   end subroutine
   
-  subroutine epetraMap_assign_to_epetraMap(lhs,rhs)
-    class(epetra_map) ,intent(inout):: lhs
-    class(epetra_map) ,intent(in)   :: rhs
+  subroutine EpetraMap_assign_to_EpetraMap(lhs,rhs)
+    class(Epetra_Map) ,intent(inout):: lhs
+    class(Epetra_Map) ,intent(in)   :: rhs
     call Epetra_Map_Assign(lhs%map_id,rhs%map_id)
-    lhs = epetra_map(lhs%map_id)
+    lhs = Epetra_Map(lhs%map_id)
   end subroutine
 
   subroutine finalize(this)
-    type(epetra_map) :: this
+    type(Epetra_Map) :: this
     print *,'finalize_map'
-    call this%epetra_BlockMap%force_finalization()
     call Epetra_Map_Destroy( this%map_id ) 
     deallocate(this%map_id)
   end subroutine
 
   subroutine force_finalization(this)
-    class(epetra_map) ,intent(inout) :: this
+    class(Epetra_Map) ,intent(inout) :: this
+    call this%Epetra_BlockMap%force_finalization()
     if (associated(this%map_id)) then
       call finalize(this) 
     else
-      print *,' finalization for epetra_map received object with unassociated map_id'
+      print *,' finalization for Epetra_Map received object with unassociated map_id'
     end if
   end subroutine
 

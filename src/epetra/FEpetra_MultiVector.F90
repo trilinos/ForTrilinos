@@ -2,23 +2,27 @@ module FEpetra_MultiVector
   use ForTrilinos_enums ,only: FT_Epetra_MultiVector_ID_t,FT_Epetra_Map_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
   use ForTrilinos_universal
-  use FEpetra_BlockMap  ,only: epetra_BlockMap
+  use FEpetra_BlockMap  ,only: Epetra_BlockMap
   use iso_c_binding     ,only: c_int,c_double
   use forepetra
   implicit none
   private                      ! Hide everything by default
-  public :: epetra_MultiVector ! Expose type/constructors/methods
+  public :: Epetra_MultiVector ! Expose type/constructors/methods
 
-  type ,extends(universal)                    :: epetra_MultiVector !"shell"
+  type ,extends(universal)                    :: Epetra_MultiVector !"shell"
     private
     type(FT_Epetra_MultiVector_ID_t) ,pointer :: MultiVector_id => null()
   contains
      procedure         :: get_EpetraMultiVector_ID 
      procedure ,nopass :: alias_EpetraMultiVector_ID
      procedure         :: generalize 
-     procedure         :: assign_to_epetra_MultiVector
-     generic :: assignment(=) => assign_to_epetra_MultiVector
+     procedure         :: assign_to_Epetra_MultiVector
+     generic :: assignment(=) => assign_to_Epetra_MultiVector
      ! Post-construction modification procedure 
+     procedure         :: Dot
+     procedure         :: Scale_Self
+     procedure         :: Scale_Other
+     generic :: Scale => Scale_Self,Scale_Other
      procedure         :: PutScalar
      procedure         :: Random
      ! Extraction Methods
@@ -41,7 +45,7 @@ module FEpetra_MultiVector
      final :: finalize
   end type
 
-   interface epetra_MultiVector ! constructors
+   interface Epetra_MultiVector ! constructors
      module procedure from_scratch,duplicate,from_struct
    end interface
 
@@ -59,7 +63,7 @@ contains
   type(FT_Epetra_MultiVector_ID_t) function from_scratch(BlockMap,Num_Vectors,zeroOut)
    use ForTrilinos_enums ,only: FT_boolean_t
    use iso_c_binding     ,only: c_int
-   class(epetra_BlockMap) ,intent(in) :: BlockMap
+   class(Epetra_BlockMap) ,intent(in) :: BlockMap
    integer(c_int)         ,intent(in) :: Num_Vectors
    integer(FT_boolean_t)  ,intent(in) :: zeroOut 
    from_scratch = Epetra_MultiVector_Create(BlockMap%get_EpetraBlockMap_ID(),Num_Vectors,zeroOut)
@@ -71,12 +75,12 @@ contains
   ! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Duplicate ( CT_Epetra_MultiVector_ID_t SourceID );
 
   type(FT_Epetra_MultiVector_ID_t) function duplicate(original)
-    type(epetra_MultiVector) ,intent(in) :: original
+    type(Epetra_MultiVector) ,intent(in) :: original
     duplicate = Epetra_MultiVector_Duplicate(original%MultiVector_id)
   end function
 
   type(FT_Epetra_MultiVector_ID_t) function get_EpetraMultiVector_ID(this)
-    class(epetra_MultiVector) ,intent(in) :: this 
+    class(Epetra_MultiVector) ,intent(in) :: this 
     if (associated(this%MultiVector_id)) then
      get_EpetraMultiVector_ID=this%MultiVector_id
     else
@@ -99,12 +103,12 @@ contains
    ! ____ Use for ForTrilinos function implementation ______
    use ForTrilinos_utils ,only: generalize_all
    use iso_c_binding     ,only : c_loc
-   class(epetra_MultiVector) ,intent(in) ,target :: this
+   class(Epetra_MultiVector) ,intent(in) ,target :: this
    generalize = generalize_all(c_loc(this%MultiVector_ID))
    ! ____ Use for ForTrilinos function implementation ______
 
    ! ____ Use for CTrilinos function implementation ______
-   ! class(epetra_MultiVector) ,intent(in) ,target :: this
+   ! class(Epetra_MultiVector) ,intent(in) ,target :: this
    ! generalize = Epetra_MultiVector_Generalize ( this%MultiVector_id)
    ! ____ Use for CTrilinos function implementation ______
   end function
@@ -125,14 +129,43 @@ contains
   ! ____ Use for CTrilinos function implementation ______
   end function
  
-  subroutine assign_to_epetra_MultiVector(lhs,rhs)
-    class(epetra_MultiVector)       ,intent(inout):: lhs
+  subroutine assign_to_Epetra_MultiVector(lhs,rhs)
+    class(Epetra_MultiVector)       ,intent(inout):: lhs
     type(FT_Epetra_MultiVector_ID_t),intent(in)   :: rhs
     allocate(lhs%MultiVector_id,source=rhs)
   end subroutine
+
+  subroutine Dot(this,x,result,error)
+   class(Epetra_MultiVector), intent(in) :: this
+   class(Epetra_MultiVector), intent(in) :: x
+   real(c_double),dimension(:)           :: result
+   integer(c_int),optional,intent(out)   :: error
+   integer(c_int)                        :: error_out
+   error_out=Epetra_multiVector_Dot(this%MultiVector_id,x%MultiVector_id,result)
+   if (present(error)) error=error_out
+  end subroutine
+ 
+  subroutine Scale_Self(this,scalar_value,error)
+    class(Epetra_MultiVector), intent(inout) :: this
+    real(c_double),            intent(in)    :: scalar_value
+    integer(c_int),optional,intent(out)      :: error
+    integer(c_int)                           :: error_out
+    error_out=Epetra_MultiVector_Scale_Self(this%MultiVector_id,scalar_value)
+    if (present(error)) error=error_out
+  end subroutine
   
+  subroutine Scale_Other(this,scalar_value,MultiVector,error)
+    class(Epetra_MultiVector), intent(inout) :: this
+    class(Epetra_MultiVector), intent(in)    :: MultiVector 
+    real(c_double),            intent(in)    :: scalar_value
+    integer(c_int),optional,intent(out)      :: error
+    integer(c_int)                           :: error_out
+    error_out=Epetra_MultiVector_Scale(this%MultiVector_id,scalar_value,MultiVector%MultiVector_id)
+    if (present(error)) error=error_out
+  end subroutine
+
   subroutine PutScalar(this,scalar,error)
-   class(epetra_MultiVector) ,intent(inout) :: this
+   class(Epetra_MultiVector) ,intent(inout) :: this
    integer(c_int) ,optional  ,intent(out)   :: error
    real(c_double)            ,intent(in)    :: scalar
    integer(c_int)                           :: error_out
@@ -141,7 +174,7 @@ contains
   end subroutine
  
   subroutine Random(this,error)
-   class(epetra_MultiVector) ,intent(inout) :: this
+   class(Epetra_MultiVector) ,intent(inout) :: this
    integer(c_int) ,optional  ,intent(out)   :: error
    integer(c_int)                           :: error_out
    error_out = Epetra_MultiVector_Random (this%MultiVector_id)
@@ -149,9 +182,9 @@ contains
   end subroutine
 
   subroutine Update_WithA(this,scalarA,A,scalarThis,error)
-    class(epetra_MultiVector) ,intent(inout) :: this
+    class(Epetra_MultiVector) ,intent(inout) :: this
     real(c_double)            ,intent(in) :: scalarA
-    class(epetra_MultiVector) ,intent(in) :: A
+    class(Epetra_MultiVector) ,intent(in) :: A
     real(c_double)            ,intent(in) :: scalarThis
     integer(c_int) ,optional  ,intent(out):: error
     integer(c_int)                        :: error_out
@@ -160,11 +193,11 @@ contains
   end subroutine 
 
   subroutine Update_WithAB(this,scalarA,A,scalarB,B,scalarThis,error)
-    class(epetra_MultiVector) ,intent(inout) :: this
+    class(Epetra_MultiVector) ,intent(inout) :: this
     real(c_double)            ,intent(in) :: scalarA
-    class(epetra_MultiVector) ,intent(in) :: A
+    class(Epetra_MultiVector) ,intent(in) :: A
     real(c_double)            ,intent(in) :: scalarB
-    class(epetra_MultiVector) ,intent(in) :: B
+    class(Epetra_MultiVector) ,intent(in) :: B
     real(c_double)            ,intent(in) :: scalarThis
     integer(c_int) ,optional  ,intent(out):: error
     integer(c_int)                        :: error_out
@@ -173,7 +206,7 @@ contains
   end subroutine
 
   function Norm1(this,error) result(Norm1_val)
-    class(epetra_MultiVector)   ,intent(in)  :: this
+    class(Epetra_MultiVector)   ,intent(in)  :: this
     integer(c_int) ,optional    ,intent(out) :: error
     real(c_double) ,dimension(:),allocatable :: Norm1_val 
     integer(c_int)                           :: error_out
@@ -183,7 +216,7 @@ contains
   end function 
  
   function Norm2(this,error) result(Norm2_val)
-    class(epetra_MultiVector)   ,intent(in)  :: this
+    class(Epetra_MultiVector)   ,intent(in)  :: this
     integer(c_int) ,optional    ,intent(out) :: error
     real(c_double) ,dimension(:),allocatable :: Norm2_val 
     integer(c_int)                           :: error_out
@@ -193,7 +226,7 @@ contains
   end function
  
   function NormInf(this,error) result(NormInf_val)
-    class(epetra_MultiVector)   ,intent(in)  :: this
+    class(Epetra_MultiVector)   ,intent(in)  :: this
     integer(c_int) ,optional    ,intent(out) :: error
     real(c_double) ,dimension(:),allocatable :: NormInf_val 
     integer(c_int)                           :: error_out
@@ -203,8 +236,8 @@ contains
   end function 
 
   function NormWeighted(this,weights,error) result(NormWeighted_val)
-    class(epetra_MultiVector)   ,intent(in)  :: this
-    class(epetra_MultiVector)   ,intent(in)  :: weights 
+    class(Epetra_MultiVector)   ,intent(in)  :: this
+    class(Epetra_MultiVector)   ,intent(in)  :: weights 
     integer(c_int) ,optional    ,intent(out) :: error
     real(c_double) ,dimension(:),allocatable :: NormWeighted_val 
     integer(c_int)                           :: error_out
@@ -214,43 +247,43 @@ contains
   end function 
 
   integer(c_int) function NumVectors(this)
-    class(epetra_MultiVector) ,intent(in) :: this
+    class(Epetra_MultiVector) ,intent(in) :: this
     NumVectors=Epetra_MultiVector_NumVectors(this%MultiVector_id)
   end function 
 
   integer(c_int) function MyLength(this)
-    class(epetra_MultiVector) ,intent(in) :: this
+    class(Epetra_MultiVector) ,intent(in) :: this
     MyLength=Epetra_MultiVector_MyLength(this%MultiVector_id)
   end function 
 
   integer(c_int) function GlobalLength(this)
-    class(epetra_MultiVector) ,intent(in) :: this
+    class(Epetra_MultiVector) ,intent(in) :: this
     GlobalLength=Epetra_MultiVector_GlobalLength(this%MultiVector_id)
   end function 
 
   integer(c_int) function Stride(this)
-    class(epetra_MultiVector) ,intent(in) :: this
+    class(Epetra_MultiVector) ,intent(in) :: this
     Stride=Epetra_MultiVector_Stride(this%MultiVector_id)
   end function 
 
   integer(FT_boolean_t) function ConstantStride(this)
     use ForTrilinos_enums ,only:FT_Epetra_MultiVector_ID_t,FT_boolean_t
-    class(epetra_MultiVector) ,intent(in) :: this
+    class(Epetra_MultiVector) ,intent(in) :: this
     ConstantStride=Epetra_MultiVector_ConstantStride(this%MultiVector_id)
   end function 
 
   subroutine finalize(this)
-    type(epetra_MultiVector) :: this
+    type(Epetra_MultiVector) :: this
     call Epetra_MultiVector_Destroy( this%MultiVector_id ) 
     deallocate (this%MultiVector_id)
   end subroutine
 
   subroutine force_finalization(this)
-    class(epetra_MultiVector) ,intent(inout) :: this
+    class(Epetra_MultiVector) ,intent(inout) :: this
     if (associated(this%MultiVector_id)) then
       call finalize(this) 
     else
-      print *,' finalization for epetra_MultiVector received  with unassociated object'
+      print *,' finalization for Epetra_MultiVector received  with unassociated object'
     end if
   end subroutine
 

@@ -6,9 +6,9 @@ module FEpetra_Comm
 #include "ForTrilinos_config.h"
   implicit none
   private               ! Hide everything by default
-  public :: epetra_comm ! Expose type/methods
+  public :: Epetra_Comm ! Expose type/methods
 
-  type ,abstract ,extends(universal) :: epetra_comm
+  type ,abstract ,extends(universal) :: Epetra_Comm
    private
    type(FT_Epetra_Comm_ID_t)         :: comm_id 
   contains
@@ -62,87 +62,87 @@ module FEpetra_Comm
     ! CT_Epetra_Comm_ID_t Epetra_Comm_Clone ( CT_Epetra_Comm_ID_t selfID );
   
     function clone_interface(this) 
-      import:: epetra_comm
-      class(epetra_comm) ,intent(in)  :: this
-      class(epetra_comm) ,allocatable :: clone_interface
+      import:: Epetra_Comm
+      class(Epetra_Comm) ,intent(in)  :: this
+      class(Epetra_Comm) ,allocatable :: clone_interface
     end function
     subroutine EpetraSerialComm_assign(lhs,rhs)
       use ForTrilinos_enums
-      import:: epetra_comm
+      import:: Epetra_Comm
       type(FT_Epetra_SerialComm_ID_t),intent(in)    :: rhs
-      class(epetra_comm)             ,intent(inout) :: lhs
+      class(Epetra_Comm)             ,intent(inout) :: lhs
     end subroutine
 #ifdef HAVE_MPI
     subroutine EpetraMpiComm_assign(lhs,rhs)
       use ForTrilinos_enums
-      import:: epetra_comm
+      import:: Epetra_Comm
       type(FT_Epetra_MpiComm_ID_t)   ,intent(in)    :: rhs
-      class(epetra_comm)             ,intent(inout) :: lhs
+      class(Epetra_Comm)             ,intent(inout) :: lhs
     end subroutine
 #endif /* HAVE_MPI */
     subroutine EpetraComm_assign(lhs,rhs)
       use ForTrilinos_enums
-      import:: epetra_comm
-      class(epetra_comm) ,intent(in)    :: rhs
-      class(epetra_comm) ,intent(inout) :: lhs
+      import:: Epetra_Comm
+      class(Epetra_Comm) ,intent(in)    :: rhs
+      class(Epetra_Comm) ,intent(inout) :: lhs
     end subroutine
     subroutine barrier_interface(this) 
-      import:: epetra_comm
-      class(epetra_comm) ,intent(in)  :: this
+      import:: Epetra_Comm
+      class(Epetra_Comm) ,intent(in)  :: this
     end subroutine
     subroutine broadcast_double_interface(this,MyVals,count,root) 
       use iso_c_binding ,only: c_int,c_double
-      import:: epetra_comm
-      class(epetra_comm)           ,intent(in)    :: this
+      import:: Epetra_Comm
+      class(Epetra_Comm)           ,intent(in)    :: this
       real(c_double) ,dimension(:) ,intent(inout) :: MyVals
       integer(c_int)               ,intent(in)    :: count
       integer(c_int)               ,intent(in)    :: root
     end subroutine
     subroutine broadcast_int_interface(this,MyVals,count,root) 
       use iso_c_binding ,only: c_int
-      import:: epetra_comm
-      class(epetra_comm)           ,intent(in)    :: this
+      import:: Epetra_Comm
+      class(Epetra_Comm)           ,intent(in)    :: this
       integer(c_int) ,dimension(:) ,intent(inout) :: MyVals
       integer(c_int)               ,intent(in)    :: count
       integer(c_int)               ,intent(in)    :: root
     end subroutine
     subroutine broadcast_long_interface(this,MyVals,count,root) 
       use iso_c_binding ,only: c_int,c_long
-      import:: epetra_comm
-      class(epetra_comm)           ,intent(in)    :: this
+      import:: Epetra_Comm
+      class(Epetra_Comm)           ,intent(in)    :: this
       integer(c_long),dimension(:) ,intent(inout) :: MyVals
       integer(c_int)               ,intent(in)    :: count
       integer(c_int)               ,intent(in)    :: root
     end subroutine
     subroutine broadcast_char_interface(this,MyVals,count,root) 
       use iso_c_binding ,only: c_int,c_char
-      import:: epetra_comm
-      class(epetra_comm)                 ,intent(in)    :: this
+      import:: Epetra_Comm
+      class(Epetra_Comm)                 ,intent(in)    :: this
       character(kind=c_char),dimension(:),intent(inout) :: MyVals
       integer(c_int)                     ,intent(in)    :: count
       integer(c_int)                     ,intent(in)    :: root
     end subroutine
     integer(c_int) function MyPID_interface(this)
       use iso_c_binding ,only: c_int
-      import:: epetra_comm
-      class(epetra_comm), intent(in) :: this
+      import:: Epetra_Comm
+      class(Epetra_Comm), intent(in) :: this
     end function
     integer(c_int) function NumProc_interface(this)
       use iso_c_binding ,only: c_int
-      import:: epetra_comm
-      class(epetra_comm), intent(in) :: this
+      import:: Epetra_Comm
+      class(Epetra_Comm), intent(in) :: this
     end function
   end interface
 
   contains
   
   type(FT_Epetra_Comm_ID_t) function get_EpetraComm_ID(this)
-    class(epetra_comm) ,intent(in) :: this
+    class(Epetra_Comm) ,intent(in) :: this
     get_EpetraComm_ID = this%comm_id
   end function
   
   subroutine set_EpetraComm_ID(this,id)
-    class(epetra_comm)        ,intent(inout) :: this
+    class(Epetra_Comm)        ,intent(inout) :: this
     type(FT_Epetra_Comm_ID_t) ,intent(in)    :: id 
     this%comm_id=id
   end subroutine 
@@ -162,12 +162,12 @@ module FEpetra_Comm
    ! ____ Use for ForTrilinos function implementation ______
    use ForTrilinos_utils ,only: generalize_all
    use iso_c_binding ,only : c_loc
-   class(epetra_comm) ,intent(in) ,target :: this
+   class(Epetra_Comm) ,intent(in) ,target :: this
    generalize_EpetraComm = generalize_all( c_loc(this%comm_id) )
    ! ____ Use for ForTrilinos function implementation ______
 
    ! ____ Use for CTrilinos function implementation ______
-   ! class(epetra_comm) ,intent(in) ,target :: this
+   ! class(Epetra_Comm) ,intent(in) ,target :: this
    ! generalize_EpetraComm = Epetra_Comm_Generalize ( this%comm_id )
    ! ____ Use for CTrilinos function implementation ______
   end function
@@ -184,13 +184,13 @@ module FEpetra_Comm
   subroutine Comm_assign_ID(lhs,rhs)
     use ForTrilinos_enums
     type(FT_Epetra_Comm_ID_t) ,intent(in)   :: rhs
-    class(epetra_comm)        ,intent(inout):: lhs
+    class(Epetra_Comm)        ,intent(inout):: lhs
     print *,'Comm_assign_ID'
     lhs%comm_id=rhs
   end subroutine
  
   subroutine force_finalization_EpetraComm(this)
-    class(epetra_comm) ,intent(inout) :: this
+    class(Epetra_Comm) ,intent(inout) :: this
     print *,'Destroy_Comm'
     call Epetra_Comm_Destroy( this%comm_id )
   end subroutine

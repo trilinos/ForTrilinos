@@ -3,7 +3,7 @@ program main
   ! This file is the object-oriented equivalent of verySimple.F90.  In Trilinos 10.0,
   ! this is a snapshot of an unstable (evolving) file expected to become stable in a
   ! subsequent release.  This file exercises the derived types defined in 
-  ! ForTrilinos/src/epetra/Epetra*.F90, which wrap the interface bodies in 
+  ! ForTrilinos/src/epetra/FEpetra*.F90, which wrap the interface bodies in 
   ! ForTrilinos/src/epetra/forepetra.F90.   
     
   ! This file represents the preferred style for using ForTrilinos and is recommended for 
@@ -15,17 +15,17 @@ program main
   ! that help users work around the lack of final subroutines.
 
   use iso_c_binding        ,only : c_int,c_double
-  use FEpetra_SerialComm   ,only : epetra_serialcomm
-  use FEpetra_Map          ,only : epetra_map
-  use FEpetra_Vector       ,only : epetra_vector
+  use FEpetra_SerialComm   ,only : Epetra_SerialComm
+  use FEpetra_Map          ,only : Epetra_Map
+  use FEpetra_Vector       ,only : Epetra_Vector
   use ForTrilinos_utils    ,only : valid_kind_parameters
   implicit none
 
   ! Data declarations 
   
-  type(epetra_serialcomm) :: communicator
-  type(epetra_map)    :: map
-  type(epetra_vector) :: x, b
+  type(Epetra_SerialComm) :: communicator
+  type(Epetra_Map)    :: map
+  type(Epetra_Vector) :: x, b
   integer(c_int) :: numGlobalElements_local, numGlobalElements_return
   integer(c_int) :: Index_Base=1
   real(c_double) :: bnorm(1), xnorm(1)
@@ -38,11 +38,11 @@ program main
   ! Executable code
   
 ! Create a serial comm
-  communicator= epetra_serialcomm() 
+  communicator= Epetra_SerialComm() 
 
 ! Create a map 
   numGlobalElements_local = 4 
-  map = epetra_map(numGlobalElements_local,Index_Base,communicator)
+  map = Epetra_Map(numGlobalElements_local,Index_Base,communicator)
   numGlobalElements_return = map%NumGlobalElements()
   print *,'NumGlobalElements = ', numGlobalElements_return
   print *,'NumMyElements=', map%NumMyElements()
@@ -50,8 +50,8 @@ program main
     stop 'In ForTrilinos (verySimpleObjectOriented.F90: return mismatch'
    
   ! Create vectors
-  x = epetra_vector(map,zero_initial)
-  b = epetra_vector(map,zero_initial)
+  x = Epetra_Vector(map,zero_initial)
+  b = Epetra_Vector(map,zero_initial)
  
   ! Do some vector operations
   call b%PutScalar(two)

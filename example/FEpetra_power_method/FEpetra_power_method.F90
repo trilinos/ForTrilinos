@@ -2,7 +2,7 @@ program main
   ! This file is the object-oriented fortran equivalent of Epetra_power_method.cpp. In Trilinos 10.0,
   ! this is a snapshot of an unstable (evolving) file expected to become stable in a
   ! subsequent release.  This file exercises the derived types defined in 
-  ! ForTrilinos/src/epetra/Epetra*.F90, which wrap the interface bodies in 
+  ! ForTrilinos/src/epetra/FEpetra*.F90, which wrap the interface bodies in 
   ! ForTrilinos/src/epetra/forepetra.F90.   
     
   ! This file represents the preferred style for using ForTrilinos and is recommended for 
@@ -16,39 +16,39 @@ program main
 #include "ForTrilinos_config.h"
 #ifdef HAVE_MPI
   use mpi
-  use FEpetra_MpiComm      ,only : epetra_mpicomm
+  use FEpetra_MpiComm      ,only : Epetra_MpiComm
 #else
-  use FEpetra_SerialComm   ,only : epetra_serialcomm
+  use FEpetra_SerialComm   ,only : Epetra_SerialComm
 #endif
-  use FEpetra_Map          ,only : epetra_map
-  use FEpetra_Vector       ,only : epetra_vector
+  use FEpetra_Map          ,only : Epetra_Map
+  use FEpetra_Vector       ,only : Epetra_Vector
+  use FEpetra_CrsMatrix    ,only : Epetra_CrsMatrix
   use ForTrilinos_utils    ,only : valid_kind_parameters
+  use ForTrilinos_enum_wrappers
   use iso_c_binding        ,only : c_int,c_double
   implicit none
 ! Data declarations 
 #ifdef HAVE_MPI  
-  type(epetra_mpicomm) :: communicator
+  type(Epetra_MpiComm) :: communicator
 #else
-  type(epetra_serialcomm) :: communicator
+  type(Epetra_SerialComm) :: communicator
 #endif
-  type(epetra_map)    :: map
-  type(epetra_vector) :: x, b
+  type(Epetra_Map)    :: map
+  type(Epetra_CrsMatrix) :: A
   integer(c_int)      :: NumGlobalElements, NumGlobalElements_return
   integer(c_int),dimension(:),allocatable :: MyGlobalElements
   integer(c_int),dimension(:),allocatable :: NumNz
   integer(c_int)      :: NumMyElements,i,error
   integer(c_int)      :: Index_Base=1
-  integer             :: MyPID, NumProc
+  integer(c_int)      :: MyPID, NumProc
   logical             :: verbose
-  real(c_double)      :: indices(2)
-  integer(c_int)      :: values(2), NumEntries
-  real(c_double)      :: two = 2.0
-  integer             :: rc, ierr 
-
-  real(c_double)      :: bnorm(1), xnorm(1)
-  real(c_double)      :: err_tol,expected_bnorm,expected_xnorm,bnorm_err,xnorm_err 
-  real(c_double)      :: zero = 0.0
-  logical             :: success = .true.,zero_initial=.true.
+  integer(c_int)      :: indices(2), NumEntries
+  real(c_double)      :: two = 2.0,values(2)
+  integer             :: rc, ierr,ierr_pm=0 
+  real(c_double)      :: lambda=0.0,tolerance=1.0E-2
+  integer(c_int)      :: niters, numvals
+  integer(c_int),dimension(:),allocatable::Rowinds
+  real(c_double),dimension(:),allocatable::Rowvals
 
   if (.not. valid_kind_parameters()) stop 'C interoperability not supported on this platform.'
   
@@ -57,20 +57,21 @@ program main
 ! Create a comm
 #ifdef HAVE_MPI
   call MPI_INIT(ierr)
-  communicator= epetra_mpicomm(MPI_COMM_WORLD) 
+  communicator= Epetra_MpiComm(MPI_COMM_WORLD) 
 # else
-  communicator= epetra_serialcomm() 
+  communicator= Epetra_SerialComm() 
 #endif
 
   MyPID   = communicator%MyPID()
   NumProc = communicator%NumProc()
   verbose = MyPID==0
+  print *,verbose
   print *,MyPID,NumProc
 
 ! Create a map 
   NumGlobalElements = 100 
   if (NumGlobalElements < NumProc) stop 'Number of global elements cannot be less that number of processors'
-  map = epetra_map(NumGlobalElements,Index_Base,communicator)
+  map = Epetra_Map(NumGlobalElements,Index_Base,communicator)
   NumGlobalElements_return = map%NumGlobalElements()   ! test line
 
 ! Get update list and number of local equations from newly created Map
@@ -98,7 +99,7 @@ program main
   end do
   
 ! Create a Epetra_Matrix
-!  A = epetra_CrsMatrix(copy,map,NumNz)
+  A = Epetra_CrsMatrix(FT_Epetra_DataAccess_E_Copy,map,NumNz)
 
 ! Add rows one at a time
 ! Need some vectors to help
@@ -117,70 +118,90 @@ program main
       indices(2) = MyGlobalElements(i)+1
       NumEntries = 2
     end if
+     call A%InsertGlobalValues(MyGlobalElements(i),NumEntries,values,indices,error)
+     if (error/=0) stop 'A%InsertGlobalValues: failed'
+  !Put in the diaogonal entry
+     call A%InsertGlobalValues(MyGlobalElements(i),1,[two],MyGlobalElements,error)
+     if (error/=0) stop 'A%InsertGlobalValues: failed'
   end do
-  
-  !call A%InsertGlobalValues(MyGlobalElements(i),NumEntries,values,indices,error)
-  
-  ! Create vectors
-  x = epetra_vector(map,zero_initial)
-  b = epetra_vector(map,zero_initial)
  
-  ! Do some vector operations
-  call b%PutScalar(two)
-  call x%Update(two, b, zero) ! /* x = 2*b */
+  !Finish up
+  call A%FillComplete()
+  if (error/=0) stop 'A%FillComplete: failed'
  
-  bnorm = b%Norm2()
-  xnorm = x%Norm2()
- 
-  print *, "2 norm of x = ", xnorm(1) 
-  print *, "2 norm of b = ", bnorm(1) 
+  !Create vectors for power methods
+  !variable needed for interation
+  niters=NumGlobalElements*10 
+  call power_method(A,lambda,niters,tolerance,verbose,ierr_pm)
+  ierr_pm=ierr_pm+1
 
-! Test the expected value 
-  err_tol = 1.0e-14
-  expected_bnorm = sqrt( 2.0 * 2.0 * numGlobalElements_return )
-  expected_xnorm = sqrt( 4.0 * 4.0 * numGlobalElements_return )
-  bnorm_err = abs( expected_bnorm - bnorm(1) ) / expected_bnorm
-  xnorm_err = abs( expected_xnorm - xnorm(1) ) / expected_xnorm
-  print *, "error in 2 norm of x = ",bnorm_err
-  print *, "error in 2 norm of b = ",xnorm_err
-  if (bnorm_err > err_tol) success = .false.
-  if (xnorm_err > err_tol) success = .false.
+  !Iterate
+  if (A%MyGlobalRow(0_c_int)) then
+    numvals=A%NumGlobalEntries(1_c_int)
+    allocate(Rowvals(numvals),Rowinds(numvals))
+  end if
+  call A%ExtractGlobalRowCopy(0_c_int,numvals,numvals,Rowvals,Rowinds) ! get A(0,0)
+  do i=1,numvals
+   call A%ReplaceGlobalValues(0_c_int,numvals,Rowvals,Rowinds)
+  enddo  
+
+  !Iterate again
+  call power_method(A,lambda,niters,tolerance,verbose,ierr_pm)
+  ierr_pm=ierr_pm+1
+
  
   ! Clean up memory (in reverse order).  This step is not required
   ! with compilers that support Fortran 2003 type finalization:
-  call b%force_finalization()
-  call x%force_finalization()
+  call A%force_finalization()
   call map%force_finalization()
   call communicator%force_finalization()
  
-  if (success) then
-    print *  
-    print *, "End Result: TEST PASSED" 
-  else
-    print *  
-    print *, "End Result: TEST FAILED"
-  end if
 #ifdef HAVE_MPI
   call MPI_FINALIZE(rc)
 #endif
 
 contains
 
-subroutine power_method(A,lambda,niters,tolerance,verbose)
+subroutine power_method(A,lambda,niters,tolerance,verbose,ierr_pm)
  use iso_c_binding        ,only : c_int,c_double
- use FEpetra_Vector, only : epetra_Vector
- !use FEpetra_CrsMatrix, only : epetra_CrsMatrix
- !type(epetra_CrsMatrix), intent(inout) :: A
- type(epetra_Vector) :: q,z,resid,A
+ use FEpetra_Vector, only : Epetra_Vector
+ use FEpetra_CrsMatrix, only : Epetra_CrsMatrix
+ implicit none
+ type(Epetra_CrsMatrix), intent(inout) :: A
+ integer(c_int),    intent(inout):: ierr_pm
  real(c_double) :: lambda
- integer(c_int) :: niters
- real(c_double) :: tolerance 
- logical        :: verbose
- 
+ integer(c_int), intent(in) :: niters
+ real(c_double), intent(in) :: tolerance 
+ logical, intent(in)        :: verbose
+ real(c_double), allocatable,dimension(:) :: normz,residual
+ type(Epetra_Vector) :: q,z,resid
+ integer(c_int) :: iter
+ print *,'Inside power method'
+ ierr_pm=1
+ q = Epetra_Vector(A%RowMap()) 
+ z = Epetra_Vector(A%RowMap()) 
+ resid = Epetra_Vector(A%RowMap()) 
 
- !q = epetra_vector(A%RowMap()) 
- !z = epetra_vector(A%RowMap()) 
- !resid = epetra_vector(A%RowMap()) 
+ !Fill z with random numbers
+ call z%Random()
+
+ do iter=1,niters
+  normz=z%Norm2()              !Compute 2-norm of z
+  call q%Scale(1.0/normz(1),z)  
+  call A%Multiply(.false.,q,z) ! Compute z=A*q
+  call q%Dot(z,[lambda])       ! Approximate maximum eignvalue
+  if (mod(iter,100)==0.or.iter==niters) then
+   call resid%Update(1.0_c_double,z,-lambda,q,0.0_c_double) ! Compute A*q-lambda*q
+   residual=resid%Norm2()
+   if (verbose) then
+    print *,'Iter=',iter,'lambda=',lambda,'Resisual of A*q-lambda*q=',residual(1)
+   endif
+  endif
+  if (residual(1)<tolerance) then
+   ierr_pm=0
+   exit
+  endif
+ enddo
 end subroutine
 
 end 
