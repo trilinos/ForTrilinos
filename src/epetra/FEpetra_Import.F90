@@ -89,7 +89,7 @@ contains
     type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
     type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id
     allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_Import_ID))
-    alias_EpetraImport_ID=degeneralize_EpetraBlockMap(c_loc(alias_id))
+    alias_EpetraImport_ID=degeneralize_EpetraImport(c_loc(alias_id))
     deallocate(alias_id)
   end function
 
@@ -107,7 +107,7 @@ contains
    ! ____ Use for CTrilinos function implementation ______
   end function
 
- type(FT_Epetra_Import_ID_t) function degeneralize_EpetraBlockMap(generic_id) bind(C)
+ type(FT_Epetra_Import_ID_t) function degeneralize_EpetraImport(generic_id) bind(C)
    ! ____ Use for ForTrilinos function implementation ______
     use ForTrilinos_enums ,only : ForTrilinos_Universal_ID_t,FT_Epetra_Import_ID_t
     use ,intrinsic :: iso_c_binding ,only: c_ptr,c_f_pointer
@@ -159,12 +159,20 @@ contains
     NumRecv=Epetra_Import_NumRecv(this%Import_id)
   end function
 
-  class(Epetra_BlockMap) function SourceMap(this)
-   class(Epetra_Import), intetn(in) :: this
+  type(Epetra_BlockMap) function SourceMap(this)
+   class(Epetra_Import), intent(in) :: this
    type(FT_Epetra_BlockMap_ID_t) :: SourceMap_id
-   SourceMap_id=Epetra_Import_SourceMap(thi%Import_id)
-   SourceMap
+   SourceMap_id=Epetra_Import_SourceMap(this%Import_id)
+   SourceMap=Epetra_BlockMap(SourceMap_id)
   end function
+
+  type(Epetra_BlockMap) function TargetMap(this)
+   class(Epetra_Import), intent(in) :: this
+   type(FT_Epetra_BlockMap_ID_t) :: TargetMap_id
+   TargetMap_id=Epetra_Import_TargetMap(this%Import_id)
+   TargetMap=Epetra_BlockMap(TargetMap_id)
+  end function
+
   subroutine finalize(this)
     type(Epetra_Import) :: this
     print *,'finalize_Import'
