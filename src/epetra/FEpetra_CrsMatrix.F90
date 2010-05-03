@@ -2,6 +2,7 @@ module FEpetra_CrsMatrix
   use ForTrilinos_enums !,only : FT_Epetra_RowMatrix_ID,FT_Epetra_CrsMatrix_ID_t,ForTrilinos_Universal_ID_t,FT_boolean_t,FT_FALSE,FT_TRUE
   use ForTrilinos_enum_wrappers
   use ForTrilinos_table_man
+  use ForTrilinos_error
   use FEpetra_RowMatrix ,only : Epetra_RowMatrix
   use FEpetra_Map     !  ,only : Epetra_Map
   use iso_c_binding     ,only : c_int,c_long,c_double,c_char
@@ -39,6 +40,7 @@ module FEpetra_CrsMatrix
      procedure         :: RowMatrixRowMap 
      procedure         :: RowMap
      procedure         :: NumGlobalEntries
+     !procedure         :: Comm
      !Local/Global ID method
      procedure         :: MyGlobalRow
      !Memory Management
@@ -158,28 +160,28 @@ contains
      end select
   end subroutine
  
-  subroutine InsertGlobalValues(this,GlobalRow,NumEntries,values,indices,error)
+  subroutine InsertGlobalValues(this,GlobalRow,NumEntries,values,indices,err)
    class(Epetra_CrsMatrix), intent(in) :: this
    integer(c_int),          intent(in) :: GlobalRow
    integer(c_int),          intent(in) :: NumEntries
    real(c_double),dimension(:),intent(in):: values 
    integer(c_int),dimension(:),intent(in):: indices 
-   integer(c_int), optional, intent(inout) :: error
+   type(error), optional, intent(out) :: err
    integer(c_int)                          :: error_out
    error_out=Epetra_CrsMatrix_InsertGlobalValues(this%CrsMatrix_id,GlobalRow,NumEntries,values,indices)
-   if  (present(error)) error=error_out
+   if (present(err)) err=error(error_out)
   end subroutine
 
-  subroutine ReplaceGlobalValues(this,GlobalRow,NumEntries,values,indices,error)
+  subroutine ReplaceGlobalValues(this,GlobalRow,NumEntries,values,indices,err)
    class(Epetra_CrsMatrix), intent(in) :: this
    integer(c_int),          intent(in) :: GlobalRow
    integer(c_int),          intent(in) :: NumEntries
    real(c_double), dimension(:)        :: values 
    integer(c_int),    dimension(:)        :: indices 
-   integer(c_int), optional, intent(inout) :: error
+   type(error), optional, intent(out) :: err
    integer(c_int)                          :: error_out
    error_out=Epetra_CrsMatrix_ReplaceGlobalValues(this%CrsMatrix_id,GlobalRow,NumEntries,values,indices)
-   if  (present(error)) error=error_out
+   if (present(err)) err=error(error_out)
   end subroutine
 
   subroutine FillComplete(this,OptimizeDataStorage)
@@ -197,17 +199,17 @@ contains
    junk=Epetra_CrsMatrix_FillComplete(this%CrsMatrix_id,OptimizeDataStorage_in)
   end subroutine
 
- subroutine ExtractGlobalRowCopy(this,GlobalRow,length,NumEntries,values,indices,error)
+ subroutine ExtractGlobalRowCopy(this,GlobalRow,length,NumEntries,values,indices,err)
    class(Epetra_CrsMatrix), intent(in) :: this
    integer(c_int),          intent(in) :: GlobalRow
    integer(c_int),          intent(in) :: length 
    integer(c_int),          intent(inout) :: NumEntries
    real(c_double), dimension(:),intent(inout):: values 
    integer(c_int), dimension(:),intent(inout):: indices 
-   integer(c_int), optional, intent(inout) :: error
+   type(error), optional, intent(out) :: err
    integer(c_int)                          :: error_out
    error_out=Epetra_CrsMatrix_ExtractGlobalRowCopy_WithIndices(this%CrsMatrix_id,GlobalRow,length,NumEntries,values,indices)
-   if  (present(error)) error=error_out
+   if (present(err)) err=error(error_out)
  end subroutine
 
  integer(c_int) function NumMyRowEntries(this,MyRow)
@@ -223,7 +225,7 @@ contains
    MaxNumEntries=Epetra_CrsMatrix_MaxNumEntries(this%CrsMatrix_id)
  end function
  
- subroutine Multiply_Vector(this,TransA,x,y,error)
+ subroutine Multiply_Vector(this,TransA,x,y,err)
   use ForTrilinos_enums, only: FT_boolean_t,FT_FALSE,FT_TRUE
   use FEpetra_Vector, only:Epetra_Vector
   class(Epetra_CrsMatrix), intent(in) :: this
@@ -231,7 +233,7 @@ contains
   integer(FT_boolean_t)  :: TransA_in
   class(Epetra_Vector), intent(in) :: x
   class(Epetra_Vector), intent(in) :: y 
-  integer(c_int), optional, intent(inout) :: error
+  type(error), optional, intent(inout) :: err
   integer(c_int)                       :: error_out
   if (TransA) then
     TransA_in=FT_TRUE
@@ -239,10 +241,10 @@ contains
     TransA_in=FT_FALSE
   endif
   error_out=Epetra_CrsMatrix_Multiply_Vector(this%CrsMatrix_id,TransA_in,x%get_EpetraVector_ID(),y%get_EpetraVector_ID())    
-  if (present(error)) error=error_out
+  if (present(err)) err=error(error_out)
  end subroutine
 
- subroutine Multiply_MultiVector(this,TransA,x,y,error)
+ subroutine Multiply_MultiVector(this,TransA,x,y,err)
   use ForTrilinos_enums, only: FT_boolean_t,FT_FALSE,FT_TRUE
   use FEpetra_MultiVector, only:Epetra_MultiVector
   class(Epetra_CrsMatrix), intent(in) :: this
@@ -250,7 +252,7 @@ contains
   integer(FT_boolean_t)  :: TransA_in
   class(Epetra_MultiVector), intent(in) :: x
   class(Epetra_MultiVector), intent(in) :: y 
-  integer(c_int), optional, intent(inout) :: error
+  type(error), optional, intent(inout) :: err
   integer(c_int)                       :: error_out
   if (TransA) then
     TransA_in=FT_TRUE
@@ -258,7 +260,7 @@ contains
     TransA_in=FT_FALSE
   endif
   error_out=Epetra_CrsMatrix_Multiply_MultiVector(this%CrsMatrix_id,TransA_in,x%get_EpetraMultiVector_ID(),y%get_EpetraMultiVector_ID())    
-  if (present(error)) error=error_out
+  if (present(err)) err=error(error_out)
  end subroutine
 
  logical function MyGlobalRow(this,GID)
@@ -295,6 +297,20 @@ contains
    integer(c_int), intent(in) :: row
    NumGlobalEntries=Epetra_CrsMatrix_NumGlobalEntries(this%CrsMatrix_id,row)
  end function
+
+ !type(FT_Epetra_Comm_ID_t) function Comm(this)
+ !function Comm(this)
+ !  use FEpetra_Comm, only:Epetra_Comm
+ !  use FEpetra_MpiComm, only:Epetra_MpiComm
+ !  class(Epetra_CrsMatrix), intent(in) :: this
+ !  class(Epetra_MpiComm),allocatable:: Comm  
+ !  class(Epetra_MpiComm):: comm_out  
+ !  class(Epetra_Comm),allocatable :: comm_temp
+ !  allocate(Epetra_MpiComm:: comm_temp)  
+ !  comm_temp=Epetra_CrsMatrix_Comm(this%CrsMatrix_id)
+ !  comm_out=comm_temp
+ !  allocate(Comm,source=comm_out)
+ !end function
 
   subroutine finalize(this)
     type(Epetra_CrsMatrix)     :: this

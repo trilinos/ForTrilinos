@@ -32,10 +32,8 @@ module FEpetra_MpiComm
     procedure         :: broadcast_int
     procedure         :: broadcast_long
     procedure         :: broadcast_char
-    !generic :: broadcast=>broadcast_double,broadcast_int,broadcast_char
-    !generic :: broadcast=>broadcast_double,broadcast_int,broadcast_long,broadcast_char
     !Gather Methods
-    !generic :: GatherAll=>
+    procedure         :: gather_double
     !Sum Methods
     !generic :: SumAll=>
     !Max/Min Methods
@@ -230,6 +228,15 @@ contains
     integer(c_int)                     ,intent(in)    :: count,root
     integer(c_int)                                    :: error_out
     error_out=Epetra_MpiComm_Broadcast_Char(this%MpiComm_id,MyVals,count,root)
+  end subroutine
+
+  subroutine gather_double(this,MyVals,AllVals,count)
+   class(Epetra_MpiComm)     ,intent(in)    :: this
+   real(c_double), dimension(:) ,intent(inout) :: MyVals
+   real(c_double), dimension(:) ,intent(inout) :: AllVals
+   integer(c_int)               ,intent(in)    :: count
+   integer(c_int)                              :: error
+   error = Epetra_MpiComm_GatherAll_Double(this%MpiComm_id,MyVals,AllVals,count)
   end subroutine
 
   integer(c_int) function MyPID(this)

@@ -19,6 +19,7 @@ program main
   use FEpetra_Map          ,only : Epetra_Map
   use FEpetra_Vector       ,only : Epetra_Vector
   use ForTrilinos_utils    ,only : valid_kind_parameters
+  use ForTrilinos_error    !,only : error
   implicit none
 
   ! Data declarations 
@@ -26,6 +27,7 @@ program main
   type(Epetra_SerialComm) :: communicator
   type(Epetra_Map)    :: map
   type(Epetra_Vector) :: x, b
+  type(error)         :: err
   integer(c_int) :: numGlobalElements_local, numGlobalElements_return
   integer(c_int) :: Index_Base=1
   real(c_double) :: bnorm(1), xnorm(1)
@@ -57,8 +59,12 @@ program main
   call b%PutScalar(two)
   call x%Update(two, b, zero) ! /* x = 2*b */
  
-  bnorm = b%Norm2()
-  xnorm = x%Norm2()
+  bnorm = b%Norm2(err)
+  print *,'Error value from b%Norm2():',err%error_code()
+  print *,'Error message from b%Norm2():',err%error_message()
+  xnorm = x%Norm2(err)
+  print *,'Error value from x%Norm2():',err%error_code()
+  print *,'Error message from x%Norm2():',err%error_message()
  
   print *, "2 norm of x = ", xnorm(1) 
   print *, "2 norm of b = ", bnorm(1) 

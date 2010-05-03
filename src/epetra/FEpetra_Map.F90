@@ -6,7 +6,7 @@ module FEpetra_Map
   use iso_c_binding      ,only: c_int
   use forepetra
   private                     ! Hide everything by default
-  public :: Epetra_Map,Epetra_BlockMap ! Expose type/constructors/methods
+  public :: Epetra_Map!,Epetra_BlockMap ! Expose type/constructors/methods
   implicit none
 
   type, extends(Epetra_BlockMap)      :: Epetra_Map !"shell"
@@ -152,8 +152,9 @@ contains
   subroutine EpetraMap_assign_to_EpetraMap(lhs,rhs)
     class(Epetra_Map) ,intent(inout):: lhs
     class(Epetra_Map) ,intent(in)   :: rhs
-    call Epetra_Map_Assign(lhs%map_id,rhs%map_id)
-    lhs = Epetra_Map(lhs%map_id)
+    !call Epetra_Map_Assign(lhs%map_id,rhs%map_id)
+    !lhs = Epetra_Map(lhs%map_id)
+    lhs = Epetra_Map(rhs%alias_EpetraMap_ID(rhs%generalize()))
   end subroutine
 
   subroutine finalize(this)

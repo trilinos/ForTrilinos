@@ -2,6 +2,7 @@ module FEpetra_RowMatrix
   use ForTrilinos_universal ,only : universal
   use ForTrilinos_enums !,only: FT_Epetra_RowMatrix_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
+  use ForTrilinos_error, only: error
   use FEpetra_Map, only: Epetra_Map
   use FEpetra_MultiVector, only: Epetra_MultiVector
   use FEpetra_Vector, only: Epetra_Vector
@@ -63,43 +64,43 @@ module FEpetra_RowMatrix
       import:: Epetra_RowMatrix
       class(Epetra_RowMatrix), intent(in) :: this
     end function
-  !  subroutine ExtractMyRowCopy_interface(this,MyRow,length,NumEntries,values,indices,error)
+  !  subroutine ExtractMyRowCopy_interface(this,MyRow,length,NumEntries,values,indices,err)
   !    use iso_c_binding, only : c_int, c_double
-  !    import:: Epetra_RowMatrix
+  !    import:: Epetra_RowMatrix,error
   !    class(Epetra_RowMatrix), intent(in) :: this
   !    integer(c_int),          intent(in) :: MyRow
   !    integer(c_int),          intent(in) :: NumEntries 
   !    integer(c_int),          intent(in) :: length 
   !    real(c_double),dimension(:), intent(out):: values,indices
-  !    integer(c_int),optional,intent(out) :: error
+  !    type(error),optional,intent(out) :: err
   !  end subroutine
-  !  subroutine ExtractDiagonalCopy_interface(this,vector,error)
+  !  subroutine ExtractDiagonalCopy_interface(this,vector,err)
   !    use iso_c_binding, only : c_int
   !    use FEpetra_Vector, only:Epetra_Vector
-  !    import:: Epetra_RowMatrix
+  !    import:: Epetra_RowMatrix,error
   !    class(Epetra_RowMatrix), intent(in) :: this
   !    class(Epetra_Vector), intent(out) :: vector
-  !    integer(c_int),optional,intent(out) :: error
+  !    type(error),optional,intent(out) :: err
   !  end subroutine
-  !   subroutine Multiply_Vector_interface(this,TransA,x,y,error)
+  !   subroutine Multiply_Vector_interface(this,TransA,x,y,err)
   !    use iso_c_binding, only: c_int
   !    use ForTrilinos_enums, only: FT_boolean_t
-  !    import :: Epetra_RowMatrix,Epetra_Vector
+  !    import :: Epetra_RowMatrix,Epetra_Vector,error
   !    class(Epetra_RowMatrix), intent(in) :: this
   !    integer(FT_boolean_t), intent(in) :: TransA
   !    class(Epetra_Vector), intent(in) :: x
   !    class(Epetra_Vector), intent(in) :: y
-  !    integer(c_int), optional,intent(inout) :: error
+  !    type(error), optional,intent(inout) :: err
   !   end subroutine
-    ! subroutine Multiply_MultiVector_interface(this,TransA,x,y,error)
-     subroutine Multiply_interface(this,TransA,x,y,error)
+    ! subroutine Multiply_MultiVector_interface(this,TransA,x,y,err)
+     subroutine Multiply_interface(this,TransA,x,y,err)
       use iso_c_binding, only: c_int
-      import :: Epetra_RowMatrix,Epetra_MultiVector
+      import :: Epetra_RowMatrix,Epetra_MultiVector,error
       class(Epetra_RowMatrix), intent(in) :: this
       logical, intent(in) :: TransA
       class(Epetra_MultiVector), intent(in) :: x
       class(Epetra_MultiVector), intent(in) :: y
-      integer(c_int), optional,intent(inout) :: error
+      type(error), optional,intent(inout) :: err
      end subroutine
     function RowMatrixRowMap_interface(this) 
      import:: Epetra_RowMatrix,Epetra_Map

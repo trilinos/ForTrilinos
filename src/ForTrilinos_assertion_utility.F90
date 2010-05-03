@@ -1,4 +1,4 @@
-module assertion_utility
+module ForTrilinos_assertion_utility
   use iso_fortran_env ,only : error_unit  
   implicit none
   private
@@ -16,7 +16,7 @@ module assertion_utility
 contains
 
   type(error_message) function new_message(message)
-    character(:) ,allocatable :: message
+    character(len=*), intent(in) :: message
     new_message%string = message 
   end function
 

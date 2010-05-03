@@ -28,6 +28,8 @@ module FEpetra_BlockMap
      procedure         :: ElementSize_LID
      generic :: ElementSize=>ElementSize_Const,ElementSize_LID
      !Miscellaneous boolean tests
+     procedure         :: LinearMap
+     procedure         :: DistributedGlobal
      !Array accessor functions
      !Miscellaneous
      !Memory Management
@@ -204,6 +206,24 @@ contains
     integer(c_int)         ,intent(in) :: L_ID
     ElementSize_LID=Epetra_BlockMap_ElementSize(this%BlockMap_id,L_ID)
   end function 
+
+  logical function LinearMap(this)
+    use ForTrilinos_enums, only:FT_boolean_t,FT_FALSE,FT_TRUE
+    class(Epetra_BlockMap),intent(in) :: this
+    integer(FT_boolean_t) :: LinearMap_out
+    LinearMap_out=Epetra_BlockMap_LinearMap(this%BlockMap_id)
+    if (LinearMap_out==FT_FALSE) LinearMap=.false.
+    if (LinearMap_out==FT_TRUE) LinearMap=.true.
+  end function
+
+  logical function DistributedGlobal(this)
+    use ForTrilinos_enums, only:FT_boolean_t,FT_FALSE,FT_TRUE
+    class(Epetra_BlockMap),intent(in) :: this
+    integer(FT_boolean_t) :: DistributedGlobal_out
+    DistributedGlobal_out=Epetra_BlockMap_DistributedGlobal(this%BlockMap_id)
+    if (DistributedGlobal_out==FT_FALSE) DistributedGlobal =.false.
+    if (DistributedGlobal_out==FT_TRUE) DistributedGlobal=.true.
+  end function
 
   subroutine finalize(this)
     type(Epetra_BlockMap) :: this

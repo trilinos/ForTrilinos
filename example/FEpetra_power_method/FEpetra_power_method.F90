@@ -25,6 +25,7 @@ program main
   use FEpetra_CrsMatrix    ,only : Epetra_CrsMatrix
   use ForTrilinos_utils    ,only : valid_kind_parameters
   use ForTrilinos_enum_wrappers
+  use ForTrilinos_error
   use iso_c_binding        ,only : c_int,c_double
   implicit none
 ! Data declarations 
@@ -35,10 +36,11 @@ program main
 #endif
   type(Epetra_Map)    :: map
   type(Epetra_CrsMatrix) :: A
+  type(error)         :: err
   integer(c_int)      :: NumGlobalElements, NumGlobalElements_return
   integer(c_int),dimension(:),allocatable :: MyGlobalElements
   integer(c_int),dimension(:),allocatable :: NumNz
-  integer(c_int)      :: NumMyElements,i,error
+  integer(c_int)      :: NumMyElements,i
   integer(c_int)      :: Index_Base=1
   integer(c_int)      :: MyPID, NumProc
   logical             :: verbose
@@ -118,16 +120,15 @@ program main
       indices(2) = MyGlobalElements(i)+1
       NumEntries = 2
     end if
-     call A%InsertGlobalValues(MyGlobalElements(i),NumEntries,values,indices,error)
-     if (error/=0) stop 'A%InsertGlobalValues: failed'
+     call A%InsertGlobalValues(MyGlobalElements(i),NumEntries,values,indices,err)
+     if (err%error_code()/=0) stop 'A%InsertGlobalValues: failed'
   !Put in the diaogonal entry
-     call A%InsertGlobalValues(MyGlobalElements(i),1,[two],MyGlobalElements,error)
-     if (error/=0) stop 'A%InsertGlobalValues: failed'
+     call A%InsertGlobalValues(MyGlobalElements(i),1,[two],MyGlobalElements,err)
+     if (err%error_code()/=0) stop 'A%InsertGlobalValues: failed'
   end do
  
   !Finish up
   call A%FillComplete()
-  if (error/=0) stop 'A%FillComplete: failed'
  
   !Create vectors for power methods
   !variable needed for interation

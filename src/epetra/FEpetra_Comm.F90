@@ -36,9 +36,12 @@ module FEpetra_Comm
     procedure(broadcast_long_interface)   ,deferred  ::broadcast_long
     procedure(broadcast_char_interface)   ,deferred  ::broadcast_char
     !generic :: broadcast=>broadcast_double,broadcast_int,broadcast_long,broadcast_char
-    generic :: broadcast=>broadcast_double,broadcast_int,broadcast_char
+    generic :: Broadcast=>broadcast_double,broadcast_int,broadcast_char
     !Gather Methods
     !generic :: GatherAll=>
+    procedure(gather_double_interface)   ,deferred  ::gather_double
+    !generic :: GatherAll=>gather_double,gather_int,gather_long,gather_char
+    generic :: GatherAll=>gather_double!,gather_int,gather_char
     !Sum Methods
     !generic :: SumAll=>
     !Max/Min Methods
@@ -119,6 +122,15 @@ module FEpetra_Comm
       import:: Epetra_Comm
       class(Epetra_Comm)                 ,intent(in)    :: this
       character(kind=c_char),dimension(:),intent(inout) :: MyVals
+      integer(c_int)                     ,intent(in)    :: count
+      integer(c_int)                     ,intent(in)    :: root
+    end subroutine
+    subroutine gather_double_interface(this,MyVals,AllVals,count) 
+      use iso_c_binding ,only: c_int,c_double
+      import:: Epetra_Comm
+      class(Epetra_Comm)                 ,intent(in)    :: this
+      real(c_double), dimension(:),       intent(inout) :: MyVals
+      real(c_double), dimension(:),       intent(inout) :: AllVals
       integer(c_int)                     ,intent(in)    :: count
       integer(c_int)                     ,intent(in)    :: root
     end subroutine

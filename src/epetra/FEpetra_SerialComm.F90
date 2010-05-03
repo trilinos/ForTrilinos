@@ -31,10 +31,8 @@ module FEpetra_SerialComm
      procedure         :: broadcast_int
      procedure         :: broadcast_long
      procedure         :: broadcast_char
-     !generic :: broadcast=>broadcast_double,broadcast_int,broadcast_long,broadcast_char
-     !generic :: broadcast=>broadcast_double,broadcast_int,broadcast_char
      !Gather Methods
-     !generic :: GatherAll=>
+     procedure         :: gather_double
      !Sum Methods
      !generic :: SumAll=>
      !Max/Min Methods
@@ -239,7 +237,16 @@ contains
    integer(c_int)                                    :: error 
    error = Epetra_SerialComm_Broadcast_Char(this%SerialComm_id,MyVals,count,root)
   end subroutine
- 
+
+  subroutine gather_double(this,MyVals,AllVals,count)
+   class(Epetra_SerialComm)     ,intent(in)    :: this
+   real(c_double), dimension(:) ,intent(inout) :: MyVals
+   real(c_double), dimension(:) ,intent(inout) :: AllVals
+   integer(c_int)               ,intent(in)    :: count
+   integer(c_int)                              :: error 
+   error = Epetra_SerialComm_GatherAll_Double(this%SerialComm_id,MyVals,AllVals,count)
+  end subroutine
+
   integer(c_int) function MyPID(this)
    class(Epetra_SerialComm)     , intent(in) :: this
    MyPID=Epetra_SerialComm_MyPID(this%SerialComm_id)

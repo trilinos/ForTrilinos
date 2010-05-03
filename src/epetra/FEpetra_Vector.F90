@@ -1,12 +1,13 @@
 module FEpetra_Vector
   use ForTrilinos_enums   ,only: FT_Epetra_MultiVector_ID_t,FT_Epetra_Vector_ID_t,FT_Epetra_BlockMap_ID_t,ForTrilinos_Universal_ID_t,FT_boolean_t 
   use ForTrilinos_table_man
+  use ForTrilinos_error
   use FEpetra_MultiVector ,only: Epetra_MultiVector
   use FEpetra_BlockMap    !,only: Epetra_BlockMap !use to circumvent reported compiler bug
   use iso_c_binding       ,only: c_int
   use forepetra
   private                                    ! Hide everything by default
-  public :: Epetra_Vector,Epetra_MultiVector ! Expose type/constructors/methods
+  public :: Epetra_Vector!,Epetra_MultiVector ! Expose type/constructors/methods
   implicit none
 
   type ,extends(Epetra_MultiVector)      :: Epetra_Vector !"shell"
@@ -18,12 +19,17 @@ module FEpetra_Vector
      procedure         :: generalize 
      procedure         :: assign_to_Epetra_Vector
      generic :: assignment(=) => assign_to_Epetra_Vector
+     !Post-construction modfication routines
+     procedure         :: ReplaceGlobalValues
+     ! Extraction methods
+     procedure         :: ExtractCopy_EpetraVector
+     generic :: ExtractCopy => ExtractCopy_EpetraVector
      procedure         :: force_finalization 
      final :: finalize
   end type
 
    interface Epetra_Vector ! constructors
-     module procedure from_scratch,duplicate,from_struct
+     module procedure constructor1,constructor2,duplicate,from_struct
    end interface
  
 contains
@@ -38,7 +44,7 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_Vector_ID_t Epetra_Vector_Create ( CT_Epetra_BlockMap_ID_t MapID, boolean zeroOut );
 
-  type(FT_Epetra_Vector_ID_t) function from_scratch(BlockMap,zero_initial)
+  type(FT_Epetra_Vector_ID_t) function constructor1(BlockMap,zero_initial)
     use ForTrilinos_enums ,only: FT_boolean_t,FT_FALSE,FT_TRUE,FT_Epetra_BlockMap_ID_t
     use FEpetra_BlockMap  ,only: Epetra_BlockMap
     class(Epetra_BlockMap) ,intent(in) :: BlockMap
@@ -49,7 +55,16 @@ contains
     else
      zero_out=FT_FALSE
     endif
-    from_scratch = Epetra_Vector_Create(BlockMap%get_EpetraBlockMap_ID(),zero_out)
+    constructor1 = Epetra_Vector_Create(BlockMap%get_EpetraBlockMap_ID(),zero_out)
+  end function
+  
+  type(FT_Epetra_Vector_ID_t) function constructor2(CV,BlockMap,V)
+    use ForTrilinos_enum_wrappers
+    use FEpetra_BlockMap  ,only: Epetra_BlockMap
+    class(Epetra_BlockMap) ,intent(in) :: BlockMap
+    integer(FT_Epetra_DataAccess_E_t), intent(in) :: CV
+    real(c_double),dimension(:) :: V
+    constructor2 = Epetra_Vector_Create_FromArray(CV,BlockMap%get_EpetraBlockMap_ID(),V)
   end function
 
   ! Original C++ prototype:
@@ -119,6 +134,27 @@ contains
     lhs%Epetra_MultiVector=Epetra_MultiVector(lhs%alias_EpetraMultiVector_ID(lhs%generalize()))
   end subroutine
 
+  subroutine ReplaceGlobalValues(this,NumEntries,values,indices,err)
+    class(Epetra_Vector), intent(in) :: this
+    integer(c_int),       intent(in) :: NumEntries
+    real(c_double),dimension(:),intent(in) :: values
+    integer(c_int),dimension(:),intent(in) :: indices 
+    type(error),optional,intent(out) :: err
+    integer(c_int)                      :: error_out
+    error_out=Epetra_Vector_ReplaceGlobalValues(this%vector_id,NumEntries,values,indices)
+    if (present(err)) err=error(error_out)
+  end subroutine
+
+  function ExtractCopy_EpetraVector(this,err) result(ExtractCopy_out)
+   class(Epetra_Vector), intent(in) :: this
+   real(c_double), dimension(:), allocatable::  ExtractCopy_out 
+   type(error),optional,intent(out) :: err
+   integer(c_int)                      :: error_out
+   allocate(ExtractCopy_out(this%MyLength()))
+   error_out = Epetra_Vector_ExtractCopy(this%vector_id,ExtractCopy_out)
+   if (present(err)) err=error(error_out)
+  end function 
+  
   subroutine finalize(this)
     type(Epetra_Vector) :: this
     call Epetra_Vector_Destroy( this%vector_id ) 
