@@ -1,0 +1,30 @@
+/**********************************************************
+ ** C++ driver code
+ **********************************************************/
+
+#if !defined(MAIN_UNITTEST_DRIVER) && defined(MAIN_UNITTEST_DRIVER_CXX)
+
+/* Module level */
+
+#  define FORTRILINOS_UNITTEST_MODULE_DEF0(CLASSNAME)
+
+#  define FORTRILINOS_UNITTEST_MODULE_DEF(CLASSNAME) \
+      FORTRILINOS_UNITTEST_MODULE_DEF0(CLASSNAME)
+
+#  define FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASSNAME)
+
+#  define FORTRILINOS_UNITTEST_MODULE_END0(CLASSNAME)
+
+#  define FORTRILINOS_UNITTEST_MODULE_END(CLASSNAME) \
+      FORTRILINOS_UNITTEST_MODULE_END0(CLASSNAME)
+
+/* Unittest level */
+
+#  define FORTRILINOS_UNITTEST_DEF(CLASSNAME, METHODNAME) \
+      TEST_EXEC_FILE(CLASSNAME) METHODNAME
+
+#  define FORTRILINOS_UNITTEST_BEGIN #if 0
+
+#  define FORTRILINOS_UNITTEST_END #endif
+
+#endif

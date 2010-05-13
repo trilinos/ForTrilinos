@@ -1,0 +1,24 @@
+#include "../all_build_macros.h"
+#include "../runtime_macros.h"
+#define CLASS_BEING_TESTED PackageName_ClassName
+
+FORTRILINOS_UNITTEST_MODULE_DEF(CLASS_BEING_TESTED)
+FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, PassingTest)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    implicit none 
+    ! Insert test code here
+    success = .TRUE.
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, FailingTest)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    implicit none 
+    ! Insert test code here
+    success = .FALSE.
+  FORTRILINOS_UNITTEST_END
+
+FORTRILINOS_UNITTEST_MODULE_END(CLASS_BEING_TESTED)

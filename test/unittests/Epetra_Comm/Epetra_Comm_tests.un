@@ -1,0 +1,21 @@
+#include "../all_build_macros.h"
+#include "../runtime_macros.h"
+#define CLASS_BEING_TESTED Epetra_Comm
+
+FORTRILINOS_UNITTEST_MODULE_DEF(CLASS_BEING_TESTED)
+FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, PassingTest)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    use forepetra
+    implicit none 
+    type(FT_Epetra_Comm_ID_t) commID
+    ECHO(commID = Epetra_Comm_Degeneralize(Epetra_SerialComm_Generalize(Epetra_SerialComm_Create())))
+    TEST_EQUALITY(commID%table, FT_Epetra_SerialComm_ID)
+    TEST_EQUALITY(commID%index, 0)
+    TEST_EQUALITY(commID%is_const, FT_False)
+    call Epetra_Comm_Destroy(commID)
+  FORTRILINOS_UNITTEST_END
+
+FORTRILINOS_UNITTEST_MODULE_END(CLASS_BEING_TESTED)
