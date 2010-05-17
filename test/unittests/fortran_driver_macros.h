@@ -1,3 +1,5 @@
+#include "breaklines.h"
+
 /**********************************************************
  ** Fortran driver code
  **********************************************************/
@@ -7,32 +9,32 @@
 /* Module level */
 
 #  define FORTRILINOS_UNITTEST_MODULE_DEF0(CLASSNAME) \
-    module TEST_CALLS_FILE(CLASSNAME) @@ \
-      use TEST_FILE(CLASSNAME) @@ \
-      implicit none @@ \
-      public @@ \
+    module TEST_CALLS_FILE(CLASSNAME) BREAKLINE \
+      use TEST_FILE(CLASSNAME) BREAKLINE \
+      implicit none BREAKLINE \
+      public BREAKLINE \
       contains
 
 #  define FORTRILINOS_UNITTEST_MODULE_DEF(CLASSNAME) \
     FORTRILINOS_UNITTEST_MODULE_DEF0(CLASSNAME)
 
 #  define FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASSNAME) \
-    logical function select_test(which_test) result(success) @@ \
-      character(len=50),intent(in) :: which_test @@ \
+    logical function select_test(which_test) result(success) BREAKLINE \
+      character(len=50),intent(in) :: which_test BREAKLINE \
       success=.FALSE.
 
 #  define FORTRILINOS_UNITTEST_MODULE_END0(CLASSNAME) \
     end module TEST_CALLS_FILE(CLASSNAME)
 
 #  define FORTRILINOS_UNITTEST_MODULE_END(CLASSNAME) \
-    ; stop "Missing test. TEST FAILED" @@ endif @@ end function @@ \
+    ; stop "Missing test. TEST FAILED" BREAKLINE endif BREAKLINE end function BREAKLINE \
     FORTRILINOS_UNITTEST_MODULE_END0(CLASSNAME)
 
 /* Unittest level */
 
 #  define FORTRILINOS_UNITTEST_DEF(CLASSNAME, METHODNAME) \
-    if (which_test==STRINGIFY(METHODNAME)) then @@ \
-      success=TEST_NAME(CLASSNAME, METHODNAME)() @@ else &
+    if (which_test==STRINGIFY(METHODNAME)) then BREAKLINE \
+      success=TEST_NAME(CLASSNAME, METHODNAME)() BREAKLINE else &
 
 #  define FORTRILINOS_UNITTEST_BEGIN #if 0
 

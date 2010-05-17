@@ -1,3 +1,5 @@
+#include "breaklines.h"
+
 /**********************************************************
  ** Unittest implementations
  **********************************************************/
@@ -7,9 +9,9 @@
 /* Module level */
 
 #  define FORTRILINOS_UNITTEST_MODULE_DEF0(CLASSNAME) \
-      module TEST_FILE(CLASSNAME) @@ \
-        implicit none @@ \
-        public @@ \
+      module TEST_FILE(CLASSNAME) BREAKLINE \
+        implicit none BREAKLINE \
+        public BREAKLINE \
         contains
 
 #  define FORTRILINOS_UNITTEST_MODULE_DEF(CLASSNAME) \
