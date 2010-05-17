@@ -38,6 +38,17 @@ SET_TARGET_PROPERTIES(
 
 ######################################################################
 
+SET(ALL_MACRO_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/all_build_macros.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/cxx_driver_macros.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/fortran_driver_macros.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/fortran_impl_macros.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/runtime_macros.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/breaklines.h
+  )
+
+######################################################################
+
 ## EDIT BLOCK BELOW ONLY
 ADD_SUBDIRECTORIES(
   Epetra_Comm
