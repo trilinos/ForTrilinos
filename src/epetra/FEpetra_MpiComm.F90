@@ -164,13 +164,8 @@ contains
   subroutine assign_to_Epetra_MpiComm(lhs,rhs)
     class(Epetra_MpiComm)     ,intent(inout) :: lhs
     type(FT_Epetra_MpiComm_ID_t) ,intent(in)    :: rhs
-    type(FT_Epetra_Comm_ID_t)                   :: test  ! test line
     allocate( lhs%MpiComm_id, source=rhs)
-    print *,'assignment after mpi  part'
-    print *,lhs%MpiComm_id%table,lhs%MpiComm_id%index,lhs%MpiComm_id%is_const
     call lhs%set_EpetraComm_ID(lhs%alias_EpetraComm_ID(lhs%generalize()))
-    test=lhs%get_EpetraComm_ID()  ! test line
-    print *,test%table,test%index,test%is_const
   end subroutine
 
   subroutine SerialComm_assign(lhs,rhs)
@@ -232,8 +227,10 @@ contains
 
   subroutine gather_double(this,MyVals,AllVals,count)
    class(Epetra_MpiComm)     ,intent(in)    :: this
-   real(c_double), dimension(:) ,intent(inout) :: MyVals
-   real(c_double), dimension(:) ,intent(inout) :: AllVals
+   !real(c_double), dimension(:) ,intent(inout) :: MyVals
+   !real(c_double), dimension(:) ,intent(inout) :: AllVals
+   real(c_double), dimension(:)  :: MyVals
+   real(c_double), dimension(:)  :: AllVals
    integer(c_int)               ,intent(in)    :: count
    integer(c_int)                              :: error
    error = Epetra_MpiComm_GatherAll_Double(this%MpiComm_id,MyVals,AllVals,count)

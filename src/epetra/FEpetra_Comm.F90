@@ -129,8 +129,8 @@ module FEpetra_Comm
       use iso_c_binding ,only: c_int,c_double
       import:: Epetra_Comm
       class(Epetra_Comm)                 ,intent(in)    :: this
-      real(c_double), dimension(:),       intent(inout) :: MyVals
-      real(c_double), dimension(:),       intent(inout) :: AllVals
+      real(c_double), dimension(:)        :: MyVals
+      real(c_double), dimension(:)       :: AllVals
       integer(c_int)                     ,intent(in)    :: count
       integer(c_int)                     ,intent(in)    :: root
     end subroutine
@@ -197,13 +197,11 @@ module FEpetra_Comm
     use ForTrilinos_enums
     type(FT_Epetra_Comm_ID_t) ,intent(in)   :: rhs
     class(Epetra_Comm)        ,intent(inout):: lhs
-    print *,'Comm_assign_ID'
     lhs%comm_id=rhs
   end subroutine
  
   subroutine force_finalization_EpetraComm(this)
     class(Epetra_Comm) ,intent(inout) :: this
-    print *,'Destroy_Comm'
     call Epetra_Comm_Destroy( this%comm_id )
   end subroutine
 end module 

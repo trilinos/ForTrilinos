@@ -112,15 +112,15 @@ contains
 
   type(ForTrilinos_Universal_ID_t) function generalize(this)
    ! ____ Use for ForTrilinos function implementation ______
-   !use ForTrilinos_utils ,only: generalize_all
-   !use iso_c_binding ,only : c_loc
-   !class(Epetra_CrsMatrix) ,intent(in) ,target :: this
-   !generalize = generalize_all( c_loc(this%CrsMatrix_id) )
+   use ForTrilinos_utils ,only: generalize_all
+   use iso_c_binding ,only : c_loc
+   class(Epetra_CrsMatrix) ,intent(in) ,target :: this
+   generalize = generalize_all( c_loc(this%CrsMatrix_id) )
    ! ____ Use for ForTrilinos function implementation ______
    
    ! ____ Use for CTrilinos function implementation ______
-    class(Epetra_CrsMatrix) ,intent(in) ,target :: this
-    generalize = Epetra_CrsMatrix_Generalize ( this%CrsMatrix_id ) 
+   ! class(Epetra_CrsMatrix) ,intent(in) ,target :: this
+   ! generalize = Epetra_CrsMatrix_Generalize ( this%CrsMatrix_id ) 
    ! ____ Use for CTrilinos function implementation ______
   end function
  
@@ -150,7 +150,6 @@ contains
   subroutine assign_to_Epetra_RowMatrix(lhs,rhs)
     class(Epetra_CrsMatrix) ,intent(inout) :: lhs
     class(Epetra_RowMatrix) ,intent(in)    :: rhs
-    print *,'assign_to_Epetra_RowMatrix'
     select type(rhs)
       class is (Epetra_CrsMatrix)
         allocate(lhs%CrsMatrix_id,source=alias_EpetraCrsMatrix_ID(rhs%generalize()))
@@ -314,7 +313,6 @@ contains
 
   subroutine finalize(this)
     type(Epetra_CrsMatrix)     :: this
-    print *,'finalize_CrsMatrix'
     call this%force_finalization_EpetraRowMatrix()
     call Epetra_CrsMatrix_Destroy( this%CrsMatrix_id ) 
     deallocate(this%CrsMatrix_id)
@@ -323,7 +321,6 @@ contains
   subroutine force_finalization(this)
     class(Epetra_CrsMatrix) ,intent(inout) :: this
     if (associated(this%CrsMatrix_id)) then
-      print *,'force_finalization_CrsMatrix'
       call finalize(this) 
     else
       print *,' finalization for Epetra_CrsMatrix received object with unassociated CrsMatrix_id'

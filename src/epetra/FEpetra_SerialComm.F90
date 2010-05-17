@@ -58,7 +58,6 @@ contains
   type(FT_Epetra_SerialComm_ID_t) function from_struct(id)
      type(FT_Epetra_SerialComm_ID_t) ,intent(in) :: id
      from_struct = id
-     !print *,'serialcomm from_Struct:',id%table,id%index
   end function
 
   ! Original C++ prototype:
@@ -68,7 +67,6 @@ contains
   
   type(FT_Epetra_SerialComm_ID_t) function from_scratch()
     from_scratch = Epetra_SerialComm_Create()
-     print *,'serialcomm from_Scratch'
   end function
 
   ! Original C++ prototype:
@@ -79,7 +77,6 @@ contains
   type(FT_Epetra_SerialComm_ID_t) function duplicate(this)
     type(Epetra_SerialComm) ,intent(in) :: this 
     duplicate = Epetra_SerialComm_Duplicate(this%SerialComm_id)
-     print *,'serialcomm from_duplicate'
   end function
 
   function clone(this)
@@ -126,15 +123,15 @@ contains
 
   type(ForTrilinos_Universal_ID_t) function generalize(this)
    ! ____ Use for ForTrilinos function implementation ______
-   !use ForTrilinos_utils ,only: generalize_all
-   !use iso_c_binding ,only : c_loc
-   !class(Epetra_SerialComm) ,intent(in) ,target :: this
-   !generalize = generalize_all( c_loc(this%SerialComm_id) )
+   use ForTrilinos_utils ,only: generalize_all
+   use iso_c_binding ,only : c_loc
+   class(Epetra_SerialComm) ,intent(in) ,target :: this
+   generalize = generalize_all( c_loc(this%SerialComm_id) )
    ! ____ Use for ForTrilinos function implementation ______
    
    ! ____ Use for CTrilinos function implementation ______
-    class(Epetra_SerialComm) ,intent(in) ,target :: this
-    generalize = Epetra_SerialComm_Generalize ( this%SerialComm_id ) 
+   ! class(Epetra_SerialComm) ,intent(in) ,target :: this
+   ! generalize = Epetra_SerialComm_Generalize ( this%SerialComm_id ) 
    ! ____ Use for CTrilinos function implementation ______
   end function
  
@@ -157,15 +154,8 @@ contains
   subroutine assign_to_Epetra_SerialComm(lhs,rhs)
     class(Epetra_SerialComm)        ,intent(inout) :: lhs
     type(FT_Epetra_SerialComm_ID_t) ,intent(in)    :: rhs
-    type(FT_Epetra_SerialComm_ID_t) :: test_serial
-    type(FT_Epetra_Comm_ID_t) :: test_comm
-    print *,'assign_to_Epetra_SerialComm'
     allocate( lhs%SerialComm_id, source=rhs)
     call lhs%set_EpetraComm_ID(lhs%alias_EpetraComm_ID(lhs%generalize()))
-    test_serial=lhs%SerialComm_id
-    test_comm=lhs%get_EpetraComm_ID()
-    !print *,'serial=',test_serial%table, test_serial%index
-    !print *,'comm=',test_comm%table, test_comm%index
   end subroutine
 
 #ifdef HAVE_MPI 
@@ -179,19 +169,12 @@ contains
   subroutine assign_to_Epetra_Comm(lhs,rhs)
     class(Epetra_SerialComm) ,intent(inout) :: lhs
     class(Epetra_Comm)       ,intent(in)    :: rhs
-    type(FT_Epetra_SerialComm_ID_t) :: test_serial
-    type(FT_Epetra_Comm_ID_t) :: test_comm
-    print *,'assign_to_Epetra_Comm'
     select type(rhs)
       class is (Epetra_SerialComm)
         allocate(lhs%SerialComm_id,source=alias_EpetraSerialComm_ID(rhs%generalize()))
         call lhs%set_EpetraComm_ID(lhs%alias_EpetraComm_ID(lhs%generalize()))
         !allocate(Epetra_SerialComm :: lhs)
         !lhs=Epetra_SerialComm(alias_EpetraSerialComm_ID(rhs%generalize()))
-    !test_serial=lhs%SerialComm_id
-    test_comm=lhs%get_EpetraComm_ID()
-    !print *,'serial=',test_serial%table, test_serial%index
-    !print *,'comm=',test_comm%table, test_comm%index
      class default
         stop 'assign_to_Epetra_Comm: unsupported class'
      end select
@@ -240,8 +223,10 @@ contains
 
   subroutine gather_double(this,MyVals,AllVals,count)
    class(Epetra_SerialComm)     ,intent(in)    :: this
-   real(c_double), dimension(:) ,intent(inout) :: MyVals
-   real(c_double), dimension(:) ,intent(inout) :: AllVals
+   !real(c_double), dimension(:) ,intent(inout) :: MyVals
+   !real(c_double), dimension(:) ,intent(inout) :: AllVals
+   real(c_double), dimension(:)  :: MyVals
+   real(c_double), dimension(:)  :: AllVals
    integer(c_int)               ,intent(in)    :: count
    integer(c_int)                              :: error 
    error = Epetra_SerialComm_GatherAll_Double(this%SerialComm_id,MyVals,AllVals,count)
@@ -259,7 +244,6 @@ contains
 
   subroutine finalize(this)
     type(Epetra_SerialComm)     :: this
-    print *,'finalize_SerialComm'
     call this%force_finalization_EpetraComm()
     call Epetra_SerialComm_Destroy( this%SerialComm_id ) 
     deallocate(this%SerialComm_id)
@@ -268,7 +252,6 @@ contains
   subroutine force_finalization(this)
     class(Epetra_SerialComm) ,intent(inout) :: this
     if (associated(this%SerialComm_id)) then
-      print *,'force_finalization_SerialComm'
       call finalize(this) 
     else
       print *,' finalization for Epetra_SerialComm received object with unassociated SerialComm_id'

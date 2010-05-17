@@ -59,8 +59,6 @@ APPEND_SET(SOURCES
   ForTrilinos_table_man.F90
   ForTrilinos_external_utils.F90
   ForTrilinos_utils.F90
-  ForTrilinos_error.F90
-  ForTrilinos_assertion_utility.F90
   ${DIREPETRA}/forepetra.F90
   ${DIRTEUCHOS}/forteuchos.F90
   )
@@ -104,6 +102,8 @@ IF(${PACKAGE_NAME}_ENABLE_EXTENDED)
   APPEND_SET(SOURCES
     ForTrilinos_hermetic.F90
     ForTrilinos_universal.F90
+    ForTrilinos_error.F90
+    ForTrilinos_assertion_utility.F90
     )
 
   APPEND_GLOB(SOURCES ${DIREPETRA}/FEpetra*.F90

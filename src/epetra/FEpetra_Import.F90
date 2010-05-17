@@ -23,7 +23,7 @@ module FEpetra_Import
      ! Public member functions
      procedure        :: NumSameIDs
      procedure        :: NumPermuteIDs
-     !procedure        :: PermuteFromLIDs
+     procedure        :: PermuteFromLIDs
      !procedure        :: PermuteToLIDs
      procedure        :: NumRemoteIDs
      !procedure       :: RemoteLIDs
@@ -137,6 +137,18 @@ contains
   integer(c_int) function NumPermuteIDs(this)
     class(Epetra_Import), intent(in) :: this
     NumPermuteIDs=Epetra_Import_NumPermuteIDs(this%Import_id)
+  end function
+
+ function PermuteFromLIDs(this)
+    use ,intrinsic :: iso_c_binding ,only: c_ptr,c_f_pointer,c_int
+    class(Epetra_Import), intent(in) :: this
+    integer(c_int),dimension(:),allocatable :: PermuteFromLIDs
+    type(c_ptr)   :: PermuteFromLIDs_external_ptr 
+    integer(c_int),pointer :: PermuteFromLIDs_local_ptr
+    allocate(PermuteFromLIDs(this%NumPermuteIDs()))
+    PermuteFromLIDs_external_ptr=Epetra_Import_PermuteFromLIDs(this%Import_id)
+    call c_f_pointer (PermuteFromLIDs_external_ptr, PermuteFromLIDs_local_ptr)
+    PermuteFromLIDs=PermuteFromLIDs_local_ptr
   end function
 
   integer(c_int) function NumRemoteIDs(this)

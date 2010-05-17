@@ -161,13 +161,11 @@ module FEpetra_RowMatrix
     use ForTrilinos_enums
     type(FT_Epetra_RowMatrix_ID_t) ,intent(in)   :: rhs
     class(Epetra_RowMatrix)        ,intent(inout):: lhs
-    print *,'RowMatrix_assign_ID'
     lhs%RowMatrix_id=rhs
   end subroutine
  
   subroutine force_finalization_EpetraRowMatrix(this)
     class(Epetra_RowMatrix) ,intent(inout) :: this
-    print *,'Destroy_RowMatrix'
     call Epetra_RowMatrix_Destroy( this%RowMatrix_id )
   end subroutine
 end module 
