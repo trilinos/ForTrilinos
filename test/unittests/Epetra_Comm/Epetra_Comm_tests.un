@@ -11,6 +11,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     use forepetra
     implicit none 
     type(FT_Epetra_Comm_ID_t) commID
+    success = .TRUE.
     ECHO(commID = Epetra_Comm_Degeneralize(Epetra_SerialComm_Generalize(Epetra_SerialComm_Create())))
     TEST_EQUALITY(commID%table, FT_Epetra_SerialComm_ID)
     TEST_EQUALITY(commID%index, 0)
