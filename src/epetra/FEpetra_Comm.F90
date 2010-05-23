@@ -1,5 +1,5 @@
 module FEpetra_Comm
-  use ForTrilinos_universal ,only : universal
+  use ForTrilinos_universal_new ,only : universal
   use ForTrilinos_enums !,only: FT_Epetra_Comm_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
   use forepetra
@@ -15,19 +15,20 @@ module FEpetra_Comm
     !Constructors
     procedure(clone_interface)          ,deferred :: clone
     ! Developers only
+    procedure,private :: remote_dealloc_EpetraComm
     procedure                                     :: get_EpetraComm_ID
     procedure                                     :: set_EpetraComm_ID
     procedure                 ,nopass             :: alias_EpetraComm_ID
     procedure ,non_overridable                    :: generalize_EpetraComm
-    procedure(EpetraComm_assign)        ,deferred :: Comm_assign 
-    procedure                                     :: Comm_assign_ID
-    procedure(EpetraSerialComm_assign)  ,deferred :: SerialComm_assign 
-#ifdef HAVE_MPI
-    procedure(EpetraMpiComm_assign)     ,deferred :: MpiComm_assign 
-    generic :: assignment(=)=>MpiComm_assign,SerialComm_assign,Comm_assign,Comm_assign_ID
-#else
-    generic :: assignment(=)=>SerialComm_assign,Comm_assign,Comm_assign_ID
-#endif /* HAVE_MPI */
+!    procedure(EpetraComm_assign)        ,deferred :: Comm_assign 
+!    procedure                                     :: Comm_assign_ID
+!    procedure(EpetraSerialComm_assign)  ,deferred :: SerialComm_assign 
+!#ifdef HAVE_MPI
+!    procedure(EpetraMpiComm_assign)     ,deferred :: MpiComm_assign 
+!!    generic :: assignment(=)=>MpiComm_assign,SerialComm_assign,Comm_assign,Comm_assign_ID
+!#else
+!    generic :: assignment(=)=>SerialComm_assign,Comm_assign,Comm_assign_ID
+!#endif /* HAVE_MPI */
     !Barrier Methods
     procedure(barrier_interface)          ,deferred          ::barrier
     !Broadcast Methods
@@ -53,8 +54,6 @@ module FEpetra_Comm
     procedure(NumProc_interface)         ,deferred::NumProc
     !Gather/catter and Directory Constructors
     !I/O methods
-    !Memory Management
-    procedure,non_overridable :: force_finalization_EpetraComm
   end type
   
   abstract interface
@@ -69,26 +68,26 @@ module FEpetra_Comm
       class(Epetra_Comm) ,intent(in)  :: this
       class(Epetra_Comm) ,allocatable :: clone_interface
     end function
-    subroutine EpetraSerialComm_assign(lhs,rhs)
-      use ForTrilinos_enums
-      import:: Epetra_Comm
-      type(FT_Epetra_SerialComm_ID_t),intent(in)    :: rhs
-      class(Epetra_Comm)             ,intent(inout) :: lhs
-    end subroutine
-#ifdef HAVE_MPI
-    subroutine EpetraMpiComm_assign(lhs,rhs)
-      use ForTrilinos_enums
-      import:: Epetra_Comm
-      type(FT_Epetra_MpiComm_ID_t)   ,intent(in)    :: rhs
-      class(Epetra_Comm)             ,intent(inout) :: lhs
-    end subroutine
-#endif /* HAVE_MPI */
-    subroutine EpetraComm_assign(lhs,rhs)
-      use ForTrilinos_enums
-      import:: Epetra_Comm
-      class(Epetra_Comm) ,intent(in)    :: rhs
-      class(Epetra_Comm) ,intent(inout) :: lhs
-    end subroutine
+!    subroutine EpetraSerialComm_assign(lhs,rhs)
+!      use ForTrilinos_enums
+!      import:: Epetra_Comm
+!      type(FT_Epetra_SerialComm_ID_t),intent(in)    :: rhs
+!      class(Epetra_Comm)             ,intent(inout) :: lhs
+!    end subroutine
+!#ifdef HAVE_MPI
+!    subroutine EpetraMpiComm_assign(lhs,rhs)
+!      use ForTrilinos_enums
+!      import:: Epetra_Comm
+!      type(FT_Epetra_MpiComm_ID_t)   ,intent(in)    :: rhs
+!      class(Epetra_Comm)             ,intent(inout) :: lhs
+!    end subroutine
+!#endif /* HAVE_MPI */
+!    subroutine EpetraComm_assign(lhs,rhs)
+!      use ForTrilinos_enums
+!      import:: Epetra_Comm
+!      class(Epetra_Comm) ,intent(in)    :: rhs
+!      class(Epetra_Comm) ,intent(inout) :: lhs
+!    end subroutine
     subroutine barrier_interface(this) 
       import:: Epetra_Comm
       class(Epetra_Comm) ,intent(in)  :: this
@@ -132,7 +131,6 @@ module FEpetra_Comm
       real(c_double), dimension(:)        :: MyVals
       real(c_double), dimension(:)       :: AllVals
       integer(c_int)                     ,intent(in)    :: count
-      integer(c_int)                     ,intent(in)    :: root
     end subroutine
     integer(c_int) function MyPID_interface(this)
       use iso_c_binding ,only: c_int
@@ -193,14 +191,7 @@ module FEpetra_Comm
     degeneralize_EpetraComm = local_ptr
   end function
  
-  subroutine Comm_assign_ID(lhs,rhs)
-    use ForTrilinos_enums
-    type(FT_Epetra_Comm_ID_t) ,intent(in)   :: rhs
-    class(Epetra_Comm)        ,intent(inout):: lhs
-    lhs%comm_id=rhs
-  end subroutine
- 
-  subroutine force_finalization_EpetraComm(this)
+  subroutine remote_dealloc_EpetraComm(this)
     class(Epetra_Comm) ,intent(inout) :: this
     call Epetra_Comm_Destroy( this%comm_id )
   end subroutine

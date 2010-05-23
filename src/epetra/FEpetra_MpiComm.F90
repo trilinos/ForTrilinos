@@ -5,6 +5,7 @@ module FEpetra_MpiComm
   use ForTrilinos_enums ,only: FT_Epetra_MpiComm_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
   use ForTrilinos_external_utils
+  use ForTrilinos_hermetic_new, only : hermetic
   use FEpetra_Comm      ,only: Epetra_Comm
   use iso_c_binding     ,only: c_int,c_double,c_long,c_char
   use forepetra
@@ -19,12 +20,10 @@ module FEpetra_MpiComm
     !Constructor
     procedure         :: clone
     !Developers only
+    procedure, private::remote_dealloc_EpetraMpiComm
     procedure         :: get_EpetraMpiComm_ID
     procedure ,nopass :: alias_EpetraMpiComm_ID
     procedure         :: generalize
-    procedure         :: MpiComm_assign => assign_to_Epetra_MpiComm 
-    procedure         :: Comm_assign => assign_to_Epetra_Comm
-    procedure         :: SerialComm_assign
     !Barrier Method
     procedure         :: barrier
     !Broadcast Method
@@ -46,8 +45,6 @@ module FEpetra_MpiComm
     !Gather/catter and Directory Constructors
     !I/O methods
     !Memory Management 
-    procedure :: force_finalization 
-    final :: finalize
   end type
   
  interface Epetra_MpiComm ! constructors
@@ -56,9 +53,11 @@ module FEpetra_MpiComm
   
 contains
 
- type(FT_Epetra_MpiComm_ID_t) function from_struct(id)
-     type(FT_Epetra_MpiComm_ID_t) ,intent(in) :: id
-     from_struct = id
+ type(Epetra_MpiComm) function from_struct(id)
+   type(FT_Epetra_MpiComm_ID_t) ,intent(in) :: id
+   from_struct%hermetic = hermetic()
+   from_struct%MpiComm_id = id
+   call from_struct%set_EpetraComm_ID(from_struct%alias_EpetraComm_ID(from_struct%generalize()))
   end function
  
   ! Original C++ prototype:
@@ -66,9 +65,11 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_MpiComm_ID_t Epetra_MpiComm_Create ( MPI_Comm comm );
 
-  type(FT_Epetra_MpiComm_ID_t) function from_scratch(comm)
+  type(Epetra_MpiComm) function from_scratch(comm)
     integer(c_int) ,intent(in) :: comm
-    from_scratch = Epetra_MpiComm_Fortran_Create(comm)
+    from_scratch%hermetic = hermetic()
+    from_scratch%MpiComm_id = Epetra_MpiComm_Fortran_Create(comm)
+    call from_scratch%set_EpetraComm_ID(from_scratch%alias_EpetraComm_ID(from_scratch%generalize()))
   end function
 
   ! Original C++ prototype:
@@ -76,39 +77,41 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_MpiComm_ID_t Epetra_MpiComm_Duplicate ( CT_Epetra_MpiComm_ID_t CommID );
 
-  type(FT_Epetra_MpiComm_ID_t) function duplicate(original)
-    type(Epetra_MpiComm) ,intent(in) :: original
-    duplicate = Epetra_MpiComm_Duplicate(original%MpiComm_id)
+  type(Epetra_MpiComm) function duplicate(original)
+   type(Epetra_MpiComm) ,intent(in) :: original
+   duplicate%hermetic = hermetic()
+   duplicate%MpiComm_id = Epetra_MpiComm_Duplicate(original%MpiComm_id)
+   call duplicate%set_EpetraComm_ID(duplicate%alias_EpetraComm_ID(duplicate%generalize()))
+  end function
+
+  function clone(this)
+    class(Epetra_MpiComm)    ,intent(in)  :: this
+    class(Epetra_Comm)       ,allocatable :: clone
+    allocate(Epetra_MpiComm :: clone)
+    clone=Epetra_MpiComm(Epetra_MpiComm_Clone(this%MpiComm_id))
   end function
 
   !function clone(this)
-  !  class(Epetra_MpiComm)    ,intent(in)  :: this
-  !  class(Epetra_Comm)       ,allocatable :: clone
-  !  allocate(Epetra_MpiComm :: clone)
-  !  clone = Epetra_MpiComm_Clone(this%MpiComm_id)
+   ! class(Epetra_MpiComm) ,intent(in)  :: this
+   ! class(Epetra_Comm)       ,allocatable :: clone
+    !class(Epetra_Comm)       ,allocatable :: clone_temp
+    !type(FT_Epetra_MpiComm_ID_t) :: test
+    !type(FT_Epetra_Comm_ID_t) :: test1
+    !allocate(Epetra_MpiComm :: clone)
+    !allocate(Epetra_MpiComm :: clone_temp)
+    !clone_temp = Epetra_MpiComm_Clone(this%MpiComm_id)
+   !! test = clone_temp%MpiComm_id
+   !! print *,'clone_temp%mpicom',test%table,test%index
+    !test1 = clone_temp%get_EpetraComm_ID()
+    !print *,'clone_temp%comm',test1%table,test1%index
+    !clone=Epetra_MpiComm(alias_EpetraMpiComm_ID(clone_temp%generalize_EpetraComm()))
+    !!test = clone%MpiComm_id
+   !! test = clone%get_EpetraMpiComm_ID()
+   !! print *,'clone%mpicomm',test%table,test%index
+    !test1 = clone%get_EpetraComm_ID()
+    !print *,'clone%comm',test1%table,test1%index
+    !call clone_temp%force_finalization_EpetraComm()
   !end function
-
-  function clone(this)
-    class(Epetra_MpiComm) ,intent(in)  :: this
-    class(Epetra_Comm)       ,allocatable :: clone
-    class(Epetra_Comm)       ,allocatable :: clone_temp
-    type(FT_Epetra_MpiComm_ID_t) :: test
-    type(FT_Epetra_Comm_ID_t) :: test1
-    allocate(Epetra_MpiComm :: clone)
-    allocate(Epetra_MpiComm :: clone_temp)
-    clone_temp = Epetra_MpiComm_Clone(this%MpiComm_id)
-   ! test = clone_temp%MpiComm_id
-   ! print *,'clone_temp%mpicom',test%table,test%index
-    test1 = clone_temp%get_EpetraComm_ID()
-    print *,'clone_temp%comm',test1%table,test1%index
-    clone=Epetra_MpiComm(alias_EpetraMpiComm_ID(clone_temp%generalize_EpetraComm()))
-    !test = clone%MpiComm_id
-   ! test = clone%get_EpetraMpiComm_ID()
-   ! print *,'clone%mpicomm',test%table,test%index
-    test1 = clone%get_EpetraComm_ID()
-    print *,'clone%comm',test1%table,test1%index
-    call clone_temp%force_finalization_EpetraComm()
-  end function
 
 
  type(FT_Epetra_MpiComm_ID_t) function get_EpetraMpiComm_ID(this)
@@ -160,33 +163,6 @@ contains
    ! degeneralize_EpetraMpiComm = Epetra_MpiComm_Degeneralize( generic_id )
    ! ____ Use for CTrilinos function implementation ______
   end function
-
-  subroutine assign_to_Epetra_MpiComm(lhs,rhs)
-    class(Epetra_MpiComm)     ,intent(inout) :: lhs
-    type(FT_Epetra_MpiComm_ID_t) ,intent(in)    :: rhs
-    allocate( lhs%MpiComm_id, source=rhs)
-    call lhs%set_EpetraComm_ID(lhs%alias_EpetraComm_ID(lhs%generalize()))
-  end subroutine
-
-  subroutine SerialComm_assign(lhs,rhs)
-    use ForTrilinos_enums, only : FT_Epetra_SerialComm_ID_t
-    class(Epetra_MpiComm),      intent(inout) :: lhs
-    type(FT_Epetra_SerialComm_ID_t), intent(in) :: rhs 
-    print *, 'SerialComm_assign in FEpetra_MpiComm no-op'
-  end subroutine
-
-
-  subroutine assign_to_Epetra_Comm(lhs,rhs)
-    class(Epetra_MpiComm) ,intent(inout) :: lhs
-    class(Epetra_Comm)       ,intent(in)    :: rhs
-    select type(rhs)
-      class is (Epetra_MpiComm)
-        allocate(lhs%MpiComm_id,source=alias_EpetraMpiComm_ID(rhs%generalize()))
-        call lhs%set_EpetraComm_ID(lhs%alias_EpetraComm_ID(lhs%generalize()))
-     class default
-        stop 'assign_to_Epetra_Comm: unsupported class'
-     end select
-  end subroutine
 
   subroutine barrier(this)
    class(Epetra_MpiComm) ,intent(in) :: this
@@ -246,20 +222,10 @@ contains
    NumProc=Epetra_MpiComm_NumProc(this%MpiComm_id)
   end function
 
-  subroutine finalize(this)
-    type(Epetra_MpiComm) :: this
-    call this%force_finalization_EpetraComm()
-    call Epetra_MpiComm_Destroy ( this%MpiComm_id ) 
-    deallocate(this%MpiComm_id)
-  end subroutine
-
-  subroutine force_finalization(this)
+  subroutine remote_dealloc_EpetraMpiComm(this)
     class(Epetra_MpiComm) ,intent(inout) :: this
-    if (associated(this%MpiComm_id)) then
-      call finalize(this) 
-    else
-      print *,'finalization for Epetra_MpiComm received object with unassociated MpiComm_id'
-    end if
+    call this%Epetra_Comm%remote_dealloc_EpetraComm()
+    call Epetra_MpiComm_Destroy(this%MpiComm_id)
   end subroutine
 #endif
 end module 

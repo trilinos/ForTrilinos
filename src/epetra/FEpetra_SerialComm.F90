@@ -1,6 +1,7 @@
 module FEpetra_SerialComm
   use ForTrilinos_enums ,only : FT_Epetra_Comm_ID,FT_Epetra_SerialComm_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
+  use FOrTrilinos_hermetic_new, only: hermetic
   use FEpetra_Comm      ,only : Epetra_Comm
   use iso_c_binding     ,only : c_int,c_long,c_double,c_char
   use forepetra
@@ -11,19 +12,15 @@ module FEpetra_SerialComm
 
   type ,extends(Epetra_Comm)                 :: Epetra_SerialComm !"shell"
     private
-    type(FT_Epetra_SerialComm_ID_t) ,pointer :: SerialComm_id => null()
+    type(FT_Epetra_SerialComm_ID_t) :: SerialComm_id 
   contains
      !Constructor
      procedure         :: clone 
      !Developers only
+     procedure, private:: remote_dealloc_EpetraSerialComm
      procedure         :: get_EpetraSerialComm_ID 
      procedure ,nopass :: alias_EpetraSerialComm_ID
      procedure         :: generalize 
-     procedure         :: SerialComm_assign => assign_to_Epetra_SerialComm
-     procedure         :: Comm_assign => assign_to_Epetra_Comm
-#ifdef HAVE_MPI
-     procedure         :: MpiComm_assign
-#endif
      !Barrier Methods
      procedure         :: barrier
      !Broadcast Methods
@@ -45,8 +42,6 @@ module FEpetra_SerialComm
      !Gather/catter and Directory Constructors
      !I/O methods
      !Memory Management
-     procedure         :: force_finalization 
-     final :: finalize
   end type
 
    interface Epetra_SerialComm ! constructors
@@ -65,8 +60,10 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_SerialComm_ID_t Epetra_SerialComm_Create (  );
   
-  type(FT_Epetra_SerialComm_ID_t) function from_scratch()
-    from_scratch = Epetra_SerialComm_Create()
+  type(Epetra_SerialComm) function from_scratch()
+    from_scratch%hermetic = hermetic()
+    from_scratch%SerialComm_id = Epetra_SerialComm_Create()
+   call from_scratch%set_EpetraComm_ID(from_scratch%alias_EpetraComm_ID(from_scratch%generalize())) 
   end function
 
   ! Original C++ prototype:
@@ -151,34 +148,12 @@ contains
    ! ____ Use for CTrilinos function implementation ______
   end function
  
-  subroutine assign_to_Epetra_SerialComm(lhs,rhs)
-    class(Epetra_SerialComm)        ,intent(inout) :: lhs
-    type(FT_Epetra_SerialComm_ID_t) ,intent(in)    :: rhs
-    allocate( lhs%SerialComm_id, source=rhs)
-    call lhs%set_EpetraComm_ID(lhs%alias_EpetraComm_ID(lhs%generalize()))
-  end subroutine
-
-#ifdef HAVE_MPI 
-  subroutine MpiComm_assign(lhs,rhs)
-    use ForTrilinos_enums, only : FT_Epetra_MpiComm_ID_t
-    class(Epetra_SerialComm),      intent(inout) :: lhs
-    type(FT_Epetra_MpiComm_ID_t), intent(in) :: rhs 
-    print *, 'MpiComm_assign in FEpetra_SerialComm no-op'
-  end subroutine
-#endif
-  subroutine assign_to_Epetra_Comm(lhs,rhs)
-    class(Epetra_SerialComm) ,intent(inout) :: lhs
-    class(Epetra_Comm)       ,intent(in)    :: rhs
-    select type(rhs)
-      class is (Epetra_SerialComm)
-        allocate(lhs%SerialComm_id,source=alias_EpetraSerialComm_ID(rhs%generalize()))
-        call lhs%set_EpetraComm_ID(lhs%alias_EpetraComm_ID(lhs%generalize()))
-        !allocate(Epetra_SerialComm :: lhs)
-        !lhs=Epetra_SerialComm(alias_EpetraSerialComm_ID(rhs%generalize()))
-     class default
-        stop 'assign_to_Epetra_Comm: unsupported class'
-     end select
-  end subroutine
+ ! subroutine assign_to_Epetra_SerialComm(lhs,rhs)
+ !   class(Epetra_SerialComm)        ,intent(inout) :: lhs
+ !   type(FT_Epetra_SerialComm_ID_t) ,intent(in)    :: rhs
+ !   allocate( lhs%SerialComm_id, source=rhs)
+ !   call lhs%set_EpetraComm_ID(lhs%alias_EpetraComm_ID(lhs%generalize()))
+ ! end subroutine
 
   subroutine barrier(this)
    class(Epetra_SerialComm) ,intent(in) :: this
@@ -242,20 +217,10 @@ contains
    NumProc=Epetra_SerialComm_NumProc(this%SerialComm_id)
   end function
 
-  subroutine finalize(this)
-    type(Epetra_SerialComm)     :: this
-    call this%force_finalization_EpetraComm()
-    call Epetra_SerialComm_Destroy( this%SerialComm_id ) 
-    deallocate(this%SerialComm_id)
-  end subroutine
-
-  subroutine force_finalization(this)
+  subroutine remote_dealloc_EpetraSerialComm(this)
     class(Epetra_SerialComm) ,intent(inout) :: this
-    if (associated(this%SerialComm_id)) then
-      call finalize(this) 
-    else
-      print *,' finalization for Epetra_SerialComm received object with unassociated SerialComm_id'
-    end if
+    call this%Epetra_Comm%remote_dealloc_EpetraComm()
+    call Epetra_SerialComm_Destroy(this%SerialCommid)
   end subroutine
 end module 
 

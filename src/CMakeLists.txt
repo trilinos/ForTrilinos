@@ -101,7 +101,9 @@ IF(${PACKAGE_NAME}_ENABLE_EXTENDED)
 
   APPEND_SET(SOURCES
     ForTrilinos_hermetic.F90
+    ForTrilinos_hermetic_new.F90
     ForTrilinos_universal.F90
+    ForTrilinos_universal_new.F90
     ForTrilinos_error.F90
     ForTrilinos_assertion_utility.F90
     )
