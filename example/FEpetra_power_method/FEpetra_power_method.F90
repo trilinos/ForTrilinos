@@ -155,7 +155,7 @@ program main
   ! with compilers that support Fortran 2003 type finalization:
   call A%force_finalization()
   call map%force_finalization()
-  call communicator%force_finalization()
+  call communicator%force_finalize()
  
 #ifdef HAVE_MPI
   call MPI_FINALIZE(rc)

@@ -85,7 +85,7 @@ program main
   call b%force_finalization()
   call x%force_finalization()
   call map%force_finalization()
-  call communicator%force_finalization()
+  call communicator%force_finalize()
  
   if (success) then
     print *  

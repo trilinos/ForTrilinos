@@ -7,11 +7,12 @@ module ForTrilinos_hermetic_new
   contains
       procedure, private, non_overridable :: grab
       procedure, private, non_overridable :: release
-      procedure, private :: assign
+      !procedure, private :: assign
+      procedure, public :: assign_hermetic
       procedure, private :: remote_dealloc
       procedure, non_overridable :: force_finalize
       final :: finalize_hermetic
-      generic :: assignment(=) => assign
+      !generic :: assignment(=) => assign
   end type
 
   interface hermetic
@@ -58,10 +59,20 @@ contains
           stop 'Error in release: count not associated'
       end if
   end subroutine
+  
+ subroutine assign_hermetic (lhs, rhs)
+      class (hermetic), intent(inout) :: lhs
+      class (hermetic), intent(in) :: rhs
+      print *,'hermetic assign'
+      if (associated(lhs%count)) call lhs%release
+      lhs%count => rhs%count
+      call lhs%grab
+  end subroutine
 
   subroutine assign (lhs, rhs)
       class (hermetic), intent(inout) :: lhs
       class (hermetic), intent(in) :: rhs
+      print *,'hermetic assign'
       if (associated(lhs%count)) call lhs%release
       lhs%count => rhs%count
       call lhs%grab
@@ -75,6 +86,7 @@ contains
   function constructor ()
       type(hermetic), allocatable :: constructor
       allocate (constructor)
+      print *,'hermetic constructor'
       allocate (constructor%count, source=0)
       call constructor%grab
   end function

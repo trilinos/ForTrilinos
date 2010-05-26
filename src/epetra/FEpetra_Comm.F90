@@ -13,21 +13,23 @@ module FEpetra_Comm
    type(FT_Epetra_Comm_ID_t)         :: comm_id 
   contains
     !Constructors
-    procedure(clone_interface)          ,deferred :: clone
+    !procedure(clone_interface)          ,deferred :: clone
     ! Developers only
-    procedure,private :: remote_dealloc_EpetraComm
+    procedure                            ,private :: remote_dealloc
+    procedure                            ,public  :: remote_dealloc_EpetraComm
     procedure                                     :: get_EpetraComm_ID
     procedure                                     :: set_EpetraComm_ID
     procedure                 ,nopass             :: alias_EpetraComm_ID
     procedure ,non_overridable                    :: generalize_EpetraComm
-!    procedure(EpetraComm_assign)        ,deferred :: Comm_assign 
+    procedure(EpetraComm_assign)        ,deferred :: Comm_assign 
+    generic  :: assignment(=)=>Comm_assign
 !    procedure                                     :: Comm_assign_ID
 !    procedure(EpetraSerialComm_assign)  ,deferred :: SerialComm_assign 
 !#ifdef HAVE_MPI
 !    procedure(EpetraMpiComm_assign)     ,deferred :: MpiComm_assign 
-!!    generic :: assignment(=)=>MpiComm_assign,SerialComm_assign,Comm_assign,Comm_assign_ID
+!    generic :: assignment(=)=>MpiComm_assign,SerialComm_assign
 !#else
-!    generic :: assignment(=)=>SerialComm_assign,Comm_assign,Comm_assign_ID
+!    generic :: assignment(=)=>SerialComm_assign
 !#endif /* HAVE_MPI */
     !Barrier Methods
     procedure(barrier_interface)          ,deferred          ::barrier
@@ -63,31 +65,28 @@ module FEpetra_Comm
     ! CTrilinos prototype:
     ! CT_Epetra_Comm_ID_t Epetra_Comm_Clone ( CT_Epetra_Comm_ID_t selfID );
   
-    function clone_interface(this) 
-      import:: Epetra_Comm
-      class(Epetra_Comm) ,intent(in)  :: this
-      class(Epetra_Comm) ,allocatable :: clone_interface
-    end function
+    !function clone_interface(this) 
+    !  import:: Epetra_Comm
+    !  class(Epetra_Comm) ,intent(in)  :: this
+    !  class(Epetra_Comm) ,allocatable :: clone_interface
+    !end function
 !    subroutine EpetraSerialComm_assign(lhs,rhs)
-!      use ForTrilinos_enums
-!      import:: Epetra_Comm
-!      type(FT_Epetra_SerialComm_ID_t),intent(in)    :: rhs
+!     import:: Epetra_Comm
 !      class(Epetra_Comm)             ,intent(inout) :: lhs
+!      class(Epetra_Comm)             ,intent(in) :: rhs
 !    end subroutine
 !#ifdef HAVE_MPI
 !    subroutine EpetraMpiComm_assign(lhs,rhs)
-!      use ForTrilinos_enums
 !      import:: Epetra_Comm
-!      type(FT_Epetra_MpiComm_ID_t)   ,intent(in)    :: rhs
 !      class(Epetra_Comm)             ,intent(inout) :: lhs
+!      class(Epetra_Comm)             ,intent(in) :: rhs
 !    end subroutine
 !#endif /* HAVE_MPI */
-!    subroutine EpetraComm_assign(lhs,rhs)
-!      use ForTrilinos_enums
-!      import:: Epetra_Comm
-!      class(Epetra_Comm) ,intent(in)    :: rhs
-!      class(Epetra_Comm) ,intent(inout) :: lhs
-!    end subroutine
+    subroutine EpetraComm_assign(lhs,rhs)
+      import:: Epetra_Comm
+      class(Epetra_Comm) ,intent(inout) :: lhs
+      class(Epetra_Comm) ,intent(in)    :: rhs
+    end subroutine
     subroutine barrier_interface(this) 
       import:: Epetra_Comm
       class(Epetra_Comm) ,intent(in)  :: this
@@ -154,6 +153,7 @@ module FEpetra_Comm
   subroutine set_EpetraComm_ID(this,id)
     class(Epetra_Comm)        ,intent(inout) :: this
     type(FT_Epetra_Comm_ID_t) ,intent(in)    :: id 
+    print *,'set comm'
     this%comm_id=id
   end subroutine 
   
@@ -191,8 +191,16 @@ module FEpetra_Comm
     degeneralize_EpetraComm = local_ptr
   end function
  
-  subroutine remote_dealloc_EpetraComm(this)
+  subroutine remote_dealloc(this)
     class(Epetra_Comm) ,intent(inout) :: this
     call Epetra_Comm_Destroy( this%comm_id )
   end subroutine
+  
+  subroutine remote_dealloc_EpetraComm(this)
+    class(Epetra_Comm) ,intent(inout) :: this
+    print *,'remote_epetraComm'
+    call Epetra_Comm_Destroy( this%comm_id )
+    !call remote_dealloc(this)
+  end subroutine
+
 end module 

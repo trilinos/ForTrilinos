@@ -15,12 +15,13 @@ module FEpetra_MpiComm
 
   type ,extends(Epetra_Comm) :: Epetra_MpiComm
     private
-    type(FT_Epetra_MpiComm_ID_t), pointer :: MpiComm_id  
+    type(FT_Epetra_MpiComm_ID_t) :: MpiComm_id  
   contains
     !Constructor
-    procedure         :: clone
+    !procedure         :: clone
     !Developers only
-    procedure, private::remote_dealloc_EpetraMpiComm
+    procedure, private::remote_dealloc
+    procedure         :: Comm_assign
     procedure         :: get_EpetraMpiComm_ID
     procedure ,nopass :: alias_EpetraMpiComm_ID
     procedure         :: generalize
@@ -55,9 +56,15 @@ contains
 
  type(Epetra_MpiComm) function from_struct(id)
    type(FT_Epetra_MpiComm_ID_t) ,intent(in) :: id
-   from_struct%hermetic = hermetic()
+   type(FT_Epetra_Comm_ID_t)  :: id_t
+   print *,'from_struct'
+   !from_struct%hermetic = hermetic()
    from_struct%MpiComm_id = id
+   call from_struct%hermetic%assign_hermetic(hermetic())
    call from_struct%set_EpetraComm_ID(from_struct%alias_EpetraComm_ID(from_struct%generalize()))
+   print *,from_struct%MpiComm_id%table,from_struct%MpiComm_id%index,from_struct%MpiComm_id%is_const
+   id_t=from_struct%get_EpetraComm_ID()
+   print *,id_t%table,id_t%index,id_t%is_const
   end function
  
   ! Original C++ prototype:
@@ -66,10 +73,15 @@ contains
   ! CT_Epetra_MpiComm_ID_t Epetra_MpiComm_Create ( MPI_Comm comm );
 
   type(Epetra_MpiComm) function from_scratch(comm)
-    integer(c_int) ,intent(in) :: comm
-    from_scratch%hermetic = hermetic()
-    from_scratch%MpiComm_id = Epetra_MpiComm_Fortran_Create(comm)
-    call from_scratch%set_EpetraComm_ID(from_scratch%alias_EpetraComm_ID(from_scratch%generalize()))
+   integer(c_int) ,intent(in) :: comm
+   type(FT_Epetra_MpiComm_ID_t) :: from_scratch_id
+   type(FT_Epetra_Comm_ID_t) :: id
+   print *,'from_scratch'
+   from_scratch_id = Epetra_MpiComm_Fortran_Create(comm)
+   from_scratch=from_struct(from_scratch_id)
+   print *,from_scratch%MpiComm_id%table,from_scratch%MpiComm_id%index,from_scratch%MpiComm_id%is_const
+   id=from_scratch%get_EpetraComm_ID()
+   print *,id%table,id%index,id%is_const
   end function
 
   ! Original C++ prototype:
@@ -77,50 +89,40 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_MpiComm_ID_t Epetra_MpiComm_Duplicate ( CT_Epetra_MpiComm_ID_t CommID );
 
-  type(Epetra_MpiComm) function duplicate(original)
-   type(Epetra_MpiComm) ,intent(in) :: original
-   duplicate%hermetic = hermetic()
-   duplicate%MpiComm_id = Epetra_MpiComm_Duplicate(original%MpiComm_id)
-   call duplicate%set_EpetraComm_ID(duplicate%alias_EpetraComm_ID(duplicate%generalize()))
+  type(Epetra_MpiComm) function duplicate(this)
+   type(Epetra_MpiComm) ,intent(in) :: this
+    type(FT_Epetra_MpiComm_ID_t) :: duplicate_id
+    duplicate_id = Epetra_MpiComm_Duplicate(this%MpiComm_id)
+    duplicate = from_struct(duplicate_id)
   end function
 
-  function clone(this)
-    class(Epetra_MpiComm)    ,intent(in)  :: this
-    class(Epetra_Comm)       ,allocatable :: clone
-    allocate(Epetra_MpiComm :: clone)
-    clone=Epetra_MpiComm(Epetra_MpiComm_Clone(this%MpiComm_id))
-  end function
+  subroutine Comm_assign(lhs,rhs)
+   class(Epetra_MpiComm),intent(inout) :: lhs
+   class(Epetra_Comm),intent(in)    :: rhs
+   select type(rhs)
+    class is (Epetra_MpiComm)
+     lhs%MpiComm_id=rhs%MpiComm_id
+     call lhs%hermetic%assign_hermetic(rhs%hermetic)
+     call lhs%set_EpetraComm_ID(rhs%get_EpetraComm_ID())
+   end select
+  end subroutine
 
   !function clone(this)
-   ! class(Epetra_MpiComm) ,intent(in)  :: this
-   ! class(Epetra_Comm)       ,allocatable :: clone
-    !class(Epetra_Comm)       ,allocatable :: clone_temp
-    !type(FT_Epetra_MpiComm_ID_t) :: test
-    !type(FT_Epetra_Comm_ID_t) :: test1
-    !allocate(Epetra_MpiComm :: clone)
-    !allocate(Epetra_MpiComm :: clone_temp)
-    !clone_temp = Epetra_MpiComm_Clone(this%MpiComm_id)
-   !! test = clone_temp%MpiComm_id
-   !! print *,'clone_temp%mpicom',test%table,test%index
-    !test1 = clone_temp%get_EpetraComm_ID()
-    !print *,'clone_temp%comm',test1%table,test1%index
-    !clone=Epetra_MpiComm(alias_EpetraMpiComm_ID(clone_temp%generalize_EpetraComm()))
-    !!test = clone%MpiComm_id
-   !! test = clone%get_EpetraMpiComm_ID()
-   !! print *,'clone%mpicomm',test%table,test%index
-    !test1 = clone%get_EpetraComm_ID()
-    !print *,'clone%comm',test1%table,test1%index
-    !call clone_temp%force_finalization_EpetraComm()
+  !  class(Epetra_MpiComm)    ,intent(in)  :: this
+  !  class(Epetra_Comm)       ,allocatable :: clone
+  !  type(Epetra_MpiComm)      :: clone_local
+  !  type(FT_Epetra_MpiComm_ID_t) :: clone_mpi_id
+  !  type(FT_Epetra_Comm_ID_t) :: clone_comm_id
+  !  clone_comm_id=Epetra_MpiComm_Clone(this%MpiComm_id)
+  !  call clone_local%set_EpetraComm_ID(clone_comm_id)
+  !  allocate(Epetra_MpiComm :: clone)
+  !  clone=Epetra_MpiComm(alias_EpetraMpiComm_ID(clone_local%generalize_EpetraComm()))
+  !  call clone_local%force_finalize()
   !end function
-
 
  type(FT_Epetra_MpiComm_ID_t) function get_EpetraMpiComm_ID(this)
    class(Epetra_MpiComm) ,intent(in) :: this
-   if (associated(this%MpiComm_id)) then
-    get_EpetraMpiComm_ID=this%MpiComm_id
-   else
-    stop 'get_EpetraMpiComm_ID: MpiComm_id is unassociated'
-   end if
+   get_EpetraMpiComm_ID=this%MpiComm_id
   end function
  
   type(FT_Epetra_MpiComm_ID_t) function alias_EpetraMpiComm_ID(generic_id)
@@ -222,9 +224,9 @@ contains
    NumProc=Epetra_MpiComm_NumProc(this%MpiComm_id)
   end function
 
-  subroutine remote_dealloc_EpetraMpiComm(this)
+  subroutine remote_dealloc(this)
     class(Epetra_MpiComm) ,intent(inout) :: this
-    call this%Epetra_Comm%remote_dealloc_EpetraComm()
+    call this%remote_dealloc_EpetraComm()
     call Epetra_MpiComm_Destroy(this%MpiComm_id)
   end subroutine
 #endif
