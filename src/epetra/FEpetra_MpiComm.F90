@@ -42,7 +42,7 @@ module FEpetra_MpiComm
   use ForTrilinos_enums ,only: FT_Epetra_MpiComm_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
   use ForTrilinos_external_utils
-  use ForTrilinos_hermetic_new, only : hermetic
+  use ForTrilinos_hermetic, only : hermetic
   use FEpetra_Comm      ,only: Epetra_Comm
   use iso_c_binding     ,only: c_int,c_double,c_long,c_char
   use forepetra
@@ -57,8 +57,7 @@ module FEpetra_MpiComm
     !Constructor
     !procedure         :: clone
     !Developers only
-    procedure, private::remote_dealloc
-    procedure         :: assign_hermetic=>Comm_assign
+    procedure         ::remote_dealloc
     procedure         :: get_EpetraMpiComm_ID
     procedure ,nopass :: alias_EpetraMpiComm_ID
     procedure         :: generalize
@@ -95,9 +94,9 @@ contains
    type(FT_Epetra_MpiComm_ID_t) ,intent(in) :: id
    type(FT_Epetra_Comm_ID_t)  :: id_t
    print *,'from_struct'
-   from_struct%hermetic = hermetic()
    from_struct%MpiComm_id = id
    call from_struct%set_EpetraComm_ID(from_struct%alias_EpetraComm_ID(from_struct%generalize()))
+   call from_struct%register_self
    print *,from_struct%MpiComm_id%table,from_struct%MpiComm_id%index,from_struct%MpiComm_id%is_const
    id_t=from_struct%get_EpetraComm_ID()
    print *,id_t%table,id_t%index,id_t%is_const
@@ -131,17 +130,6 @@ contains
     duplicate_id = Epetra_MpiComm_Duplicate(this%MpiComm_id)
     duplicate = from_struct(duplicate_id)
   end function
-
-  subroutine Comm_assign(lhs,rhs)
-   class(Epetra_MpiComm),intent(inout) :: lhs
-   class(hermetic),intent(in)    :: rhs
-   select type(rhs)
-    class is (Epetra_MpiComm)
-     lhs%MpiComm_id=rhs%MpiComm_id
-     lhs%hermetic=rhs%hermetic
-     call lhs%set_EpetraComm_ID(rhs%get_EpetraComm_ID())
-   end select
-  end subroutine
 
   !function clone(this)
   !  class(Epetra_MpiComm)    ,intent(in)  :: this

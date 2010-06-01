@@ -1,6 +1,6 @@
 
 IF("${CMAKE_Fortran_COMPILER_ID}" MATCHES "VisualAge|XL")
-    SET(CMAKE_Fortran_FLAGS "${CMake_Fortran_FLAGS} -qxlf2003=polymorphic -qxlf2003=autorealloc -WF,-C! -tchbI -B/opt/local/hotfix/091023/exe/")
+    SET(CMAKE_Fortran_FLAGS "${CMake_Fortran_FLAGS} -qxlf2003=polymorphic -qxlf2003=autorealloc -WF,-C!")
 ENDIF()
 
 INCLUDE(PackageLibraryMacros)
@@ -101,9 +101,8 @@ IF(${PACKAGE_NAME}_ENABLE_EXTENDED)
 
   APPEND_SET(SOURCES
     ForTrilinos_hermetic.F90
-    ForTrilinos_hermetic_new.F90
+    ForTrilinos_ref_counter.F90
     ForTrilinos_universal.F90
-    ForTrilinos_universal_new.F90
     ForTrilinos_error.F90
     ForTrilinos_assertion_utility.F90
     )

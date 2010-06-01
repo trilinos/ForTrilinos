@@ -39,7 +39,6 @@ module ForTrilinos_enums
 ! Can't use Fortran-style include due to C pre-processor directives in ForTrilinos_config.h
 #include "ForTrilinos_config.h"
   use iso_c_binding ,only : c_int        ! Kind parameter (precision specifier)
-#include "ForTrilinos_config.h"
   implicit none                          ! Prevent implicit typing
 
   ! This file is the Fortran companion to CTrilinos/src/CTrilinos_enums.h.

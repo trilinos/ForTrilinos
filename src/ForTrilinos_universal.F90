@@ -1,28 +1,28 @@
 module ForTrilinos_universal
-#include "ForTrilinos_config.h"
-
-  ! This module implements a base type that all ForTrilinos derived types (except 'hermetic') extend.
-  ! It provides a universal dummy argument class to which any actual argument can be passed in an 
-  ! Epetra type-bound procedure.  The deferred binding "generalize" ensures that each Epetra derived
-  ! type implements a type-bound procedure that can be invoked to create an equivalent general
-  ! entity of derived type ForTrilinos_Universal_ID_t, which can then be converted to any other Epetra
-  ! derived type.
-
   use ForTrilinos_hermetic ,only : hermetic
-  use ForTrilinos_enums ,only : ForTrilinos_Universal_ID_t
+  use ForTrilinos_ref_counter, only : ref_counter
   implicit none
-  type ,abstract ,public ,extends(hermetic) :: universal
-!  contains
-!    procedure(generalize_interface) ,deferred :: generalize 
+
+  type ,abstract ,extends(hermetic) :: universal
+    private
+    type(ref_counter) :: counter
+
+    contains
+    procedure, non_overridable :: force_finalize
+    procedure, non_overridable :: register_self
   end type
 
-  ! Implementations of this procedure will take in a specific struct and return
-  ! a generic struct that can be used to call a casting function.
+  contains
 
-!  abstract interface
-!    type(ForTrilinos_Universal_ID_t) function generalize_interface(this)
-!      import :: universal,ForTrilinos_Universal_ID_t
-!      class(universal) ,intent(in) ,target :: this
-!    end function
-!  end interface
+  subroutine force_finalize (this)
+    class(universal), intent(inout) :: this
+
+    call this%counter%release
+  end subroutine
+
+  subroutine register_self (this)
+    class(universal), intent(inout) :: this
+
+    this%counter = ref_counter(this)
+  end subroutine
 end module

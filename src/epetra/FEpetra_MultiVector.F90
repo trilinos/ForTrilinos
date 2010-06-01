@@ -39,7 +39,7 @@
 module FEpetra_MultiVector
   use ForTrilinos_enums ,only: FT_Epetra_MultiVector_ID_t,FT_Epetra_Map_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
-  use ForTrilinos_universal
+  use ForTrilinos_universal,only:universal
   use ForTrilinos_error
   use FEpetra_BlockMap  ,only: Epetra_BlockMap
   use iso_c_binding     ,only: c_int,c_double,c_char
@@ -50,13 +50,13 @@ module FEpetra_MultiVector
 
   type ,extends(universal)                    :: Epetra_MultiVector !"shell"
     private
-    type(FT_Epetra_MultiVector_ID_t) ,pointer :: MultiVector_id => null()
+    type(FT_Epetra_MultiVector_ID_t) :: MultiVector_id 
   contains
+     procedure         :: remote_dealloc_EpetraMultiVector
+     procedure         :: remote_dealloc
      procedure         :: get_EpetraMultiVector_ID 
      procedure ,nopass :: alias_EpetraMultiVector_ID
      procedure         :: generalize 
-     procedure         :: assign_to_Epetra_MultiVector
-     generic :: assignment(=) => assign_to_Epetra_MultiVector
      ! Post-construction modification procedure 
      procedure         :: ReplaceGlobalValue_GlobalRow
      procedure         :: ReplaceGlobalValue_GlobalBlockRow
@@ -85,9 +85,6 @@ module FEpetra_MultiVector
      procedure         :: GlobalLength
      procedure         :: Stride
      procedure         :: ConstantStride
-     !Memory Management
-     procedure         :: force_finalization 
-     final :: finalize
   end type
 
    interface Epetra_MultiVector ! constructors
@@ -95,9 +92,10 @@ module FEpetra_MultiVector
    end interface
 
 contains
-  type(FT_Epetra_MultiVector_ID_t) function from_struct(id)
+  type(Epetra_MultiVector) function from_struct(id)
      type(FT_Epetra_MultiVector_ID_t) ,intent(in) :: id
-     from_struct = id
+     from_struct%MultiVector_id = id
+     call from_struct%register_self
   end function
 
   ! Original C++ prototype:
@@ -105,16 +103,18 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create ( CT_Epetra_BlockMap_ID_t MapID, int NumVectors, boolean zeroOut ); 
 
-  type(FT_Epetra_MultiVector_ID_t) function from_scratch(BlockMap,Num_Vectors,zero)
+  type(Epetra_MultiVector) function from_scratch(BlockMap,Num_Vectors,zero)
    use ForTrilinos_enums ,only: FT_boolean_t,FT_TRUE,FT_FALSE
    use iso_c_binding     ,only: c_int
    class(Epetra_BlockMap) ,intent(in) :: BlockMap
    integer(c_int)         ,intent(in) :: Num_Vectors
    logical  ,intent(in) :: zero 
    integer(FT_boolean_t) :: zeroOut 
+   type(FT_Epetra_MultiVector_ID_t) :: from_scratch_id
    if (zero) zeroOut=FT_TRUE
    if (.not.zero) zeroOut=FT_FALSE
-   from_scratch = Epetra_MultiVector_Create(BlockMap%get_EpetraBlockMap_ID(),Num_Vectors,zeroOut)
+   from_scratch_id = Epetra_MultiVector_Create(BlockMap%get_EpetraBlockMap_ID(),Num_Vectors,zeroOut)
+   call from_scratch%register_self
   end function
 
   ! Original C++ prototype:
@@ -122,18 +122,16 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Duplicate ( CT_Epetra_MultiVector_ID_t SourceID );
 
-  type(FT_Epetra_MultiVector_ID_t) function duplicate(original)
-    type(Epetra_MultiVector) ,intent(in) :: original
-    duplicate = Epetra_MultiVector_Duplicate(original%MultiVector_id)
+  type(Epetra_MultiVector) function duplicate(this)
+    type(Epetra_MultiVector) ,intent(in) :: this
+    type(FT_Epetra_MultiVector_ID_t) :: duplicate_id
+    duplicate_id = Epetra_MultiVector_Duplicate(this%MultiVector_id)
+    call duplicate%register_self
   end function
 
   type(FT_Epetra_MultiVector_ID_t) function get_EpetraMultiVector_ID(this)
     class(Epetra_MultiVector) ,intent(in) :: this 
-    if (associated(this%MultiVector_id)) then
-     get_EpetraMultiVector_ID=this%MultiVector_id
-    else
-     stop 'get_EpetraMultiVector_ID: MultiVector_id is unassociated'
-    end if
+    get_EpetraMultiVector_ID=this%MultiVector_id
   end function
   
   type(FT_Epetra_MultiVector_ID_t) function alias_EpetraMultiVector_ID(generic_id)
@@ -177,12 +175,6 @@ contains
   ! ____ Use for CTrilinos function implementation ______
   end function
  
-  subroutine assign_to_Epetra_MultiVector(lhs,rhs)
-    class(Epetra_MultiVector)       ,intent(inout):: lhs
-    type(FT_Epetra_MultiVector_ID_t),intent(in)   :: rhs
-    allocate(lhs%MultiVector_id,source=rhs)
-  end subroutine
-
   subroutine ReplaceGlobalValue_GlobalRow(this,GlobalRow,VectorIndex,ScalarValue,err)
     class(Epetra_MultiVector), intent(in) :: this
     integer(c_int), intent(in) :: GlobalRow
@@ -358,19 +350,14 @@ contains
     ConstantStride=Epetra_MultiVector_ConstantStride(this%MultiVector_id)
   end function 
 
-  subroutine finalize(this)
-    type(Epetra_MultiVector) :: this
+  subroutine remote_dealloc_EpetraMultiVector(this)
+    class(Epetra_MultiVector),intent(inout) :: this
     call Epetra_MultiVector_Destroy( this%MultiVector_id ) 
-    deallocate (this%MultiVector_id)
   end subroutine
 
-  subroutine force_finalization(this)
-    class(Epetra_MultiVector) ,intent(inout) :: this
-    if (associated(this%MultiVector_id)) then
-      call finalize(this) 
-    else
-      print *,' finalization for Epetra_MultiVector received  with unassociated object'
-    end if
+  subroutine remote_dealloc(this)
+    class(Epetra_MultiVector),intent(inout) :: this
+    call Epetra_MultiVector_Destroy( this%MultiVector_id ) 
   end subroutine
 
 end module 

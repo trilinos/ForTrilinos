@@ -82,9 +82,9 @@ program main
  
   ! Clean up memory (in reverse order).  This step is not required
   ! with compilers that support Fortran 2003 type finalization:
-  call b%force_finalization()
-  call x%force_finalization()
-  call map%force_finalization()
+  call b%force_finalize()
+  call x%force_finalize()
+  call map%force_finalize()
   call communicator%force_finalize()
  
   if (success) then

@@ -153,8 +153,8 @@ program main
  
   ! Clean up memory (in reverse order).  This step is not required
   ! with compilers that support Fortran 2003 type finalization:
-  call A%force_finalization()
-  call map%force_finalization()
+  call A%force_finalize()
+  call map%force_finalize()
   call communicator%force_finalize()
  
 #ifdef HAVE_MPI

@@ -36,7 +36,7 @@
 !*********************************************************************
 
 module FEpetra_Comm
-  use ForTrilinos_universal_new ,only : universal
+  use ForTrilinos_universal ,only : universal
   use ForTrilinos_enums !,only: FT_Epetra_Comm_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
   use forepetra
@@ -52,14 +52,12 @@ module FEpetra_Comm
     !Constructors
     !procedure(clone_interface)          ,deferred :: clone
     ! Developers only
-    procedure                            ,private :: remote_dealloc
-    procedure                            ,public  :: remote_dealloc_EpetraComm
+    procedure                                     :: remote_dealloc
+    procedure                                     :: remote_dealloc_EpetraComm
     procedure                                     :: get_EpetraComm_ID
     procedure                                     :: set_EpetraComm_ID
     procedure                 ,nopass             :: alias_EpetraComm_ID
     procedure ,non_overridable                    :: generalize_EpetraComm
-!    procedure(EpetraComm_assign)        ,deferred :: Comm_assign 
-!    generic  :: assignment(=)=>Comm_assign
     !Barrier Methods
     procedure(barrier_interface)          ,deferred          ::barrier
     !Broadcast Methods
@@ -99,11 +97,6 @@ module FEpetra_Comm
     !  class(Epetra_Comm) ,intent(in)  :: this
     !  class(Epetra_Comm) ,allocatable :: clone_interface
     !end function
-!    subroutine EpetraComm_assign(lhs,rhs)
-!      import:: Epetra_Comm
-!      class(Epetra_Comm) ,intent(inout) :: lhs
-!      class(Epetra_Comm) ,intent(in)    :: rhs
-!    end subroutine
     subroutine barrier_interface(this) 
       import:: Epetra_Comm
       class(Epetra_Comm) ,intent(in)  :: this
@@ -217,7 +210,6 @@ module FEpetra_Comm
     class(Epetra_Comm) ,intent(inout) :: this
     print *,'remote_epetraComm'
     call Epetra_Comm_Destroy( this%comm_id )
-    !call remote_dealloc(this)
   end subroutine
 
 end module 

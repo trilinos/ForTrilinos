@@ -37,7 +37,7 @@
 
 
 module FEpetra_RowMatrix
-  use ForTrilinos_universal ,only : universal
+  use ForTrilinos_universal,only : universal
   use ForTrilinos_enums !,only: FT_Epetra_RowMatrix_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
   use ForTrilinos_error, only: error
@@ -54,14 +54,11 @@ module FEpetra_RowMatrix
    type(FT_Epetra_RowMatrix_ID_t)         :: RowMatrix_id 
   contains
     ! Developers only
+    procedure                          :: remote_dealloc_EpetraRowMatrix
     procedure                                     :: get_EpetraRowMatrix_ID
     procedure                                     :: set_EpetraRowMatrix_ID
     procedure                 ,nopass             :: alias_EpetraRowMatrix_ID
     procedure ,non_overridable                    :: generalize_EpetraRowMatrix
-    procedure(EpetraCrsMatrix_assign)   ,deferred :: CrsMatrix_assign 
-    procedure(EpetraRowMatrix_assign)   ,deferred :: RowMatrix_assign 
-    procedure                                     :: RowMatrix_assign_ID
-    generic :: assignment(=)=>RowMatrix_assign,CrsMatrix_assign,RowMatrix_assign_ID
     !Matrix data extraction routines
     procedure(NumMyRowEntries_interface),deferred :: NumMyRowEntries
     procedure(MaxNumEntries_interface)  ,deferred :: MaxNumEntries
@@ -75,22 +72,9 @@ module FEpetra_RowMatrix
     !Atribute access functions
     procedure(RowMatrixRowMap_interface),deferred :: RowMatrixRowMap
     !I/O methods
-    !Memory Management
-    procedure,non_overridable :: force_finalization_EpetraRowMatrix
   end type
   
   abstract interface
-    subroutine EpetraRowMatrix_assign(lhs,rhs)
-      import:: Epetra_RowMatrix
-      class(Epetra_RowMatrix) ,intent(in)    :: rhs
-      class(Epetra_RowMatrix) ,intent(inout) :: lhs
-    end subroutine
-    subroutine EpetraCrsMatrix_assign(lhs,rhs)
-      use ForTrilinos_enums, only: FT_Epetra_CrsMatrix_ID_t
-      import:: Epetra_RowMatrix
-      type(FT_Epetra_CrsMatrix_ID_t) ,intent(in)    :: rhs
-      class(Epetra_RowMatrix) ,intent(inout) :: lhs
-    end subroutine
     integer(c_int) function NumMyRowEntries_interface(this,MyRow)
       use iso_c_binding, only : c_int
       import:: Epetra_RowMatrix
@@ -202,7 +186,7 @@ module FEpetra_RowMatrix
     lhs%RowMatrix_id=rhs
   end subroutine
  
-  subroutine force_finalization_EpetraRowMatrix(this)
+  subroutine remote_dealloc_EpetraRowMatrix(this)
     class(Epetra_RowMatrix) ,intent(inout) :: this
     call Epetra_RowMatrix_Destroy( this%RowMatrix_id )
   end subroutine

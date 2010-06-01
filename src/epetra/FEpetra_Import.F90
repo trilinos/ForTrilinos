@@ -39,7 +39,7 @@
 module FEpetra_Import
   use ForTrilinos_enums ,only: FT_Epetra_Comm_ID_t,FT_Epetra_Import_ID_t,FT_Epetra_BlockMap_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
-  use ForTrilinos_universal
+  use ForTrilinos_universal,only:universal
   use FEpetra_Comm  ,only: Epetra_Comm
   use FEpetra_BlockMap ,only: Epetra_BlockMap
   use iso_c_binding ,only: c_int
@@ -50,14 +50,13 @@ module FEpetra_Import
 
   type ,extends(universal)                 :: Epetra_Import !"shell"
     private
-    type(FT_Epetra_Import_ID_t) ,pointer :: Import_id => null()
+    type(FT_Epetra_Import_ID_t) :: Import_id 
   contains
      !Developers only
+     procedure         :: remote_dealloc
      procedure         :: get_EpetraImport_ID 
      procedure ,nopass :: alias_EpetraImport_ID
      procedure         :: generalize 
-     procedure         :: assign_to_Epetra_Import
-     generic :: assignment(=) => assign_to_Epetra_Import
      ! Public member functions
      procedure        :: NumSameIDs
      procedure        :: NumPermuteIDs
@@ -72,9 +71,6 @@ module FEpetra_Import
      procedure        :: NumRecv
      procedure        :: SourceMap
      procedure        :: TargetMap
-     !Memory Management
-     procedure         :: force_finalization 
-     final :: finalize
   end type
 
    interface Epetra_Import ! constructors
@@ -82,9 +78,10 @@ module FEpetra_Import
    end interface
  
 contains
-  type(FT_Epetra_Import_ID_t) function from_struct(id)
-     type(FT_Epetra_Import_ID_t) ,intent(in) :: id
-     from_struct = id
+  type(Epetra_Import) function from_struct(id)
+    type(FT_Epetra_Import_ID_t) ,intent(in) :: id
+    from_struct%Import_id = id
+    call from_struct%register_self 
   end function
  
   ! Original C++ prototype:
@@ -94,11 +91,13 @@ contains
   ! CT_Epetra_BlockMap_ID_t SourceMapID );
 
 
-  type(FT_Epetra_Import_ID_t) function from_scratch(TargetMap,SourceMap)
+  type(Epetra_Import) function from_scratch(TargetMap,SourceMap)
    !use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_BlockMap_ID_t
     type(Epetra_BlockMap), intent(in) :: TargetMap
     type(Epetra_BlockMap), intent(in) :: SourceMap
-    from_scratch = Epetra_Import_Create(TargetMap%get_EpetraBlockMap_ID(),SourceMap%get_EpetraBlockMap_ID())
+    type(FT_Epetra_Import_ID_t) :: from_scratch_id
+    from_scratch_id = Epetra_Import_Create(TargetMap%get_EpetraBlockMap_ID(),SourceMap%get_EpetraBlockMap_ID())
+    from_scratch = from_struct(from_scratch_id)
   end function
 
   ! Original C++ prototype:
@@ -106,18 +105,16 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_Import_ID_t Epetra_Import_Duplicate ( CT_Epetra_Import_ID_t ImporterID );
 
-  type(FT_Epetra_Import_ID_t) function duplicate(original)
-    type(Epetra_Import) ,intent(in) :: original
-    duplicate = Epetra_Import_Duplicate(original%Import_id)
+  type(Epetra_Import) function duplicate(this)
+    type(Epetra_Import) ,intent(in) :: this 
+    type(FT_Epetra_Import_ID_t) :: duplicate_id
+    duplicate_id = Epetra_Import_Duplicate(this%Import_id)
+    duplicate = from_struct(duplicate_id)
   end function
 
   type(FT_Epetra_Import_ID_t) function get_EpetraImport_ID(this)
     class(Epetra_Import) ,intent(in) :: this 
-    if (associated(this%Import_id)) then
-     get_EpetraImport_ID=this%Import_id
-    else
-     stop 'get_EpetraImport_ID: Import_id is unassociated'
-    end if
+    get_EpetraImport_ID=this%Import_id
   end function
   
   type(FT_Epetra_Import_ID_t) function alias_EpetraImport_ID(generic_id)
@@ -161,12 +158,6 @@ contains
    ! ____ Use for CTrilinos function implementation ______
   end function
  
-  subroutine assign_to_Epetra_Import(lhs,rhs)
-    class(Epetra_Import)        ,intent(inout) :: lhs
-    type(FT_Epetra_Import_ID_t) ,intent(in)    :: rhs
-    allocate(lhs%Import_id,source=rhs)
-  end subroutine
-
   integer(c_int) function NumSameIDs(this)
     class(Epetra_Import), intent(in) :: this
     NumSameIDs=Epetra_Import_NumSameIDs(this%Import_id)
@@ -223,21 +214,9 @@ contains
    TargetMap=Epetra_BlockMap(TargetMap_id)
   end function
 
-  subroutine finalize(this)
-    type(Epetra_Import) :: this
-    print *,'finalize_Import'
+  subroutine remote_dealloc(this)
+    class(Epetra_Import),intent(inout) :: this
     call Epetra_Import_Destroy( this%Import_id ) 
-    deallocate (this%Import_id)
   end subroutine
-
-  subroutine force_finalization(this)
-    class(Epetra_Import) ,intent(inout) :: this
-    if (associated(this%Import_id)) then
-      call finalize(this) 
-    else
-      print *,' finalization for Epetra_Import received  with unassociated object'
-    end if
-  end subroutine
-
 end module 
 

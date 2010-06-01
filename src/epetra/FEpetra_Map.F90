@@ -39,6 +39,7 @@
 module FEpetra_Map
   use ForTrilinos_enums !,only: FT_Epetra_BlockMap_ID,FT_Epetra_Map_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
+  use ForTrilinos_hermetic,only:hermetic
   use FEpetra_Comm       ,only: Epetra_Comm
   use FEpetra_BlockMap   ,only: Epetra_BlockMap
   use iso_c_binding      ,only: c_int
@@ -49,18 +50,13 @@ module FEpetra_Map
 
   type, extends(Epetra_BlockMap)      :: Epetra_Map !"shell"
     private
-    type(FT_Epetra_Map_ID_t) ,pointer :: map_id => null()
+    type(FT_Epetra_Map_ID_t) :: map_id
   contains
      !Developers only
+     procedure         :: remote_dealloc
      procedure         :: get_EpetraMap_ID 
      procedure ,nopass :: alias_EpetraMap_ID
      procedure         :: generalize 
-     procedure         :: assign_to_Epetra_Map
-     procedure         :: EpetraMap_assign_to_EpetraMap  
-     generic :: assignment(=) => assign_to_Epetra_Map,EpetraMap_assign_to_EpetraMap
-     !Memory Management
-     procedure         :: force_finalization 
-     final :: finalize
   end type
 
    interface Epetra_Map ! constructors
@@ -69,9 +65,10 @@ module FEpetra_Map
  
 contains
 
-  type(FT_Epetra_Map_ID_t) function from_struct(id)
-     type(FT_Epetra_Map_ID_t) ,intent(in) :: id
-     from_struct = id
+  type(Epetra_Map) function from_struct(id)
+    type(FT_Epetra_Map_ID_t),intent(in) :: id
+    from_struct%map_id = id
+    from_struct%Epetra_BlockMap=Epetra_BlockMap(from_struct%alias_EpetraBlockMap_ID(from_struct%generalize()))
   end function
 
   ! Original C++ prototype:
@@ -79,12 +76,14 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_Map_ID_t Epetra_Map_Create ( int NumGlobalElements, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
-  type(FT_Epetra_Map_ID_t) function from_scratch(Num_GlobalElements,IndexBase,comm)
+  type(Epetra_Map) function from_scratch(Num_GlobalElements,IndexBase,comm)
     use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
     integer(c_int) ,intent(in) :: Num_GlobalElements
     integer(c_int) ,intent(in) :: IndexBase
     class(Epetra_Comm)         :: comm
-    from_scratch = Epetra_Map_Create(Num_GlobalElements,IndexBase,comm%get_EpetraComm_ID())
+    type(FT_Epetra_Map_ID_t) :: from_scratch_id
+    from_scratch_id = Epetra_Map_Create(Num_GlobalElements,IndexBase,comm%get_EpetraComm_ID())
+    from_scratch = from_struct(from_scratch_id)
   end function
 
 ! Original C++ prototype:
@@ -93,13 +92,15 @@ contains
   ! CT_Epetra_Map_ID_t Epetra_Map_Create_Linear ( int NumGlobalElements, int NumMyElements, int IndexBase,
   ! CT_Epetra_Comm_ID_t CommID );
 
-  type(FT_Epetra_Map_ID_t) function from_scratch_linear(Num_GlobalElements,Num_MyElements,IndexBase,comm)
+  type(Epetra_Map) function from_scratch_linear(Num_GlobalElements,Num_MyElements,IndexBase,comm)
     use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
     integer(c_int) ,intent(in) :: Num_GlobalElements
     integer(c_int) ,intent(in) :: Num_MyElements
     integer(c_int) ,intent(in) :: IndexBase
     class(Epetra_Comm)         :: comm
-    from_scratch_linear = Epetra_Map_Create_Linear(Num_GlobalElements,Num_MyElements,IndexBase,comm%get_EpetraComm_ID())
+    type(FT_Epetra_Map_ID_t) :: from_scratch_linear_id
+    from_scratch_linear_id = Epetra_Map_Create_Linear(Num_GlobalElements,Num_MyElements,IndexBase,comm%get_EpetraComm_ID())
+    from_scratch_linear = from_struct(from_scratch_linear_id)
   end function
 
 ! Original C++ prototype:
@@ -109,14 +110,16 @@ contains
   ! CT_Epetra_Map_ID_t Epetra_Map_Create_Arbitrary ( int NumGlobalElements, int NumMyElements, const int
   !* MyGlobalElements, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
- type(FT_Epetra_Map_ID_t) function from_scratch_arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm)
+ type(Epetra_Map) function from_scratch_arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm)
     use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
     integer(c_int) ,intent(in)              :: Num_GlobalElements
     integer(c_int) ,intent(in)              :: Num_MyElements
     integer(c_int) ,intent(in) ,dimension(:),allocatable:: My_GlobalElements
     integer(c_int) ,intent(in)              :: IndexBase
     class(Epetra_Comm)                      :: comm
-    from_scratch_arbitrary = Epetra_Map_Create_Arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm%get_EpetraComm_ID())
+    type(FT_Epetra_Map_ID_t) :: from_scratch_arbitrary_id
+    from_scratch_arbitrary_id = Epetra_Map_Create_Arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm%get_EpetraComm_ID())
+    from_scratch_arbitrary = from_struct(from_scratch_arbitrary_id)
   end function
 
   ! Original C++ prototype:
@@ -124,18 +127,16 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_Map_ID_t Epetra_Map_Duplicate ( CT_Epetra_Map_ID_t mapID );
 
-  type(FT_Epetra_Map_ID_t) function duplicate(original)
-    type(Epetra_Map) ,intent(in) :: original
-    duplicate = Epetra_Map_Duplicate(original%map_id)
+  type(Epetra_Map) function duplicate(this)
+    type(Epetra_Map) ,intent(in) :: this
+    type(FT_Epetra_Map_ID_t) :: duplicate_id
+    duplicate_id = Epetra_Map_Duplicate(this%map_id)
+    duplicate = from_struct(duplicate_id)
   end function
 
   type(FT_Epetra_Map_ID_t) function get_EpetraMap_ID(this)
     class(Epetra_Map) ,intent(in) :: this 
-    if (associated(this%map_id)) then
-     get_EpetraMap_ID=this%map_id
-    else
-     stop 'get_EpetraMap_ID: map_id is unassociated'
-    end if
+    get_EpetraMap_ID=this%map_id
   end function
  
   type(FT_Epetra_Map_ID_t) function alias_EpetraMap_ID(generic_id)
@@ -180,35 +181,10 @@ contains
    ! ____ Use for CTrilinos function implementation ______
   end function
 
-  subroutine assign_to_Epetra_Map(lhs,rhs)
-    class(Epetra_Map)        ,intent(inout):: lhs
-    type(FT_Epetra_Map_ID_t) ,intent(in)   :: rhs
-    allocate(lhs%map_id,source=rhs)
-    lhs%Epetra_BlockMap=Epetra_BlockMap(lhs%alias_EpetraBlockMap_ID(lhs%generalize()))
-  end subroutine
-  
-  subroutine EpetraMap_assign_to_EpetraMap(lhs,rhs)
-    class(Epetra_Map) ,intent(inout):: lhs
-    class(Epetra_Map) ,intent(in)   :: rhs
-    !call Epetra_Map_Assign(lhs%map_id,rhs%map_id)
-    !lhs = Epetra_Map(lhs%map_id)
-    lhs = Epetra_Map(rhs%alias_EpetraMap_ID(rhs%generalize()))
-  end subroutine
-
-  subroutine finalize(this)
-    type(Epetra_Map) :: this
+  subroutine remote_dealloc(this)
+    class(Epetra_Map),intent(inout) :: this
+    call this%remote_dealloc_EpetraBlockMap()
     call Epetra_Map_Destroy( this%map_id ) 
-    deallocate(this%map_id)
-  end subroutine
-
-  subroutine force_finalization(this)
-    class(Epetra_Map) ,intent(inout) :: this
-    call this%Epetra_BlockMap%force_finalization()
-    if (associated(this%map_id)) then
-      call finalize(this) 
-    else
-      print *,' finalization for Epetra_Map received object with unassociated map_id'
-    end if
   end subroutine
 
 end module 
