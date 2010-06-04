@@ -81,7 +81,7 @@ contains
   type(Epetra_BlockMap) function from_struct(id)
      type(FT_Epetra_BlockMap_ID_t) ,intent(in) :: id
      from_struct%BlockMap_id = id
-     call from_struct%register_self
+     call from_struct%register_self()
   end function
  
   ! Original C++ prototype:

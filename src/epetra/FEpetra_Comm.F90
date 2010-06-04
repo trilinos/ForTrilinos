@@ -163,7 +163,6 @@ module FEpetra_Comm
   subroutine set_EpetraComm_ID(this,id)
     class(Epetra_Comm)        ,intent(inout) :: this
     type(FT_Epetra_Comm_ID_t) ,intent(in)    :: id 
-    print *,'set comm'
     this%comm_id=id
   end subroutine 
   
@@ -208,7 +207,6 @@ module FEpetra_Comm
   
   subroutine remote_dealloc_EpetraComm(this)
     class(Epetra_Comm) ,intent(inout) :: this
-    print *,'remote_epetraComm'
     call Epetra_Comm_Destroy( this%comm_id )
   end subroutine
 

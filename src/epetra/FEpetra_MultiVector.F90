@@ -63,6 +63,8 @@ module FEpetra_MultiVector
      generic :: ReplaceGlobalValue=>ReplaceGlobalValue_GlobalRow!,ReplaceGlobalValue_GlobalBlockRow
      !Mathematical Methods
      procedure         :: Dot
+     procedure         :: Abs
+     procedure         :: Reciprocal
      procedure         :: Scale_Self
      procedure         :: Scale_Other
      generic :: Scale => Scale_Self,Scale_Other
@@ -79,6 +81,13 @@ module FEpetra_MultiVector
      procedure         :: Norm2
      procedure         :: NormInf
      procedure         :: NormWeighted
+     procedure         :: MinValue
+     procedure         :: MaxValue
+     procedure         :: MeanValue
+     procedure         :: Multiply_Matrix
+     procedure         :: Multiply_ByEl
+     generic :: Multiply => Multiply_Matrix,Multiply_ByEl
+     procedure         :: ReciprocalMultiply
      !Attribute Access Functions
      procedure         :: NumVectors
      procedure         :: MyLength
@@ -208,7 +217,25 @@ contains
    real(c_double),dimension(:)           :: result
    type(error),optional,intent(out)   :: err
    integer(c_int)                        :: error_out
-   error_out=Epetra_multiVector_Dot(this%MultiVector_id,x%MultiVector_id,result)
+   error_out=Epetra_MultiVector_Dot(this%MultiVector_id,x%MultiVector_id,result)
+   if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine Abs(this,A,err)
+   class(Epetra_MultiVector), intent(in) :: this
+   class(Epetra_MultiVector), intent(in) :: A 
+   type(error),optional,intent(out)   :: err
+   integer(c_int)                        :: error_out
+   error_out=Epetra_MultiVector_Abs(this%MultiVector_id,A%MultiVector_id)
+   if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine Reciprocal(this,A,err)
+   class(Epetra_MultiVector), intent(in) :: this
+   class(Epetra_MultiVector), intent(in) :: A
+   type(error),optional,intent(out)   :: err
+   integer(c_int)                        :: error_out
+   error_out=Epetra_MultiVector_Reciprocal(this%MultiVector_id,A%MultiVector_id)
    if (present(err)) err=error(error_out)
   end subroutine
  
@@ -323,6 +350,71 @@ contains
     error_out = Epetra_MultiVector_NormWeighted(this%MultiVector_id,weights%MultiVector_id,NormWeighted_val)
     if (present(err)) err=error(error_out)
   end function 
+
+  function MinValue(this,err) result(MinValue_val)
+    class(Epetra_MultiVector)   ,intent(in)  :: this
+    type(error) ,optional    ,intent(out) :: err
+    real(c_double) ,dimension(:),allocatable :: MinValue_val
+    integer(c_int)                           :: error_out
+    allocate(MinValue_val(this%NumVectors()))
+    error_out = Epetra_MultiVector_MinValue(this%MultiVector_id,MinValue_val)
+    if (present(err)) err=error(error_out)
+  end function
+ 
+ function MaxValue(this,err) result(MaxValue_val)
+    class(Epetra_MultiVector)   ,intent(in)  :: this
+    type(error) ,optional    ,intent(out) :: err
+    real(c_double) ,dimension(:),allocatable :: MaxValue_val
+    integer(c_int)                           :: error_out
+    allocate(MaxValue_val(this%NumVectors()))
+    error_out = Epetra_MultiVector_MaxValue(this%MultiVector_id,MaxValue_val)
+    if (present(err)) err=error(error_out)
+  end function
+
+ function MeanValue(this,err) result(MeanValue_val)
+    class(Epetra_MultiVector)   ,intent(in)  :: this
+    type(error) ,optional    ,intent(out) :: err
+    real(c_double) ,dimension(:),allocatable :: MeanValue_val
+    integer(c_int)                           :: error_out
+    allocate(MeanValue_val(this%NumVectors()))
+    error_out = Epetra_MultiVector_MeanValue(this%MultiVector_id,MeanValue_val)
+    if (present(err)) err=error(error_out)
+  end function
+
+  subroutine Multiply_Matrix(this,TransA,TransB,ScalarAB,A,B,ScalarThis,err) 
+    class(Epetra_MultiVector)   ,intent(in) :: this
+    character(c_char), intent(in) :: TransA
+    character(c_char), intent(in) :: TransB
+    class(Epetra_MultiVector)   ,intent(in)  :: A,B
+    real(c_double), intent(in) :: ScalarAB, ScalarThis 
+    type(error) ,optional    ,intent(out) :: err
+    integer(c_int)                           :: error_out
+    error_out = Epetra_MultiVector_Multiply_Matrix(this%MultiVector_id,TransA,TransB,ScalarAB,&
+                                 A%MultiVector_id,B%MultiVector_id,ScalarThis)
+    if (present(err)) err=error(error_out)
+  end subroutine
+
+ subroutine Multiply_ByEl(this,ScalarAB,A,B,ScalarThis,err)
+    class(Epetra_MultiVector)   ,intent(in) :: this
+    class(Epetra_MultiVector)   ,intent(in)  :: A,B
+    real(c_double), intent(in) :: ScalarAB, ScalarThis
+    type(error) ,optional    ,intent(out) :: err
+    integer(c_int)                           :: error_out
+    error_out = Epetra_MultiVector_Multiply_ByEl(this%MultiVector_id,ScalarAB,&
+                                 A%MultiVector_id,B%MultiVector_id,ScalarThis)
+    if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine ReciprocalMultiply(this,ScalarAB,A,B,ScalarThis,err)
+    class(Epetra_MultiVector)   ,intent(in) :: this
+    class(Epetra_MultiVector)   ,intent(in)  :: A,B
+    real(c_double), intent(in) :: ScalarAB, ScalarThis
+    type(error) ,optional    ,intent(out) :: err
+    integer(c_int)                           :: error_out
+    error_out = Epetra_MultiVector_ReciprocalMultiply(this%MultiVector_id,ScalarAB,&
+                                 A%MultiVector_id,B%MultiVector_id,ScalarThis)
+    if (present(err)) err=error(error_out)
+  end subroutine
 
   integer(c_int) function NumVectors(this)
     class(Epetra_MultiVector) ,intent(in) :: this

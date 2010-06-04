@@ -92,14 +92,9 @@ contains
 
  type(Epetra_MpiComm) function from_struct(id)
    type(FT_Epetra_MpiComm_ID_t) ,intent(in) :: id
-   type(FT_Epetra_Comm_ID_t)  :: id_t
-   print *,'from_struct'
    from_struct%MpiComm_id = id
    call from_struct%set_EpetraComm_ID(from_struct%alias_EpetraComm_ID(from_struct%generalize()))
    call from_struct%register_self
-   print *,from_struct%MpiComm_id%table,from_struct%MpiComm_id%index,from_struct%MpiComm_id%is_const
-   id_t=from_struct%get_EpetraComm_ID()
-   print *,id_t%table,id_t%index,id_t%is_const
   end function
  
   ! Original C++ prototype:
@@ -110,13 +105,8 @@ contains
   type(Epetra_MpiComm) function from_scratch(comm)
    integer(c_int) ,intent(in) :: comm
    type(FT_Epetra_MpiComm_ID_t) :: from_scratch_id
-   type(FT_Epetra_Comm_ID_t) :: id
-   print *,'from_scratch'
    from_scratch_id = Epetra_MpiComm_Fortran_Create(comm)
    from_scratch=from_struct(from_scratch_id)
-   print *,from_scratch%MpiComm_id%table,from_scratch%MpiComm_id%index,from_scratch%MpiComm_id%is_const
-   id=from_scratch%get_EpetraComm_ID()
-   print *,id%table,id%index,id%is_const
   end function
 
   ! Original C++ prototype:

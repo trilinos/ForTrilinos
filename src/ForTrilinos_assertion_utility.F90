@@ -31,7 +31,7 @@
 ! NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
 ! SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 !  
-! Questions? Contact Karla Morris  (knmorri@sandia.gov) or
+! Questions? Contact Karla Morris  (knmorri@sandia.gov)
 !                    Damian Rouson (rouson@sandia.gov)
 !*********************************************************************
 
