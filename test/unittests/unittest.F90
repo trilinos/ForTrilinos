@@ -1,11 +1,11 @@
 program main
 #include "all_build_macros.h"
-#ifdef HAVE_MPI
-#include "mpif.h"
-#endif
   use iso_fortran_env ,only : error_unit ,output_unit
   use TEST_CALLS_FILE(CLASS)
   implicit none
+#ifdef HAVE_MPI
+#include "mpif.h"
+#endif
 
   logical :: success,fullsuccess
   character(len=100) :: which_test
