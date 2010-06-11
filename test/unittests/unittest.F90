@@ -1,7 +1,7 @@
 program main
 #include "all_build_macros.h"
 #ifdef HAVE_MPI
-  use mpi
+#include "mpif.h"
 #endif
   use iso_fortran_env ,only : error_unit ,output_unit
   use TEST_CALLS_FILE(CLASS)
