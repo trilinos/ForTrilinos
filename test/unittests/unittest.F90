@@ -1,10 +1,12 @@
 program main
-#include "all_build_macros.h"
+#include "class_specific_macros.h"
+#include "ForTrilinos_config.h"
+
   use iso_fortran_env ,only : error_unit ,output_unit
-  use TEST_CALLS_FILE(CLASS)
+  use TEST_CALLS_FILE
   implicit none
 #ifdef HAVE_MPI
-#include "mpif.h"
+include 'mpif.h'
 #endif
 
   logical :: success,fullsuccess
@@ -58,7 +60,7 @@ program main
   do test_num = 1,test_cnt
     which_test = test_list(test_num)
 
-    print *,"Testing ",TEST_FILE_STR(CLASS),"::",trim(which_test),TEST_SUFFIX_STR()
+    print *,"Testing ",TEST_FILE_STR,"::",trim(which_test),"_UnitTest"
 
     call test_setup()
 
