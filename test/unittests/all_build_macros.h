@@ -1,3 +1,5 @@
+/* DO NOT INCLUDE ANY CONFIG-DEPENDENT MACROS HERE! */
+
 /* Add double quotes around anything */
 
 #define STRINGIFY0(WHATEVER) #WHATEVER

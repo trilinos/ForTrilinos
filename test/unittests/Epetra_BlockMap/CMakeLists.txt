@@ -9,7 +9,7 @@ INCLUDE_DIRECTORIES(
   )
 
 ## EDIT STATEMENT BELOW ONLY
-SET(TESTING_MODULE_NAME PackageName_ClassName)
+SET(TESTING_MODULE_NAME Epetra_BlockMap)
 
 ######################################################################
 

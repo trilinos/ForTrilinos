@@ -1,3 +1,5 @@
+/* DO NOT INCLUDE ANY CONFIG-DEPENDENT MACROS HERE! */
+
 #include "breaklines.h"
 
 /**********************************************************

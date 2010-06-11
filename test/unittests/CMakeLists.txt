@@ -47,11 +47,16 @@ SET(ALL_MACRO_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/breaklines.h
   )
 
+SET(CONFIG_FILE
+  ${CMAKE_CURRENT_BINARY_DIR}/../../src/ForTrilinos_config.h
+  )
+
 ######################################################################
 
 ## EDIT BLOCK BELOW ONLY
 ADD_SUBDIRECTORIES(
   Epetra_Comm
+  Epetra_BlockMap
   )
 
 ######################################################################
