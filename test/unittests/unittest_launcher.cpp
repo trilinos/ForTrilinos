@@ -111,7 +111,7 @@ int run_all_unittests(std::vector<std::string> &names)
 int main(int argc, char *argv[])
 {
   int mypid = 0;
-  int failed;
+  int failed = 0;
 
 #ifdef HAVE_MPI
   MPI_Init(&argc, &argv);
