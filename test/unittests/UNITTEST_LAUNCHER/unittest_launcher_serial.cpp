@@ -36,8 +36,7 @@ std::vector<std::string> get_tests(const char *filename)
     int cnt = sscanf(tmp, "%s %s\n", tmp1, tmp2);
     if (cnt == 2) {
       if (tmp1[0] != '#') {
-        std::string stmp("./");
-        stmp += std::string(tmp1) + std::string(" ") + std::string(tmp2);
+        std::string stmp = std::string(tmp1) + std::string(" ") + std::string(tmp2);
         names.push_back(stmp);
 #ifdef DEBUG
         std::cout << "Adding test: " << stmp << std::endl;
