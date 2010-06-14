@@ -16,15 +16,13 @@ To add new ForTrilinos unit tests:
    directory you created in step 1, renaming it to again replace
    PackageName_ClassName with the value appropriate for the class
    you are testing.
-5) Edit the line "#define CLASS_BEING_TESTED PackageName_ClassName"
-   in the renamed PackageName_ClassName_tests.un file, again
-   replacing PackageName_ClassName with the appropriate value.
-6) Add any new unittests to the renamed
+5) Add any new unittests to the renamed
    PackageName_ClassName_tests.un file, following the form of the
    two examples already in the file.
-7) Add the directory name to the "ADD_SUBDIRECTORIES" block in
+6) Add the directory name to the "ADD_SUBDIRECTORIES" block in
    the CMakeLists.txt file in the *parent* directory (i.e.
-   unittests/CMakeLists.txt).
+   unittests/CMakeLists.txt) after the UNITTEST_PARSER and
+   UNITTEST_LAUNCHER entries.
 
 You should be set to go.  From the root of your build tree, run
 the command:
