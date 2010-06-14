@@ -1,6 +1,5 @@
 ## Add each new test subdirectory name to the list at the bottom and that's it.
 
-INCLUDE(PackageAddTest)
 INCLUDE(AddSubdirectories)
 
 INCLUDE_DIRECTORIES(
@@ -27,39 +26,14 @@ ENDIF()
 
 IF(NOT FORTRILINOS_SKIP_UNITTESTS)
 
-######################################################################
-
-PACKAGE_ADD_EXECUTABLE(unittest_launcher SOURCES unittest_launcher.cpp)
-
-SET_TARGET_PROPERTIES(
-  ForTrilinos_unittest_launcher PROPERTIES
-  LINKER_LANGUAGE CXX
-  )
-
-######################################################################
-
-SET(ALL_MACRO_FILES
-  ${CMAKE_CURRENT_SOURCE_DIR}/all_build_macros.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/cxx_driver_macros.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/fortran_driver_macros.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/fortran_impl_macros.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/runtime_macros.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/breaklines.h
-  )
-
-SET(CONFIG_FILE
-  ${CMAKE_CURRENT_BINARY_DIR}/../../src/ForTrilinos_config.h
-  )
-
-######################################################################
-
 ## EDIT BLOCK BELOW ONLY
+## UNITTEST_* must be at the TOP of the list
 ADD_SUBDIRECTORIES(
+  UNITTEST_PARSER
+  UNITTEST_LAUNCHER
   Epetra_Comm
   Epetra_BlockMap
   )
-
-######################################################################
 
 ENDIF()
 

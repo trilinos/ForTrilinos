@@ -1,5 +1,4 @@
 program main
-#include "class_specific_macros.h"
 #include "ForTrilinos_config.h"
 
   use iso_fortran_env ,only : error_unit ,output_unit
@@ -60,7 +59,7 @@ include 'mpif.h'
   do test_num = 1,test_cnt
     which_test = test_list(test_num)
 
-    print *,"Testing ",TEST_FILE_STR,"::",trim(which_test),"_UnitTest"
+    print *,"Testing ",TEST_IMPLS_FILE_STR,"::",trim(which_test),"_UnitTest"
 
     call test_setup()
 

@@ -6,15 +6,9 @@
 #include <sstream>
 #include <string.h>
 
-#include "ForTrilinos_config.h"
-
-#ifdef HAVE_MPI
-#include "mpi.h"
-#endif
-
 //#define DEBUG
 
-std::vector<std::string> get_tests(const char *filename, bool listonly)
+std::vector<std::string> get_tests(const char *filename)
 {
   std::vector<std::string> names;
 
@@ -42,14 +36,9 @@ std::vector<std::string> get_tests(const char *filename, bool listonly)
     int cnt = sscanf(tmp, "%s %s\n", tmp1, tmp2);
     if (cnt == 2) {
       if (tmp1[0] != '#') {
-        if (listonly) {
-          std::string stmp(tmp2);
-          names.push_back(stmp);
-        } else {
-          std::string stmp("./");
-          stmp += std::string(tmp1) + std::string(" ") + std::string(tmp2);
-          names.push_back(stmp);
-        }
+        std::string stmp("./");
+        stmp += std::string(tmp1) + std::string(" ") + std::string(tmp2);
+        names.push_back(stmp);
 #ifdef DEBUG
         std::cout << "Adding test: " << stmp << std::endl;
 #endif
@@ -110,62 +99,32 @@ int run_all_unittests(std::vector<std::string> &names)
 
 int main(int argc, char *argv[])
 {
-  int mypid = 0;
   int failed = 0;
 
-#ifdef HAVE_MPI
-  MPI_Init(&argc, &argv);
-  MPI_Comm_rank(MPI_COMM_WORLD, &mypid);
-
-  if (mypid == 0) {
-#endif
-
-    if (argc < 2) {
-      std::cerr << "Specify unit test input file on the command line." << std::endl;
-      return 1;
-    }
-    int farg = 1;
-    bool list = false;
-    if (strcmp(argv[farg], "-v") == 0) {
-      farg = 2;
-      list = true;
-    }
-
-    std::vector<std::string> names;
-
-    try {
-      names = get_tests(argv[farg], list);
-    } catch (std::string &ex) {
-      std::cerr << ex << std::endl;
-      std::cerr << "END RESULT: SOME TESTS FAILED" << std::endl;
-      return 1;
-    }
-
-    int cnt = names.size();
-    if (list) {
-      for (int i=0; i<cnt; i++)
-        std::cout << names[i] << std::endl;
-      std::cout << "###ENDOFTESTS" << std::endl;
-    } else {
-      failed = run_all_unittests(names);
-
-      std::cout << (cnt-failed) << " tests passed out of " << cnt << std::endl;
-
-      if (failed > 0) {
-        std::cerr << "END RESULT: SOME TESTS FAILED" << std::endl;
-      } else {
-        std::cout << "END RESULT: ALL TESTS PASSED" << std::endl;
-      }
-    }
-
-#ifdef HAVE_MPI
+  if (argc < 2) {
+    std::cerr << "Specify unit test input file on the command line." << std::endl;
+    return 1;
   }
 
-  MPI_Barrier(MPI_COMM_WORLD);
+  std::vector<std::string> names;
 
-  MPI_Finalize();
-#endif
-  (void) mypid; // just to avoid warnings on serial build
+  try {
+    names = get_tests(argv[1]);
+  } catch (std::string &ex) {
+    std::cerr << ex << std::endl;
+    std::cerr << "END RESULT: SOME TESTS FAILED" << std::endl;
+    return 1;
+  }
+
+  int cnt = names.size();
+  failed = run_all_unittests(names);
+  std::cout << (cnt-failed) << " tests passed out of " << cnt << std::endl;
+
+  if (failed > 0) {
+    std::cerr << "END RESULT: SOME TESTS FAILED" << std::endl;
+  } else {
+    std::cout << "END RESULT: ALL TESTS PASSED" << std::endl;
+  }
 
   return (failed == 0 ? 0 : 1);
 }
