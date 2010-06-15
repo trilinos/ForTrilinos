@@ -18,4 +18,17 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     call Epetra_Comm_Destroy(commID)
   FORTRILINOS_UNITTEST_END
 
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Destroy) 
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    use forepetra
+    implicit none 
+    type(FT_Epetra_Comm_ID_t) commID
+    success = .TRUE.
+    ECHO(commID = Epetra_Comm_Degeneralize(Epetra_SerialComm_Generalize(Epetra_SerialComm_Create())))
+    ECHO(call Epetra_Comm_Destroy(commID))
+    TEST_EQUALITY(commID%table, FT_Invalid_ID)
+    TEST_EQUALITY(commID%index, -1)
+  FORTRILINOS_UNITTEST_END
+
 FORTRILINOS_UNITTEST_MODULE_END(CLASS_BEING_TESTED)

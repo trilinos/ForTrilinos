@@ -39,6 +39,7 @@
 module FEpetra_SerialComm
   use ForTrilinos_enums ,only : FT_Epetra_Comm_ID,FT_Epetra_SerialComm_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
+  use ForTrilinos_error
   use ForTrilinos_hermetic, only: hermetic
   use FEpetra_Comm      ,only : Epetra_Comm
   use iso_c_binding     ,only : c_int,c_long,c_double,c_char
@@ -66,12 +67,23 @@ module FEpetra_SerialComm
      procedure         :: broadcast_char
      !Gather Methods
      procedure         :: gather_double
+     procedure         :: gather_int
+     procedure         :: gather_long
      !Sum Methods
-     !generic :: SumAll=>
+     procedure         :: sum_double
+     procedure         :: sum_int
+     procedure         :: sum_long
      !Max/Min Methods
-     !generic :: MaxAll=>
-     !generic :: MinAll=>
+     procedure         :: max_double
+     procedure         :: max_int
+     procedure         :: max_long
+     procedure         :: min_double
+     procedure         :: min_int
+     procedure         :: min_long
      !Parallel Prefix Methods
+     procedure         :: ScanSum_double
+     procedure         :: ScanSum_int
+     procedure         :: ScanSum_long
      !Attribute Accessor Methods
      procedure         :: MyPID
      procedure         :: NumProc
@@ -126,9 +138,13 @@ contains
     use ForTrilinos_table_man,only: CT_Alias
     type(Fortrilinos_Universal_ID_t) ,intent(in) :: generic_id
     type(Fortrilinos_Universal_ID_t) ,pointer    :: alias_id
-    allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_SerialComm_ID))
+    integer(c_int) :: status
+    allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_SerialComm_ID),stat=status)
+    !call check_allocation(status,'Epetra_SerialComm%alias_EpetraSerialComm_ID')
     alias_EpetraSerialComm_ID=degeneralize_EpetraSerialComm(c_loc(alias_id))
-    deallocate(alias_id)
+    deallocate(alias_id,stat=status)
+    status=2
+    !call check_deallocation(status,'Epetra_SerialComm%alias_EpetraSerialComm_ID')
   end function
 
 
@@ -167,51 +183,213 @@ contains
    call Epetra_SerialComm_Barrier(this%SerialComm_id)
   end subroutine
  
-  subroutine broadcast_double(this,MyVals,count,root)
+  subroutine broadcast_double(this,MyVals,count,root,err)
    class(Epetra_SerialComm)     ,intent(in)    :: this
    real(c_double), dimension(:) ,intent(inout) :: MyVals
    integer(c_int)               ,intent(in)    :: count
    integer(c_int)               ,intent(in)    :: root
-   integer(c_int)                              :: error 
-   error = Epetra_SerialComm_Broadcast_Double(this%SerialComm_id,MyVals,count,root)
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_Broadcast_Double(this%SerialComm_id,MyVals,count,root)
+   if (present(err)) err=error(error_out)
   end subroutine
 
-  subroutine broadcast_int(this,MyVals,count,root)
+  subroutine broadcast_int(this,MyVals,count,root,err)
    class(Epetra_SerialComm)     ,intent(in)    :: this
    integer(c_int), dimension(:) ,intent(inout) :: MyVals
    integer(c_int)               ,intent(in)    :: count
    integer(c_int)               ,intent(in)    :: root
-   integer(c_int)                              :: error 
-   error = Epetra_SerialComm_Broadcast_Int(this%SerialComm_id,MyVals,count,root)
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_Broadcast_Int(this%SerialComm_id,MyVals,count,root)
+   if (present(err)) err=error(error_out)
   end subroutine
 
-  subroutine broadcast_long(this,MyVals,count,root)
+  subroutine broadcast_long(this,MyVals,count,root,err)
    class(Epetra_SerialComm)     ,intent(in)    :: this
    integer(c_long),dimension(:) ,intent(inout) :: MyVals
    integer(c_int)               ,intent(in)    :: count
    integer(c_int)               ,intent(in)    :: root
-   integer(c_int)                              :: error 
-   error = Epetra_SerialComm_Broadcast_Long(this%SerialComm_id,MyVals,count,root)
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_Broadcast_Long(this%SerialComm_id,MyVals,count,root)
+   if (present(err)) err=error(error_out)
   end subroutine
  
-  subroutine broadcast_char(this,MyVals,count,root)
+  subroutine broadcast_char(this,MyVals,count,root,err)
    class(Epetra_SerialComm)           ,intent(in)    :: this
    character(kind=c_char),dimension(:),intent(inout) :: MyVals
    integer(c_int)                     ,intent(in)    :: count
    integer(c_int)                     ,intent(in)    :: root
-   integer(c_int)                                    :: error 
-   error = Epetra_SerialComm_Broadcast_Char(this%SerialComm_id,MyVals,count,root)
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_Broadcast_Char(this%SerialComm_id,MyVals,count,root)
+   if (present(err)) err=error(error_out)
   end subroutine
-
-  subroutine gather_double(this,MyVals,AllVals,count)
+  
+ subroutine gather_double(this,MyVals,AllVals,count,err)
    class(Epetra_SerialComm)     ,intent(in)    :: this
-   !real(c_double), dimension(:) ,intent(inout) :: MyVals
-   !real(c_double), dimension(:) ,intent(inout) :: AllVals
    real(c_double), dimension(:)  :: MyVals
    real(c_double), dimension(:)  :: AllVals
    integer(c_int)               ,intent(in)    :: count
-   integer(c_int)                              :: error 
-   error = Epetra_SerialComm_GatherAll_Double(this%SerialComm_id,MyVals,AllVals,count)
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_GatherAll_Double(this%SerialComm_id,MyVals,AllVals,count)
+   if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine gather_int(this,MyVals,AllVals,count,err)
+   class(Epetra_SerialComm)     ,intent(in)    :: this
+   integer(c_int), dimension(:)  :: MyVals
+   integer(c_int), dimension(:)  :: AllVals
+   integer(c_int)               ,intent(in)    :: count
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_GatherAll_Int(this%SerialComm_id,MyVals,AllVals,count)
+   if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine gather_long(this,MyVals,AllVals,count,err)
+   class(Epetra_SerialComm)     ,intent(in)    :: this
+   integer(c_long), dimension(:)  :: MyVals
+   integer(c_long), dimension(:)  :: AllVals
+   integer(c_int)               ,intent(in)    :: count
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_GatherAll_Long(this%SerialComm_id,MyVals,AllVals,count)
+   if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine sum_double(this,PartialSums,GlobalSums,count,err)
+   class(Epetra_SerialComm)    ,intent(in)    :: this
+   real(c_double), dimension(:)  :: PartialSums
+   real(c_double), dimension(:)  :: GlobalSums
+   integer(c_int)               ,intent(in)    :: count
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_SumAll_Double(this%SerialComm_id,PartialSums,GlobalSums,count)
+   if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine sum_int(this,PartialSums,GlobalSums,count,err)
+   class(Epetra_SerialComm)    ,intent(in)    :: this
+   integer(c_int), dimension(:)  :: PartialSums
+   integer(c_int), dimension(:)  :: GlobalSums
+   integer(c_int)               ,intent(in)    :: count
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_SumAll_Int(this%SerialComm_id,PartialSums,GlobalSums,count)
+   if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine sum_long(this,PartialSums,GlobalSums,count,err)
+   class(Epetra_SerialComm)    ,intent(in)    :: this
+   integer(c_long), dimension(:)  :: PartialSums
+   integer(c_long), dimension(:)  :: GlobalSums
+   integer(c_int)               ,intent(in)    :: count
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_SumAll_Long(this%SerialComm_id,PartialSums,GlobalSums,count)
+   if (present(err)) err=error(error_out)
+  end subroutine
+  
+  subroutine max_double(this,PartialMaxs,GlobalMaxs,count,err)
+   class(Epetra_SerialComm)    ,intent(in)    :: this
+   real(c_double), dimension(:)  :: PartialMaxs
+   real(c_double), dimension(:)  :: GlobalMaxs
+   integer(c_int)               ,intent(in)    :: count
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_MaxAll_Double(this%SerialComm_id,PartialMaxs,GlobalMaxs,count)
+   if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine max_int(this,PartialMaxs,GlobalMaxs,count,err)
+   class(Epetra_SerialComm)    ,intent(in)    :: this
+   integer(c_int), dimension(:)  :: PartialMaxs
+   integer(c_int), dimension(:)  :: GlobalMaxs
+   integer(c_int)               ,intent(in)    :: count
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_MaxAll_Int(this%SerialComm_id,PartialMaxs,GlobalMaxs,count)
+   if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine max_long(this,PartialMaxs,GlobalMaxs,count,err)
+   class(Epetra_SerialComm)    ,intent(in)    :: this
+   integer(c_long), dimension(:)  :: PartialMaxs
+   integer(c_long), dimension(:)  :: GlobalMaxs
+   integer(c_int)               ,intent(in)    :: count
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_MaxAll_Long(this%SerialComm_id,PartialMaxs,GlobalMaxs,count)
+   if (present(err)) err=error(error_out)
+  end subroutine
+  
+  subroutine min_double(this,PartialMins,GlobalMins,count,err)
+   class(Epetra_SerialComm)    ,intent(in)    :: this
+   real(c_double), dimension(:)  :: PartialMins
+   real(c_double), dimension(:)  :: GlobalMins
+   integer(c_int)               ,intent(in)    :: count
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_MinAll_Double(this%SerialComm_id,PartialMins,GlobalMins,count)
+   if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine min_int(this,PartialMins,GlobalMins,count,err)
+   class(Epetra_SerialComm)    ,intent(in)    :: this
+   integer(c_int), dimension(:)  :: PartialMins
+   integer(c_int), dimension(:)  :: GlobalMins
+   integer(c_int)               ,intent(in)    :: count
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_MinAll_Int(this%SerialComm_id,PartialMins,GlobalMins,count)
+   if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine min_long(this,PartialMins,GlobalMins,count,err)
+   class(Epetra_SerialComm)    ,intent(in)    :: this
+   integer(c_long), dimension(:)  :: PartialMins
+   integer(c_long), dimension(:)  :: GlobalMins
+   integer(c_int)               ,intent(in)    :: count
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_MinAll_Long(this%SerialComm_id,PartialMins,GlobalMins,count)
+   if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine ScanSum_double(this,MyVals,scan_sums,count,err)
+   class(Epetra_SerialComm)    ,intent(in)    :: this
+   real(c_double), dimension(:)  :: MyVals 
+   real(c_double), dimension(:)  :: scan_sums
+   integer(c_int)               ,intent(in)    :: count
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_ScanSum_Double(this%SerialComm_id,MyVals,scan_sums,count)
+   if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine ScanSum_int(this,MyVals,scan_sums,count,err)
+   class(Epetra_SerialComm)    ,intent(in)    :: this
+   integer(c_int), dimension(:)  :: MyVals 
+   integer(c_int), dimension(:)  :: scan_sums
+   integer(c_int)               ,intent(in)    :: count
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_ScanSum_Int(this%SerialComm_id,MyVals,scan_sums,count)
+   if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine ScanSum_long(this,MyVals,scan_sums,count,err)
+   class(Epetra_SerialComm)    ,intent(in)    :: this
+   integer(c_long), dimension(:)  :: MyVals 
+   integer(c_long), dimension(:)  :: scan_sums
+   integer(c_int)               ,intent(in)    :: count
+   type(error) ,optional, intent(inout) :: err
+   integer(c_int)     :: error_out
+   error_out = Epetra_SerialComm_ScanSum_Long(this%SerialComm_id,MyVals,scan_sums,count)
+   if (present(err)) err=error(error_out)
   end subroutine
 
   integer(c_int) function MyPID(this)
@@ -228,6 +406,8 @@ contains
     class(Epetra_SerialComm) ,intent(inout) :: this
     call this%remote_dealloc_EpetraComm()
     call Epetra_SerialComm_Destroy(this%SerialComm_id)
+    print *,'remote_dealloc_SerialComm'
+    print *,this%SerialComm_id%table,this%SerialComm_id%index
   end subroutine
 
 end module 

@@ -33,6 +33,7 @@ ADD_SUBDIRECTORIES(
   UNITTEST_LAUNCHER
   Epetra_Comm
   Epetra_BlockMap
+  Epetra_SerialComm
   )
 
 ENDIF()

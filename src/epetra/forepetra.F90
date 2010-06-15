@@ -32,8 +32,6 @@
 ! SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 !
 ! Questions? Contact M. Nicole Lemaster (mnlemas@sandia.gov) 
-!                       Karla Morris    (knmorri@sandia.gov) 
-!                       Damian Rouson   (rouson@sandia.gov)
 !*********************************************************************
 
 
