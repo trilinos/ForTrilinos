@@ -25,6 +25,9 @@ void proc_module_begin(const std::string &line, const std::string &term,
   result.push_back("implicit none");
   result.push_back("public");
   result.push_back("contains");
+  result.push_back("logical function Does_Nothing_Returns_True() result(success)");
+  result.push_back("success = .TRUE.");
+  result.push_back("end function");
 }
 
 void proc_module_end(const std::string &line, const std::string &term,
