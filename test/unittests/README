@@ -12,13 +12,14 @@ To add new ForTrilinos unit tests:
 3) Edit the line "SET(TESTING_MODULE_NAME PackageName_ClassName)"
    in the new CMakeLists.txt file, replacing PackageName_ClassName
    with the directory name.
-4) Copy TEMPLATE_ONLY/PackageName_ClassName_tests.un to the
-   directory you created in step 1, renaming it to again replace
-   PackageName_ClassName with the value appropriate for the class
-   you are testing.
-5) Add any new unittests to the renamed
-   PackageName_ClassName_tests.un file, following the form of the
-   two examples already in the file.
+4) Copy TEMPLATE_ONLY/PackageName_ClassName_tests.un (for testing
+   the procedural bindings only) and
+   TEMPLATE_ONLY/PackageName_ClassName_oo_tests.un (for testing
+   object-oriented code) to the directory you created in step 1,
+   renaming them to again replace PackageName_ClassName with the
+   value appropriate for the class you are testing.
+5) Add any new unittests to the renamed files from step 4 above,
+   following the form of the examples already in the files.
 6) Add the directory name to the "ADD_SUBDIRECTORIES" block in
    the CMakeLists.txt file in the *parent* directory (i.e.
    unittests/CMakeLists.txt) after the UNITTEST_PARSER and

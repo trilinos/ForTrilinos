@@ -23,21 +23,42 @@ include 'mpif.h'
 
   success = .FALSE.
   arg_cnt = command_argument_count()
-  if (arg_cnt == 0) stop "No tests specified. TEST FAILED"
+  if (arg_cnt == 0) then
+    write(output_unit,fmt='(a)') "No tests specified. TEST FAILED"
+    stop 1
+  end if
 
   call get_command_argument(1,which_test,arg_len,stat)
-  if (stat < 0) stop "Command line argument cropped. TEST FAILED"
-  if (stat > 0) stop "Could not retrieve first command line argument. TEST FAILED"
+  if (stat < 0) then
+    write(output_unit,fmt='(a)') "Command line argument cropped. TEST FAILED"
+    stop 1
+  end if
+  if (stat > 0) then
+    write(output_unit,fmt='(a)') "Could not retrieve first command line argument. TEST FAILED"
+    stop 1
+  end if
 
   if (which_test == "-f") then
-    if (arg_cnt < 2) stop "No test list file specified. TEST FAILED"
+    if (arg_cnt < 2) then
+      write(output_unit,fmt='(a)') "No test list file specified. TEST FAILED"
+      stop 1
+    end if
     call get_command_argument(2,which_test,arg_len,stat)
-    if (stat < 0) stop "Test file command line argument cropped. TEST FAILED"
-    if (stat > 0) stop "Could not retrieve command line argument for test file. TEST FAILED"
+    if (stat < 0) then
+      write(output_unit,fmt='(a)') "Test file command line argument cropped. TEST FAILED"
+      stop 1
+    end if
+    if (stat > 0) then
+      write(output_unit,fmt='(a)') "Could not retrieve command line argument for test file. TEST FAILED"
+      stop 1
+    end if
 
     u = 100
     open(unit=u, iostat=ierr, file=which_test)
-    if (ierr .NE. 0) stop "Error opening test list file. TEST FAILED"
+    if (ierr .NE. 0) then
+      write(output_unit,fmt='(a)') "Error opening test list file. TEST FAILED"
+      stop 1
+    end if
     test_cnt = 0
     do test_num = 1,100
       read(u, '(a100)') which_test
@@ -48,7 +69,10 @@ include 'mpif.h'
     close(unit=u)
   else
     test_cnt = arg_cnt
-    if (test_cnt > 100) stop "Too many tests specified. TEST FAILED"
+    if (test_cnt > 100) then
+      write(output_unit,fmt='(a)') "Too many tests specified. TEST FAILED"
+      stop 1
+    end if
     do test_num = 1,test_cnt
       call get_command_argument(test_num,which_test,arg_len,stat)
       test_list(test_num) = which_test
@@ -83,21 +107,17 @@ include 'mpif.h'
 
     fullsuccess = fullsuccess .and. success
     if (success) then
-      write(output_unit,*) 
-      write(output_unit,fmt='(a)') "TEST PASSED" ;
+      write(output_unit,fmt='(a)') "TEST PASSED"
     else
-      write(output_unit,*) 
-      write(output_unit,fmt='(a)') "TEST FAILED" ;
+      write(output_unit,fmt='(a)') "TEST FAILED"
       stop 1
     end if
   end do
 
   if (arg_cnt > 1) then
     if (fullsuccess) then
-      write(output_unit,*) 
       write(output_unit,fmt='(a)') "END RESULT: ALL TESTS PASSED" ;
     else
-      write(output_unit,*) 
       write(output_unit,fmt='(a)') "END RESULT: SOME TESTS FAILED" ;
       stop 1
     end if
