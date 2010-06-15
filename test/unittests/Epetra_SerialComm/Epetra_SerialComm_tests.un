@@ -1,5 +1,5 @@
-#include "../all_build_macros.h"
-#include "../runtime_macros.h"
+#include "ForTrilinos_config.h"
+#include "runtime_macros.h"
 #define CLASS_BEING_TESTED Epetra_SerialComm 
 
 FORTRILINOS_UNITTEST_MODULE_DEF(CLASS_BEING_TESTED)
