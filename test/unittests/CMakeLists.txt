@@ -32,6 +32,7 @@ ADD_SUBDIRECTORIES(
   UNITTEST_PARSER
   UNITTEST_LAUNCHER
   Epetra_Comm
+  Epetra_MpiComm
   Epetra_BlockMap
   Epetra_SerialComm
   )

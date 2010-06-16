@@ -464,5 +464,29 @@ FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MinAll_Double)
     enddo
     call comm%force_finalize()
   FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MyPID)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none
+    type(Epetra_SerialComm):: comm
+    integer(c_int):: root 
+    success = .TRUE.
+    ECHO(comm = Epetra_SerialComm())
+    ECHO(root =  comm%MyPID())
+    TEST_EQUALITY(root,0)
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,NumProc)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none
+    type(Epetra_SerialComm):: comm
+    integer(c_int):: proc 
+    success = .TRUE.
+    ECHO(comm = Epetra_SerialComm())
+    ECHO(proc =  comm%NumProc())
+    TEST_EQUALITY(proc,1)
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
  
 FORTRILINOS_UNITTEST_MODULE_END(CLASS_BEING_TESTED)

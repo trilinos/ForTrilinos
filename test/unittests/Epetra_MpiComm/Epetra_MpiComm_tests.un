@@ -1,0 +1,82 @@
+#include "ForTrilinos_config.h"
+#include "runtime_macros.h"
+#define CLASS_BEING_TESTED Epetra_MpiComm 
+FORTRILINOS_UNITTEST_MODULE_DEF(CLASS_BEING_TESTED)
+    use mpi
+    use FEpetra_MpiComm,only:Epetra_MpiComm
+    use FEpetra_Comm,only:Epetra_Comm
+    use iso_c_binding,only:c_int,c_double,c_char,c_long
+    use ForTrilinos_error
+FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
+FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Create)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    implicit none 
+    type(Epetra_MpiComm):: comm
+    type(FT_Epetra_MpiComm_ID_t):: mpi_commID
+    type(FT_Epetra_Comm_ID_t) ::commID
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(mpi_commID = comm%get_EpetraMpiComm_ID())
+    ECHO(commID = comm%get_EpetraComm_ID())
+    TEST_EQUALITY(mpi_commID%table, FT_Epetra_MpiComm_ID)
+    TEST_EQUALITY(mpi_commID%index, 0)
+    TEST_EQUALITY(mpi_commID%is_const, FT_False)
+    TEST_EQUALITY(commID%table, FT_Epetra_Comm_ID)
+    TEST_EQUALITY(commID%index, 0)
+    TEST_EQUALITY(commID%is_const, FT_False)
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Duplicate)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    implicit none 
+    type(Epetra_MpiComm):: comm,comm2
+    type(FT_Epetra_MpiComm_ID_t):: mpi_comm2ID
+    type(FT_Epetra_Comm_ID_t) ::comm2ID
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(comm2 = Epetra_MpiComm(comm))
+    ECHO(mpi_comm2ID = comm2%get_EpetraMpiComm_ID())
+    ECHO(comm2ID = comm2%get_EpetraComm_ID())
+    TEST_EQUALITY(mpi_comm2ID%table, FT_Epetra_MpiComm_ID)
+    TEST_EQUALITY(mpi_comm2ID%index, 1)
+    TEST_EQUALITY(comm2ID%table, FT_Epetra_Comm_ID)
+    TEST_EQUALITY(comm2ID%index, 1)
+    call comm%force_finalize()
+    call comm2%force_finalize()
+  FORTRILINOS_UNITTEST_END
+  
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Destroy)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    implicit none 
+    type(Epetra_MpiComm):: comm
+    type(FT_Epetra_MpiComm_ID_t):: mpi_commID
+    type(FT_Epetra_Comm_ID_t) ::commID
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(call comm%force_finalize())
+    ECHO(mpi_commID = comm%get_EpetraMpiComm_ID())
+    ECHO(commID = comm%get_EpetraComm_ID())
+    TEST_EQUALITY(mpi_commID%table, FT_Invalid_ID)
+    TEST_EQUALITY(mpi_commID%index, -1)
+    TEST_EQUALITY(commID%table, FT_Invalid_ID)
+    TEST_EQUALITY(commID%index, -1)
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Barrier)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    implicit none 
+    type(Epetra_MpiComm):: comm
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(call comm%barrier())
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+FORTRILINOS_UNITTEST_MODULE_END(CLASS_BEING_TESTED)
