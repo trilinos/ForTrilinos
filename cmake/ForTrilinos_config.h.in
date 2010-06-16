@@ -25,7 +25,7 @@
 #cmakedefine HAVE_TEUCHOS_COMPLEX
 
 /* If OO-Fortran features should be built */
-#cmakedefine FORTRILINOS_ENABLE_EXTENDED
+#cmakedefine ForTrilinos_ENABLE_EXTENDED
 
 /* If Amesos is built */
 #cmakedefine HAVE_FORTRILINOS_AMESOS
