@@ -53,7 +53,7 @@ module FEpetra_Map
     type(FT_Epetra_Map_ID_t) :: map_id
   contains
      !Developers only
-     procedure         :: remote_dealloc
+     procedure         :: ctrilinos_delete
      procedure         :: get_EpetraMap_ID 
      procedure ,nopass :: alias_EpetraMap_ID
      procedure         :: generalize 
@@ -181,9 +181,9 @@ contains
    ! ____ Use for CTrilinos function implementation ______
   end function
 
-  subroutine remote_dealloc(this)
+  subroutine ctrilinos_delete(this)
     class(Epetra_Map),intent(inout) :: this
-    call this%remote_dealloc_EpetraBlockMap()
+    call this%ctrilinos_delete_EpetraBlockMap()
     call Epetra_Map_Destroy( this%map_id ) 
   end subroutine
 

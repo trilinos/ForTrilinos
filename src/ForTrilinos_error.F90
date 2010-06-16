@@ -48,6 +48,8 @@ module ForTrilinos_error
   contains
     procedure :: error_message
     procedure :: error_code
+    procedure :: check_allocation
+    procedure :: check_deallocation
   end type
 
   interface error ! constructor
@@ -77,5 +79,22 @@ contains
     class(error) ,intent(in) :: this
     error_code = this%code
   end function
+
+  subroutine check_allocation(this)
+   class(error), intent(in) :: this
+   if (this%code /= 0) then
+     print *,this%message
+     stop 'allocation failed'
+   endif
+  end subroutine
+
+  subroutine check_deallocation(this)
+   class(error), intent(in) :: this
+   if (this%code /= 0) then
+     print *,this%message
+     stop 'deallocation failed'
+   endif
+  end subroutine
+
 end module ForTrilinos_error 
 

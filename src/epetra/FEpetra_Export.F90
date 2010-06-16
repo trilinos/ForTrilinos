@@ -52,7 +52,7 @@ module FEpetra_Export
     type(FT_Epetra_Export_ID_t)  :: Export_id 
   contains
      !Developers only
-     procedure         :: remote_dealloc
+     procedure         :: ctrilinos_delete
      procedure         :: get_EpetraExport_ID 
      procedure ,nopass :: alias_EpetraExport_ID
      procedure         :: generalize 
@@ -199,7 +199,7 @@ contains
    TargetMap=Epetra_BlockMap(TargetMap_id)
   end function
 
-  subroutine remote_dealloc(this)
+  subroutine ctrilinos_delete(this)
     class(Epetra_Export) ,intent(inout) :: this
     call Epetra_Export_Destroy( this%Export_id ) 
   end subroutine

@@ -55,7 +55,7 @@ module FEpetra_MpiComm
     type(FT_Epetra_MpiComm_ID_t) :: MpiComm_id  
   contains
     !Developers only
-    procedure         ::remote_dealloc
+    procedure         ::ctrilinos_delete
     procedure         :: get_EpetraMpiComm_ID
     procedure ,nopass :: alias_EpetraMpiComm_ID
     procedure         :: generalize
@@ -409,9 +409,9 @@ contains
    NumProc=Epetra_MpiComm_NumProc(this%MpiComm_id)
   end function
 
-  subroutine remote_dealloc(this)
+  subroutine ctrilinos_delete(this)
     class(Epetra_MpiComm) ,intent(inout) :: this
-    call this%remote_dealloc_EpetraComm()
+    call this%ctrilinos_delete_EpetraComm()
     call Epetra_MpiComm_Destroy(this%MpiComm_id)
   end subroutine
 #endif

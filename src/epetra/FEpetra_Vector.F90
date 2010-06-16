@@ -51,7 +51,7 @@ module FEpetra_Vector
     private
     type(FT_Epetra_Vector_ID_t)  :: vector_id 
   contains
-     procedure         :: remote_dealloc
+     procedure         :: ctrilinos_delete
      procedure         :: get_EpetraVector_ID 
      procedure ,nopass :: alias_EpetraVector_ID
      procedure         :: generalize 
@@ -185,9 +185,9 @@ contains
    if (present(err)) err=error(error_out)
   end function 
   
-  subroutine remote_dealloc(this)
+  subroutine ctrilinos_delete(this)
     class(Epetra_Vector) ,intent(inout) :: this
-    call this%remote_dealloc_EpetraMultiVector()
+    call this%ctrilinos_delete_EpetraMultiVector()
     call Epetra_Vector_Destroy(this%vector_id) 
   end subroutine
 

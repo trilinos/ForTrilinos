@@ -51,8 +51,8 @@ module FEpetra_Comm
    type(FT_Epetra_Comm_ID_t)         :: comm_id 
   contains
     ! Developers only
-    procedure                                     :: remote_dealloc
-    procedure                                     :: remote_dealloc_EpetraComm
+    procedure                                     :: ctrilinos_delete
+    procedure                                     :: ctrilinos_delete_EpetraComm
     procedure                                     :: get_EpetraComm_ID
     procedure                                     :: set_EpetraComm_ID
     procedure                 ,nopass             :: alias_EpetraComm_ID
@@ -304,12 +304,17 @@ module FEpetra_Comm
     use ForTrilinos_enums
     type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
     type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id
-    integer :: status 
+    integer(c_int) :: status 
+    type(error) :: ierr
+    character(:),allocatable::procedure_message
+    procedure_message='FEpetra_Comm:alias_EpetraComm_ID'
     allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_Comm_ID),stat=status)
-    if (status /= 0) stop 'Failed allocation in FEpetra_Comm'
+    ierr=error(status,procedure_message)
+    call ierr%check_allocation()
     alias_EpetraComm_ID=degeneralize_EpetraComm(c_loc(alias_id))
     deallocate(alias_id,stat=status)
-    if (status /= 0) stop 'Failed deallocation in FEpetra_Comm'
+    ierr=error(status,procedure_message)
+    call ierr%check_deallocation()
   end function
 
   type(ForTrilinos_Universal_ID_t) function generalize_EpetraComm(this)
@@ -335,12 +340,12 @@ module FEpetra_Comm
     degeneralize_EpetraComm = local_ptr
   end function
  
-  subroutine remote_dealloc(this)
+  subroutine ctrilinos_delete(this)
     class(Epetra_Comm) ,intent(inout) :: this
     call Epetra_Comm_Destroy( this%comm_id )
   end subroutine
   
-  subroutine remote_dealloc_EpetraComm(this)
+  subroutine ctrilinos_delete_EpetraComm(this)
     class(Epetra_Comm) ,intent(inout) :: this
     call Epetra_Comm_Destroy( this%comm_id )
   end subroutine

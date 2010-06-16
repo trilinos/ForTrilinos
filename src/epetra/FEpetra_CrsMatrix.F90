@@ -55,7 +55,7 @@ module FEpetra_CrsMatrix
   contains
      !Constructor
      !Developers only
-     procedure         :: remote_dealloc
+     procedure         :: ctrilinos_delete
      procedure         :: get_EpetraCrsMatrix_ID 
      procedure ,nopass :: alias_EpetraCrsMatrix_ID
      procedure         :: generalize 
@@ -327,9 +327,9 @@ contains
  !  allocate(Comm,source=comm_out)
  !end function
 
-  subroutine remote_dealloc(this)
+  subroutine ctrilinos_delete(this)
     class(Epetra_CrsMatrix) ,intent(inout) :: this
-    call this%remote_dealloc_EpetraRowMatrix()
+    call this%ctrilinos_delete_EpetraRowMatrix()
     call Epetra_CrsMatrix_Destroy( this%CrsMatrix_id ) 
   end subroutine
 end module 

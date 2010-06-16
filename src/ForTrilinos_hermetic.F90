@@ -41,7 +41,7 @@ module ForTrilinos_hermetic
   public :: hermetic
   type, abstract :: hermetic
   contains
-      procedure(free_memory), deferred :: remote_dealloc
+      procedure(free_memory), deferred :: ctrilinos_delete
   end type
 
   abstract interface

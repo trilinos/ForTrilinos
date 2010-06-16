@@ -53,8 +53,8 @@ module FEpetra_BlockMap
     type(FT_Epetra_BlockMap_ID_t) :: BlockMap_id 
   contains
      !Developers only
-     procedure         :: remote_dealloc
-     procedure         :: remote_dealloc_EpetraBlockMap
+     procedure         :: ctrilinos_delete
+     procedure         :: ctrilinos_delete_EpetraBlockMap
      procedure         :: get_EpetraBlockMap_ID 
      procedure ,nopass :: alias_EpetraBlockMap_ID
      procedure         :: generalize 
@@ -262,12 +262,12 @@ contains
     if (DistributedGlobal_out==FT_TRUE) DistributedGlobal=.true.
   end function
 
-  subroutine remote_dealloc(this)
+  subroutine ctrilinos_delete(this)
     class(Epetra_BlockMap),intent(inout) :: this
     call Epetra_BlockMap_Destroy( this%BlockMap_id ) 
   end subroutine
 
-  subroutine remote_dealloc_EpetraBlockMap(this)
+  subroutine ctrilinos_delete_EpetraBlockMap(this)
     class(Epetra_BlockMap),intent(inout) :: this
     call Epetra_BlockMap_Destroy( this%BlockMap_id ) 
   end subroutine

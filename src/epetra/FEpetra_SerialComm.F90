@@ -54,7 +54,7 @@ module FEpetra_SerialComm
     type(FT_Epetra_SerialComm_ID_t) :: SerialComm_id 
   contains
      !Developers only
-     procedure         :: remote_dealloc
+     procedure         :: ctrilinos_delete
      procedure         :: get_EpetraSerialComm_ID 
      procedure ,nopass :: alias_EpetraSerialComm_ID
      procedure         :: generalize 
@@ -402,11 +402,11 @@ contains
    NumProc=Epetra_SerialComm_NumProc(this%SerialComm_id)
   end function
   
-  subroutine remote_dealloc(this)
+  subroutine ctrilinos_delete(this)
     class(Epetra_SerialComm) ,intent(inout) :: this
-    call this%remote_dealloc_EpetraComm()
+    call this%ctrilinos_delete_EpetraComm()
     call Epetra_SerialComm_Destroy(this%SerialComm_id)
-    print *,'remote_dealloc_SerialComm'
+    print *,'ctrilinos_delete_SerialComm'
     print *,this%SerialComm_id%table,this%SerialComm_id%index
   end subroutine
 

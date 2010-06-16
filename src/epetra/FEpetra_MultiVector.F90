@@ -52,8 +52,8 @@ module FEpetra_MultiVector
     private
     type(FT_Epetra_MultiVector_ID_t) :: MultiVector_id 
   contains
-     procedure         :: remote_dealloc_EpetraMultiVector
-     procedure         :: remote_dealloc
+     procedure         :: ctrilinos_delete_EpetraMultiVector
+     procedure         :: ctrilinos_delete
      procedure         :: get_EpetraMultiVector_ID 
      procedure ,nopass :: alias_EpetraMultiVector_ID
      procedure         :: generalize 
@@ -442,12 +442,12 @@ contains
     ConstantStride=Epetra_MultiVector_ConstantStride(this%MultiVector_id)
   end function 
 
-  subroutine remote_dealloc_EpetraMultiVector(this)
+  subroutine ctrilinos_delete_EpetraMultiVector(this)
     class(Epetra_MultiVector),intent(inout) :: this
     call Epetra_MultiVector_Destroy( this%MultiVector_id ) 
   end subroutine
 
-  subroutine remote_dealloc(this)
+  subroutine ctrilinos_delete(this)
     class(Epetra_MultiVector),intent(inout) :: this
     call Epetra_MultiVector_Destroy( this%MultiVector_id ) 
   end subroutine

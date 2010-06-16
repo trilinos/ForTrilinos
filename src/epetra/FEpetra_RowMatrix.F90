@@ -54,7 +54,7 @@ module FEpetra_RowMatrix
    type(FT_Epetra_RowMatrix_ID_t)         :: RowMatrix_id 
   contains
     ! Developers only
-    procedure                          :: remote_dealloc_EpetraRowMatrix
+    procedure                          :: ctrilinos_delete_EpetraRowMatrix
     procedure                                     :: get_EpetraRowMatrix_ID
     procedure                                     :: set_EpetraRowMatrix_ID
     procedure                 ,nopass             :: alias_EpetraRowMatrix_ID
@@ -186,7 +186,7 @@ module FEpetra_RowMatrix
     lhs%RowMatrix_id=rhs
   end subroutine
  
-  subroutine remote_dealloc_EpetraRowMatrix(this)
+  subroutine ctrilinos_delete_EpetraRowMatrix(this)
     class(Epetra_RowMatrix) ,intent(inout) :: this
     call Epetra_RowMatrix_Destroy( this%RowMatrix_id )
   end subroutine
