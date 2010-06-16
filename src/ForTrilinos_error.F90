@@ -37,16 +37,16 @@
 
 module ForTrilinos_error
   use iso_c_binding, only:c_int,c_char
+  use ForTrilinos_assertion_utility ,only : error_message,assert,assert_identical
+
   implicit none
   private
   public :: error
 
-  type error
+  type ,extends(error_message) :: error
     private
     integer(c_int) :: code
-    character(:) ,allocatable :: message
   contains
-    procedure :: error_message
     procedure :: error_code
     procedure :: check_allocation
     procedure :: check_deallocation
@@ -59,20 +59,10 @@ module ForTrilinos_error
 contains
   function new_error(new_code,new_message) 
     integer(c_int) ,intent(in) :: new_code
-    character(:),allocatable ,intent(in) ,optional :: new_message
+    character(len=*) ,intent(in) ,optional :: new_message
     type(error) :: new_error
     new_error%code = new_code 
-    if (present(new_message)) new_error%message = new_message
-  end function
-
-  function error_message(this)
-    class(error) ,intent(in) :: this 
-    character(:) ,allocatable :: error_message
-    if (allocated(this%message)) then
-       error_message = this%message
-    else
-       error_message = 'No error message provided.'
-    end if
+    if (present(new_message)) new_error%error_message = error_message(new_message)
   end function
 
   integer(c_int) function error_code(this)
@@ -82,18 +72,14 @@ contains
 
   subroutine check_allocation(this)
    class(error), intent(in) :: this
-   if (this%code /= 0) then
-     print *,this%message
-     stop 'allocation failed'
-   endif
+   call assert( [this%code==0], [this%error_message] )
+   !call assert( [this%code==0], ['allocation failed'] )
   end subroutine
 
   subroutine check_deallocation(this)
    class(error), intent(in) :: this
-   if (this%code /= 0) then
-     print *,this%message
-     stop 'deallocation failed'
-   endif
+   call assert( [this%code==0], [this%error_message] )
+   !call assert( [this%code==0], ['deallocation failed'] )
   end subroutine
 
 end module ForTrilinos_error 

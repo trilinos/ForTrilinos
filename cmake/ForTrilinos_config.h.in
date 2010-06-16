@@ -15,6 +15,9 @@
 /* Define if you are using gnumake - this will shorten your link lines. */
 #cmakedefine HAVE_GNUMAKE
 
+/* define if we want to use ForTrilinos assertions */
+#cmakedefine ForTrilinos_ASSERTIONS
+
 /* define if we want to use MPI */
 #cmakedefine HAVE_MPI
 

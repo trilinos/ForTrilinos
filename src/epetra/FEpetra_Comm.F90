@@ -46,6 +46,12 @@ module FEpetra_Comm
   private               ! Hide everything by default
   public :: Epetra_Comm ! Expose type/methods
 
+#ifdef ForTrilinos_ASSERTIONS
+  logical ,parameter :: assertions=.true.
+#else
+  logical ,parameter :: assertions=.false.
+#endif
+
   type ,abstract ,extends(universal) :: Epetra_Comm
    private
    type(FT_Epetra_Comm_ID_t)         :: comm_id 
@@ -306,14 +312,12 @@ module FEpetra_Comm
     type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id
     integer(c_int) :: status 
     type(error) :: ierr
-    character(:),allocatable::procedure_message
-    procedure_message='FEpetra_Comm:alias_EpetraComm_ID'
     allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_Comm_ID),stat=status)
-    ierr=error(status,procedure_message)
+    ierr=error(status,'FEpetra_Comm:alias_EpetraComm_ID')
     call ierr%check_allocation()
     alias_EpetraComm_ID=degeneralize_EpetraComm(c_loc(alias_id))
     deallocate(alias_id,stat=status)
-    ierr=error(status,procedure_message)
+    ierr=error(status,'FEpetra_Comm:alias_EpetraComm_ID')
     call ierr%check_deallocation()
   end function
 

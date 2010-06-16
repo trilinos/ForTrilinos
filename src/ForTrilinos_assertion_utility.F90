@@ -44,6 +44,8 @@ module ForTrilinos_assertion_utility
   type error_message
     private
     character(:) ,allocatable :: string
+  contains 
+    procedure :: text
   end type
 
   interface error_message ! constructor
@@ -55,6 +57,16 @@ contains
   type(error_message) function new_message(message)
     character(len=*), intent(in) :: message
     new_message%string = message 
+  end function
+
+  function text(this)
+    class(error_message) ,intent(in) :: this
+    character(:) ,allocatable :: text
+    if (allocated(this%string)) then
+       text = this%string
+    else
+       text = 'No error message provided.'
+    end if
   end function
 
   subroutine assert(assertion,text)
