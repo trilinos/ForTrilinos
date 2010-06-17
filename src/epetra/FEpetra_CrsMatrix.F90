@@ -60,6 +60,7 @@ module FEpetra_CrsMatrix
      procedure ,nopass :: alias_EpetraCrsMatrix_ID
      procedure         :: generalize 
     !Insertion/Replace/SumInto methods
+     procedure         :: PutScalar
      procedure         :: InsertGlobalValues
      procedure         :: ReplaceGlobalValues
     !Transformation methods
@@ -83,7 +84,7 @@ module FEpetra_CrsMatrix
   end type
 
    interface Epetra_CrsMatrix ! constructors
-     module procedure from_scratch,duplicate,from_struct
+     module procedure Create_VarPerRow,Create,Create_VarPerRow_WithColMap,Create_WithColMap,duplicate,from_struct
    end interface
 
 contains
@@ -101,20 +102,87 @@ contains
   ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_VarPerRow ( CT_Epetra_DataAccess_E_t CV,
   !CT_Epetra_Map_ID_t RowMapID, const int * NumEntriesPerRow, boolean StaticProfile);
 
-  type(Epetra_CrsMatrix) function from_scratch(CV,Row_Map,NumEntriesPerRow,StaticProfile)
+  type(Epetra_CrsMatrix) function Create_VarPerRow(CV,Row_Map,NumEntriesPerRow,StaticProfile)
     use ForTrilinos_enums,         only: FT_boolean_t,FT_FALSE,FT_TRUE
     integer(FT_Epetra_DataAccess_E_t), intent(in) :: CV
     class(Epetra_Map),              intent(in) :: Row_Map
     integer(c_int), dimension(:),   intent(in) :: NumEntriesPerRow                   
     integer(FT_boolean_t), optional            :: StaticProfile
-    type(FT_Epetra_CrsMatrix_ID_t) :: from_scratch_id
+    type(FT_Epetra_CrsMatrix_ID_t) :: Create_VarPerRow_id
     if (present(StaticProfile)) then
-      from_scratch_id = Epetra_CrsMatrix_Create_VarPerRow(CV,Row_Map%get_EpetraMap_ID(),NumEntriesPerRow,StaticProfile) 
+      Create_VarPerRow_id = Epetra_CrsMatrix_Create_VarPerRow(CV,Row_Map%get_EpetraMap_ID(),NumEntriesPerRow,StaticProfile) 
     else
-      from_scratch_id = Epetra_CrsMatrix_Create_VarPerRow(CV,Row_Map%get_EpetraMap_ID(),NumEntriesPerRow,FT_FALSE)
+      Create_VarPerRow_id = Epetra_CrsMatrix_Create_VarPerRow(CV,Row_Map%get_EpetraMap_ID(),NumEntriesPerRow,FT_FALSE)
     endif
-      from_scratch = from_struct(from_scratch_id)
+      Create_VarPerRow = from_struct(Create_VarPerRow_id)
   end function
+
+  ! Original C++ prototype:
+  ! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, int NumEntriesPerRow, bool StaticProfile = false);
+  ! CTrilinos prototype:
+  ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, 
+  ! int NumEntriesPerRow, boolean StaticProfile );
+
+  type(Epetra_CrsMatrix) function Create(CV,Row_Map,NumEntriesPerRow,StaticProfile)
+    use ForTrilinos_enums,         only: FT_boolean_t,FT_FALSE,FT_TRUE
+    integer(FT_Epetra_DataAccess_E_t), intent(in) :: CV
+    class(Epetra_Map),              intent(in) :: Row_Map
+    integer(c_int),                 intent(in) :: NumEntriesPerRow
+    integer(FT_boolean_t), optional            :: StaticProfile
+    type(FT_Epetra_CrsMatrix_ID_t) :: Create_id
+    if (present(StaticProfile)) then
+      Create_id = Epetra_CrsMatrix_Create(CV,Row_Map%get_EpetraMap_ID(),NumEntriesPerRow,StaticProfile)
+    else
+      Create_id = Epetra_CrsMatrix_Create(CV,Row_Map%get_EpetraMap_ID(),NumEntriesPerRow,FT_FALSE)
+    endif
+      Create = from_struct(Create_id)
+  end function
+
+  ! Original C++ prototype:
+  ! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const Epetra_Map& ColMap, const int* NumEntriesPerRow, 
+  ! bool StaticProfile = false);
+  ! CTrilinos prototype:
+  ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_VarPerRow_WithColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, 
+  ! CT_Epetra_Map_ID_t ColMapID, const int * NumEntriesPerRow, boolean StaticProfile );
+
+  type(Epetra_CrsMatrix) function Create_VarPerRow_WithColMap(CV,Row_Map,Col_Map,NumEntriesPerRow,StaticProfile)
+    use ForTrilinos_enums,         only: FT_boolean_t,FT_FALSE,FT_TRUE
+    integer(FT_Epetra_DataAccess_E_t), intent(in) :: CV
+    class(Epetra_Map),              intent(in) :: Row_Map
+    class(Epetra_Map),              intent(in) :: Col_Map
+    integer(c_int), dimension(:) ,  intent(in) :: NumEntriesPerRow
+    integer(FT_boolean_t), optional            :: StaticProfile
+    type(FT_Epetra_CrsMatrix_ID_t):: Create_id
+    if (present(StaticProfile)) then
+      Create_id = Epetra_CrsMatrix_Create_VarPerRow_WithColMap(CV,Row_Map%get_EpetraMap_ID(),Col_Map%get_EpetraMap_ID(),NumEntriesPerRow,StaticProfile)
+    else
+      Create_id = Epetra_CrsMatrix_Create_VarPerRow_WithColMap(CV,Row_Map%get_EpetraMap_ID(),Col_Map%get_EpetraMap_ID(),NumEntriesPerRow,FT_FALSE)
+    endif
+      Create_VarPerRow_WithColMap = from_struct(Create_id)
+  end function
+
+  !Original C++ prototype:
+  ! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const Epetra_Map& ColMap, int NumEntriesPerRow, bool StaticProfile = false);
+  ! CTrilinos prototype:
+  ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_WithColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, 
+  !CT_Epetra_Map_ID_t ColMapID, int NumEntriesPerRow, boolean StaticProfile );
+
+  type(Epetra_CrsMatrix) function Create_WithColMap(CV,Row_Map,Col_Map,NumEntriesPerRow,StaticProfile)
+    use ForTrilinos_enums,         only: FT_boolean_t,FT_FALSE,FT_TRUE
+    integer(FT_Epetra_DataAccess_E_t), intent(in) :: CV
+    class(Epetra_Map),              intent(in) :: Row_Map
+    class(Epetra_Map),              intent(in) :: Col_Map
+    integer(c_int),                 intent(in) :: NumEntriesPerRow
+    integer(FT_boolean_t), optional            :: StaticProfile
+    type(FT_Epetra_CrsMatrix_ID_t):: Create_id
+    if (present(StaticProfile)) then
+      Create_id = Epetra_CrsMatrix_Create_WithColMap(CV,Row_Map%get_EpetraMap_ID(),Col_Map%get_EpetraMap_ID(),NumEntriesPerRow,StaticProfile)
+    else
+      Create_id = Epetra_CrsMatrix_Create_WithColMap(CV,Row_Map%get_EpetraMap_ID(),Col_Map%get_EpetraMap_ID(),NumEntriesPerRow,FT_FALSE)
+    endif
+      Create_WithColMap = from_struct(Create_id)
+  end function
+
   
   ! Original C++ prototype:
   ! Epetra_CrsMatrix(const Epetra_CrsMatrix& RowMatrix);
@@ -174,7 +242,16 @@ contains
    ! degeneralize_EpetraCrsMatrix = Epetra_CrsMatrix_Degeneralize( generic_id )
    ! ____ Use for CTrilinos function implementation ______
   end function
- 
+
+  subroutine PutScalar(this,scalar,err)
+   class(Epetra_CrsMatrix), intent(in) :: this
+   real(c_double)           ,intent(in):: scalar
+   type(error), optional, intent(out) :: err
+   integer(c_int)                          :: error_out
+   error_out=Epetra_CrsMatrix_PutScalar(this%CrsMatrix_id,scalar)
+   if (present(err)) err=error(error_out)
+  end subroutine
+  
   subroutine InsertGlobalValues(this,GlobalRow,NumEntries,values,indices,err)
    class(Epetra_CrsMatrix), intent(in) :: this
    integer(c_int),          intent(in) :: GlobalRow
@@ -199,11 +276,12 @@ contains
    if (present(err)) err=error(error_out)
   end subroutine
 
-  subroutine FillComplete(this,OptimizeDataStorage)
+  subroutine FillComplete(this,OptimizeDataStorage,err)
    use ForTrilinos_enums, only: FT_boolean_t,FT_FALSE,FT_TRUE
    class(Epetra_CrsMatrix), intent(in) :: this
    logical,optional,        intent(in) :: OptimizeDataStorage
-   integer(c_int)                      :: junk
+   type(error),optional,intent(out)    :: err
+   integer(c_int)                      :: error_out 
    integer(FT_boolean_t)               :: OptimizeDataStorage_in
    if (present(OptimizeDataStorage)) then
      if (OptimizeDataStorage) OptimizeDataStorage_in=FT_TRUE
@@ -211,7 +289,8 @@ contains
    else
      OptimizeDataStorage_in=FT_TRUE
    endif
-   junk=Epetra_CrsMatrix_FillComplete(this%CrsMatrix_id,OptimizeDataStorage_in)
+   error_out=Epetra_CrsMatrix_FillComplete(this%CrsMatrix_id,OptimizeDataStorage_in)
+   if (present(err)) err=error(error_out)
   end subroutine
 
  subroutine ExtractGlobalRowCopy(this,GlobalRow,length,NumEntries,values,indices,err)
