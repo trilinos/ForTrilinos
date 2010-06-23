@@ -53,7 +53,8 @@ module FEpetra_Import
     type(FT_Epetra_Import_ID_t) :: Import_id 
   contains
      !Developers only
-     procedure         :: ctrilinos_delete
+     procedure         :: invalidate_id => invalidate_EpetraImport_ID
+     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraImport
      procedure         :: get_EpetraImport_ID 
      procedure ,nopass :: alias_EpetraImport_ID
      procedure         :: generalize 
@@ -214,7 +215,14 @@ contains
    TargetMap=Epetra_BlockMap(TargetMap_id)
   end function
 
-  subroutine ctrilinos_delete(this)
+  subroutine invalidate_EpetraImport_ID(this)
+    class(Epetra_Import),intent(inout) :: this
+    this%Import_id%table = FT_Invalid_ID
+    this%Import_id%index = FT_Invalid_Index 
+    this%Import_id%is_const = FT_FALSE
+  end subroutine
+
+  subroutine ctrilinos_delete_EpetraImport(this)
     class(Epetra_Import),intent(inout) :: this
     call Epetra_Import_Destroy( this%Import_id ) 
   end subroutine

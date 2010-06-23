@@ -54,7 +54,8 @@ module FEpetra_SerialComm
     type(FT_Epetra_SerialComm_ID_t) :: SerialComm_id 
   contains
      !Developers only
-     procedure         :: ctrilinos_delete
+     procedure         :: invalidate_id => invalidate_EpetraSerialComm_ID 
+     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraSerialComm
      procedure         :: get_EpetraSerialComm_ID 
      procedure ,nopass :: alias_EpetraSerialComm_ID
      procedure         :: generalize 
@@ -401,13 +402,23 @@ contains
    class(Epetra_SerialComm)     , intent(in) :: this
    NumProc=Epetra_SerialComm_NumProc(this%SerialComm_id)
   end function
+
+  subroutine invalidate_EpetraSerialComm_ID(this)
+    class(Epetra_SerialComm),intent(inout) :: this
+    call this%invalidate_EpetraComm_ID
+    this%SerialComm_id%table=FT_Invalid_ID
+    this%SerialComm_id%index=FT_Invalid_Index
+    this%SerialComm_id%is_const=FT_FALSE
+  end subroutine
   
-  subroutine ctrilinos_delete(this)
+  subroutine ctrilinos_delete_EpetraSerialComm(this)
     class(Epetra_SerialComm) ,intent(inout) :: this
+    print *,'before destroy'
+    print *,this%SerialComm_id%table,this%SerialComm_id%index,this%SerialComm_id%is_const
     call this%ctrilinos_delete_EpetraComm()
     call Epetra_SerialComm_Destroy(this%SerialComm_id)
-    print *,'ctrilinos_delete_SerialComm'
-    print *,this%SerialComm_id%table,this%SerialComm_id%index
+    print *,'after destroy'
+    print *,this%SerialComm_id%table,this%SerialComm_id%index,this%SerialComm_id%is_const
   end subroutine
 
 end module 

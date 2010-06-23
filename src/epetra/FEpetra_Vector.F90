@@ -39,19 +39,22 @@ module FEpetra_Vector
   use ForTrilinos_enums   ,only: FT_Epetra_MultiVector_ID_t,FT_Epetra_Vector_ID_t,FT_Epetra_BlockMap_ID_t,ForTrilinos_Universal_ID_t,FT_boolean_t 
   use ForTrilinos_table_man
   use ForTrilinos_error
+  use ForTrilinos_universal
   use FEpetra_MultiVector ,only: Epetra_MultiVector
   use FEpetra_BlockMap    !,only: Epetra_BlockMap !use to circumvent reported compiler bug
   use iso_c_binding       ,only: c_int
   use forepetra
   private                                    ! Hide everything by default
-  public :: Epetra_Vector!,Epetra_MultiVector ! Expose type/constructors/methods
+  public :: Epetra_Vector !,Epetra_MultiVector ! Expose type/constructors/methods
   implicit none
 
   type ,extends(Epetra_MultiVector)      :: Epetra_Vector !"shell"
     private
     type(FT_Epetra_Vector_ID_t)  :: vector_id 
   contains
-     procedure         :: ctrilinos_delete
+     !Developers only
+     procedure         :: invalidate_id => invalidate_EpetraVector_ID
+     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraVector
      procedure         :: get_EpetraVector_ID 
      procedure ,nopass :: alias_EpetraVector_ID
      procedure         :: generalize 
@@ -72,6 +75,7 @@ contains
     type(FT_Epetra_Vector_ID_t) ,intent(in) :: id
     from_struct%vector_id = id
     from_struct%Epetra_MultiVector=Epetra_MultiVector(from_struct%alias_EpetraMultiVector_ID(from_struct%generalize()))
+    call from_struct%register_self 
   end function
 
   ! Original C++ prototype:
@@ -185,9 +189,16 @@ contains
    if (present(err)) err=error(error_out)
   end function 
   
-  subroutine ctrilinos_delete(this)
+  subroutine invalidate_EpetraVector_ID(this)
     class(Epetra_Vector) ,intent(inout) :: this
-    call this%ctrilinos_delete_EpetraMultiVector()
+    call this%Epetra_MultiVector%invalidate_id
+    this%Vector_id%table = FT_Invalid_ID
+    this%Vector_id%index = FT_Invalid_Index 
+    this%Vector_id%is_const = FT_FALSE
+  end subroutine
+  
+  subroutine ctrilinos_delete_EpetraVector(this)
+    class(Epetra_Vector) ,intent(inout) :: this
     call Epetra_Vector_Destroy(this%vector_id) 
   end subroutine
 

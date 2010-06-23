@@ -73,13 +73,11 @@ contains
   subroutine check_allocation(this)
    class(error), intent(in) :: this
    call assert( [this%code==0], [this%error_message] )
-   !call assert( [this%code==0], ['allocation failed'] )
   end subroutine
 
   subroutine check_deallocation(this)
    class(error), intent(in) :: this
    call assert( [this%code==0], [this%error_message] )
-   !call assert( [this%code==0], ['deallocation failed'] )
   end subroutine
 
 end module ForTrilinos_error 

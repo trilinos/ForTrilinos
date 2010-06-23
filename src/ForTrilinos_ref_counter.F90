@@ -29,17 +29,17 @@ contains
       end if
   end subroutine
 
-  subroutine release(this)
+  recursive subroutine release(this)
       class (ref_counter), intent(inout) :: this
       if (associated(this%count)) then
           this%count = this%count - 1
-
+ 
           if (this%count == 0) then
               call this%obj%ctrilinos_delete
               deallocate (this%count, this%obj)
           end if
       else
- !         stop 'Error in release: count not associated'
+          stop 'Error in release: count not associated'
       end if
   end subroutine
 
@@ -54,7 +54,7 @@ contains
 
   subroutine finalize_ref_counter (this)
       type(ref_counter), intent(inout) :: this
-      call this%release
+      if (associated(this%count)) call this%release
   end subroutine
 
   function constructor (object)

@@ -53,7 +53,8 @@ module FEpetra_Map
     type(FT_Epetra_Map_ID_t) :: map_id
   contains
      !Developers only
-     procedure         :: ctrilinos_delete
+     procedure         :: invalidate_id => invalidate_EpetraMap_ID
+     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraMap
      procedure         :: get_EpetraMap_ID 
      procedure ,nopass :: alias_EpetraMap_ID
      procedure         :: generalize 
@@ -69,6 +70,7 @@ contains
     type(FT_Epetra_Map_ID_t),intent(in) :: id
     from_struct%map_id = id
     from_struct%Epetra_BlockMap=Epetra_BlockMap(from_struct%alias_EpetraBlockMap_ID(from_struct%generalize()))
+    call from_struct%register_self
   end function
 
   ! Original C++ prototype:
@@ -181,9 +183,16 @@ contains
    ! ____ Use for CTrilinos function implementation ______
   end function
 
-  subroutine ctrilinos_delete(this)
+  subroutine invalidate_EpetraMap_ID(this)
     class(Epetra_Map),intent(inout) :: this
-    call this%ctrilinos_delete_EpetraBlockMap()
+    call this%Epetra_BlockMap%invalidate_id
+    this%Map_id%table = FT_Invalid_ID
+    this%Map_id%index = FT_Invalid_Index 
+    this%Map_id%is_const = FT_FALSE
+  end subroutine
+
+  subroutine ctrilinos_delete_EpetraMap(this)
+    class(Epetra_Map),intent(inout) :: this
     call Epetra_Map_Destroy( this%map_id ) 
   end subroutine
 

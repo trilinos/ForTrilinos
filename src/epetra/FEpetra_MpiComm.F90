@@ -55,7 +55,8 @@ module FEpetra_MpiComm
     type(FT_Epetra_MpiComm_ID_t) :: MpiComm_id  
   contains
     !Developers only
-    procedure         ::ctrilinos_delete
+    procedure         :: invalidate_id => invalidate_EpetraMpiComm_ID
+    procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraMpiComm
     procedure         :: get_EpetraMpiComm_ID
     procedure ,nopass :: alias_EpetraMpiComm_ID
     procedure         :: generalize
@@ -409,7 +410,15 @@ contains
    NumProc=Epetra_MpiComm_NumProc(this%MpiComm_id)
   end function
 
-  subroutine ctrilinos_delete(this)
+  subroutine invalidate_EpetraMpiComm_ID(this)
+    class(Epetra_MpiComm) ,intent(inout) :: this
+    call this%invalidate_EpetraComm_ID
+    this%MpiComm_id%table = FT_Invalid_ID
+    this%MpiComm_id%index = FT_Invalid_Index 
+    this%MpiComm_id%is_const = FT_FALSE
+  end subroutine
+
+  subroutine ctrilinos_delete_EpetraMpiComm(this)
     class(Epetra_MpiComm) ,intent(inout) :: this
     call this%ctrilinos_delete_EpetraComm()
     call Epetra_MpiComm_Destroy(this%MpiComm_id)

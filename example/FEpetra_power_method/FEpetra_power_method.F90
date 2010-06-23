@@ -94,9 +94,9 @@ program main
 ! So we need 2 off-diagonal terms (except for the first and last equation)
   do i=1,NumMyElements
    if(MyGlobalElements(i)==1.or.MyGlobalElements(i)==NumGlobalElements) then
-     NumNz(i) = 2_c_int
+     NumNz(i) = 2
    else
-     NumNz(i) = 3_c_int
+     NumNz(i) = 3
    end if
   end do
   
@@ -140,13 +140,15 @@ program main
   if (A%MyGlobalRow(0_c_int)) then
     numvals=A%NumGlobalEntries(1_c_int)
     allocate(Rowvals(numvals),Rowinds(numvals))
-  end if
-  call A%ExtractGlobalRowCopy(0_c_int,numvals,numvals,Rowvals,Rowinds) ! get A(0,0)
+    call A%ExtractGlobalRowCopy(0_c_int,numvals,numvals,Rowvals,Rowinds) ! get A(0,0)
   do i=1,numvals
+   if (Rowinds(i)==0) Rowvals(i)=10.0*Rowvals(i)
    call A%ReplaceGlobalValues(0_c_int,numvals,Rowvals,Rowinds)
   enddo  
+  endif
 
   !Iterate again
+  lambda = 0.0
   call power_method(A,lambda,niters,tolerance,verbose,ierr_pm)
   ierr_pm=ierr_pm+1
 
@@ -164,12 +166,8 @@ program main
 contains
 
 subroutine power_method(A,lambda,niters,tolerance,verbose,ierr_pm)
- use iso_c_binding        ,only : c_int,c_double
- use FEpetra_Map, only : Epetra_Map
- use FEpetra_Vector, only : Epetra_Vector
- use FEpetra_CrsMatrix, only : Epetra_CrsMatrix
  implicit none
- type(Epetra_CrsMatrix), intent(inout) :: A
+ type(Epetra_CrsMatrix), intent(inout) :: A 
  integer(c_int),    intent(inout):: ierr_pm
  real(c_double) :: lambda
  integer(c_int), intent(in) :: niters
@@ -180,20 +178,20 @@ subroutine power_method(A,lambda,niters,tolerance,verbose,ierr_pm)
  integer(c_int) :: iter
  print *,'Inside power method'
  ierr_pm=1
- !q = Epetra_Vector(A%RowMap()) 
- !z = Epetra_Vector(A%RowMap()) 
- !resid = Epetra_Vector(A%RowMap()) 
+ q = Epetra_Vector(A%RowMap()) 
+ z = Epetra_Vector(A%RowMap()) 
+ resid = Epetra_Vector(A%RowMap()) 
 
  !Fill z with random numbers
  call z%Random()
 
  do iter=1,niters
- ! normz=z%Norm2()              !Compute 2-norm of z
- ! call q%Scale(1.0/normz(1),z)  
- ! call A%Multiply(.false.,q,z) ! Compute z=A*q
- ! call q%Dot(z,[lambda])       ! Approximate maximum eignvalue
+  normz=z%Norm2()              !Compute 2-norm of z
+  call q%Scale(1.0/normz(1),z)  
+  call A%Multiply(.false.,q,z) ! Compute z=A*q
+  call q%Dot(z,[lambda])       ! Approximate maximum eignvalue
   if (mod(iter,100)==0.or.iter==niters) then
- !  call resid%Update(1.0_c_double,z,-lambda,q,0.0_c_double) ! Compute A*q-lambda*q
+   call resid%Update(1.0_c_double,z,-lambda,q,0.0_c_double) ! Compute A*q-lambda*q
    residual=resid%Norm2()
    if (verbose) then
     print *,'Iter=',iter,'lambda=',lambda,'Resisual of A*q-lambda*q=',residual(1)

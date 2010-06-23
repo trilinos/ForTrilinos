@@ -53,8 +53,8 @@ module FEpetra_BlockMap
     type(FT_Epetra_BlockMap_ID_t) :: BlockMap_id 
   contains
      !Developers only
-     procedure         :: ctrilinos_delete
-     procedure         :: ctrilinos_delete_EpetraBlockMap
+     procedure         :: invalidate_id => invalidate_EpetraBlockMap_ID
+     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraBlockMap
      procedure         :: get_EpetraBlockMap_ID 
      procedure ,nopass :: alias_EpetraBlockMap_ID
      procedure         :: generalize 
@@ -262,9 +262,11 @@ contains
     if (DistributedGlobal_out==FT_TRUE) DistributedGlobal=.true.
   end function
 
-  subroutine ctrilinos_delete(this)
+  subroutine invalidate_EpetraBlockMap_ID(this)
     class(Epetra_BlockMap),intent(inout) :: this
-    call Epetra_BlockMap_Destroy( this%BlockMap_id ) 
+    this%BlockMap_id%table = FT_Invalid_ID
+    this%BlockMap_id%index = FT_Invalid_Index 
+    this%BlockMap_id%is_const = FT_FALSE
   end subroutine
 
   subroutine ctrilinos_delete_EpetraBlockMap(this)

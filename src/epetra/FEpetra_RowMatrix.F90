@@ -54,6 +54,7 @@ module FEpetra_RowMatrix
    type(FT_Epetra_RowMatrix_ID_t)         :: RowMatrix_id 
   contains
     ! Developers only
+    procedure                          :: invalidate_EpetraRowMatrix_ID
     procedure                          :: ctrilinos_delete_EpetraRowMatrix
     procedure                                     :: get_EpetraRowMatrix_ID
     procedure                                     :: set_EpetraRowMatrix_ID
@@ -184,6 +185,13 @@ module FEpetra_RowMatrix
     type(FT_Epetra_RowMatrix_ID_t) ,intent(in)   :: rhs
     class(Epetra_RowMatrix)        ,intent(inout):: lhs
     lhs%RowMatrix_id=rhs
+  end subroutine
+ 
+  subroutine invalidate_EpetraRowMatrix_ID(this)
+    class(Epetra_RowMatrix) ,intent(inout) :: this
+    this%RowMatrix_id%table = FT_Invalid_ID
+    this%RowMatrix_id%index = FT_Invalid_Index 
+    this%RowMatrix_id%is_const = FT_FALSE
   end subroutine
  
   subroutine ctrilinos_delete_EpetraRowMatrix(this)

@@ -57,7 +57,7 @@ module FEpetra_Comm
    type(FT_Epetra_Comm_ID_t)         :: comm_id 
   contains
     ! Developers only
-    procedure                                     :: ctrilinos_delete
+    procedure                                     :: invalidate_EpetraComm_ID
     procedure                                     :: ctrilinos_delete_EpetraComm
     procedure                                     :: get_EpetraComm_ID
     procedure                                     :: set_EpetraComm_ID
@@ -343,12 +343,14 @@ module FEpetra_Comm
     call c_f_pointer (generic_id, local_ptr)
     degeneralize_EpetraComm = local_ptr
   end function
- 
-  subroutine ctrilinos_delete(this)
+
+  subroutine invalidate_EpetraComm_ID(this)
     class(Epetra_Comm) ,intent(inout) :: this
-    call Epetra_Comm_Destroy( this%comm_id )
+    this%comm_id%table =FT_Invalid_ID
+    this%comm_id%index =FT_Invalid_Index
+    this%comm_id%is_const=FT_FALSE
   end subroutine
-  
+ 
   subroutine ctrilinos_delete_EpetraComm(this)
     class(Epetra_Comm) ,intent(inout) :: this
     call Epetra_Comm_Destroy( this%comm_id )

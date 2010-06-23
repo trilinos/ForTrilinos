@@ -45,9 +45,17 @@ module ForTrilinos_universal
     type(ref_counter) :: counter
 
     contains
+    procedure(invalidate_id_interface) , deferred :: invalidate_id 
     procedure, non_overridable :: force_finalize
     procedure, non_overridable :: register_self
   end type
+
+  abstract interface
+     subroutine invalidate_id_interface (this)
+        import :: universal 
+        class(universal), intent(inout) :: this
+     end subroutine
+  end interface
 
   contains
 
@@ -55,6 +63,7 @@ module ForTrilinos_universal
     class(universal), intent(inout) :: this
 
     call this%counter%release
+    call this%invalidate_id
   end subroutine
 
   subroutine register_self (this)

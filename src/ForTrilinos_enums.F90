@@ -107,6 +107,9 @@ module ForTrilinos_enums
 
   integer(FT_boolean_t) ,parameter :: FT_FALSE = 0
   integer(FT_boolean_t) ,parameter :: FT_TRUE  = 1
+ 
+  ! Define invalid index in object table
+  integer(c_int), parameter :: FT_Invalid_Index = -1
 
   ! The type below is interoperable with CTrilinos_Universal_ID_t in CTrilinos/src/CTrilinos_enums.h:
 

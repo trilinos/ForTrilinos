@@ -52,8 +52,8 @@ module FEpetra_MultiVector
     private
     type(FT_Epetra_MultiVector_ID_t) :: MultiVector_id 
   contains
-     procedure         :: ctrilinos_delete_EpetraMultiVector
-     procedure         :: ctrilinos_delete
+     procedure         :: invalidate_id => invalidate_EpetraMultiVector_ID
+     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraMultiVector
      procedure         :: get_EpetraMultiVector_ID 
      procedure ,nopass :: alias_EpetraMultiVector_ID
      procedure         :: generalize 
@@ -118,12 +118,12 @@ contains
    class(Epetra_BlockMap) ,intent(in) :: BlockMap
    integer(c_int)         ,intent(in) :: Num_Vectors
    logical  ,intent(in) :: zero 
-   integer(FT_boolean_t) :: zeroOut 
+   integer(FT_boolean_t) :: zero_in 
    type(FT_Epetra_MultiVector_ID_t) :: from_scratch_id
-   if (zero) zeroOut=FT_TRUE
-   if (.not.zero) zeroOut=FT_FALSE
-   from_scratch_id = Epetra_MultiVector_Create(BlockMap%get_EpetraBlockMap_ID(),Num_Vectors,zeroOut)
-   call from_scratch%register_self
+   if (zero) zero_in=FT_TRUE
+   if (.not.zero) zero_in=FT_FALSE
+   from_scratch_id = Epetra_MultiVector_Create(BlockMap%get_EpetraBlockMap_ID(),Num_Vectors,zero_in)
+   from_scratch = from_struct(from_scratch_id)
   end function
 
   ! Original C++ prototype:
@@ -135,7 +135,7 @@ contains
     type(Epetra_MultiVector) ,intent(in) :: this
     type(FT_Epetra_MultiVector_ID_t) :: duplicate_id
     duplicate_id = Epetra_MultiVector_Duplicate(this%MultiVector_id)
-    call duplicate%register_self
+    duplicate = from_struct(duplicate_id)
   end function
 
   type(FT_Epetra_MultiVector_ID_t) function get_EpetraMultiVector_ID(this)
@@ -442,12 +442,14 @@ contains
     ConstantStride=Epetra_MultiVector_ConstantStride(this%MultiVector_id)
   end function 
 
-  subroutine ctrilinos_delete_EpetraMultiVector(this)
+  subroutine invalidate_EpetraMultiVector_ID(this)
     class(Epetra_MultiVector),intent(inout) :: this
-    call Epetra_MultiVector_Destroy( this%MultiVector_id ) 
+    this%MultiVector_id%table = FT_Invalid_ID
+    this%MultiVector_id%index = FT_Invalid_Index 
+    this%MultiVector_id%is_const = FT_FALSE
   end subroutine
 
-  subroutine ctrilinos_delete(this)
+  subroutine ctrilinos_delete_EpetraMultiVector(this)
     class(Epetra_MultiVector),intent(inout) :: this
     call Epetra_MultiVector_Destroy( this%MultiVector_id ) 
   end subroutine

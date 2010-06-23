@@ -41,7 +41,7 @@ module ForTrilinos_oo_unittest_utils
   use ForTrilinos_enums
 #ifdef HAVE_MPI
   use mpi
-  use FEpetra_MpiComm,only:Epetra_MpiCom
+  use FEpetra_MpiComm,only:Epetra_MpiComm
 #else 
   use FEpetra_SerialComm,only:Epetra_SerialComm
 #endif

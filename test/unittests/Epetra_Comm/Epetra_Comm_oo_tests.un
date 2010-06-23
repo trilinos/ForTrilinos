@@ -2,6 +2,34 @@
 #include "runtime_macros.h"
 
 FORTRILINOS_UNITTEST_MODULE_DEF(CLASS_BEING_TESTED)
+    use FEpetra_SerialComm,only:Epetra_SerialComm
+    use FEpetra_Comm,only:Epetra_Comm
+    use iso_c_binding,only:c_int,c_double,c_char,c_long
+    use ForTrilinos_error
 FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Alias)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    implicit none 
+    type(Epetra_SerialComm):: comm
+    type(FT_Epetra_SerialComm_ID_t):: serial_commID
+    type(FT_Epetra_Comm_ID_t) ::commID,comm_alias_ID
+    success = .TRUE.
+    ECHO(comm = Epetra_SerialComm())
+    ECHO(serial_commID = comm%get_EpetraSerialComm_ID())
+    ECHO(commID = comm%get_EpetraComm_ID())
+    ECHO(comm_alias_ID = comm%alias_EpetraComm_ID(comm%generalize_EpetraComm()))
+    TEST_EQUALITY(serial_commID%table, FT_Epetra_SerialComm_ID)
+    TEST_EQUALITY(serial_commID%index, 0)
+    TEST_EQUALITY(serial_commID%is_const, FT_False)
+    TEST_EQUALITY(commID%table, FT_Epetra_Comm_ID)
+    TEST_EQUALITY(commID%index, 0)
+    TEST_EQUALITY(commID%is_const, FT_False)
+    TEST_EQUALITY(comm_alias_ID%table, FT_Epetra_Comm_ID)
+    TEST_EQUALITY(comm_alias_ID%index, 1)
+    TEST_EQUALITY(comm_alias_ID%is_const, FT_False)
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
 
 FORTRILINOS_UNITTEST_MODULE_END(CLASS_BEING_TESTED)
