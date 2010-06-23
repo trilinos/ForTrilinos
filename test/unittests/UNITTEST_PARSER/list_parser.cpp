@@ -5,7 +5,7 @@
 
 namespace {
 
-static bool ignore_now = false;
+static bool ignore_now = true;
 
 void proc_module_def(const std::string &line, const std::string &term,
   const std::vector<std::string> &args, std::vector<std::string> &result)
@@ -64,7 +64,6 @@ void proc_unittest_begin(const std::string &line, const std::string &term,
 //FORTRILINOS_UNITTEST_BEGIN
   if (args.size() != 0)
     throw ParserException("Incorrect number of arguments");
-  ignore_now = true;
 }
 
 void proc_unittest_end(const std::string &line, const std::string &term,
@@ -73,7 +72,6 @@ void proc_unittest_end(const std::string &line, const std::string &term,
 //FORTRILINOS_UNITTEST_END
   if (args.size() != 0)
     throw ParserException("Incorrect number of arguments");
-  ignore_now = false;
 }
 
 }
