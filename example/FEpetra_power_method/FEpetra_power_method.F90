@@ -51,6 +51,7 @@ program main
   integer(c_int)      :: niters, numvals
   integer(c_int),dimension(:),allocatable::Rowinds
   real(c_double),dimension(:),allocatable::Rowvals
+  logical        :: success = .true.
 
   if (.not. valid_kind_parameters()) stop 'C interoperability not supported on this platform.'
   
@@ -162,6 +163,14 @@ program main
 #ifdef HAVE_MPI
   call MPI_FINALIZE(rc)
 #endif
+  ! Should really figure out cases where this does not work
+  if (success) then
+    print *  
+    print *, "End Result: TEST PASSED" 
+  else
+    print *  
+    print *, "End Result: TEST FAILED"
+  end if
 
 contains
 
@@ -204,4 +213,4 @@ subroutine power_method(A,lambda,niters,tolerance,verbose,ierr_pm)
  enddo
 end subroutine
 
-end 
+end program main
