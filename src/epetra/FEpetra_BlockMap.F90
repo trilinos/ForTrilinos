@@ -62,6 +62,9 @@ module FEpetra_BlockMap
      !Size and dimension acccessor functions
      procedure         :: NumGlobalElements
      procedure         :: NumMyElements
+     procedure         :: IndexBase
+     procedure         :: SameAs
+     procedure         :: PointSameAs
      procedure         :: MyGlobalElements
      procedure         :: ElementSize_Const
      procedure         :: ElementSize_LID
@@ -224,6 +227,32 @@ contains
     class(Epetra_BlockMap) ,intent(in) :: this
     NumMyElements=Epetra_BlockMap_NumMyElements(this%BlockMap_id)
   end function 
+
+  integer(c_int) function IndexBase(this)
+    class(Epetra_BlockMap) ,intent(in) :: this
+    IndexBase=Epetra_BlockMap_IndexBase(this%BlockMap_id)
+  end function 
+
+  logical function  SameAs(lhs,rhs)
+    use ForTrilinos_enums, only:FT_boolean_t,FT_FALSE,FT_TRUE
+    class(Epetra_BlockMap)        ,intent(in) :: lhs
+    class(Epetra_BlockMap)        ,intent(in) :: rhs
+    integer(FT_boolean_t) :: SameAs_out
+    SameAs_out=Epetra_BlockMap_SameAs(lhs%BlockMap_id,rhs%BlockMap_id)
+    if (SameAs_out==FT_FALSE) SameAs=.false.
+    if (SameAs_out==FT_TRUE)  SameAs=.true.
+  end function SameAs
+
+  logical function  PointSameAs(lhs,rhs)
+    use ForTrilinos_enums, only:FT_boolean_t,FT_FALSE,FT_TRUE
+    class(Epetra_BlockMap)        ,intent(in) :: lhs
+    class(Epetra_BlockMap)        ,intent(in) :: rhs
+    integer(FT_boolean_t) :: PointSameAs_out
+    PointSameAs_out=Epetra_BlockMap_PointSameAs(lhs%BlockMap_id,rhs%BlockMap_id)
+    if (PointSameAs_out==FT_FALSE) PointSameAs=.false.
+    if (PointSameAs_out==FT_TRUE)  PointSameAs=.true.
+  end function PointSameAs
+
  
   function MyGlobalElements(this) result(MyGlobalElementsList)
     class(Epetra_BlockMap)     ,intent(in)    :: this
