@@ -6,6 +6,8 @@
 #include <sstream>
 #include <string.h>
 
+#include "ForTrilinos_config.h"
+
 //#define DEBUG
 
 std::vector<std::string> get_tests(const char *filename)
@@ -98,6 +100,16 @@ int run_all_unittests(std::vector<std::string> &names)
 
 int main(int argc, char *argv[])
 {
+#ifdef HAVE_MPI
+  std::cerr << "The serial unittest launcher is not capable of running MPI tests."
+            << std::endl
+            << "If you are seeing this error, then CMake isn't behaving as expected!"
+            << std::endl
+            << "END RESULT: SOME TESTS FAILED"
+            << std::endl;
+  return 1;
+#endif
+
   int failed = 0;
 
   if (argc < 2) {

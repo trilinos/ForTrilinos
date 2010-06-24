@@ -68,6 +68,10 @@ include 'mpif.h'
     end do
     close(unit=u)
   else
+#ifdef HAVE_MPI
+    write(output_unit,fmt='(a)') "You must specify a test file in MPI mode. TEST FAILED"
+    stop 1
+#else
     test_cnt = arg_cnt
     if (test_cnt > 100) then
       write(output_unit,fmt='(a)') "Too many tests specified. TEST FAILED"
@@ -77,6 +81,7 @@ include 'mpif.h'
       call get_command_argument(test_num,which_test,arg_len,stat)
       test_list(test_num) = which_test
     end do
+#endif
   end if
 
   fullsuccess = .TRUE.
