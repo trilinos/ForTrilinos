@@ -7,6 +7,7 @@ FORTRILINOS_UNITTEST_MODULE_DEF(CLASS_BEING_TESTED)
     use iso_c_binding,only:c_int,c_double,c_char,c_long
     use ForTrilinos_error
 #ifdef HAVE_MPI
+    use mpi
     use FEpetra_MpiComm, only: Epetra_MpiComm
 #else 
     use FEpetra_SerialComm, only: Epetra_SerialComm
