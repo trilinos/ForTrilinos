@@ -211,15 +211,16 @@ contains
     if (present(err)) err=error(error_out)
   end subroutine
 
-  subroutine Dot(this,x,result,err)
+  function Dot(this,x,err) result(dot_)
    class(Epetra_MultiVector), intent(in) :: this
    class(Epetra_MultiVector), intent(in) :: x
-   real(c_double),dimension(:)           :: result
+   real(c_double),dimension(:),allocatable :: dot_ 
    type(error),optional,intent(out)   :: err
    integer(c_int)                        :: error_out
-   error_out=Epetra_MultiVector_Dot(this%MultiVector_id,x%MultiVector_id,result)
+   allocate(dot_(this%NumVectors()))
+   error_out=Epetra_MultiVector_Dot(this%MultiVector_id,x%MultiVector_id,dot_)
    if (present(err)) err=error(error_out)
-  end subroutine
+  end function 
 
   subroutine Abs(this,A,err)
    class(Epetra_MultiVector), intent(in) :: this

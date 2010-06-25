@@ -413,12 +413,8 @@ contains
   
   subroutine ctrilinos_delete_EpetraSerialComm(this)
     class(Epetra_SerialComm) ,intent(inout) :: this
-    print *,'before destroy'
-    print *,this%SerialComm_id%table,this%SerialComm_id%index,this%SerialComm_id%is_const
     call this%ctrilinos_delete_EpetraComm()
     call Epetra_SerialComm_Destroy(this%SerialComm_id)
-    print *,'after destroy'
-    print *,this%SerialComm_id%table,this%SerialComm_id%index,this%SerialComm_id%is_const
   end subroutine
 
 end module 

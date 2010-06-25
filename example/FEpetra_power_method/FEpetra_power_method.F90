@@ -46,9 +46,9 @@ program main
   logical             :: verbose
   integer(c_int)      :: indices(2), NumEntries
   real(c_double)      :: two = 2.0,values(2)
-  integer             :: rc, ierr,ierr_pm=0 
-  real(c_double)      :: lambda=0.0,tolerance=1.0E-2
-  integer(c_int)      :: niters, numvals
+  integer             :: rc, ierr,ierr_pm 
+  real(c_double)      :: lambda(1),tolerance=1.0E-2
+  integer(c_int)      :: niters, numvals,index_diagonal
   integer(c_int),dimension(:),allocatable::Rowinds
   real(c_double),dimension(:),allocatable::Rowvals
   logical        :: success = .true.
@@ -124,7 +124,9 @@ program main
      call A%InsertGlobalValues(MyGlobalElements(i),NumEntries,values,indices,err)
      if (err%error_code()/=0) stop 'A%InsertGlobalValues: failed'
   !Put in the diaogonal entry
-     call A%InsertGlobalValues(MyGlobalElements(i),1,[two],MyGlobalElements,err)
+     index_diagonal = MyGlobalElements(i)
+     !call A%InsertGlobalValues(MyGlobalElements(i),1,[two],MyGlobalElements,err)
+     call A%InsertGlobalValues(MyGlobalElements(i),1,[two],[index_diagonal],err)
      if (err%error_code()/=0) stop 'A%InsertGlobalValues: failed'
   end do
  
@@ -133,19 +135,21 @@ program main
  
   !Create vectors for power methods
   !variable needed for interation
+  lambda = 0.0
+  ierr_pm = 0
   niters=NumGlobalElements*10 
   call power_method(A,lambda,niters,tolerance,verbose,ierr_pm)
   ierr_pm=ierr_pm+1
 
   !Iterate
-  if (A%MyGlobalRow(0_c_int)) then
+  if (A%MyGlobalRow(1_c_int)) then
     numvals=A%NumGlobalEntries(1_c_int)
     allocate(Rowvals(numvals),Rowinds(numvals))
-    call A%ExtractGlobalRowCopy(0_c_int,numvals,numvals,Rowvals,Rowinds) ! get A(0,0)
+    call A%ExtractGlobalRowCopy(1_c_int,numvals,numvals,Rowvals,Rowinds) ! get A(0,0)
   do i=1,numvals
-   if (Rowinds(i)==0) Rowvals(i)=10.0*Rowvals(i)
-   call A%ReplaceGlobalValues(0_c_int,numvals,Rowvals,Rowinds)
+   if (Rowinds(i)==1) Rowvals(i)=10.0*Rowvals(i)
   enddo  
+   call A%ReplaceGlobalValues(1_c_int,numvals,Rowvals,Rowinds)
   endif
 
   !Iterate again
@@ -178,14 +182,13 @@ subroutine power_method(A,lambda,niters,tolerance,verbose,ierr_pm)
  implicit none
  type(Epetra_CrsMatrix), intent(inout) :: A 
  integer(c_int),    intent(inout):: ierr_pm
- real(c_double) :: lambda
  integer(c_int), intent(in) :: niters
  real(c_double), intent(in) :: tolerance 
  logical, intent(in)        :: verbose
- real(c_double), allocatable,dimension(:) :: normz,residual
+ real(c_double)             :: lambda(1)
+ real(c_double) :: normz(1),residual(1)
  type(Epetra_Vector) :: q,z,resid
  integer(c_int) :: iter
- print *,'Inside power method'
  ierr_pm=1
  q = Epetra_Vector(A%RowMap()) 
  z = Epetra_Vector(A%RowMap()) 
@@ -194,17 +197,15 @@ subroutine power_method(A,lambda,niters,tolerance,verbose,ierr_pm)
  !Fill z with random numbers
  call z%Random()
 
- do iter=1,niters
+ do iter=0,niters
   normz=z%Norm2()              !Compute 2-norm of z
   call q%Scale(1.0/normz(1),z)  
   call A%Multiply(.false.,q,z) ! Compute z=A*q
-  call q%Dot(z,[lambda])       ! Approximate maximum eignvalue
-  if (mod(iter,100)==0.or.iter==niters) then
-   call resid%Update(1.0_c_double,z,-lambda,q,0.0_c_double) ! Compute A*q-lambda*q
+  lambda = q%Dot(z)            ! Approximate maximum eignvalue
+  if (modulo(iter,100)==0.or.iter+1==niters) then
+   call resid%Update(1.0_c_double,z,-lambda(1),q,0.0_c_double) ! Compute A*q-lambda*q
    residual=resid%Norm2()
-   if (verbose) then
-    print *,'Iter=',iter,'lambda=',lambda,'Resisual of A*q-lambda*q=',residual(1)
-   endif
+   if (verbose) print *,'Iter=',iter,'lambda=',lambda(1),'Resisual of A*q-lambda*q=',residual(1)
   endif
   if (residual(1)<tolerance) then
    ierr_pm=0
