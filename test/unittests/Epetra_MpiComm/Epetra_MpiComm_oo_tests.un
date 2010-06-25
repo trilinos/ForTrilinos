@@ -2,7 +2,7 @@
 #include "runtime_macros.h"
 
 FORTRILINOS_UNITTEST_MODULE_DEF(CLASS_BEING_TESTED)
-    use mpi
+    use mpi, only : MPI_COMM_WORLD
     use FEpetra_MpiComm,only:Epetra_MpiComm
     use FEpetra_Comm,only:Epetra_Comm
     use iso_c_binding,only:c_int,c_double,c_char,c_long
