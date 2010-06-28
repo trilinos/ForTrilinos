@@ -36,7 +36,7 @@ include 'mpif.h'
   if (stat < 0) then
     write(output_unit,fmt='(a)') "Command line argument cropped. TEST FAILED"
 #ifdef HAVE_MPI
-     call MPI_Abort(MPI_COMM_WORLD,1,ierr)
+    call MPI_Abort(MPI_COMM_WORLD,1,ierr)
 #else
     stop 1
 #endif
@@ -44,7 +44,7 @@ include 'mpif.h'
   if (stat > 0) then
     write(output_unit,fmt='(a)') "Could not retrieve first command line argument. TEST FAILED"
 #ifdef HAVE_MPI
-     call MPI_Abort(MPI_COMM_WORLD,1,ierr)
+    call MPI_Abort(MPI_COMM_WORLD,1,ierr)
 #else
     stop 1
 #endif
@@ -53,27 +53,27 @@ include 'mpif.h'
   if (which_test == "-f") then
     if (arg_cnt < 2) then
       write(output_unit,fmt='(a)') "No test list file specified. TEST FAILED"
-  #ifdef HAVE_MPI
-     call MPI_Abort(MPI_COMM_WORLD,1,ierr)
+#ifdef HAVE_MPI
+      call MPI_Abort(MPI_COMM_WORLD,1,ierr)
 #else
-    stop 1
+      stop 1
 #endif  
     end if
     call get_command_argument(2,which_test,arg_len,stat)
     if (stat < 0) then
       write(output_unit,fmt='(a)') "Test file command line argument cropped. TEST FAILED"
 #ifdef HAVE_MPI
-     call MPI_Abort(MPI_COMM_WORLD,1,ierr)
+      call MPI_Abort(MPI_COMM_WORLD,1,ierr)
 #else
-    stop 1
+      stop 1
 #endif
     end if
     if (stat > 0) then
       write(output_unit,fmt='(a)') "Could not retrieve command line argument for test file. TEST FAILED"
 #ifdef HAVE_MPI
-     call MPI_Abort(MPI_COMM_WORLD,1,ierr)
+      call MPI_Abort(MPI_COMM_WORLD,1,ierr)
 #else
-    stop 1
+      stop 1
 #endif
     end if
 
@@ -82,9 +82,9 @@ include 'mpif.h'
     if (ierr .NE. 0) then
       write(output_unit,fmt='(a)') "Error opening test list file. TEST FAILED"
 #ifdef HAVE_MPI
-     call MPI_Abort(MPI_COMM_WORLD,1,ierr)
+      call MPI_Abort(MPI_COMM_WORLD,1,ierr)
 #else
-    stop 1
+      stop 1
 #endif
     end if
     test_cnt = 0
@@ -98,7 +98,7 @@ include 'mpif.h'
   else
 #ifdef HAVE_MPI
     write(output_unit,fmt='(a)') "You must specify a test file in MPI mode. TEST FAILED"
-     call MPI_Abort(MPI_COMM_WORLD,1,ierr)
+    call MPI_Abort(MPI_COMM_WORLD,1,ierr)
 #else
     test_cnt = arg_cnt
     if (test_cnt > 100) then
@@ -144,9 +144,9 @@ include 'mpif.h'
     else
       write(output_unit,fmt='(a)') "TEST FAILED"
 #ifdef HAVE_MPI
-     call MPI_Abort(MPI_COMM_WORLD,1,ierr)
+      call MPI_Abort(MPI_COMM_WORLD,1,ierr)
 #else
-    stop 1
+      stop 1
 #endif
     end if
   end do
@@ -157,9 +157,9 @@ include 'mpif.h'
     else
       write(output_unit,fmt='(a)') "END RESULT: SOME TESTS FAILED" ;
 #ifdef HAVE_MPI
-     call MPI_Abort(MPI_COMM_WORLD,1,ierr)
+      call MPI_Abort(MPI_COMM_WORLD,1,ierr)
 #else
-    stop 1
+      stop 1
 #endif
     end if
   end if
