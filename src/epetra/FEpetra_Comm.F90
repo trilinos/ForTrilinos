@@ -75,7 +75,7 @@ module FEpetra_Comm
     procedure(gather_double_interface)   ,deferred  ::gather_double
     procedure(gather_int_interface)      ,deferred  ::gather_int
     procedure(gather_long_interface)     ,deferred  ::gather_long
-    generic :: GatherAll=>gather_double,gather_int
+    generic :: GatherAll=>gather_double!,gather_int
     !Sum Methods
     procedure(sum_double_interface)     ,deferred   ::sum_double
     procedure(sum_int_interface)        ,deferred   ::sum_int
@@ -148,8 +148,8 @@ module FEpetra_Comm
       use iso_c_binding ,only: c_int,c_double
       import:: Epetra_Comm, error
       class(Epetra_Comm)       ,intent(in)    :: this
-      real(c_double), dimension(:)            :: MyVals
-      real(c_double), dimension(:)            :: AllVals
+      real(c_double), dimension(:),intent(in)            :: MyVals
+      real(c_double), dimension(:),intent(inout)            :: AllVals
       integer(c_int)           ,intent(in)    :: count
       type(error)   ,optional  ,intent(inout) :: err
     end subroutine

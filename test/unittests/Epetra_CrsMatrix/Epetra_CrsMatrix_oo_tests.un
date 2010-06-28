@@ -70,11 +70,7 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     integer(c_int) :: NumGlobalElements = 5
     integer(c_int) :: NumIndicesPerRow=7
     success = .TRUE.
-#ifdef HAVE_MPI
-    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-#else
-    ECHO(comm = Epetra_SerialComm())
-#endif
+    ECHO(comm = UnitTest_EpetraComm_Create())
     ECHO(map = Epetra_Map(NumGlobalElements,IndexBase,comm))
     ECHO(A = Epetra_CrsMatrix(FT_Epetra_DataAccess_E_Copy,map,NumIndicesPerRow,.false.))
     ECHO(CrsMatrix_ID = A%get_EpetraCrsMatrix_ID())
@@ -110,11 +106,7 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     integer(c_int),dimension(:),allocatable :: NumIndicesPerRow
     NumIndicesPerRow=(/3,2,6,4/)
     success = .TRUE.
-#ifdef HAVE_MPI
-    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-#else
-    ECHO(comm = Epetra_SerialComm())
-#endif
+    ECHO(comm = UnitTest_EpetraComm_Create())
     ECHO(map = Epetra_Map(NumGlobalElements,IndexBase,comm))
     ECHO(A = Epetra_CrsMatrix(FT_Epetra_DataAccess_E_Copy,map,NumIndicesPerRow,.false.))
     ECHO(call A%PutScalar(1._c_double,err))
@@ -155,11 +147,7 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     integer(c_int),dimension(:),allocatable :: NumIndicesPerRow
     NumIndicesPerRow=(/3,2,6,4/)
     success = .TRUE.
-#ifdef HAVE_MPI
-    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-#else
-    ECHO(comm = Epetra_SerialComm())
-#endif
+    ECHO(comm = UnitTest_EpetraComm_Create())
     ECHO(map = Epetra_Map(NumGlobalElements,IndexBase,comm))
     ECHO(A = Epetra_CrsMatrix(FT_Epetra_DataAccess_E_Copy,map,NumIndicesPerRow,.false.))
     ECHO(call A%force_finalize())

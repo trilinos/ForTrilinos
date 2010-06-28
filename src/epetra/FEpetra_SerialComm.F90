@@ -230,8 +230,8 @@ contains
   
  subroutine gather_double(this,MyVals,AllVals,count,err)
    class(Epetra_SerialComm)     ,intent(in)    :: this
-   real(c_double), dimension(:)  :: MyVals
-   real(c_double), dimension(:)  :: AllVals
+   real(c_double), dimension(:),intent(in)  :: MyVals
+   real(c_double), dimension(:),intent(inout)  :: AllVals
    integer(c_int)               ,intent(in)    :: count
    type(error) ,optional, intent(inout) :: err
    integer(c_int)     :: error_out
