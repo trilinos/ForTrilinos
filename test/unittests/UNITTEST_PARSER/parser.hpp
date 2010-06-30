@@ -21,6 +21,8 @@ class Parser
         const std::vector<std::string> &args, std::vector<std::string> &result);
     void add_match(const std::string &term, proc_fun_t fun);
     std::string strip_space(const std::string &par);
+    bool is_preproc(const std::string &line);
+    bool is_blank(const std::string &line);
 
   private:
     typedef std::map<std::string, proc_fun_t> proc_fun_map_t;

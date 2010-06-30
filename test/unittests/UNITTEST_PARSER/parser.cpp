@@ -53,6 +53,10 @@ bool Parser::extract_match(const std::string &line, std::string &match,
   if (loc_prefix == line.npos)
     return false;
 
+  size_t tmp = line.find("!");
+  if ((tmp != line.npos) && (tmp < loc_prefix))
+    return false;
+
   size_t loc_term = loc_prefix + _prefix.size()+1;
   size_t loc_lpar = line.find("(", loc_term);
   size_t loc_rpar = line.rfind(")");
@@ -152,8 +156,28 @@ void Parser::proc_match(const std::string &line, const std::string &term,
   }
 }
 
+bool Parser::is_preproc(const std::string &line)
+{
+  std::string mline = strip_space(line);
+  if (mline.size() > 0) {
+    return (mline[0] == '#');
+  } else {
+    return false;
+  }
+}
+
+bool Parser::is_blank(const std::string &line)
+{
+  std::string mline = strip_space(line);
+  return (mline.size() == 0);
+}
+
 void Parser::proc_plain(const std::string &line, std::vector<std::string> &result)
 {
-  result.push_back(line);
+  if (is_preproc(line)) {
+    result.push_back(strip_space(line));
+  } else {
+    result.push_back(line);
+  }
 }
 

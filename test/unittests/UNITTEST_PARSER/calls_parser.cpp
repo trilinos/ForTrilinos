@@ -127,10 +127,8 @@ void CallsParser::init()
 void CallsParser::proc_plain(const std::string &line, std::vector<std::string> &result)
 {
   if (!ignore_now) {
-    std::string mline = strip_space(line);
-    if (mline.size() > 0) {
+    if (!is_blank(line))
       result.push_back(line);
-    }
   }
 }
 

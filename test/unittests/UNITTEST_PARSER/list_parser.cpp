@@ -93,12 +93,8 @@ void ListParser::init()
 void ListParser::proc_plain(const std::string &line, std::vector<std::string> &result)
 {
   if (!ignore_now) {
-    std::string mline = strip_space(line);
-    if (mline.size() > 0) {
-      if (mline[0] != '#') {
-        result.push_back(line);
-      }
-    }
+    if ((!is_blank(line)) && (!is_preproc(line)))
+      result.push_back(line);
   }
 }
 
