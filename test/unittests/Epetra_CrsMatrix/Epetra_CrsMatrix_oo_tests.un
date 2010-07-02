@@ -35,7 +35,7 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     integer(c_int),parameter::IndexBase=1
     integer(c_int) :: NumGlobalElements = 4
     integer(c_int),dimension(:),allocatable :: NumIndicesPerRow
-    NumIndicesPerRow=(/3,2,6,4/)
+    NumIndicesPerRow=(/3,2,1,4/)
     success = .TRUE.
     ECHO(comm = UnitTest_EpetraComm_Create())
     ECHO(map = Epetra_Map(NumGlobalElements,IndexBase,comm))

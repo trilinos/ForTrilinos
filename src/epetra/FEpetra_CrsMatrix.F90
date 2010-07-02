@@ -293,10 +293,10 @@ contains
    type(error),optional,intent(out)    :: err
    integer(c_int)                      :: error_out 
    integer(FT_boolean_t)               :: OptimizeDataStorage_in
-   if (present(OptimizeDataStorage).and.OptimizeDataStorage) then
+   if (.not.(present(OptimizeDataStorage)).or.OptimizeDataStorage) then
      OptimizeDataStorage_in=FT_TRUE
    else
-     OptimizeDataStorage_in=FT_TRUE
+     OptimizeDataStorage_in=FT_FALSE
    endif
    error_out=Epetra_CrsMatrix_FillComplete(this%CrsMatrix_id,OptimizeDataStorage_in)
    if (present(err)) err=error(error_out)

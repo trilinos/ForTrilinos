@@ -35,7 +35,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     implicit none 
     type(Epetra_MpiComm):: comm,comm2
     type(FT_Epetra_MpiComm_ID_t):: mpi_comm2ID
-    type(FT_Epetra_Comm_ID_t) ::comm2ID
+   type(FT_Epetra_Comm_ID_t) ::comm2ID
     success = .TRUE.
     ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
     ECHO(comm2 = Epetra_MpiComm(comm))
@@ -78,423 +78,426 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     call comm%force_finalize()
   FORTRILINOS_UNITTEST_END
 
-!  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Broadcast_Double)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    use ForTrilinos_enums
-!    implicit none 
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: root,count
-!    real(c_double),allocatable :: MyVals(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(root = 0)
-!    ECHO(count = 6)
-!    ECHO(allocate(MyVals(count)))
-!    ECHO(if(comm%MyPID()==0) MyVals = (/4.6,2.6,3.1,7.7,-0.5,1.0/))
-!    ECHO(call comm%broadcast(MyVals,count,root,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0) 
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Broadcast_Double)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    implicit none 
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: root,count
+    real(c_double),allocatable :: MyVals(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(root = 0)
+    ECHO(count = 6)
+    ECHO(allocate(MyVals(count)))
+    ECHO(if(comm%MyPID()==0) MyVals = (/4.6,2.6,3.1,7.7,-0.5,1.0/))
+    ECHO(call comm%broadcast(MyVals,count,root,ierror))
+    TEST_EQUALITY(ierror%error_code(),0) 
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
 
-!  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Broadcast_Int)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    use ForTrilinos_enums
-!    implicit none 
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: root,count
-!    integer(c_int),allocatable :: MyVals(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(root = 0)
-!    ECHO(count = 6)
-!    ECHO(allocate(MyVals(count)))
-!    ECHO(if(comm%MyPID()==0) MyVals = (/4,2,3,7,-5,1/))
-!    ECHO(call comm%broadcast(MyVals,count,root,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0) 
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-!  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Broadcast_Long)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none 
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: root,count
-!    integer(c_long),allocatable :: MyVals(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(root = 0)
-!    ECHO(count = 6)
-!    ECHO(allocate(MyVals(count))) 
-!    ECHO(if(comm%MyPID()==0) MyVals = (/46,26,31,77,-50,10/))
-!    ECHO(call comm%broadcast_long(MyVals,count,root,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0) 
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-!  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Broadcast_Char)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none 
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: root,count
-!    character(kind=c_char),allocatable :: MyVals(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(root = 0)
-!    ECHO(count = 6)
-!    ECHO(allocate(MyVals(count)))
-!    ECHO(if(comm%MyPID()==0) MyVals = (/'a','b','c','d','o','i'/))
-!    ECHO(call comm%broadcast(MyVals,count,root,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0) 
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-!  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, GatherAll_Double)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none 
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: count,i,j
-!    real(c_double),allocatable :: MyVals(:)
-!    real(c_double),allocatable :: AllVals(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(count = 6)
-!    ECHO(MyVals = (/4.6,2.6,3.1,7.7,-0.5,1.0/))
-!    ECHO(allocate(AllVals(count*comm%NumProc())))
-!    ECHO(call comm%GatherAll(MyVals,AllVals,count,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0) 
-!    do j=1,comm%NumProc() 
-!    do i=1,count
-!      if (MyVals(i) /= AllVals(i+(j-1)*count)) success=.false.
-!    enddo
-!    enddo
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-! FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, GatherAll_Int)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: count,i,j
-!    integer(c_int),allocatable :: MyVals(:)
-!    integer(c_int),allocatable :: AllVals(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(count = 6)
-!    ECHO(MyVals = (/4,2,3,7,-5,1/))
-!    ECHO(allocate(AllVals(count*comm%NumProc())))
-!    ECHO(call comm%GatherAll(MyVals,AllVals,count,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0)
-!    do j=1,comm%NumProc()
-!    do i=1,count
-!      if (MyVals(i) /= AllVals(i+(j-1)*count)) success=.false.
-!    enddo
-!    enddo
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-!  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, GatherAll_Long)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: count,i,j
-!    integer(c_long),allocatable :: MyVals(:)
-!    integer(c_long),allocatable :: AllVals(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(count = 6)
-!    ECHO(MyVals = (/49,22,37,73,-57,18/))
-!    ECHO(allocate(AllVals(size(MyVals))))
-!    ECHO(call comm%gather_long(MyVals,AllVals,count,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0)
-!    do j=1,comm%NumProc()
-!    do i=1,count
-!      if (MyVals(i) /= AllVals(i+(j-1)*count)) success=.false.
-!    enddo
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-!  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, SumAll_Double)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: count,i
-!    real(c_double),allocatable :: PartialSums(:)
-!    real(c_double),allocatable :: GlobalSums(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(count = 6)
-!    ECHO(PartialSums = (/4.9,2.2,3.7,7.3,-5.7,1.8/))
-!    ECHO(allocate(GlobalSums(size(PartialSums))))
-!    ECHO(call comm%sum_double(PartialSums,GlobalSums,count,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0)
-!    do i=1,count
-!      if (PartialSums(i)*comm%NumProc() /= GlobalSums(i)) success=.false.
-!    enddo
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-! FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, SumAll_Int)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: count,i
-!    integer(c_int),allocatable :: PartialSums(:)
-!    integer(c_int),allocatable :: GlobalSums(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(count = 6)
-!    ECHO(PartialSums = (/4,2,3,7,-5,1/))
-!    ECHO(allocate(GlobalSums(size(PartialSums))))
-!    ECHO(call comm%SumAll(PartialSums,GlobalSums,count,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0)
-!    do i=1,count
-!      if (PartialSums(i)*comm%NumProc() /= GlobalSums(i)) success=.false.
-!    enddo
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-!  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, SumAll_Long)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: count,i
-!    integer(c_long),allocatable :: PartialSums(:)
-!    integer(c_long),allocatable :: GlobalSums(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(count = 6)
-!    ECHO(PartialSums = (/49,22,37,73,-57,18/))
-!    ECHO(allocate(GlobalSums(size(PartialSums))))
-!    ECHO(call comm%sum_long(PartialSums,GlobalSums,count,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0)
-!    do i=1,count
-!      if (PartialSums(i)*comm%NumProc() /= GlobalSums(i)) success=.false.
-!    enddo
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-! FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MaxAll_Double)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: count,i
-!    real(c_double),allocatable :: PartialMaxs(:)
-!    real(c_double),allocatable :: GlobalMaxs(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(count = comm%NumProc())
-!    ECHO(allocate(PartialMaxs(count),GlobalMaxs(count)))
-!    ECHO(PartialMaxs = 1.0*comm%MyPID()) 
-!    ECHO(call comm%MaxAll(PartialMaxs,GlobalMaxs,count,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0)
-!    do i=1,count
-!      if (i*1._c_double /= GlobalMaxs(i)) success=.false.
-!    enddo
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-!  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MaxAll_Int)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: count,i
-!    integer(c_int),allocatable :: PartialMaxs(:)
-!    integer(c_int),allocatable :: GlobalMaxs(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(count = comm%NumProc())
-!    ECHO(allocate(PartialMaxs(count),GlobalMaxs(count)))
-!    ECHO(PartialMaxs = 1*comm%MyPID())
-!    ECHO(call comm%MaxAll(PartialMaxs,GlobalMaxs,count,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0)
-!    do i=1,count
-!      if (i*1_c_int /= GlobalMaxs(i)) success=.false.
-!    enddo
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-!  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MaxAll_Long)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: count,i
-!    integer(c_long),allocatable :: PartialMaxs(:)
-!    integer(c_long),allocatable :: GlobalMaxs(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(count = comm%NumProc())
-!    ECHO(allocate(PartialMaxs(count),GlobalMaxs(count)))
-!    ECHO(PartialMaxs = 1_c_long*comm%MyPID())
-!    ECHO(call comm%max_long(PartialMaxs,GlobalMaxs,count,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0)
-!    do i=1,count
-!      if (i*1_c_long) /= GlobalMaxs(i)) success=.false.
-!    enddo
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-!FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MinAll_Double)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: count,i
-!    real(c_double),allocatable :: PartialMins(:)
-!    real(c_double),allocatable :: GlobalMins(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(count = 6)
-!    ECHO(PartialMins = (/4.9,2.2,3.7,7.3,-5.7,1.8/))
-!    ECHO(allocate(GlobalMins(size(PartialMins))))
-!    ECHO(call comm%MinAll(PartialMins,GlobalMins,count,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0)
-!    do i=1,count
-!      if (PartialMins(i) /= GlobalMins(i)) success=.false.
-!    enddo
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-!  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MinAll_Int)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: count,i
-!    integer(c_int),allocatable :: PartialMins(:)
-!    integer(c_int),allocatable :: GlobalMins(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(count = 6)
-!    ECHO(PartialMins = (/4,2,3,7,-5,1/))
-!    ECHO(allocate(GlobalMins(size(PartialMins))))
-!    ECHO(call comm%MinAll(PartialMins,GlobalMins,count,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0)
-!    do i=1,count
-!      if (PartialMins(i) /= GlobalMins(i)) success=.false.
-!    enddo
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-!  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MinAll_Long)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: count,i
-!    integer(c_long),allocatable :: PartialMins(:)
-!    integer(c_long),allocatable :: GlobalMins(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(count = 6)
-!    ECHO(PartialMins = (/49,22,37,73,-57,18/))
-!    ECHO(allocate(GlobalMins(size(PartialMins))))
-!    ECHO(call comm%max_long(PartialMins,GlobalMins,count,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0)
-!    do i=1,count
-!      if (PartialMins(i) /= GlobalMins(i)) success=.false.
-!    enddo
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-!  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,ScanSum_Double)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: count,i
-!    real(c_double),allocatable :: MyVals(:)
-!    real(c_double),allocatable :: scan_sums(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(count = 6)
-!    ECHO(MyVals = (/4.9,2.2,3.7,7.3,-5.7,1.8/))
-!    ECHO(allocate(scan_sums(size(MyVals))))
-!    ECHO(call comm%ScanSum(MyVals,scan_sums,count,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0)
-!    do i=1,count
-!      if (MyVals(i) /= scan_sums(i)) success=.false.
-!    enddo
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-!  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,ScanSum_Int)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: count,i
-!    integer(c_int),allocatable :: MyVals(:)
-!    integer(c_int),allocatable :: scan_sums(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(count = 6)
-!    ECHO(MyVals = (/9,2,3,7,-5,1/))
-!    ECHO(allocate(scan_sums(size(MyVals))))
-!    ECHO(call comm%ScanSum(MyVals,scan_sums,count,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0)
-!    do i=1,count
-!      if (MyVals(i) /= scan_sums(i)) success=.false.
-!    enddo
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-!  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,ScanSum_Long)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: count,i
-!    integer(c_long),allocatable :: MyVals(:)
-!    integer(c_long),allocatable :: scan_sums(:)
-!    type(error) :: ierror
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(count = 6)
-!    ECHO(MyVals = (/49,22,37,73,-57,18/))
-!    ECHO(allocate(scan_sums(size(MyVals))))
-!    ECHO(call comm%ScanSum_long(MyVals,scan_sums,count,ierror))
-!    TEST_EQUALITY(ierror%error_code(),0)
-!    do i=1,count
-!      if (MyVals(i) /= scan_sums(i)) success=.false.
-!    enddo
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-!  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MyPID)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: root 
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(root =  comm%MyPID())
-!    TEST_EQUALITY(root,0)
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
-!  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,NumProc)
-!  FORTRILINOS_UNITTEST_BEGIN
-!    implicit none
-!    type(Epetra_MpiComm):: comm
-!    integer(c_int):: proc 
-!    success = .TRUE.
-!    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
-!    ECHO(proc =  comm%NumProc())
-!    TEST_EQUALITY(proc,1)
-!    call comm%force_finalize()
-!  FORTRILINOS_UNITTEST_END
-!
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Broadcast_Int)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    implicit none 
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: root,count
+    integer(c_int),allocatable :: MyVals(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(root = 0)
+    ECHO(count = 6)
+    ECHO(allocate(MyVals(count)))
+    ECHO(if(comm%MyPID()==0) MyVals = (/4,2,3,7,-5,1/))
+    ECHO(call comm%broadcast(MyVals,count,root,ierror))
+    TEST_EQUALITY(ierror%error_code(),0) 
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Broadcast_Long)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none 
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: root,count
+    integer(c_long),allocatable :: MyVals(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(root = 0)
+    ECHO(count = 6)
+    ECHO(allocate(MyVals(count))) 
+    ECHO(if(comm%MyPID()==0) MyVals = (/46,26,31,77,-50,10/))
+    ECHO(call comm%broadcast_long(MyVals,count,root,ierror))
+    TEST_EQUALITY(ierror%error_code(),0) 
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Broadcast_Char)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none 
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: root,count
+    character(kind=c_char),allocatable :: MyVals(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(root = 0)
+    ECHO(count = 6)
+    ECHO(allocate(MyVals(count)))
+    ECHO(if(comm%MyPID()==0) MyVals = (/'a','b','c','d','o','i'/))
+    ECHO(call comm%broadcast(MyVals,count,root,ierror))
+    TEST_EQUALITY(ierror%error_code(),0) 
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, GatherAll_Double)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none 
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: count,i,j
+    real(c_double),allocatable :: MyVals(:)
+    real(c_double),allocatable :: AllVals(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(count = 6)
+    ECHO(MyVals = (/4.6,2.6,3.1,7.7,-0.5,1.0/))
+    ECHO(allocate(AllVals(count*comm%NumProc())))
+    ECHO(call comm%GatherAll(MyVals,AllVals,count,ierror))
+    TEST_EQUALITY(ierror%error_code(),0) 
+    do j=1,comm%NumProc() 
+     do i=1,count
+      if (MyVals(i) /= AllVals(i+(j-1)*count)) success=.false.
+     enddo
+    enddo
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, GatherAll_Int)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: count,i,j
+    integer(c_int),allocatable :: MyVals(:)
+    integer(c_int),allocatable :: AllVals(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(count = 6)
+    ECHO(MyVals = (/4,2,3,7,-5,1/))
+    ECHO(allocate(AllVals(count*comm%NumProc())))
+    ECHO(call comm%GatherAll(MyVals,AllVals,count,ierror))
+    TEST_EQUALITY(ierror%error_code(),0)
+    do j=1,comm%NumProc()
+    do i=1,count
+      if (MyVals(i) /= AllVals(i+(j-1)*count)) success=.false.
+    enddo
+    enddo
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, GatherAll_Long)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: count,i,j
+    integer(c_long),allocatable :: MyVals(:)
+    integer(c_long),allocatable :: AllVals(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(count = 6)
+    ECHO(MyVals = (/49,22,37,73,-57,18/))
+    ECHO(allocate(AllVals(count*comm%NumProc())))
+    ECHO(call comm%gather_long(MyVals,AllVals,count,ierror))
+    TEST_EQUALITY(ierror%error_code(),0)
+    do j=1,comm%NumProc()
+    do i=1,count
+      if (MyVals(i) /= AllVals(i+(j-1)*count)) success=.false.
+    enddo
+    enddo
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, SumAll_Double)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: count,i
+    real(c_double),allocatable :: PartialSums(:)
+    real(c_double),allocatable :: GlobalSums(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(count = 6)
+    ECHO(PartialSums = (/4.9,2.2,3.7,7.3,-5.7,1.8/))
+    ECHO(allocate(GlobalSums(size(PartialSums))))
+    !ECHO(call comm%sum_double(PartialSums,GlobalSums,count,ierror))
+    ECHO(call comm%SumALL(PartialSums,GlobalSums,count,ierror))
+    TEST_EQUALITY(ierror%error_code(),0)
+    do i=1,count
+      if (PartialSums(i)*comm%NumProc() /= GlobalSums(i)) success=.false.
+    enddo
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, SumAll_Int)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: count,i
+    integer(c_int),allocatable :: PartialSums(:)
+    integer(c_int),allocatable :: GlobalSums(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(count = 6)
+    ECHO(PartialSums = (/4,2,3,7,-5,1/))
+    ECHO(allocate(GlobalSums(size(PartialSums))))
+    ECHO(call comm%SumAll(PartialSums,GlobalSums,count,ierror))
+    TEST_EQUALITY(ierror%error_code(),0)
+    do i=1,count
+      if (PartialSums(i)*comm%NumProc() /= GlobalSums(i)) success=.false.
+    enddo
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, SumAll_Long)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: count,i
+    integer(c_long),allocatable :: PartialSums(:)
+    integer(c_long),allocatable :: GlobalSums(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(count = 6)
+    ECHO(PartialSums = (/49,22,37,73,-57,18/))
+    ECHO(allocate(GlobalSums(size(PartialSums))))
+    ECHO(call comm%sum_long(PartialSums,GlobalSums,count,ierror))
+    TEST_EQUALITY(ierror%error_code(),0)
+    do i=1,count
+      if (PartialSums(i)*comm%NumProc() /= GlobalSums(i)) success=.false.
+    enddo
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MaxAll_Double)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: count,i
+    real(c_double),allocatable :: PartialMaxs(:)
+    real(c_double),allocatable :: GlobalMaxs(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(count = comm%NumProc())
+    ECHO(allocate(PartialMaxs(count),GlobalMaxs(count)))
+    ECHO(PartialMaxs = 1.0*comm%MyPID()) 
+    ECHO(call comm%MaxAll(PartialMaxs,GlobalMaxs,count,ierror))
+    TEST_EQUALITY(ierror%error_code(),0)
+
+    do i=1,count
+      if ((count-1)*1_c_double/=GlobalMaxs(i)) success=.false.  
+    enddo
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MaxAll_Int)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: count,i
+    integer(c_int),allocatable :: PartialMaxs(:)
+    integer(c_int),allocatable :: GlobalMaxs(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(count = comm%NumProc())
+    ECHO(allocate(PartialMaxs(count),GlobalMaxs(count)))
+    ECHO(PartialMaxs = 1*comm%MyPID())
+    ECHO(call comm%MaxAll(PartialMaxs,GlobalMaxs,count,ierror))
+    TEST_EQUALITY(ierror%error_code(),0)
+    do i=1,count
+      if ((count-1)*1_c_int /= GlobalMaxs(i)) success=.false.
+    enddo
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MaxAll_Long)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: count,i
+    integer(c_long),allocatable :: PartialMaxs(:)
+    integer(c_long),allocatable :: GlobalMaxs(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(count = comm%NumProc())
+    ECHO(allocate(PartialMaxs(count),GlobalMaxs(count)))
+    ECHO(PartialMaxs = 1_c_long*comm%MyPID())
+    ECHO(call comm%max_long(PartialMaxs,GlobalMaxs,count,ierror))
+    TEST_EQUALITY(ierror%error_code(),0)
+    do i=1,count
+      if ((count-1)*1_c_long /= GlobalMaxs(i)) success=.false.
+    enddo
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+ FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MinAll_Double)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: count,i
+    real(c_double),allocatable :: PartialMins(:)
+    real(c_double),allocatable :: GlobalMins(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(count = 6)
+    ECHO(PartialMins = (/4.9,2.2,3.7,7.3,-5.7,1.8/))
+    ECHO(allocate(GlobalMins(size(PartialMins))))
+    ECHO(call comm%MinAll(PartialMins,GlobalMins,count,ierror))
+    TEST_EQUALITY(ierror%error_code(),0)
+    do i=1,count
+      if (PartialMins(i) /= GlobalMins(i)) success=.false.
+    enddo
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MinAll_Int)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: count,i
+    integer(c_int),allocatable :: PartialMins(:)
+    integer(c_int),allocatable :: GlobalMins(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(count = 6)
+    ECHO(PartialMins = (/4,2,3,7,-5,1/))
+    ECHO(allocate(GlobalMins(size(PartialMins))))
+    ECHO(call comm%MinAll(PartialMins,GlobalMins,count,ierror))
+    TEST_EQUALITY(ierror%error_code(),0)
+    do i=1,count
+      if (PartialMins(i) /= GlobalMins(i)) success=.false.
+    enddo
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MinAll_Long)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: count,i
+    integer(c_long),allocatable :: PartialMins(:)
+    integer(c_long),allocatable :: GlobalMins(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(count = 6)
+    ECHO(PartialMins = (/49,22,37,73,-57,18/))
+    ECHO(allocate(GlobalMins(size(PartialMins))))
+    ECHO(call comm%min_long(PartialMins,GlobalMins,count,ierror))
+    TEST_EQUALITY(ierror%error_code(),0)
+    do i=1,count
+      if (PartialMins(i) /= GlobalMins(i)) success=.false.
+    enddo
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,ScanSum_Double)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: count,i
+    real(c_double),allocatable :: MyVals(:)
+    real(c_double),allocatable :: scan_sums(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(count = 6)
+    ECHO(MyVals = (/4.9,2.2,3.7,7.3,-5.7,1.8/))
+    ECHO(allocate(scan_sums(size(MyVals))))
+    ECHO(call comm%ScanSum(MyVals,scan_sums,count,ierror))
+    TEST_EQUALITY(ierror%error_code(),0)
+    do i=1,count
+      if (MyVals(i)*(comm%MyPID()+1) /= scan_sums(i)) success=.false.
+    enddo
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,ScanSum_Int)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: count,i
+    integer(c_int),allocatable :: MyVals(:)
+    integer(c_int),allocatable :: scan_sums(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(count = 6)
+    ECHO(MyVals = (/9,2,3,7,-5,1/))
+    ECHO(allocate(scan_sums(size(MyVals))))
+    ECHO(call comm%ScanSum(MyVals,scan_sums,count,ierror))
+    TEST_EQUALITY(ierror%error_code(),0)
+    do i=1,count
+      if (MyVals(i)*(comm%MyPID()+1) /= scan_sums(i)) success=.false.
+    enddo
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,ScanSum_Long)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: count,i
+    integer(c_long),allocatable :: MyVals(:)
+    integer(c_long),allocatable :: scan_sums(:)
+    type(error) :: ierror
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(count = 6)
+    ECHO(MyVals = (/49,22,37,73,-57,18/))
+    ECHO(allocate(scan_sums(size(MyVals))))
+    ECHO(call comm%scansum_long(MyVals,scan_sums,count,ierror))
+    TEST_EQUALITY(ierror%error_code(),0)
+    do i=1,count
+      if (MyVals(i)*(comm%MyPID()+1) /= scan_sums(i)) success=.false.
+    enddo
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MyPID)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: root 
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(root =  comm%MyPID())
+    TEST_EQUALITY(root,comm%MyPID())
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,NumProc)
+  FORTRILINOS_UNITTEST_BEGIN
+    implicit none
+    type(Epetra_MpiComm):: comm
+    integer(c_int):: proc 
+    success = .TRUE.
+    ECHO(comm = Epetra_MpiComm(MPI_COMM_WORLD))
+    ECHO(proc =  comm%NumProc())
+    TEST_EQUALITY(proc,3)
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
 FORTRILINOS_UNITTEST_MODULE_END(CLASS_BEING_TESTED)
