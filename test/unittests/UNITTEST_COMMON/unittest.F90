@@ -2,6 +2,7 @@ program main
 #include "ForTrilinos_config.h"
 
   use iso_fortran_env ,only : error_unit ,output_unit
+  use ForTrilinos_external_utils
   use TEST_CALLS_FILE
   implicit none
 #ifdef HAVE_MPI
@@ -195,6 +196,10 @@ include 'mpif.h'
 #endif
 
     subroutine test_setup()
+#ifdef HAVE_MPI
+      print *, "Starting with fresh tables..."
+      call ForTrilinos_CleanSlate()
+#endif
     end subroutine
 
     subroutine test_teardown()

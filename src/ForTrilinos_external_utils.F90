@@ -58,5 +58,9 @@ module ForTrilinos_external_utils
 
 #endif
 
+  subroutine ForTrilinos_CleanSlate( ) &
+        bind(C,name='CTrilinos_CleanSlate')
+  end subroutine
+
   end interface
 end module ForTrilinos_external_utils
