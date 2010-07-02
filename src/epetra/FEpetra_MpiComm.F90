@@ -236,32 +236,32 @@ contains
   end subroutine
 
   subroutine gather_double(this,MyVals,AllVals,count,err)
-   class(Epetra_MpiComm)     ,intent(in)    :: this
-   real(c_double), dimension(:),intent(in)  :: MyVals
-   real(c_double), dimension(:),intent(inout)  :: AllVals
-   integer(c_int)               ,intent(in)    :: count
-   type(error) ,optional, intent(inout) :: err
+   class(Epetra_MpiComm)      ,intent(in)    :: this
+   real(c_double),dimension(:),intent(in)    :: MyVals
+   real(c_double),dimension(:),intent(inout) :: AllVals
+   integer(c_int)             ,intent(in)    :: count
+   type(error) ,optional      ,intent(inout) :: err
    integer(c_int)     :: error_out
-   error_out = Epetra_MpiComm_GatherAll_Double(this%MpiComm_id,MyVals,AllVals,count)
+   error_out = Epetra_MpiComm_GatherAll_Double(this%MpiComm_id,MyVals(:),AllVals(:),count)
    if (present(err)) err=error(error_out)
   end subroutine
 
   subroutine gather_int(this,MyVals,AllVals,count,err)
-   class(Epetra_MpiComm)     ,intent(in)    :: this
-   integer(c_int), dimension(:)  :: MyVals
-   integer(c_int), dimension(:)  :: AllVals
+   class(Epetra_MpiComm)        ,intent(in)    :: this
+   integer(c_int), dimension(:) ,intent(in)    :: MyVals
+   integer(c_int), dimension(:) ,intent(inout) :: AllVals
    integer(c_int)               ,intent(in)    :: count
    type(error) ,optional, intent(inout) :: err
    integer(c_int)     :: error_out
    error_out = Epetra_MpiComm_GatherAll_Int(this%MpiComm_id,MyVals,AllVals,count)
    if (present(err)) err=error(error_out)
   end subroutine
-  
+ 
   subroutine gather_long(this,MyVals,AllVals,count,err)
-   class(Epetra_MpiComm)     ,intent(in)    :: this
-   integer(c_long), dimension(:)  :: MyVals
-   integer(c_long), dimension(:)  :: AllVals
-   integer(c_int)               ,intent(in)    :: count
+   class(Epetra_MpiComm)         ,intent(in)   :: this
+   integer(c_long), dimension(:) ,intent(in)   :: MyVals
+   integer(c_long), dimension(:) ,intent(inout):: AllVals
+   integer(c_int)                ,intent(in)    :: count
    type(error) ,optional, intent(inout) :: err
    integer(c_int)     :: error_out
    error_out = Epetra_MpiComm_GatherAll_Long(this%MpiComm_id,MyVals,AllVals,count)
@@ -269,9 +269,9 @@ contains
   end subroutine
 
   subroutine sum_double(this,PartialSums,GlobalSums,count,err)
-   class(Epetra_MpiComm)     ,intent(in)    :: this
-   real(c_double), dimension(:)  :: PartialSums 
-   real(c_double), dimension(:)  :: GlobalSums
+   class(Epetra_MpiComm)        ,intent(in)    :: this
+   real(c_double), dimension(:) ,intent(in)    :: PartialSums 
+   real(c_double), dimension(:) ,intent(inout) :: GlobalSums
    integer(c_int)               ,intent(in)    :: count
    type(error) ,optional, intent(inout) :: err
    integer(c_int)     :: error_out
@@ -280,9 +280,9 @@ contains
   end subroutine
   
   subroutine sum_int(this,PartialSums,GlobalSums,count,err)
-   class(Epetra_MpiComm)     ,intent(in)    :: this
-   integer(c_int), dimension(:)  :: PartialSums 
-   integer(c_int), dimension(:)  :: GlobalSums
+   class(Epetra_MpiComm)        ,intent(in)    :: this
+   integer(c_int), dimension(:) ,intent(in)    :: PartialSums 
+   integer(c_int), dimension(:) ,intent(inout) :: GlobalSums
    integer(c_int)               ,intent(in)    :: count
    type(error) ,optional, intent(inout) :: err
    integer(c_int)     :: error_out
@@ -291,9 +291,9 @@ contains
   end subroutine
 
   subroutine sum_long(this,PartialSums,GlobalSums,count,err)
-   class(Epetra_MpiComm)     ,intent(in)    :: this
-   integer(c_long), dimension(:)  :: PartialSums 
-   integer(c_long), dimension(:)  :: GlobalSums
+   class(Epetra_MpiComm)        ,intent(in)    :: this
+   integer(c_long), dimension(:),intent(in)    :: PartialSums 
+   integer(c_long), dimension(:),intent(inout) :: GlobalSums
    integer(c_int)               ,intent(in)    :: count
    type(error) ,optional, intent(inout) :: err
    integer(c_int)     :: error_out
@@ -302,9 +302,9 @@ contains
   end subroutine
 
   subroutine max_double(this,PartialMaxs,GlobalMaxs,count,err)
-   class(Epetra_MpiComm)     ,intent(in)    :: this
-   real(c_double), dimension(:)  :: PartialMaxs 
-   real(c_double), dimension(:)  :: GlobalMaxs
+   class(Epetra_MpiComm)        ,intent(in)    :: this
+   real(c_double), dimension(:) ,intent(in)    :: PartialMaxs 
+   real(c_double), dimension(:) ,intent(inout) :: GlobalMaxs
    integer(c_int)               ,intent(in)    :: count
    type(error) ,optional, intent(inout) :: err
    integer(c_int)     :: error_out
@@ -313,9 +313,9 @@ contains
   end subroutine
 
   subroutine max_int(this,PartialMaxs,GlobalMaxs,count,err)
-   class(Epetra_MpiComm)     ,intent(in)    :: this
-   integer(c_int), dimension(:)  :: PartialMaxs 
-   integer(c_int), dimension(:)  :: GlobalMaxs
+   class(Epetra_MpiComm)        ,intent(in)    :: this
+   integer(c_int), dimension(:) ,intent(in)    :: PartialMaxs 
+   integer(c_int), dimension(:) ,intent(inout) :: GlobalMaxs
    integer(c_int)               ,intent(in)    :: count
    type(error) ,optional, intent(inout) :: err
    integer(c_int)     :: error_out
@@ -324,9 +324,9 @@ contains
   end subroutine
 
   subroutine max_long(this,PartialMaxs,GlobalMaxs,count,err)
-   class(Epetra_MpiComm)     ,intent(in)    :: this
-   integer(c_long), dimension(:)  :: PartialMaxs 
-   integer(c_long), dimension(:)  :: GlobalMaxs
+   class(Epetra_MpiComm)        ,intent(in)    :: this
+   integer(c_long), dimension(:),intent(in)    :: PartialMaxs 
+   integer(c_long), dimension(:),intent(inout) :: GlobalMaxs
    integer(c_int)               ,intent(in)    :: count
    type(error) ,optional, intent(inout) :: err
    integer(c_int)     :: error_out
@@ -335,9 +335,9 @@ contains
   end subroutine
   
   subroutine min_double(this,PartialMins,GlobalMins,count,err)
-   class(Epetra_MpiComm)     ,intent(in)    :: this
-   real(c_double), dimension(:)  :: PartialMins 
-   real(c_double), dimension(:)  :: GlobalMins
+   class(Epetra_MpiComm)        ,intent(in)    :: this
+   real(c_double), dimension(:) ,intent(in)    :: PartialMins 
+   real(c_double), dimension(:) ,intent(inout) :: GlobalMins
    integer(c_int)               ,intent(in)    :: count
    type(error) ,optional, intent(inout) :: err
    integer(c_int)     :: error_out
@@ -346,9 +346,9 @@ contains
   end subroutine
 
   subroutine min_int(this,PartialMins,GlobalMins,count,err)
-   class(Epetra_MpiComm)     ,intent(in)    :: this
-   integer(c_int), dimension(:)  :: PartialMins 
-   integer(c_int), dimension(:)  :: GlobalMins
+   class(Epetra_MpiComm)        ,intent(in)    :: this
+   integer(c_int), dimension(:) ,intent(in)    :: PartialMins 
+   integer(c_int), dimension(:) ,intent(inout) :: GlobalMins
    integer(c_int)               ,intent(in)    :: count
    type(error) ,optional, intent(inout) :: err
    integer(c_int)     :: error_out
@@ -357,10 +357,10 @@ contains
   end subroutine
 
   subroutine min_long(this,PartialMins,GlobalMins,count,err)
-   class(Epetra_MpiComm)     ,intent(in)    :: this
-   integer(c_long), dimension(:)  :: PartialMins 
-   integer(c_long), dimension(:)  :: GlobalMins
-   integer(c_int)               ,intent(in)    :: count
+   class(Epetra_MpiComm)         ,intent(in)    :: this
+   integer(c_long), dimension(:) ,intent(in)    :: PartialMins 
+   integer(c_long), dimension(:) ,intent(inout) :: GlobalMins
+   integer(c_int)                ,intent(in)    :: count
    type(error) ,optional, intent(inout) :: err
    integer(c_int)     :: error_out
    error_out = Epetra_MpiComm_MinAll_Long(this%MpiComm_id,PartialMins,GlobalMins,count)
@@ -368,9 +368,9 @@ contains
   end subroutine
  
   subroutine ScanSum_double(this,MyVals,scan_sums,count,err)
-   class(Epetra_MpiComm)     ,intent(in)    :: this
-   real(c_double), dimension(:)  :: MyVals
-   real(c_double), dimension(:)  :: scan_sums
+   class(Epetra_MpiComm)        ,intent(in)    :: this
+   real(c_double), dimension(:) ,intent(in)    :: MyVals
+   real(c_double), dimension(:) ,intent(inout) :: scan_sums
    integer(c_int)               ,intent(in)    :: count
    type(error) ,optional, intent(inout) :: err
    integer(c_int)     :: error_out
@@ -379,9 +379,9 @@ contains
   end subroutine
 
   subroutine ScanSum_int(this,MyVals,scan_sums,count,err)
-   class(Epetra_MpiComm)     ,intent(in)    :: this
-   integer(c_int), dimension(:)  :: MyVals
-   integer(c_int), dimension(:)  :: scan_sums
+   class(Epetra_MpiComm)        ,intent(in)    :: this
+   integer(c_int), dimension(:) ,intent(in)    :: MyVals
+   integer(c_int), dimension(:) ,intent(inout) :: scan_sums
    integer(c_int)               ,intent(in)    :: count
    type(error) ,optional, intent(inout) :: err
    integer(c_int)     :: error_out
@@ -390,9 +390,9 @@ contains
   end subroutine
 
   subroutine ScanSum_long(this,MyVals,scan_sums,count,err)
-   class(Epetra_MpiComm)     ,intent(in)    :: this
-   integer(c_long), dimension(:)  :: MyVals
-   integer(c_long), dimension(:)  :: scan_sums
+   class(Epetra_MpiComm)        ,intent(in)    :: this
+   integer(c_long), dimension(:),intent(in)    :: MyVals
+   integer(c_long), dimension(:),intent(inout) :: scan_sums
    integer(c_int)               ,intent(in)    :: count
    type(error) ,optional, intent(inout) :: err
    integer(c_int)     :: error_out

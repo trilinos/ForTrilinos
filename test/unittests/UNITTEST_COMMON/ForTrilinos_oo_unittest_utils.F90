@@ -53,7 +53,7 @@ module ForTrilinos_oo_unittest_utils
 
   ! /*! Create an Epetra_MpiComm */
   type(Epetra_MpiComm) function UnitTest_EpetraComm_Create() 
-    use mpi
+!    use mpi
     UnitTest_EpetraComm_Create = Epetra_MpiComm(MPI_COMM_WORLD)
   end function
 #else
