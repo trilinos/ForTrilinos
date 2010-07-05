@@ -38,3 +38,10 @@
     print *, "Assertion failed on line ", STRINGIFY(__LINE__) BREAKLINE \
   endif
 
+
+#define TEST_LESSEQUAL(x, y) \
+  print *, "TEST: ", #x, " = ", (x), " ?<=? ", #y, " = ", (y) BREAKLINE \
+    if (.not.((x) .LE. (y))) then BREAKLINE				\
+    success = .FALSE. BREAKLINE \
+    print *, "Assertion failed on line ", STRINGIFY(__LINE__) BREAKLINE \
+  endif
