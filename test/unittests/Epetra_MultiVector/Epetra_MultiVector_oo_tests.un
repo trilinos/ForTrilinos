@@ -29,7 +29,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
 #endif
     integer                 :: localElems, info
     real(c_double), allocatable :: lMV(:,:), vres(:)
-    integer(c_int)          :: NumElems, indexbase, NumVectors
+    integer(c_int)          :: NumElems, indexbase, NumVectors, nmv, nglb
     success = .TRUE.
 #ifdef HAVE_MPI
     comm   = Epetra_MpiComm(MPI_COMM_WORLD)
@@ -41,8 +41,13 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     NumVectors = 4
     ECHO(map = Epetra_Map(NumElems,indexbase,comm))
     ECHO(MV  = Epetra_MultiVector(map,NumVectors,.TRUE.))
-    ! What to test now?  We have initialized to zero,
-    ! so first of all check it's really zero
+    ! What to test now? 
+    ECHO(nmv = MV%NumVectors()) 
+    TEST_EQUALITY(nmv,NumVectors)
+    ECHO(nglb = MV%GlobalLength()) 
+    TEST_EQUALITY(nglb,NumElems)
+        ! We have initialized to zero,
+    ! so check it's really zero
     ECHO(vres = MV%Norm2())
     TEST_EQUALITY(maxval(vres),0.0d0)	
     ECHO(vres = MV%NormInf())
@@ -50,6 +55,354 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     
 
     call MV%force_finalize()
+    call map%force_finalize()
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, MinValue)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    implicit none 
+    type(Epetra_Map)         :: map
+    type(Epetra_MultiVector) :: MV
+#ifdef HAVE_MPI
+    type(Epetra_MpiComm)    ::   comm
+#else
+    type(Epetra_SerialComm) ::   comm
+#endif
+    integer                 :: localElems, info, iret
+    real(c_double), allocatable :: lMV(:,:), vres(:)
+    integer(c_int)          :: NumElems, indexbase, NumVectors, nmv, nglb
+    integer(c_int)          :: i,j,k
+    real(c_double)          :: val
+    success = .TRUE.
+#ifdef HAVE_MPI
+    comm   = Epetra_MpiComm(MPI_COMM_WORLD)
+#else
+    comm   = Epetra_SerialComm()
+#endif
+    numElems  = 100
+    indexbase = 1
+    NumVectors = 4
+    ECHO(map = Epetra_Map(NumElems,indexbase,comm))
+    ECHO(MV  = Epetra_MultiVector(map,NumVectors,.TRUE.))
+    ! What to test now? 
+    do j=1, NumVectors
+       do i=1, NumElems
+       	 val = i*j
+         ! Note: here we're specifying all possible I values,
+	 ! so some calls will return info=1, and that's ok.
+	 ! MIN will select 0 or the occasional -1
+         call MV%ReplaceGlobalValue(i,j,val)
+       end do
+    end do
+    ECHO(vres = MV%MinValue())
+    do j=1, NumVectors
+       TEST_EQUALITY(vres(j),j)	
+    end do
+
+    call MV%force_finalize()
+    call map%force_finalize()
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, MaxValue)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    implicit none 
+    type(Epetra_Map)         :: map
+    type(Epetra_MultiVector) :: MV
+#ifdef HAVE_MPI
+    type(Epetra_MpiComm)    ::   comm
+#else
+    type(Epetra_SerialComm) ::   comm
+#endif
+    integer                 :: localElems, info, iret
+    real(c_double), allocatable :: lMV(:,:), vres(:)
+    integer(c_int)          :: NumElems, indexbase, NumVectors, nmv, nglb
+    integer(c_int)          :: i,j,k
+    real(c_double)          :: val
+    success = .TRUE.
+#ifdef HAVE_MPI
+    comm   = Epetra_MpiComm(MPI_COMM_WORLD)
+#else
+    comm   = Epetra_SerialComm()
+#endif
+    numElems  = 100
+    indexbase = 1
+    NumVectors = 4
+    ECHO(map = Epetra_Map(NumElems,indexbase,comm))
+    ECHO(MV  = Epetra_MultiVector(map,NumVectors,.TRUE.))
+    ! What to test now? 
+    info = 0
+    do j=1, NumVectors
+       do i=1, NumElems
+       	 val = i*j
+         ! Note: here we're specifying all possible I values,
+	 ! so some calls will return info=1, and that's ok.
+	 ! MIN will select 0 or the occasional -1
+         call MV%ReplaceGlobalValue(i,j,val)
+       end do
+    end do
+    ECHO(vres = MV%MaxValue())
+    do j=1, NumVectors
+       TEST_EQUALITY(vres(j),j*NumElems)	
+    end do
+
+    call MV%force_finalize()
+    call map%force_finalize()
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Norm1)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    implicit none 
+    type(Epetra_Map)         :: map
+    type(Epetra_MultiVector) :: MV
+#ifdef HAVE_MPI
+    type(Epetra_MpiComm)    ::   comm
+#else
+    type(Epetra_SerialComm) ::   comm
+#endif
+    integer                 :: localElems, info, iret
+    real(c_double), allocatable :: lMV(:,:), vres(:)
+    integer(c_int)          :: NumElems, indexbase, NumVectors, nmv, nglb
+    integer(c_int)          :: i,j,k
+    real(c_double)          :: val, tol, ref
+    success = .TRUE.
+#ifdef HAVE_MPI
+    comm   = Epetra_MpiComm(MPI_COMM_WORLD)
+#else
+    comm   = Epetra_SerialComm()
+#endif
+    numElems  = 100
+    indexbase = 1
+    NumVectors = 4
+    ECHO(map = Epetra_Map(NumElems,indexbase,comm))
+    ECHO(MV  = Epetra_MultiVector(map,NumVectors,.TRUE.))
+    ! What to test now? 
+    info = 0
+    do j=1, NumVectors
+       do i=1, NumElems
+         ! Note: here we're specifying all possible I values,
+	 ! so some calls will return info=1, and that's ok.
+	 ! MIN will select 0 or the occasional -1
+       	 val = i*j
+         call MV%ReplaceGlobalValue(i,j,val)
+       end do
+    end do
+    ECHO(vres = MV%Norm1())
+    ! Now build a reference value for the
+    ! dot product. This is from the formula
+    ! \sum_1^n i = n(n+1)/2
+    k = NumElems
+    val = (1.d0*k*(k+1))/2
+    ! Perturbations in a sum 
+    ! may be bounded by a factor
+    ! NumElems*epsilon(1.d0)
+    ! implying the forward bound below
+    ! which is however not tight
+    do j=1, NumVectors
+       ref = val*j
+       tol = NumElems*epsilon(1.d0)*ref
+       TEST_LESSEQUAL(abs(ref-vres(j)),tol)
+    end do
+
+    call MV%force_finalize()
+    call map%force_finalize()
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Norm2)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    implicit none 
+    type(Epetra_Map)         :: map
+    type(Epetra_MultiVector) :: MV
+#ifdef HAVE_MPI
+    type(Epetra_MpiComm)    ::   comm
+#else
+    type(Epetra_SerialComm) ::   comm
+#endif
+    integer                 :: localElems, info, iret
+    real(c_double), allocatable :: lMV(:,:), vres(:)
+    integer(c_int)          :: NumElems, indexbase, NumVectors, nmv, nglb
+    integer(c_int)          :: i,j,k
+    real(c_double)          :: val, tol, ref
+    success = .TRUE.
+#ifdef HAVE_MPI
+    comm   = Epetra_MpiComm(MPI_COMM_WORLD)
+#else
+    comm   = Epetra_SerialComm()
+#endif
+    numElems  = 100
+    indexbase = 1
+    NumVectors = 4
+    ECHO(map = Epetra_Map(NumElems,indexbase,comm))
+    ECHO(MV  = Epetra_MultiVector(map,NumVectors,.TRUE.))
+    ! What to test now? 
+    info = 0
+    do j=1, NumVectors
+       do i=1, NumElems
+         ! Note: here we're specifying all possible I values,
+	 ! so some calls will return info=1, and that's ok.
+	 ! MIN will select 0 or the occasional -1
+       	 val = i*j
+         call MV%ReplaceGlobalValue(i,j,val)
+       end do
+    end do
+    ECHO(vres = MV%Norm2())
+    ! Now build a reference value for the
+    ! dot product. This is from the formula
+    ! \sum_1^n i^2 = n(n+1)(2n+1)/6
+    k = NumElems
+    val = sqrt((1.d0*k*(k+1)*(2*k+1))/6)
+    ! Perturbations in a sum
+    ! may be bounded by a factor
+    ! NumElems*epsilon(1.d0)
+    ! implying the forward bound below
+    ! which is however not tight
+    do j=1, NumVectors
+       ref = val*j
+       tol = NumElems*epsilon(1.d0)*ref
+       TEST_LESSEQUAL(abs(ref-vres(j)),tol)
+    end do
+
+    call MV%force_finalize()
+    call map%force_finalize()
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Dot)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    implicit none 
+    type(Epetra_Map)         :: map
+    type(Epetra_MultiVector) :: MV1,MV2
+#ifdef HAVE_MPI
+    type(Epetra_MpiComm)    ::   comm
+#else
+    type(Epetra_SerialComm) ::   comm
+#endif
+    integer                 :: localElems, info, iret
+    real(c_double), allocatable :: lMV(:,:), vres(:)
+    integer(c_int)          :: NumElems, indexbase, NumVectors, nmv, nglb
+    integer(c_int)          :: i,j,k
+    real(c_double)          :: val, tol, ref
+    success = .TRUE.
+#ifdef HAVE_MPI
+    comm   = Epetra_MpiComm(MPI_COMM_WORLD)
+#else
+    comm   = Epetra_SerialComm()
+#endif
+    numElems  = 100
+    indexbase = 1
+    NumVectors = 4
+    ECHO(map = Epetra_Map(NumElems,indexbase,comm))
+    ECHO(MV1 = Epetra_MultiVector(map,NumVectors,.TRUE.))
+    ECHO(MV2 = Epetra_MultiVector(map,NumVectors,.TRUE.))
+    ! What to test now? 
+    info = 0
+    do j=1, NumVectors
+       do i=1, NumElems
+         ! Note: here we're specifying all possible I values,
+	 ! so some calls will return info=1, and that's ok.
+	 ! MIN will select 0 or the occasional -1
+       	 val = i
+         call MV1%ReplaceGlobalValue(i,j,val)
+       	 val = j
+         call MV2%ReplaceGlobalValue(i,j,val)
+       end do
+    end do
+    ECHO(vres = MV1%Dot(MV2))
+    ! Now build a reference value for the
+    ! dot product. This is from the formula
+    ! \sum_1^n i = n(n+1)/2
+    k = NumElems
+    val = (1.d0*k*(k+1))/2
+    ! Perturbations in a dot product
+    ! may be bounded by a factor
+    ! NumElems*epsilon(1.d0) 
+    ! implying the forward bound 
+    ! |x^T y - round(x^T y)| <= n*eps*(|x|^T |y|)
+    ! which is in general not tight. In this
+    ! case both x and y are positive, so the bound
+    ! is acceptable.
+    do j=1, NumVectors
+       ref = val*j
+       tol = NumElems*epsilon(1.d0)*ref
+       TEST_LESSEQUAL(abs(ref-vres(j)),tol)
+    end do
+
+    call MV1%force_finalize()
+    call MV2%force_finalize()
+    call map%force_finalize()
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Update)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    implicit none 
+    type(Epetra_Map)         :: map
+    type(Epetra_MultiVector) :: MV1,MV2
+#ifdef HAVE_MPI
+    type(Epetra_MpiComm)    ::   comm
+#else
+    type(Epetra_SerialComm) ::   comm
+#endif
+    integer                 :: localElems, info, iret
+    real(c_double), allocatable :: lMV(:,:), vres(:)
+    integer(c_int)          :: NumElems, indexbase, NumVectors, nmv, nglb
+    integer(c_int)          :: i,j,k
+    real(c_double)          :: val, tol, ref
+    success = .TRUE.
+#ifdef HAVE_MPI
+    comm   = Epetra_MpiComm(MPI_COMM_WORLD)
+#else
+    comm   = Epetra_SerialComm()
+#endif
+    numElems  = 100
+    indexbase = 1
+    NumVectors = 4
+    ECHO(map = Epetra_Map(NumElems,indexbase,comm))
+    ECHO(MV1 = Epetra_MultiVector(map,NumVectors,.TRUE.))
+    ECHO(MV2 = Epetra_MultiVector(map,NumVectors,.TRUE.))
+    ! What to test now? 
+    info = 0
+    do j=1, NumVectors
+       do i=1, NumElems
+         ! Note: here we're specifying all possible I values,
+	 ! so some calls will return info=1, and that's ok.
+	 ! MIN will select 0 or the occasional -1
+       	 val = i*j
+         call MV1%ReplaceGlobalValue(i,j,val)
+       	 val = (i+1)*j
+         call MV2%ReplaceGlobalValue(i,j,val)
+       end do
+    end do
+    ECHO(call MV1%Update(-1.d0,MV2,1.d0))
+    ECHO(vres = MV1%Norm1())
+    ! Now build a reference value for the
+    ! 1 norm. The output should be 
+    ! MV1(i,j) = j
+    ! so the 1-norm should be
+    ! j * NumElems
+    val = NumElems
+    ! Perturbations in a sum
+    ! may be bounded by a factor
+    ! NumElems*epsilon(1.d0)
+    ! implying the forward bound below
+    ! which is however not tight
+    do j=1, NumVectors
+       ref = val*j
+       tol = NumElems*epsilon(1.d0)*ref
+       TEST_LESSEQUAL(abs(ref-vres(j)),tol)
+    end do
+
+    call MV1%force_finalize()
+    call MV2%force_finalize()
     call map%force_finalize()
     call comm%force_finalize()
   FORTRILINOS_UNITTEST_END
