@@ -233,7 +233,7 @@ contains
   end function 
 
   subroutine Abs(this,A,err)
-   class(Epetra_MultiVector), intent(in) :: this
+   class(Epetra_MultiVector), intent(inout) :: this
    class(Epetra_MultiVector), intent(in) :: A 
    type(error),optional,intent(out)   :: err
    integer(c_int)                        :: error_out
@@ -242,7 +242,7 @@ contains
   end subroutine
 
   subroutine Reciprocal(this,A,err)
-   class(Epetra_MultiVector), intent(in) :: this
+   class(Epetra_MultiVector), intent(inout) :: this
    class(Epetra_MultiVector), intent(in) :: A
    type(error),optional,intent(out)   :: err
    integer(c_int)                        :: error_out
