@@ -134,18 +134,20 @@ contains
   end function
   
   type(FT_Epetra_SerialComm_ID_t) function alias_EpetraSerialComm_ID(generic_id)
-    use iso_c_binding        ,only: c_loc
+    use iso_c_binding        ,only: c_loc,c_int
     use ForTrilinos_enums    ,only: FT_Epetra_SerialComm_ID,ForTrilinos_Universal_ID_t
     use ForTrilinos_table_man,only: CT_Alias
     type(Fortrilinos_Universal_ID_t) ,intent(in) :: generic_id
     type(Fortrilinos_Universal_ID_t) ,pointer    :: alias_id
     integer(c_int) :: status
+    type(error) :: ierr
     allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_SerialComm_ID),stat=status)
-    !call check_allocation(status,'Epetra_SerialComm%alias_EpetraSerialComm_ID')
+    ierr=error(status,'FEpetra_SerialComm:alias_EpetraSerialComm_ID')
+    call ierr%check_allocation()
     alias_EpetraSerialComm_ID=degeneralize_EpetraSerialComm(c_loc(alias_id))
     deallocate(alias_id,stat=status)
-    status=2
-    !call check_deallocation(status,'Epetra_SerialComm%alias_EpetraSerialComm_ID')
+    ierr=error(status,'FEpetra_SerialComm:alias_EpetraSerialComm_ID')
+    call ierr%check_deallocation()
   end function
 
 

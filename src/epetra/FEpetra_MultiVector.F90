@@ -145,13 +145,19 @@ contains
   
   type(FT_Epetra_MultiVector_ID_t) function alias_EpetraMultiVector_ID(generic_id)
     use ForTrilinos_table_man,only: CT_Alias
-    use iso_c_binding        ,only: c_loc
+    use iso_c_binding        ,only: c_loc,c_int
     use ForTrilinos_enums    ,only: ForTrilinos_Universal_ID_t,FT_Epetra_MultiVector_ID
     type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
     type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id
-    allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_MultiVector_ID))
+    integer(c_int) :: status
+    type(error) :: ierr
+    allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_MultiVector_ID),stat=status)
+    ierr=error(status,'FEpetra_MultiVector:alias_EpetraMultiVector_ID')
+    call ierr%check_allocation()
     alias_EpetraMultiVector_ID=degeneralize_EpetraMultiVector(c_loc(alias_id))
-    deallocate(alias_id)
+    deallocate(alias_id,stat=status)
+    ierr=error(status,'FEpetra_MultiVector:alias_EpetraMultiVector_ID')
+    call ierr%check_deallocation()
   end function
 
   type(ForTrilinos_Universal_ID_t) function generalize(this)
@@ -217,7 +223,11 @@ contains
    real(c_double),dimension(:),allocatable :: dot_ 
    type(error),optional,intent(out)   :: err
    integer(c_int)                        :: error_out
-   allocate(dot_(this%NumVectors()))
+   integer(c_int) :: status
+   type(error) :: ierr
+   allocate(dot_(this%NumVectors()),stat=status)
+   ierr=error(status,'FEpetra_MultiVector:Dot')
+   call ierr%check_allocation()
    error_out=Epetra_MultiVector_Dot(this%MultiVector_id,x%MultiVector_id,dot_)
    if (present(err)) err=error(error_out)
   end function 
@@ -282,7 +292,11 @@ contains
    integer(c_int),intent(in) :: MyLDA
    type(error),optional,intent(out) :: err
    integer(c_int)           :: error_out
-   allocate(A(this%NumVectors(),this%MyLength()))
+   integer(c_int) :: status
+   type(error) :: ierr
+   allocate(A(this%NumVectors(),this%MyLength()),stat=status)
+   ierr=error(status,'FEpetra_MultiVector:ExtractCopy_2DA')
+   call ierr%check_allocation()
    error_out=Epetra_MultiVector_ExtractCopy_Fill2DA(this%MultiVector_id,A,MyLDA)
    if (present(err)) err=error(error_out)
   end function
@@ -316,7 +330,11 @@ contains
     type(error) ,optional    ,intent(out) :: err
     real(c_double) ,dimension(:),allocatable :: Norm1_val 
     integer(c_int)                           :: error_out
-    allocate(Norm1_val(this%NumVectors()))
+    integer(c_int) :: status
+    type(error) :: ierr
+    allocate(Norm1_val(this%NumVectors()),stat=status)
+    ierr=error(status,'FEpetra_MultiVector:Norm1')
+    call ierr%check_allocation()
     error_out = Epetra_MultiVector_Norm1(this%MultiVector_id,Norm1_val)
     if (present(err)) err=error(error_out)
   end function 
@@ -326,7 +344,11 @@ contains
     type(error) ,optional    ,intent(out) :: err
     real(c_double) ,dimension(:),allocatable :: Norm2_val 
     integer(c_int)                           :: error_out
-    allocate(Norm2_val(this%NumVectors()))
+    integer(c_int) :: status
+    type(error) :: ierr
+    allocate(Norm2_val(this%NumVectors()),stat=status)
+    ierr=error(status,'FEpetra_MultiVector:Norm2')
+    call ierr%check_allocation()
     error_out = Epetra_MultiVector_Norm2(this%MultiVector_id,Norm2_val)
     if (present(err)) err=error(error_out)
   end function
@@ -336,7 +358,11 @@ contains
     type(error) ,optional    ,intent(out) :: err
     real(c_double) ,dimension(:),allocatable :: NormInf_val 
     integer(c_int)                           :: error_out
-    allocate(NormInf_val(this%NumVectors()))
+    integer(c_int) :: status
+    type(error) :: ierr
+    allocate(NormInf_val(this%NumVectors()),stat=status)
+    ierr=error(status,'FEpetra_MultiVector:NormInf')
+    call ierr%check_allocation()
     error_out = Epetra_MultiVector_NormInf(this%MultiVector_id,NormInf_val)
     if (present(err)) err=error(error_out)
   end function 
@@ -347,7 +373,11 @@ contains
     type(error) ,optional    ,intent(out) :: err
     real(c_double) ,dimension(:),allocatable :: NormWeighted_val 
     integer(c_int)                           :: error_out
-    allocate(NormWeighted_val(this%NumVectors()))
+    integer(c_int) :: status
+    type(error) :: ierr
+    allocate(NormWeighted_val(this%NumVectors()),stat=status)
+    ierr=error(status,'FEpetra_MultiVector:NormWeighted')
+    call ierr%check_allocation()
     error_out = Epetra_MultiVector_NormWeighted(this%MultiVector_id,weights%MultiVector_id,NormWeighted_val)
     if (present(err)) err=error(error_out)
   end function 
@@ -357,7 +387,11 @@ contains
     type(error) ,optional    ,intent(out) :: err
     real(c_double) ,dimension(:),allocatable :: MinValue_val
     integer(c_int)                           :: error_out
-    allocate(MinValue_val(this%NumVectors()))
+    integer(c_int) :: status
+    type(error) :: ierr
+    allocate(MinValue_val(this%NumVectors()),stat=status)
+    ierr=error(status,'FEpetra_MultiVector:MinValue')
+    call ierr%check_allocation()
     error_out = Epetra_MultiVector_MinValue(this%MultiVector_id,MinValue_val)
     if (present(err)) err=error(error_out)
   end function
@@ -367,7 +401,11 @@ contains
     type(error) ,optional    ,intent(out) :: err
     real(c_double) ,dimension(:),allocatable :: MaxValue_val
     integer(c_int)                           :: error_out
-    allocate(MaxValue_val(this%NumVectors()))
+    integer(c_int) :: status
+    type(error) :: ierr
+    allocate(MaxValue_val(this%NumVectors()),stat=status)
+    ierr=error(status,'FEpetra_MultiVector:MaxValue')
+    call ierr%check_allocation()
     error_out = Epetra_MultiVector_MaxValue(this%MultiVector_id,MaxValue_val)
     if (present(err)) err=error(error_out)
   end function
@@ -377,7 +415,11 @@ contains
     type(error) ,optional    ,intent(out) :: err
     real(c_double) ,dimension(:),allocatable :: MeanValue_val
     integer(c_int)                           :: error_out
-    allocate(MeanValue_val(this%NumVectors()))
+    integer(c_int) :: status
+    type(error) :: ierr
+    allocate(MeanValue_val(this%NumVectors()),stat=status)
+    ierr=error(status,'FEpetra_MultiVector:MeanValue')
+    call ierr%check_allocation()
     error_out = Epetra_MultiVector_MeanValue(this%MultiVector_id,MeanValue_val)
     if (present(err)) err=error(error_out)
   end function

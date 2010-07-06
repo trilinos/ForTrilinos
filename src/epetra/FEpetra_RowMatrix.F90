@@ -147,14 +147,20 @@ module FEpetra_RowMatrix
   end subroutine 
   
   type(FT_Epetra_RowMatrix_ID_t) function alias_EpetraRowMatrix_ID(generic_id)
-    use iso_c_binding, only : c_loc
+    use iso_c_binding, only : c_loc,c_int
     use ForTrilinos_table_man
     use ForTrilinos_enums
     type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
     type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id
-    allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_RowMatrix_ID))
+    integer(c_int) :: status
+    type(error) :: ierr
+    allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_RowMatrix_ID),stat=status)
+    ierr=error(status,'FEpetra_RowMatrix:alias_EpetraRowMatrix_ID')
+    call ierr%check_allocation()
     alias_EpetraRowMatrix_ID=degeneralize_EpetraRowMatrix(c_loc(alias_id))
-    deallocate(alias_id)
+    deallocate(alias_id,stat=status)
+    ierr=error(status,'FEpetra_RowMatrix:alias_EpetraRowMatrix_ID')
+    call ierr%check_deallocation()
   end function
 
   type(ForTrilinos_Universal_ID_t) function generalize_EpetraRowMatrix(this)

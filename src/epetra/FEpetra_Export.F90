@@ -39,6 +39,7 @@ module FEpetra_Export
   use ForTrilinos_enums ,only: FT_Epetra_Comm_ID_t,FT_Epetra_Export_ID_t,FT_Epetra_BlockMap_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
   use ForTrilinos_universal,only:universal
+  use ForTrilinos_error
   use FEpetra_Comm  ,only: Epetra_Comm
   use FEpetra_BlockMap ,only: Epetra_BlockMap
   use iso_c_binding ,only: c_int
@@ -118,12 +119,18 @@ contains
   type(FT_Epetra_Export_ID_t) function alias_EpetraExport_ID(generic_id)
     use ForTrilinos_table_man
     use ForTrilinos_enums ,only: ForTrilinos_Universal_ID_t,FT_Epetra_Export_ID
-    use iso_c_binding     ,only: c_loc
+    use iso_c_binding     ,only: c_loc,c_int
     type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
     type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id
-    allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_Export_ID))
+    integer(c_int) :: status
+    type(error) :: ierr
+    allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_Export_ID),stat=status)
+    ierr=error(status,'FEpetra_Export:alias_EpetraExport_ID')
+    call ierr%check_allocation()
     alias_EpetraExport_ID=degeneralize_EpetraExport(c_loc(alias_id))
-    deallocate(alias_id)
+    deallocate(alias_id,stat=status)
+    ierr=error(status,'FEpetra_Export:alias_EpetraExport_ID')
+    call ierr%check_deallocation()
   end function
 
   type(ForTrilinos_Universal_ID_t) function generalize(this)

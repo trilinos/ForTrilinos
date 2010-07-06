@@ -41,6 +41,7 @@ module FEpetra_BlockMap
   use ForTrilinos_table_man
   use ForTrilinos_hermetic,only:hermetic
   use ForTrilinos_universal,only:universal
+  use ForTrilinos_error
   use FEpetra_Comm  ,only: Epetra_Comm
   use iso_c_binding ,only: c_int
   use forepetra
@@ -180,12 +181,18 @@ contains
   type(FT_Epetra_BlockMap_ID_t) function alias_EpetraBlockMap_ID(generic_id)
     use ForTrilinos_table_man
     use ForTrilinos_enums ,only: ForTrilinos_Universal_ID_t,FT_Epetra_BlockMap_ID
-    use iso_c_binding     ,only: c_loc
+    use iso_c_binding     ,only: c_loc,c_int
     type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
     type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id
-    allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_BlockMap_ID))
+    integer(c_int) :: status
+    type(error) :: ierr
+    allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_BlockMap_ID),stat=status)
+    ierr=error(status,'FEpetra_BlockMap:alias_EpetraBlockMap_ID')
+    call ierr%check_allocation()
     alias_EpetraBlockMap_ID=degeneralize_EpetraBlockMap(c_loc(alias_id))
-    deallocate(alias_id)
+    deallocate(alias_id,stat=status)
+    ierr=error(status,'FEpetra_BlockMap:alias_EpetraBlockMap_ID')
+    call ierr%check_deallocation()
   end function
 
   type(ForTrilinos_Universal_ID_t) function generalize(this)
@@ -258,7 +265,11 @@ contains
     class(Epetra_BlockMap)     ,intent(in)    :: this
     integer(c_int),dimension(:),allocatable   :: MyGlobalElementsList
     integer(c_int)                            :: junk
-    allocate(MyGlobalElementsList(this%NumMyElements()))
+    integer(c_int) :: status
+    type(error) :: ierr
+    allocate(MyGlobalElementsList(this%NumMyElements()),stat=status)
+    ierr=error(status,'FEpetra_BlockMap:alias_EpetraBlockMap_ID')
+    call ierr%check_allocation()
     junk=Epetra_BlockMap_MyGlobalElements_Fill(this%BlockMap_id,MyGlobalElementsList)
   end function 
 

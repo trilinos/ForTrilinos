@@ -305,7 +305,7 @@ module FEpetra_Comm
   end subroutine 
   
   type(FT_Epetra_Comm_ID_t) function alias_EpetraComm_ID(generic_id)
-    use iso_c_binding, only : c_loc
+    use iso_c_binding, only : c_loc,c_int
     use ForTrilinos_table_man
     use ForTrilinos_enums
     type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
