@@ -40,13 +40,19 @@
 #
 ############################################################################
 
+OPTIMIZE_FOR_FORTRAN   = YES
 PROJECT_NAME           = ForTrilinos
 INPUT                  = ../src
 EXAMPLE_PATH           = ../example
 FILE_PATTERNS          = for*.F90
 IMAGE_PATH             = .
 
-#TAGFILES               = ../../common/tag_files/epetraBrowser.tag=../../../epetra/browser/doc/html
+TAGFILES               = ../../common/tag_files/epetra.tag=../../../epetra/doc/html \
+			 ../../common/tag_files/teuchos.tag=../../../teuchos/doc/html \
+			 ../../common/tag_files/amesos.tag=../../../amesos/doc/html \
+			 ../../common/tag_files/aztecoo.tag=../../../aztecoo/doc/html \
+			 ../../common/tag_files/galeri.tag=../../../galeri/doc/html \
+			 ../../common/tag_files/ifpack.tag=../../../ifpack/doc/html
 GENERATE_TAGFILE       = ../../common/tag_files/fortrilinos.tag
 
 EXTRACT_ALL            = YES
