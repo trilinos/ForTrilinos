@@ -93,7 +93,9 @@ contains
     logical ,optional      ,intent(in) :: zero_initial
     integer(FT_boolean_t)              :: zero_out
     type(FT_Epetra_Vector_ID_t) :: constructor1_id
-    if (present(zero_initial).and.zero_initial) then
+    if (.not.present(zero_initial)) then
+     zero_out=FT_FALSE
+    elseif (zero_initial) then
      zero_out=FT_TRUE
     else
      zero_out=FT_FALSE
