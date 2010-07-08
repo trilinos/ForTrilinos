@@ -63,6 +63,9 @@ module FEpetra_Vector
      ! Extraction methods
      procedure         :: ExtractCopy_EpetraVector
      generic :: ExtractCopy => ExtractCopy_EpetraVector
+     !overloaded operators
+     procedure         :: get_element_EpetraVector
+     generic :: get_Element => get_element_EpetraVector 
   end type
 
    interface Epetra_Vector ! constructors
@@ -198,7 +201,15 @@ contains
    error_out = Epetra_Vector_ExtractCopy(this%vector_id,ExtractCopy_out)
    if (present(err)) err=error(error_out)
   end function 
-  
+ 
+  real(c_double) function get_element_EpetraVector(this,index)
+    class(Epetra_Vector), intent(in) :: this
+    integer(c_int), intent(in) :: index
+    integer(c_int)             :: index_c
+    index_c=index-FT_Index_OffSet ! To account for Fortran index base 1 
+    get_element_EpetraVector=Epetra_Vector_getElement(this%vector_id,index_c)
+  end function
+   
   subroutine invalidate_EpetraVector_ID(this)
     class(Epetra_Vector) ,intent(inout) :: this
     call this%Epetra_MultiVector%invalidate_id

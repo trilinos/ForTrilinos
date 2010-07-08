@@ -1,3 +1,40 @@
+!*********************************************************************
+! ForTrilinos: Object-Oriented Fortran 2003 interface to Trilinos
+!                Copyright 2010 Sandia Corporation
+!
+! Under the terms of Contract DE-AC04-94AL85000 with Sandia Corporation,
+! the U.S. Government retains certain rights in this software.
+!
+! Redistribution and use in source and binary forms, with or without
+! modification, are permitted provided that the following conditions are met:
+!
+! 1. Redistributions of source code must retain the above copyright
+!    notice, this list of conditions and the following disclaimer.
+!
+! 2. Redistributions in binary form must reproduce the above copyright
+!    notice, this list of conditions and the following disclaimer in the
+!    documentation and/or other materials provided with the distribution.
+!
+! 3. Neither the name of the Corporation nor the names of the
+!    contributors may be used to endorse or promote products derived from
+!    this software without specific prior written permission.
+!
+! THIS SOFTWARE IS PROVIDED BY SANDIA CORPORATION "AS IS" AND ANY
+! EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+! IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+! PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL SANDIA CORPORATION OR THE
+! CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+! EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+! PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+! PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+! LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+! NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+! SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+!
+! Questions? Contact Karla Morris  (knmorri@sandia.gov)
+!                    Damian Rouson (rouson@sandia.gov)
+!*********************************************************************
+
 program main
   ! This file is the object-oriented fortran equivalent of Epetra_power_method.cpp. In Trilinos 10.0,
   ! this is a snapshot of an unstable (evolving) file expected to become stable in a
@@ -125,7 +162,6 @@ program main
      if (err%error_code()/=0) stop 'A%InsertGlobalValues: failed'
   !Put in the diaogonal entry
      index_diagonal = MyGlobalElements(i)
-     !call A%InsertGlobalValues(MyGlobalElements(i),1,[two],MyGlobalElements,err)
      call A%InsertGlobalValues(MyGlobalElements(i),1,[two],[index_diagonal],err)
      if (err%error_code()/=0) stop 'A%InsertGlobalValues: failed'
   end do
@@ -138,14 +174,15 @@ program main
   lambda = 0.0
   ierr_pm = 0
   niters=NumGlobalElements*10 
+  
+  !Iterate
   call power_method(A,lambda,niters,tolerance,verbose,ierr_pm)
   ierr_pm=ierr_pm+1
 
-  !Iterate
   if (A%MyGlobalRow(1_c_int)) then
     numvals=A%NumGlobalEntries(1_c_int)
     allocate(Rowvals(numvals),Rowinds(numvals))
-    call A%ExtractGlobalRowCopy(1_c_int,numvals,numvals,Rowvals,Rowinds) ! get A(0,0)
+    call A%ExtractGlobalRowCopy(1_c_int,numvals,numvals,Rowvals,Rowinds) ! get A(1,1)
   do i=1,numvals
    if (Rowinds(i)==1) Rowvals(i)=10.0*Rowvals(i)
   enddo  
