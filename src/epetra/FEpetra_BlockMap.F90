@@ -281,7 +281,9 @@ contains
   integer(c_int) function ElementSize_LID(this,L_ID)
     class(Epetra_BlockMap) ,intent(in) :: this
     integer(c_int)         ,intent(in) :: L_ID
-    ElementSize_LID=Epetra_BlockMap_ElementSize(this%BlockMap_id,L_ID)
+    integer(c_int)          :: L_ID_c
+    L_ID_c=L_ID-FT_Index_OffSet ! To account for Fortran index base 1
+    ElementSize_LID=Epetra_BlockMap_ElementSize(this%BlockMap_id,L_ID_c)
   end function 
 
   logical function LinearMap(this)

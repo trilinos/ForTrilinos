@@ -325,7 +325,9 @@ contains
    use iso_c_binding, only : c_int
    class(Epetra_CrsMatrix), intent(in) :: this
    integer(c_int),          intent(in) :: MyRow
-   NumMyRowEntries=Epetra_CrsMatrix_NumMyEntries(this%CrsMatrix_id,MyRow)
+   integer(c_int)                      :: MyRow_c
+   MyRow_c=MyRow-FT_Index_OffSet ! To account for Fortran index base 1
+   NumMyRowEntries=Epetra_CrsMatrix_NumMyEntries(this%CrsMatrix_id,MyRow_c)
  end function
 
  integer(c_int) function MaxNumEntries(this)

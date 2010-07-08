@@ -60,7 +60,7 @@ module FEpetra_MultiVector
      ! Post-construction modification procedure 
      procedure         :: ReplaceGlobalValue_GlobalRow
      procedure         :: ReplaceGlobalValue_GlobalBlockRow
-     generic :: ReplaceGlobalValue=>ReplaceGlobalValue_GlobalRow!,ReplaceGlobalValue_GlobalBlockRow
+     generic :: ReplaceGlobalValue=>ReplaceGlobalValue_GlobalRow,ReplaceGlobalValue_GlobalBlockRow
      !Mathematical Methods
      procedure         :: Dot
      procedure         :: Abs
@@ -194,12 +194,12 @@ contains
     class(Epetra_MultiVector), intent(in) :: this
     integer(c_int), intent(in) :: GlobalRow
     integer(c_int), intent(in) :: VectorIndex 
-    integer(c_int)             :: VectorIndex_mod ! To account for Fortran index base 1
+    integer(c_int)             :: VectorIndex_c
     real(c_double), intent(in) :: ScalarValue 
     type(error),optional,intent(out) :: err
     integer(c_int)     :: error_out
-    VectorIndex_mod = VectorIndex-1
-    error_out=Epetra_MultiVector_ReplaceGlobalValue(this%MultiVector_id,GlobalRow,VectorIndex_mod,ScalarValue)
+    VectorIndex_c=VectorIndex-FT_Index_OffSet ! To account for Fortran index base 1
+    error_out=Epetra_MultiVector_ReplaceGlobalValue(this%MultiVector_id,GlobalRow,VectorIndex_c,ScalarValue)
     if (present(err)) err=error(error_out)
   end subroutine
   
@@ -208,12 +208,12 @@ contains
     integer(c_int), intent(in) :: GlobalRow
     integer(c_int), intent(in) :: BlockRowOffset
     integer(c_int), intent(in) :: VectorIndex 
-    integer(c_int)             :: VectorIndex_mod ! To account for Fortran index base 1
+    integer(c_int)             :: VectorIndex_c ! To account for Fortran index base 1
     real(c_double), intent(in) :: ScalarValue 
     type(error),optional,intent(out) :: err
     integer(c_int)     :: error_out
-    VectorIndex_mod = VectorIndex-1
-    error_out=Epetra_MultiVector_ReplaceGlobalValue_BlockPos(this%MultiVector_id,GlobalRow,BlockRowOffset,VectorIndex_mod,ScalarValue)
+    VectorIndex_c=VectorIndex-FT_Index_OffSet ! To account for Fortran index base 1
+    error_out=Epetra_MultiVector_ReplaceGlobalValue_BlockPos(this%MultiVector_id,GlobalRow,BlockRowOffset,VectorIndex_c,ScalarValue)
     if (present(err)) err=error(error_out)
   end subroutine
 
