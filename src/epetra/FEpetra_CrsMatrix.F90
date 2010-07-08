@@ -112,7 +112,9 @@ contains
     logical,        optional                   :: StaticProfile                  
     integer(FT_boolean_t)                      :: StaticProfile_in
     type(FT_Epetra_CrsMatrix_ID_t)             :: Create_VarPerRow_id
-    if (present(StaticProfile).and.StaticProfile) then
+    if (.not.present(StaticProfile)) then
+      StaticProfile_in=FT_FALSE
+    elseif (StaticProfile) then
       StaticProfile_in=FT_TRUE
     else
       StaticProfile_in=FT_FALSE
@@ -135,7 +137,9 @@ contains
     logical,        optional                   :: StaticProfile
     integer(FT_boolean_t)                      :: StaticProfile_in
     type(FT_Epetra_CrsMatrix_ID_t) :: Create_id
-    if (present(StaticProfile).and.StaticProfile) then
+    if (.not.present(StaticProfile)) then
+      StaticProfile_in=FT_FALSE
+    elseif (StaticProfile) then
       StaticProfile_in=FT_TRUE
     else
       StaticProfile_in=FT_FALSE
@@ -160,7 +164,9 @@ contains
     logical,        optional                   :: StaticProfile
     integer(FT_boolean_t)                      :: StaticProfile_in   
     type(FT_Epetra_CrsMatrix_ID_t):: Create_id
-    if (present(StaticProfile).and.StaticProfile) then
+    if (.not.present(StaticProfile)) then
+      StaticProfile_in=FT_FALSE
+    elseif (StaticProfile) then
       StaticProfile_in=FT_TRUE
     else
       StaticProfile_in=FT_FALSE
@@ -184,7 +190,9 @@ contains
     logical,        optional                   :: StaticProfile
     integer(FT_boolean_t)                      :: StaticProfile_in
     type(FT_Epetra_CrsMatrix_ID_t):: Create_id
-    if (present(StaticProfile).and.StaticProfile) then
+    if (.not.present(StaticProfile)) then
+      StaticProfile_in=FT_FALSE
+    elseif (StaticProfile) then
       StaticProfile_in=FT_TRUE
     else
       StaticProfile_in=FT_FALSE
@@ -299,7 +307,9 @@ contains
    type(error),optional,intent(out)    :: err
    integer(c_int)                      :: error_out 
    integer(FT_boolean_t)               :: OptimizeDataStorage_in
-   if (.not.(present(OptimizeDataStorage)).or.OptimizeDataStorage) then
+   if (.not.present(OptimizeDataStorage)) then
+     OptimizeDataStorage_in=FT_TRUE
+   elseif (OptimizeDataStorage) then
      OptimizeDataStorage_in=FT_TRUE
    else
      OptimizeDataStorage_in=FT_FALSE
