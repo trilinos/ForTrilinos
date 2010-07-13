@@ -227,13 +227,13 @@ contains
     type(Fortrilinos_Universal_ID_t) ,pointer    :: alias_id
     integer(c_int) :: status
     type(error) :: ierr
-    allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_CrsMatrix_ID),stat=status)
-    ierr=error(status,'FEpetra_CrsMatrix:alias_EpetraCrsMatrix_ID')
-    call ierr%check_allocation()
+    if (.not.associated(alias_id)) then
+      allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_CrsMatrix_ID),stat=status)
+      ierr=error(status,'FEpetra_CrsMatrix:alias_EpetraCrsMatrix_ID')
+      call ierr%check_success()
+    endif
     alias_EpetraCrsMatrix_ID=degeneralize_EpetraCrsMatrix(c_loc(alias_id))
-    deallocate(alias_id,stat=status)
-    ierr=error(status,'FEpetra_CrsMatrix:alias_EpetraCrsMatrix_ID')
-    call ierr%check_deallocation()
+    call deallocate_and_check_error(alias_id,'FEpetra_CrsMatrix:alias_EpetraCrsMatrix_ID')
   end function
 
 

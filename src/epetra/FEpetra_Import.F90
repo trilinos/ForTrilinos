@@ -127,13 +127,13 @@ contains
     type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id
     integer(c_int) :: status
     type(error) :: ierr
-    allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_Import_ID),stat=status)
-    ierr=error(status,'FEpetra_Import:alias_EpetraImport_ID')
-    call ierr%check_allocation()
+    if (.not.associated(alias_id)) then
+     allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_Import_ID),stat=status)
+     ierr=error(status,'FEpetra_Import:alias_EpetraImport_ID')
+     call ierr%check_success()
+    endif
     alias_EpetraImport_ID=degeneralize_EpetraImport(c_loc(alias_id))
-    deallocate(alias_id,stat=status)
-    ierr=error(status,'FEpetra_Import:alias_EpetraImport_ID')
-    call ierr%check_allocation()
+    call deallocate_and_check_error(alias_id,'FEpetra_Import:alias_EpetraImport_ID')
   end function
 
   type(ForTrilinos_Universal_ID_t) function generalize(this)
@@ -184,9 +184,11 @@ contains
     integer(c_int),pointer :: PermuteFromLIDs_local_ptr
     integer(c_int) :: status
     type(error) :: ierr
-    allocate(PermuteFromLIDs(this%NumPermuteIDs()),stat=status)
-    ierr=error(status,'FEpetra_Import:alias_EpetraImport_ID')
-    call ierr%check_allocation()
+    if (.not.allocated(PermuteFromLIDs)) then
+     allocate(PermuteFromLIDs(this%NumPermuteIDs()),stat=status)
+     ierr=error(status,'FEpetra_Import:alias_EpetraImport_ID')
+     call ierr%check_success()
+    endif
     PermuteFromLIDs_external_ptr=Epetra_Import_PermuteFromLIDs(this%Import_id)
     call c_f_pointer (PermuteFromLIDs_external_ptr, PermuteFromLIDs_local_ptr)
     PermuteFromLIDs=PermuteFromLIDs_local_ptr

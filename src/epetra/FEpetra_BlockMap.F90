@@ -186,13 +186,13 @@ contains
     type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id
     integer(c_int) :: status
     type(error) :: ierr
-    allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_BlockMap_ID),stat=status)
-    ierr=error(status,'FEpetra_BlockMap:alias_EpetraBlockMap_ID')
-    call ierr%check_allocation()
+    if(.not.associated(alias_id)) then
+      allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_BlockMap_ID),stat=status)
+      ierr=error(status,'FEpetra_BlockMap:alias_EpetraBlockMap_ID')
+      call ierr%check_success()
+    endif
     alias_EpetraBlockMap_ID=degeneralize_EpetraBlockMap(c_loc(alias_id))
-    deallocate(alias_id,stat=status)
-    ierr=error(status,'FEpetra_BlockMap:alias_EpetraBlockMap_ID')
-    call ierr%check_deallocation()
+    call deallocate_and_check_error(alias_id,'FEpetra_BlockMap:alias_EpetraBlockMap_ID')
   end function
 
   type(ForTrilinos_Universal_ID_t) function generalize(this)
@@ -267,9 +267,11 @@ contains
     integer(c_int)                            :: junk
     integer(c_int) :: status
     type(error) :: ierr
-    allocate(MyGlobalElementsList(this%NumMyElements()),stat=status)
-    ierr=error(status,'FEpetra_BlockMap:alias_EpetraBlockMap_ID')
-    call ierr%check_allocation()
+    if (.not.allocated(MyGlobalElementsList)) then
+     allocate(MyGlobalElementsList(this%NumMyElements()),stat=status)
+     ierr=error(status,'FEpetra_BlockMap:MyGlobalElements')
+     call ierr%check_success()
+    endif
     junk=Epetra_BlockMap_MyGlobalElements_Fill(this%BlockMap_id,MyGlobalElementsList)
   end function 
 
