@@ -40,7 +40,7 @@ module FEpetra_RowMatrix
   use ForTrilinos_universal,only : universal
   use ForTrilinos_enums !,only: FT_Epetra_RowMatrix_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
-  use ForTrilinos_error, only: error
+  use ForTrilinos_error
   use FEpetra_Map, only: Epetra_Map
   use FEpetra_MultiVector, only: Epetra_MultiVector
   use FEpetra_Vector, only: Epetra_Vector
@@ -154,13 +154,13 @@ module FEpetra_RowMatrix
     type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id
     integer(c_int) :: status
     type(error) :: ierr
-    allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_RowMatrix_ID),stat=status)
-    ierr=error(status,'FEpetra_RowMatrix:alias_EpetraRowMatrix_ID')
-    call ierr%check_allocation()
+    if (.not.associated(alias_id)) then
+     allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_RowMatrix_ID),stat=status)
+     ierr=error(status,'FEpetra_RowMatrix:alias_EpetraRowMatrix_ID')
+     call ierr%check_success()
+    endif
     alias_EpetraRowMatrix_ID=degeneralize_EpetraRowMatrix(c_loc(alias_id))
-    deallocate(alias_id,stat=status)
-    ierr=error(status,'FEpetra_RowMatrix:alias_EpetraRowMatrix_ID')
-    call ierr%check_deallocation()
+    call deallocate_and_check_error(alias_id,'FEpetra_RowMatrix:alias_EpetraRowMatrix_ID')
   end function
 
   type(ForTrilinos_Universal_ID_t) function generalize_EpetraRowMatrix(this)
