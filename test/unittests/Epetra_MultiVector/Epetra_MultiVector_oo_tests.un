@@ -83,7 +83,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ECHO(nglb = MV%GlobalLength()) 
     TEST_EQUALITY(nglb,NumElems)
         ! We have initialized to zero,
-    ! so check it's really zero
+    ! so check its really zero
     ECHO(vres = MV%Norm2())
     TEST_EQUALITY(maxval(vres),0.0d0)	
     ECHO(vres = MV%NormInf())
@@ -126,8 +126,8 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     do j=1, NumVectors
        do i=1, NumElems
        	 val = i*j
-         ! Note: here we're specifying all possible I values,
-	 ! so some calls will return info=1, and that's ok.
+         ! Note: here were specifying all possible I values,
+	 ! so some calls will return info=1, and thats ok.
 	 ! MIN will select 0 or the occasional -1
          call MV%ReplaceGlobalValue(i,j,val)
        end do
@@ -174,8 +174,8 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     do j=1, NumVectors
        do i=1, NumElems
        	 val = i*j
-         ! Note: here we're specifying all possible I values,
-	 ! so some calls will return info=1, and that's ok.
+         ! Note: here were specifying all possible I values,
+	 ! so some calls will return info=1, and thats ok.
 	 ! MIN will select 0 or the occasional -1
          call MV%ReplaceGlobalValue(i,j,val)
        end do
@@ -221,8 +221,8 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     info = 0
     do j=1, NumVectors
        do i=1, NumElems
-         ! Note: here we're specifying all possible I values,
-	 ! so some calls will return info=1, and that's ok.
+         ! Note: here were specifying all possible I values,
+	 ! so some calls will return info=1, and thats ok.
 	 ! MIN will select 0 or the occasional -1
        	 val = i*j
          call MV%ReplaceGlobalValue(i,j,val)
@@ -281,8 +281,8 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     info = 0
     do j=1, NumVectors
        do i=1, NumElems
-         ! Note: here we're specifying all possible I values,
-	 ! so some calls will return info=1, and that's ok.
+         ! Note: here were specifying all possible I values,
+	 ! so some calls will return info=1, and thats ok.
 	 ! MIN will select 0 or the occasional -1
        	 val = i*j
          call MV%ReplaceGlobalValue(i,j,val)
@@ -342,8 +342,8 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     info = 0
     do j=1, NumVectors
        do i=1, NumElems
-         ! Note: here we're specifying all possible I values,
-	 ! so some calls will return info=1, and that's ok.
+         ! Note: here were specifying all possible I values,
+	 ! so some calls will return info=1, and thats ok.
 	 ! MIN will select 0 or the occasional -1
        	 val = i
          call MV1%ReplaceGlobalValue(i,j,val)
@@ -409,8 +409,8 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     info = 0
     do j=1, NumVectors
        do i=1, NumElems
-         ! Note: here we're specifying all possible I values,
-	 ! so some calls will return info=1, and that's ok.
+         ! Note: here were specifying all possible I values,
+	 ! so some calls will return info=1, and thats ok.
 	 ! MIN will select 0 or the occasional -1
        	 val = i*j
          call MV1%ReplaceGlobalValue(i,j,val)
