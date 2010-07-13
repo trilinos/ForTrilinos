@@ -9,6 +9,11 @@ PACKAGE(ForTrilinos Fortran)
 
 IF("${CMAKE_Fortran_COMPILER_ID}" MATCHES "VisualAge|XL")
     SET(CMAKE_Fortran_FLAGS "${CMake_Fortran_FLAGS} -qxlf2003=polymorphic -qxlf2003=autorealloc -WF,-C!")
+    SET(ForTrilinos_UT_CPP_FLAGS -E -P -qnoppline)
+    SET(ForTrilinos_UT_CPP ${CMAKE_C_COMPILER})
+ELSE()
+    SET(ForTrilinos_UT_CPP_FLAGS "")
+    SET(ForTrilinos_UT_CPP cpp)
 ENDIF()
 
 # Unit testing requires support for long lines
