@@ -17,6 +17,7 @@ FORTRILINOS_UNITTEST_MODULE_DEF(CLASS_BEING_TESTED)
     use ForTrilinos_error
     use ForTrilinos_enum_wrappers
 FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
+FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
 
   FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Create_VarPerRow)
   FORTRILINOS_UNITTEST_BEGIN
@@ -31,53 +32,14 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     type(Epetra_CrsMatrix) :: A
     type(FT_Epetra_CrsMatrix_ID_t) :: CrsMatrix_ID
     type(FT_Epetra_RowMatrix_ID_t) :: RowMatrix_ID
-    type(error) :: err
     integer(c_int),parameter::IndexBase=1
-    integer(c_int) :: NumGlobalElements = 8
+    integer(c_int) :: NumGlobalElements = 4
     integer(c_int),dimension(:),allocatable :: NumIndicesPerRow
-    integer(c_int),dimension(:),allocatable :: MyGlobalElements
-    integer(c_int),dimension(:),allocatable :: MyGlobalElements_diagonal
-    integer(c_int),dimension(:),allocatable :: NumNz
-    integer(c_int) :: NumMyElements,i
-    integer(c_int) :: indices(2), NumEntries
-    real(c_double) :: values(2)
-    real(c_double) :: two
-    integer(c_int),parameter :: diagonal=1
+    NumIndicesPerRow=(/3,2,1,4/)
     success = .TRUE.
     ECHO(comm = UnitTest_EpetraComm_Create())
     ECHO(map = Epetra_Map(NumGlobalElements,IndexBase,comm))
-    NumMyElements = map%NumMyElements()
-    allocate(MyGlobalElements(NumMyElements))
-    MyGlobalElements = map%MyGlobalElements()
-    allocate(NumNz(NumMyElements))
-  NumNz = 3
-  ECHO(A = Epetra_CrsMatrix(FT_Epetra_DataAccess_E_Copy,map,NumNz,.true.))
-  values(1) = 1.0
-  values(2) = 1.0
-  two  =-2.0
-  do i=1,NumMyElements
-    if (MyGlobalElements(i)==1) then
-      indices(1) = NumGlobalElements
-      indices(2) = 2
-      NumEntries = 2
-    else if(MyGlobalElements(i)==NumGlobalElements) then
-      indices(1) = NumGlobalElements-1
-      indices(2) = 1
-      NumEntries = 2
-    else
-      indices(1) = MyGlobalElements(i)-1
-      indices(2) = MyGlobalElements(i)+1
-      NumEntries = 2
-    end if
-     call A%InsertGlobalValues(MyGlobalElements(i),NumEntries,values,indices,err)
-     TEST_EQUALITY(err%error_code(),0)
-     MyGlobalElements_diagonal=MyGlobalElements+i-1
-     call A%InsertGlobalValues(MyGlobalElements(i),diagonal,[two],MyGlobalElements_diagonal,err)
-     TEST_EQUALITY(err%error_code(),0)
-  end do
-    call A%FillComplete(.true.,err)
-     TEST_EQUALITY(err%error_code(),0)
-
+    ECHO(A = Epetra_CrsMatrix(FT_Epetra_DataAccess_E_Copy,map,NumIndicesPerRow,.false.))
     ECHO(CrsMatrix_ID = A%get_EpetraCrsMatrix_ID())
     ECHO(RowMatrix_ID = A%get_EpetraRowMatrix_ID())
     TEST_EQUALITY(CrsMatrix_ID%table, FT_Epetra_CrsMatrix_ID)
@@ -106,7 +68,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     type(FT_Epetra_RowMatrix_ID_t) :: RowMatrix_ID
     integer(c_int),parameter::IndexBase=1
     integer(c_int) :: NumGlobalElements = 5
-    integer(c_int) :: NumIndicesPerRow=7
+    integer(c_int) :: NumIndicesPerRow=3
     success = .TRUE.
     ECHO(comm = UnitTest_EpetraComm_Create())
     ECHO(map = Epetra_Map(NumGlobalElements,IndexBase,comm))
@@ -142,7 +104,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     integer(c_int),parameter::IndexBase=1
     integer(c_int) :: NumGlobalElements = 4
     integer(c_int),dimension(:),allocatable :: NumIndicesPerRow
-    NumIndicesPerRow=(/3,2,6,4/)
+    NumIndicesPerRow=(/3,2,1,4/)
     success = .TRUE.
     ECHO(comm = UnitTest_EpetraComm_Create())
     ECHO(map = Epetra_Map(NumGlobalElements,IndexBase,comm))
@@ -183,7 +145,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     integer(c_int),parameter::IndexBase=1
     integer(c_int) :: NumGlobalElements = 4
     integer(c_int),dimension(:),allocatable :: NumIndicesPerRow
-    NumIndicesPerRow=(/3,2,6,4/)
+    NumIndicesPerRow=(/3,2,1,4/)
     success = .TRUE.
     ECHO(comm = UnitTest_EpetraComm_Create())
     ECHO(map = Epetra_Map(NumGlobalElements,IndexBase,comm))
@@ -254,5 +216,221 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     call comm%force_finalize()
   FORTRILINOS_UNITTEST_END
 
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, ExtractGlobalRowCopy)
+  FORTRILINOS_UNITTEST_BEGIN
+ use ForTrilinos_enums
+    implicit none
+#ifdef HAVE_MPI
+    type(Epetra_MpiComm):: comm
+#else
+    type(Epetra_SerialComm):: comm
+#endif
+    type(error) :: err
+    type(Epetra_Map) :: map
+    type(Epetra_CrsMatrix) :: A
+    integer(c_int),parameter::IndexBase=1
+    integer(c_int) :: NumGlobalElements = 4 
+    integer(c_int) :: i, NumIndicesPerRow
+    integer(c_int) :: NumMyElements
+    integer(c_int), dimension(:), allocatable :: MyGlobalElements 
+    real(c_double), dimension(2)  :: scalar
+    real(c_double), dimension(2)  :: values
+    integer(c_int), dimension(2)  :: col
+    integer(c_int), dimension(2)  :: indices
+    integer(c_int) :: global_row, length, num_entries
+    NumIndicesPerRow=3
+    success = .TRUE.
+    ECHO(comm = UnitTest_EpetraComm_Create())
+    ECHO(map = Epetra_Map(NumGlobalElements,IndexBase,comm))
+    ECHO(A = Epetra_CrsMatrix(FT_Epetra_DataAccess_E_Copy,map,NumIndicesPerRow,.false.))
+    scalar(1) = -1.0
+    scalar(2) = 1.0
+    col(1)=2
+    col(2)=3
+    num_entries=2
+    NumMyElements=map%NumMyElements()
+    Allocate (MyGlobalElements(NumMyElements))
+    MyGlobalElements=map%MyGlobalElements()
+    do i=1,NumMyElements
+      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col
+,err))
+      TEST_EQUALITY(err%error_code(),0)
+    end do
+    ECHO(call A%FillComplete(.true.,err))
+    TEST_EQUALITY(err%error_code(),0)
+    global_row=4
+    length=2
+    num_entries=2
+    ECHO(call A%ExtractGlobalRowCopy(global_row,length,num_entries,values, indices,err))
+    TEST_EQUALITY(scalar(1), values(1))
+    TEST_EQUALITY(scalar(2), values(2))
+    TEST_EQUALITY(col(1), indices(1)) 
+    TEST_EQUALITY(col(2), indices(2))
+    call A%force_finalize()
+    call map%force_finalize()
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MaxNumEntries) 
+  FORTRILINOS_UNITTEST_BEGIN
+ use ForTrilinos_enums
+    implicit none
+#ifdef HAVE_MPI
+    type(Epetra_MpiComm):: comm
+#else
+    type(Epetra_SerialComm):: comm
+#endif
+    type(error) :: err
+    type(Epetra_CrsMatrix) :: A
+    type(Epetra_Map) :: map
+    integer(c_int),parameter::IndexBase=1
+    integer(c_int) :: NumGlobalElements = 4
+    integer(c_int) :: i
+    integer(c_int),dimension(:),allocatable :: NumIndicesPerRow
+    integer(c_int) :: max_entries
+    integer(c_int) :: NumMyElements
+    integer(c_int), dimension(:), allocatable :: MyGlobalElements
+    real(c_double), dimension(3)  :: scalar
+    integer(c_int), dimension(3)  :: col
+    integer(c_int) :: num_entries
+    NumIndicesPerRow=(/3,2,1,3/) 
+    success = .TRUE.
+    ECHO(comm = UnitTest_EpetraComm_Create())
+    ECHO(map = Epetra_Map(NumGlobalElements,IndexBase,comm))
+    ECHO(A = Epetra_CrsMatrix(FT_Epetra_DataAccess_E_Copy,map,NumIndicesPerRow,.false.))
+    scalar(1) = -1.0
+    scalar(2) = 1.0
+    scalar(3) = 2.0
+    col(1)=2
+    col(2)=3
+    col(3)=4
+    NumMyElements=map%NumMyElements()
+    Allocate (MyGlobalElements(NumMyElements))
+    MyGlobalElements=map%MyGlobalElements()
+    do i=1,NumMyElements
+      num_entries=NumIndicesPerRow(MyGlobalElements(i))
+      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col, err))
+      TEST_EQUALITY(err%error_code(),0)
+    end do
+    ECHO(call A%FillComplete(.true.,err))
+    TEST_EQUALITY(err%error_code(),0)
+    max_entries = A%MaxNumEntries()
+    TEST_EQUALITY(max_entries,3)
+    call A%force_finalize()
+    call map%force_finalize()
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, ReplaceGlobalValues)
+  FORTRILINOS_UNITTEST_BEGIN
+ use ForTrilinos_enums
+    implicit none
+#ifdef HAVE_MPI
+    type(Epetra_MpiComm):: comm
+#else
+    type(Epetra_SerialComm):: comm
+#endif
+    type(error) :: err
+    type(Epetra_Map) :: map
+    type(Epetra_CrsMatrix) :: A
+    integer(c_int),parameter::IndexBase=1
+    integer(c_int) :: NumGlobalElements = 4
+    integer(c_int) :: i, NumIndicesPerRow, NumMyElements
+    integer(c_int), dimension(:), allocatable :: MyGlobalElements
+    real(c_double), dimension(2)  :: scalar
+    real(c_double), dimension(2)  :: values
+    integer(c_int), dimension(2)  :: col
+    integer(c_int), dimension(2)  :: indices
+    integer(c_int) :: global_row, length, num_entries
+    NumIndicesPerRow=3
+    success = .TRUE.
+    ECHO(comm = UnitTest_EpetraComm_Create())
+    ECHO(map = Epetra_Map(NumGlobalElements,IndexBase,comm))
+    ECHO(A = Epetra_CrsMatrix(FT_Epetra_DataAccess_E_Copy,map,NumIndicesPerRow,.false.))
+    scalar(1) = -1.0
+    scalar(2) = 1.0
+    col(1)=2
+    col(2)=3
+    num_entries=2
+    NumMyElements=map%NumMyElements()
+    Allocate (MyGlobalElements(NumMyElements))
+    MyGlobalElements=map%MyGlobalElements()
+    do i=1,NumMyElements
+      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col,err))
+      TEST_EQUALITY(err%error_code(),0)
+    end do
+    scalar(1)=3.0 
+    scalar(2)=-4.0
+    col(1)=2
+    col(2)=3
+    num_entries=2.0
+    global_row=3
+    ECHO(call A%ReplaceGlobalValues(global_row,num_entries,scalar,col,err)) 
+    TEST_EQUALITY(err%error_code(),0)
+    ECHO(call A%FillComplete(.true.,err))
+    TEST_EQUALITY(err%error_code(),0)
+    length=2
+    num_entries=2
+    ECHO(call A%ExtractGlobalRowCopy(global_row,length,num_entries,values, indices,err))
+    TEST_EQUALITY(scalar(1), values(1))
+    TEST_EQUALITY(scalar(2), values(2))
+    TEST_EQUALITY(col(1), indices(1))
+    TEST_EQUALITY(col(2), indices(2))
+    call A%force_finalize()
+    call map%force_finalize()
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, PutScalar)
+  FORTRILINOS_UNITTEST_BEGIN
+ use ForTrilinos_enums
+    implicit none
+#ifdef HAVE_MPI
+    type(Epetra_MpiComm):: comm
+#else
+    type(Epetra_SerialComm):: comm
+#endif
+    type(error) :: err
+    type(Epetra_Map) :: map
+    type(Epetra_CrsMatrix) :: A
+    integer(c_int),parameter::IndexBase=1
+    integer(c_int) :: NumGlobalElements = 4
+    integer(c_int) :: i, NumIndicesPerRow, NumMyElements
+    integer(c_int), dimension(:), allocatable :: MyGlobalElements
+    real(c_double), dimension(2)  :: values, scalar
+    integer(c_int), dimension(2)  :: col, indices 
+    integer(c_int) :: global_row, length, num_entries
+    NumIndicesPerRow=2
+    success = .TRUE.
+    ECHO(comm = UnitTest_EpetraComm_Create())
+    ECHO(map = Epetra_Map(NumGlobalElements,IndexBase,comm))
+    ECHO(A = Epetra_CrsMatrix(FT_Epetra_DataAccess_E_Copy,map, NumIndicesPerRow,.false.))
+    scalar=2.0
+    col(1)=1
+    col(2)=3 
+    num_entries=2
+    NumMyElements=map%NumMyElements()
+    Allocate (MyGlobalElements(NumMyElements))
+    MyGlobalElements=map%MyGlobalElements()
+    do i=1,NumMyElements
+      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col,err))
+      TEST_EQUALITY(err%error_code(),0)
+    end do
+    ECHO(call A%PutScalar(1.0_c_double,err))
+    TEST_EQUALITY(err%error_code(),0)
+    ECHO(call A%FillComplete(.true.,err))
+    TEST_EQUALITY(err%error_code(),0)
+    global_row=4
+    length=2
+    num_entries=2
+    ECHO(call A%ExtractGlobalRowCopy(global_row,length,num_entries,values, indices,err))
+    TEST_EQUALITY(1.0_c_double, values(1))
+    TEST_EQUALITY(1.0_c_double, values(2))
+    TEST_EQUALITY(col(1), indices(1))
+    TEST_EQUALITY(col(2), indices(2))
+    call A%force_finalize()
+    call map%force_finalize()
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
 
 FORTRILINOS_UNITTEST_MODULE_END(CLASS_BEING_TESTED)
