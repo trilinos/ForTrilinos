@@ -261,11 +261,15 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     global_row=4
     length=2
     num_entries=2
-    ECHO(call A%ExtractGlobalRowCopy(global_row,length,num_entries,values, indices,err))
-    TEST_EQUALITY(scalar(1), values(1))
-    TEST_EQUALITY(scalar(2), values(2))
-    TEST_EQUALITY(col(1), indices(1)) 
-    TEST_EQUALITY(col(2), indices(2))
+    do i=1, NumMyElements
+      if (MyGlobalElements(i)==global_row) then
+        ECHO(call A%ExtractGlobalRowCopy(global_row,length,num_entries,values, indices,err))
+        TEST_EQUALITY(scalar(1), values(1))
+        TEST_EQUALITY(scalar(2), values(2))
+        TEST_EQUALITY(col(1), indices(1)) 
+        TEST_EQUALITY(col(2), indices(2))
+      end if
+    end do
     call A%force_finalize()
     call map%force_finalize()
     call comm%force_finalize()
@@ -287,7 +291,7 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     integer(c_int) :: NumGlobalElements = 4
     integer(c_int) :: i
     integer(c_int),dimension(:),allocatable :: NumIndicesPerRow
-    integer(c_int) :: max_entries
+    integer(c_int) :: max_entries, max_NumIndices
     integer(c_int) :: NumMyElements
     integer(c_int), dimension(:), allocatable :: MyGlobalElements
     real(c_double), dimension(3)  :: scalar
@@ -307,15 +311,17 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     NumMyElements=map%NumMyElements()
     Allocate (MyGlobalElements(NumMyElements))
     MyGlobalElements=map%MyGlobalElements()
+    max_NumIndices=-1
     do i=1,NumMyElements
       num_entries=NumIndicesPerRow(MyGlobalElements(i))
+      if (NumIndicesPerRow(MyGlobalElements(i)) > max_NumIndices) max_NumIndices=NumIndicesPerRow(MyGlobalElements(i))
       ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col, err))
       TEST_EQUALITY(err%error_code(),0)
     end do
     ECHO(call A%FillComplete(.true.,err))
     TEST_EQUALITY(err%error_code(),0)
     max_entries = A%MaxNumEntries()
-    TEST_EQUALITY(max_entries,3)
+    TEST_EQUALITY(max_entries,max_NumIndices)
     call A%force_finalize()
     call map%force_finalize()
     call comm%force_finalize()
@@ -335,7 +341,7 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     type(Epetra_CrsMatrix) :: A
     integer(c_int),parameter::IndexBase=1
     integer(c_int) :: NumGlobalElements = 4
-    integer(c_int) :: i, NumIndicesPerRow, NumMyElements
+    integer(c_int) :: i,j, k, NumIndicesPerRow, NumMyElements
     integer(c_int), dimension(:), allocatable :: MyGlobalElements
     real(c_double), dimension(2)  :: scalar
     real(c_double), dimension(2)  :: values
@@ -359,23 +365,37 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
       ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col,err))
       TEST_EQUALITY(err%error_code(),0)
     end do
+    ECHO(call A%FillComplete(.true.,err))
+    TEST_EQUALITY(err%error_code(),0)
     scalar(1)=3.0 
     scalar(2)=-4.0
     col(1)=2
     col(2)=3
     num_entries=2.0
     global_row=3
-    ECHO(call A%ReplaceGlobalValues(global_row,num_entries,scalar,col,err)) 
-    TEST_EQUALITY(err%error_code(),0)
+    do i=1, NumMyElements
+      if (MyGlobalElements(i)==global_row) then
+        ECHO(call A%ReplaceGlobalValues(global_row,num_entries,scalar,col,err)) 
+        TEST_EQUALITY(err%error_code(),0)
+      end if
+    end do
     ECHO(call A%FillComplete(.true.,err))
     TEST_EQUALITY(err%error_code(),0)
     length=2
     num_entries=2
-    ECHO(call A%ExtractGlobalRowCopy(global_row,length,num_entries,values, indices,err))
-    TEST_EQUALITY(scalar(1), values(1))
-    TEST_EQUALITY(scalar(2), values(2))
-    TEST_EQUALITY(col(1), indices(1))
-    TEST_EQUALITY(col(2), indices(2))
+    do i=1, NumMyElements 
+      if (MyGlobalElements(i)==global_row) then
+        ECHO(call A%ExtractGlobalRowCopy(global_row,length,num_entries,values, indices,err))
+        do j=1, 2
+          do k=1, 2
+            if (indices(k)==col(j)) then
+              TEST_EQUALITY(scalar(k), values(j))
+            end if
+          end do
+        end do
+      end if
+    end do
+
     call A%force_finalize()
     call map%force_finalize()
     call comm%force_finalize()
@@ -423,11 +443,15 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     global_row=4
     length=2
     num_entries=2
-    ECHO(call A%ExtractGlobalRowCopy(global_row,length,num_entries,values, indices,err))
-    TEST_EQUALITY(1.0_c_double, values(1))
-    TEST_EQUALITY(1.0_c_double, values(2))
-    TEST_EQUALITY(col(1), indices(1))
-    TEST_EQUALITY(col(2), indices(2))
+    do i=1, NumMyElements
+      if (MyGlobalElements(i)== global_row) then
+        ECHO(call A%ExtractGlobalRowCopy(global_row,length,num_entries,values, indices,err))
+        TEST_EQUALITY(1.0_c_double, values(1))
+        TEST_EQUALITY(1.0_c_double, values(2))
+        TEST_EQUALITY(col(1), indices(1))
+        TEST_EQUALITY(col(2), indices(2))
+      end if
+    end do
     call A%force_finalize()
     call map%force_finalize()
     call comm%force_finalize()
