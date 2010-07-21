@@ -122,7 +122,7 @@ module FEpetra_RowMatrix
       class(Epetra_RowMatrix), intent(in) :: this
       logical, intent(in) :: TransA
       class(Epetra_MultiVector), intent(in) :: x
-      class(Epetra_MultiVector), intent(in) :: y
+      class(Epetra_MultiVector), intent(inout) :: y
       type(error), optional,intent(inout) :: err
      end subroutine
     function RowMatrixRowMap_interface(this) 

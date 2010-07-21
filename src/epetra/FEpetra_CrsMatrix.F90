@@ -353,7 +353,7 @@ contains
   logical, intent(in) :: TransA
   integer(FT_boolean_t)  :: TransA_in
   class(Epetra_Vector), intent(in) :: x
-  class(Epetra_Vector), intent(in) :: y 
+  class(Epetra_Vector), intent(inout) :: y 
   type(error), optional, intent(inout) :: err
   integer(c_int)                       :: error_out
   if (TransA) then
@@ -372,7 +372,7 @@ contains
   logical, intent(in) :: TransA
   integer(FT_boolean_t)  :: TransA_in
   class(Epetra_MultiVector), intent(in) :: x
-  class(Epetra_MultiVector), intent(in) :: y 
+  class(Epetra_MultiVector), intent(inout) :: y 
   type(error), optional, intent(inout) :: err
   integer(c_int)                       :: error_out
   if (TransA) then
