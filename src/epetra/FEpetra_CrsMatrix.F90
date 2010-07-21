@@ -65,7 +65,9 @@ module FEpetra_CrsMatrix
      procedure         :: InsertGlobalValues
      procedure         :: ReplaceGlobalValues
     !Transformation methods
-     procedure         :: FillComplete
+     procedure         :: FillComplete_Op
+     procedure         :: FillComplete_Map
+     generic           :: FillComplete=>FillComplete_Op, FillComplete_Map 
      !Matrix data extraction routines
      procedure         :: ExtractGlobalRowCopy
      procedure         :: NumMyRowEntries
@@ -299,10 +301,30 @@ contains
    error_out=Epetra_CrsMatrix_ReplaceGlobalValues(this%CrsMatrix_id,GlobalRow,NumEntries,values,indices)
    if (present(err)) err=error(error_out)
   end subroutine
-
-  subroutine FillComplete(this,OptimizeDataStorage,err)
+  
+  subroutine FillComplete_Op(this,OptimizeDataStorage,err)
    use ForTrilinos_enums, only: FT_boolean_t,FT_FALSE,FT_TRUE
    class(Epetra_CrsMatrix), intent(in) :: this
+   logical,optional,        intent(in) :: OptimizeDataStorage
+   type(error),optional,intent(out)    :: err
+   integer(c_int)                      :: error_out
+   integer(FT_boolean_t)               :: OptimizeDataStorage_in
+   if (.not.present(OptimizeDataStorage)) then
+     OptimizeDataStorage_in=FT_TRUE
+   elseif (OptimizeDataStorage) then
+     OptimizeDataStorage_in=FT_TRUE
+   else
+     OptimizeDataStorage_in=FT_FALSE
+   endif
+   error_out=Epetra_CrsMatrix_FillComplete(this%CrsMatrix_id,OptimizeDataStorage_in)
+   if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine FillComplete_Map(this,DomainMap,RangeMap,OptimizeDataStorage,err)
+   use ForTrilinos_enums, only: FT_boolean_t,FT_FALSE,FT_TRUE
+   class(Epetra_CrsMatrix), intent(in) :: this
+   class(Epetra_Map) , intent(in) :: DomainMap
+   class(Epetra_Map) , intent(in) :: RangeMap
    logical,optional,        intent(in) :: OptimizeDataStorage
    type(error),optional,intent(out)    :: err
    integer(c_int)                      :: error_out 
@@ -314,7 +336,8 @@ contains
    else
      OptimizeDataStorage_in=FT_FALSE
    endif
-   error_out=Epetra_CrsMatrix_FillComplete(this%CrsMatrix_id,OptimizeDataStorage_in)
+   error_out=Epetra_CrsMatrix_FillComplete_UsingMaps (this%CrsMatrix_id,DomainMap%get_EpetraMap_ID(),&
+        RangeMap%get_EpetraMap_ID(),OptimizeDataStorage_in)
    if (present(err)) err=error(error_out)
   end subroutine
 
