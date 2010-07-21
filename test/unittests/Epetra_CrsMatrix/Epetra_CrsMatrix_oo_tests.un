@@ -1,3 +1,4 @@
+P
 #include "ForTrilinos_config.h"
 #include "runtime_macros.h"
 
@@ -706,6 +707,7 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
 !    ECHO(y=Epetra_MultiVector(vector_map, vector_size, .true.))
 !    ECHO(call A%Multiply(.true., x, y, err))
 !    TEST_EQUALITY(err%error_code(),0)
+!    deallocate(x_values)
 !    allocate(x_values(4,4))
 !    ECHO(x_values=y%ExtractCopy(4_c_int,err))
 !    TEST_EQUALITY(err%error_code(),0)
@@ -717,5 +719,5 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
 !    call map%force_finalize()
 !    call comm%force_finalize()
 !  FORTRILINOS_UNITTEST_END
-!
+
 FORTRILINOS_UNITTEST_MODULE_END(CLASS_BEING_TESTED)
