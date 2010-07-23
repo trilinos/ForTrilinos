@@ -53,7 +53,6 @@ module FEpetra_CrsMatrix
     private
     type(FT_Epetra_CrsMatrix_ID_t) :: CrsMatrix_id 
   contains
-     !Constructor
      !Developers only
      procedure         :: invalidate_id => invalidate_EpetraCrsMatrix_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraCrsMatrix
@@ -72,8 +71,6 @@ module FEpetra_CrsMatrix
      procedure         :: ExtractGlobalRowCopy
      procedure         :: NumMyRowEntries
      procedure         :: MaxNumEntries
-    !procedure         :: ExtractMyRowCopy
-    !procedure         :: ExtractDiagonalCopy
     !Computational Methods
      procedure         :: Multiply_Vector
      procedure         :: Multiply => Multiply_MultiVector
@@ -81,7 +78,6 @@ module FEpetra_CrsMatrix
      procedure         :: RowMatrixRowMap 
      procedure         :: RowMap
      procedure         :: NumGlobalEntries
-     !procedure         :: Comm
      !Local/Global ID method
      procedure         :: MyGlobalRow
   end type
@@ -441,20 +437,6 @@ contains
    integer(c_int), intent(in) :: row
    NumGlobalEntries=Epetra_CrsMatrix_NumGlobalEntries(this%CrsMatrix_id,row)
  end function
-
- !type(FT_Epetra_Comm_ID_t) function Comm(this)
- !function Comm(this)
- !  use FEpetra_Comm, only:Epetra_Comm
- !  use FEpetra_MpiComm, only:Epetra_MpiComm
- !  class(Epetra_CrsMatrix), intent(in) :: this
- !  class(Epetra_MpiComm),allocatable:: Comm  
- !  class(Epetra_MpiComm):: comm_out  
- !  class(Epetra_Comm),allocatable :: comm_temp
- !  allocate(Epetra_MpiComm:: comm_temp)  
- !  comm_temp=Epetra_CrsMatrix_Comm(this%CrsMatrix_id)
- !  comm_out=comm_temp
- !  allocate(Comm,source=comm_out)
- !end function
 
   subroutine invalidate_EpetraCrsMatrix_ID(this)
     class(Epetra_CrsMatrix) ,intent(inout) :: this
