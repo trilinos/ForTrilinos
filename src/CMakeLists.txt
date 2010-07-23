@@ -1,7 +1,7 @@
 
 IF("${CMAKE_Fortran_COMPILER_ID}" MATCHES "VisualAge|XL")
-#    SET(CMAKE_Fortran_FLAGS "${CMake_Fortran_FLAGS} -qxlf2003=polymorphic -qxlf2003=autorealloc -WF,-C!")
-    SET(CMAKE_Fortran_FLAGS "${CMake_Fortran_FLAGS} -qxlf2003=polymorphic -qxlf2003=autorealloc -qxlf90=autodealloc -WF,-C!")
+    SET(CMAKE_Fortran_FLAGS "${CMake_Fortran_FLAGS} -qxlf2003=polymorphic -qxlf2003=autorealloc -WF,-C!")
+#    SET(CMAKE_Fortran_FLAGS "${CMake_Fortran_FLAGS} -qxlf2003=polymorphic -qxlf2003=autorealloc -qxlf90=autodealloc -WF,-C!")
 ENDIF()
 
 INCLUDE(PackageLibraryMacros)
