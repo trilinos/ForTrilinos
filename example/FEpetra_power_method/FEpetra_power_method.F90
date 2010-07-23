@@ -36,7 +36,7 @@
 !*********************************************************************
 
 program main
-  ! This file is the object-oriented fortran equivalent of Epetra_power_method.cpp. In Trilinos 10.0,
+  ! This file is the object-oriented fortran equivalent of Epetra_power_method.cpp. In Trilinos 10.4,
   ! this is a snapshot of an unstable (evolving) file expected to become stable in a
   ! subsequent release.  This file exercises the derived types defined in 
   ! ForTrilinos/src/epetra/FEpetra*.F90, which wrap the interface bodies in 
@@ -44,11 +44,10 @@ program main
     
   ! This file represents the preferred style for using ForTrilinos and is recommended for 
   ! Fortran users whose compilers support the object-oriented features of Fortran 2003.
-  ! As of the Trilinos 10.0 release date, the latest versions of the IBM and Cray compilers 
+  ! As of the Trilinos 10.4 release date, the latest versions of the IBM and Cray compilers 
   ! nominally support the required features.  The Numerical Algorithms Group (NAG) and Intel 
   ! compilers support all features but one: final subroutines.  (In each case, the support is
-  ! somewhat immature and buggy.)  ForTrilinos/src/ForTrilinos_hermetic.F90 contains utilities 
-  ! that help users work around the lack of final subroutines.
+  ! somewhat immature and buggy.)  
 
 #include "ForTrilinos_config.h"
 #ifdef HAVE_MPI

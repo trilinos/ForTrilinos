@@ -65,8 +65,8 @@ module FEpetra_CrsMatrix
      procedure         :: InsertGlobalValues
      procedure         :: ReplaceGlobalValues
     !Transformation methods
-     procedure         :: FillComplete_Op
-     procedure         :: FillComplete_Map
+     procedure,private :: FillComplete_Op
+     procedure,private :: FillComplete_Map
      generic           :: FillComplete=>FillComplete_Op, FillComplete_Map 
      !Matrix data extraction routines
      procedure         :: ExtractGlobalRowCopy
@@ -336,7 +336,7 @@ contains
    else
      OptimizeDataStorage_in=FT_FALSE
    endif
-   error_out=Epetra_CrsMatrix_FillComplete_UsingMaps (this%CrsMatrix_id,DomainMap%get_EpetraMap_ID(),&
+   error_out=Epetra_CrsMatrix_FillComplete_UsingMaps(this%CrsMatrix_id,DomainMap%get_EpetraMap_ID(),&
         RangeMap%get_EpetraMap_ID(),OptimizeDataStorage_in)
    if (present(err)) err=error(error_out)
   end subroutine
