@@ -52,6 +52,7 @@ program main
   ! compilers support all features but one: final subroutines.  (In each case, the support is
   ! somewhat immature and buggy.)  
 
+  use iso_c_binding,only:c_int,c_double
   use FEpetra_SerialComm   ,only : Epetra_SerialComm
   use FEpetra_Map          ,only : Epetra_Map
   use FEpetra_Vector       ,only : Epetra_Vector

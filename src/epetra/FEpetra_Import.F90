@@ -63,12 +63,8 @@ module FEpetra_Import
      procedure        :: NumSameIDs
      procedure        :: NumPermuteIDs
      procedure        :: PermuteFromLIDs
-     !procedure        :: PermuteToLIDs
      procedure        :: NumRemoteIDs
-     !procedure       :: RemoteLIDs
      procedure        :: NumExportIDs
-     !procedure       :: ExportLIDs
-     !procedure       :: Export PIDs
      procedure        :: NumSend
      procedure        :: NumRecv
      procedure        :: SourceMap
