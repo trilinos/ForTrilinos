@@ -93,14 +93,14 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create ( int NumGlobalElements, int ElementSize, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
-  type(Epetra_BlockMap) function from_scratch(Num_GlobalElements,ElementSize,IndexBase,comm)
+  type(Epetra_BlockMap) function from_scratch(Num_GlobalElements,Element_Size,IndexBase,comm)
    !use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
     integer(c_int) ,intent(in) :: Num_GlobalElements
-    integer(c_int) ,intent(in) :: ElementSize
+    integer(c_int) ,intent(in) :: Element_Size
     integer(c_int) ,intent(in) :: IndexBase
     class(Epetra_Comm)         :: comm
     type(FT_Epetra_BlockMap_ID_t) :: from_scratch_id
-    from_scratch_id = Epetra_BlockMap_Create(Num_GlobalElements,ElementSize,IndexBase,comm%get_EpetraComm_ID())
+    from_scratch_id = Epetra_BlockMap_Create(Num_GlobalElements,Element_Size,IndexBase,comm%get_EpetraComm_ID())
     from_scratch = from_struct(from_scratch_id)
   end function
 
