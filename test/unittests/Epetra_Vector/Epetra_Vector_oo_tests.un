@@ -44,7 +44,7 @@
     ECHO(nglb = EV%GlobalLength()) 
     TEST_EQUALITY(nglb,NumElems)
     ! We have initialized to zero,
-    ! so check it's really zero
+    ! so check its really zero
     ECHO(vres = EV%Norm2())
     TEST_EQUALITY(maxval(vres),0.0d0)	
     ECHO(vres = EV%NormInf())
