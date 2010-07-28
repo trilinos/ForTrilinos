@@ -322,7 +322,6 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     call vec%force_finalize()
     call A%force_finalize()
     call map%force_finalize()
-    call row_map%force_finalize()
     call comm%force_finalize()
   FORTRILINOS_UNITTEST_END
 
