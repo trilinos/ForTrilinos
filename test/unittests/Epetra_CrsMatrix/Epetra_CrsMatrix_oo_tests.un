@@ -286,8 +286,54 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     call vec%force_finalize()
     call A%force_finalize()
     call map%force_finalize()
+    call row_map%force_finalize()
     call comm%force_finalize()
   FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, RowMatrixRowMap)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    implicit none
+#ifdef HAVE_MPI
+    type(Epetra_MpiComm):: comm
+#else
+    type(Epetra_SerialComm):: comm
+#endif
+    type(Epetra_Map) :: map,row_matrix_row_map
+    type(Epetra_CrsMatrix) :: A
+    type(FT_Epetra_Map_ID_t) :: Map_ID,RowMatrixRowMap_ID
+    type(FT_Epetra_BlockMap_ID_t) :: BlockMap_ID,BlockRowMatrixRowMap_ID
+    integer(c_int),parameter::IndexBase=1
+    integer(c_int) :: NumGlobalElements = 4
+    integer(c_int),dimension(:),allocatable :: NumIndicesPerRow
+    NumIndicesPerRow=(/3,2,1,4/)
+    success = .TRUE.
+    ECHO(comm = UnitTest_EpetraComm_Create())
+    ECHO(map = Epetra_Map(NumGlobalElements,IndexBase,comm))
+    ECHO(A = Epetra_CrsMatrix(FT_Epetra_DataAccess_E_Copy,map,NumIndicesPerRow,.false.))
+    ECHO(row_matrix_row_map=A%RowMatrixRowMap())
+    ECHO(Map_ID=map%get_EpetraMap_ID())
+    ECHO(BlockMap_ID=map%get_EpetraBlockMap_ID())
+    ECHO(RowMatrixRowMap_ID=row_matrix_row_map%get_EpetraMap_ID())
+    ECHO(BlockRowMatrixRowMap_ID=row_matrix_row_map%get_EpetraBlockMap_ID())
+    TEST_EQUALITY(Map_ID%table,FT_Epetra_Map_ID)
+    TEST_EQUALITY(Map_ID%index,0)
+    TEST_EQUALITY(Map_ID%is_const,FT_FALSE)
+    TEST_EQUALITY(BlockMap_ID%table,FT_Epetra_BlockMap_ID)
+    TEST_EQUALITY(BlockMap_ID%index,0)
+    TEST_EQUALITY(BlockMap_ID%is_const,FT_FALSE)
+    TEST_EQUALITY(RowMatrixRowMap_ID%table,FT_Epetra_Map_ID)
+    TEST_EQUALITY(RowMatrixRowMap_ID%index,0)
+    TEST_EQUALITY(RowMatrixRowMap_ID%is_const,FT_TRUE)
+    TEST_EQUALITY(BlockRowMatrixRowMap_ID%table,FT_Epetra_BlockMap_ID)
+    TEST_EQUALITY(BlockRowMatrixRowMap_ID%index,0)
+    TEST_EQUALITY(BlockRowMatrixRowMap_ID%is_const,FT_TRUE)
+    call row_matrix_row_map%force_finalize()
+    call A%force_finalize()
+    call map%force_finalize()
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
 
   FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, ExtractGlobalRowCopy)
   FORTRILINOS_UNITTEST_BEGIN
@@ -452,6 +498,57 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     call comm%force_finalize()
   FORTRILINOS_UNITTEST_END
 
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,NumGlobalEntries)
+  FORTRILINOS_UNITTEST_BEGIN
+ use ForTrilinos_enums
+    implicit none
+#ifdef HAVE_MPI
+    type(Epetra_MpiComm):: comm
+#else
+    type(Epetra_SerialComm):: comm
+#endif
+    type(error) :: err
+    type(Epetra_CrsMatrix) :: A
+    type(Epetra_Map) :: map
+    integer(c_int),parameter::IndexBase=1
+    integer(c_int) :: NumGlobalElements = 4
+    integer(c_int) :: i
+    integer(c_int),dimension(:),allocatable :: NumIndicesPerRow
+    integer(c_int) :: num_global_entries
+    integer(c_int) :: NumMyElements
+    integer(c_int), dimension(:), allocatable :: MyGlobalElements
+    real(c_double), dimension(3)  :: scalar
+    integer(c_int), dimension(3)  :: col
+    integer(c_int) :: num_entries
+    NumIndicesPerRow=(/3,2,1,3/)
+    success = .TRUE.
+    ECHO(comm = UnitTest_EpetraComm_Create())
+    ECHO(map = Epetra_Map(NumGlobalElements,IndexBase,comm))
+    ECHO(A = Epetra_CrsMatrix(FT_Epetra_DataAccess_E_Copy,map,NumIndicesPerRow,.false.))
+    scalar(1) = -1.0
+    scalar(2) = 1.0
+    scalar(3) = 2.0
+    col(1)=2
+    col(2)=3
+    col(3)=4
+    NumMyElements=map%NumMyElements()
+    Allocate (MyGlobalElements(NumMyElements))
+    MyGlobalElements=map%MyGlobalElements()
+    do i=1,NumMyElements
+      num_entries=NumIndicesPerRow(MyGlobalElements(i))
+      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col, err))
+      TEST_EQUALITY(err%error_code(),0)
+    end do
+    ECHO(call A%FillComplete(.true.,err))
+    TEST_EQUALITY(err%error_code(),0)
+    do i=1, NumMyElements
+      num_global_entries = A%NumGlobalEntries(MyGlobalElements(i))
+      TEST_EQUALITY(num_global_entries,NumIndicesPerRow(MyGlobalElements(i)))
+    end do
+    call A%force_finalize()
+    call map%force_finalize()
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
 
   FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, ReplaceGlobalValues)
   FORTRILINOS_UNITTEST_BEGIN
@@ -649,9 +746,62 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     call comm%force_finalize()
   FORTRILINOS_UNITTEST_END
  
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MyGlobalRow)
+  FORTRILINOS_UNITTEST_BEGIN
+  use ForTrilinos_enums
+    implicit none
+#ifdef HAVE_MPI
+    type(Epetra_MpiComm):: comm
+#else
+    type(Epetra_SerialComm):: comm
+#endif
+    type(error) :: err
+    type(Epetra_CrsMatrix) :: A
+    type(Epetra_Map) :: map
+    integer(c_int),parameter::IndexBase=1
+    integer(c_int) :: NumGlobalElements = 4
+    integer(c_int) :: i, is_my_gid
+    integer(c_int),dimension(:),allocatable :: NumIndicesPerRow
+    integer(c_int) :: NumMyElements
+    integer(c_int), dimension(:), allocatable :: MyGlobalElements
+    real(c_double), dimension(3)  :: scalar
+    integer(c_int), dimension(3)  :: col
+    integer(c_int) :: num_entries
+    logical        :: my_gid
+    NumIndicesPerRow=(/3,2,1,3/)
+    success = .TRUE.
+    ECHO(comm = UnitTest_EpetraComm_Create())
+    ECHO(map = Epetra_Map(NumGlobalElements,IndexBase,comm))
+    ECHO(A = Epetra_CrsMatrix(FT_Epetra_DataAccess_E_Copy,map,NumIndicesPerRow,.false.))
+    scalar(1) = 1.0
+    scalar(2) = 2.0
+    scalar(3) = 3.0
+    col(1)=2
+    col(2)=3
+    col(3)=4
+    NumMyElements=map%NumMyElements()
+    Allocate (MyGlobalElements(NumMyElements))
+    MyGlobalElements=map%MyGlobalElements()
+    do i=1,NumMyElements
+      num_entries=NumIndicesPerRow(MyGlobalElements(i))
+      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col, err))
+      TEST_EQUALITY(err%error_code(),0)
+    end do
+    ECHO(call A%FillComplete(.true.,err))
+    TEST_EQUALITY(err%error_code(),0)
+    do i=1, NumMyElements
+      ECHO(my_gid=A%MyGlobalRow(MyGlobalElements(i)))
+      if (my_gid) is_my_gid=0
+      TEST_EQUALITY(is_my_gid, 0)
+    end do
+    call A%force_finalize()
+    call map%force_finalize()
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
   FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,Multiply_MultiVector)
   FORTRILINOS_UNITTEST_BEGIN
- use ForTrilinos_enums
+  use ForTrilinos_enums
     implicit none
 #ifdef HAVE_MPI
     type(Epetra_MpiComm):: comm
@@ -695,21 +845,26 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     ECHO(call A%FillComplete(.true.,err))
     TEST_EQUALITY(err%error_code(),0)
     ECHO(vector_map = Epetra_BlockMap(Num_GlobalElements=vector_NumGlobalElements, Element_Size=1_c_int, IndexBase=IndexBase, comm=comm)) 
-    vector_size=1
+    vector_size=3
     ECHO(x=Epetra_MultiVector(vector_map, vector_size,  .true.))
-    ECHO(call x%ReplaceGlobalValue(GlobalRow=1_c_int,VectorIndex=1_c_int,ScalarValue=3.0_c_double))
-    allocate(x_values(4,4))
-    ECHO(x_values=x%ExtractCopy(4_c_int,err))
-    TEST_EQUALITY(err%error_code(),0)
-    print *,x_values
+    ECHO(call x%ReplaceGlobalValue(GlobalRow=3_c_int,VectorIndex=1_c_int,ScalarValue=3.0_c_double))
     ECHO(y=Epetra_MultiVector(vector_map, vector_size, .true.))
-    ECHO(call A%Multiply(.true., x, y, err))
+    ECHO(call A%Multiply(.false., x, y, err))
     TEST_EQUALITY(err%error_code(),0)
-    deallocate(x_values)
-    allocate(x_values(4,4))
+    allocate(x_values(4,3))
     ECHO(x_values=y%ExtractCopy(4_c_int,err))
     TEST_EQUALITY(err%error_code(),0)
-    print *, x_values
+    deallocate(MyGlobalElements)
+    NumMyElements=vector_map%NumMyElements()
+    allocate(MyGlobalElements(NumMyElements))
+    MyGlobalElements=vector_map%MyGlobalElements()
+    do i=1, NumMyElements
+      if(MyGlobalElements(i)==3) then
+         TEST_EQUALITY(x_values(i,1), 0.0_c_double)
+      else 
+         TEST_EQUALITY(x_values(i,1), 6.0_c_double)
+      end if
+    end do
     call A%force_finalize()
     call x%force_finalize()
     call y%force_finalize()
