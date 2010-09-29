@@ -75,6 +75,7 @@ module FEpetra_BlockMap
      procedure         :: DistributedGlobal
      !Array accessor functions
      !Miscellaneous
+     procedure         :: Comm
   end type
 
    interface Epetra_BlockMap ! constructors
@@ -306,6 +307,23 @@ contains
     if (DistributedGlobal_out==FT_TRUE) DistributedGlobal=.true.
   end function
 
+  subroutine Comm(this,communicator)
+    use FEpetra_MpiComm
+    use FEpetra_SerialComm
+    class(Epetra_BlockMap), intent(in) :: this
+    class(Epetra_Comm), allocatable :: communicator
+#ifdef HAVE_MPI
+    type(Epetra_MpiComm), allocatable :: local_Comm
+    allocate(Epetra_MpiComm :: local_Comm)
+    Comm = Epetra_MpiComm(Epetra_BlockMap_Comm(this%BlockMap_id) )
+    call move_alloc(local_Comm, communicator)
+#else     
+    type(Epetra_SerialComm), allocatable :: local_Comm
+    allocate(Epetra_SerialComm :: local_Comm)
+    !Comm = Epetra_SerialComm(Epetra_BlockMap_Comm(this%BlockMap_id) )
+    call move_alloc(local_Comm,communicator)
+#endif
+ end subroutine
   subroutine invalidate_EpetraBlockMap_ID(this)
     class(Epetra_BlockMap),intent(inout) :: this
     this%BlockMap_id%table = FT_Invalid_ID

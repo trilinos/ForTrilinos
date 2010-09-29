@@ -95,7 +95,7 @@ module FEpetra_MpiComm
   end type
   
  interface Epetra_MpiComm ! constructors
-   procedure from_scratch,duplicate,from_struct
+   procedure from_scratch,duplicate,from_struct,from_comm
  end interface
   
 contains
@@ -107,6 +107,13 @@ contains
    call from_struct%register_self
   end function
  
+ type(Epetra_MpiComm) function from_comm(id)
+   type(FT_Epetra_Comm_ID_t) ,intent(in) :: id
+   call from_comm%set_EpetraComm_ID(id)
+   from_comm%MpiComm_id = from_comm%alias_EpetraMpiComm_ID(from_comm%generalize_EpetraComm())
+   call from_comm%register_self
+  end function
+
   ! Original C++ prototype:
   ! Epetra_MpiComm(MPI_Comm comm);
   ! CTrilinos prototype:
