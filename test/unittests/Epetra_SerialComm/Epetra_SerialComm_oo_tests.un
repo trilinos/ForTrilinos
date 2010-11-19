@@ -219,7 +219,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ECHO(count = 6)
     ECHO(MyVals = (/4,2,3,7,-5,1/))
     ECHO(allocate(AllVals(size(MyVals))))
-    ECHO(call comm%gather_int(MyVals,AllVals,count,ierror))
+    ECHO(call comm%GatherAll(MyVals,AllVals,count,ierror))
     TEST_EQUALITY(ierror%error_code(),0)
     do i=1,count
       if (MyVals(i) /= AllVals(i)) success=.false.
@@ -261,7 +261,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ECHO(count = 6)
     ECHO(PartialSums = (/4.9,2.2,3.7,7.3,-5.7,1.8/))
     ECHO(allocate(GlobalSums(size(PartialSums))))
-    ECHO(call comm%sum_double(PartialSums,GlobalSums,count,ierror))
+    ECHO(call comm%SumAll(PartialSums,GlobalSums,count,ierror))
     TEST_EQUALITY(ierror%error_code(),0)
     do i=1,count
       if (PartialSums(i) /= GlobalSums(i)) success=.false.

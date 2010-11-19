@@ -42,10 +42,12 @@
 
 OPTIMIZE_FOR_FORTRAN   = YES
 PROJECT_NAME           = ForTrilinos
-INPUT                  = ../src
-EXAMPLE_PATH           = ../example
-FILE_PATTERNS          = for*.F90
 IMAGE_PATH             = .
+INPUT                  = . ../src
+FILE_PATTERNS          = *.F90
+RECURSIVE              = YES
+EXCLUDE                = ./html
+EXAMPLE_PATH           = ../example
 
 TAGFILES               = ../../common/tag_files/epetra.tag=../../../epetra/doc/html \
 			 ../../common/tag_files/teuchos.tag=../../../teuchos/doc/html \
@@ -55,7 +57,34 @@ TAGFILES               = ../../common/tag_files/epetra.tag=../../../epetra/doc/h
 			 ../../common/tag_files/ifpack.tag=../../../ifpack/doc/html
 GENERATE_TAGFILE       = ../../common/tag_files/fortrilinos.tag
 
-EXTRACT_ALL            = YES
+EXTRACT_ALL            = YES 
+EXTRACT_PRIVATE        = YES 
+EXTRACT_STATIC         = YES
+HIDE_UNDOC_MEMBERS     = YES
+HIDE_UNDOC_CLASSES     = YES 
+ALWAYS_DETAILED_SEC    = YES
+BRIEF_MEMBER_DESC      = YES
+REPEAT_BRIEF           = YES
+DETAILS_AT_TOP         = YES
+OPTIMIZE_OUTPUT_FOR_FORTRAN  = YES
+SOURCE_BROWSER         = YES
+SHOW_DIRECTORIES       = YES
+WARN_IF_UNDOCUMENTED   = YES
+
+ALPHABETICAL_INDEX     = NO
+
+SORT_MEMBER_DOCS       = YES
+SORT_BRIEF_DOCS        = YES
+SORT_GROUP_NAMES       = YES
+SHOW_USED_FILES        = YES
+SHOW_FILES             = YES
+
+ENUM_VALUES_PER_LINE   = 1
+SHOW_NAMESPACES        = NO
+#EXCLUDE_SYMBOLS        = Teuchos::Exceptions Teuchosstd
+
+SEARCHENGINE           = YES
+
 
 #
 # Preprocessing
