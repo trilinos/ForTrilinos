@@ -56,7 +56,6 @@ APPEND_SET(SOURCES
   ForTrilinos_utils.F90
   ${DIREPETRA}/forepetra.F90
   ${DIRTEUCHOS}/forteuchos.F90
-  ${DIRAZTECOO}/foraztecoo.F90
   )
 
 IF (${PACKAGE_NAME}_ENABLE_Amesos)
@@ -104,8 +103,7 @@ IF(${PACKAGE_NAME}_ENABLE_EXTENDED)
     )
 
   APPEND_GLOB(SOURCES ${DIREPETRA}/FEpetra*.F90
-                      ${DIRTEUCHOS}/FTeuchos*.F90
-                      ${DIRAZTECOO}/FAztecOO*.F90)
+                      ${DIRTEUCHOS}/FTeuchos*.F90)
 
   IF (${PACKAGE_NAME}_ENABLE_Amesos)
 

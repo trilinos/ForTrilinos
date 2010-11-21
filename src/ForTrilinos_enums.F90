@@ -35,9 +35,9 @@
 !                    Damian Rouson (rouson@sandia.gov)
 !*********************************************************************
 
+#include "ForTrilinos_config.h"
 module ForTrilinos_enums
 ! Can't use Fortran-style include due to C pre-processor directives in ForTrilinos_config.h
-#include "ForTrilinos_config.h"
   use iso_c_binding ,only : c_int        ! Kind parameter (precision specifier)
   implicit none                          ! Prevent implicit typing
 

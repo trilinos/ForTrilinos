@@ -34,7 +34,7 @@
 ! Questions? Contact M. Nicole Lemaster (mnlemas@sandia.gov) 
 !*********************************************************************
 
-
+#include "ForTrilinos_config.h"
 #ifdef HAVE_FORTRILINOS_AMESOS
 
 module foramesos

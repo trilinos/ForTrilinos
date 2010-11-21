@@ -35,13 +35,13 @@
 !                    Damian Rouson (rouson@sandia.gov)
 !*********************************************************************
 
+#include "ForTrilinos_config.h"
 module FEpetra_Comm
   use ForTrilinos_universal ,only : universal
   use ForTrilinos_enums !,only: FT_Epetra_Comm_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_error
   use ForTrilinos_table_man
   use forepetra
-#include "ForTrilinos_config.h"
   implicit none
   private               ! Hide everything by default
   public :: Epetra_Comm ! Expose type/methods

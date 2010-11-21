@@ -74,6 +74,7 @@ contains
      type(FT_AztecOO_ID_t) ,intent(in) :: id
      from_struct%AztecOO_id = id
      call from_struct%register_self
+   print *,'Inside AztecOO constructor'
   end function
   
   !> <BR> Original C++ prototype:
@@ -163,7 +164,7 @@ contains
     real(c_double)   ,intent(in) :: tolerance
     type(error) ,optional    ,intent(out) :: err
     integer(c_int)               :: error_out
-    error_out = AztecOO_Iterrate_Current(this%AztecOO_id,MaxIters,tolerance)
+    error_out = AztecOO_Iterate_Current(this%AztecOO_id,MaxIters,tolerance)
     if (present(err)) err=error(error_out)
   end subroutine
 
@@ -182,7 +183,7 @@ contains
     real(c_double)   ,intent(in) :: tolerance
     type(error) ,optional    ,intent(out) :: err
     integer(c_int)               :: error_out
-    error_out = AztecOO_Iterrate_Current(this%AztecOO_id,A%get_EpetraCrsMatrix_ID(),x%get_EpetraMultiVector_ID(),b%get_EpetraMultiVector_ID(),MaxIters,tolerance)
+    error_out = AztecOO_Iterate(this%AztecOO_id,A%get_EpetraRowMatrix_ID(),x%get_EpetraMultiVector_ID(),b%get_EpetraMultiVector_ID(),MaxIters,tolerance)
     if (present(err)) err=error(error_out)
   end subroutine
 

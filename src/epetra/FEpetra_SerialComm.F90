@@ -35,7 +35,7 @@
 !                    Damian Rouson (rouson@sandia.gov)
 !*********************************************************************
 
-
+#include "ForTrilinos_config.h"
 module FEpetra_SerialComm
   use ForTrilinos_enums ,only : FT_Epetra_Comm_ID,FT_Epetra_SerialComm_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
@@ -44,7 +44,6 @@ module FEpetra_SerialComm
   use FEpetra_Comm      ,only : Epetra_Comm
   use iso_c_binding     ,only : c_int,c_long,c_double,c_char
   use forepetra
-#include "ForTrilinos_config.h"
   implicit none
   private                     ! Hide everything by default
   public :: Epetra_SerialComm ! Expose type/constructors/methods

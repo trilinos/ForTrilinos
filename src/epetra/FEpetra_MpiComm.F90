@@ -35,8 +35,8 @@
 !                    Damian Rouson (rouson@sandia.gov)
 !*********************************************************************
 
-module FEpetra_MpiComm
 #include "ForTrilinos_config.h"
+module FEpetra_MpiComm
 #ifdef HAVE_MPI
   use ForTrilinos_enums ,only: FT_Epetra_MpiComm_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
