@@ -109,9 +109,10 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     type(error) :: err
     integer(c_int),parameter::IndexBase=1
     integer(c_int) :: NumGlobalElements = 8, NumMyElements, NumEntries, MaximumIter=100
-    integer(c_int),dimension(:),allocatable :: MyGlobalElements, NumNonZero,c
+    integer(c_int),dimension(:),allocatable :: MyGlobalElements, NumNonZero
+    real(c_double),dimension(:),allocatable:: c
     real(c_double) :: values(2)
-    real(c_double), parameter :: tolerance = 1.0E-2,three=3.0
+    real(c_double), parameter :: tolerance = 1.0E-4,three=3.0
     integer(c_int) :: MyGlobalElements_diagonal(1),i,indices(2)
     integer(c_int),parameter :: diagonal=1
     success = .TRUE.
@@ -153,20 +154,14 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ECHO(b=Epetra_Vector(map,.true.))
     ECHO(call x%Random())
     ECHO(call b%PutScalar(1.0_c_double))
-    allocate(c(NumMyElements))
-    c=x%ExtractCopy(err)
-    TEST_EQUALITY(err%error_code(),0) 
-    do i=1, NumMyElements
-     TEST_EQUALITY(c(i),1.0_c_double)
-    enddo 
-    deallocate(c)
     ECHO(Solver=AztecOO(A,x,b))
     ECHO(call Solver%iterate(A,x,b,MaximumIter,tolerance,err))
     TEST_EQUALITY(err%error_code(),0) 
-    allocate(c(NumMyElements))
-    c=x%ExtractCopy()
+    allocate(c(x%MyLength()))
+    ECHO(c=x%ExtractCopy(err))
+    TEST_EQUALITY(err%error_code(),0) 
     do i=1, NumMyElements
-     TEST_EQUALITY(c(i),0.2_c_double)
+     TEST_LESSEQUAL(abs((c(i)-0.2_c_double)/0.2_c_double),tolerance)
     enddo 
     call Solver%force_finalize()
     call x%force_finalize()
