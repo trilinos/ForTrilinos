@@ -70,7 +70,7 @@ module FEpetra_Export
   end type
 
    interface Epetra_Export ! constructors
-     module procedure from_scratch,duplicate,from_struct
+     module procedure create,duplicate,from_struct
    end interface
  
 contains
@@ -85,13 +85,13 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_Export_ID_t Epetra_Export_Create ( CT_Epetra_BlockMap_ID_t SourceMapID, CT_Epetra_BlockMap_ID_t TargetMapID );
 
-  type(Epetra_Export) function from_scratch(SourceMap,TargetMap)
+  type(Epetra_Export) function create(SourceMap,TargetMap)
    !use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_BlockMap_ID_t
     type(Epetra_BlockMap), intent(in) :: TargetMap
     type(Epetra_BlockMap), intent(in) :: SourceMap
-    type(FT_Epetra_Export_ID_t) :: from_scratch_id
-    from_scratch_id = Epetra_Export_Create(SourceMap%get_EpetraBlockMap_ID(),TargetMap%get_EpetraBlockMap_ID())
-    from_scratch = from_struct(from_scratch_id)
+    type(FT_Epetra_Export_ID_t) :: create_id
+    create_id = Epetra_Export_Create(SourceMap%get_EpetraBlockMap_ID(),TargetMap%get_EpetraBlockMap_ID())
+    create = from_struct(create_id)
   end function
 
   ! Original C++ prototype:
