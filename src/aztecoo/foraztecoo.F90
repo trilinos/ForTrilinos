@@ -35,6 +35,8 @@
 !*********************************************************************
 
 
+#include "ForTrilinos_config.h"
+
 #ifdef HAVE_FORTRILINOS_AZTECOO
 
 module foraztecoo
@@ -42,6 +44,9 @@ module foraztecoo
   use ForTrilinos_enums
   use ForTrilinos_enum_wrappers
   implicit none   ! Prevent implicit typing
+#ifdef HAVE_MPI
+#include "mpif.h"
+#endif
 
   ! This file provides Fortran interface blocks that bind the argument types,
   ! return value types, and procedure names to those in the C function prototypes
@@ -65,10 +70,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_ID_t AztecOO_Create_FromOperator ( CT_Epetra_Operator_ID_t AID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID );
 
-  type(FT_AztecOO_ID_t) function AztecOO_Create_FromOperator ( AID, XID, BID ) &
+  function AztecOO_Create_FromOperator ( AID, XID, BID ) result(that) &
         bind(C,name='AztecOO_Create_FromOperator')
     import :: FT_AztecOO_ID_t ,FT_Epetra_Operator_ID_t ,FT_Epetra_MultiVector_ID_t
     
+    type(FT_AztecOO_ID_t)                                         :: that
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: AID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: BID
@@ -80,10 +86,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_ID_t AztecOO_Create_FromRowMatrix ( CT_Epetra_RowMatrix_ID_t AID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID );
 
-  type(FT_AztecOO_ID_t) function AztecOO_Create_FromRowMatrix ( AID, XID, BID ) &
+  function AztecOO_Create_FromRowMatrix ( AID, XID, BID ) result(that) &
         bind(C,name='AztecOO_Create_FromRowMatrix')
     import :: FT_AztecOO_ID_t ,FT_Epetra_RowMatrix_ID_t ,FT_Epetra_MultiVector_ID_t
     
+    type(FT_AztecOO_ID_t)                                         :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: AID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: BID
@@ -95,10 +102,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_ID_t AztecOO_Create_FromLinearProblem ( CT_Epetra_LinearProblem_ID_t LinearProblemID );
 
-  type(FT_AztecOO_ID_t) function AztecOO_Create_FromLinearProblem ( LinearProblemID ) &
+  function AztecOO_Create_FromLinearProblem ( LinearProblemID ) result(that) &
         bind(C,name='AztecOO_Create_FromLinearProblem')
     import :: FT_AztecOO_ID_t ,FT_Epetra_LinearProblem_ID_t
     
+    type(FT_AztecOO_ID_t)                                         :: that
     type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: LinearProblemID
   end function
 
@@ -108,9 +116,10 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_ID_t AztecOO_Create (  );
 
-  type(FT_AztecOO_ID_t) function AztecOO_Create (  ) bind(C,name='AztecOO_Create')
+  function AztecOO_Create (  ) result(that) bind(C,name='AztecOO_Create')
     import :: FT_AztecOO_ID_t
     
+    type(FT_AztecOO_ID_t)                                         :: that
   end function
 
 
@@ -119,10 +128,10 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_ID_t AztecOO_Duplicate ( CT_AztecOO_ID_t SolverID );
 
-  type(FT_AztecOO_ID_t) function AztecOO_Duplicate ( SolverID ) &
-        bind(C,name='AztecOO_Duplicate')
+  function AztecOO_Duplicate ( SolverID ) result(that) bind(C,name='AztecOO_Duplicate')
     import :: FT_AztecOO_ID_t
     
+    type(FT_AztecOO_ID_t)                                         :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: SolverID
   end function
 
@@ -144,10 +153,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_SetProblem ( CT_AztecOO_ID_t selfID, CT_Epetra_LinearProblem_ID_t probID, boolean call_SetPrecMatrix );
 
-  integer(c_int) function AztecOO_SetProblem ( selfID, probID, call_SetPrecMatrix ) &
+  function AztecOO_SetProblem ( selfID, probID, call_SetPrecMatrix ) result(that) &
         bind(C,name='AztecOO_SetProblem')
     import :: c_int ,FT_AztecOO_ID_t ,FT_Epetra_LinearProblem_ID_t ,FT_boolean_t
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: probID
     integer(FT_boolean_t)       ,intent(in)   ,value              :: call_SetPrecMatrix
@@ -159,10 +169,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_SetUserOperator ( CT_AztecOO_ID_t selfID, CT_Epetra_Operator_ID_t UserOperatorID );
 
-  integer(c_int) function AztecOO_SetUserOperator ( selfID, UserOperatorID ) &
+  function AztecOO_SetUserOperator ( selfID, UserOperatorID ) result(that) &
         bind(C,name='AztecOO_SetUserOperator')
     import :: c_int ,FT_AztecOO_ID_t ,FT_Epetra_Operator_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: UserOperatorID
   end function
@@ -173,10 +184,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_SetUserMatrix ( CT_AztecOO_ID_t selfID, CT_Epetra_RowMatrix_ID_t UserMatrixID, boolean call_SetPrecMatrix );
 
-  integer(c_int) function AztecOO_SetUserMatrix ( selfID, UserMatrixID, call_SetPrecMatrix ) &
+  function AztecOO_SetUserMatrix ( selfID, UserMatrixID, call_SetPrecMatrix ) result(that) &
         bind(C,name='AztecOO_SetUserMatrix')
     import :: c_int ,FT_AztecOO_ID_t ,FT_Epetra_RowMatrix_ID_t ,FT_boolean_t
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: UserMatrixID
     integer(FT_boolean_t)       ,intent(in)   ,value              :: call_SetPrecMatrix
@@ -188,9 +200,10 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_SetLHS ( CT_AztecOO_ID_t selfID, CT_Epetra_MultiVector_ID_t XID );
 
-  integer(c_int) function AztecOO_SetLHS ( selfID, XID ) bind(C,name='AztecOO_SetLHS')
+  function AztecOO_SetLHS ( selfID, XID ) result(that) bind(C,name='AztecOO_SetLHS')
     import :: c_int ,FT_AztecOO_ID_t ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
   end function
@@ -201,9 +214,10 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_SetRHS ( CT_AztecOO_ID_t selfID, CT_Epetra_MultiVector_ID_t BID );
 
-  integer(c_int) function AztecOO_SetRHS ( selfID, BID ) bind(C,name='AztecOO_SetRHS')
+  function AztecOO_SetRHS ( selfID, BID ) result(that) bind(C,name='AztecOO_SetRHS')
     import :: c_int ,FT_AztecOO_ID_t ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: BID
   end function
@@ -214,10 +228,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_SetPrecMatrix ( CT_AztecOO_ID_t selfID, CT_Epetra_RowMatrix_ID_t PrecMatrixID );
 
-  integer(c_int) function AztecOO_SetPrecMatrix ( selfID, PrecMatrixID ) &
+  function AztecOO_SetPrecMatrix ( selfID, PrecMatrixID ) result(that) &
         bind(C,name='AztecOO_SetPrecMatrix')
     import :: c_int ,FT_AztecOO_ID_t ,FT_Epetra_RowMatrix_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: PrecMatrixID
   end function
@@ -228,10 +243,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_SetPrecOperator ( CT_AztecOO_ID_t selfID, CT_Epetra_Operator_ID_t PrecOperatorID );
 
-  integer(c_int) function AztecOO_SetPrecOperator ( selfID, PrecOperatorID ) &
+  function AztecOO_SetPrecOperator ( selfID, PrecOperatorID ) result(that) &
         bind(C,name='AztecOO_SetPrecOperator')
     import :: c_int ,FT_AztecOO_ID_t ,FT_Epetra_Operator_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: PrecOperatorID
   end function
@@ -242,10 +258,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_ConstructPreconditioner ( CT_AztecOO_ID_t selfID, double * condest );
 
-  integer(c_int) function AztecOO_ConstructPreconditioner ( selfID, condest ) &
+  function AztecOO_ConstructPreconditioner ( selfID, condest ) result(that) &
         bind(C,name='AztecOO_ConstructPreconditioner')
     import :: c_int ,FT_AztecOO_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     real(c_double)              ,intent(inout)                    :: condest
   end function
@@ -256,10 +273,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_DestroyPreconditioner ( CT_AztecOO_ID_t selfID );
 
-  integer(c_int) function AztecOO_DestroyPreconditioner ( selfID ) &
+  function AztecOO_DestroyPreconditioner ( selfID ) result(that) &
         bind(C,name='AztecOO_DestroyPreconditioner')
     import :: c_int ,FT_AztecOO_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -269,9 +287,10 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! double AztecOO_Condest ( CT_AztecOO_ID_t selfID );
 
-  real(c_double) function AztecOO_Condest ( selfID ) bind(C,name='AztecOO_Condest')
+  function AztecOO_Condest ( selfID ) result(that) bind(C,name='AztecOO_Condest')
     import :: c_double ,FT_AztecOO_ID_t
     
+    real(c_double)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -281,9 +300,10 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_CheckInput ( CT_AztecOO_ID_t selfID );
 
-  integer(c_int) function AztecOO_CheckInput ( selfID ) bind(C,name='AztecOO_CheckInput')
+  function AztecOO_CheckInput ( selfID ) result(that) bind(C,name='AztecOO_CheckInput')
     import :: c_int ,FT_AztecOO_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -293,10 +313,10 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_LinearProblem_ID_t AztecOO_GetProblem ( CT_AztecOO_ID_t selfID );
 
-  type(FT_Epetra_LinearProblem_ID_t) function AztecOO_GetProblem ( selfID ) &
-        bind(C,name='AztecOO_GetProblem')
+  function AztecOO_GetProblem ( selfID ) result(that) bind(C,name='AztecOO_GetProblem')
     import :: FT_Epetra_LinearProblem_ID_t ,FT_AztecOO_ID_t
     
+    type(FT_Epetra_LinearProblem_ID_t)                                  :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -306,10 +326,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Operator_ID_t AztecOO_GetUserOperator ( CT_AztecOO_ID_t selfID );
 
-  type(FT_Epetra_Operator_ID_t) function AztecOO_GetUserOperator ( selfID ) &
+  function AztecOO_GetUserOperator ( selfID ) result(that) &
         bind(C,name='AztecOO_GetUserOperator')
     import :: FT_Epetra_Operator_ID_t ,FT_AztecOO_ID_t
     
+    type(FT_Epetra_Operator_ID_t)                                  :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -319,10 +340,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_RowMatrix_ID_t AztecOO_GetUserMatrix ( CT_AztecOO_ID_t selfID );
 
-  type(FT_Epetra_RowMatrix_ID_t) function AztecOO_GetUserMatrix ( selfID ) &
+  function AztecOO_GetUserMatrix ( selfID ) result(that) &
         bind(C,name='AztecOO_GetUserMatrix')
     import :: FT_Epetra_RowMatrix_ID_t ,FT_AztecOO_ID_t
     
+    type(FT_Epetra_RowMatrix_ID_t)                                  :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -332,10 +354,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Operator_ID_t AztecOO_GetPrecOperator ( CT_AztecOO_ID_t selfID );
 
-  type(FT_Epetra_Operator_ID_t) function AztecOO_GetPrecOperator ( selfID ) &
+  function AztecOO_GetPrecOperator ( selfID ) result(that) &
         bind(C,name='AztecOO_GetPrecOperator')
     import :: FT_Epetra_Operator_ID_t ,FT_AztecOO_ID_t
     
+    type(FT_Epetra_Operator_ID_t)                                  :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -345,10 +368,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_RowMatrix_ID_t AztecOO_GetPrecMatrix ( CT_AztecOO_ID_t selfID );
 
-  type(FT_Epetra_RowMatrix_ID_t) function AztecOO_GetPrecMatrix ( selfID ) &
+  function AztecOO_GetPrecMatrix ( selfID ) result(that) &
         bind(C,name='AztecOO_GetPrecMatrix')
     import :: FT_Epetra_RowMatrix_ID_t ,FT_AztecOO_ID_t
     
+    type(FT_Epetra_RowMatrix_ID_t)                                  :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -358,10 +382,10 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_MultiVector_ID_t AztecOO_GetLHS ( CT_AztecOO_ID_t selfID );
 
-  type(FT_Epetra_MultiVector_ID_t) function AztecOO_GetLHS ( selfID ) &
-        bind(C,name='AztecOO_GetLHS')
+  function AztecOO_GetLHS ( selfID ) result(that) bind(C,name='AztecOO_GetLHS')
     import :: FT_Epetra_MultiVector_ID_t ,FT_AztecOO_ID_t
     
+    type(FT_Epetra_MultiVector_ID_t)                                  :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -371,10 +395,10 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_MultiVector_ID_t AztecOO_GetRHS ( CT_AztecOO_ID_t selfID );
 
-  type(FT_Epetra_MultiVector_ID_t) function AztecOO_GetRHS ( selfID ) &
-        bind(C,name='AztecOO_GetRHS')
+  function AztecOO_GetRHS ( selfID ) result(that) bind(C,name='AztecOO_GetRHS')
     import :: FT_Epetra_MultiVector_ID_t ,FT_AztecOO_ID_t
     
+    type(FT_Epetra_MultiVector_ID_t)                                  :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -398,10 +422,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_SetParameters ( CT_AztecOO_ID_t selfID, CT_Teuchos_ParameterList_ID_t parameterlistID, boolean cerr_warning_if_unused );
 
-  integer(c_int) function AztecOO_SetParameters ( selfID, parameterlistID, &
-        cerr_warning_if_unused ) bind(C,name='AztecOO_SetParameters')
+  function AztecOO_SetParameters ( selfID, parameterlistID, cerr_warning_if_unused ) &
+        result(that) bind(C,name='AztecOO_SetParameters')
     import :: c_int ,FT_AztecOO_ID_t ,FT_Teuchos_ParameterList_ID_t ,FT_boolean_t
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: parameterlistID
     integer(FT_boolean_t)       ,intent(in)   ,value              :: cerr_warning_if_unused
@@ -413,10 +438,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_SetAztecDefaults ( CT_AztecOO_ID_t selfID );
 
-  integer(c_int) function AztecOO_SetAztecDefaults ( selfID ) &
+  function AztecOO_SetAztecDefaults ( selfID ) result(that) &
         bind(C,name='AztecOO_SetAztecDefaults')
     import :: c_int ,FT_AztecOO_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -426,10 +452,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_SetAztecOption ( CT_AztecOO_ID_t selfID, int option, int value );
 
-  integer(c_int) function AztecOO_SetAztecOption ( selfID, option, value ) &
+  function AztecOO_SetAztecOption ( selfID, option, value ) result(that) &
         bind(C,name='AztecOO_SetAztecOption')
     import :: c_int ,FT_AztecOO_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: option
     integer(c_int)              ,intent(in)   ,value              :: value
@@ -441,10 +468,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_GetAztecOption ( CT_AztecOO_ID_t selfID, int option );
 
-  integer(c_int) function AztecOO_GetAztecOption ( selfID, option ) &
+  function AztecOO_GetAztecOption ( selfID, option ) result(that) &
         bind(C,name='AztecOO_GetAztecOption')
     import :: c_int ,FT_AztecOO_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: option
   end function
@@ -455,10 +483,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_SetAztecParam ( CT_AztecOO_ID_t selfID, int param, double value );
 
-  integer(c_int) function AztecOO_SetAztecParam ( selfID, param, value ) &
+  function AztecOO_SetAztecParam ( selfID, param, value ) result(that) &
         bind(C,name='AztecOO_SetAztecParam')
     import :: c_int ,FT_AztecOO_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: param
     real(c_double)              ,intent(in)   ,value              :: value
@@ -470,10 +499,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! const int * AztecOO_GetAllAztecOptions ( CT_AztecOO_ID_t selfID );
 
-  type(c_ptr) function AztecOO_GetAllAztecOptions ( selfID ) &
+  function AztecOO_GetAllAztecOptions ( selfID ) result(that) &
         bind(C,name='AztecOO_GetAllAztecOptions')
     import :: c_ptr ,FT_AztecOO_ID_t
     
+    type(c_ptr)                                                   :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -483,10 +513,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! const double * AztecOO_GetAllAztecParams ( CT_AztecOO_ID_t selfID );
 
-  type(c_ptr) function AztecOO_GetAllAztecParams ( selfID ) &
+  function AztecOO_GetAllAztecParams ( selfID ) result(that) &
         bind(C,name='AztecOO_GetAllAztecParams')
     import :: c_ptr ,FT_AztecOO_ID_t
     
+    type(c_ptr)                                                   :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -496,10 +527,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_SetAllAztecOptions ( CT_AztecOO_ID_t selfID, const int * options );
 
-  integer(c_int) function AztecOO_SetAllAztecOptions ( selfID, options ) &
+  function AztecOO_SetAllAztecOptions ( selfID, options ) result(that) &
         bind(C,name='AztecOO_SetAllAztecOptions')
     import :: c_int ,FT_AztecOO_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)         ,dimension(*) :: options
   end function
@@ -510,10 +542,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_SetAllAztecParams ( CT_AztecOO_ID_t selfID, const double * params );
 
-  integer(c_int) function AztecOO_SetAllAztecParams ( selfID, params ) &
+  function AztecOO_SetAllAztecParams ( selfID, params ) result(that) &
         bind(C,name='AztecOO_SetAllAztecParams')
     import :: c_int ,FT_AztecOO_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     real(c_double)              ,intent(in)         ,dimension(*) :: params
   end function
@@ -524,10 +557,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_Iterate_Current ( CT_AztecOO_ID_t selfID, int MaxIters, double Tolerance );
 
-  integer(c_int) function AztecOO_Iterate_Current ( selfID, MaxIters, Tolerance ) &
+  function AztecOO_Iterate_Current ( selfID, MaxIters, Tolerance ) result(that) &
         bind(C,name='AztecOO_Iterate_Current')
     import :: c_int ,FT_AztecOO_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: MaxIters
     real(c_double)              ,intent(in)   ,value              :: Tolerance
@@ -539,11 +573,12 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_Iterate ( CT_AztecOO_ID_t selfID, CT_Epetra_RowMatrix_ID_t AID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID, int MaxIters, double Tolerance );
 
-  integer(c_int) function AztecOO_Iterate ( selfID, AID, XID, BID, MaxIters, Tolerance ) &
+  function AztecOO_Iterate ( selfID, AID, XID, BID, MaxIters, Tolerance ) result(that) &
         bind(C,name='AztecOO_Iterate')
     import :: c_int ,FT_AztecOO_ID_t ,FT_Epetra_RowMatrix_ID_t ,FT_Epetra_MultiVector_ID_t , &
           c_double
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: AID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
@@ -558,10 +593,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_recursiveIterate ( CT_AztecOO_ID_t selfID, int MaxIters, double Tolerance );
 
-  integer(c_int) function AztecOO_recursiveIterate ( selfID, MaxIters, Tolerance ) &
+  function AztecOO_recursiveIterate ( selfID, MaxIters, Tolerance ) result(that) &
         bind(C,name='AztecOO_recursiveIterate')
     import :: c_int ,FT_AztecOO_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: MaxIters
     real(c_double)              ,intent(in)   ,value              :: Tolerance
@@ -573,10 +609,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! const double * AztecOO_GetAztecStatus ( CT_AztecOO_ID_t selfID );
 
-  type(c_ptr) function AztecOO_GetAztecStatus ( selfID ) &
+  function AztecOO_GetAztecStatus ( selfID ) result(that) &
         bind(C,name='AztecOO_GetAztecStatus')
     import :: c_ptr ,FT_AztecOO_ID_t
     
+    type(c_ptr)                                                   :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -586,10 +623,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_SetUseAdaptiveDefaultsTrue ( CT_AztecOO_ID_t selfID );
 
-  integer(c_int) function AztecOO_SetUseAdaptiveDefaultsTrue ( selfID ) &
+  function AztecOO_SetUseAdaptiveDefaultsTrue ( selfID ) result(that) &
         bind(C,name='AztecOO_SetUseAdaptiveDefaultsTrue')
     import :: c_int ,FT_AztecOO_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -599,11 +637,12 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_SetAdaptiveParams ( CT_AztecOO_ID_t selfID, int NumTrials, double * athresholds, double * rthresholds, double condestThreshold, double maxFill, int maxKspace );
 
-  integer(c_int) function AztecOO_SetAdaptiveParams ( selfID, NumTrials, athresholds, &
-        rthresholds, condestThreshold, maxFill, maxKspace ) &
+  function AztecOO_SetAdaptiveParams ( selfID, NumTrials, athresholds, rthresholds, &
+        condestThreshold, maxFill, maxKspace ) result(that) &
         bind(C,name='AztecOO_SetAdaptiveParams')
     import :: c_int ,FT_AztecOO_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: NumTrials
     real(c_double)                                  ,dimension(*) :: athresholds
@@ -619,10 +658,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_AdaptiveIterate ( CT_AztecOO_ID_t selfID, int MaxIters, int MaxSolveAttempts, double Tolerance );
 
-  integer(c_int) function AztecOO_AdaptiveIterate ( selfID, MaxIters, MaxSolveAttempts, &
-        Tolerance ) bind(C,name='AztecOO_AdaptiveIterate')
+  function AztecOO_AdaptiveIterate ( selfID, MaxIters, MaxSolveAttempts, Tolerance ) &
+        result(that) bind(C,name='AztecOO_AdaptiveIterate')
     import :: c_int ,FT_AztecOO_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: MaxIters
     integer(c_int)              ,intent(in)   ,value              :: MaxSolveAttempts
@@ -635,9 +675,10 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_NumIters ( CT_AztecOO_ID_t selfID );
 
-  integer(c_int) function AztecOO_NumIters ( selfID ) bind(C,name='AztecOO_NumIters')
+  function AztecOO_NumIters ( selfID ) result(that) bind(C,name='AztecOO_NumIters')
     import :: c_int ,FT_AztecOO_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -647,10 +688,10 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! double AztecOO_TrueResidual ( CT_AztecOO_ID_t selfID );
 
-  real(c_double) function AztecOO_TrueResidual ( selfID ) &
-        bind(C,name='AztecOO_TrueResidual')
+  function AztecOO_TrueResidual ( selfID ) result(that) bind(C,name='AztecOO_TrueResidual')
     import :: c_double ,FT_AztecOO_ID_t
     
+    real(c_double)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -660,10 +701,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! double AztecOO_ScaledResidual ( CT_AztecOO_ID_t selfID );
 
-  real(c_double) function AztecOO_ScaledResidual ( selfID ) &
+  function AztecOO_ScaledResidual ( selfID ) result(that) &
         bind(C,name='AztecOO_ScaledResidual')
     import :: c_double ,FT_AztecOO_ID_t
     
+    real(c_double)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -673,10 +715,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! double AztecOO_RecursiveResidual ( CT_AztecOO_ID_t selfID );
 
-  real(c_double) function AztecOO_RecursiveResidual ( selfID ) &
+  function AztecOO_RecursiveResidual ( selfID ) result(that) &
         bind(C,name='AztecOO_RecursiveResidual')
     import :: c_double ,FT_AztecOO_ID_t
     
+    real(c_double)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -686,9 +729,10 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! double AztecOO_SolveTime ( CT_AztecOO_ID_t selfID );
 
-  real(c_double) function AztecOO_SolveTime ( selfID ) bind(C,name='AztecOO_SolveTime')
+  function AztecOO_SolveTime ( selfID ) result(that) bind(C,name='AztecOO_SolveTime')
     import :: c_double ,FT_AztecOO_ID_t
     
+    real(c_double)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
   end function
 
@@ -698,10 +742,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_GetAllAztecStatus ( CT_AztecOO_ID_t selfID, double * status );
 
-  integer(c_int) function AztecOO_GetAllAztecStatus ( selfID, status ) &
+  function AztecOO_GetAllAztecStatus ( selfID, status ) result(that) &
         bind(C,name='AztecOO_GetAllAztecStatus')
     import :: c_int ,FT_AztecOO_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_AztecOO_ID_t)       ,intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: status
   end function
@@ -719,10 +764,11 @@ module foraztecoo
   !> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusTest_ID_t AztecOO_StatusTest_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_AztecOO_StatusTest_ID_t) function AztecOO_StatusTest_Degeneralize ( id ) &
+  function AztecOO_StatusTest_Degeneralize ( id ) result(that) &
         bind(C,name='AztecOO_StatusTest_Degeneralize')
     import :: FT_AztecOO_StatusTest_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_AztecOO_StatusTest_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -730,10 +776,11 @@ module foraztecoo
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t AztecOO_StatusTest_Generalize ( CT_AztecOO_StatusTest_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function AztecOO_StatusTest_Generalize ( id ) &
+  function AztecOO_StatusTest_Generalize ( id ) result(that) &
         bind(C,name='AztecOO_StatusTest_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_AztecOO_StatusTest_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_AztecOO_StatusTest_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -756,10 +803,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! boolean AztecOO_StatusTest_ResidualVectorRequired ( CT_AztecOO_StatusTest_ID_t selfID );
 
-  integer(FT_boolean_t) function AztecOO_StatusTest_ResidualVectorRequired ( selfID ) &
+  function AztecOO_StatusTest_ResidualVectorRequired ( selfID ) result(that) &
         bind(C,name='AztecOO_StatusTest_ResidualVectorRequired')
     import :: FT_boolean_t ,FT_AztecOO_StatusTest_ID_t
     
+    integer(FT_boolean_t)                                             :: that
     type(FT_AztecOO_StatusTest_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -769,12 +817,13 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusType_E_t AztecOO_StatusTest_CheckStatus ( CT_AztecOO_StatusTest_ID_t selfID, int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, boolean SolutionUpdated );
 
-  integer(FT_AztecOO_StatusType_E_t) function AztecOO_StatusTest_CheckStatus ( selfID, &
-        CurrentIter, CurrentResVectorID, CurrentResNormEst, SolutionUpdated ) &
+  function AztecOO_StatusTest_CheckStatus ( selfID, CurrentIter, CurrentResVectorID, &
+        CurrentResNormEst, SolutionUpdated ) result(that) &
         bind(C,name='AztecOO_StatusTest_CheckStatus')
     import :: FT_AztecOO_StatusType_E_t ,FT_AztecOO_StatusTest_ID_t ,c_int , &
           FT_Epetra_MultiVector_ID_t ,c_double ,FT_boolean_t
     
+    integer(FT_AztecOO_StatusType_E_t)                                  :: that
     type(FT_AztecOO_StatusTest_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: CurrentIter
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: CurrentResVectorID
@@ -788,10 +837,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusType_E_t AztecOO_StatusTest_GetStatus ( CT_AztecOO_StatusTest_ID_t selfID );
 
-  integer(FT_AztecOO_StatusType_E_t) function AztecOO_StatusTest_GetStatus ( selfID ) &
+  function AztecOO_StatusTest_GetStatus ( selfID ) result(that) &
         bind(C,name='AztecOO_StatusTest_GetStatus')
     import :: FT_AztecOO_StatusType_E_t ,FT_AztecOO_StatusTest_ID_t
     
+    integer(FT_AztecOO_StatusType_E_t)                                  :: that
     type(FT_AztecOO_StatusTest_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -808,10 +858,11 @@ module foraztecoo
   !> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusTestCombo_ID_t AztecOO_StatusTestCombo_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_AztecOO_StatusTestCombo_ID_t) function AztecOO_StatusTestCombo_Degeneralize ( id ) &
+  function AztecOO_StatusTestCombo_Degeneralize ( id ) result(that) &
         bind(C,name='AztecOO_StatusTestCombo_Degeneralize')
     import :: FT_AztecOO_StatusTestCombo_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_AztecOO_StatusTestCombo_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t)     ,intent(in)   ,value              :: id
   end function
 
@@ -819,10 +870,11 @@ module foraztecoo
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t AztecOO_StatusTestCombo_Generalize ( CT_AztecOO_StatusTestCombo_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function AztecOO_StatusTestCombo_Generalize ( id ) &
+  function AztecOO_StatusTestCombo_Generalize ( id ) result(that) &
         bind(C,name='AztecOO_StatusTestCombo_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_AztecOO_StatusTestCombo_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                       :: that
     type(FT_AztecOO_StatusTestCombo_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -832,10 +884,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusTestCombo_ID_t AztecOO_StatusTestCombo_Create ( CT_ComboType_E_t t );
 
-  type(FT_AztecOO_StatusTestCombo_ID_t) function AztecOO_StatusTestCombo_Create ( t ) &
+  function AztecOO_StatusTestCombo_Create ( t ) result(that) &
         bind(C,name='AztecOO_StatusTestCombo_Create')
     import :: FT_AztecOO_StatusTestCombo_ID_t ,FT_ComboType_E_t
     
+    type(FT_AztecOO_StatusTestCombo_ID_t)                                  :: that
     integer(FT_ComboType_E_t)            ,intent(in)   ,value              :: t
   end function
 
@@ -845,11 +898,12 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusTestCombo_ID_t AztecOO_StatusTestCombo_Create_OneTest ( CT_ComboType_E_t t, CT_AztecOO_StatusTest_ID_t aID );
 
-  type(FT_AztecOO_StatusTestCombo_ID_t) function AztecOO_StatusTestCombo_Create_OneTest ( t, &
-        aID ) bind(C,name='AztecOO_StatusTestCombo_Create_OneTest')
+  function AztecOO_StatusTestCombo_Create_OneTest ( t, aID ) result(that) &
+        bind(C,name='AztecOO_StatusTestCombo_Create_OneTest')
     import :: FT_AztecOO_StatusTestCombo_ID_t ,FT_ComboType_E_t , &
           FT_AztecOO_StatusTest_ID_t
     
+    type(FT_AztecOO_StatusTestCombo_ID_t)                                  :: that
     integer(FT_ComboType_E_t)            ,intent(in)   ,value              :: t
     type(FT_AztecOO_StatusTest_ID_t)     ,intent(in)   ,value              :: aID
   end function
@@ -860,11 +914,12 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusTestCombo_ID_t AztecOO_StatusTestCombo_Create_TwoTests ( CT_ComboType_E_t t, CT_AztecOO_StatusTest_ID_t aID, CT_AztecOO_StatusTest_ID_t bID );
 
-  type(FT_AztecOO_StatusTestCombo_ID_t) function AztecOO_StatusTestCombo_Create_TwoTests ( &
-        t, aID, bID ) bind(C,name='AztecOO_StatusTestCombo_Create_TwoTests')
+  function AztecOO_StatusTestCombo_Create_TwoTests ( t, aID, bID ) result(that) &
+        bind(C,name='AztecOO_StatusTestCombo_Create_TwoTests')
     import :: FT_AztecOO_StatusTestCombo_ID_t ,FT_ComboType_E_t , &
           FT_AztecOO_StatusTest_ID_t
     
+    type(FT_AztecOO_StatusTestCombo_ID_t)                                  :: that
     integer(FT_ComboType_E_t)            ,intent(in)   ,value              :: t
     type(FT_AztecOO_StatusTest_ID_t)     ,intent(in)   ,value              :: aID
     type(FT_AztecOO_StatusTest_ID_t)     ,intent(in)   ,value              :: bID
@@ -876,10 +931,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusTestCombo_ID_t AztecOO_StatusTestCombo_AddStatusTest ( CT_AztecOO_StatusTestCombo_ID_t selfID, CT_AztecOO_StatusTest_ID_t aID );
 
-  type(FT_AztecOO_StatusTestCombo_ID_t) function AztecOO_StatusTestCombo_AddStatusTest ( &
-        selfID, aID ) bind(C,name='AztecOO_StatusTestCombo_AddStatusTest')
+  function AztecOO_StatusTestCombo_AddStatusTest ( selfID, aID ) result(that) &
+        bind(C,name='AztecOO_StatusTestCombo_AddStatusTest')
     import :: FT_AztecOO_StatusTestCombo_ID_t ,FT_AztecOO_StatusTest_ID_t
     
+    type(FT_AztecOO_StatusTestCombo_ID_t)                                  :: that
     type(FT_AztecOO_StatusTestCombo_ID_t),intent(in)   ,value              :: selfID
     type(FT_AztecOO_StatusTest_ID_t)     ,intent(in)   ,value              :: aID
   end function
@@ -903,10 +959,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! boolean AztecOO_StatusTestCombo_ResidualVectorRequired ( CT_AztecOO_StatusTestCombo_ID_t selfID );
 
-  integer(FT_boolean_t) function AztecOO_StatusTestCombo_ResidualVectorRequired ( selfID ) &
+  function AztecOO_StatusTestCombo_ResidualVectorRequired ( selfID ) result(that) &
         bind(C,name='AztecOO_StatusTestCombo_ResidualVectorRequired')
     import :: FT_boolean_t ,FT_AztecOO_StatusTestCombo_ID_t
     
+    integer(FT_boolean_t)                                                  :: that
     type(FT_AztecOO_StatusTestCombo_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -916,12 +973,13 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusType_E_t AztecOO_StatusTestCombo_CheckStatus ( CT_AztecOO_StatusTestCombo_ID_t selfID, int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, boolean SolutionUpdated );
 
-  integer(FT_AztecOO_StatusType_E_t) function AztecOO_StatusTestCombo_CheckStatus ( selfID, &
-        CurrentIter, CurrentResVectorID, CurrentResNormEst, SolutionUpdated ) &
+  function AztecOO_StatusTestCombo_CheckStatus ( selfID, CurrentIter, CurrentResVectorID, &
+        CurrentResNormEst, SolutionUpdated ) result(that) &
         bind(C,name='AztecOO_StatusTestCombo_CheckStatus')
     import :: FT_AztecOO_StatusType_E_t ,FT_AztecOO_StatusTestCombo_ID_t ,c_int , &
           FT_Epetra_MultiVector_ID_t ,c_double ,FT_boolean_t
     
+    integer(FT_AztecOO_StatusType_E_t)                                     :: that
     type(FT_AztecOO_StatusTestCombo_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                       ,intent(in)   ,value              :: CurrentIter
     type(FT_Epetra_MultiVector_ID_t)     ,intent(in)   ,value              :: CurrentResVectorID
@@ -935,10 +993,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusType_E_t AztecOO_StatusTestCombo_GetStatus ( CT_AztecOO_StatusTestCombo_ID_t selfID );
 
-  integer(FT_AztecOO_StatusType_E_t) function AztecOO_StatusTestCombo_GetStatus ( selfID ) &
+  function AztecOO_StatusTestCombo_GetStatus ( selfID ) result(that) &
         bind(C,name='AztecOO_StatusTestCombo_GetStatus')
     import :: FT_AztecOO_StatusType_E_t ,FT_AztecOO_StatusTestCombo_ID_t
     
+    integer(FT_AztecOO_StatusType_E_t)                                     :: that
     type(FT_AztecOO_StatusTestCombo_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -948,10 +1007,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_ComboType_E_t AztecOO_StatusTestCombo_GetComboType ( CT_AztecOO_StatusTestCombo_ID_t selfID );
 
-  integer(FT_ComboType_E_t) function AztecOO_StatusTestCombo_GetComboType ( selfID ) &
+  function AztecOO_StatusTestCombo_GetComboType ( selfID ) result(that) &
         bind(C,name='AztecOO_StatusTestCombo_GetComboType')
     import :: FT_ComboType_E_t ,FT_AztecOO_StatusTestCombo_ID_t
     
+    integer(FT_ComboType_E_t)                                              :: that
     type(FT_AztecOO_StatusTestCombo_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -968,10 +1028,11 @@ module foraztecoo
   !> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusTestMaxIters_ID_t AztecOO_StatusTestMaxIters_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_AztecOO_StatusTestMaxIters_ID_t) function AztecOO_StatusTestMaxIters_Degeneralize ( &
-        id ) bind(C,name='AztecOO_StatusTestMaxIters_Degeneralize')
+  function AztecOO_StatusTestMaxIters_Degeneralize ( id ) result(that) &
+        bind(C,name='AztecOO_StatusTestMaxIters_Degeneralize')
     import :: FT_AztecOO_StatusTestMaxIters_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_AztecOO_StatusTestMaxIters_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t)        ,intent(in)   ,value              :: id
   end function
 
@@ -979,10 +1040,11 @@ module foraztecoo
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t AztecOO_StatusTestMaxIters_Generalize ( CT_AztecOO_StatusTestMaxIters_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function AztecOO_StatusTestMaxIters_Generalize ( id ) &
+  function AztecOO_StatusTestMaxIters_Generalize ( id ) result(that) &
         bind(C,name='AztecOO_StatusTestMaxIters_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_AztecOO_StatusTestMaxIters_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                          :: that
     type(FT_AztecOO_StatusTestMaxIters_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -992,10 +1054,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusTestMaxIters_ID_t AztecOO_StatusTestMaxIters_Create ( int MaxIters );
 
-  type(FT_AztecOO_StatusTestMaxIters_ID_t) function AztecOO_StatusTestMaxIters_Create ( &
-        MaxIters ) bind(C,name='AztecOO_StatusTestMaxIters_Create')
+  function AztecOO_StatusTestMaxIters_Create ( MaxIters ) result(that) &
+        bind(C,name='AztecOO_StatusTestMaxIters_Create')
     import :: FT_AztecOO_StatusTestMaxIters_ID_t ,c_int
     
+    type(FT_AztecOO_StatusTestMaxIters_ID_t)                                  :: that
     integer(c_int)                          ,intent(in)   ,value              :: MaxIters
   end function
 
@@ -1018,10 +1081,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! boolean AztecOO_StatusTestMaxIters_ResidualVectorRequired ( CT_AztecOO_StatusTestMaxIters_ID_t selfID );
 
-  integer(FT_boolean_t) function AztecOO_StatusTestMaxIters_ResidualVectorRequired ( selfID ) &
+  function AztecOO_StatusTestMaxIters_ResidualVectorRequired ( selfID ) result(that) &
         bind(C,name='AztecOO_StatusTestMaxIters_ResidualVectorRequired')
     import :: FT_boolean_t ,FT_AztecOO_StatusTestMaxIters_ID_t
     
+    integer(FT_boolean_t)                                                     :: that
     type(FT_AztecOO_StatusTestMaxIters_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1031,12 +1095,13 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusType_E_t AztecOO_StatusTestMaxIters_CheckStatus ( CT_AztecOO_StatusTestMaxIters_ID_t selfID, int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, boolean SolutionUpdated );
 
-  integer(FT_AztecOO_StatusType_E_t) function AztecOO_StatusTestMaxIters_CheckStatus ( &
-        selfID, CurrentIter, CurrentResVectorID, CurrentResNormEst, SolutionUpdated ) &
+  function AztecOO_StatusTestMaxIters_CheckStatus ( selfID, CurrentIter, CurrentResVectorID, &
+        CurrentResNormEst, SolutionUpdated ) result(that) &
         bind(C,name='AztecOO_StatusTestMaxIters_CheckStatus')
     import :: FT_AztecOO_StatusType_E_t ,FT_AztecOO_StatusTestMaxIters_ID_t ,c_int , &
           FT_Epetra_MultiVector_ID_t ,c_double ,FT_boolean_t
     
+    integer(FT_AztecOO_StatusType_E_t)                                        :: that
     type(FT_AztecOO_StatusTestMaxIters_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                          ,intent(in)   ,value              :: CurrentIter
     type(FT_Epetra_MultiVector_ID_t)        ,intent(in)   ,value              :: CurrentResVectorID
@@ -1050,10 +1115,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusType_E_t AztecOO_StatusTestMaxIters_GetStatus ( CT_AztecOO_StatusTestMaxIters_ID_t selfID );
 
-  integer(FT_AztecOO_StatusType_E_t) function AztecOO_StatusTestMaxIters_GetStatus ( selfID ) &
+  function AztecOO_StatusTestMaxIters_GetStatus ( selfID ) result(that) &
         bind(C,name='AztecOO_StatusTestMaxIters_GetStatus')
     import :: FT_AztecOO_StatusType_E_t ,FT_AztecOO_StatusTestMaxIters_ID_t
     
+    integer(FT_AztecOO_StatusType_E_t)                                        :: that
     type(FT_AztecOO_StatusTestMaxIters_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1063,10 +1129,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_StatusTestMaxIters_GetMaxIters ( CT_AztecOO_StatusTestMaxIters_ID_t selfID );
 
-  integer(c_int) function AztecOO_StatusTestMaxIters_GetMaxIters ( selfID ) &
+  function AztecOO_StatusTestMaxIters_GetMaxIters ( selfID ) result(that) &
         bind(C,name='AztecOO_StatusTestMaxIters_GetMaxIters')
     import :: c_int ,FT_AztecOO_StatusTestMaxIters_ID_t
     
+    integer(c_int)                                                            :: that
     type(FT_AztecOO_StatusTestMaxIters_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1076,10 +1143,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_StatusTestMaxIters_GetNumIters ( CT_AztecOO_StatusTestMaxIters_ID_t selfID );
 
-  integer(c_int) function AztecOO_StatusTestMaxIters_GetNumIters ( selfID ) &
+  function AztecOO_StatusTestMaxIters_GetNumIters ( selfID ) result(that) &
         bind(C,name='AztecOO_StatusTestMaxIters_GetNumIters')
     import :: c_int ,FT_AztecOO_StatusTestMaxIters_ID_t
     
+    integer(c_int)                                                            :: that
     type(FT_AztecOO_StatusTestMaxIters_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1096,10 +1164,11 @@ module foraztecoo
   !> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusTestResNorm_ID_t AztecOO_StatusTestResNorm_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_AztecOO_StatusTestResNorm_ID_t) function AztecOO_StatusTestResNorm_Degeneralize ( &
-        id ) bind(C,name='AztecOO_StatusTestResNorm_Degeneralize')
+  function AztecOO_StatusTestResNorm_Degeneralize ( id ) result(that) &
+        bind(C,name='AztecOO_StatusTestResNorm_Degeneralize')
     import :: FT_AztecOO_StatusTestResNorm_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_AztecOO_StatusTestResNorm_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t)       ,intent(in)   ,value              :: id
   end function
 
@@ -1107,10 +1176,11 @@ module foraztecoo
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t AztecOO_StatusTestResNorm_Generalize ( CT_AztecOO_StatusTestResNorm_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function AztecOO_StatusTestResNorm_Generalize ( id ) &
+  function AztecOO_StatusTestResNorm_Generalize ( id ) result(that) &
         bind(C,name='AztecOO_StatusTestResNorm_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_AztecOO_StatusTestResNorm_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                         :: that
     type(FT_AztecOO_StatusTestResNorm_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -1120,12 +1190,12 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusTestResNorm_ID_t AztecOO_StatusTestResNorm_Create ( CT_Epetra_Operator_ID_t OperatorID, CT_Epetra_Vector_ID_t LHSID, CT_Epetra_Vector_ID_t RHSID, double Tolerance );
 
-  type(FT_AztecOO_StatusTestResNorm_ID_t) function AztecOO_StatusTestResNorm_Create ( &
-        OperatorID, LHSID, RHSID, Tolerance ) &
-        bind(C,name='AztecOO_StatusTestResNorm_Create')
+  function AztecOO_StatusTestResNorm_Create ( OperatorID, LHSID, RHSID, Tolerance ) &
+        result(that) bind(C,name='AztecOO_StatusTestResNorm_Create')
     import :: FT_AztecOO_StatusTestResNorm_ID_t ,FT_Epetra_Operator_ID_t , &
           FT_Epetra_Vector_ID_t ,c_double
     
+    type(FT_AztecOO_StatusTestResNorm_ID_t)                                  :: that
     type(FT_Epetra_Operator_ID_t)          ,intent(in)   ,value              :: OperatorID
     type(FT_Epetra_Vector_ID_t)            ,intent(in)   ,value              :: LHSID
     type(FT_Epetra_Vector_ID_t)            ,intent(in)   ,value              :: RHSID
@@ -1151,11 +1221,12 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_StatusTestResNorm_DefineResForm ( CT_AztecOO_StatusTestResNorm_ID_t selfID, CT_ResType_E_t TypeOfResidual, CT_NormType_E_t TypeOfNorm, CT_Epetra_Vector_ID_t WeightsID );
 
-  integer(c_int) function AztecOO_StatusTestResNorm_DefineResForm ( selfID, TypeOfResidual, &
-        TypeOfNorm, WeightsID ) bind(C,name='AztecOO_StatusTestResNorm_DefineResForm')
+  function AztecOO_StatusTestResNorm_DefineResForm ( selfID, TypeOfResidual, TypeOfNorm, &
+        WeightsID ) result(that) bind(C,name='AztecOO_StatusTestResNorm_DefineResForm')
     import :: c_int ,FT_AztecOO_StatusTestResNorm_ID_t ,FT_ResType_E_t ,FT_NormType_E_t , &
           FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                           :: that
     type(FT_AztecOO_StatusTestResNorm_ID_t),intent(in)   ,value              :: selfID
     integer(FT_ResType_E_t)                ,intent(in)   ,value              :: TypeOfResidual
     integer(FT_NormType_E_t)               ,intent(in)   ,value              :: TypeOfNorm
@@ -1168,12 +1239,13 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_StatusTestResNorm_DefineScaleForm ( CT_AztecOO_StatusTestResNorm_ID_t selfID, CT_ScaleType_E_t TypeOfScaling, CT_NormType_E_t TypeOfNorm, CT_Epetra_Vector_ID_t WeightsID, double ScaleValue );
 
-  integer(c_int) function AztecOO_StatusTestResNorm_DefineScaleForm ( selfID, TypeOfScaling, &
-        TypeOfNorm, WeightsID, ScaleValue ) &
+  function AztecOO_StatusTestResNorm_DefineScaleForm ( selfID, TypeOfScaling, TypeOfNorm, &
+        WeightsID, ScaleValue ) result(that) &
         bind(C,name='AztecOO_StatusTestResNorm_DefineScaleForm')
     import :: c_int ,FT_AztecOO_StatusTestResNorm_ID_t ,FT_ScaleType_E_t ,FT_NormType_E_t , &
           FT_Epetra_Vector_ID_t ,c_double
     
+    integer(c_int)                                                           :: that
     type(FT_AztecOO_StatusTestResNorm_ID_t),intent(in)   ,value              :: selfID
     integer(FT_ScaleType_E_t)              ,intent(in)   ,value              :: TypeOfScaling
     integer(FT_NormType_E_t)               ,intent(in)   ,value              :: TypeOfNorm
@@ -1187,10 +1259,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_StatusTestResNorm_ResetTolerance ( CT_AztecOO_StatusTestResNorm_ID_t selfID, double Tolerance );
 
-  integer(c_int) function AztecOO_StatusTestResNorm_ResetTolerance ( selfID, Tolerance ) &
+  function AztecOO_StatusTestResNorm_ResetTolerance ( selfID, Tolerance ) result(that) &
         bind(C,name='AztecOO_StatusTestResNorm_ResetTolerance')
     import :: c_int ,FT_AztecOO_StatusTestResNorm_ID_t ,c_double
     
+    integer(c_int)                                                           :: that
     type(FT_AztecOO_StatusTestResNorm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                         ,intent(in)   ,value              :: Tolerance
   end function
@@ -1201,11 +1274,12 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_StatusTestResNorm_SetMaxNumExtraIterations ( CT_AztecOO_StatusTestResNorm_ID_t selfID, int maxNumExtraIterations );
 
-  integer(c_int) function AztecOO_StatusTestResNorm_SetMaxNumExtraIterations ( selfID, &
-        maxNumExtraIterations ) &
+  function AztecOO_StatusTestResNorm_SetMaxNumExtraIterations ( selfID, &
+        maxNumExtraIterations ) result(that) &
         bind(C,name='AztecOO_StatusTestResNorm_SetMaxNumExtraIterations')
     import :: c_int ,FT_AztecOO_StatusTestResNorm_ID_t
     
+    integer(c_int)                                                           :: that
     type(FT_AztecOO_StatusTestResNorm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                         ,intent(in)   ,value              :: maxNumExtraIterations
   end function
@@ -1216,10 +1290,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_StatusTestResNorm_GetMaxNumExtraIterations ( CT_AztecOO_StatusTestResNorm_ID_t selfID );
 
-  integer(c_int) function AztecOO_StatusTestResNorm_GetMaxNumExtraIterations ( selfID ) &
+  function AztecOO_StatusTestResNorm_GetMaxNumExtraIterations ( selfID ) result(that) &
         bind(C,name='AztecOO_StatusTestResNorm_GetMaxNumExtraIterations')
     import :: c_int ,FT_AztecOO_StatusTestResNorm_ID_t
     
+    integer(c_int)                                                           :: that
     type(FT_AztecOO_StatusTestResNorm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1229,10 +1304,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! boolean AztecOO_StatusTestResNorm_ResidualVectorRequired ( CT_AztecOO_StatusTestResNorm_ID_t selfID );
 
-  integer(FT_boolean_t) function AztecOO_StatusTestResNorm_ResidualVectorRequired ( selfID ) &
+  function AztecOO_StatusTestResNorm_ResidualVectorRequired ( selfID ) result(that) &
         bind(C,name='AztecOO_StatusTestResNorm_ResidualVectorRequired')
     import :: FT_boolean_t ,FT_AztecOO_StatusTestResNorm_ID_t
     
+    integer(FT_boolean_t)                                                    :: that
     type(FT_AztecOO_StatusTestResNorm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1242,12 +1318,13 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusType_E_t AztecOO_StatusTestResNorm_CheckStatus ( CT_AztecOO_StatusTestResNorm_ID_t selfID, int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, boolean SolutionUpdated );
 
-  integer(FT_AztecOO_StatusType_E_t) function AztecOO_StatusTestResNorm_CheckStatus ( &
-        selfID, CurrentIter, CurrentResVectorID, CurrentResNormEst, SolutionUpdated ) &
+  function AztecOO_StatusTestResNorm_CheckStatus ( selfID, CurrentIter, CurrentResVectorID, &
+        CurrentResNormEst, SolutionUpdated ) result(that) &
         bind(C,name='AztecOO_StatusTestResNorm_CheckStatus')
     import :: FT_AztecOO_StatusType_E_t ,FT_AztecOO_StatusTestResNorm_ID_t ,c_int , &
           FT_Epetra_MultiVector_ID_t ,c_double ,FT_boolean_t
     
+    integer(FT_AztecOO_StatusType_E_t)                                       :: that
     type(FT_AztecOO_StatusTestResNorm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                         ,intent(in)   ,value              :: CurrentIter
     type(FT_Epetra_MultiVector_ID_t)       ,intent(in)   ,value              :: CurrentResVectorID
@@ -1261,10 +1338,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusType_E_t AztecOO_StatusTestResNorm_GetStatus ( CT_AztecOO_StatusTestResNorm_ID_t selfID );
 
-  integer(FT_AztecOO_StatusType_E_t) function AztecOO_StatusTestResNorm_GetStatus ( selfID ) &
+  function AztecOO_StatusTestResNorm_GetStatus ( selfID ) result(that) &
         bind(C,name='AztecOO_StatusTestResNorm_GetStatus')
     import :: FT_AztecOO_StatusType_E_t ,FT_AztecOO_StatusTestResNorm_ID_t
     
+    integer(FT_AztecOO_StatusType_E_t)                                       :: that
     type(FT_AztecOO_StatusTestResNorm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1287,10 +1365,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! double AztecOO_StatusTestResNorm_GetTolerance ( CT_AztecOO_StatusTestResNorm_ID_t selfID );
 
-  real(c_double) function AztecOO_StatusTestResNorm_GetTolerance ( selfID ) &
+  function AztecOO_StatusTestResNorm_GetTolerance ( selfID ) result(that) &
         bind(C,name='AztecOO_StatusTestResNorm_GetTolerance')
     import :: c_double ,FT_AztecOO_StatusTestResNorm_ID_t
     
+    real(c_double)                                                           :: that
     type(FT_AztecOO_StatusTestResNorm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1300,10 +1379,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! double AztecOO_StatusTestResNorm_GetTestValue ( CT_AztecOO_StatusTestResNorm_ID_t selfID );
 
-  real(c_double) function AztecOO_StatusTestResNorm_GetTestValue ( selfID ) &
+  function AztecOO_StatusTestResNorm_GetTestValue ( selfID ) result(that) &
         bind(C,name='AztecOO_StatusTestResNorm_GetTestValue')
     import :: c_double ,FT_AztecOO_StatusTestResNorm_ID_t
     
+    real(c_double)                                                           :: that
     type(FT_AztecOO_StatusTestResNorm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1313,10 +1393,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! double AztecOO_StatusTestResNorm_GetResNormValue ( CT_AztecOO_StatusTestResNorm_ID_t selfID );
 
-  real(c_double) function AztecOO_StatusTestResNorm_GetResNormValue ( selfID ) &
+  function AztecOO_StatusTestResNorm_GetResNormValue ( selfID ) result(that) &
         bind(C,name='AztecOO_StatusTestResNorm_GetResNormValue')
     import :: c_double ,FT_AztecOO_StatusTestResNorm_ID_t
     
+    real(c_double)                                                           :: that
     type(FT_AztecOO_StatusTestResNorm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1326,10 +1407,11 @@ module foraztecoo
   !> <BR> <BR> CTrilinos prototype:
   !! double AztecOO_StatusTestResNorm_GetScaledNormValue ( CT_AztecOO_StatusTestResNorm_ID_t selfID );
 
-  real(c_double) function AztecOO_StatusTestResNorm_GetScaledNormValue ( selfID ) &
+  function AztecOO_StatusTestResNorm_GetScaledNormValue ( selfID ) result(that) &
         bind(C,name='AztecOO_StatusTestResNorm_GetScaledNormValue')
     import :: c_double ,FT_AztecOO_StatusTestResNorm_ID_t
     
+    real(c_double)                                                           :: that
     type(FT_AztecOO_StatusTestResNorm_ID_t),intent(in)   ,value              :: selfID
   end function
 

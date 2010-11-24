@@ -115,7 +115,7 @@ module ForTrilinos_enum_wrappers
       FT_EOptType_E_OPT_ENUM_INT                                      
   end enum
 
-#ifdef HAVE_CTRILINOS_AZTECOO
+#ifdef HAVE_FORTRILINOS_AZTECOO
   ! AztecOO_StatusType
   integer(kind(c_int)) ,parameter :: FT_AztecOO_StatusType_E_t = c_int
 
@@ -128,9 +128,9 @@ module ForTrilinos_enum_wrappers
       FT_AztecOO_StatusType_E_NaN = -2,                               &
       FT_AztecOO_StatusType_E_PartialFailed = -3                      
   end enum
-#endif /* HAVE_CTRILINOS_AZTECOO */
+#endif /* HAVE_FORTRILINOS_AZTECOO */
 
-#ifdef HAVE_CTRILINOS_AZTECOO
+#ifdef HAVE_FORTRILINOS_AZTECOO
   ! AztecOO_StatusTestCombo::ComboType
   integer(kind(c_int)) ,parameter :: FT_ComboType_E_t = c_int
 
@@ -140,9 +140,9 @@ module ForTrilinos_enum_wrappers
       FT_ComboType_E_OR,                                              &
       FT_ComboType_E_SEQ                                              
   end enum
-#endif /* HAVE_CTRILINOS_AZTECOO */
+#endif /* HAVE_FORTRILINOS_AZTECOO */
 
-#ifdef HAVE_CTRILINOS_AZTECOO
+#ifdef HAVE_FORTRILINOS_AZTECOO
   ! AztecOO_StatusTestResNorm::ResType
   integer(kind(c_int)) ,parameter :: FT_ResType_E_t = c_int
 
@@ -151,9 +151,9 @@ module ForTrilinos_enum_wrappers
       FT_ResType_E_Implicit,                                          &
       FT_ResType_E_Explicit                                           
   end enum
-#endif /* HAVE_CTRILINOS_AZTECOO */
+#endif /* HAVE_FORTRILINOS_AZTECOO */
 
-#ifdef HAVE_CTRILINOS_AZTECOO
+#ifdef HAVE_FORTRILINOS_AZTECOO
   ! AztecOO_StatusTestResNorm::NormType
   integer(kind(c_int)) ,parameter :: FT_NormType_E_t = c_int
 
@@ -163,9 +163,9 @@ module ForTrilinos_enum_wrappers
       FT_NormType_E_TwoNorm,                                          &
       FT_NormType_E_InfNorm                                           
   end enum
-#endif /* HAVE_CTRILINOS_AZTECOO */
+#endif /* HAVE_FORTRILINOS_AZTECOO */
 
-#ifdef HAVE_CTRILINOS_AZTECOO
+#ifdef HAVE_FORTRILINOS_AZTECOO
   ! AztecOO_StatusTestResNorm::ScaleType
   integer(kind(c_int)) ,parameter :: FT_ScaleType_E_t = c_int
 
@@ -176,9 +176,9 @@ module ForTrilinos_enum_wrappers
       FT_ScaleType_E_None,                                            &
       FT_ScaleType_E_UserProvided                                     
   end enum
-#endif /* HAVE_CTRILINOS_AZTECOO */
+#endif /* HAVE_FORTRILINOS_AZTECOO */
 
-#ifdef HAVE_CTRILINOS_IFPACK
+#ifdef HAVE_FORTRILINOS_IFPACK
   ! Ifpack::EPrecType
   integer(kind(c_int)) ,parameter :: FT_EPrecType_E_t = c_int
 
@@ -206,6 +206,6 @@ module ForTrilinos_enum_wrappers
       FT_EPrecType_E_HYPRE,                                           &
       FT_EPrecType_E_CHEBYSHEV                                        
   end enum
-#endif /* HAVE_CTRILINOS_IFPACK */
+#endif /* HAVE_FORTRILINOS_IFPACK */
 
 end module ForTrilinos_enum_wrappers
