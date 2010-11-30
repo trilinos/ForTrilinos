@@ -105,7 +105,8 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     TEST_EQUALITY(map%NumGlobalElements(),map2%NumGlobalElements())
     TEST_EQUALITY(map%IndexBase(),map2%IndexBase())	
     TEST_EQUIV(map%SameAs(map2),.TRUE.)	
-
+ 
+    call map2%force_finalize()
     call map%force_finalize()
     call comm%force_finalize()
   FORTRILINOS_UNITTEST_END
