@@ -34,6 +34,7 @@
 ! Questions? Contact M. Nicole Lemaster (mnlemas@sandia.gov) 
 !*********************************************************************
 
+
 #include "ForTrilinos_config.h"
 #ifdef HAVE_FORTRILINOS_AMESOS
 
@@ -42,6 +43,9 @@ module foramesos
   use ForTrilinos_enums
   use ForTrilinos_enum_wrappers
   implicit none   ! Prevent implicit typing
+#ifdef HAVE_MPI
+#include "mpif.h"
+#endif
 
   ! This file provides Fortran interface blocks that bind the argument types,
   ! return value types, and procedure names to those in the C function prototypes
@@ -63,10 +67,11 @@ module foramesos
   !> <BR> CTrilinos prototype:
   !! CT_Amesos_BaseSolver_ID_t Amesos_BaseSolver_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Amesos_BaseSolver_ID_t) function Amesos_BaseSolver_Degeneralize ( id ) &
+  function Amesos_BaseSolver_Degeneralize ( id ) result(that) &
         bind(C,name='Amesos_BaseSolver_Degeneralize')
     import :: FT_Amesos_BaseSolver_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Amesos_BaseSolver_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -74,10 +79,11 @@ module foramesos
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Amesos_BaseSolver_Generalize ( CT_Amesos_BaseSolver_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Amesos_BaseSolver_Generalize ( id ) &
+  function Amesos_BaseSolver_Generalize ( id ) result(that) &
         bind(C,name='Amesos_BaseSolver_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Amesos_BaseSolver_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -99,10 +105,11 @@ module foramesos
   !> <BR> <BR> CTrilinos prototype:
   !! int Amesos_BaseSolver_SymbolicFactorization ( CT_Amesos_BaseSolver_ID_t selfID );
 
-  integer(c_int) function Amesos_BaseSolver_SymbolicFactorization ( selfID ) &
+  function Amesos_BaseSolver_SymbolicFactorization ( selfID ) result(that) &
         bind(C,name='Amesos_BaseSolver_SymbolicFactorization')
     import :: c_int ,FT_Amesos_BaseSolver_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -112,10 +119,11 @@ module foramesos
   !> <BR> <BR> CTrilinos prototype:
   !! int Amesos_BaseSolver_NumericFactorization ( CT_Amesos_BaseSolver_ID_t selfID );
 
-  integer(c_int) function Amesos_BaseSolver_NumericFactorization ( selfID ) &
+  function Amesos_BaseSolver_NumericFactorization ( selfID ) result(that) &
         bind(C,name='Amesos_BaseSolver_NumericFactorization')
     import :: c_int ,FT_Amesos_BaseSolver_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -125,10 +133,11 @@ module foramesos
   !> <BR> <BR> CTrilinos prototype:
   !! int Amesos_BaseSolver_Solve ( CT_Amesos_BaseSolver_ID_t selfID );
 
-  integer(c_int) function Amesos_BaseSolver_Solve ( selfID ) &
+  function Amesos_BaseSolver_Solve ( selfID ) result(that) &
         bind(C,name='Amesos_BaseSolver_Solve')
     import :: c_int ,FT_Amesos_BaseSolver_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -138,10 +147,11 @@ module foramesos
   !> <BR> <BR> CTrilinos prototype:
   !! int Amesos_BaseSolver_SetUseTranspose ( CT_Amesos_BaseSolver_ID_t selfID, boolean UseTranspose );
 
-  integer(c_int) function Amesos_BaseSolver_SetUseTranspose ( selfID, UseTranspose ) &
+  function Amesos_BaseSolver_SetUseTranspose ( selfID, UseTranspose ) result(that) &
         bind(C,name='Amesos_BaseSolver_SetUseTranspose')
     import :: c_int ,FT_Amesos_BaseSolver_ID_t ,FT_boolean_t
     
+    integer(c_int)                                                   :: that
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
     integer(FT_boolean_t)          ,intent(in)   ,value              :: UseTranspose
   end function
@@ -152,10 +162,11 @@ module foramesos
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Amesos_BaseSolver_UseTranspose ( CT_Amesos_BaseSolver_ID_t selfID );
 
-  integer(FT_boolean_t) function Amesos_BaseSolver_UseTranspose ( selfID ) &
+  function Amesos_BaseSolver_UseTranspose ( selfID ) result(that) &
         bind(C,name='Amesos_BaseSolver_UseTranspose')
     import :: FT_boolean_t ,FT_Amesos_BaseSolver_ID_t
     
+    integer(FT_boolean_t)                                            :: that
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -165,10 +176,11 @@ module foramesos
   !> <BR> <BR> CTrilinos prototype:
   !! int Amesos_BaseSolver_SetParameters ( CT_Amesos_BaseSolver_ID_t selfID, CT_Teuchos_ParameterList_ID_t ParameterListID );
 
-  integer(c_int) function Amesos_BaseSolver_SetParameters ( selfID, ParameterListID ) &
+  function Amesos_BaseSolver_SetParameters ( selfID, ParameterListID ) result(that) &
         bind(C,name='Amesos_BaseSolver_SetParameters')
     import :: c_int ,FT_Amesos_BaseSolver_ID_t ,FT_Teuchos_ParameterList_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: ParameterListID
   end function
@@ -179,10 +191,11 @@ module foramesos
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_LinearProblem_ID_t Amesos_BaseSolver_GetProblem ( CT_Amesos_BaseSolver_ID_t selfID );
 
-  type(FT_Epetra_LinearProblem_ID_t) function Amesos_BaseSolver_GetProblem ( selfID ) &
+  function Amesos_BaseSolver_GetProblem ( selfID ) result(that) &
         bind(C,name='Amesos_BaseSolver_GetProblem')
     import :: FT_Epetra_LinearProblem_ID_t ,FT_Amesos_BaseSolver_ID_t
     
+    type(FT_Epetra_LinearProblem_ID_t)                                  :: that
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -192,10 +205,11 @@ module foramesos
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Amesos_BaseSolver_MatrixShapeOK ( CT_Amesos_BaseSolver_ID_t selfID );
 
-  integer(FT_boolean_t) function Amesos_BaseSolver_MatrixShapeOK ( selfID ) &
+  function Amesos_BaseSolver_MatrixShapeOK ( selfID ) result(that) &
         bind(C,name='Amesos_BaseSolver_MatrixShapeOK')
     import :: FT_boolean_t ,FT_Amesos_BaseSolver_ID_t
     
+    integer(FT_boolean_t)                                            :: that
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -205,10 +219,11 @@ module foramesos
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Comm_ID_t Amesos_BaseSolver_Comm ( CT_Amesos_BaseSolver_ID_t selfID );
 
-  type(FT_Epetra_Comm_ID_t) function Amesos_BaseSolver_Comm ( selfID ) &
+  function Amesos_BaseSolver_Comm ( selfID ) result(that) &
         bind(C,name='Amesos_BaseSolver_Comm')
     import :: FT_Epetra_Comm_ID_t ,FT_Amesos_BaseSolver_ID_t
     
+    type(FT_Epetra_Comm_ID_t)                                        :: that
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -218,10 +233,11 @@ module foramesos
   !> <BR> <BR> CTrilinos prototype:
   !! int Amesos_BaseSolver_NumSymbolicFact ( CT_Amesos_BaseSolver_ID_t selfID );
 
-  integer(c_int) function Amesos_BaseSolver_NumSymbolicFact ( selfID ) &
+  function Amesos_BaseSolver_NumSymbolicFact ( selfID ) result(that) &
         bind(C,name='Amesos_BaseSolver_NumSymbolicFact')
     import :: c_int ,FT_Amesos_BaseSolver_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -231,10 +247,11 @@ module foramesos
   !> <BR> <BR> CTrilinos prototype:
   !! int Amesos_BaseSolver_NumNumericFact ( CT_Amesos_BaseSolver_ID_t selfID );
 
-  integer(c_int) function Amesos_BaseSolver_NumNumericFact ( selfID ) &
+  function Amesos_BaseSolver_NumNumericFact ( selfID ) result(that) &
         bind(C,name='Amesos_BaseSolver_NumNumericFact')
     import :: c_int ,FT_Amesos_BaseSolver_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -244,10 +261,11 @@ module foramesos
   !> <BR> <BR> CTrilinos prototype:
   !! int Amesos_BaseSolver_NumSolve ( CT_Amesos_BaseSolver_ID_t selfID );
 
-  integer(c_int) function Amesos_BaseSolver_NumSolve ( selfID ) &
+  function Amesos_BaseSolver_NumSolve ( selfID ) result(that) &
         bind(C,name='Amesos_BaseSolver_NumSolve')
     import :: c_int ,FT_Amesos_BaseSolver_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -297,10 +315,11 @@ module foramesos
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Teuchos_ParameterList_ID_t Amesos_BaseSolver_getNonconstParameterList ( CT_Amesos_BaseSolver_ID_t selfID );
 
-  type(FT_Teuchos_ParameterList_ID_t) function Amesos_BaseSolver_getNonconstParameterList ( &
-        selfID ) bind(C,name='Amesos_BaseSolver_getNonconstParameterList')
+  function Amesos_BaseSolver_getNonconstParameterList ( selfID ) result(that) &
+        bind(C,name='Amesos_BaseSolver_getNonconstParameterList')
     import :: FT_Teuchos_ParameterList_ID_t ,FT_Amesos_BaseSolver_ID_t
     
+    type(FT_Teuchos_ParameterList_ID_t)                                  :: that
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -310,10 +329,11 @@ module foramesos
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Teuchos_ParameterList_ID_t Amesos_BaseSolver_unsetParameterList ( CT_Amesos_BaseSolver_ID_t selfID );
 
-  type(FT_Teuchos_ParameterList_ID_t) function Amesos_BaseSolver_unsetParameterList ( &
-        selfID ) bind(C,name='Amesos_BaseSolver_unsetParameterList')
+  function Amesos_BaseSolver_unsetParameterList ( selfID ) result(that) &
+        bind(C,name='Amesos_BaseSolver_unsetParameterList')
     import :: FT_Teuchos_ParameterList_ID_t ,FT_Amesos_BaseSolver_ID_t
     
+    type(FT_Teuchos_ParameterList_ID_t)                                  :: that
     type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -346,9 +366,10 @@ module foramesos
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Amesos_ID_t Amesos_Create (  );
 
-  type(FT_Amesos_ID_t) function Amesos_Create (  ) bind(C,name='Amesos_Create')
+  function Amesos_Create (  ) result(that) bind(C,name='Amesos_Create')
     import :: FT_Amesos_ID_t
     
+    type(FT_Amesos_ID_t)                                          :: that
   end function
 
 
@@ -369,11 +390,12 @@ module foramesos
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Amesos_BaseSolver_ID_t Amesos_CreateSolver ( CT_Amesos_ID_t selfID, const char * ClassType, CT_Epetra_LinearProblem_ID_t LinearProblemID );
 
-  type(FT_Amesos_BaseSolver_ID_t) function Amesos_CreateSolver ( selfID, ClassType, &
-        LinearProblemID ) bind(C,name='Amesos_CreateSolver')
+  function Amesos_CreateSolver ( selfID, ClassType, LinearProblemID ) result(that) &
+        bind(C,name='Amesos_CreateSolver')
     import :: FT_Amesos_BaseSolver_ID_t ,FT_Amesos_ID_t ,c_char , &
           FT_Epetra_LinearProblem_ID_t
     
+    type(FT_Amesos_BaseSolver_ID_t)                                  :: that
     type(FT_Amesos_ID_t)        ,intent(in)   ,value              :: selfID
     character(kind=c_char)      ,intent(in)         ,dimension(*) :: ClassType
     type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: LinearProblemID
@@ -385,10 +407,10 @@ module foramesos
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Amesos_Query ( CT_Amesos_ID_t selfID, const char * ClassType );
 
-  integer(FT_boolean_t) function Amesos_Query ( selfID, ClassType ) &
-        bind(C,name='Amesos_Query')
+  function Amesos_Query ( selfID, ClassType ) result(that) bind(C,name='Amesos_Query')
     import :: FT_boolean_t ,FT_Amesos_ID_t ,c_char
     
+    integer(FT_boolean_t)                                         :: that
     type(FT_Amesos_ID_t)        ,intent(in)   ,value              :: selfID
     character(kind=c_char)      ,intent(in)         ,dimension(*) :: ClassType
   end function
@@ -399,10 +421,11 @@ module foramesos
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Teuchos_ParameterList_ID_t Amesos_GetValidParameters (  );
 
-  type(FT_Teuchos_ParameterList_ID_t) function Amesos_GetValidParameters (  ) &
+  function Amesos_GetValidParameters (  ) result(that) &
         bind(C,name='Amesos_GetValidParameters')
     import :: FT_Teuchos_ParameterList_ID_t
     
+    type(FT_Teuchos_ParameterList_ID_t)                                  :: that
   end function
 
 

@@ -64,10 +64,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_Distributor_ID_t Epetra_Distributor_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Distributor_ID_t) function Epetra_Distributor_Degeneralize ( id ) &
+  function Epetra_Distributor_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_Distributor_Degeneralize')
     import :: FT_Epetra_Distributor_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_Distributor_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -75,10 +76,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_Distributor_Generalize ( CT_Epetra_Distributor_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_Distributor_Generalize ( id ) &
+  function Epetra_Distributor_Generalize ( id ) result(that) &
         bind(C,name='Epetra_Distributor_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Distributor_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -88,10 +90,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Distributor_ID_t Epetra_Distributor_Clone ( CT_Epetra_Distributor_ID_t selfID );
 
-  type(FT_Epetra_Distributor_ID_t) function Epetra_Distributor_Clone ( selfID ) &
+  function Epetra_Distributor_Clone ( selfID ) result(that) &
         bind(C,name='Epetra_Distributor_Clone')
     import :: FT_Epetra_Distributor_ID_t
     
+    type(FT_Epetra_Distributor_ID_t)                                  :: that
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -114,11 +117,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Distributor_CreateFromSends ( CT_Epetra_Distributor_ID_t selfID, int NumExportIDs, const int * ExportPIDs, boolean Deterministic, int * NumRemoteIDs );
 
-  integer(c_int) function Epetra_Distributor_CreateFromSends ( selfID, NumExportIDs, &
-        ExportPIDs, Deterministic, NumRemoteIDs ) &
+  function Epetra_Distributor_CreateFromSends ( selfID, NumExportIDs, ExportPIDs, &
+        Deterministic, NumRemoteIDs ) result(that) &
         bind(C,name='Epetra_Distributor_CreateFromSends')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,FT_boolean_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: NumExportIDs
     integer(c_int)                  ,intent(in)         ,dimension(*) :: ExportPIDs
@@ -132,11 +136,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Distributor_CreateFromRecvs ( CT_Epetra_Distributor_ID_t selfID, int NumRemoteIDs, const int * RemoteGIDs, const int * RemotePIDs, boolean Deterministic, int * NumExportIDs, int ** ExportGIDs, int ** ExportPIDs );
 
-  integer(c_int) function Epetra_Distributor_CreateFromRecvs ( selfID, NumRemoteIDs, &
-        RemoteGIDs, RemotePIDs, Deterministic, NumExportIDs, ExportGIDs, ExportPIDs ) &
+  function Epetra_Distributor_CreateFromRecvs ( selfID, NumRemoteIDs, RemoteGIDs, &
+        RemotePIDs, Deterministic, NumExportIDs, ExportGIDs, ExportPIDs ) result(that) &
         bind(C,name='Epetra_Distributor_CreateFromRecvs')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,FT_boolean_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: NumRemoteIDs
     integer(c_int)                  ,intent(in)         ,dimension(*) :: RemoteGIDs
@@ -153,10 +158,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Distributor_Do ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, int obj_size, int * len_import_objs, char ** import_objs );
 
-  integer(c_int) function Epetra_Distributor_Do ( selfID, export_objs, obj_size, &
-        len_import_objs, import_objs ) bind(C,name='Epetra_Distributor_Do')
+  function Epetra_Distributor_Do ( selfID, export_objs, obj_size, len_import_objs, &
+        import_objs ) result(that) bind(C,name='Epetra_Distributor_Do')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_char
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                              ,dimension(*) :: export_objs
     integer(c_int)                  ,intent(in)   ,value              :: obj_size
@@ -170,10 +176,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Distributor_DoReverse ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, int obj_size, int * len_import_objs, char ** import_objs );
 
-  integer(c_int) function Epetra_Distributor_DoReverse ( selfID, export_objs, obj_size, &
-        len_import_objs, import_objs ) bind(C,name='Epetra_Distributor_DoReverse')
+  function Epetra_Distributor_DoReverse ( selfID, export_objs, obj_size, len_import_objs, &
+        import_objs ) result(that) bind(C,name='Epetra_Distributor_DoReverse')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_char
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                              ,dimension(*) :: export_objs
     integer(c_int)                  ,intent(in)   ,value              :: obj_size
@@ -187,10 +194,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Distributor_DoPosts ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, int obj_size, int * len_import_objs, char ** import_objs );
 
-  integer(c_int) function Epetra_Distributor_DoPosts ( selfID, export_objs, obj_size, &
-        len_import_objs, import_objs ) bind(C,name='Epetra_Distributor_DoPosts')
+  function Epetra_Distributor_DoPosts ( selfID, export_objs, obj_size, len_import_objs, &
+        import_objs ) result(that) bind(C,name='Epetra_Distributor_DoPosts')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_char
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                              ,dimension(*) :: export_objs
     integer(c_int)                  ,intent(in)   ,value              :: obj_size
@@ -204,10 +212,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Distributor_DoWaits ( CT_Epetra_Distributor_ID_t selfID );
 
-  integer(c_int) function Epetra_Distributor_DoWaits ( selfID ) &
+  function Epetra_Distributor_DoWaits ( selfID ) result(that) &
         bind(C,name='Epetra_Distributor_DoWaits')
     import :: c_int ,FT_Epetra_Distributor_ID_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -217,10 +226,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Distributor_DoReversePosts ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, int obj_size, int * len_import_objs, char ** import_objs );
 
-  integer(c_int) function Epetra_Distributor_DoReversePosts ( selfID, export_objs, obj_size, &
-        len_import_objs, import_objs ) bind(C,name='Epetra_Distributor_DoReversePosts')
+  function Epetra_Distributor_DoReversePosts ( selfID, export_objs, obj_size, &
+        len_import_objs, import_objs ) result(that) &
+        bind(C,name='Epetra_Distributor_DoReversePosts')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_char
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                              ,dimension(*) :: export_objs
     integer(c_int)                  ,intent(in)   ,value              :: obj_size
@@ -234,10 +245,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Distributor_DoReverseWaits ( CT_Epetra_Distributor_ID_t selfID );
 
-  integer(c_int) function Epetra_Distributor_DoReverseWaits ( selfID ) &
+  function Epetra_Distributor_DoReverseWaits ( selfID ) result(that) &
         bind(C,name='Epetra_Distributor_DoReverseWaits')
     import :: c_int ,FT_Epetra_Distributor_ID_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -247,10 +259,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Distributor_Do_VarLen ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, int obj_size, int ** sizes, int * len_import_objs, char ** import_objs );
 
-  integer(c_int) function Epetra_Distributor_Do_VarLen ( selfID, export_objs, obj_size, &
-        sizes, len_import_objs, import_objs ) bind(C,name='Epetra_Distributor_Do_VarLen')
+  function Epetra_Distributor_Do_VarLen ( selfID, export_objs, obj_size, sizes, &
+        len_import_objs, import_objs ) result(that) &
+        bind(C,name='Epetra_Distributor_Do_VarLen')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_char
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                              ,dimension(*) :: export_objs
     integer(c_int)                  ,intent(in)   ,value              :: obj_size
@@ -265,11 +279,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Distributor_DoReverse_VarLen ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, int obj_size, int ** sizes, int * len_import_objs, char ** import_objs );
 
-  integer(c_int) function Epetra_Distributor_DoReverse_VarLen ( selfID, export_objs, &
-        obj_size, sizes, len_import_objs, import_objs ) &
+  function Epetra_Distributor_DoReverse_VarLen ( selfID, export_objs, obj_size, sizes, &
+        len_import_objs, import_objs ) result(that) &
         bind(C,name='Epetra_Distributor_DoReverse_VarLen')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_char
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                              ,dimension(*) :: export_objs
     integer(c_int)                  ,intent(in)   ,value              :: obj_size
@@ -284,11 +299,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Distributor_DoPosts_VarLen ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, int obj_size, int ** sizes, int * len_import_objs, char ** import_objs );
 
-  integer(c_int) function Epetra_Distributor_DoPosts_VarLen ( selfID, export_objs, obj_size, &
-        sizes, len_import_objs, import_objs ) &
+  function Epetra_Distributor_DoPosts_VarLen ( selfID, export_objs, obj_size, sizes, &
+        len_import_objs, import_objs ) result(that) &
         bind(C,name='Epetra_Distributor_DoPosts_VarLen')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_char
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                              ,dimension(*) :: export_objs
     integer(c_int)                  ,intent(in)   ,value              :: obj_size
@@ -303,11 +319,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Distributor_DoReversePosts_VarLen ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, int obj_size, int ** sizes, int * len_import_objs, char ** import_objs );
 
-  integer(c_int) function Epetra_Distributor_DoReversePosts_VarLen ( selfID, export_objs, &
-        obj_size, sizes, len_import_objs, import_objs ) &
+  function Epetra_Distributor_DoReversePosts_VarLen ( selfID, export_objs, obj_size, sizes, &
+        len_import_objs, import_objs ) result(that) &
         bind(C,name='Epetra_Distributor_DoReversePosts_VarLen')
     import :: c_int ,FT_Epetra_Distributor_ID_t ,c_char
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_Distributor_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                              ,dimension(*) :: export_objs
     integer(c_int)                  ,intent(in)   ,value              :: obj_size
@@ -329,10 +346,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_SerialComm_ID_t Epetra_SerialComm_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_SerialComm_ID_t) function Epetra_SerialComm_Degeneralize ( id ) &
+  function Epetra_SerialComm_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_SerialComm_Degeneralize')
     import :: FT_Epetra_SerialComm_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_SerialComm_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -340,10 +358,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_SerialComm_Generalize ( CT_Epetra_SerialComm_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_SerialComm_Generalize ( id ) &
+  function Epetra_SerialComm_Generalize ( id ) result(that) &
         bind(C,name='Epetra_SerialComm_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_SerialComm_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -353,10 +372,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_SerialComm_ID_t Epetra_SerialComm_Create (  );
 
-  type(FT_Epetra_SerialComm_ID_t) function Epetra_SerialComm_Create (  ) &
+  function Epetra_SerialComm_Create (  ) result(that) &
         bind(C,name='Epetra_SerialComm_Create')
     import :: FT_Epetra_SerialComm_ID_t
     
+    type(FT_Epetra_SerialComm_ID_t)                                  :: that
   end function
 
 
@@ -365,10 +385,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_SerialComm_ID_t Epetra_SerialComm_Duplicate ( CT_Epetra_SerialComm_ID_t CommID );
 
-  type(FT_Epetra_SerialComm_ID_t) function Epetra_SerialComm_Duplicate ( CommID ) &
+  function Epetra_SerialComm_Duplicate ( CommID ) result(that) &
         bind(C,name='Epetra_SerialComm_Duplicate')
     import :: FT_Epetra_SerialComm_ID_t
     
+    type(FT_Epetra_SerialComm_ID_t)                                  :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: CommID
   end function
 
@@ -378,10 +399,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Comm_ID_t Epetra_SerialComm_Clone ( CT_Epetra_SerialComm_ID_t selfID );
 
-  type(FT_Epetra_Comm_ID_t) function Epetra_SerialComm_Clone ( selfID ) &
+  function Epetra_SerialComm_Clone ( selfID ) result(that) &
         bind(C,name='Epetra_SerialComm_Clone')
     import :: FT_Epetra_Comm_ID_t ,FT_Epetra_SerialComm_ID_t
     
+    type(FT_Epetra_Comm_ID_t)                                        :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -415,10 +437,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_Broadcast_Double ( CT_Epetra_SerialComm_ID_t selfID, double * MyVals, int Count, int Root );
 
-  integer(c_int) function Epetra_SerialComm_Broadcast_Double ( selfID, MyVals, Count, Root ) &
+  function Epetra_SerialComm_Broadcast_Double ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_SerialComm_Broadcast_Double')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_double
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                     ,dimension(*) :: MyVals
     integer(c_int)                 ,intent(in)   ,value              :: Count
@@ -431,10 +454,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_Broadcast_Int ( CT_Epetra_SerialComm_ID_t selfID, int * MyVals, int Count, int Root );
 
-  integer(c_int) function Epetra_SerialComm_Broadcast_Int ( selfID, MyVals, Count, Root ) &
+  function Epetra_SerialComm_Broadcast_Int ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_SerialComm_Broadcast_Int')
     import :: c_int ,FT_Epetra_SerialComm_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                     ,dimension(*) :: MyVals
     integer(c_int)                 ,intent(in)   ,value              :: Count
@@ -447,10 +471,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_Broadcast_Long ( CT_Epetra_SerialComm_ID_t selfID, long * MyVals, int Count, int Root );
 
-  integer(c_int) function Epetra_SerialComm_Broadcast_Long ( selfID, MyVals, Count, Root ) &
+  function Epetra_SerialComm_Broadcast_Long ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_SerialComm_Broadcast_Long')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_long
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                    ,dimension(*) :: MyVals
     integer(c_int)                 ,intent(in)   ,value              :: Count
@@ -463,10 +488,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_Broadcast_Char ( CT_Epetra_SerialComm_ID_t selfID, char * MyVals, int Count, int Root );
 
-  integer(c_int) function Epetra_SerialComm_Broadcast_Char ( selfID, MyVals, Count, Root ) &
+  function Epetra_SerialComm_Broadcast_Char ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_SerialComm_Broadcast_Char')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_char
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                             ,dimension(*) :: MyVals
     integer(c_int)                 ,intent(in)   ,value              :: Count
@@ -479,10 +505,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_GatherAll_Double ( CT_Epetra_SerialComm_ID_t selfID, double * MyVals, double * AllVals, int Count );
 
-  integer(c_int) function Epetra_SerialComm_GatherAll_Double ( selfID, MyVals, AllVals, &
-        Count ) bind(C,name='Epetra_SerialComm_GatherAll_Double')
+  function Epetra_SerialComm_GatherAll_Double ( selfID, MyVals, AllVals, Count ) &
+        result(that) bind(C,name='Epetra_SerialComm_GatherAll_Double')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_double
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                     ,dimension(*) :: MyVals
     real(c_double)                                     ,dimension(*) :: AllVals
@@ -495,10 +522,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_GatherAll_Int ( CT_Epetra_SerialComm_ID_t selfID, int * MyVals, int * AllVals, int Count );
 
-  integer(c_int) function Epetra_SerialComm_GatherAll_Int ( selfID, MyVals, AllVals, Count ) &
+  function Epetra_SerialComm_GatherAll_Int ( selfID, MyVals, AllVals, Count ) result(that) &
         bind(C,name='Epetra_SerialComm_GatherAll_Int')
     import :: c_int ,FT_Epetra_SerialComm_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                     ,dimension(*) :: MyVals
     integer(c_int)                                     ,dimension(*) :: AllVals
@@ -511,10 +539,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_GatherAll_Long ( CT_Epetra_SerialComm_ID_t selfID, long * MyVals, long * AllVals, int Count );
 
-  integer(c_int) function Epetra_SerialComm_GatherAll_Long ( selfID, MyVals, AllVals, Count ) &
-        bind(C,name='Epetra_SerialComm_GatherAll_Long')
+  function Epetra_SerialComm_GatherAll_Long ( selfID, MyVals, AllVals, Count ) &
+        result(that) bind(C,name='Epetra_SerialComm_GatherAll_Long')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_long
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                    ,dimension(*) :: MyVals
     integer(c_long)                                    ,dimension(*) :: AllVals
@@ -527,10 +556,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_SumAll_Double ( CT_Epetra_SerialComm_ID_t selfID, double * PartialSums, double * GlobalSums, int Count );
 
-  integer(c_int) function Epetra_SerialComm_SumAll_Double ( selfID, PartialSums, GlobalSums, &
-        Count ) bind(C,name='Epetra_SerialComm_SumAll_Double')
+  function Epetra_SerialComm_SumAll_Double ( selfID, PartialSums, GlobalSums, Count ) &
+        result(that) bind(C,name='Epetra_SerialComm_SumAll_Double')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_double
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                     ,dimension(*) :: PartialSums
     real(c_double)                                     ,dimension(*) :: GlobalSums
@@ -543,10 +573,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_SumAll_Int ( CT_Epetra_SerialComm_ID_t selfID, int * PartialSums, int * GlobalSums, int Count );
 
-  integer(c_int) function Epetra_SerialComm_SumAll_Int ( selfID, PartialSums, GlobalSums, &
-        Count ) bind(C,name='Epetra_SerialComm_SumAll_Int')
+  function Epetra_SerialComm_SumAll_Int ( selfID, PartialSums, GlobalSums, Count ) &
+        result(that) bind(C,name='Epetra_SerialComm_SumAll_Int')
     import :: c_int ,FT_Epetra_SerialComm_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                     ,dimension(*) :: PartialSums
     integer(c_int)                                     ,dimension(*) :: GlobalSums
@@ -559,10 +590,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_SumAll_Long ( CT_Epetra_SerialComm_ID_t selfID, long * PartialSums, long * GlobalSums, int Count );
 
-  integer(c_int) function Epetra_SerialComm_SumAll_Long ( selfID, PartialSums, GlobalSums, &
-        Count ) bind(C,name='Epetra_SerialComm_SumAll_Long')
+  function Epetra_SerialComm_SumAll_Long ( selfID, PartialSums, GlobalSums, Count ) &
+        result(that) bind(C,name='Epetra_SerialComm_SumAll_Long')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_long
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                    ,dimension(*) :: PartialSums
     integer(c_long)                                    ,dimension(*) :: GlobalSums
@@ -575,10 +607,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_MaxAll_Double ( CT_Epetra_SerialComm_ID_t selfID, double * PartialMaxs, double * GlobalMaxs, int Count );
 
-  integer(c_int) function Epetra_SerialComm_MaxAll_Double ( selfID, PartialMaxs, GlobalMaxs, &
-        Count ) bind(C,name='Epetra_SerialComm_MaxAll_Double')
+  function Epetra_SerialComm_MaxAll_Double ( selfID, PartialMaxs, GlobalMaxs, Count ) &
+        result(that) bind(C,name='Epetra_SerialComm_MaxAll_Double')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_double
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                     ,dimension(*) :: PartialMaxs
     real(c_double)                                     ,dimension(*) :: GlobalMaxs
@@ -591,10 +624,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_MaxAll_Int ( CT_Epetra_SerialComm_ID_t selfID, int * PartialMaxs, int * GlobalMaxs, int Count );
 
-  integer(c_int) function Epetra_SerialComm_MaxAll_Int ( selfID, PartialMaxs, GlobalMaxs, &
-        Count ) bind(C,name='Epetra_SerialComm_MaxAll_Int')
+  function Epetra_SerialComm_MaxAll_Int ( selfID, PartialMaxs, GlobalMaxs, Count ) &
+        result(that) bind(C,name='Epetra_SerialComm_MaxAll_Int')
     import :: c_int ,FT_Epetra_SerialComm_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                     ,dimension(*) :: PartialMaxs
     integer(c_int)                                     ,dimension(*) :: GlobalMaxs
@@ -607,10 +641,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_MaxAll_Long ( CT_Epetra_SerialComm_ID_t selfID, long * PartialMaxs, long * GlobalMaxs, int Count );
 
-  integer(c_int) function Epetra_SerialComm_MaxAll_Long ( selfID, PartialMaxs, GlobalMaxs, &
-        Count ) bind(C,name='Epetra_SerialComm_MaxAll_Long')
+  function Epetra_SerialComm_MaxAll_Long ( selfID, PartialMaxs, GlobalMaxs, Count ) &
+        result(that) bind(C,name='Epetra_SerialComm_MaxAll_Long')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_long
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                    ,dimension(*) :: PartialMaxs
     integer(c_long)                                    ,dimension(*) :: GlobalMaxs
@@ -623,10 +658,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_MinAll_Double ( CT_Epetra_SerialComm_ID_t selfID, double * PartialMins, double * GlobalMins, int Count );
 
-  integer(c_int) function Epetra_SerialComm_MinAll_Double ( selfID, PartialMins, GlobalMins, &
-        Count ) bind(C,name='Epetra_SerialComm_MinAll_Double')
+  function Epetra_SerialComm_MinAll_Double ( selfID, PartialMins, GlobalMins, Count ) &
+        result(that) bind(C,name='Epetra_SerialComm_MinAll_Double')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_double
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                     ,dimension(*) :: PartialMins
     real(c_double)                                     ,dimension(*) :: GlobalMins
@@ -639,10 +675,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_MinAll_Int ( CT_Epetra_SerialComm_ID_t selfID, int * PartialMins, int * GlobalMins, int Count );
 
-  integer(c_int) function Epetra_SerialComm_MinAll_Int ( selfID, PartialMins, GlobalMins, &
-        Count ) bind(C,name='Epetra_SerialComm_MinAll_Int')
+  function Epetra_SerialComm_MinAll_Int ( selfID, PartialMins, GlobalMins, Count ) &
+        result(that) bind(C,name='Epetra_SerialComm_MinAll_Int')
     import :: c_int ,FT_Epetra_SerialComm_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                     ,dimension(*) :: PartialMins
     integer(c_int)                                     ,dimension(*) :: GlobalMins
@@ -655,10 +692,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_MinAll_Long ( CT_Epetra_SerialComm_ID_t selfID, long * PartialMins, long * GlobalMins, int Count );
 
-  integer(c_int) function Epetra_SerialComm_MinAll_Long ( selfID, PartialMins, GlobalMins, &
-        Count ) bind(C,name='Epetra_SerialComm_MinAll_Long')
+  function Epetra_SerialComm_MinAll_Long ( selfID, PartialMins, GlobalMins, Count ) &
+        result(that) bind(C,name='Epetra_SerialComm_MinAll_Long')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_long
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                    ,dimension(*) :: PartialMins
     integer(c_long)                                    ,dimension(*) :: GlobalMins
@@ -671,10 +709,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_ScanSum_Double ( CT_Epetra_SerialComm_ID_t selfID, double * MyVals, double * ScanSums, int Count );
 
-  integer(c_int) function Epetra_SerialComm_ScanSum_Double ( selfID, MyVals, ScanSums, &
-        Count ) bind(C,name='Epetra_SerialComm_ScanSum_Double')
+  function Epetra_SerialComm_ScanSum_Double ( selfID, MyVals, ScanSums, Count ) &
+        result(that) bind(C,name='Epetra_SerialComm_ScanSum_Double')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_double
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                     ,dimension(*) :: MyVals
     real(c_double)                                     ,dimension(*) :: ScanSums
@@ -687,10 +726,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_ScanSum_Int ( CT_Epetra_SerialComm_ID_t selfID, int * MyVals, int * ScanSums, int Count );
 
-  integer(c_int) function Epetra_SerialComm_ScanSum_Int ( selfID, MyVals, ScanSums, Count ) &
+  function Epetra_SerialComm_ScanSum_Int ( selfID, MyVals, ScanSums, Count ) result(that) &
         bind(C,name='Epetra_SerialComm_ScanSum_Int')
     import :: c_int ,FT_Epetra_SerialComm_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                     ,dimension(*) :: MyVals
     integer(c_int)                                     ,dimension(*) :: ScanSums
@@ -703,10 +743,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_ScanSum_Long ( CT_Epetra_SerialComm_ID_t selfID, long * MyVals, long * ScanSums, int Count );
 
-  integer(c_int) function Epetra_SerialComm_ScanSum_Long ( selfID, MyVals, ScanSums, Count ) &
+  function Epetra_SerialComm_ScanSum_Long ( selfID, MyVals, ScanSums, Count ) result(that) &
         bind(C,name='Epetra_SerialComm_ScanSum_Long')
     import :: c_int ,FT_Epetra_SerialComm_ID_t ,c_long
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                    ,dimension(*) :: MyVals
     integer(c_long)                                    ,dimension(*) :: ScanSums
@@ -719,10 +760,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_MyPID ( CT_Epetra_SerialComm_ID_t selfID );
 
-  integer(c_int) function Epetra_SerialComm_MyPID ( selfID ) &
+  function Epetra_SerialComm_MyPID ( selfID ) result(that) &
         bind(C,name='Epetra_SerialComm_MyPID')
     import :: c_int ,FT_Epetra_SerialComm_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -732,10 +774,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialComm_NumProc ( CT_Epetra_SerialComm_ID_t selfID );
 
-  integer(c_int) function Epetra_SerialComm_NumProc ( selfID ) &
+  function Epetra_SerialComm_NumProc ( selfID ) result(that) &
         bind(C,name='Epetra_SerialComm_NumProc')
     import :: c_int ,FT_Epetra_SerialComm_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -745,10 +788,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Distributor_ID_t Epetra_SerialComm_CreateDistributor ( CT_Epetra_SerialComm_ID_t selfID );
 
-  type(FT_Epetra_Distributor_ID_t) function Epetra_SerialComm_CreateDistributor ( selfID ) &
+  function Epetra_SerialComm_CreateDistributor ( selfID ) result(that) &
         bind(C,name='Epetra_SerialComm_CreateDistributor')
     import :: FT_Epetra_Distributor_ID_t ,FT_Epetra_SerialComm_ID_t
     
+    type(FT_Epetra_Distributor_ID_t)                                  :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -758,10 +802,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Directory_ID_t Epetra_SerialComm_CreateDirectory ( CT_Epetra_SerialComm_ID_t selfID, CT_Epetra_BlockMap_ID_t MapID );
 
-  type(FT_Epetra_Directory_ID_t) function Epetra_SerialComm_CreateDirectory ( selfID, MapID ) &
+  function Epetra_SerialComm_CreateDirectory ( selfID, MapID ) result(that) &
         bind(C,name='Epetra_SerialComm_CreateDirectory')
     import :: FT_Epetra_Directory_ID_t ,FT_Epetra_SerialComm_ID_t ,FT_Epetra_BlockMap_ID_t
     
+    type(FT_Epetra_Directory_ID_t)                                   :: that
     type(FT_Epetra_SerialComm_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t)  ,intent(in)   ,value              :: MapID
   end function
@@ -793,10 +838,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_BLAS_ID_t Epetra_BLAS_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_BLAS_ID_t) function Epetra_BLAS_Degeneralize ( id ) &
+  function Epetra_BLAS_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_BLAS_Degeneralize')
     import :: FT_Epetra_BLAS_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_BLAS_ID_t)                                     :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -804,10 +850,10 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_BLAS_Generalize ( CT_Epetra_BLAS_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_BLAS_Generalize ( id ) &
-        bind(C,name='Epetra_BLAS_Generalize')
+  function Epetra_BLAS_Generalize ( id ) result(that) bind(C,name='Epetra_BLAS_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_BLAS_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: id
   end function
 
@@ -817,10 +863,10 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_BLAS_ID_t Epetra_BLAS_Create (  );
 
-  type(FT_Epetra_BLAS_ID_t) function Epetra_BLAS_Create (  ) &
-        bind(C,name='Epetra_BLAS_Create')
+  function Epetra_BLAS_Create (  ) result(that) bind(C,name='Epetra_BLAS_Create')
     import :: FT_Epetra_BLAS_ID_t
     
+    type(FT_Epetra_BLAS_ID_t)                                     :: that
   end function
 
 
@@ -829,10 +875,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_BLAS_ID_t Epetra_BLAS_Duplicate ( CT_Epetra_BLAS_ID_t BLASID );
 
-  type(FT_Epetra_BLAS_ID_t) function Epetra_BLAS_Duplicate ( BLASID ) &
+  function Epetra_BLAS_Duplicate ( BLASID ) result(that) &
         bind(C,name='Epetra_BLAS_Duplicate')
     import :: FT_Epetra_BLAS_ID_t
     
+    type(FT_Epetra_BLAS_ID_t)                                     :: that
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: BLASID
   end function
 
@@ -854,10 +901,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! float Epetra_BLAS_ASUM_Float ( CT_Epetra_BLAS_ID_t selfID, const int N, const float * X, const int INCX );
 
-  real(c_float) function Epetra_BLAS_ASUM_Float ( selfID, N, X, INCX ) &
+  function Epetra_BLAS_ASUM_Float ( selfID, N, X, INCX ) result(that) &
         bind(C,name='Epetra_BLAS_ASUM_Float')
     import :: c_float ,FT_Epetra_BLAS_ID_t ,c_int
     
+    real(c_float)                                                 :: that
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_float)               ,intent(in)         ,dimension(*) :: X
@@ -870,10 +918,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_BLAS_ASUM_Double ( CT_Epetra_BLAS_ID_t selfID, const int N, const double * X, const int INCX );
 
-  real(c_double) function Epetra_BLAS_ASUM_Double ( selfID, N, X, INCX ) &
+  function Epetra_BLAS_ASUM_Double ( selfID, N, X, INCX ) result(that) &
         bind(C,name='Epetra_BLAS_ASUM_Double')
     import :: c_double ,FT_Epetra_BLAS_ID_t ,c_int
     
+    real(c_double)                                                :: that
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_double)              ,intent(in)         ,dimension(*) :: X
@@ -886,10 +935,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! float Epetra_BLAS_DOT_Float ( CT_Epetra_BLAS_ID_t selfID, const int N, const float * X, const float * Y, const int INCX, const int INCY );
 
-  real(c_float) function Epetra_BLAS_DOT_Float ( selfID, N, X, Y, INCX, INCY ) &
+  function Epetra_BLAS_DOT_Float ( selfID, N, X, Y, INCX, INCY ) result(that) &
         bind(C,name='Epetra_BLAS_DOT_Float')
     import :: c_float ,FT_Epetra_BLAS_ID_t ,c_int
     
+    real(c_float)                                                 :: that
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_float)               ,intent(in)         ,dimension(*) :: X
@@ -904,10 +954,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_BLAS_DOT_Double ( CT_Epetra_BLAS_ID_t selfID, const int N, const double * X, const double * Y, const int INCX, const int INCY );
 
-  real(c_double) function Epetra_BLAS_DOT_Double ( selfID, N, X, Y, INCX, INCY ) &
+  function Epetra_BLAS_DOT_Double ( selfID, N, X, Y, INCX, INCY ) result(that) &
         bind(C,name='Epetra_BLAS_DOT_Double')
     import :: c_double ,FT_Epetra_BLAS_ID_t ,c_int
     
+    real(c_double)                                                :: that
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_double)              ,intent(in)         ,dimension(*) :: X
@@ -922,10 +973,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! float Epetra_BLAS_NRM2_Float ( CT_Epetra_BLAS_ID_t selfID, const int N, const float * X, const int INCX );
 
-  real(c_float) function Epetra_BLAS_NRM2_Float ( selfID, N, X, INCX ) &
+  function Epetra_BLAS_NRM2_Float ( selfID, N, X, INCX ) result(that) &
         bind(C,name='Epetra_BLAS_NRM2_Float')
     import :: c_float ,FT_Epetra_BLAS_ID_t ,c_int
     
+    real(c_float)                                                 :: that
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_float)               ,intent(in)         ,dimension(*) :: X
@@ -938,10 +990,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_BLAS_NRM2_Double ( CT_Epetra_BLAS_ID_t selfID, const int N, const double * X, const int INCX );
 
-  real(c_double) function Epetra_BLAS_NRM2_Double ( selfID, N, X, INCX ) &
+  function Epetra_BLAS_NRM2_Double ( selfID, N, X, INCX ) result(that) &
         bind(C,name='Epetra_BLAS_NRM2_Double')
     import :: c_double ,FT_Epetra_BLAS_ID_t ,c_int
     
+    real(c_double)                                                :: that
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_double)              ,intent(in)         ,dimension(*) :: X
@@ -1024,10 +1077,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BLAS_IAMAX_Float ( CT_Epetra_BLAS_ID_t selfID, const int N, const float * X, const int INCX );
 
-  integer(c_int) function Epetra_BLAS_IAMAX_Float ( selfID, N, X, INCX ) &
+  function Epetra_BLAS_IAMAX_Float ( selfID, N, X, INCX ) result(that) &
         bind(C,name='Epetra_BLAS_IAMAX_Float')
     import :: c_int ,FT_Epetra_BLAS_ID_t ,c_float
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_float)               ,intent(in)         ,dimension(*) :: X
@@ -1040,10 +1094,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BLAS_IAMAX_Double ( CT_Epetra_BLAS_ID_t selfID, const int N, const double * X, const int INCX );
 
-  integer(c_int) function Epetra_BLAS_IAMAX_Double ( selfID, N, X, INCX ) &
+  function Epetra_BLAS_IAMAX_Double ( selfID, N, X, INCX ) result(that) &
         bind(C,name='Epetra_BLAS_IAMAX_Double')
     import :: c_int ,FT_Epetra_BLAS_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_BLAS_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: N
     real(c_double)              ,intent(in)         ,dimension(*) :: X
@@ -1299,10 +1354,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_Comm_ID_t Epetra_Comm_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Comm_ID_t) function Epetra_Comm_Degeneralize ( id ) &
+  function Epetra_Comm_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_Comm_Degeneralize')
     import :: FT_Epetra_Comm_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_Comm_ID_t)                                     :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -1310,10 +1366,10 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_Comm_Generalize ( CT_Epetra_Comm_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_Comm_Generalize ( id ) &
-        bind(C,name='Epetra_Comm_Generalize')
+  function Epetra_Comm_Generalize ( id ) result(that) bind(C,name='Epetra_Comm_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Comm_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: id
   end function
 
@@ -1323,10 +1379,10 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Comm_ID_t Epetra_Comm_Clone ( CT_Epetra_Comm_ID_t selfID );
 
-  type(FT_Epetra_Comm_ID_t) function Epetra_Comm_Clone ( selfID ) &
-        bind(C,name='Epetra_Comm_Clone')
+  function Epetra_Comm_Clone ( selfID ) result(that) bind(C,name='Epetra_Comm_Clone')
     import :: FT_Epetra_Comm_ID_t
     
+    type(FT_Epetra_Comm_ID_t)                                     :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
   end function
 
@@ -1360,10 +1416,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_Broadcast_Double ( CT_Epetra_Comm_ID_t selfID, double * MyVals, int Count, int Root );
 
-  integer(c_int) function Epetra_Comm_Broadcast_Double ( selfID, MyVals, Count, Root ) &
+  function Epetra_Comm_Broadcast_Double ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_Comm_Broadcast_Double')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: MyVals
     integer(c_int)              ,intent(in)   ,value              :: Count
@@ -1376,10 +1433,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_Broadcast_Int ( CT_Epetra_Comm_ID_t selfID, int * MyVals, int Count, int Root );
 
-  integer(c_int) function Epetra_Comm_Broadcast_Int ( selfID, MyVals, Count, Root ) &
+  function Epetra_Comm_Broadcast_Int ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_Comm_Broadcast_Int')
     import :: c_int ,FT_Epetra_Comm_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: MyVals
     integer(c_int)              ,intent(in)   ,value              :: Count
@@ -1392,10 +1450,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_Broadcast_Long ( CT_Epetra_Comm_ID_t selfID, long * MyVals, int Count, int Root );
 
-  integer(c_int) function Epetra_Comm_Broadcast_Long ( selfID, MyVals, Count, Root ) &
+  function Epetra_Comm_Broadcast_Long ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_Comm_Broadcast_Long')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_long
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: MyVals
     integer(c_int)              ,intent(in)   ,value              :: Count
@@ -1408,10 +1467,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_Broadcast_Char ( CT_Epetra_Comm_ID_t selfID, char * MyVals, int Count, int Root );
 
-  integer(c_int) function Epetra_Comm_Broadcast_Char ( selfID, MyVals, Count, Root ) &
+  function Epetra_Comm_Broadcast_Char ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_Comm_Broadcast_Char')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_char
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     character(kind=c_char)                          ,dimension(*) :: MyVals
     integer(c_int)              ,intent(in)   ,value              :: Count
@@ -1424,10 +1484,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_GatherAll_Double ( CT_Epetra_Comm_ID_t selfID, double * MyVals, double * AllVals, int Count );
 
-  integer(c_int) function Epetra_Comm_GatherAll_Double ( selfID, MyVals, AllVals, Count ) &
+  function Epetra_Comm_GatherAll_Double ( selfID, MyVals, AllVals, Count ) result(that) &
         bind(C,name='Epetra_Comm_GatherAll_Double')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: MyVals
     real(c_double)                                  ,dimension(*) :: AllVals
@@ -1440,10 +1501,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_GatherAll_Int ( CT_Epetra_Comm_ID_t selfID, int * MyVals, int * AllVals, int Count );
 
-  integer(c_int) function Epetra_Comm_GatherAll_Int ( selfID, MyVals, AllVals, Count ) &
+  function Epetra_Comm_GatherAll_Int ( selfID, MyVals, AllVals, Count ) result(that) &
         bind(C,name='Epetra_Comm_GatherAll_Int')
     import :: c_int ,FT_Epetra_Comm_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: MyVals
     integer(c_int)                                  ,dimension(*) :: AllVals
@@ -1456,10 +1518,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_GatherAll_Long ( CT_Epetra_Comm_ID_t selfID, long * MyVals, long * AllVals, int Count );
 
-  integer(c_int) function Epetra_Comm_GatherAll_Long ( selfID, MyVals, AllVals, Count ) &
+  function Epetra_Comm_GatherAll_Long ( selfID, MyVals, AllVals, Count ) result(that) &
         bind(C,name='Epetra_Comm_GatherAll_Long')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_long
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: MyVals
     integer(c_long)                                 ,dimension(*) :: AllVals
@@ -1472,10 +1535,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_SumAll_Double ( CT_Epetra_Comm_ID_t selfID, double * PartialSums, double * GlobalSums, int Count );
 
-  integer(c_int) function Epetra_Comm_SumAll_Double ( selfID, PartialSums, GlobalSums, &
-        Count ) bind(C,name='Epetra_Comm_SumAll_Double')
+  function Epetra_Comm_SumAll_Double ( selfID, PartialSums, GlobalSums, Count ) &
+        result(that) bind(C,name='Epetra_Comm_SumAll_Double')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: PartialSums
     real(c_double)                                  ,dimension(*) :: GlobalSums
@@ -1488,10 +1552,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_SumAll_Int ( CT_Epetra_Comm_ID_t selfID, int * PartialSums, int * GlobalSums, int Count );
 
-  integer(c_int) function Epetra_Comm_SumAll_Int ( selfID, PartialSums, GlobalSums, Count ) &
+  function Epetra_Comm_SumAll_Int ( selfID, PartialSums, GlobalSums, Count ) result(that) &
         bind(C,name='Epetra_Comm_SumAll_Int')
     import :: c_int ,FT_Epetra_Comm_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: PartialSums
     integer(c_int)                                  ,dimension(*) :: GlobalSums
@@ -1504,10 +1569,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_SumAll_Long ( CT_Epetra_Comm_ID_t selfID, long * PartialSums, long * GlobalSums, int Count );
 
-  integer(c_int) function Epetra_Comm_SumAll_Long ( selfID, PartialSums, GlobalSums, Count ) &
+  function Epetra_Comm_SumAll_Long ( selfID, PartialSums, GlobalSums, Count ) result(that) &
         bind(C,name='Epetra_Comm_SumAll_Long')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_long
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: PartialSums
     integer(c_long)                                 ,dimension(*) :: GlobalSums
@@ -1520,10 +1586,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_MaxAll_Double ( CT_Epetra_Comm_ID_t selfID, double * PartialMaxs, double * GlobalMaxs, int Count );
 
-  integer(c_int) function Epetra_Comm_MaxAll_Double ( selfID, PartialMaxs, GlobalMaxs, &
-        Count ) bind(C,name='Epetra_Comm_MaxAll_Double')
+  function Epetra_Comm_MaxAll_Double ( selfID, PartialMaxs, GlobalMaxs, Count ) &
+        result(that) bind(C,name='Epetra_Comm_MaxAll_Double')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: PartialMaxs
     real(c_double)                                  ,dimension(*) :: GlobalMaxs
@@ -1536,10 +1603,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_MaxAll_Int ( CT_Epetra_Comm_ID_t selfID, int * PartialMaxs, int * GlobalMaxs, int Count );
 
-  integer(c_int) function Epetra_Comm_MaxAll_Int ( selfID, PartialMaxs, GlobalMaxs, Count ) &
+  function Epetra_Comm_MaxAll_Int ( selfID, PartialMaxs, GlobalMaxs, Count ) result(that) &
         bind(C,name='Epetra_Comm_MaxAll_Int')
     import :: c_int ,FT_Epetra_Comm_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: PartialMaxs
     integer(c_int)                                  ,dimension(*) :: GlobalMaxs
@@ -1552,10 +1620,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_MaxAll_Long ( CT_Epetra_Comm_ID_t selfID, long * PartialMaxs, long * GlobalMaxs, int Count );
 
-  integer(c_int) function Epetra_Comm_MaxAll_Long ( selfID, PartialMaxs, GlobalMaxs, Count ) &
+  function Epetra_Comm_MaxAll_Long ( selfID, PartialMaxs, GlobalMaxs, Count ) result(that) &
         bind(C,name='Epetra_Comm_MaxAll_Long')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_long
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: PartialMaxs
     integer(c_long)                                 ,dimension(*) :: GlobalMaxs
@@ -1568,10 +1637,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_MinAll_Double ( CT_Epetra_Comm_ID_t selfID, double * PartialMins, double * GlobalMins, int Count );
 
-  integer(c_int) function Epetra_Comm_MinAll_Double ( selfID, PartialMins, GlobalMins, &
-        Count ) bind(C,name='Epetra_Comm_MinAll_Double')
+  function Epetra_Comm_MinAll_Double ( selfID, PartialMins, GlobalMins, Count ) &
+        result(that) bind(C,name='Epetra_Comm_MinAll_Double')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: PartialMins
     real(c_double)                                  ,dimension(*) :: GlobalMins
@@ -1584,10 +1654,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_MinAll_Int ( CT_Epetra_Comm_ID_t selfID, int * PartialMins, int * GlobalMins, int Count );
 
-  integer(c_int) function Epetra_Comm_MinAll_Int ( selfID, PartialMins, GlobalMins, Count ) &
+  function Epetra_Comm_MinAll_Int ( selfID, PartialMins, GlobalMins, Count ) result(that) &
         bind(C,name='Epetra_Comm_MinAll_Int')
     import :: c_int ,FT_Epetra_Comm_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: PartialMins
     integer(c_int)                                  ,dimension(*) :: GlobalMins
@@ -1600,10 +1671,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_MinAll_Long ( CT_Epetra_Comm_ID_t selfID, long * PartialMins, long * GlobalMins, int Count );
 
-  integer(c_int) function Epetra_Comm_MinAll_Long ( selfID, PartialMins, GlobalMins, Count ) &
+  function Epetra_Comm_MinAll_Long ( selfID, PartialMins, GlobalMins, Count ) result(that) &
         bind(C,name='Epetra_Comm_MinAll_Long')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_long
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: PartialMins
     integer(c_long)                                 ,dimension(*) :: GlobalMins
@@ -1616,10 +1688,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_ScanSum_Double ( CT_Epetra_Comm_ID_t selfID, double * MyVals, double * ScanSums, int Count );
 
-  integer(c_int) function Epetra_Comm_ScanSum_Double ( selfID, MyVals, ScanSums, Count ) &
+  function Epetra_Comm_ScanSum_Double ( selfID, MyVals, ScanSums, Count ) result(that) &
         bind(C,name='Epetra_Comm_ScanSum_Double')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: MyVals
     real(c_double)                                  ,dimension(*) :: ScanSums
@@ -1632,10 +1705,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_ScanSum_Int ( CT_Epetra_Comm_ID_t selfID, int * MyVals, int * ScanSums, int Count );
 
-  integer(c_int) function Epetra_Comm_ScanSum_Int ( selfID, MyVals, ScanSums, Count ) &
+  function Epetra_Comm_ScanSum_Int ( selfID, MyVals, ScanSums, Count ) result(that) &
         bind(C,name='Epetra_Comm_ScanSum_Int')
     import :: c_int ,FT_Epetra_Comm_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: MyVals
     integer(c_int)                                  ,dimension(*) :: ScanSums
@@ -1648,10 +1722,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_ScanSum_Long ( CT_Epetra_Comm_ID_t selfID, long * MyVals, long * ScanSums, int Count );
 
-  integer(c_int) function Epetra_Comm_ScanSum_Long ( selfID, MyVals, ScanSums, Count ) &
+  function Epetra_Comm_ScanSum_Long ( selfID, MyVals, ScanSums, Count ) result(that) &
         bind(C,name='Epetra_Comm_ScanSum_Long')
     import :: c_int ,FT_Epetra_Comm_ID_t ,c_long
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: MyVals
     integer(c_long)                                 ,dimension(*) :: ScanSums
@@ -1664,9 +1739,10 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_MyPID ( CT_Epetra_Comm_ID_t selfID );
 
-  integer(c_int) function Epetra_Comm_MyPID ( selfID ) bind(C,name='Epetra_Comm_MyPID')
+  function Epetra_Comm_MyPID ( selfID ) result(that) bind(C,name='Epetra_Comm_MyPID')
     import :: c_int ,FT_Epetra_Comm_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
   end function
 
@@ -1676,9 +1752,10 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Comm_NumProc ( CT_Epetra_Comm_ID_t selfID );
 
-  integer(c_int) function Epetra_Comm_NumProc ( selfID ) bind(C,name='Epetra_Comm_NumProc')
+  function Epetra_Comm_NumProc ( selfID ) result(that) bind(C,name='Epetra_Comm_NumProc')
     import :: c_int ,FT_Epetra_Comm_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
   end function
 
@@ -1688,10 +1765,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Distributor_ID_t Epetra_Comm_CreateDistributor ( CT_Epetra_Comm_ID_t selfID );
 
-  type(FT_Epetra_Distributor_ID_t) function Epetra_Comm_CreateDistributor ( selfID ) &
+  function Epetra_Comm_CreateDistributor ( selfID ) result(that) &
         bind(C,name='Epetra_Comm_CreateDistributor')
     import :: FT_Epetra_Distributor_ID_t ,FT_Epetra_Comm_ID_t
     
+    type(FT_Epetra_Distributor_ID_t)                                  :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
   end function
 
@@ -1701,10 +1779,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Directory_ID_t Epetra_Comm_CreateDirectory ( CT_Epetra_Comm_ID_t selfID, CT_Epetra_BlockMap_ID_t MapID );
 
-  type(FT_Epetra_Directory_ID_t) function Epetra_Comm_CreateDirectory ( selfID, MapID ) &
+  function Epetra_Comm_CreateDirectory ( selfID, MapID ) result(that) &
         bind(C,name='Epetra_Comm_CreateDirectory')
     import :: FT_Epetra_Directory_ID_t ,FT_Epetra_Comm_ID_t ,FT_Epetra_BlockMap_ID_t
     
+    type(FT_Epetra_Directory_ID_t)                                  :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: MapID
   end function
@@ -1722,10 +1801,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_Operator_ID_t Epetra_Operator_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Operator_ID_t) function Epetra_Operator_Degeneralize ( id ) &
+  function Epetra_Operator_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_Operator_Degeneralize')
     import :: FT_Epetra_Operator_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_Operator_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -1733,10 +1813,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_Operator_Generalize ( CT_Epetra_Operator_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_Operator_Generalize ( id ) &
+  function Epetra_Operator_Generalize ( id ) result(that) &
         bind(C,name='Epetra_Operator_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Operator_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -1758,10 +1839,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Operator_SetUseTranspose ( CT_Epetra_Operator_ID_t selfID, boolean UseTranspose );
 
-  integer(c_int) function Epetra_Operator_SetUseTranspose ( selfID, UseTranspose ) &
+  function Epetra_Operator_SetUseTranspose ( selfID, UseTranspose ) result(that) &
         bind(C,name='Epetra_Operator_SetUseTranspose')
     import :: c_int ,FT_Epetra_Operator_ID_t ,FT_boolean_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
     integer(FT_boolean_t)        ,intent(in)   ,value              :: UseTranspose
   end function
@@ -1772,10 +1854,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Operator_Apply ( CT_Epetra_Operator_ID_t selfID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
-  integer(c_int) function Epetra_Operator_Apply ( selfID, XID, YID ) &
+  function Epetra_Operator_Apply ( selfID, XID, YID ) result(that) &
         bind(C,name='Epetra_Operator_Apply')
     import :: c_int ,FT_Epetra_Operator_ID_t ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: YID
@@ -1787,10 +1870,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Operator_ApplyInverse ( CT_Epetra_Operator_ID_t selfID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
-  integer(c_int) function Epetra_Operator_ApplyInverse ( selfID, XID, YID ) &
+  function Epetra_Operator_ApplyInverse ( selfID, XID, YID ) result(that) &
         bind(C,name='Epetra_Operator_ApplyInverse')
     import :: c_int ,FT_Epetra_Operator_ID_t ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: YID
@@ -1802,10 +1886,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_Operator_NormInf ( CT_Epetra_Operator_ID_t selfID );
 
-  real(c_double) function Epetra_Operator_NormInf ( selfID ) &
+  function Epetra_Operator_NormInf ( selfID ) result(that) &
         bind(C,name='Epetra_Operator_NormInf')
     import :: c_double ,FT_Epetra_Operator_ID_t
     
+    real(c_double)                                                 :: that
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1815,10 +1900,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! const char * Epetra_Operator_Label ( CT_Epetra_Operator_ID_t selfID );
 
-  type(c_ptr) function Epetra_Operator_Label ( selfID ) &
+  function Epetra_Operator_Label ( selfID ) result(that) &
         bind(C,name='Epetra_Operator_Label')
     import :: c_ptr ,FT_Epetra_Operator_ID_t
     
+    type(c_ptr)                                                    :: that
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1828,10 +1914,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_Operator_UseTranspose ( CT_Epetra_Operator_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_Operator_UseTranspose ( selfID ) &
+  function Epetra_Operator_UseTranspose ( selfID ) result(that) &
         bind(C,name='Epetra_Operator_UseTranspose')
     import :: FT_boolean_t ,FT_Epetra_Operator_ID_t
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1841,10 +1928,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_Operator_HasNormInf ( CT_Epetra_Operator_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_Operator_HasNormInf ( selfID ) &
+  function Epetra_Operator_HasNormInf ( selfID ) result(that) &
         bind(C,name='Epetra_Operator_HasNormInf')
     import :: FT_boolean_t ,FT_Epetra_Operator_ID_t
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1854,10 +1942,10 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Comm_ID_t Epetra_Operator_Comm ( CT_Epetra_Operator_ID_t selfID );
 
-  type(FT_Epetra_Comm_ID_t) function Epetra_Operator_Comm ( selfID ) &
-        bind(C,name='Epetra_Operator_Comm')
+  function Epetra_Operator_Comm ( selfID ) result(that) bind(C,name='Epetra_Operator_Comm')
     import :: FT_Epetra_Comm_ID_t ,FT_Epetra_Operator_ID_t
     
+    type(FT_Epetra_Comm_ID_t)                                      :: that
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1867,10 +1955,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Epetra_Operator_OperatorDomainMap ( CT_Epetra_Operator_ID_t selfID );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_Operator_OperatorDomainMap ( selfID ) &
+  function Epetra_Operator_OperatorDomainMap ( selfID ) result(that) &
         bind(C,name='Epetra_Operator_OperatorDomainMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_Operator_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                       :: that
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1880,10 +1969,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Epetra_Operator_OperatorRangeMap ( CT_Epetra_Operator_ID_t selfID );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_Operator_OperatorRangeMap ( selfID ) &
+  function Epetra_Operator_OperatorRangeMap ( selfID ) result(that) &
         bind(C,name='Epetra_Operator_OperatorRangeMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_Operator_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                       :: that
     type(FT_Epetra_Operator_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -1900,10 +1990,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_MultiVector_ID_t) function Epetra_MultiVector_Degeneralize ( id ) &
+  function Epetra_MultiVector_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_MultiVector_Degeneralize')
     import :: FT_Epetra_MultiVector_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_MultiVector_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -1911,10 +2002,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_MultiVector_Generalize ( CT_Epetra_MultiVector_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_MultiVector_Generalize ( id ) &
+  function Epetra_MultiVector_Generalize ( id ) result(that) &
         bind(C,name='Epetra_MultiVector_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_MultiVector_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -1924,10 +2016,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create ( CT_Epetra_BlockMap_ID_t MapID, int NumVectors, boolean zeroOut );
 
-  type(FT_Epetra_MultiVector_ID_t) function Epetra_MultiVector_Create ( MapID, NumVectors, &
-        zeroOut ) bind(C,name='Epetra_MultiVector_Create')
+  function Epetra_MultiVector_Create ( MapID, NumVectors, zeroOut ) result(that) &
+        bind(C,name='Epetra_MultiVector_Create')
     import :: FT_Epetra_MultiVector_ID_t ,FT_Epetra_BlockMap_ID_t ,c_int ,FT_boolean_t
     
+    type(FT_Epetra_MultiVector_ID_t)                                  :: that
     type(FT_Epetra_BlockMap_ID_t)   ,intent(in)   ,value              :: MapID
     integer(c_int)                  ,intent(in)   ,value              :: NumVectors
     integer(FT_boolean_t)           ,intent(in)   ,value              :: zeroOut
@@ -1939,10 +2032,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Duplicate ( CT_Epetra_MultiVector_ID_t SourceID );
 
-  type(FT_Epetra_MultiVector_ID_t) function Epetra_MultiVector_Duplicate ( SourceID ) &
+  function Epetra_MultiVector_Duplicate ( SourceID ) result(that) &
         bind(C,name='Epetra_MultiVector_Duplicate')
     import :: FT_Epetra_MultiVector_ID_t
     
+    type(FT_Epetra_MultiVector_ID_t)                                  :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: SourceID
   end function
 
@@ -1952,11 +2046,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_From2DA ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t MapID, double * A, int MyLDA, int NumVectors );
 
-  type(FT_Epetra_MultiVector_ID_t) function Epetra_MultiVector_Create_From2DA ( CV, MapID, &
-        A, MyLDA, NumVectors ) bind(C,name='Epetra_MultiVector_Create_From2DA')
+  function Epetra_MultiVector_Create_From2DA ( CV, MapID, A, MyLDA, NumVectors ) &
+        result(that) bind(C,name='Epetra_MultiVector_Create_From2DA')
     import :: FT_Epetra_MultiVector_ID_t ,FT_Epetra_DataAccess_E_t , &
           FT_Epetra_BlockMap_ID_t ,c_double ,c_int
     
+    type(FT_Epetra_MultiVector_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_BlockMap_ID_t)   ,intent(in)   ,value              :: MapID
     real(c_double)                                      ,dimension(*) :: A
@@ -1970,11 +2065,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_FromAOP ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t MapID, double ** ArrayOfPointers, int NumVectors );
 
-  type(FT_Epetra_MultiVector_ID_t) function Epetra_MultiVector_Create_FromAOP ( CV, MapID, &
-        ArrayOfPointers, NumVectors ) bind(C,name='Epetra_MultiVector_Create_FromAOP')
+  function Epetra_MultiVector_Create_FromAOP ( CV, MapID, ArrayOfPointers, NumVectors ) &
+        result(that) bind(C,name='Epetra_MultiVector_Create_FromAOP')
     import :: FT_Epetra_MultiVector_ID_t ,FT_Epetra_DataAccess_E_t , &
           FT_Epetra_BlockMap_ID_t ,c_double ,c_int
     
+    type(FT_Epetra_MultiVector_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_BlockMap_ID_t)   ,intent(in)   ,value              :: MapID
     real(c_double)                                      ,dimension(*) :: ArrayOfPointers
@@ -1987,10 +2083,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_FromList ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_MultiVector_ID_t SourceID, int * Indices, int NumVectors );
 
-  type(FT_Epetra_MultiVector_ID_t) function Epetra_MultiVector_Create_FromList ( CV, &
-        SourceID, Indices, NumVectors ) bind(C,name='Epetra_MultiVector_Create_FromList')
+  function Epetra_MultiVector_Create_FromList ( CV, SourceID, Indices, NumVectors ) &
+        result(that) bind(C,name='Epetra_MultiVector_Create_FromList')
     import :: FT_Epetra_MultiVector_ID_t ,FT_Epetra_DataAccess_E_t ,c_int
     
+    type(FT_Epetra_MultiVector_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: SourceID
     integer(c_int)                                      ,dimension(*) :: Indices
@@ -2003,11 +2100,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_FromRange ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_MultiVector_ID_t SourceID, int StartIndex, int NumVectors );
 
-  type(FT_Epetra_MultiVector_ID_t) function Epetra_MultiVector_Create_FromRange ( CV, &
-        SourceID, StartIndex, NumVectors ) &
-        bind(C,name='Epetra_MultiVector_Create_FromRange')
+  function Epetra_MultiVector_Create_FromRange ( CV, SourceID, StartIndex, NumVectors ) &
+        result(that) bind(C,name='Epetra_MultiVector_Create_FromRange')
     import :: FT_Epetra_MultiVector_ID_t ,FT_Epetra_DataAccess_E_t ,c_int
     
+    type(FT_Epetra_MultiVector_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: SourceID
     integer(c_int)                  ,intent(in)   ,value              :: StartIndex
@@ -2033,10 +2130,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_ReplaceGlobalValue ( CT_Epetra_MultiVector_ID_t selfID, int GlobalRow, int VectorIndex, double ScalarValue );
 
-  integer(c_int) function Epetra_MultiVector_ReplaceGlobalValue ( selfID, GlobalRow, &
-        VectorIndex, ScalarValue ) bind(C,name='Epetra_MultiVector_ReplaceGlobalValue')
+  function Epetra_MultiVector_ReplaceGlobalValue ( selfID, GlobalRow, VectorIndex, &
+        ScalarValue ) result(that) bind(C,name='Epetra_MultiVector_ReplaceGlobalValue')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                  ,intent(in)   ,value              :: VectorIndex
@@ -2049,11 +2147,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_ReplaceGlobalValue_BlockPos ( CT_Epetra_MultiVector_ID_t selfID, int GlobalBlockRow, int BlockRowOffset, int VectorIndex, double ScalarValue );
 
-  integer(c_int) function Epetra_MultiVector_ReplaceGlobalValue_BlockPos ( selfID, &
-        GlobalBlockRow, BlockRowOffset, VectorIndex, ScalarValue ) &
+  function Epetra_MultiVector_ReplaceGlobalValue_BlockPos ( selfID, GlobalBlockRow, &
+        BlockRowOffset, VectorIndex, ScalarValue ) result(that) &
         bind(C,name='Epetra_MultiVector_ReplaceGlobalValue_BlockPos')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: GlobalBlockRow
     integer(c_int)                  ,intent(in)   ,value              :: BlockRowOffset
@@ -2067,10 +2166,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_SumIntoGlobalValue ( CT_Epetra_MultiVector_ID_t selfID, int GlobalRow, int VectorIndex, double ScalarValue );
 
-  integer(c_int) function Epetra_MultiVector_SumIntoGlobalValue ( selfID, GlobalRow, &
-        VectorIndex, ScalarValue ) bind(C,name='Epetra_MultiVector_SumIntoGlobalValue')
+  function Epetra_MultiVector_SumIntoGlobalValue ( selfID, GlobalRow, VectorIndex, &
+        ScalarValue ) result(that) bind(C,name='Epetra_MultiVector_SumIntoGlobalValue')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                  ,intent(in)   ,value              :: VectorIndex
@@ -2083,11 +2183,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_SumIntoGlobalValue_BlockPos ( CT_Epetra_MultiVector_ID_t selfID, int GlobalBlockRow, int BlockRowOffset, int VectorIndex, double ScalarValue );
 
-  integer(c_int) function Epetra_MultiVector_SumIntoGlobalValue_BlockPos ( selfID, &
-        GlobalBlockRow, BlockRowOffset, VectorIndex, ScalarValue ) &
+  function Epetra_MultiVector_SumIntoGlobalValue_BlockPos ( selfID, GlobalBlockRow, &
+        BlockRowOffset, VectorIndex, ScalarValue ) result(that) &
         bind(C,name='Epetra_MultiVector_SumIntoGlobalValue_BlockPos')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: GlobalBlockRow
     integer(c_int)                  ,intent(in)   ,value              :: BlockRowOffset
@@ -2101,10 +2202,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_ReplaceMyValue ( CT_Epetra_MultiVector_ID_t selfID, int MyRow, int VectorIndex, double ScalarValue );
 
-  integer(c_int) function Epetra_MultiVector_ReplaceMyValue ( selfID, MyRow, VectorIndex, &
-        ScalarValue ) bind(C,name='Epetra_MultiVector_ReplaceMyValue')
+  function Epetra_MultiVector_ReplaceMyValue ( selfID, MyRow, VectorIndex, ScalarValue ) &
+        result(that) bind(C,name='Epetra_MultiVector_ReplaceMyValue')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: MyRow
     integer(c_int)                  ,intent(in)   ,value              :: VectorIndex
@@ -2117,11 +2219,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_ReplaceMyValue_BlockPos ( CT_Epetra_MultiVector_ID_t selfID, int MyBlockRow, int BlockRowOffset, int VectorIndex, double ScalarValue );
 
-  integer(c_int) function Epetra_MultiVector_ReplaceMyValue_BlockPos ( selfID, MyBlockRow, &
-        BlockRowOffset, VectorIndex, ScalarValue ) &
+  function Epetra_MultiVector_ReplaceMyValue_BlockPos ( selfID, MyBlockRow, BlockRowOffset, &
+        VectorIndex, ScalarValue ) result(that) &
         bind(C,name='Epetra_MultiVector_ReplaceMyValue_BlockPos')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: MyBlockRow
     integer(c_int)                  ,intent(in)   ,value              :: BlockRowOffset
@@ -2135,10 +2238,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_SumIntoMyValue ( CT_Epetra_MultiVector_ID_t selfID, int MyRow, int VectorIndex, double ScalarValue );
 
-  integer(c_int) function Epetra_MultiVector_SumIntoMyValue ( selfID, MyRow, VectorIndex, &
-        ScalarValue ) bind(C,name='Epetra_MultiVector_SumIntoMyValue')
+  function Epetra_MultiVector_SumIntoMyValue ( selfID, MyRow, VectorIndex, ScalarValue ) &
+        result(that) bind(C,name='Epetra_MultiVector_SumIntoMyValue')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: MyRow
     integer(c_int)                  ,intent(in)   ,value              :: VectorIndex
@@ -2151,11 +2255,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_SumIntoMyValue_BlockPos ( CT_Epetra_MultiVector_ID_t selfID, int MyBlockRow, int BlockRowOffset, int VectorIndex, double ScalarValue );
 
-  integer(c_int) function Epetra_MultiVector_SumIntoMyValue_BlockPos ( selfID, MyBlockRow, &
-        BlockRowOffset, VectorIndex, ScalarValue ) &
+  function Epetra_MultiVector_SumIntoMyValue_BlockPos ( selfID, MyBlockRow, BlockRowOffset, &
+        VectorIndex, ScalarValue ) result(that) &
         bind(C,name='Epetra_MultiVector_SumIntoMyValue_BlockPos')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: MyBlockRow
     integer(c_int)                  ,intent(in)   ,value              :: BlockRowOffset
@@ -2169,10 +2274,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_PutScalar ( CT_Epetra_MultiVector_ID_t selfID, double ScalarConstant );
 
-  integer(c_int) function Epetra_MultiVector_PutScalar ( selfID, ScalarConstant ) &
+  function Epetra_MultiVector_PutScalar ( selfID, ScalarConstant ) result(that) &
         bind(C,name='Epetra_MultiVector_PutScalar')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                  ,intent(in)   ,value              :: ScalarConstant
   end function
@@ -2183,10 +2289,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_Random ( CT_Epetra_MultiVector_ID_t selfID );
 
-  integer(c_int) function Epetra_MultiVector_Random ( selfID ) &
+  function Epetra_MultiVector_Random ( selfID ) result(that) &
         bind(C,name='Epetra_MultiVector_Random')
     import :: c_int ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2196,10 +2303,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_ExtractCopy_Fill2DA ( CT_Epetra_MultiVector_ID_t selfID, double * A, int MyLDA );
 
-  integer(c_int) function Epetra_MultiVector_ExtractCopy_Fill2DA ( selfID, A, MyLDA ) &
+  function Epetra_MultiVector_ExtractCopy_Fill2DA ( selfID, A, MyLDA ) result(that) &
         bind(C,name='Epetra_MultiVector_ExtractCopy_Fill2DA')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: A
     integer(c_int)                  ,intent(in)   ,value              :: MyLDA
@@ -2211,10 +2319,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_ExtractCopy_FillAOP ( CT_Epetra_MultiVector_ID_t selfID, double ** ArrayOfPointers );
 
-  integer(c_int) function Epetra_MultiVector_ExtractCopy_FillAOP ( selfID, ArrayOfPointers ) &
+  function Epetra_MultiVector_ExtractCopy_FillAOP ( selfID, ArrayOfPointers ) result(that) &
         bind(C,name='Epetra_MultiVector_ExtractCopy_FillAOP')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: ArrayOfPointers
   end function
@@ -2225,10 +2334,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_ExtractView_Set2DA ( CT_Epetra_MultiVector_ID_t selfID, double ** A, int * MyLDA );
 
-  integer(c_int) function Epetra_MultiVector_ExtractView_Set2DA ( selfID, A, MyLDA ) &
+  function Epetra_MultiVector_ExtractView_Set2DA ( selfID, A, MyLDA ) result(that) &
         bind(C,name='Epetra_MultiVector_ExtractView_Set2DA')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: A
     integer(c_int)                                      ,dimension(*) :: MyLDA
@@ -2240,10 +2350,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_ExtractView_SetAOP ( CT_Epetra_MultiVector_ID_t selfID, double *** ArrayOfPointers );
 
-  integer(c_int) function Epetra_MultiVector_ExtractView_SetAOP ( selfID, ArrayOfPointers ) &
+  function Epetra_MultiVector_ExtractView_SetAOP ( selfID, ArrayOfPointers ) result(that) &
         bind(C,name='Epetra_MultiVector_ExtractView_SetAOP')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: ArrayOfPointers
   end function
@@ -2254,10 +2365,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_Dot ( CT_Epetra_MultiVector_ID_t selfID, CT_Epetra_MultiVector_ID_t AID, double * Result );
 
-  integer(c_int) function Epetra_MultiVector_Dot ( selfID, AID, Result ) &
+  function Epetra_MultiVector_Dot ( selfID, AID, Result ) result(that) &
         bind(C,name='Epetra_MultiVector_Dot')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: AID
     real(c_double)                                      ,dimension(*) :: Result
@@ -2269,10 +2381,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_Abs ( CT_Epetra_MultiVector_ID_t selfID, CT_Epetra_MultiVector_ID_t AID );
 
-  integer(c_int) function Epetra_MultiVector_Abs ( selfID, AID ) &
+  function Epetra_MultiVector_Abs ( selfID, AID ) result(that) &
         bind(C,name='Epetra_MultiVector_Abs')
     import :: c_int ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: AID
   end function
@@ -2283,10 +2396,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_Reciprocal ( CT_Epetra_MultiVector_ID_t selfID, CT_Epetra_MultiVector_ID_t AID );
 
-  integer(c_int) function Epetra_MultiVector_Reciprocal ( selfID, AID ) &
+  function Epetra_MultiVector_Reciprocal ( selfID, AID ) result(that) &
         bind(C,name='Epetra_MultiVector_Reciprocal')
     import :: c_int ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: AID
   end function
@@ -2297,10 +2411,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_Scale_Self ( CT_Epetra_MultiVector_ID_t selfID, double ScalarValue );
 
-  integer(c_int) function Epetra_MultiVector_Scale_Self ( selfID, ScalarValue ) &
+  function Epetra_MultiVector_Scale_Self ( selfID, ScalarValue ) result(that) &
         bind(C,name='Epetra_MultiVector_Scale_Self')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                  ,intent(in)   ,value              :: ScalarValue
   end function
@@ -2311,10 +2426,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_Scale ( CT_Epetra_MultiVector_ID_t selfID, double ScalarA, CT_Epetra_MultiVector_ID_t AID );
 
-  integer(c_int) function Epetra_MultiVector_Scale ( selfID, ScalarA, AID ) &
+  function Epetra_MultiVector_Scale ( selfID, ScalarA, AID ) result(that) &
         bind(C,name='Epetra_MultiVector_Scale')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                  ,intent(in)   ,value              :: ScalarA
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: AID
@@ -2326,10 +2442,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_Update_WithA ( CT_Epetra_MultiVector_ID_t selfID, double ScalarA, CT_Epetra_MultiVector_ID_t AID, double ScalarThis );
 
-  integer(c_int) function Epetra_MultiVector_Update_WithA ( selfID, ScalarA, AID, &
-        ScalarThis ) bind(C,name='Epetra_MultiVector_Update_WithA')
+  function Epetra_MultiVector_Update_WithA ( selfID, ScalarA, AID, ScalarThis ) &
+        result(that) bind(C,name='Epetra_MultiVector_Update_WithA')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                  ,intent(in)   ,value              :: ScalarA
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: AID
@@ -2342,10 +2459,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_Update_WithAB ( CT_Epetra_MultiVector_ID_t selfID, double ScalarA, CT_Epetra_MultiVector_ID_t AID, double ScalarB, CT_Epetra_MultiVector_ID_t BID, double ScalarThis );
 
-  integer(c_int) function Epetra_MultiVector_Update_WithAB ( selfID, ScalarA, AID, ScalarB, &
-        BID, ScalarThis ) bind(C,name='Epetra_MultiVector_Update_WithAB')
+  function Epetra_MultiVector_Update_WithAB ( selfID, ScalarA, AID, ScalarB, BID, &
+        ScalarThis ) result(that) bind(C,name='Epetra_MultiVector_Update_WithAB')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                  ,intent(in)   ,value              :: ScalarA
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: AID
@@ -2360,10 +2478,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_Norm1 ( CT_Epetra_MultiVector_ID_t selfID, double * Result );
 
-  integer(c_int) function Epetra_MultiVector_Norm1 ( selfID, Result ) &
+  function Epetra_MultiVector_Norm1 ( selfID, Result ) result(that) &
         bind(C,name='Epetra_MultiVector_Norm1')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: Result
   end function
@@ -2374,10 +2493,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_Norm2 ( CT_Epetra_MultiVector_ID_t selfID, double * Result );
 
-  integer(c_int) function Epetra_MultiVector_Norm2 ( selfID, Result ) &
+  function Epetra_MultiVector_Norm2 ( selfID, Result ) result(that) &
         bind(C,name='Epetra_MultiVector_Norm2')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: Result
   end function
@@ -2388,10 +2508,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_NormInf ( CT_Epetra_MultiVector_ID_t selfID, double * Result );
 
-  integer(c_int) function Epetra_MultiVector_NormInf ( selfID, Result ) &
+  function Epetra_MultiVector_NormInf ( selfID, Result ) result(that) &
         bind(C,name='Epetra_MultiVector_NormInf')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: Result
   end function
@@ -2402,10 +2523,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_NormWeighted ( CT_Epetra_MultiVector_ID_t selfID, CT_Epetra_MultiVector_ID_t WeightsID, double * Result );
 
-  integer(c_int) function Epetra_MultiVector_NormWeighted ( selfID, WeightsID, Result ) &
+  function Epetra_MultiVector_NormWeighted ( selfID, WeightsID, Result ) result(that) &
         bind(C,name='Epetra_MultiVector_NormWeighted')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: WeightsID
     real(c_double)                                      ,dimension(*) :: Result
@@ -2417,10 +2539,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_MinValue ( CT_Epetra_MultiVector_ID_t selfID, double * Result );
 
-  integer(c_int) function Epetra_MultiVector_MinValue ( selfID, Result ) &
+  function Epetra_MultiVector_MinValue ( selfID, Result ) result(that) &
         bind(C,name='Epetra_MultiVector_MinValue')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: Result
   end function
@@ -2431,10 +2554,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_MaxValue ( CT_Epetra_MultiVector_ID_t selfID, double * Result );
 
-  integer(c_int) function Epetra_MultiVector_MaxValue ( selfID, Result ) &
+  function Epetra_MultiVector_MaxValue ( selfID, Result ) result(that) &
         bind(C,name='Epetra_MultiVector_MaxValue')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: Result
   end function
@@ -2445,10 +2569,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_MeanValue ( CT_Epetra_MultiVector_ID_t selfID, double * Result );
 
-  integer(c_int) function Epetra_MultiVector_MeanValue ( selfID, Result ) &
+  function Epetra_MultiVector_MeanValue ( selfID, Result ) result(that) &
         bind(C,name='Epetra_MultiVector_MeanValue')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                      ,dimension(*) :: Result
   end function
@@ -2459,10 +2584,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_Multiply_Matrix ( CT_Epetra_MultiVector_ID_t selfID, char TransA, char TransB, double ScalarAB, CT_Epetra_MultiVector_ID_t AID, CT_Epetra_MultiVector_ID_t BID, double ScalarThis );
 
-  integer(c_int) function Epetra_MultiVector_Multiply_Matrix ( selfID, TransA, TransB, &
-        ScalarAB, AID, BID, ScalarThis ) bind(C,name='Epetra_MultiVector_Multiply_Matrix')
+  function Epetra_MultiVector_Multiply_Matrix ( selfID, TransA, TransB, ScalarAB, AID, BID, &
+        ScalarThis ) result(that) bind(C,name='Epetra_MultiVector_Multiply_Matrix')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_char ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)          ,intent(in)   ,value              :: TransA
     character(kind=c_char)          ,intent(in)   ,value              :: TransB
@@ -2478,10 +2604,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_Multiply_ByEl ( CT_Epetra_MultiVector_ID_t selfID, double ScalarAB, CT_Epetra_MultiVector_ID_t AID, CT_Epetra_MultiVector_ID_t BID, double ScalarThis );
 
-  integer(c_int) function Epetra_MultiVector_Multiply_ByEl ( selfID, ScalarAB, AID, BID, &
-        ScalarThis ) bind(C,name='Epetra_MultiVector_Multiply_ByEl')
+  function Epetra_MultiVector_Multiply_ByEl ( selfID, ScalarAB, AID, BID, ScalarThis ) &
+        result(that) bind(C,name='Epetra_MultiVector_Multiply_ByEl')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                  ,intent(in)   ,value              :: ScalarAB
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: AID
@@ -2495,10 +2622,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_ReciprocalMultiply ( CT_Epetra_MultiVector_ID_t selfID, double ScalarAB, CT_Epetra_MultiVector_ID_t AID, CT_Epetra_MultiVector_ID_t BID, double ScalarThis );
 
-  integer(c_int) function Epetra_MultiVector_ReciprocalMultiply ( selfID, ScalarAB, AID, &
-        BID, ScalarThis ) bind(C,name='Epetra_MultiVector_ReciprocalMultiply')
+  function Epetra_MultiVector_ReciprocalMultiply ( selfID, ScalarAB, AID, BID, ScalarThis ) &
+        result(that) bind(C,name='Epetra_MultiVector_ReciprocalMultiply')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                  ,intent(in)   ,value              :: ScalarAB
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: AID
@@ -2512,10 +2640,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_SetSeed ( CT_Epetra_MultiVector_ID_t selfID, unsigned int Seed_in );
 
-  integer(c_int) function Epetra_MultiVector_SetSeed ( selfID, Seed_in ) &
+  function Epetra_MultiVector_SetSeed ( selfID, Seed_in ) result(that) &
         bind(C,name='Epetra_MultiVector_SetSeed')
     import :: c_int ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: Seed_in
   end function
@@ -2526,10 +2655,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! unsigned int Epetra_MultiVector_Seed ( CT_Epetra_MultiVector_ID_t selfID );
 
-  integer(c_int) function Epetra_MultiVector_Seed ( selfID ) &
+  function Epetra_MultiVector_Seed ( selfID ) result(that) &
         bind(C,name='Epetra_MultiVector_Seed')
     import :: c_int ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2553,10 +2683,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double * Epetra_MultiVector_getArray ( CT_Epetra_MultiVector_ID_t selfID, int i );
 
-  type(c_ptr) function Epetra_MultiVector_getArray ( selfID, i ) &
+  function Epetra_MultiVector_getArray ( selfID, i ) result(that) &
         bind(C,name='Epetra_MultiVector_getArray')
     import :: c_ptr ,FT_Epetra_MultiVector_ID_t ,c_int
     
+    type(c_ptr)                                                       :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: i
   end function
@@ -2567,10 +2698,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Vector_ID_t Epetra_MultiVector_getVector ( CT_Epetra_MultiVector_ID_t selfID, int i );
 
-  type(FT_Epetra_Vector_ID_t) function Epetra_MultiVector_getVector ( selfID, i ) &
+  function Epetra_MultiVector_getVector ( selfID, i ) result(that) &
         bind(C,name='Epetra_MultiVector_getVector')
     import :: FT_Epetra_Vector_ID_t ,FT_Epetra_MultiVector_ID_t ,c_int
     
+    type(FT_Epetra_Vector_ID_t)                                       :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: i
   end function
@@ -2581,10 +2713,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_NumVectors ( CT_Epetra_MultiVector_ID_t selfID );
 
-  integer(c_int) function Epetra_MultiVector_NumVectors ( selfID ) &
+  function Epetra_MultiVector_NumVectors ( selfID ) result(that) &
         bind(C,name='Epetra_MultiVector_NumVectors')
     import :: c_int ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2594,10 +2727,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_MyLength ( CT_Epetra_MultiVector_ID_t selfID );
 
-  integer(c_int) function Epetra_MultiVector_MyLength ( selfID ) &
+  function Epetra_MultiVector_MyLength ( selfID ) result(that) &
         bind(C,name='Epetra_MultiVector_MyLength')
     import :: c_int ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2607,10 +2741,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_GlobalLength ( CT_Epetra_MultiVector_ID_t selfID );
 
-  integer(c_int) function Epetra_MultiVector_GlobalLength ( selfID ) &
+  function Epetra_MultiVector_GlobalLength ( selfID ) result(that) &
         bind(C,name='Epetra_MultiVector_GlobalLength')
     import :: c_int ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2620,10 +2755,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_Stride ( CT_Epetra_MultiVector_ID_t selfID );
 
-  integer(c_int) function Epetra_MultiVector_Stride ( selfID ) &
+  function Epetra_MultiVector_Stride ( selfID ) result(that) &
         bind(C,name='Epetra_MultiVector_Stride')
     import :: c_int ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2633,10 +2769,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_MultiVector_ConstantStride ( CT_Epetra_MultiVector_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_MultiVector_ConstantStride ( selfID ) &
+  function Epetra_MultiVector_ConstantStride ( selfID ) result(that) &
         bind(C,name='Epetra_MultiVector_ConstantStride')
     import :: FT_boolean_t ,FT_Epetra_MultiVector_ID_t
     
+    integer(FT_boolean_t)                                             :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2646,10 +2783,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MultiVector_ReplaceMap ( CT_Epetra_MultiVector_ID_t selfID, CT_Epetra_BlockMap_ID_t mapID );
 
-  integer(c_int) function Epetra_MultiVector_ReplaceMap ( selfID, mapID ) &
+  function Epetra_MultiVector_ReplaceMap ( selfID, mapID ) result(that) &
         bind(C,name='Epetra_MultiVector_ReplaceMap')
     import :: c_int ,FT_Epetra_MultiVector_ID_t ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t)   ,intent(in)   ,value              :: mapID
   end function
@@ -2667,10 +2805,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_OffsetIndex_ID_t Epetra_OffsetIndex_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_OffsetIndex_ID_t) function Epetra_OffsetIndex_Degeneralize ( id ) &
+  function Epetra_OffsetIndex_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_OffsetIndex_Degeneralize')
     import :: FT_Epetra_OffsetIndex_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_OffsetIndex_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -2678,10 +2817,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_OffsetIndex_Generalize ( CT_Epetra_OffsetIndex_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_OffsetIndex_Generalize ( id ) &
+  function Epetra_OffsetIndex_Generalize ( id ) result(that) &
         bind(C,name='Epetra_OffsetIndex_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_OffsetIndex_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_OffsetIndex_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -2691,11 +2831,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_OffsetIndex_ID_t Epetra_OffsetIndex_Create_FromImporter ( CT_Epetra_CrsGraph_ID_t SourceGraphID, CT_Epetra_CrsGraph_ID_t TargetGraphID, CT_Epetra_Import_ID_t ImporterID );
 
-  type(FT_Epetra_OffsetIndex_ID_t) function Epetra_OffsetIndex_Create_FromImporter ( &
-        SourceGraphID, TargetGraphID, ImporterID ) &
-        bind(C,name='Epetra_OffsetIndex_Create_FromImporter')
+  function Epetra_OffsetIndex_Create_FromImporter ( SourceGraphID, TargetGraphID, &
+        ImporterID ) result(that) bind(C,name='Epetra_OffsetIndex_Create_FromImporter')
     import :: FT_Epetra_OffsetIndex_ID_t ,FT_Epetra_CrsGraph_ID_t ,FT_Epetra_Import_ID_t
     
+    type(FT_Epetra_OffsetIndex_ID_t)                                  :: that
     type(FT_Epetra_CrsGraph_ID_t)   ,intent(in)   ,value              :: SourceGraphID
     type(FT_Epetra_CrsGraph_ID_t)   ,intent(in)   ,value              :: TargetGraphID
     type(FT_Epetra_Import_ID_t)     ,intent(in)   ,value              :: ImporterID
@@ -2707,11 +2847,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_OffsetIndex_ID_t Epetra_OffsetIndex_Create_FromExporter ( CT_Epetra_CrsGraph_ID_t SourceGraphID, CT_Epetra_CrsGraph_ID_t TargetGraphID, CT_Epetra_Export_ID_t ExporterID );
 
-  type(FT_Epetra_OffsetIndex_ID_t) function Epetra_OffsetIndex_Create_FromExporter ( &
-        SourceGraphID, TargetGraphID, ExporterID ) &
-        bind(C,name='Epetra_OffsetIndex_Create_FromExporter')
+  function Epetra_OffsetIndex_Create_FromExporter ( SourceGraphID, TargetGraphID, &
+        ExporterID ) result(that) bind(C,name='Epetra_OffsetIndex_Create_FromExporter')
     import :: FT_Epetra_OffsetIndex_ID_t ,FT_Epetra_CrsGraph_ID_t ,FT_Epetra_Export_ID_t
     
+    type(FT_Epetra_OffsetIndex_ID_t)                                  :: that
     type(FT_Epetra_CrsGraph_ID_t)   ,intent(in)   ,value              :: SourceGraphID
     type(FT_Epetra_CrsGraph_ID_t)   ,intent(in)   ,value              :: TargetGraphID
     type(FT_Epetra_Export_ID_t)     ,intent(in)   ,value              :: ExporterID
@@ -2723,10 +2863,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_OffsetIndex_ID_t Epetra_OffsetIndex_Duplicate ( CT_Epetra_OffsetIndex_ID_t IndexorID );
 
-  type(FT_Epetra_OffsetIndex_ID_t) function Epetra_OffsetIndex_Duplicate ( IndexorID ) &
+  function Epetra_OffsetIndex_Duplicate ( IndexorID ) result(that) &
         bind(C,name='Epetra_OffsetIndex_Duplicate')
     import :: FT_Epetra_OffsetIndex_ID_t
     
+    type(FT_Epetra_OffsetIndex_ID_t)                                  :: that
     type(FT_Epetra_OffsetIndex_ID_t),intent(in)   ,value              :: IndexorID
   end function
 
@@ -2749,10 +2890,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int ** Epetra_OffsetIndex_SameOffsets ( CT_Epetra_OffsetIndex_ID_t selfID );
 
-  type(c_ptr) function Epetra_OffsetIndex_SameOffsets ( selfID ) &
+  function Epetra_OffsetIndex_SameOffsets ( selfID ) result(that) &
         bind(C,name='Epetra_OffsetIndex_SameOffsets')
     import :: c_ptr ,FT_Epetra_OffsetIndex_ID_t
     
+    type(c_ptr)                                                       :: that
     type(FT_Epetra_OffsetIndex_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2762,10 +2904,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int ** Epetra_OffsetIndex_PermuteOffsets ( CT_Epetra_OffsetIndex_ID_t selfID );
 
-  type(c_ptr) function Epetra_OffsetIndex_PermuteOffsets ( selfID ) &
+  function Epetra_OffsetIndex_PermuteOffsets ( selfID ) result(that) &
         bind(C,name='Epetra_OffsetIndex_PermuteOffsets')
     import :: c_ptr ,FT_Epetra_OffsetIndex_ID_t
     
+    type(c_ptr)                                                       :: that
     type(FT_Epetra_OffsetIndex_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2775,10 +2918,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int ** Epetra_OffsetIndex_RemoteOffsets ( CT_Epetra_OffsetIndex_ID_t selfID );
 
-  type(c_ptr) function Epetra_OffsetIndex_RemoteOffsets ( selfID ) &
+  function Epetra_OffsetIndex_RemoteOffsets ( selfID ) result(that) &
         bind(C,name='Epetra_OffsetIndex_RemoteOffsets')
     import :: c_ptr ,FT_Epetra_OffsetIndex_ID_t
     
+    type(c_ptr)                                                       :: that
     type(FT_Epetra_OffsetIndex_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -2795,10 +2939,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_Object_ID_t Epetra_Object_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Object_ID_t) function Epetra_Object_Degeneralize ( id ) &
+  function Epetra_Object_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_Object_Degeneralize')
     import :: FT_Epetra_Object_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_Object_ID_t)                                   :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -2806,10 +2951,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_Object_Generalize ( CT_Epetra_Object_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_Object_Generalize ( id ) &
+  function Epetra_Object_Generalize ( id ) result(that) &
         bind(C,name='Epetra_Object_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Object_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_Object_ID_t) ,intent(in)   ,value              :: id
   end function
 
@@ -2819,10 +2965,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Object_ID_t Epetra_Object_Create ( int TracebackModeIn, boolean set_label );
 
-  type(FT_Epetra_Object_ID_t) function Epetra_Object_Create ( TracebackModeIn, set_label ) &
+  function Epetra_Object_Create ( TracebackModeIn, set_label ) result(that) &
         bind(C,name='Epetra_Object_Create')
     import :: FT_Epetra_Object_ID_t ,c_int ,FT_boolean_t
     
+    type(FT_Epetra_Object_ID_t)                                   :: that
     integer(c_int)              ,intent(in)   ,value              :: TracebackModeIn
     integer(FT_boolean_t)       ,intent(in)   ,value              :: set_label
   end function
@@ -2833,10 +2980,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Object_ID_t Epetra_Object_Create_WithLabel ( const char * const Label, int TracebackModeIn );
 
-  type(FT_Epetra_Object_ID_t) function Epetra_Object_Create_WithLabel ( Label, &
-        TracebackModeIn ) bind(C,name='Epetra_Object_Create_WithLabel')
+  function Epetra_Object_Create_WithLabel ( Label, TracebackModeIn ) result(that) &
+        bind(C,name='Epetra_Object_Create_WithLabel')
     import :: FT_Epetra_Object_ID_t ,c_char ,c_int
     
+    type(FT_Epetra_Object_ID_t)                                   :: that
     character(kind=c_char)      ,intent(in)         ,dimension(*) :: Label
     integer(c_int)              ,intent(in)   ,value              :: TracebackModeIn
   end function
@@ -2847,10 +2995,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Object_ID_t Epetra_Object_Duplicate ( CT_Epetra_Object_ID_t ObjectID );
 
-  type(FT_Epetra_Object_ID_t) function Epetra_Object_Duplicate ( ObjectID ) &
+  function Epetra_Object_Duplicate ( ObjectID ) result(that) &
         bind(C,name='Epetra_Object_Duplicate')
     import :: FT_Epetra_Object_ID_t
     
+    type(FT_Epetra_Object_ID_t)                                   :: that
     type(FT_Epetra_Object_ID_t) ,intent(in)   ,value              :: ObjectID
   end function
 
@@ -2885,9 +3034,10 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! const char * Epetra_Object_Label ( CT_Epetra_Object_ID_t selfID );
 
-  type(c_ptr) function Epetra_Object_Label ( selfID ) bind(C,name='Epetra_Object_Label')
+  function Epetra_Object_Label ( selfID ) result(that) bind(C,name='Epetra_Object_Label')
     import :: c_ptr ,FT_Epetra_Object_ID_t
     
+    type(c_ptr)                                                   :: that
     type(FT_Epetra_Object_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -2910,10 +3060,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Object_GetTracebackMode (  );
 
-  integer(c_int) function Epetra_Object_GetTracebackMode (  ) &
+  function Epetra_Object_GetTracebackMode (  ) result(that) &
         bind(C,name='Epetra_Object_GetTracebackMode')
     import :: c_int
     
+    integer(c_int)                                                :: that
   end function
 
 
@@ -2922,10 +3073,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Object_ReportError ( CT_Epetra_Object_ID_t selfID, const char Message[], int ErrorCode );
 
-  integer(c_int) function Epetra_Object_ReportError ( selfID, Message, ErrorCode ) &
+  function Epetra_Object_ReportError ( selfID, Message, ErrorCode ) result(that) &
         bind(C,name='Epetra_Object_ReportError')
     import :: c_int ,FT_Epetra_Object_ID_t ,c_char
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Object_ID_t) ,intent(in)   ,value              :: selfID
     character(kind=c_char)      ,intent(in)         ,dimension(*) :: Message
     integer(c_int)              ,intent(in)   ,value              :: ErrorCode
@@ -2944,10 +3096,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_RowMatrix_ID_t Epetra_RowMatrix_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_RowMatrix_ID_t) function Epetra_RowMatrix_Degeneralize ( id ) &
+  function Epetra_RowMatrix_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_RowMatrix_Degeneralize')
     import :: FT_Epetra_RowMatrix_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_RowMatrix_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -2955,10 +3108,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_RowMatrix_Generalize ( CT_Epetra_RowMatrix_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_RowMatrix_Generalize ( id ) &
+  function Epetra_RowMatrix_Generalize ( id ) result(that) &
         bind(C,name='Epetra_RowMatrix_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_RowMatrix_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -2980,10 +3134,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_RowMatrix_NumMyRowEntries ( CT_Epetra_RowMatrix_ID_t selfID, int MyRow, int * NumEntries );
 
-  integer(c_int) function Epetra_RowMatrix_NumMyRowEntries ( selfID, MyRow, NumEntries ) &
+  function Epetra_RowMatrix_NumMyRowEntries ( selfID, MyRow, NumEntries ) result(that) &
         bind(C,name='Epetra_RowMatrix_NumMyRowEntries')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(inout)                    :: NumEntries
@@ -2995,10 +3150,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_RowMatrix_MaxNumEntries ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_RowMatrix_MaxNumEntries ( selfID ) &
+  function Epetra_RowMatrix_MaxNumEntries ( selfID ) result(that) &
         bind(C,name='Epetra_RowMatrix_MaxNumEntries')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3008,10 +3164,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_RowMatrix_ExtractMyRowCopy ( CT_Epetra_RowMatrix_ID_t selfID, int MyRow, int Length, int * NumEntries, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_RowMatrix_ExtractMyRowCopy ( selfID, MyRow, Length, &
-        NumEntries, Values, Indices ) bind(C,name='Epetra_RowMatrix_ExtractMyRowCopy')
+  function Epetra_RowMatrix_ExtractMyRowCopy ( selfID, MyRow, Length, NumEntries, Values, &
+        Indices ) result(that) bind(C,name='Epetra_RowMatrix_ExtractMyRowCopy')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(in)   ,value              :: Length
@@ -3026,10 +3183,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_RowMatrix_ExtractDiagonalCopy ( CT_Epetra_RowMatrix_ID_t selfID, CT_Epetra_Vector_ID_t DiagonalID );
 
-  integer(c_int) function Epetra_RowMatrix_ExtractDiagonalCopy ( selfID, DiagonalID ) &
+  function Epetra_RowMatrix_ExtractDiagonalCopy ( selfID, DiagonalID ) result(that) &
         bind(C,name='Epetra_RowMatrix_ExtractDiagonalCopy')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t ,FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: DiagonalID
   end function
@@ -3040,10 +3198,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_RowMatrix_Multiply ( CT_Epetra_RowMatrix_ID_t selfID, boolean TransA, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
-  integer(c_int) function Epetra_RowMatrix_Multiply ( selfID, TransA, XID, YID ) &
+  function Epetra_RowMatrix_Multiply ( selfID, TransA, XID, YID ) result(that) &
         bind(C,name='Epetra_RowMatrix_Multiply')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t ,FT_boolean_t ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(FT_boolean_t)         ,intent(in)   ,value              :: TransA
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
@@ -3056,10 +3215,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_RowMatrix_Solve ( CT_Epetra_RowMatrix_ID_t selfID, boolean Upper, boolean Trans, boolean UnitDiagonal, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
-  integer(c_int) function Epetra_RowMatrix_Solve ( selfID, Upper, Trans, UnitDiagonal, XID, &
-        YID ) bind(C,name='Epetra_RowMatrix_Solve')
+  function Epetra_RowMatrix_Solve ( selfID, Upper, Trans, UnitDiagonal, XID, YID ) &
+        result(that) bind(C,name='Epetra_RowMatrix_Solve')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t ,FT_boolean_t ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(FT_boolean_t)         ,intent(in)   ,value              :: Upper
     integer(FT_boolean_t)         ,intent(in)   ,value              :: Trans
@@ -3074,10 +3234,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_RowMatrix_InvRowSums ( CT_Epetra_RowMatrix_ID_t selfID, CT_Epetra_Vector_ID_t xID );
 
-  integer(c_int) function Epetra_RowMatrix_InvRowSums ( selfID, xID ) &
+  function Epetra_RowMatrix_InvRowSums ( selfID, xID ) result(that) &
         bind(C,name='Epetra_RowMatrix_InvRowSums')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t ,FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -3088,10 +3249,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_RowMatrix_LeftScale ( CT_Epetra_RowMatrix_ID_t selfID, CT_Epetra_Vector_ID_t xID );
 
-  integer(c_int) function Epetra_RowMatrix_LeftScale ( selfID, xID ) &
+  function Epetra_RowMatrix_LeftScale ( selfID, xID ) result(that) &
         bind(C,name='Epetra_RowMatrix_LeftScale')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t ,FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -3102,10 +3264,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_RowMatrix_InvColSums ( CT_Epetra_RowMatrix_ID_t selfID, CT_Epetra_Vector_ID_t xID );
 
-  integer(c_int) function Epetra_RowMatrix_InvColSums ( selfID, xID ) &
+  function Epetra_RowMatrix_InvColSums ( selfID, xID ) result(that) &
         bind(C,name='Epetra_RowMatrix_InvColSums')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t ,FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -3116,10 +3279,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_RowMatrix_RightScale ( CT_Epetra_RowMatrix_ID_t selfID, CT_Epetra_Vector_ID_t xID );
 
-  integer(c_int) function Epetra_RowMatrix_RightScale ( selfID, xID ) &
+  function Epetra_RowMatrix_RightScale ( selfID, xID ) result(that) &
         bind(C,name='Epetra_RowMatrix_RightScale')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t ,FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -3130,10 +3294,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_RowMatrix_Filled ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_RowMatrix_Filled ( selfID ) &
+  function Epetra_RowMatrix_Filled ( selfID ) result(that) &
         bind(C,name='Epetra_RowMatrix_Filled')
     import :: FT_boolean_t ,FT_Epetra_RowMatrix_ID_t
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3143,10 +3308,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_RowMatrix_NormInf ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  real(c_double) function Epetra_RowMatrix_NormInf ( selfID ) &
+  function Epetra_RowMatrix_NormInf ( selfID ) result(that) &
         bind(C,name='Epetra_RowMatrix_NormInf')
     import :: c_double ,FT_Epetra_RowMatrix_ID_t
     
+    real(c_double)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3156,10 +3322,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_RowMatrix_NormOne ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  real(c_double) function Epetra_RowMatrix_NormOne ( selfID ) &
+  function Epetra_RowMatrix_NormOne ( selfID ) result(that) &
         bind(C,name='Epetra_RowMatrix_NormOne')
     import :: c_double ,FT_Epetra_RowMatrix_ID_t
     
+    real(c_double)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3169,10 +3336,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_RowMatrix_NumGlobalNonzeros ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_RowMatrix_NumGlobalNonzeros ( selfID ) &
+  function Epetra_RowMatrix_NumGlobalNonzeros ( selfID ) result(that) &
         bind(C,name='Epetra_RowMatrix_NumGlobalNonzeros')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3182,10 +3350,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_RowMatrix_NumGlobalRows ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_RowMatrix_NumGlobalRows ( selfID ) &
+  function Epetra_RowMatrix_NumGlobalRows ( selfID ) result(that) &
         bind(C,name='Epetra_RowMatrix_NumGlobalRows')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3195,10 +3364,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_RowMatrix_NumGlobalCols ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_RowMatrix_NumGlobalCols ( selfID ) &
+  function Epetra_RowMatrix_NumGlobalCols ( selfID ) result(that) &
         bind(C,name='Epetra_RowMatrix_NumGlobalCols')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3208,10 +3378,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_RowMatrix_NumGlobalDiagonals ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_RowMatrix_NumGlobalDiagonals ( selfID ) &
+  function Epetra_RowMatrix_NumGlobalDiagonals ( selfID ) result(that) &
         bind(C,name='Epetra_RowMatrix_NumGlobalDiagonals')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3221,10 +3392,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_RowMatrix_NumMyNonzeros ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_RowMatrix_NumMyNonzeros ( selfID ) &
+  function Epetra_RowMatrix_NumMyNonzeros ( selfID ) result(that) &
         bind(C,name='Epetra_RowMatrix_NumMyNonzeros')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3234,10 +3406,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_RowMatrix_NumMyRows ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_RowMatrix_NumMyRows ( selfID ) &
+  function Epetra_RowMatrix_NumMyRows ( selfID ) result(that) &
         bind(C,name='Epetra_RowMatrix_NumMyRows')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3247,10 +3420,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_RowMatrix_NumMyCols ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_RowMatrix_NumMyCols ( selfID ) &
+  function Epetra_RowMatrix_NumMyCols ( selfID ) result(that) &
         bind(C,name='Epetra_RowMatrix_NumMyCols')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3260,10 +3434,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_RowMatrix_NumMyDiagonals ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_RowMatrix_NumMyDiagonals ( selfID ) &
+  function Epetra_RowMatrix_NumMyDiagonals ( selfID ) result(that) &
         bind(C,name='Epetra_RowMatrix_NumMyDiagonals')
     import :: c_int ,FT_Epetra_RowMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3273,10 +3448,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_RowMatrix_LowerTriangular ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_RowMatrix_LowerTriangular ( selfID ) &
+  function Epetra_RowMatrix_LowerTriangular ( selfID ) result(that) &
         bind(C,name='Epetra_RowMatrix_LowerTriangular')
     import :: FT_boolean_t ,FT_Epetra_RowMatrix_ID_t
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3286,10 +3462,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_RowMatrix_UpperTriangular ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_RowMatrix_UpperTriangular ( selfID ) &
+  function Epetra_RowMatrix_UpperTriangular ( selfID ) result(that) &
         bind(C,name='Epetra_RowMatrix_UpperTriangular')
     import :: FT_boolean_t ,FT_Epetra_RowMatrix_ID_t
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3299,10 +3476,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Epetra_RowMatrix_RowMatrixRowMap ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_RowMatrix_RowMatrixRowMap ( selfID ) &
+  function Epetra_RowMatrix_RowMatrixRowMap ( selfID ) result(that) &
         bind(C,name='Epetra_RowMatrix_RowMatrixRowMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_RowMatrix_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                        :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3312,10 +3490,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Epetra_RowMatrix_RowMatrixColMap ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_RowMatrix_RowMatrixColMap ( selfID ) &
+  function Epetra_RowMatrix_RowMatrixColMap ( selfID ) result(that) &
         bind(C,name='Epetra_RowMatrix_RowMatrixColMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_RowMatrix_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                        :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3325,10 +3504,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Import_ID_t Epetra_RowMatrix_RowMatrixImporter ( CT_Epetra_RowMatrix_ID_t selfID );
 
-  type(FT_Epetra_Import_ID_t) function Epetra_RowMatrix_RowMatrixImporter ( selfID ) &
+  function Epetra_RowMatrix_RowMatrixImporter ( selfID ) result(that) &
         bind(C,name='Epetra_RowMatrix_RowMatrixImporter')
     import :: FT_Epetra_Import_ID_t ,FT_Epetra_RowMatrix_ID_t
     
+    type(FT_Epetra_Import_ID_t)                                     :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3345,10 +3525,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_CompObject_ID_t Epetra_CompObject_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_CompObject_ID_t) function Epetra_CompObject_Degeneralize ( id ) &
+  function Epetra_CompObject_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_CompObject_Degeneralize')
     import :: FT_Epetra_CompObject_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_CompObject_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -3356,10 +3537,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_CompObject_Generalize ( CT_Epetra_CompObject_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_CompObject_Generalize ( id ) &
+  function Epetra_CompObject_Generalize ( id ) result(that) &
         bind(C,name='Epetra_CompObject_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_CompObject_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -3369,10 +3551,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_CompObject_ID_t Epetra_CompObject_Create (  );
 
-  type(FT_Epetra_CompObject_ID_t) function Epetra_CompObject_Create (  ) &
+  function Epetra_CompObject_Create (  ) result(that) &
         bind(C,name='Epetra_CompObject_Create')
     import :: FT_Epetra_CompObject_ID_t
     
+    type(FT_Epetra_CompObject_ID_t)                                  :: that
   end function
 
 
@@ -3381,10 +3564,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_CompObject_ID_t Epetra_CompObject_Duplicate ( CT_Epetra_CompObject_ID_t SourceID );
 
-  type(FT_Epetra_CompObject_ID_t) function Epetra_CompObject_Duplicate ( SourceID ) &
+  function Epetra_CompObject_Duplicate ( SourceID ) result(that) &
         bind(C,name='Epetra_CompObject_Duplicate')
     import :: FT_Epetra_CompObject_ID_t
     
+    type(FT_Epetra_CompObject_ID_t)                                  :: that
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: SourceID
   end function
 
@@ -3447,10 +3631,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Flops_ID_t Epetra_CompObject_GetFlopCounter ( CT_Epetra_CompObject_ID_t selfID );
 
-  type(FT_Epetra_Flops_ID_t) function Epetra_CompObject_GetFlopCounter ( selfID ) &
+  function Epetra_CompObject_GetFlopCounter ( selfID ) result(that) &
         bind(C,name='Epetra_CompObject_GetFlopCounter')
     import :: FT_Epetra_Flops_ID_t ,FT_Epetra_CompObject_ID_t
     
+    type(FT_Epetra_Flops_ID_t)                                       :: that
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3473,10 +3658,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_CompObject_Flops ( CT_Epetra_CompObject_ID_t selfID );
 
-  real(c_double) function Epetra_CompObject_Flops ( selfID ) &
+  function Epetra_CompObject_Flops ( selfID ) result(that) &
         bind(C,name='Epetra_CompObject_Flops')
     import :: c_double ,FT_Epetra_CompObject_ID_t
     
+    real(c_double)                                                   :: that
     type(FT_Epetra_CompObject_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3563,10 +3749,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_Directory_ID_t Epetra_Directory_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Directory_ID_t) function Epetra_Directory_Degeneralize ( id ) &
+  function Epetra_Directory_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_Directory_Degeneralize')
     import :: FT_Epetra_Directory_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_Directory_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -3574,10 +3761,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_Directory_Generalize ( CT_Epetra_Directory_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_Directory_Generalize ( id ) &
+  function Epetra_Directory_Generalize ( id ) result(that) &
         bind(C,name='Epetra_Directory_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Directory_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_Directory_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -3599,11 +3787,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Directory_GetDirectoryEntries ( CT_Epetra_Directory_ID_t selfID, CT_Epetra_BlockMap_ID_t MapID, const int NumEntries, const int * GlobalEntries, int * Procs, int * LocalEntries, int * EntrySizes, boolean high_rank_sharing_procs );
 
-  integer(c_int) function Epetra_Directory_GetDirectoryEntries ( selfID, MapID, NumEntries, &
-        GlobalEntries, Procs, LocalEntries, EntrySizes, high_rank_sharing_procs ) &
+  function Epetra_Directory_GetDirectoryEntries ( selfID, MapID, NumEntries, GlobalEntries, &
+        Procs, LocalEntries, EntrySizes, high_rank_sharing_procs ) result(that) &
         bind(C,name='Epetra_Directory_GetDirectoryEntries')
     import :: c_int ,FT_Epetra_Directory_ID_t ,FT_Epetra_BlockMap_ID_t ,FT_boolean_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_Directory_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t) ,intent(in)   ,value              :: MapID
     integer(c_int)                ,intent(in)   ,value              :: NumEntries
@@ -3620,10 +3809,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_Directory_GIDsAllUniquelyOwned ( CT_Epetra_Directory_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_Directory_GIDsAllUniquelyOwned ( selfID ) &
+  function Epetra_Directory_GIDsAllUniquelyOwned ( selfID ) result(that) &
         bind(C,name='Epetra_Directory_GIDsAllUniquelyOwned')
     import :: FT_boolean_t ,FT_Epetra_Directory_ID_t
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_Directory_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3640,10 +3830,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_Flops_ID_t Epetra_Flops_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Flops_ID_t) function Epetra_Flops_Degeneralize ( id ) &
+  function Epetra_Flops_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_Flops_Degeneralize')
     import :: FT_Epetra_Flops_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_Flops_ID_t)                                    :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -3651,10 +3842,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_Flops_Generalize ( CT_Epetra_Flops_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_Flops_Generalize ( id ) &
+  function Epetra_Flops_Generalize ( id ) result(that) &
         bind(C,name='Epetra_Flops_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Flops_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_Flops_ID_t)  ,intent(in)   ,value              :: id
   end function
 
@@ -3664,10 +3856,10 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Flops_ID_t Epetra_Flops_Create (  );
 
-  type(FT_Epetra_Flops_ID_t) function Epetra_Flops_Create (  ) &
-        bind(C,name='Epetra_Flops_Create')
+  function Epetra_Flops_Create (  ) result(that) bind(C,name='Epetra_Flops_Create')
     import :: FT_Epetra_Flops_ID_t
     
+    type(FT_Epetra_Flops_ID_t)                                    :: that
   end function
 
 
@@ -3676,10 +3868,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Flops_ID_t Epetra_Flops_Duplicate ( CT_Epetra_Flops_ID_t Flops_inID );
 
-  type(FT_Epetra_Flops_ID_t) function Epetra_Flops_Duplicate ( Flops_inID ) &
+  function Epetra_Flops_Duplicate ( Flops_inID ) result(that) &
         bind(C,name='Epetra_Flops_Duplicate')
     import :: FT_Epetra_Flops_ID_t
     
+    type(FT_Epetra_Flops_ID_t)                                    :: that
     type(FT_Epetra_Flops_ID_t)  ,intent(in)   ,value              :: Flops_inID
   end function
 
@@ -3689,9 +3882,10 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_Flops_Flops ( CT_Epetra_Flops_ID_t selfID );
 
-  real(c_double) function Epetra_Flops_Flops ( selfID ) bind(C,name='Epetra_Flops_Flops')
+  function Epetra_Flops_Flops ( selfID ) result(that) bind(C,name='Epetra_Flops_Flops')
     import :: c_double ,FT_Epetra_Flops_ID_t
     
+    real(c_double)                                                :: that
     type(FT_Epetra_Flops_ID_t)  ,intent(in)   ,value              :: selfID
   end function
 
@@ -3745,10 +3939,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_SrcDistObject_ID_t Epetra_SrcDistObject_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_SrcDistObject_ID_t) function Epetra_SrcDistObject_Degeneralize ( id ) &
+  function Epetra_SrcDistObject_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_SrcDistObject_Degeneralize')
     import :: FT_Epetra_SrcDistObject_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_SrcDistObject_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t)  ,intent(in)   ,value              :: id
   end function
 
@@ -3756,10 +3951,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_SrcDistObject_Generalize ( CT_Epetra_SrcDistObject_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_SrcDistObject_Generalize ( id ) &
+  function Epetra_SrcDistObject_Generalize ( id ) result(that) &
         bind(C,name='Epetra_SrcDistObject_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_SrcDistObject_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                    :: that
     type(FT_Epetra_SrcDistObject_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -3782,10 +3978,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_BlockMap_ID_t Epetra_SrcDistObject_Map ( CT_Epetra_SrcDistObject_ID_t selfID );
 
-  type(FT_Epetra_BlockMap_ID_t) function Epetra_SrcDistObject_Map ( selfID ) &
+  function Epetra_SrcDistObject_Map ( selfID ) result(that) &
         bind(C,name='Epetra_SrcDistObject_Map')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_SrcDistObject_ID_t
     
+    type(FT_Epetra_BlockMap_ID_t)                                       :: that
     type(FT_Epetra_SrcDistObject_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3808,10 +4005,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_MpiComm_ID_t Epetra_MpiComm_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_MpiComm_ID_t) function Epetra_MpiComm_Degeneralize ( id ) &
+  function Epetra_MpiComm_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_MpiComm_Degeneralize')
     import :: FT_Epetra_MpiComm_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_MpiComm_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -3819,10 +4017,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_MpiComm_Generalize ( CT_Epetra_MpiComm_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_MpiComm_Generalize ( id ) &
+  function Epetra_MpiComm_Generalize ( id ) result(that) &
         bind(C,name='Epetra_MpiComm_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_MpiComm_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -3832,10 +4031,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_MpiComm_ID_t Epetra_MpiComm_Duplicate ( CT_Epetra_MpiComm_ID_t CommID );
 
-  type(FT_Epetra_MpiComm_ID_t) function Epetra_MpiComm_Duplicate ( CommID ) &
+  function Epetra_MpiComm_Duplicate ( CommID ) result(that) &
         bind(C,name='Epetra_MpiComm_Duplicate')
     import :: FT_Epetra_MpiComm_ID_t
     
+    type(FT_Epetra_MpiComm_ID_t)                                  :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: CommID
   end function
 
@@ -3845,10 +4045,10 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Comm_ID_t Epetra_MpiComm_Clone ( CT_Epetra_MpiComm_ID_t selfID );
 
-  type(FT_Epetra_Comm_ID_t) function Epetra_MpiComm_Clone ( selfID ) &
-        bind(C,name='Epetra_MpiComm_Clone')
+  function Epetra_MpiComm_Clone ( selfID ) result(that) bind(C,name='Epetra_MpiComm_Clone')
     import :: FT_Epetra_Comm_ID_t ,FT_Epetra_MpiComm_ID_t
     
+    type(FT_Epetra_Comm_ID_t)                                     :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -3882,10 +4082,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_Broadcast_Double ( CT_Epetra_MpiComm_ID_t selfID, double * MyVals, int Count, int Root );
 
-  integer(c_int) function Epetra_MpiComm_Broadcast_Double ( selfID, MyVals, Count, Root ) &
+  function Epetra_MpiComm_Broadcast_Double ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_MpiComm_Broadcast_Double')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: MyVals
     integer(c_int)              ,intent(in)   ,value              :: Count
@@ -3898,10 +4099,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_Broadcast_Int ( CT_Epetra_MpiComm_ID_t selfID, int * MyVals, int Count, int Root );
 
-  integer(c_int) function Epetra_MpiComm_Broadcast_Int ( selfID, MyVals, Count, Root ) &
+  function Epetra_MpiComm_Broadcast_Int ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_MpiComm_Broadcast_Int')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: MyVals
     integer(c_int)              ,intent(in)   ,value              :: Count
@@ -3914,10 +4116,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_Broadcast_Long ( CT_Epetra_MpiComm_ID_t selfID, long * MyVals, int Count, int Root );
 
-  integer(c_int) function Epetra_MpiComm_Broadcast_Long ( selfID, MyVals, Count, Root ) &
+  function Epetra_MpiComm_Broadcast_Long ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_MpiComm_Broadcast_Long')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_long
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: MyVals
     integer(c_int)              ,intent(in)   ,value              :: Count
@@ -3930,10 +4133,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_Broadcast_Char ( CT_Epetra_MpiComm_ID_t selfID, char * MyVals, int Count, int Root );
 
-  integer(c_int) function Epetra_MpiComm_Broadcast_Char ( selfID, MyVals, Count, Root ) &
+  function Epetra_MpiComm_Broadcast_Char ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_MpiComm_Broadcast_Char')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_char
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                          ,dimension(*) :: MyVals
     integer(c_int)              ,intent(in)   ,value              :: Count
@@ -3946,10 +4150,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_GatherAll_Double ( CT_Epetra_MpiComm_ID_t selfID, double * MyVals, double * AllVals, int Count );
 
-  integer(c_int) function Epetra_MpiComm_GatherAll_Double ( selfID, MyVals, AllVals, Count ) &
+  function Epetra_MpiComm_GatherAll_Double ( selfID, MyVals, AllVals, Count ) result(that) &
         bind(C,name='Epetra_MpiComm_GatherAll_Double')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: MyVals
     real(c_double)                                  ,dimension(*) :: AllVals
@@ -3962,10 +4167,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_GatherAll_Int ( CT_Epetra_MpiComm_ID_t selfID, int * MyVals, int * AllVals, int Count );
 
-  integer(c_int) function Epetra_MpiComm_GatherAll_Int ( selfID, MyVals, AllVals, Count ) &
+  function Epetra_MpiComm_GatherAll_Int ( selfID, MyVals, AllVals, Count ) result(that) &
         bind(C,name='Epetra_MpiComm_GatherAll_Int')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: MyVals
     integer(c_int)                                  ,dimension(*) :: AllVals
@@ -3978,10 +4184,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_GatherAll_Long ( CT_Epetra_MpiComm_ID_t selfID, long * MyVals, long * AllVals, int Count );
 
-  integer(c_int) function Epetra_MpiComm_GatherAll_Long ( selfID, MyVals, AllVals, Count ) &
+  function Epetra_MpiComm_GatherAll_Long ( selfID, MyVals, AllVals, Count ) result(that) &
         bind(C,name='Epetra_MpiComm_GatherAll_Long')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_long
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: MyVals
     integer(c_long)                                 ,dimension(*) :: AllVals
@@ -3994,10 +4201,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_SumAll_Double ( CT_Epetra_MpiComm_ID_t selfID, double * PartialSums, double * GlobalSums, int Count );
 
-  integer(c_int) function Epetra_MpiComm_SumAll_Double ( selfID, PartialSums, GlobalSums, &
-        Count ) bind(C,name='Epetra_MpiComm_SumAll_Double')
+  function Epetra_MpiComm_SumAll_Double ( selfID, PartialSums, GlobalSums, Count ) &
+        result(that) bind(C,name='Epetra_MpiComm_SumAll_Double')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: PartialSums
     real(c_double)                                  ,dimension(*) :: GlobalSums
@@ -4010,10 +4218,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_SumAll_Int ( CT_Epetra_MpiComm_ID_t selfID, int * PartialSums, int * GlobalSums, int Count );
 
-  integer(c_int) function Epetra_MpiComm_SumAll_Int ( selfID, PartialSums, GlobalSums, &
-        Count ) bind(C,name='Epetra_MpiComm_SumAll_Int')
+  function Epetra_MpiComm_SumAll_Int ( selfID, PartialSums, GlobalSums, Count ) &
+        result(that) bind(C,name='Epetra_MpiComm_SumAll_Int')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: PartialSums
     integer(c_int)                                  ,dimension(*) :: GlobalSums
@@ -4026,10 +4235,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_SumAll_Long ( CT_Epetra_MpiComm_ID_t selfID, long * PartialSums, long * GlobalSums, int Count );
 
-  integer(c_int) function Epetra_MpiComm_SumAll_Long ( selfID, PartialSums, GlobalSums, &
-        Count ) bind(C,name='Epetra_MpiComm_SumAll_Long')
+  function Epetra_MpiComm_SumAll_Long ( selfID, PartialSums, GlobalSums, Count ) &
+        result(that) bind(C,name='Epetra_MpiComm_SumAll_Long')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_long
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: PartialSums
     integer(c_long)                                 ,dimension(*) :: GlobalSums
@@ -4042,10 +4252,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_MaxAll_Double ( CT_Epetra_MpiComm_ID_t selfID, double * PartialMaxs, double * GlobalMaxs, int Count );
 
-  integer(c_int) function Epetra_MpiComm_MaxAll_Double ( selfID, PartialMaxs, GlobalMaxs, &
-        Count ) bind(C,name='Epetra_MpiComm_MaxAll_Double')
+  function Epetra_MpiComm_MaxAll_Double ( selfID, PartialMaxs, GlobalMaxs, Count ) &
+        result(that) bind(C,name='Epetra_MpiComm_MaxAll_Double')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: PartialMaxs
     real(c_double)                                  ,dimension(*) :: GlobalMaxs
@@ -4058,10 +4269,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_MaxAll_Int ( CT_Epetra_MpiComm_ID_t selfID, int * PartialMaxs, int * GlobalMaxs, int Count );
 
-  integer(c_int) function Epetra_MpiComm_MaxAll_Int ( selfID, PartialMaxs, GlobalMaxs, &
-        Count ) bind(C,name='Epetra_MpiComm_MaxAll_Int')
+  function Epetra_MpiComm_MaxAll_Int ( selfID, PartialMaxs, GlobalMaxs, Count ) &
+        result(that) bind(C,name='Epetra_MpiComm_MaxAll_Int')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: PartialMaxs
     integer(c_int)                                  ,dimension(*) :: GlobalMaxs
@@ -4074,10 +4286,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_MaxAll_Long ( CT_Epetra_MpiComm_ID_t selfID, long * PartialMaxs, long * GlobalMaxs, int Count );
 
-  integer(c_int) function Epetra_MpiComm_MaxAll_Long ( selfID, PartialMaxs, GlobalMaxs, &
-        Count ) bind(C,name='Epetra_MpiComm_MaxAll_Long')
+  function Epetra_MpiComm_MaxAll_Long ( selfID, PartialMaxs, GlobalMaxs, Count ) &
+        result(that) bind(C,name='Epetra_MpiComm_MaxAll_Long')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_long
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: PartialMaxs
     integer(c_long)                                 ,dimension(*) :: GlobalMaxs
@@ -4090,10 +4303,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_MinAll_Double ( CT_Epetra_MpiComm_ID_t selfID, double * PartialMins, double * GlobalMins, int Count );
 
-  integer(c_int) function Epetra_MpiComm_MinAll_Double ( selfID, PartialMins, GlobalMins, &
-        Count ) bind(C,name='Epetra_MpiComm_MinAll_Double')
+  function Epetra_MpiComm_MinAll_Double ( selfID, PartialMins, GlobalMins, Count ) &
+        result(that) bind(C,name='Epetra_MpiComm_MinAll_Double')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: PartialMins
     real(c_double)                                  ,dimension(*) :: GlobalMins
@@ -4106,10 +4320,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_MinAll_Int ( CT_Epetra_MpiComm_ID_t selfID, int * PartialMins, int * GlobalMins, int Count );
 
-  integer(c_int) function Epetra_MpiComm_MinAll_Int ( selfID, PartialMins, GlobalMins, &
-        Count ) bind(C,name='Epetra_MpiComm_MinAll_Int')
+  function Epetra_MpiComm_MinAll_Int ( selfID, PartialMins, GlobalMins, Count ) &
+        result(that) bind(C,name='Epetra_MpiComm_MinAll_Int')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: PartialMins
     integer(c_int)                                  ,dimension(*) :: GlobalMins
@@ -4122,10 +4337,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_MinAll_Long ( CT_Epetra_MpiComm_ID_t selfID, long * PartialMins, long * GlobalMins, int Count );
 
-  integer(c_int) function Epetra_MpiComm_MinAll_Long ( selfID, PartialMins, GlobalMins, &
-        Count ) bind(C,name='Epetra_MpiComm_MinAll_Long')
+  function Epetra_MpiComm_MinAll_Long ( selfID, PartialMins, GlobalMins, Count ) &
+        result(that) bind(C,name='Epetra_MpiComm_MinAll_Long')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_long
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: PartialMins
     integer(c_long)                                 ,dimension(*) :: GlobalMins
@@ -4138,10 +4354,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_ScanSum_Double ( CT_Epetra_MpiComm_ID_t selfID, double * MyVals, double * ScanSums, int Count );
 
-  integer(c_int) function Epetra_MpiComm_ScanSum_Double ( selfID, MyVals, ScanSums, Count ) &
+  function Epetra_MpiComm_ScanSum_Double ( selfID, MyVals, ScanSums, Count ) result(that) &
         bind(C,name='Epetra_MpiComm_ScanSum_Double')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: MyVals
     real(c_double)                                  ,dimension(*) :: ScanSums
@@ -4154,10 +4371,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_ScanSum_Int ( CT_Epetra_MpiComm_ID_t selfID, int * MyVals, int * ScanSums, int Count );
 
-  integer(c_int) function Epetra_MpiComm_ScanSum_Int ( selfID, MyVals, ScanSums, Count ) &
+  function Epetra_MpiComm_ScanSum_Int ( selfID, MyVals, ScanSums, Count ) result(that) &
         bind(C,name='Epetra_MpiComm_ScanSum_Int')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                  ,dimension(*) :: MyVals
     integer(c_int)                                  ,dimension(*) :: ScanSums
@@ -4170,10 +4388,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_ScanSum_Long ( CT_Epetra_MpiComm_ID_t selfID, long * MyVals, long * ScanSums, int Count );
 
-  integer(c_int) function Epetra_MpiComm_ScanSum_Long ( selfID, MyVals, ScanSums, Count ) &
+  function Epetra_MpiComm_ScanSum_Long ( selfID, MyVals, ScanSums, Count ) result(that) &
         bind(C,name='Epetra_MpiComm_ScanSum_Long')
     import :: c_int ,FT_Epetra_MpiComm_ID_t ,c_long
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     integer(c_long)                                 ,dimension(*) :: MyVals
     integer(c_long)                                 ,dimension(*) :: ScanSums
@@ -4186,10 +4405,10 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_MyPID ( CT_Epetra_MpiComm_ID_t selfID );
 
-  integer(c_int) function Epetra_MpiComm_MyPID ( selfID ) &
-        bind(C,name='Epetra_MpiComm_MyPID')
+  function Epetra_MpiComm_MyPID ( selfID ) result(that) bind(C,name='Epetra_MpiComm_MyPID')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4199,10 +4418,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_NumProc ( CT_Epetra_MpiComm_ID_t selfID );
 
-  integer(c_int) function Epetra_MpiComm_NumProc ( selfID ) &
+  function Epetra_MpiComm_NumProc ( selfID ) result(that) &
         bind(C,name='Epetra_MpiComm_NumProc')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4212,10 +4432,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Distributor_ID_t Epetra_MpiComm_CreateDistributor ( CT_Epetra_MpiComm_ID_t selfID );
 
-  type(FT_Epetra_Distributor_ID_t) function Epetra_MpiComm_CreateDistributor ( selfID ) &
+  function Epetra_MpiComm_CreateDistributor ( selfID ) result(that) &
         bind(C,name='Epetra_MpiComm_CreateDistributor')
     import :: FT_Epetra_Distributor_ID_t ,FT_Epetra_MpiComm_ID_t
     
+    type(FT_Epetra_Distributor_ID_t)                                  :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4225,10 +4446,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Directory_ID_t Epetra_MpiComm_CreateDirectory ( CT_Epetra_MpiComm_ID_t selfID, CT_Epetra_BlockMap_ID_t MapID );
 
-  type(FT_Epetra_Directory_ID_t) function Epetra_MpiComm_CreateDirectory ( selfID, MapID ) &
+  function Epetra_MpiComm_CreateDirectory ( selfID, MapID ) result(that) &
         bind(C,name='Epetra_MpiComm_CreateDirectory')
     import :: FT_Epetra_Directory_ID_t ,FT_Epetra_MpiComm_ID_t ,FT_Epetra_BlockMap_ID_t
     
+    type(FT_Epetra_Directory_ID_t)                                  :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: MapID
   end function
@@ -4239,10 +4461,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_MpiComm_GetMpiTag ( CT_Epetra_MpiComm_ID_t selfID );
 
-  integer(c_int) function Epetra_MpiComm_GetMpiTag ( selfID ) &
+  function Epetra_MpiComm_GetMpiTag ( selfID ) result(that) &
         bind(C,name='Epetra_MpiComm_GetMpiTag')
     import :: c_int ,FT_Epetra_MpiComm_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_MpiComm_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4275,10 +4498,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Degeneralize ( id ) &
+  function Epetra_CrsMatrix_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Degeneralize')
     import :: FT_Epetra_CrsMatrix_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_CrsMatrix_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -4286,10 +4510,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_CrsMatrix_Generalize ( CT_Epetra_CrsMatrix_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_CrsMatrix_Generalize ( id ) &
+  function Epetra_CrsMatrix_Generalize ( id ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_CrsMatrix_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -4299,11 +4524,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_VarPerRow ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, const int * NumEntriesPerRow, boolean StaticProfile );
 
-  type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Create_VarPerRow ( CV, RowMapID, &
-        NumEntriesPerRow, StaticProfile ) bind(C,name='Epetra_CrsMatrix_Create_VarPerRow')
+  function Epetra_CrsMatrix_Create_VarPerRow ( CV, RowMapID, NumEntriesPerRow, &
+        StaticProfile ) result(that) bind(C,name='Epetra_CrsMatrix_Create_VarPerRow')
     import :: FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
           c_int ,FT_boolean_t
     
+    type(FT_Epetra_CrsMatrix_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: RowMapID
     integer(c_int)                ,intent(in)         ,dimension(*) :: NumEntriesPerRow
@@ -4316,11 +4542,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, int NumEntriesPerRow, boolean StaticProfile );
 
-  type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Create ( CV, RowMapID, &
-        NumEntriesPerRow, StaticProfile ) bind(C,name='Epetra_CrsMatrix_Create')
+  function Epetra_CrsMatrix_Create ( CV, RowMapID, NumEntriesPerRow, StaticProfile ) &
+        result(that) bind(C,name='Epetra_CrsMatrix_Create')
     import :: FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
           c_int ,FT_boolean_t
     
+    type(FT_Epetra_CrsMatrix_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: RowMapID
     integer(c_int)                ,intent(in)   ,value              :: NumEntriesPerRow
@@ -4333,12 +4560,13 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_VarPerRow_WithColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, const int * NumEntriesPerRow, boolean StaticProfile );
 
-  type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Create_VarPerRow_WithColMap ( CV, &
-        RowMapID, ColMapID, NumEntriesPerRow, StaticProfile ) &
+  function Epetra_CrsMatrix_Create_VarPerRow_WithColMap ( CV, RowMapID, ColMapID, &
+        NumEntriesPerRow, StaticProfile ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Create_VarPerRow_WithColMap')
     import :: FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
           c_int ,FT_boolean_t
     
+    type(FT_Epetra_CrsMatrix_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: RowMapID
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: ColMapID
@@ -4352,12 +4580,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_WithColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, int NumEntriesPerRow, boolean StaticProfile );
 
-  type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Create_WithColMap ( CV, RowMapID, &
-        ColMapID, NumEntriesPerRow, StaticProfile ) &
-        bind(C,name='Epetra_CrsMatrix_Create_WithColMap')
+  function Epetra_CrsMatrix_Create_WithColMap ( CV, RowMapID, ColMapID, NumEntriesPerRow, &
+        StaticProfile ) result(that) bind(C,name='Epetra_CrsMatrix_Create_WithColMap')
     import :: FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
           c_int ,FT_boolean_t
     
+    type(FT_Epetra_CrsMatrix_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: RowMapID
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: ColMapID
@@ -4371,10 +4599,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_FromGraph ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_CrsGraph_ID_t GraphID );
 
-  type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Create_FromGraph ( CV, GraphID ) &
+  function Epetra_CrsMatrix_Create_FromGraph ( CV, GraphID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Create_FromGraph')
     import :: FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_CrsGraph_ID_t
     
+    type(FT_Epetra_CrsMatrix_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_CrsGraph_ID_t) ,intent(in)   ,value              :: GraphID
   end function
@@ -4385,10 +4614,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Duplicate ( CT_Epetra_CrsMatrix_ID_t MatrixID );
 
-  type(FT_Epetra_CrsMatrix_ID_t) function Epetra_CrsMatrix_Duplicate ( MatrixID ) &
+  function Epetra_CrsMatrix_Duplicate ( MatrixID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Duplicate')
     import :: FT_Epetra_CrsMatrix_ID_t
     
+    type(FT_Epetra_CrsMatrix_ID_t)                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: MatrixID
   end function
 
@@ -4424,10 +4654,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_PutScalar ( CT_Epetra_CrsMatrix_ID_t selfID, double ScalarConstant );
 
-  integer(c_int) function Epetra_CrsMatrix_PutScalar ( selfID, ScalarConstant ) &
+  function Epetra_CrsMatrix_PutScalar ( selfID, ScalarConstant ) result(that) &
         bind(C,name='Epetra_CrsMatrix_PutScalar')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                ,intent(in)   ,value              :: ScalarConstant
   end function
@@ -4438,10 +4669,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_Scale ( CT_Epetra_CrsMatrix_ID_t selfID, double ScalarConstant );
 
-  integer(c_int) function Epetra_CrsMatrix_Scale ( selfID, ScalarConstant ) &
+  function Epetra_CrsMatrix_Scale ( selfID, ScalarConstant ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Scale')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                ,intent(in)   ,value              :: ScalarConstant
   end function
@@ -4452,10 +4684,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_InsertGlobalValues ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, int NumEntries, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_CrsMatrix_InsertGlobalValues ( selfID, GlobalRow, &
-        NumEntries, Values, Indices ) bind(C,name='Epetra_CrsMatrix_InsertGlobalValues')
+  function Epetra_CrsMatrix_InsertGlobalValues ( selfID, GlobalRow, NumEntries, Values, &
+        Indices ) result(that) bind(C,name='Epetra_CrsMatrix_InsertGlobalValues')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                ,intent(in)   ,value              :: NumEntries
@@ -4469,10 +4702,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_ReplaceGlobalValues ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, int NumEntries, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_CrsMatrix_ReplaceGlobalValues ( selfID, GlobalRow, &
-        NumEntries, Values, Indices ) bind(C,name='Epetra_CrsMatrix_ReplaceGlobalValues')
+  function Epetra_CrsMatrix_ReplaceGlobalValues ( selfID, GlobalRow, NumEntries, Values, &
+        Indices ) result(that) bind(C,name='Epetra_CrsMatrix_ReplaceGlobalValues')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                ,intent(in)   ,value              :: NumEntries
@@ -4486,10 +4720,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_SumIntoGlobalValues ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, int NumEntries, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_CrsMatrix_SumIntoGlobalValues ( selfID, GlobalRow, &
-        NumEntries, Values, Indices ) bind(C,name='Epetra_CrsMatrix_SumIntoGlobalValues')
+  function Epetra_CrsMatrix_SumIntoGlobalValues ( selfID, GlobalRow, NumEntries, Values, &
+        Indices ) result(that) bind(C,name='Epetra_CrsMatrix_SumIntoGlobalValues')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                ,intent(in)   ,value              :: NumEntries
@@ -4503,10 +4738,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_InsertMyValues ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int NumEntries, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_CrsMatrix_InsertMyValues ( selfID, MyRow, NumEntries, &
-        Values, Indices ) bind(C,name='Epetra_CrsMatrix_InsertMyValues')
+  function Epetra_CrsMatrix_InsertMyValues ( selfID, MyRow, NumEntries, Values, Indices ) &
+        result(that) bind(C,name='Epetra_CrsMatrix_InsertMyValues')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(in)   ,value              :: NumEntries
@@ -4520,10 +4756,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_ReplaceMyValues ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int NumEntries, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_CrsMatrix_ReplaceMyValues ( selfID, MyRow, NumEntries, &
-        Values, Indices ) bind(C,name='Epetra_CrsMatrix_ReplaceMyValues')
+  function Epetra_CrsMatrix_ReplaceMyValues ( selfID, MyRow, NumEntries, Values, Indices ) &
+        result(that) bind(C,name='Epetra_CrsMatrix_ReplaceMyValues')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(in)   ,value              :: NumEntries
@@ -4537,10 +4774,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_SumIntoMyValues ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int NumEntries, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_CrsMatrix_SumIntoMyValues ( selfID, MyRow, NumEntries, &
-        Values, Indices ) bind(C,name='Epetra_CrsMatrix_SumIntoMyValues')
+  function Epetra_CrsMatrix_SumIntoMyValues ( selfID, MyRow, NumEntries, Values, Indices ) &
+        result(that) bind(C,name='Epetra_CrsMatrix_SumIntoMyValues')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(in)   ,value              :: NumEntries
@@ -4554,10 +4792,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_ReplaceDiagonalValues ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_Vector_ID_t DiagonalID );
 
-  integer(c_int) function Epetra_CrsMatrix_ReplaceDiagonalValues ( selfID, DiagonalID ) &
+  function Epetra_CrsMatrix_ReplaceDiagonalValues ( selfID, DiagonalID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_ReplaceDiagonalValues')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: DiagonalID
   end function
@@ -4568,10 +4807,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_FillComplete ( CT_Epetra_CrsMatrix_ID_t selfID, boolean OptimizeDataStorage );
 
-  integer(c_int) function Epetra_CrsMatrix_FillComplete ( selfID, OptimizeDataStorage ) &
+  function Epetra_CrsMatrix_FillComplete ( selfID, OptimizeDataStorage ) result(that) &
         bind(C,name='Epetra_CrsMatrix_FillComplete')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_boolean_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(FT_boolean_t)         ,intent(in)   ,value              :: OptimizeDataStorage
   end function
@@ -4582,11 +4822,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_FillComplete_UsingMaps ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_Map_ID_t DomainMapID, CT_Epetra_Map_ID_t RangeMapID, boolean OptimizeDataStorage );
 
-  integer(c_int) function Epetra_CrsMatrix_FillComplete_UsingMaps ( selfID, DomainMapID, &
-        RangeMapID, OptimizeDataStorage ) &
+  function Epetra_CrsMatrix_FillComplete_UsingMaps ( selfID, DomainMapID, RangeMapID, &
+        OptimizeDataStorage ) result(that) &
         bind(C,name='Epetra_CrsMatrix_FillComplete_UsingMaps')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Map_ID_t ,FT_boolean_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: DomainMapID
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: RangeMapID
@@ -4599,10 +4840,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_OptimizeStorage ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsMatrix_OptimizeStorage ( selfID ) &
+  function Epetra_CrsMatrix_OptimizeStorage ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_OptimizeStorage')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4612,10 +4854,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_MakeDataContiguous ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsMatrix_MakeDataContiguous ( selfID ) &
+  function Epetra_CrsMatrix_MakeDataContiguous ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_MakeDataContiguous')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4625,11 +4868,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_ExtractGlobalRowCopy_WithIndices ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, int Length, int * NumEntries, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_CrsMatrix_ExtractGlobalRowCopy_WithIndices ( selfID, &
-        GlobalRow, Length, NumEntries, Values, Indices ) &
+  function Epetra_CrsMatrix_ExtractGlobalRowCopy_WithIndices ( selfID, GlobalRow, Length, &
+        NumEntries, Values, Indices ) result(that) &
         bind(C,name='Epetra_CrsMatrix_ExtractGlobalRowCopy_WithIndices')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                ,intent(in)   ,value              :: Length
@@ -4644,11 +4888,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_ExtractMyRowCopy_WithIndices ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int Length, int * NumEntries, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_CrsMatrix_ExtractMyRowCopy_WithIndices ( selfID, MyRow, &
-        Length, NumEntries, Values, Indices ) &
+  function Epetra_CrsMatrix_ExtractMyRowCopy_WithIndices ( selfID, MyRow, Length, &
+        NumEntries, Values, Indices ) result(that) &
         bind(C,name='Epetra_CrsMatrix_ExtractMyRowCopy_WithIndices')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(in)   ,value              :: Length
@@ -4663,10 +4908,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_ExtractGlobalRowCopy ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, int Length, int * NumEntries, double * Values );
 
-  integer(c_int) function Epetra_CrsMatrix_ExtractGlobalRowCopy ( selfID, GlobalRow, Length, &
-        NumEntries, Values ) bind(C,name='Epetra_CrsMatrix_ExtractGlobalRowCopy')
+  function Epetra_CrsMatrix_ExtractGlobalRowCopy ( selfID, GlobalRow, Length, NumEntries, &
+        Values ) result(that) bind(C,name='Epetra_CrsMatrix_ExtractGlobalRowCopy')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                ,intent(in)   ,value              :: Length
@@ -4680,10 +4926,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_ExtractMyRowCopy ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int Length, int * NumEntries, double * Values );
 
-  integer(c_int) function Epetra_CrsMatrix_ExtractMyRowCopy ( selfID, MyRow, Length, &
-        NumEntries, Values ) bind(C,name='Epetra_CrsMatrix_ExtractMyRowCopy')
+  function Epetra_CrsMatrix_ExtractMyRowCopy ( selfID, MyRow, Length, NumEntries, Values ) &
+        result(that) bind(C,name='Epetra_CrsMatrix_ExtractMyRowCopy')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(in)   ,value              :: Length
@@ -4697,10 +4944,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_ExtractDiagonalCopy ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_Vector_ID_t DiagonalID );
 
-  integer(c_int) function Epetra_CrsMatrix_ExtractDiagonalCopy ( selfID, DiagonalID ) &
+  function Epetra_CrsMatrix_ExtractDiagonalCopy ( selfID, DiagonalID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_ExtractDiagonalCopy')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: DiagonalID
   end function
@@ -4711,11 +4959,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_ExtractGlobalRowView_WithIndices ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, int * NumEntries, double ** Values, int ** Indices );
 
-  integer(c_int) function Epetra_CrsMatrix_ExtractGlobalRowView_WithIndices ( selfID, &
-        GlobalRow, NumEntries, Values, Indices ) &
+  function Epetra_CrsMatrix_ExtractGlobalRowView_WithIndices ( selfID, GlobalRow, &
+        NumEntries, Values, Indices ) result(that) &
         bind(C,name='Epetra_CrsMatrix_ExtractGlobalRowView_WithIndices')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                ,intent(inout)                    :: NumEntries
@@ -4729,11 +4978,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_ExtractMyRowView_WithIndices ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int * NumEntries, double ** Values, int ** Indices );
 
-  integer(c_int) function Epetra_CrsMatrix_ExtractMyRowView_WithIndices ( selfID, MyRow, &
-        NumEntries, Values, Indices ) &
+  function Epetra_CrsMatrix_ExtractMyRowView_WithIndices ( selfID, MyRow, NumEntries, &
+        Values, Indices ) result(that) &
         bind(C,name='Epetra_CrsMatrix_ExtractMyRowView_WithIndices')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(inout)                    :: NumEntries
@@ -4747,10 +4997,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_ExtractGlobalRowView ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, int * NumEntries, double ** Values );
 
-  integer(c_int) function Epetra_CrsMatrix_ExtractGlobalRowView ( selfID, GlobalRow, &
-        NumEntries, Values ) bind(C,name='Epetra_CrsMatrix_ExtractGlobalRowView')
+  function Epetra_CrsMatrix_ExtractGlobalRowView ( selfID, GlobalRow, NumEntries, Values ) &
+        result(that) bind(C,name='Epetra_CrsMatrix_ExtractGlobalRowView')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                ,intent(inout)                    :: NumEntries
@@ -4763,10 +5014,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_ExtractMyRowView ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int * NumEntries, double ** Values );
 
-  integer(c_int) function Epetra_CrsMatrix_ExtractMyRowView ( selfID, MyRow, NumEntries, &
-        Values ) bind(C,name='Epetra_CrsMatrix_ExtractMyRowView')
+  function Epetra_CrsMatrix_ExtractMyRowView ( selfID, MyRow, NumEntries, Values ) &
+        result(that) bind(C,name='Epetra_CrsMatrix_ExtractMyRowView')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(inout)                    :: NumEntries
@@ -4779,10 +5031,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_Multiply_Vector ( CT_Epetra_CrsMatrix_ID_t selfID, boolean TransA, CT_Epetra_Vector_ID_t xID, CT_Epetra_Vector_ID_t yID );
 
-  integer(c_int) function Epetra_CrsMatrix_Multiply_Vector ( selfID, TransA, xID, yID ) &
+  function Epetra_CrsMatrix_Multiply_Vector ( selfID, TransA, xID, yID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Multiply_Vector')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_boolean_t ,FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(FT_boolean_t)         ,intent(in)   ,value              :: TransA
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
@@ -4795,10 +5048,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_Multiply1_Vector ( CT_Epetra_CrsMatrix_ID_t selfID, boolean TransA, CT_Epetra_Vector_ID_t xID, CT_Epetra_Vector_ID_t yID );
 
-  integer(c_int) function Epetra_CrsMatrix_Multiply1_Vector ( selfID, TransA, xID, yID ) &
+  function Epetra_CrsMatrix_Multiply1_Vector ( selfID, TransA, xID, yID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Multiply1_Vector')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_boolean_t ,FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(FT_boolean_t)         ,intent(in)   ,value              :: TransA
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
@@ -4811,10 +5065,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_Multiply_MultiVector ( CT_Epetra_CrsMatrix_ID_t selfID, boolean TransA, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
-  integer(c_int) function Epetra_CrsMatrix_Multiply_MultiVector ( selfID, TransA, XID, YID ) &
+  function Epetra_CrsMatrix_Multiply_MultiVector ( selfID, TransA, XID, YID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Multiply_MultiVector')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_boolean_t ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(FT_boolean_t)         ,intent(in)   ,value              :: TransA
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
@@ -4827,10 +5082,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_Multiply1_MultiVector ( CT_Epetra_CrsMatrix_ID_t selfID, boolean TransA, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
-  integer(c_int) function Epetra_CrsMatrix_Multiply1_MultiVector ( selfID, TransA, XID, YID ) &
-        bind(C,name='Epetra_CrsMatrix_Multiply1_MultiVector')
+  function Epetra_CrsMatrix_Multiply1_MultiVector ( selfID, TransA, XID, YID ) &
+        result(that) bind(C,name='Epetra_CrsMatrix_Multiply1_MultiVector')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_boolean_t ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(FT_boolean_t)         ,intent(in)   ,value              :: TransA
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
@@ -4843,10 +5099,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_Solve_Vector ( CT_Epetra_CrsMatrix_ID_t selfID, boolean Upper, boolean Trans, boolean UnitDiagonal, CT_Epetra_Vector_ID_t xID, CT_Epetra_Vector_ID_t yID );
 
-  integer(c_int) function Epetra_CrsMatrix_Solve_Vector ( selfID, Upper, Trans, &
-        UnitDiagonal, xID, yID ) bind(C,name='Epetra_CrsMatrix_Solve_Vector')
+  function Epetra_CrsMatrix_Solve_Vector ( selfID, Upper, Trans, UnitDiagonal, xID, yID ) &
+        result(that) bind(C,name='Epetra_CrsMatrix_Solve_Vector')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_boolean_t ,FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(FT_boolean_t)         ,intent(in)   ,value              :: Upper
     integer(FT_boolean_t)         ,intent(in)   ,value              :: Trans
@@ -4861,10 +5118,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_Solve_MultiVector ( CT_Epetra_CrsMatrix_ID_t selfID, boolean Upper, boolean Trans, boolean UnitDiagonal, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
-  integer(c_int) function Epetra_CrsMatrix_Solve_MultiVector ( selfID, Upper, Trans, &
-        UnitDiagonal, XID, YID ) bind(C,name='Epetra_CrsMatrix_Solve_MultiVector')
+  function Epetra_CrsMatrix_Solve_MultiVector ( selfID, Upper, Trans, UnitDiagonal, XID, &
+        YID ) result(that) bind(C,name='Epetra_CrsMatrix_Solve_MultiVector')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_boolean_t ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(FT_boolean_t)         ,intent(in)   ,value              :: Upper
     integer(FT_boolean_t)         ,intent(in)   ,value              :: Trans
@@ -4879,10 +5137,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_InvRowSums ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_Vector_ID_t xID );
 
-  integer(c_int) function Epetra_CrsMatrix_InvRowSums ( selfID, xID ) &
+  function Epetra_CrsMatrix_InvRowSums ( selfID, xID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_InvRowSums')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -4893,10 +5152,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_InvRowMaxs ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_Vector_ID_t xID );
 
-  integer(c_int) function Epetra_CrsMatrix_InvRowMaxs ( selfID, xID ) &
+  function Epetra_CrsMatrix_InvRowMaxs ( selfID, xID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_InvRowMaxs')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -4907,10 +5167,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_LeftScale ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_Vector_ID_t xID );
 
-  integer(c_int) function Epetra_CrsMatrix_LeftScale ( selfID, xID ) &
+  function Epetra_CrsMatrix_LeftScale ( selfID, xID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_LeftScale')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -4921,10 +5182,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_InvColSums ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_Vector_ID_t xID );
 
-  integer(c_int) function Epetra_CrsMatrix_InvColSums ( selfID, xID ) &
+  function Epetra_CrsMatrix_InvColSums ( selfID, xID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_InvColSums')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -4935,10 +5197,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_InvColMaxs ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_Vector_ID_t xID );
 
-  integer(c_int) function Epetra_CrsMatrix_InvColMaxs ( selfID, xID ) &
+  function Epetra_CrsMatrix_InvColMaxs ( selfID, xID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_InvColMaxs')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -4949,10 +5212,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_RightScale ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_Vector_ID_t xID );
 
-  integer(c_int) function Epetra_CrsMatrix_RightScale ( selfID, xID ) &
+  function Epetra_CrsMatrix_RightScale ( selfID, xID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_RightScale')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)   ,intent(in)   ,value              :: xID
   end function
@@ -4963,10 +5227,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsMatrix_Filled ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsMatrix_Filled ( selfID ) &
+  function Epetra_CrsMatrix_Filled ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Filled')
     import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4976,10 +5241,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsMatrix_StorageOptimized ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsMatrix_StorageOptimized ( selfID ) &
+  function Epetra_CrsMatrix_StorageOptimized ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_StorageOptimized')
     import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -4989,10 +5255,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsMatrix_IndicesAreGlobal ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsMatrix_IndicesAreGlobal ( selfID ) &
+  function Epetra_CrsMatrix_IndicesAreGlobal ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_IndicesAreGlobal')
     import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5002,10 +5269,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsMatrix_IndicesAreLocal ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsMatrix_IndicesAreLocal ( selfID ) &
+  function Epetra_CrsMatrix_IndicesAreLocal ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_IndicesAreLocal')
     import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5015,10 +5283,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsMatrix_IndicesAreContiguous ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsMatrix_IndicesAreContiguous ( selfID ) &
+  function Epetra_CrsMatrix_IndicesAreContiguous ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_IndicesAreContiguous')
     import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5028,10 +5297,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsMatrix_LowerTriangular ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsMatrix_LowerTriangular ( selfID ) &
+  function Epetra_CrsMatrix_LowerTriangular ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_LowerTriangular')
     import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5041,10 +5311,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsMatrix_UpperTriangular ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsMatrix_UpperTriangular ( selfID ) &
+  function Epetra_CrsMatrix_UpperTriangular ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_UpperTriangular')
     import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5054,10 +5325,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsMatrix_NoDiagonal ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsMatrix_NoDiagonal ( selfID ) &
+  function Epetra_CrsMatrix_NoDiagonal ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_NoDiagonal')
     import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5067,10 +5339,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_CrsMatrix_NormInf ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  real(c_double) function Epetra_CrsMatrix_NormInf ( selfID ) &
+  function Epetra_CrsMatrix_NormInf ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_NormInf')
     import :: c_double ,FT_Epetra_CrsMatrix_ID_t
     
+    real(c_double)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5080,10 +5353,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_CrsMatrix_NormOne ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  real(c_double) function Epetra_CrsMatrix_NormOne ( selfID ) &
+  function Epetra_CrsMatrix_NormOne ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_NormOne')
     import :: c_double ,FT_Epetra_CrsMatrix_ID_t
     
+    real(c_double)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5093,10 +5367,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_CrsMatrix_NormFrobenius ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  real(c_double) function Epetra_CrsMatrix_NormFrobenius ( selfID ) &
+  function Epetra_CrsMatrix_NormFrobenius ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_NormFrobenius')
     import :: c_double ,FT_Epetra_CrsMatrix_ID_t
     
+    real(c_double)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5106,10 +5381,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_NumGlobalNonzeros ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsMatrix_NumGlobalNonzeros ( selfID ) &
+  function Epetra_CrsMatrix_NumGlobalNonzeros ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_NumGlobalNonzeros')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5119,10 +5395,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_NumGlobalRows ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsMatrix_NumGlobalRows ( selfID ) &
+  function Epetra_CrsMatrix_NumGlobalRows ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_NumGlobalRows')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5132,10 +5409,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_NumGlobalCols ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsMatrix_NumGlobalCols ( selfID ) &
+  function Epetra_CrsMatrix_NumGlobalCols ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_NumGlobalCols')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5145,10 +5423,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_NumGlobalDiagonals ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsMatrix_NumGlobalDiagonals ( selfID ) &
+  function Epetra_CrsMatrix_NumGlobalDiagonals ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_NumGlobalDiagonals')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5158,10 +5437,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_NumMyNonzeros ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsMatrix_NumMyNonzeros ( selfID ) &
+  function Epetra_CrsMatrix_NumMyNonzeros ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_NumMyNonzeros')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5171,10 +5451,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_NumMyRows ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsMatrix_NumMyRows ( selfID ) &
+  function Epetra_CrsMatrix_NumMyRows ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_NumMyRows')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5184,10 +5465,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_NumMyCols ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsMatrix_NumMyCols ( selfID ) &
+  function Epetra_CrsMatrix_NumMyCols ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_NumMyCols')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5197,10 +5479,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_NumMyDiagonals ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsMatrix_NumMyDiagonals ( selfID ) &
+  function Epetra_CrsMatrix_NumMyDiagonals ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_NumMyDiagonals')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5210,10 +5493,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_NumGlobalEntries ( CT_Epetra_CrsMatrix_ID_t selfID, int Row );
 
-  integer(c_int) function Epetra_CrsMatrix_NumGlobalEntries ( selfID, Row ) &
+  function Epetra_CrsMatrix_NumGlobalEntries ( selfID, Row ) result(that) &
         bind(C,name='Epetra_CrsMatrix_NumGlobalEntries')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: Row
   end function
@@ -5224,10 +5508,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_NumAllocatedGlobalEntries ( CT_Epetra_CrsMatrix_ID_t selfID, int Row );
 
-  integer(c_int) function Epetra_CrsMatrix_NumAllocatedGlobalEntries ( selfID, Row ) &
+  function Epetra_CrsMatrix_NumAllocatedGlobalEntries ( selfID, Row ) result(that) &
         bind(C,name='Epetra_CrsMatrix_NumAllocatedGlobalEntries')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: Row
   end function
@@ -5238,10 +5523,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_MaxNumEntries ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsMatrix_MaxNumEntries ( selfID ) &
+  function Epetra_CrsMatrix_MaxNumEntries ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_MaxNumEntries')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5251,10 +5537,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_GlobalMaxNumEntries ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsMatrix_GlobalMaxNumEntries ( selfID ) &
+  function Epetra_CrsMatrix_GlobalMaxNumEntries ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_GlobalMaxNumEntries')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5264,10 +5551,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_NumMyEntries ( CT_Epetra_CrsMatrix_ID_t selfID, int Row );
 
-  integer(c_int) function Epetra_CrsMatrix_NumMyEntries ( selfID, Row ) &
+  function Epetra_CrsMatrix_NumMyEntries ( selfID, Row ) result(that) &
         bind(C,name='Epetra_CrsMatrix_NumMyEntries')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: Row
   end function
@@ -5278,10 +5566,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_NumAllocatedMyEntries ( CT_Epetra_CrsMatrix_ID_t selfID, int Row );
 
-  integer(c_int) function Epetra_CrsMatrix_NumAllocatedMyEntries ( selfID, Row ) &
+  function Epetra_CrsMatrix_NumAllocatedMyEntries ( selfID, Row ) result(that) &
         bind(C,name='Epetra_CrsMatrix_NumAllocatedMyEntries')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: Row
   end function
@@ -5292,10 +5581,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_IndexBase ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsMatrix_IndexBase ( selfID ) &
+  function Epetra_CrsMatrix_IndexBase ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_IndexBase')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5305,10 +5595,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsMatrix_StaticGraph ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsMatrix_StaticGraph ( selfID ) &
+  function Epetra_CrsMatrix_StaticGraph ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_StaticGraph')
     import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5318,10 +5609,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_CrsGraph_ID_t Epetra_CrsMatrix_Graph ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  type(FT_Epetra_CrsGraph_ID_t) function Epetra_CrsMatrix_Graph ( selfID ) &
+  function Epetra_CrsMatrix_Graph ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Graph')
     import :: FT_Epetra_CrsGraph_ID_t ,FT_Epetra_CrsMatrix_ID_t
     
+    type(FT_Epetra_CrsGraph_ID_t)                                   :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5331,10 +5623,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Epetra_CrsMatrix_RowMap ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_CrsMatrix_RowMap ( selfID ) &
+  function Epetra_CrsMatrix_RowMap ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_RowMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_CrsMatrix_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                        :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5344,10 +5637,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_ReplaceRowMap ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_BlockMap_ID_t newmapID );
 
-  integer(c_int) function Epetra_CrsMatrix_ReplaceRowMap ( selfID, newmapID ) &
+  function Epetra_CrsMatrix_ReplaceRowMap ( selfID, newmapID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_ReplaceRowMap')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t) ,intent(in)   ,value              :: newmapID
   end function
@@ -5358,10 +5652,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsMatrix_HaveColMap ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsMatrix_HaveColMap ( selfID ) &
+  function Epetra_CrsMatrix_HaveColMap ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_HaveColMap')
     import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5371,10 +5666,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_ReplaceColMap ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_BlockMap_ID_t newmapID );
 
-  integer(c_int) function Epetra_CrsMatrix_ReplaceColMap ( selfID, newmapID ) &
+  function Epetra_CrsMatrix_ReplaceColMap ( selfID, newmapID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_ReplaceColMap')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t) ,intent(in)   ,value              :: newmapID
   end function
@@ -5385,10 +5681,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Epetra_CrsMatrix_ColMap ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_CrsMatrix_ColMap ( selfID ) &
+  function Epetra_CrsMatrix_ColMap ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_ColMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_CrsMatrix_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                        :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5398,10 +5695,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Epetra_CrsMatrix_DomainMap ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_CrsMatrix_DomainMap ( selfID ) &
+  function Epetra_CrsMatrix_DomainMap ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_DomainMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_CrsMatrix_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                        :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5411,10 +5709,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Epetra_CrsMatrix_RangeMap ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_CrsMatrix_RangeMap ( selfID ) &
+  function Epetra_CrsMatrix_RangeMap ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_RangeMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_CrsMatrix_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                        :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5424,10 +5723,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Import_ID_t Epetra_CrsMatrix_Importer ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  type(FT_Epetra_Import_ID_t) function Epetra_CrsMatrix_Importer ( selfID ) &
+  function Epetra_CrsMatrix_Importer ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Importer')
     import :: FT_Epetra_Import_ID_t ,FT_Epetra_CrsMatrix_ID_t
     
+    type(FT_Epetra_Import_ID_t)                                     :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5437,10 +5737,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Export_ID_t Epetra_CrsMatrix_Exporter ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  type(FT_Epetra_Export_ID_t) function Epetra_CrsMatrix_Exporter ( selfID ) &
+  function Epetra_CrsMatrix_Exporter ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Exporter')
     import :: FT_Epetra_Export_ID_t ,FT_Epetra_CrsMatrix_ID_t
     
+    type(FT_Epetra_Export_ID_t)                                     :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5450,10 +5751,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Comm_ID_t Epetra_CrsMatrix_Comm ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  type(FT_Epetra_Comm_ID_t) function Epetra_CrsMatrix_Comm ( selfID ) &
+  function Epetra_CrsMatrix_Comm ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Comm')
     import :: FT_Epetra_Comm_ID_t ,FT_Epetra_CrsMatrix_ID_t
     
+    type(FT_Epetra_Comm_ID_t)                                       :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5463,10 +5765,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_LRID ( CT_Epetra_CrsMatrix_ID_t selfID, int GRID_in );
 
-  integer(c_int) function Epetra_CrsMatrix_LRID ( selfID, GRID_in ) &
+  function Epetra_CrsMatrix_LRID ( selfID, GRID_in ) result(that) &
         bind(C,name='Epetra_CrsMatrix_LRID')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GRID_in
   end function
@@ -5477,10 +5780,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_GRID ( CT_Epetra_CrsMatrix_ID_t selfID, int LRID_in );
 
-  integer(c_int) function Epetra_CrsMatrix_GRID ( selfID, LRID_in ) &
+  function Epetra_CrsMatrix_GRID ( selfID, LRID_in ) result(that) &
         bind(C,name='Epetra_CrsMatrix_GRID')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: LRID_in
   end function
@@ -5491,10 +5795,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_LCID ( CT_Epetra_CrsMatrix_ID_t selfID, int GCID_in );
 
-  integer(c_int) function Epetra_CrsMatrix_LCID ( selfID, GCID_in ) &
+  function Epetra_CrsMatrix_LCID ( selfID, GCID_in ) result(that) &
         bind(C,name='Epetra_CrsMatrix_LCID')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GCID_in
   end function
@@ -5505,10 +5810,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_GCID ( CT_Epetra_CrsMatrix_ID_t selfID, int LCID_in );
 
-  integer(c_int) function Epetra_CrsMatrix_GCID ( selfID, LCID_in ) &
+  function Epetra_CrsMatrix_GCID ( selfID, LCID_in ) result(that) &
         bind(C,name='Epetra_CrsMatrix_GCID')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: LCID_in
   end function
@@ -5519,10 +5825,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsMatrix_MyGRID ( CT_Epetra_CrsMatrix_ID_t selfID, int GRID_in );
 
-  integer(FT_boolean_t) function Epetra_CrsMatrix_MyGRID ( selfID, GRID_in ) &
+  function Epetra_CrsMatrix_MyGRID ( selfID, GRID_in ) result(that) &
         bind(C,name='Epetra_CrsMatrix_MyGRID')
     import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t ,c_int
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GRID_in
   end function
@@ -5533,10 +5840,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsMatrix_MyLRID ( CT_Epetra_CrsMatrix_ID_t selfID, int LRID_in );
 
-  integer(FT_boolean_t) function Epetra_CrsMatrix_MyLRID ( selfID, LRID_in ) &
+  function Epetra_CrsMatrix_MyLRID ( selfID, LRID_in ) result(that) &
         bind(C,name='Epetra_CrsMatrix_MyLRID')
     import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t ,c_int
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: LRID_in
   end function
@@ -5547,10 +5855,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsMatrix_MyGCID ( CT_Epetra_CrsMatrix_ID_t selfID, int GCID_in );
 
-  integer(FT_boolean_t) function Epetra_CrsMatrix_MyGCID ( selfID, GCID_in ) &
+  function Epetra_CrsMatrix_MyGCID ( selfID, GCID_in ) result(that) &
         bind(C,name='Epetra_CrsMatrix_MyGCID')
     import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t ,c_int
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GCID_in
   end function
@@ -5561,10 +5870,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsMatrix_MyLCID ( CT_Epetra_CrsMatrix_ID_t selfID, int LCID_in );
 
-  integer(FT_boolean_t) function Epetra_CrsMatrix_MyLCID ( selfID, LCID_in ) &
+  function Epetra_CrsMatrix_MyLCID ( selfID, LCID_in ) result(that) &
         bind(C,name='Epetra_CrsMatrix_MyLCID')
     import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t ,c_int
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: LCID_in
   end function
@@ -5575,10 +5885,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsMatrix_MyGlobalRow ( CT_Epetra_CrsMatrix_ID_t selfID, int GID );
 
-  integer(FT_boolean_t) function Epetra_CrsMatrix_MyGlobalRow ( selfID, GID ) &
+  function Epetra_CrsMatrix_MyGlobalRow ( selfID, GID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_MyGlobalRow')
     import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t ,c_int
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: GID
   end function
@@ -5589,10 +5900,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! const char * Epetra_CrsMatrix_Label ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  type(c_ptr) function Epetra_CrsMatrix_Label ( selfID ) &
+  function Epetra_CrsMatrix_Label ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Label')
     import :: c_ptr ,FT_Epetra_CrsMatrix_ID_t
     
+    type(c_ptr)                                                     :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5602,10 +5914,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_SetUseTranspose ( CT_Epetra_CrsMatrix_ID_t selfID, boolean UseTranspose_in );
 
-  integer(c_int) function Epetra_CrsMatrix_SetUseTranspose ( selfID, UseTranspose_in ) &
+  function Epetra_CrsMatrix_SetUseTranspose ( selfID, UseTranspose_in ) result(that) &
         bind(C,name='Epetra_CrsMatrix_SetUseTranspose')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_boolean_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(FT_boolean_t)         ,intent(in)   ,value              :: UseTranspose_in
   end function
@@ -5616,10 +5929,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_Apply ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
-  integer(c_int) function Epetra_CrsMatrix_Apply ( selfID, XID, YID ) &
+  function Epetra_CrsMatrix_Apply ( selfID, XID, YID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Apply')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: YID
@@ -5631,10 +5945,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_ApplyInverse ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
-  integer(c_int) function Epetra_CrsMatrix_ApplyInverse ( selfID, XID, YID ) &
+  function Epetra_CrsMatrix_ApplyInverse ( selfID, XID, YID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_ApplyInverse')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: YID
@@ -5646,10 +5961,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsMatrix_HasNormInf ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsMatrix_HasNormInf ( selfID ) &
+  function Epetra_CrsMatrix_HasNormInf ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_HasNormInf')
     import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5659,10 +5975,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsMatrix_UseTranspose ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsMatrix_UseTranspose ( selfID ) &
+  function Epetra_CrsMatrix_UseTranspose ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_UseTranspose')
     import :: FT_boolean_t ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(FT_boolean_t)                                           :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5672,10 +5989,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Epetra_CrsMatrix_OperatorDomainMap ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_CrsMatrix_OperatorDomainMap ( selfID ) &
+  function Epetra_CrsMatrix_OperatorDomainMap ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_OperatorDomainMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_CrsMatrix_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                        :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5685,10 +6003,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Epetra_CrsMatrix_OperatorRangeMap ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_CrsMatrix_OperatorRangeMap ( selfID ) &
+  function Epetra_CrsMatrix_OperatorRangeMap ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_OperatorRangeMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_CrsMatrix_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                        :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5698,10 +6017,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_NumMyRowEntries ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int * NumEntries );
 
-  integer(c_int) function Epetra_CrsMatrix_NumMyRowEntries ( selfID, MyRow, NumEntries ) &
+  function Epetra_CrsMatrix_NumMyRowEntries ( selfID, MyRow, NumEntries ) result(that) &
         bind(C,name='Epetra_CrsMatrix_NumMyRowEntries')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(inout)                    :: NumEntries
@@ -5713,10 +6033,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Epetra_CrsMatrix_RowMatrixRowMap ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_CrsMatrix_RowMatrixRowMap ( selfID ) &
+  function Epetra_CrsMatrix_RowMatrixRowMap ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_RowMatrixRowMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_CrsMatrix_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                        :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5726,10 +6047,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Epetra_CrsMatrix_RowMatrixColMap ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_CrsMatrix_RowMatrixColMap ( selfID ) &
+  function Epetra_CrsMatrix_RowMatrixColMap ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_RowMatrixColMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_CrsMatrix_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                        :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5739,10 +6061,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Import_ID_t Epetra_CrsMatrix_RowMatrixImporter ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  type(FT_Epetra_Import_ID_t) function Epetra_CrsMatrix_RowMatrixImporter ( selfID ) &
+  function Epetra_CrsMatrix_RowMatrixImporter ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_RowMatrixImporter')
     import :: FT_Epetra_Import_ID_t ,FT_Epetra_CrsMatrix_ID_t
     
+    type(FT_Epetra_Import_ID_t)                                     :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5752,10 +6075,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double * Epetra_CrsMatrix_getRow ( CT_Epetra_CrsMatrix_ID_t selfID, int Loc );
 
-  type(c_ptr) function Epetra_CrsMatrix_getRow ( selfID, Loc ) &
+  function Epetra_CrsMatrix_getRow ( selfID, Loc ) result(that) &
         bind(C,name='Epetra_CrsMatrix_getRow')
     import :: c_ptr ,FT_Epetra_CrsMatrix_ID_t ,c_int
     
+    type(c_ptr)                                                     :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: Loc
   end function
@@ -5766,10 +6090,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Epetra_CrsMatrix_ImportMap ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_CrsMatrix_ImportMap ( selfID ) &
+  function Epetra_CrsMatrix_ImportMap ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_ImportMap')
     import :: FT_Epetra_Map_ID_t ,FT_Epetra_CrsMatrix_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                        :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5779,10 +6104,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_TransformToLocal ( CT_Epetra_CrsMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsMatrix_TransformToLocal ( selfID ) &
+  function Epetra_CrsMatrix_TransformToLocal ( selfID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_TransformToLocal')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -5792,10 +6118,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsMatrix_TransformToLocal_UsingMaps ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_Map_ID_t DomainMapID, CT_Epetra_Map_ID_t RangeMapID );
 
-  integer(c_int) function Epetra_CrsMatrix_TransformToLocal_UsingMaps ( selfID, DomainMapID, &
-        RangeMapID ) bind(C,name='Epetra_CrsMatrix_TransformToLocal_UsingMaps')
+  function Epetra_CrsMatrix_TransformToLocal_UsingMaps ( selfID, DomainMapID, RangeMapID ) &
+        result(that) bind(C,name='Epetra_CrsMatrix_TransformToLocal_UsingMaps')
     import :: c_int ,FT_Epetra_CrsMatrix_ID_t ,FT_Epetra_Map_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: DomainMapID
     type(FT_Epetra_Map_ID_t)      ,intent(in)   ,value              :: RangeMapID
@@ -5814,10 +6141,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_CrsGraph_ID_t) function Epetra_CrsGraph_Degeneralize ( id ) &
+  function Epetra_CrsGraph_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_CrsGraph_Degeneralize')
     import :: FT_Epetra_CrsGraph_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_CrsGraph_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -5825,10 +6153,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_CrsGraph_Generalize ( CT_Epetra_CrsGraph_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_CrsGraph_Generalize ( id ) &
+  function Epetra_CrsGraph_Generalize ( id ) result(that) &
         bind(C,name='Epetra_CrsGraph_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_CrsGraph_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -5838,11 +6167,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create_VarPerRow ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t RowMapID, const int * NumIndicesPerRow, boolean StaticProfile );
 
-  type(FT_Epetra_CrsGraph_ID_t) function Epetra_CrsGraph_Create_VarPerRow ( CV, RowMapID, &
-        NumIndicesPerRow, StaticProfile ) bind(C,name='Epetra_CrsGraph_Create_VarPerRow')
+  function Epetra_CrsGraph_Create_VarPerRow ( CV, RowMapID, NumIndicesPerRow, StaticProfile ) &
+        result(that) bind(C,name='Epetra_CrsGraph_Create_VarPerRow')
     import :: FT_Epetra_CrsGraph_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_BlockMap_ID_t , &
           c_int ,FT_boolean_t
     
+    type(FT_Epetra_CrsGraph_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: RowMapID
     integer(c_int)               ,intent(in)         ,dimension(*) :: NumIndicesPerRow
@@ -5855,11 +6185,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t RowMapID, int NumIndicesPerRow, boolean StaticProfile );
 
-  type(FT_Epetra_CrsGraph_ID_t) function Epetra_CrsGraph_Create ( CV, RowMapID, &
-        NumIndicesPerRow, StaticProfile ) bind(C,name='Epetra_CrsGraph_Create')
+  function Epetra_CrsGraph_Create ( CV, RowMapID, NumIndicesPerRow, StaticProfile ) &
+        result(that) bind(C,name='Epetra_CrsGraph_Create')
     import :: FT_Epetra_CrsGraph_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_BlockMap_ID_t , &
           c_int ,FT_boolean_t
     
+    type(FT_Epetra_CrsGraph_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: RowMapID
     integer(c_int)               ,intent(in)   ,value              :: NumIndicesPerRow
@@ -5872,12 +6203,13 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create_VarPerRow_WithColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t RowMapID, CT_Epetra_BlockMap_ID_t ColMapID, const int * NumIndicesPerRow, boolean StaticProfile );
 
-  type(FT_Epetra_CrsGraph_ID_t) function Epetra_CrsGraph_Create_VarPerRow_WithColMap ( CV, &
-        RowMapID, ColMapID, NumIndicesPerRow, StaticProfile ) &
+  function Epetra_CrsGraph_Create_VarPerRow_WithColMap ( CV, RowMapID, ColMapID, &
+        NumIndicesPerRow, StaticProfile ) result(that) &
         bind(C,name='Epetra_CrsGraph_Create_VarPerRow_WithColMap')
     import :: FT_Epetra_CrsGraph_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_BlockMap_ID_t , &
           c_int ,FT_boolean_t
     
+    type(FT_Epetra_CrsGraph_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: RowMapID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: ColMapID
@@ -5891,12 +6223,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create_With_ColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t RowMapID, CT_Epetra_BlockMap_ID_t ColMapID, int NumIndicesPerRow, boolean StaticProfile );
 
-  type(FT_Epetra_CrsGraph_ID_t) function Epetra_CrsGraph_Create_With_ColMap ( CV, RowMapID, &
-        ColMapID, NumIndicesPerRow, StaticProfile ) &
-        bind(C,name='Epetra_CrsGraph_Create_With_ColMap')
+  function Epetra_CrsGraph_Create_With_ColMap ( CV, RowMapID, ColMapID, NumIndicesPerRow, &
+        StaticProfile ) result(that) bind(C,name='Epetra_CrsGraph_Create_With_ColMap')
     import :: FT_Epetra_CrsGraph_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_BlockMap_ID_t , &
           c_int ,FT_boolean_t
     
+    type(FT_Epetra_CrsGraph_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: RowMapID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: ColMapID
@@ -5910,10 +6242,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Duplicate ( CT_Epetra_CrsGraph_ID_t GraphID );
 
-  type(FT_Epetra_CrsGraph_ID_t) function Epetra_CrsGraph_Duplicate ( GraphID ) &
+  function Epetra_CrsGraph_Duplicate ( GraphID ) result(that) &
         bind(C,name='Epetra_CrsGraph_Duplicate')
     import :: FT_Epetra_CrsGraph_ID_t
     
+    type(FT_Epetra_CrsGraph_ID_t)                                  :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: GraphID
   end function
 
@@ -5935,10 +6268,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_InsertGlobalIndices ( CT_Epetra_CrsGraph_ID_t selfID, int GlobalRow, int NumIndices, int * Indices );
 
-  integer(c_int) function Epetra_CrsGraph_InsertGlobalIndices ( selfID, GlobalRow, &
-        NumIndices, Indices ) bind(C,name='Epetra_CrsGraph_InsertGlobalIndices')
+  function Epetra_CrsGraph_InsertGlobalIndices ( selfID, GlobalRow, NumIndices, Indices ) &
+        result(that) bind(C,name='Epetra_CrsGraph_InsertGlobalIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GlobalRow
     integer(c_int)               ,intent(in)   ,value              :: NumIndices
@@ -5951,10 +6285,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_RemoveGlobalIndices ( CT_Epetra_CrsGraph_ID_t selfID, int GlobalRow, int NumIndices, int * Indices );
 
-  integer(c_int) function Epetra_CrsGraph_RemoveGlobalIndices ( selfID, GlobalRow, &
-        NumIndices, Indices ) bind(C,name='Epetra_CrsGraph_RemoveGlobalIndices')
+  function Epetra_CrsGraph_RemoveGlobalIndices ( selfID, GlobalRow, NumIndices, Indices ) &
+        result(that) bind(C,name='Epetra_CrsGraph_RemoveGlobalIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GlobalRow
     integer(c_int)               ,intent(in)   ,value              :: NumIndices
@@ -5967,10 +6302,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_RemoveGlobalIndices_LocalRow ( CT_Epetra_CrsGraph_ID_t selfID, int Row );
 
-  integer(c_int) function Epetra_CrsGraph_RemoveGlobalIndices_LocalRow ( selfID, Row ) &
+  function Epetra_CrsGraph_RemoveGlobalIndices_LocalRow ( selfID, Row ) result(that) &
         bind(C,name='Epetra_CrsGraph_RemoveGlobalIndices_LocalRow')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: Row
   end function
@@ -5981,10 +6317,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_InsertMyIndices ( CT_Epetra_CrsGraph_ID_t selfID, int LocalRow, int NumIndices, int * Indices );
 
-  integer(c_int) function Epetra_CrsGraph_InsertMyIndices ( selfID, LocalRow, NumIndices, &
-        Indices ) bind(C,name='Epetra_CrsGraph_InsertMyIndices')
+  function Epetra_CrsGraph_InsertMyIndices ( selfID, LocalRow, NumIndices, Indices ) &
+        result(that) bind(C,name='Epetra_CrsGraph_InsertMyIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LocalRow
     integer(c_int)               ,intent(in)   ,value              :: NumIndices
@@ -5997,10 +6334,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_RemoveMyIndices ( CT_Epetra_CrsGraph_ID_t selfID, int LocalRow, int NumIndices, int * Indices );
 
-  integer(c_int) function Epetra_CrsGraph_RemoveMyIndices ( selfID, LocalRow, NumIndices, &
-        Indices ) bind(C,name='Epetra_CrsGraph_RemoveMyIndices')
+  function Epetra_CrsGraph_RemoveMyIndices ( selfID, LocalRow, NumIndices, Indices ) &
+        result(that) bind(C,name='Epetra_CrsGraph_RemoveMyIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LocalRow
     integer(c_int)               ,intent(in)   ,value              :: NumIndices
@@ -6013,10 +6351,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_RemoveMyIndices_LocalRow ( CT_Epetra_CrsGraph_ID_t selfID, int Row );
 
-  integer(c_int) function Epetra_CrsGraph_RemoveMyIndices_LocalRow ( selfID, Row ) &
+  function Epetra_CrsGraph_RemoveMyIndices_LocalRow ( selfID, Row ) result(that) &
         bind(C,name='Epetra_CrsGraph_RemoveMyIndices_LocalRow')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: Row
   end function
@@ -6027,10 +6366,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_FillComplete ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_FillComplete ( selfID ) &
+  function Epetra_CrsGraph_FillComplete ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_FillComplete')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6040,10 +6380,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_FillComplete_UsingMaps ( CT_Epetra_CrsGraph_ID_t selfID, CT_Epetra_BlockMap_ID_t DomainMapID, CT_Epetra_BlockMap_ID_t RangeMapID );
 
-  integer(c_int) function Epetra_CrsGraph_FillComplete_UsingMaps ( selfID, DomainMapID, &
-        RangeMapID ) bind(C,name='Epetra_CrsGraph_FillComplete_UsingMaps')
+  function Epetra_CrsGraph_FillComplete_UsingMaps ( selfID, DomainMapID, RangeMapID ) &
+        result(that) bind(C,name='Epetra_CrsGraph_FillComplete_UsingMaps')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: DomainMapID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: RangeMapID
@@ -6055,10 +6396,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_OptimizeStorage ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_OptimizeStorage ( selfID ) &
+  function Epetra_CrsGraph_OptimizeStorage ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_OptimizeStorage')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6068,11 +6410,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_ExtractGlobalRowCopy ( CT_Epetra_CrsGraph_ID_t selfID, int GlobalRow, int LenOfIndices, int * NumIndices, int * Indices );
 
-  integer(c_int) function Epetra_CrsGraph_ExtractGlobalRowCopy ( selfID, GlobalRow, &
-        LenOfIndices, NumIndices, Indices ) &
+  function Epetra_CrsGraph_ExtractGlobalRowCopy ( selfID, GlobalRow, LenOfIndices, &
+        NumIndices, Indices ) result(that) &
         bind(C,name='Epetra_CrsGraph_ExtractGlobalRowCopy')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GlobalRow
     integer(c_int)               ,intent(in)   ,value              :: LenOfIndices
@@ -6086,10 +6429,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_ExtractMyRowCopy ( CT_Epetra_CrsGraph_ID_t selfID, int LocalRow, int LenOfIndices, int * NumIndices, int * Indices );
 
-  integer(c_int) function Epetra_CrsGraph_ExtractMyRowCopy ( selfID, LocalRow, LenOfIndices, &
-        NumIndices, Indices ) bind(C,name='Epetra_CrsGraph_ExtractMyRowCopy')
+  function Epetra_CrsGraph_ExtractMyRowCopy ( selfID, LocalRow, LenOfIndices, NumIndices, &
+        Indices ) result(that) bind(C,name='Epetra_CrsGraph_ExtractMyRowCopy')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LocalRow
     integer(c_int)               ,intent(in)   ,value              :: LenOfIndices
@@ -6103,10 +6447,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_ExtractGlobalRowView ( CT_Epetra_CrsGraph_ID_t selfID, int GlobalRow, int * NumIndices, int ** Indices );
 
-  integer(c_int) function Epetra_CrsGraph_ExtractGlobalRowView ( selfID, GlobalRow, &
-        NumIndices, Indices ) bind(C,name='Epetra_CrsGraph_ExtractGlobalRowView')
+  function Epetra_CrsGraph_ExtractGlobalRowView ( selfID, GlobalRow, NumIndices, Indices ) &
+        result(that) bind(C,name='Epetra_CrsGraph_ExtractGlobalRowView')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GlobalRow
     integer(c_int)               ,intent(inout)                    :: NumIndices
@@ -6119,10 +6464,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_ExtractMyRowView ( CT_Epetra_CrsGraph_ID_t selfID, int LocalRow, int * NumIndices, int ** Indices );
 
-  integer(c_int) function Epetra_CrsGraph_ExtractMyRowView ( selfID, LocalRow, NumIndices, &
-        Indices ) bind(C,name='Epetra_CrsGraph_ExtractMyRowView')
+  function Epetra_CrsGraph_ExtractMyRowView ( selfID, LocalRow, NumIndices, Indices ) &
+        result(that) bind(C,name='Epetra_CrsGraph_ExtractMyRowView')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LocalRow
     integer(c_int)               ,intent(inout)                    :: NumIndices
@@ -6135,10 +6481,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsGraph_Filled ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsGraph_Filled ( selfID ) &
+  function Epetra_CrsGraph_Filled ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_Filled')
     import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6148,10 +6495,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsGraph_StorageOptimized ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsGraph_StorageOptimized ( selfID ) &
+  function Epetra_CrsGraph_StorageOptimized ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_StorageOptimized')
     import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6161,10 +6509,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsGraph_IndicesAreGlobal ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsGraph_IndicesAreGlobal ( selfID ) &
+  function Epetra_CrsGraph_IndicesAreGlobal ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_IndicesAreGlobal')
     import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6174,10 +6523,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsGraph_IndicesAreLocal ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsGraph_IndicesAreLocal ( selfID ) &
+  function Epetra_CrsGraph_IndicesAreLocal ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_IndicesAreLocal')
     import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6187,10 +6537,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsGraph_LowerTriangular ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsGraph_LowerTriangular ( selfID ) &
+  function Epetra_CrsGraph_LowerTriangular ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_LowerTriangular')
     import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6200,10 +6551,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsGraph_UpperTriangular ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsGraph_UpperTriangular ( selfID ) &
+  function Epetra_CrsGraph_UpperTriangular ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_UpperTriangular')
     import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6213,10 +6565,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsGraph_NoDiagonal ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsGraph_NoDiagonal ( selfID ) &
+  function Epetra_CrsGraph_NoDiagonal ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_NoDiagonal')
     import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6226,10 +6579,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsGraph_MyGlobalRow ( CT_Epetra_CrsGraph_ID_t selfID, int GID );
 
-  integer(FT_boolean_t) function Epetra_CrsGraph_MyGlobalRow ( selfID, GID ) &
+  function Epetra_CrsGraph_MyGlobalRow ( selfID, GID ) result(that) &
         bind(C,name='Epetra_CrsGraph_MyGlobalRow')
     import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t ,c_int
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GID
   end function
@@ -6240,10 +6594,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsGraph_HaveColMap ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_CrsGraph_HaveColMap ( selfID ) &
+  function Epetra_CrsGraph_HaveColMap ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_HaveColMap')
     import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6253,10 +6608,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumMyRows ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_NumMyRows ( selfID ) &
+  function Epetra_CrsGraph_NumMyRows ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumMyRows')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6266,10 +6622,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumGlobalRows ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_NumGlobalRows ( selfID ) &
+  function Epetra_CrsGraph_NumGlobalRows ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumGlobalRows')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6279,10 +6636,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumMyCols ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_NumMyCols ( selfID ) &
+  function Epetra_CrsGraph_NumMyCols ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumMyCols')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6292,10 +6650,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumGlobalCols ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_NumGlobalCols ( selfID ) &
+  function Epetra_CrsGraph_NumGlobalCols ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumGlobalCols')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6305,10 +6664,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumGlobalNonzeros ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_NumGlobalNonzeros ( selfID ) &
+  function Epetra_CrsGraph_NumGlobalNonzeros ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumGlobalNonzeros')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6318,10 +6678,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumGlobalDiagonals ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_NumGlobalDiagonals ( selfID ) &
+  function Epetra_CrsGraph_NumGlobalDiagonals ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumGlobalDiagonals')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6331,10 +6692,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumMyDiagonals ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_NumMyDiagonals ( selfID ) &
+  function Epetra_CrsGraph_NumMyDiagonals ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumMyDiagonals')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6344,10 +6706,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumMyBlockRows ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_NumMyBlockRows ( selfID ) &
+  function Epetra_CrsGraph_NumMyBlockRows ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumMyBlockRows')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6357,10 +6720,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumGlobalBlockRows ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_NumGlobalBlockRows ( selfID ) &
+  function Epetra_CrsGraph_NumGlobalBlockRows ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumGlobalBlockRows')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6370,10 +6734,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumMyBlockCols ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_NumMyBlockCols ( selfID ) &
+  function Epetra_CrsGraph_NumMyBlockCols ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumMyBlockCols')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6383,10 +6748,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumGlobalBlockCols ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_NumGlobalBlockCols ( selfID ) &
+  function Epetra_CrsGraph_NumGlobalBlockCols ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumGlobalBlockCols')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6396,10 +6762,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumMyBlockDiagonals ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_NumMyBlockDiagonals ( selfID ) &
+  function Epetra_CrsGraph_NumMyBlockDiagonals ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumMyBlockDiagonals')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6409,10 +6776,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumGlobalBlockDiagonals ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_NumGlobalBlockDiagonals ( selfID ) &
+  function Epetra_CrsGraph_NumGlobalBlockDiagonals ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumGlobalBlockDiagonals')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6422,10 +6790,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumGlobalEntries ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_NumGlobalEntries ( selfID ) &
+  function Epetra_CrsGraph_NumGlobalEntries ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumGlobalEntries')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6435,10 +6804,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumMyEntries ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_NumMyEntries ( selfID ) &
+  function Epetra_CrsGraph_NumMyEntries ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumMyEntries')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6448,10 +6818,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_MaxRowDim ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_MaxRowDim ( selfID ) &
+  function Epetra_CrsGraph_MaxRowDim ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_MaxRowDim')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6461,10 +6832,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_GlobalMaxRowDim ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_GlobalMaxRowDim ( selfID ) &
+  function Epetra_CrsGraph_GlobalMaxRowDim ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_GlobalMaxRowDim')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6474,10 +6846,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_MaxColDim ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_MaxColDim ( selfID ) &
+  function Epetra_CrsGraph_MaxColDim ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_MaxColDim')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6487,10 +6860,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_GlobalMaxColDim ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_GlobalMaxColDim ( selfID ) &
+  function Epetra_CrsGraph_GlobalMaxColDim ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_GlobalMaxColDim')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6500,10 +6874,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumMyNonzeros ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_NumMyNonzeros ( selfID ) &
+  function Epetra_CrsGraph_NumMyNonzeros ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumMyNonzeros')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6513,10 +6888,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumGlobalIndices ( CT_Epetra_CrsGraph_ID_t selfID, int Row );
 
-  integer(c_int) function Epetra_CrsGraph_NumGlobalIndices ( selfID, Row ) &
+  function Epetra_CrsGraph_NumGlobalIndices ( selfID, Row ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumGlobalIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: Row
   end function
@@ -6527,10 +6903,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumAllocatedGlobalIndices ( CT_Epetra_CrsGraph_ID_t selfID, int Row );
 
-  integer(c_int) function Epetra_CrsGraph_NumAllocatedGlobalIndices ( selfID, Row ) &
+  function Epetra_CrsGraph_NumAllocatedGlobalIndices ( selfID, Row ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumAllocatedGlobalIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: Row
   end function
@@ -6541,10 +6918,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_MaxNumIndices ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_MaxNumIndices ( selfID ) &
+  function Epetra_CrsGraph_MaxNumIndices ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_MaxNumIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6554,10 +6932,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_GlobalMaxNumIndices ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_GlobalMaxNumIndices ( selfID ) &
+  function Epetra_CrsGraph_GlobalMaxNumIndices ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_GlobalMaxNumIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6567,10 +6946,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_MaxNumNonzeros ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_MaxNumNonzeros ( selfID ) &
+  function Epetra_CrsGraph_MaxNumNonzeros ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_MaxNumNonzeros')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6580,10 +6960,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_GlobalMaxNumNonzeros ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_GlobalMaxNumNonzeros ( selfID ) &
+  function Epetra_CrsGraph_GlobalMaxNumNonzeros ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_GlobalMaxNumNonzeros')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6593,10 +6974,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumMyIndices ( CT_Epetra_CrsGraph_ID_t selfID, int Row );
 
-  integer(c_int) function Epetra_CrsGraph_NumMyIndices ( selfID, Row ) &
+  function Epetra_CrsGraph_NumMyIndices ( selfID, Row ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumMyIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: Row
   end function
@@ -6607,10 +6989,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_NumAllocatedMyIndices ( CT_Epetra_CrsGraph_ID_t selfID, int Row );
 
-  integer(c_int) function Epetra_CrsGraph_NumAllocatedMyIndices ( selfID, Row ) &
+  function Epetra_CrsGraph_NumAllocatedMyIndices ( selfID, Row ) result(that) &
         bind(C,name='Epetra_CrsGraph_NumAllocatedMyIndices')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: Row
   end function
@@ -6621,10 +7004,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_IndexBase ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_IndexBase ( selfID ) &
+  function Epetra_CrsGraph_IndexBase ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_IndexBase')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6634,10 +7018,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_BlockMap_ID_t Epetra_CrsGraph_RowMap ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  type(FT_Epetra_BlockMap_ID_t) function Epetra_CrsGraph_RowMap ( selfID ) &
+  function Epetra_CrsGraph_RowMap ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_RowMap')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_CrsGraph_ID_t
     
+    type(FT_Epetra_BlockMap_ID_t)                                  :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6647,10 +7032,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_ReplaceRowMap ( CT_Epetra_CrsGraph_ID_t selfID, CT_Epetra_BlockMap_ID_t newmapID );
 
-  integer(c_int) function Epetra_CrsGraph_ReplaceRowMap ( selfID, newmapID ) &
+  function Epetra_CrsGraph_ReplaceRowMap ( selfID, newmapID ) result(that) &
         bind(C,name='Epetra_CrsGraph_ReplaceRowMap')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: newmapID
   end function
@@ -6661,10 +7047,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_ReplaceColMap ( CT_Epetra_CrsGraph_ID_t selfID, CT_Epetra_BlockMap_ID_t newmapID );
 
-  integer(c_int) function Epetra_CrsGraph_ReplaceColMap ( selfID, newmapID ) &
+  function Epetra_CrsGraph_ReplaceColMap ( selfID, newmapID ) result(that) &
         bind(C,name='Epetra_CrsGraph_ReplaceColMap')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: newmapID
   end function
@@ -6675,10 +7062,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_BlockMap_ID_t Epetra_CrsGraph_ColMap ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  type(FT_Epetra_BlockMap_ID_t) function Epetra_CrsGraph_ColMap ( selfID ) &
+  function Epetra_CrsGraph_ColMap ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_ColMap')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_CrsGraph_ID_t
     
+    type(FT_Epetra_BlockMap_ID_t)                                  :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6688,10 +7076,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_BlockMap_ID_t Epetra_CrsGraph_DomainMap ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  type(FT_Epetra_BlockMap_ID_t) function Epetra_CrsGraph_DomainMap ( selfID ) &
+  function Epetra_CrsGraph_DomainMap ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_DomainMap')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_CrsGraph_ID_t
     
+    type(FT_Epetra_BlockMap_ID_t)                                  :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6701,10 +7090,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_BlockMap_ID_t Epetra_CrsGraph_RangeMap ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  type(FT_Epetra_BlockMap_ID_t) function Epetra_CrsGraph_RangeMap ( selfID ) &
+  function Epetra_CrsGraph_RangeMap ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_RangeMap')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_CrsGraph_ID_t
     
+    type(FT_Epetra_BlockMap_ID_t)                                  :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6714,10 +7104,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Import_ID_t Epetra_CrsGraph_Importer ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  type(FT_Epetra_Import_ID_t) function Epetra_CrsGraph_Importer ( selfID ) &
+  function Epetra_CrsGraph_Importer ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_Importer')
     import :: FT_Epetra_Import_ID_t ,FT_Epetra_CrsGraph_ID_t
     
+    type(FT_Epetra_Import_ID_t)                                    :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6727,10 +7118,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Export_ID_t Epetra_CrsGraph_Exporter ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  type(FT_Epetra_Export_ID_t) function Epetra_CrsGraph_Exporter ( selfID ) &
+  function Epetra_CrsGraph_Exporter ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_Exporter')
     import :: FT_Epetra_Export_ID_t ,FT_Epetra_CrsGraph_ID_t
     
+    type(FT_Epetra_Export_ID_t)                                    :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6740,10 +7132,10 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Comm_ID_t Epetra_CrsGraph_Comm ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  type(FT_Epetra_Comm_ID_t) function Epetra_CrsGraph_Comm ( selfID ) &
-        bind(C,name='Epetra_CrsGraph_Comm')
+  function Epetra_CrsGraph_Comm ( selfID ) result(that) bind(C,name='Epetra_CrsGraph_Comm')
     import :: FT_Epetra_Comm_ID_t ,FT_Epetra_CrsGraph_ID_t
     
+    type(FT_Epetra_Comm_ID_t)                                      :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6753,10 +7145,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_LRID ( CT_Epetra_CrsGraph_ID_t selfID, int GRID_in );
 
-  integer(c_int) function Epetra_CrsGraph_LRID ( selfID, GRID_in ) &
+  function Epetra_CrsGraph_LRID ( selfID, GRID_in ) result(that) &
         bind(C,name='Epetra_CrsGraph_LRID')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GRID_in
   end function
@@ -6767,10 +7160,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_GRID ( CT_Epetra_CrsGraph_ID_t selfID, int LRID_in );
 
-  integer(c_int) function Epetra_CrsGraph_GRID ( selfID, LRID_in ) &
+  function Epetra_CrsGraph_GRID ( selfID, LRID_in ) result(that) &
         bind(C,name='Epetra_CrsGraph_GRID')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LRID_in
   end function
@@ -6781,10 +7175,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_LCID ( CT_Epetra_CrsGraph_ID_t selfID, int GCID_in );
 
-  integer(c_int) function Epetra_CrsGraph_LCID ( selfID, GCID_in ) &
+  function Epetra_CrsGraph_LCID ( selfID, GCID_in ) result(that) &
         bind(C,name='Epetra_CrsGraph_LCID')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GCID_in
   end function
@@ -6795,10 +7190,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_GCID ( CT_Epetra_CrsGraph_ID_t selfID, int LCID_in );
 
-  integer(c_int) function Epetra_CrsGraph_GCID ( selfID, LCID_in ) &
+  function Epetra_CrsGraph_GCID ( selfID, LCID_in ) result(that) &
         bind(C,name='Epetra_CrsGraph_GCID')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LCID_in
   end function
@@ -6809,10 +7205,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsGraph_MyGRID ( CT_Epetra_CrsGraph_ID_t selfID, int GRID_in );
 
-  integer(FT_boolean_t) function Epetra_CrsGraph_MyGRID ( selfID, GRID_in ) &
+  function Epetra_CrsGraph_MyGRID ( selfID, GRID_in ) result(that) &
         bind(C,name='Epetra_CrsGraph_MyGRID')
     import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t ,c_int
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GRID_in
   end function
@@ -6823,10 +7220,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsGraph_MyLRID ( CT_Epetra_CrsGraph_ID_t selfID, int LRID_in );
 
-  integer(FT_boolean_t) function Epetra_CrsGraph_MyLRID ( selfID, LRID_in ) &
+  function Epetra_CrsGraph_MyLRID ( selfID, LRID_in ) result(that) &
         bind(C,name='Epetra_CrsGraph_MyLRID')
     import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t ,c_int
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LRID_in
   end function
@@ -6837,10 +7235,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsGraph_MyGCID ( CT_Epetra_CrsGraph_ID_t selfID, int GCID_in );
 
-  integer(FT_boolean_t) function Epetra_CrsGraph_MyGCID ( selfID, GCID_in ) &
+  function Epetra_CrsGraph_MyGCID ( selfID, GCID_in ) result(that) &
         bind(C,name='Epetra_CrsGraph_MyGCID')
     import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t ,c_int
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GCID_in
   end function
@@ -6851,10 +7250,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_CrsGraph_MyLCID ( CT_Epetra_CrsGraph_ID_t selfID, int LCID_in );
 
-  integer(FT_boolean_t) function Epetra_CrsGraph_MyLCID ( selfID, LCID_in ) &
+  function Epetra_CrsGraph_MyLCID ( selfID, LCID_in ) result(that) &
         bind(C,name='Epetra_CrsGraph_MyLCID')
     import :: FT_boolean_t ,FT_Epetra_CrsGraph_ID_t ,c_int
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LCID_in
   end function
@@ -6865,10 +7265,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int * Epetra_CrsGraph_getRow ( CT_Epetra_CrsGraph_ID_t selfID, int Loc );
 
-  type(c_ptr) function Epetra_CrsGraph_getRow ( selfID, Loc ) &
+  function Epetra_CrsGraph_getRow ( selfID, Loc ) result(that) &
         bind(C,name='Epetra_CrsGraph_getRow')
     import :: c_ptr ,FT_Epetra_CrsGraph_ID_t ,c_int
     
+    type(c_ptr)                                                    :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: Loc
   end function
@@ -6893,10 +7294,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_BlockMap_ID_t Epetra_CrsGraph_ImportMap ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  type(FT_Epetra_BlockMap_ID_t) function Epetra_CrsGraph_ImportMap ( selfID ) &
+  function Epetra_CrsGraph_ImportMap ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_ImportMap')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_CrsGraph_ID_t
     
+    type(FT_Epetra_BlockMap_ID_t)                                  :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6906,10 +7308,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_TransformToLocal ( CT_Epetra_CrsGraph_ID_t selfID );
 
-  integer(c_int) function Epetra_CrsGraph_TransformToLocal ( selfID ) &
+  function Epetra_CrsGraph_TransformToLocal ( selfID ) result(that) &
         bind(C,name='Epetra_CrsGraph_TransformToLocal')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -6919,10 +7322,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_CrsGraph_TransformToLocal_UsingMaps ( CT_Epetra_CrsGraph_ID_t selfID, CT_Epetra_BlockMap_ID_t DomainMapID, CT_Epetra_BlockMap_ID_t RangeMapID );
 
-  integer(c_int) function Epetra_CrsGraph_TransformToLocal_UsingMaps ( selfID, DomainMapID, &
-        RangeMapID ) bind(C,name='Epetra_CrsGraph_TransformToLocal_UsingMaps')
+  function Epetra_CrsGraph_TransformToLocal_UsingMaps ( selfID, DomainMapID, RangeMapID ) &
+        result(that) bind(C,name='Epetra_CrsGraph_TransformToLocal_UsingMaps')
     import :: c_int ,FT_Epetra_CrsGraph_ID_t ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_CrsGraph_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: DomainMapID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: RangeMapID
@@ -6941,10 +7345,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_DistObject_ID_t Epetra_DistObject_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_DistObject_ID_t) function Epetra_DistObject_Degeneralize ( id ) &
+  function Epetra_DistObject_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_DistObject_Degeneralize')
     import :: FT_Epetra_DistObject_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_DistObject_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -6952,10 +7357,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_DistObject_Generalize ( CT_Epetra_DistObject_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_DistObject_Generalize ( id ) &
+  function Epetra_DistObject_Generalize ( id ) result(that) &
         bind(C,name='Epetra_DistObject_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_DistObject_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -6977,11 +7383,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_DistObject_Import ( CT_Epetra_DistObject_ID_t selfID, CT_Epetra_SrcDistObject_ID_t AID, CT_Epetra_Import_ID_t ImporterID, CT_Epetra_CombineMode_E_t CombineMode, CT_Epetra_OffsetIndex_ID_t IndexorID );
 
-  integer(c_int) function Epetra_DistObject_Import ( selfID, AID, ImporterID, CombineMode, &
-        IndexorID ) bind(C,name='Epetra_DistObject_Import')
+  function Epetra_DistObject_Import ( selfID, AID, ImporterID, CombineMode, IndexorID ) &
+        result(that) bind(C,name='Epetra_DistObject_Import')
     import :: c_int ,FT_Epetra_DistObject_ID_t ,FT_Epetra_SrcDistObject_ID_t , &
           FT_Epetra_Import_ID_t ,FT_Epetra_CombineMode_E_t ,FT_Epetra_OffsetIndex_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_SrcDistObject_ID_t),intent(in)   ,value              :: AID
     type(FT_Epetra_Import_ID_t)    ,intent(in)   ,value              :: ImporterID
@@ -6995,11 +7402,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_DistObject_Import_UsingExporter ( CT_Epetra_DistObject_ID_t selfID, CT_Epetra_SrcDistObject_ID_t AID, CT_Epetra_Export_ID_t ExporterID, CT_Epetra_CombineMode_E_t CombineMode, CT_Epetra_OffsetIndex_ID_t IndexorID );
 
-  integer(c_int) function Epetra_DistObject_Import_UsingExporter ( selfID, AID, ExporterID, &
-        CombineMode, IndexorID ) bind(C,name='Epetra_DistObject_Import_UsingExporter')
+  function Epetra_DistObject_Import_UsingExporter ( selfID, AID, ExporterID, CombineMode, &
+        IndexorID ) result(that) bind(C,name='Epetra_DistObject_Import_UsingExporter')
     import :: c_int ,FT_Epetra_DistObject_ID_t ,FT_Epetra_SrcDistObject_ID_t , &
           FT_Epetra_Export_ID_t ,FT_Epetra_CombineMode_E_t ,FT_Epetra_OffsetIndex_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_SrcDistObject_ID_t),intent(in)   ,value              :: AID
     type(FT_Epetra_Export_ID_t)    ,intent(in)   ,value              :: ExporterID
@@ -7013,11 +7421,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_DistObject_Export_UsingImporter ( CT_Epetra_DistObject_ID_t selfID, CT_Epetra_SrcDistObject_ID_t AID, CT_Epetra_Import_ID_t ImporterID, CT_Epetra_CombineMode_E_t CombineMode, CT_Epetra_OffsetIndex_ID_t IndexorID );
 
-  integer(c_int) function Epetra_DistObject_Export_UsingImporter ( selfID, AID, ImporterID, &
-        CombineMode, IndexorID ) bind(C,name='Epetra_DistObject_Export_UsingImporter')
+  function Epetra_DistObject_Export_UsingImporter ( selfID, AID, ImporterID, CombineMode, &
+        IndexorID ) result(that) bind(C,name='Epetra_DistObject_Export_UsingImporter')
     import :: c_int ,FT_Epetra_DistObject_ID_t ,FT_Epetra_SrcDistObject_ID_t , &
           FT_Epetra_Import_ID_t ,FT_Epetra_CombineMode_E_t ,FT_Epetra_OffsetIndex_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_SrcDistObject_ID_t),intent(in)   ,value              :: AID
     type(FT_Epetra_Import_ID_t)    ,intent(in)   ,value              :: ImporterID
@@ -7031,11 +7440,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_DistObject_Export ( CT_Epetra_DistObject_ID_t selfID, CT_Epetra_SrcDistObject_ID_t AID, CT_Epetra_Export_ID_t ExporterID, CT_Epetra_CombineMode_E_t CombineMode, CT_Epetra_OffsetIndex_ID_t IndexorID );
 
-  integer(c_int) function Epetra_DistObject_Export ( selfID, AID, ExporterID, CombineMode, &
-        IndexorID ) bind(C,name='Epetra_DistObject_Export')
+  function Epetra_DistObject_Export ( selfID, AID, ExporterID, CombineMode, IndexorID ) &
+        result(that) bind(C,name='Epetra_DistObject_Export')
     import :: c_int ,FT_Epetra_DistObject_ID_t ,FT_Epetra_SrcDistObject_ID_t , &
           FT_Epetra_Export_ID_t ,FT_Epetra_CombineMode_E_t ,FT_Epetra_OffsetIndex_ID_t
     
+    integer(c_int)                                                   :: that
     type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_SrcDistObject_ID_t),intent(in)   ,value              :: AID
     type(FT_Epetra_Export_ID_t)    ,intent(in)   ,value              :: ExporterID
@@ -7049,10 +7459,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_BlockMap_ID_t Epetra_DistObject_Map ( CT_Epetra_DistObject_ID_t selfID );
 
-  type(FT_Epetra_BlockMap_ID_t) function Epetra_DistObject_Map ( selfID ) &
+  function Epetra_DistObject_Map ( selfID ) result(that) &
         bind(C,name='Epetra_DistObject_Map')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_DistObject_ID_t
     
+    type(FT_Epetra_BlockMap_ID_t)                                    :: that
     type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -7062,10 +7473,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Comm_ID_t Epetra_DistObject_Comm ( CT_Epetra_DistObject_ID_t selfID );
 
-  type(FT_Epetra_Comm_ID_t) function Epetra_DistObject_Comm ( selfID ) &
+  function Epetra_DistObject_Comm ( selfID ) result(that) &
         bind(C,name='Epetra_DistObject_Comm')
     import :: FT_Epetra_Comm_ID_t ,FT_Epetra_DistObject_ID_t
     
+    type(FT_Epetra_Comm_ID_t)                                        :: that
     type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -7075,10 +7487,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_DistObject_DistributedGlobal ( CT_Epetra_DistObject_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_DistObject_DistributedGlobal ( selfID ) &
+  function Epetra_DistObject_DistributedGlobal ( selfID ) result(that) &
         bind(C,name='Epetra_DistObject_DistributedGlobal')
     import :: FT_boolean_t ,FT_Epetra_DistObject_ID_t
     
+    integer(FT_boolean_t)                                            :: that
     type(FT_Epetra_DistObject_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -7095,10 +7508,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_Vector_ID_t Epetra_Vector_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Vector_ID_t) function Epetra_Vector_Degeneralize ( id ) &
+  function Epetra_Vector_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_Vector_Degeneralize')
     import :: FT_Epetra_Vector_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_Vector_ID_t)                                   :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -7106,10 +7520,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_Vector_Generalize ( CT_Epetra_Vector_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_Vector_Generalize ( id ) &
+  function Epetra_Vector_Generalize ( id ) result(that) &
         bind(C,name='Epetra_Vector_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Vector_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: id
   end function
 
@@ -7119,10 +7534,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Vector_ID_t Epetra_Vector_Create ( CT_Epetra_BlockMap_ID_t MapID, boolean zeroOut );
 
-  type(FT_Epetra_Vector_ID_t) function Epetra_Vector_Create ( MapID, zeroOut ) &
+  function Epetra_Vector_Create ( MapID, zeroOut ) result(that) &
         bind(C,name='Epetra_Vector_Create')
     import :: FT_Epetra_Vector_ID_t ,FT_Epetra_BlockMap_ID_t ,FT_boolean_t
     
+    type(FT_Epetra_Vector_ID_t)                                   :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: MapID
     integer(FT_boolean_t)       ,intent(in)   ,value              :: zeroOut
   end function
@@ -7133,10 +7549,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Vector_ID_t Epetra_Vector_Duplicate ( CT_Epetra_Vector_ID_t SourceID );
 
-  type(FT_Epetra_Vector_ID_t) function Epetra_Vector_Duplicate ( SourceID ) &
+  function Epetra_Vector_Duplicate ( SourceID ) result(that) &
         bind(C,name='Epetra_Vector_Duplicate')
     import :: FT_Epetra_Vector_ID_t
     
+    type(FT_Epetra_Vector_ID_t)                                   :: that
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: SourceID
   end function
 
@@ -7146,11 +7563,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Vector_ID_t Epetra_Vector_Create_FromArray ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t MapID, double * V );
 
-  type(FT_Epetra_Vector_ID_t) function Epetra_Vector_Create_FromArray ( CV, MapID, V ) &
+  function Epetra_Vector_Create_FromArray ( CV, MapID, V ) result(that) &
         bind(C,name='Epetra_Vector_Create_FromArray')
     import :: FT_Epetra_Vector_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_BlockMap_ID_t , &
           c_double
     
+    type(FT_Epetra_Vector_ID_t)                                   :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: MapID
     real(c_double)                                  ,dimension(*) :: V
@@ -7162,11 +7580,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Vector_ID_t Epetra_Vector_FromSource ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_MultiVector_ID_t SourceID, int Index );
 
-  type(FT_Epetra_Vector_ID_t) function Epetra_Vector_FromSource ( CV, SourceID, Index ) &
+  function Epetra_Vector_FromSource ( CV, SourceID, Index ) result(that) &
         bind(C,name='Epetra_Vector_FromSource')
     import :: FT_Epetra_Vector_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_MultiVector_ID_t , &
           c_int
     
+    type(FT_Epetra_Vector_ID_t)                                   :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: SourceID
     integer(c_int)              ,intent(in)   ,value              :: Index
@@ -7190,10 +7609,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Vector_ReplaceGlobalValues ( CT_Epetra_Vector_ID_t selfID, int NumEntries, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_Vector_ReplaceGlobalValues ( selfID, NumEntries, Values, &
-        Indices ) bind(C,name='Epetra_Vector_ReplaceGlobalValues')
+  function Epetra_Vector_ReplaceGlobalValues ( selfID, NumEntries, Values, Indices ) &
+        result(that) bind(C,name='Epetra_Vector_ReplaceGlobalValues')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: NumEntries
     real(c_double)                                  ,dimension(*) :: Values
@@ -7206,10 +7626,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Vector_ReplaceMyValues ( CT_Epetra_Vector_ID_t selfID, int NumEntries, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_Vector_ReplaceMyValues ( selfID, NumEntries, Values, &
-        Indices ) bind(C,name='Epetra_Vector_ReplaceMyValues')
+  function Epetra_Vector_ReplaceMyValues ( selfID, NumEntries, Values, Indices ) &
+        result(that) bind(C,name='Epetra_Vector_ReplaceMyValues')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: NumEntries
     real(c_double)                                  ,dimension(*) :: Values
@@ -7222,10 +7643,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Vector_SumIntoGlobalValues ( CT_Epetra_Vector_ID_t selfID, int NumEntries, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_Vector_SumIntoGlobalValues ( selfID, NumEntries, Values, &
-        Indices ) bind(C,name='Epetra_Vector_SumIntoGlobalValues')
+  function Epetra_Vector_SumIntoGlobalValues ( selfID, NumEntries, Values, Indices ) &
+        result(that) bind(C,name='Epetra_Vector_SumIntoGlobalValues')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: NumEntries
     real(c_double)                                  ,dimension(*) :: Values
@@ -7238,10 +7660,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Vector_SumIntoMyValues ( CT_Epetra_Vector_ID_t selfID, int NumEntries, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_Vector_SumIntoMyValues ( selfID, NumEntries, Values, &
-        Indices ) bind(C,name='Epetra_Vector_SumIntoMyValues')
+  function Epetra_Vector_SumIntoMyValues ( selfID, NumEntries, Values, Indices ) &
+        result(that) bind(C,name='Epetra_Vector_SumIntoMyValues')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: NumEntries
     real(c_double)                                  ,dimension(*) :: Values
@@ -7254,11 +7677,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Vector_ReplaceGlobalValues_BlockPos ( CT_Epetra_Vector_ID_t selfID, int NumEntries, int BlockOffset, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_Vector_ReplaceGlobalValues_BlockPos ( selfID, NumEntries, &
-        BlockOffset, Values, Indices ) &
+  function Epetra_Vector_ReplaceGlobalValues_BlockPos ( selfID, NumEntries, BlockOffset, &
+        Values, Indices ) result(that) &
         bind(C,name='Epetra_Vector_ReplaceGlobalValues_BlockPos')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: NumEntries
     integer(c_int)              ,intent(in)   ,value              :: BlockOffset
@@ -7272,11 +7696,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Vector_ReplaceMyValues_BlockPos ( CT_Epetra_Vector_ID_t selfID, int NumEntries, int BlockOffset, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_Vector_ReplaceMyValues_BlockPos ( selfID, NumEntries, &
-        BlockOffset, Values, Indices ) &
-        bind(C,name='Epetra_Vector_ReplaceMyValues_BlockPos')
+  function Epetra_Vector_ReplaceMyValues_BlockPos ( selfID, NumEntries, BlockOffset, Values, &
+        Indices ) result(that) bind(C,name='Epetra_Vector_ReplaceMyValues_BlockPos')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: NumEntries
     integer(c_int)              ,intent(in)   ,value              :: BlockOffset
@@ -7290,11 +7714,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Vector_SumIntoGlobalValues_BlockPos ( CT_Epetra_Vector_ID_t selfID, int NumEntries, int BlockOffset, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_Vector_SumIntoGlobalValues_BlockPos ( selfID, NumEntries, &
-        BlockOffset, Values, Indices ) &
+  function Epetra_Vector_SumIntoGlobalValues_BlockPos ( selfID, NumEntries, BlockOffset, &
+        Values, Indices ) result(that) &
         bind(C,name='Epetra_Vector_SumIntoGlobalValues_BlockPos')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: NumEntries
     integer(c_int)              ,intent(in)   ,value              :: BlockOffset
@@ -7308,11 +7733,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Vector_SumIntoMyValues_BlockPos ( CT_Epetra_Vector_ID_t selfID, int NumEntries, int BlockOffset, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_Vector_SumIntoMyValues_BlockPos ( selfID, NumEntries, &
-        BlockOffset, Values, Indices ) &
-        bind(C,name='Epetra_Vector_SumIntoMyValues_BlockPos')
+  function Epetra_Vector_SumIntoMyValues_BlockPos ( selfID, NumEntries, BlockOffset, Values, &
+        Indices ) result(that) bind(C,name='Epetra_Vector_SumIntoMyValues_BlockPos')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: NumEntries
     integer(c_int)              ,intent(in)   ,value              :: BlockOffset
@@ -7326,10 +7751,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Vector_ExtractCopy ( CT_Epetra_Vector_ID_t selfID, double * V );
 
-  integer(c_int) function Epetra_Vector_ExtractCopy ( selfID, V ) &
+  function Epetra_Vector_ExtractCopy ( selfID, V ) result(that) &
         bind(C,name='Epetra_Vector_ExtractCopy')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: V
   end function
@@ -7340,10 +7766,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Vector_ExtractView ( CT_Epetra_Vector_ID_t selfID, double ** V );
 
-  integer(c_int) function Epetra_Vector_ExtractView ( selfID, V ) &
+  function Epetra_Vector_ExtractView ( selfID, V ) result(that) &
         bind(C,name='Epetra_Vector_ExtractView')
     import :: c_int ,FT_Epetra_Vector_ID_t ,c_double
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     real(c_double)                                  ,dimension(*) :: V
   end function
@@ -7354,10 +7781,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_Vector_getElement ( CT_Epetra_Vector_ID_t selfID, int index );
 
-  real(c_double) function Epetra_Vector_getElement ( selfID, index ) &
+  function Epetra_Vector_getElement ( selfID, index ) result(that) &
         bind(C,name='Epetra_Vector_getElement')
     import :: c_double ,FT_Epetra_Vector_ID_t ,c_int
     
+    real(c_double)                                                :: that
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: index
   end function
@@ -7375,10 +7803,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_Export_ID_t Epetra_Export_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Export_ID_t) function Epetra_Export_Degeneralize ( id ) &
+  function Epetra_Export_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_Export_Degeneralize')
     import :: FT_Epetra_Export_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_Export_ID_t)                                   :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -7386,10 +7815,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_Export_Generalize ( CT_Epetra_Export_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_Export_Generalize ( id ) &
+  function Epetra_Export_Generalize ( id ) result(that) &
         bind(C,name='Epetra_Export_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Export_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: id
   end function
 
@@ -7399,10 +7829,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Export_ID_t Epetra_Export_Create ( CT_Epetra_BlockMap_ID_t SourceMapID, CT_Epetra_BlockMap_ID_t TargetMapID );
 
-  type(FT_Epetra_Export_ID_t) function Epetra_Export_Create ( SourceMapID, TargetMapID ) &
+  function Epetra_Export_Create ( SourceMapID, TargetMapID ) result(that) &
         bind(C,name='Epetra_Export_Create')
     import :: FT_Epetra_Export_ID_t ,FT_Epetra_BlockMap_ID_t
     
+    type(FT_Epetra_Export_ID_t)                                   :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: SourceMapID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: TargetMapID
   end function
@@ -7413,10 +7844,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Export_ID_t Epetra_Export_Duplicate ( CT_Epetra_Export_ID_t ExporterID );
 
-  type(FT_Epetra_Export_ID_t) function Epetra_Export_Duplicate ( ExporterID ) &
+  function Epetra_Export_Duplicate ( ExporterID ) result(that) &
         bind(C,name='Epetra_Export_Duplicate')
     import :: FT_Epetra_Export_ID_t
     
+    type(FT_Epetra_Export_ID_t)                                   :: that
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: ExporterID
   end function
 
@@ -7438,10 +7870,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Export_NumSameIDs ( CT_Epetra_Export_ID_t selfID );
 
-  integer(c_int) function Epetra_Export_NumSameIDs ( selfID ) &
+  function Epetra_Export_NumSameIDs ( selfID ) result(that) &
         bind(C,name='Epetra_Export_NumSameIDs')
     import :: c_int ,FT_Epetra_Export_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7451,10 +7884,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Export_NumPermuteIDs ( CT_Epetra_Export_ID_t selfID );
 
-  integer(c_int) function Epetra_Export_NumPermuteIDs ( selfID ) &
+  function Epetra_Export_NumPermuteIDs ( selfID ) result(that) &
         bind(C,name='Epetra_Export_NumPermuteIDs')
     import :: c_int ,FT_Epetra_Export_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7464,10 +7898,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int * Epetra_Export_PermuteFromLIDs ( CT_Epetra_Export_ID_t selfID );
 
-  type(c_ptr) function Epetra_Export_PermuteFromLIDs ( selfID ) &
+  function Epetra_Export_PermuteFromLIDs ( selfID ) result(that) &
         bind(C,name='Epetra_Export_PermuteFromLIDs')
     import :: c_ptr ,FT_Epetra_Export_ID_t
     
+    type(c_ptr)                                                   :: that
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7477,10 +7912,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int * Epetra_Export_PermuteToLIDs ( CT_Epetra_Export_ID_t selfID );
 
-  type(c_ptr) function Epetra_Export_PermuteToLIDs ( selfID ) &
+  function Epetra_Export_PermuteToLIDs ( selfID ) result(that) &
         bind(C,name='Epetra_Export_PermuteToLIDs')
     import :: c_ptr ,FT_Epetra_Export_ID_t
     
+    type(c_ptr)                                                   :: that
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7490,10 +7926,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Export_NumRemoteIDs ( CT_Epetra_Export_ID_t selfID );
 
-  integer(c_int) function Epetra_Export_NumRemoteIDs ( selfID ) &
+  function Epetra_Export_NumRemoteIDs ( selfID ) result(that) &
         bind(C,name='Epetra_Export_NumRemoteIDs')
     import :: c_int ,FT_Epetra_Export_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7503,10 +7940,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int * Epetra_Export_RemoteLIDs ( CT_Epetra_Export_ID_t selfID );
 
-  type(c_ptr) function Epetra_Export_RemoteLIDs ( selfID ) &
+  function Epetra_Export_RemoteLIDs ( selfID ) result(that) &
         bind(C,name='Epetra_Export_RemoteLIDs')
     import :: c_ptr ,FT_Epetra_Export_ID_t
     
+    type(c_ptr)                                                   :: that
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7516,10 +7954,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Export_NumExportIDs ( CT_Epetra_Export_ID_t selfID );
 
-  integer(c_int) function Epetra_Export_NumExportIDs ( selfID ) &
+  function Epetra_Export_NumExportIDs ( selfID ) result(that) &
         bind(C,name='Epetra_Export_NumExportIDs')
     import :: c_int ,FT_Epetra_Export_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7529,10 +7968,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int * Epetra_Export_ExportLIDs ( CT_Epetra_Export_ID_t selfID );
 
-  type(c_ptr) function Epetra_Export_ExportLIDs ( selfID ) &
+  function Epetra_Export_ExportLIDs ( selfID ) result(that) &
         bind(C,name='Epetra_Export_ExportLIDs')
     import :: c_ptr ,FT_Epetra_Export_ID_t
     
+    type(c_ptr)                                                   :: that
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7542,10 +7982,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int * Epetra_Export_ExportPIDs ( CT_Epetra_Export_ID_t selfID );
 
-  type(c_ptr) function Epetra_Export_ExportPIDs ( selfID ) &
+  function Epetra_Export_ExportPIDs ( selfID ) result(that) &
         bind(C,name='Epetra_Export_ExportPIDs')
     import :: c_ptr ,FT_Epetra_Export_ID_t
     
+    type(c_ptr)                                                   :: that
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7555,10 +7996,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Export_NumSend ( CT_Epetra_Export_ID_t selfID );
 
-  integer(c_int) function Epetra_Export_NumSend ( selfID ) &
+  function Epetra_Export_NumSend ( selfID ) result(that) &
         bind(C,name='Epetra_Export_NumSend')
     import :: c_int ,FT_Epetra_Export_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7568,10 +8010,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Export_NumRecv ( CT_Epetra_Export_ID_t selfID );
 
-  integer(c_int) function Epetra_Export_NumRecv ( selfID ) &
+  function Epetra_Export_NumRecv ( selfID ) result(that) &
         bind(C,name='Epetra_Export_NumRecv')
     import :: c_int ,FT_Epetra_Export_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7581,10 +8024,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_BlockMap_ID_t Epetra_Export_SourceMap ( CT_Epetra_Export_ID_t selfID );
 
-  type(FT_Epetra_BlockMap_ID_t) function Epetra_Export_SourceMap ( selfID ) &
+  function Epetra_Export_SourceMap ( selfID ) result(that) &
         bind(C,name='Epetra_Export_SourceMap')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_Export_ID_t
     
+    type(FT_Epetra_BlockMap_ID_t)                                  :: that
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7594,10 +8038,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_BlockMap_ID_t Epetra_Export_TargetMap ( CT_Epetra_Export_ID_t selfID );
 
-  type(FT_Epetra_BlockMap_ID_t) function Epetra_Export_TargetMap ( selfID ) &
+  function Epetra_Export_TargetMap ( selfID ) result(that) &
         bind(C,name='Epetra_Export_TargetMap')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_Export_ID_t
     
+    type(FT_Epetra_BlockMap_ID_t)                                  :: that
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7607,10 +8052,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Distributor_ID_t Epetra_Export_Distributor ( CT_Epetra_Export_ID_t selfID );
 
-  type(FT_Epetra_Distributor_ID_t) function Epetra_Export_Distributor ( selfID ) &
+  function Epetra_Export_Distributor ( selfID ) result(that) &
         bind(C,name='Epetra_Export_Distributor')
     import :: FT_Epetra_Distributor_ID_t ,FT_Epetra_Export_ID_t
     
+    type(FT_Epetra_Distributor_ID_t)                                  :: that
     type(FT_Epetra_Export_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -7627,10 +8073,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Epetra_Map_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_Map_Degeneralize ( id ) &
+  function Epetra_Map_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_Map_Degeneralize')
     import :: FT_Epetra_Map_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                      :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -7638,10 +8085,10 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_Map_Generalize ( CT_Epetra_Map_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_Map_Generalize ( id ) &
-        bind(C,name='Epetra_Map_Generalize')
+  function Epetra_Map_Generalize ( id ) result(that) bind(C,name='Epetra_Map_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Map_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_Map_ID_t)    ,intent(in)   ,value              :: id
   end function
 
@@ -7651,10 +8098,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Epetra_Map_Create ( int NumGlobalElements, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_Map_Create ( NumGlobalElements, IndexBase, &
-        CommID ) bind(C,name='Epetra_Map_Create')
+  function Epetra_Map_Create ( NumGlobalElements, IndexBase, CommID ) result(that) &
+        bind(C,name='Epetra_Map_Create')
     import :: FT_Epetra_Map_ID_t ,c_int ,FT_Epetra_Comm_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                      :: that
     integer(c_int)              ,intent(in)   ,value              :: NumGlobalElements
     integer(c_int)              ,intent(in)   ,value              :: IndexBase
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: CommID
@@ -7666,10 +8114,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Epetra_Map_Create_Linear ( int NumGlobalElements, int NumMyElements, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_Map_Create_Linear ( NumGlobalElements, &
-        NumMyElements, IndexBase, CommID ) bind(C,name='Epetra_Map_Create_Linear')
+  function Epetra_Map_Create_Linear ( NumGlobalElements, NumMyElements, IndexBase, CommID ) &
+        result(that) bind(C,name='Epetra_Map_Create_Linear')
     import :: FT_Epetra_Map_ID_t ,c_int ,FT_Epetra_Comm_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                      :: that
     integer(c_int)              ,intent(in)   ,value              :: NumGlobalElements
     integer(c_int)              ,intent(in)   ,value              :: NumMyElements
     integer(c_int)              ,intent(in)   ,value              :: IndexBase
@@ -7682,11 +8131,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Epetra_Map_Create_Arbitrary ( int NumGlobalElements, int NumMyElements, const int * MyGlobalElements, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_Map_Create_Arbitrary ( NumGlobalElements, &
-        NumMyElements, MyGlobalElements, IndexBase, CommID ) &
-        bind(C,name='Epetra_Map_Create_Arbitrary')
+  function Epetra_Map_Create_Arbitrary ( NumGlobalElements, NumMyElements, MyGlobalElements, &
+        IndexBase, CommID ) result(that) bind(C,name='Epetra_Map_Create_Arbitrary')
     import :: FT_Epetra_Map_ID_t ,c_int ,FT_Epetra_Comm_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                      :: that
     integer(c_int)              ,intent(in)   ,value              :: NumGlobalElements
     integer(c_int)              ,intent(in)   ,value              :: NumMyElements
     integer(c_int)              ,intent(in)         ,dimension(*) :: MyGlobalElements
@@ -7700,10 +8149,10 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Epetra_Map_Duplicate ( CT_Epetra_Map_ID_t mapID );
 
-  type(FT_Epetra_Map_ID_t) function Epetra_Map_Duplicate ( mapID ) &
-        bind(C,name='Epetra_Map_Duplicate')
+  function Epetra_Map_Duplicate ( mapID ) result(that) bind(C,name='Epetra_Map_Duplicate')
     import :: FT_Epetra_Map_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                      :: that
     type(FT_Epetra_Map_ID_t)    ,intent(in)   ,value              :: mapID
   end function
 
@@ -7745,10 +8194,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_BlockMap_ID_t) function Epetra_BlockMap_Degeneralize ( id ) &
+  function Epetra_BlockMap_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_BlockMap_Degeneralize')
     import :: FT_Epetra_BlockMap_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_BlockMap_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -7756,10 +8206,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_BlockMap_Generalize ( CT_Epetra_BlockMap_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_BlockMap_Generalize ( id ) &
+  function Epetra_BlockMap_Generalize ( id ) result(that) &
         bind(C,name='Epetra_BlockMap_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_BlockMap_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -7769,10 +8220,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create ( int NumGlobalElements, int ElementSize, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
-  type(FT_Epetra_BlockMap_ID_t) function Epetra_BlockMap_Create ( NumGlobalElements, &
-        ElementSize, IndexBase, CommID ) bind(C,name='Epetra_BlockMap_Create')
+  function Epetra_BlockMap_Create ( NumGlobalElements, ElementSize, IndexBase, CommID ) &
+        result(that) bind(C,name='Epetra_BlockMap_Create')
     import :: FT_Epetra_BlockMap_ID_t ,c_int ,FT_Epetra_Comm_ID_t
     
+    type(FT_Epetra_BlockMap_ID_t)                                  :: that
     integer(c_int)               ,intent(in)   ,value              :: NumGlobalElements
     integer(c_int)               ,intent(in)   ,value              :: ElementSize
     integer(c_int)               ,intent(in)   ,value              :: IndexBase
@@ -7785,11 +8237,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create_Linear ( int NumGlobalElements, int NumMyElements, int ElementSize, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
-  type(FT_Epetra_BlockMap_ID_t) function Epetra_BlockMap_Create_Linear ( NumGlobalElements, &
-        NumMyElements, ElementSize, IndexBase, CommID ) &
-        bind(C,name='Epetra_BlockMap_Create_Linear')
+  function Epetra_BlockMap_Create_Linear ( NumGlobalElements, NumMyElements, ElementSize, &
+        IndexBase, CommID ) result(that) bind(C,name='Epetra_BlockMap_Create_Linear')
     import :: FT_Epetra_BlockMap_ID_t ,c_int ,FT_Epetra_Comm_ID_t
     
+    type(FT_Epetra_BlockMap_ID_t)                                  :: that
     integer(c_int)               ,intent(in)   ,value              :: NumGlobalElements
     integer(c_int)               ,intent(in)   ,value              :: NumMyElements
     integer(c_int)               ,intent(in)   ,value              :: ElementSize
@@ -7803,11 +8255,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create_Arbitrary ( int NumGlobalElements, int NumMyElements, const int * MyGlobalElements, int ElementSize, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
-  type(FT_Epetra_BlockMap_ID_t) function Epetra_BlockMap_Create_Arbitrary ( &
-        NumGlobalElements, NumMyElements, MyGlobalElements, ElementSize, IndexBase, CommID ) &
+  function Epetra_BlockMap_Create_Arbitrary ( NumGlobalElements, NumMyElements, &
+        MyGlobalElements, ElementSize, IndexBase, CommID ) result(that) &
         bind(C,name='Epetra_BlockMap_Create_Arbitrary')
     import :: FT_Epetra_BlockMap_ID_t ,c_int ,FT_Epetra_Comm_ID_t
     
+    type(FT_Epetra_BlockMap_ID_t)                                  :: that
     integer(c_int)               ,intent(in)   ,value              :: NumGlobalElements
     integer(c_int)               ,intent(in)   ,value              :: NumMyElements
     integer(c_int)               ,intent(in)         ,dimension(*) :: MyGlobalElements
@@ -7822,11 +8275,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create_Variable ( int NumGlobalElements, int NumMyElements, const int * MyGlobalElements, const int * ElementSizeList, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
-  type(FT_Epetra_BlockMap_ID_t) function Epetra_BlockMap_Create_Variable ( &
-        NumGlobalElements, NumMyElements, MyGlobalElements, ElementSizeList, IndexBase, &
-        CommID ) bind(C,name='Epetra_BlockMap_Create_Variable')
+  function Epetra_BlockMap_Create_Variable ( NumGlobalElements, NumMyElements, &
+        MyGlobalElements, ElementSizeList, IndexBase, CommID ) result(that) &
+        bind(C,name='Epetra_BlockMap_Create_Variable')
     import :: FT_Epetra_BlockMap_ID_t ,c_int ,FT_Epetra_Comm_ID_t
     
+    type(FT_Epetra_BlockMap_ID_t)                                  :: that
     integer(c_int)               ,intent(in)   ,value              :: NumGlobalElements
     integer(c_int)               ,intent(in)   ,value              :: NumMyElements
     integer(c_int)               ,intent(in)         ,dimension(*) :: MyGlobalElements
@@ -7841,10 +8295,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Duplicate ( CT_Epetra_BlockMap_ID_t mapID );
 
-  type(FT_Epetra_BlockMap_ID_t) function Epetra_BlockMap_Duplicate ( mapID ) &
+  function Epetra_BlockMap_Duplicate ( mapID ) result(that) &
         bind(C,name='Epetra_BlockMap_Duplicate')
     import :: FT_Epetra_BlockMap_ID_t
     
+    type(FT_Epetra_BlockMap_ID_t)                                  :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: mapID
   end function
 
@@ -7866,10 +8321,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_RemoteIDList ( CT_Epetra_BlockMap_ID_t selfID, int NumIDs, const int * GIDList, int * PIDList, int * LIDList );
 
-  integer(c_int) function Epetra_BlockMap_RemoteIDList ( selfID, NumIDs, GIDList, PIDList, &
-        LIDList ) bind(C,name='Epetra_BlockMap_RemoteIDList')
+  function Epetra_BlockMap_RemoteIDList ( selfID, NumIDs, GIDList, PIDList, LIDList ) &
+        result(that) bind(C,name='Epetra_BlockMap_RemoteIDList')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: NumIDs
     integer(c_int)               ,intent(in)         ,dimension(*) :: GIDList
@@ -7883,10 +8339,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_RemoteIDList_WithSize ( CT_Epetra_BlockMap_ID_t selfID, int NumIDs, const int * GIDList, int * PIDList, int * LIDList, int * SizeList );
 
-  integer(c_int) function Epetra_BlockMap_RemoteIDList_WithSize ( selfID, NumIDs, GIDList, &
-        PIDList, LIDList, SizeList ) bind(C,name='Epetra_BlockMap_RemoteIDList_WithSize')
+  function Epetra_BlockMap_RemoteIDList_WithSize ( selfID, NumIDs, GIDList, PIDList, &
+        LIDList, SizeList ) result(that) &
+        bind(C,name='Epetra_BlockMap_RemoteIDList_WithSize')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: NumIDs
     integer(c_int)               ,intent(in)         ,dimension(*) :: GIDList
@@ -7901,10 +8359,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_LID ( CT_Epetra_BlockMap_ID_t selfID, int GID );
 
-  integer(c_int) function Epetra_BlockMap_LID ( selfID, GID ) &
+  function Epetra_BlockMap_LID ( selfID, GID ) result(that) &
         bind(C,name='Epetra_BlockMap_LID')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GID
   end function
@@ -7915,10 +8374,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_GID ( CT_Epetra_BlockMap_ID_t selfID, int LID );
 
-  integer(c_int) function Epetra_BlockMap_GID ( selfID, LID ) &
+  function Epetra_BlockMap_GID ( selfID, LID ) result(that) &
         bind(C,name='Epetra_BlockMap_GID')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LID
   end function
@@ -7929,10 +8389,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_FindLocalElementID ( CT_Epetra_BlockMap_ID_t selfID, int PointID, int * ElementID, int * ElementOffset );
 
-  integer(c_int) function Epetra_BlockMap_FindLocalElementID ( selfID, PointID, ElementID, &
-        ElementOffset ) bind(C,name='Epetra_BlockMap_FindLocalElementID')
+  function Epetra_BlockMap_FindLocalElementID ( selfID, PointID, ElementID, ElementOffset ) &
+        result(that) bind(C,name='Epetra_BlockMap_FindLocalElementID')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: PointID
     integer(c_int)               ,intent(inout)                    :: ElementID
@@ -7945,10 +8406,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_BlockMap_MyGID ( CT_Epetra_BlockMap_ID_t selfID, int GID_in );
 
-  integer(FT_boolean_t) function Epetra_BlockMap_MyGID ( selfID, GID_in ) &
+  function Epetra_BlockMap_MyGID ( selfID, GID_in ) result(that) &
         bind(C,name='Epetra_BlockMap_MyGID')
     import :: FT_boolean_t ,FT_Epetra_BlockMap_ID_t ,c_int
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: GID_in
   end function
@@ -7959,10 +8421,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_BlockMap_MyLID ( CT_Epetra_BlockMap_ID_t selfID, int LID_in );
 
-  integer(FT_boolean_t) function Epetra_BlockMap_MyLID ( selfID, LID_in ) &
+  function Epetra_BlockMap_MyLID ( selfID, LID_in ) result(that) &
         bind(C,name='Epetra_BlockMap_MyLID')
     import :: FT_boolean_t ,FT_Epetra_BlockMap_ID_t ,c_int
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LID_in
   end function
@@ -7973,10 +8436,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_MinAllGID ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(c_int) function Epetra_BlockMap_MinAllGID ( selfID ) &
+  function Epetra_BlockMap_MinAllGID ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_MinAllGID')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -7986,10 +8450,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_MaxAllGID ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(c_int) function Epetra_BlockMap_MaxAllGID ( selfID ) &
+  function Epetra_BlockMap_MaxAllGID ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_MaxAllGID')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -7999,10 +8464,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_MinMyGID ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(c_int) function Epetra_BlockMap_MinMyGID ( selfID ) &
+  function Epetra_BlockMap_MinMyGID ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_MinMyGID')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8012,10 +8478,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_MaxMyGID ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(c_int) function Epetra_BlockMap_MaxMyGID ( selfID ) &
+  function Epetra_BlockMap_MaxMyGID ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_MaxMyGID')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8025,10 +8492,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_MinLID ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(c_int) function Epetra_BlockMap_MinLID ( selfID ) &
+  function Epetra_BlockMap_MinLID ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_MinLID')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8038,10 +8506,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_MaxLID ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(c_int) function Epetra_BlockMap_MaxLID ( selfID ) &
+  function Epetra_BlockMap_MaxLID ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_MaxLID')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8051,10 +8520,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_NumGlobalElements ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(c_int) function Epetra_BlockMap_NumGlobalElements ( selfID ) &
+  function Epetra_BlockMap_NumGlobalElements ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_NumGlobalElements')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8064,10 +8534,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_NumMyElements ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(c_int) function Epetra_BlockMap_NumMyElements ( selfID ) &
+  function Epetra_BlockMap_NumMyElements ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_NumMyElements')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8077,10 +8548,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_MyGlobalElements_Fill ( CT_Epetra_BlockMap_ID_t selfID, int * MyGlobalElementList );
 
-  integer(c_int) function Epetra_BlockMap_MyGlobalElements_Fill ( selfID, &
-        MyGlobalElementList ) bind(C,name='Epetra_BlockMap_MyGlobalElements_Fill')
+  function Epetra_BlockMap_MyGlobalElements_Fill ( selfID, MyGlobalElementList ) &
+        result(that) bind(C,name='Epetra_BlockMap_MyGlobalElements_Fill')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                   ,dimension(*) :: MyGlobalElementList
   end function
@@ -8091,10 +8563,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_ElementSize_Const ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(c_int) function Epetra_BlockMap_ElementSize_Const ( selfID ) &
+  function Epetra_BlockMap_ElementSize_Const ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_ElementSize_Const')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8104,10 +8577,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_ElementSize ( CT_Epetra_BlockMap_ID_t selfID, int LID );
 
-  integer(c_int) function Epetra_BlockMap_ElementSize ( selfID, LID ) &
+  function Epetra_BlockMap_ElementSize ( selfID, LID ) result(that) &
         bind(C,name='Epetra_BlockMap_ElementSize')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LID
   end function
@@ -8118,10 +8592,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_FirstPointInElement ( CT_Epetra_BlockMap_ID_t selfID, int LID );
 
-  integer(c_int) function Epetra_BlockMap_FirstPointInElement ( selfID, LID ) &
+  function Epetra_BlockMap_FirstPointInElement ( selfID, LID ) result(that) &
         bind(C,name='Epetra_BlockMap_FirstPointInElement')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)               ,intent(in)   ,value              :: LID
   end function
@@ -8132,10 +8607,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_IndexBase ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(c_int) function Epetra_BlockMap_IndexBase ( selfID ) &
+  function Epetra_BlockMap_IndexBase ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_IndexBase')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8145,10 +8621,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_NumGlobalPoints ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(c_int) function Epetra_BlockMap_NumGlobalPoints ( selfID ) &
+  function Epetra_BlockMap_NumGlobalPoints ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_NumGlobalPoints')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8158,10 +8635,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_NumMyPoints ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(c_int) function Epetra_BlockMap_NumMyPoints ( selfID ) &
+  function Epetra_BlockMap_NumMyPoints ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_NumMyPoints')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8171,10 +8649,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_MinMyElementSize ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(c_int) function Epetra_BlockMap_MinMyElementSize ( selfID ) &
+  function Epetra_BlockMap_MinMyElementSize ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_MinMyElementSize')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8184,10 +8663,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_MaxMyElementSize ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(c_int) function Epetra_BlockMap_MaxMyElementSize ( selfID ) &
+  function Epetra_BlockMap_MaxMyElementSize ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_MaxMyElementSize')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8197,10 +8677,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_MinElementSize ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(c_int) function Epetra_BlockMap_MinElementSize ( selfID ) &
+  function Epetra_BlockMap_MinElementSize ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_MinElementSize')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8210,10 +8691,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_MaxElementSize ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(c_int) function Epetra_BlockMap_MaxElementSize ( selfID ) &
+  function Epetra_BlockMap_MaxElementSize ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_MaxElementSize')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8223,10 +8705,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_BlockMap_UniqueGIDs ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_BlockMap_UniqueGIDs ( selfID ) &
+  function Epetra_BlockMap_UniqueGIDs ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_UniqueGIDs')
     import :: FT_boolean_t ,FT_Epetra_BlockMap_ID_t
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8236,10 +8719,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_BlockMap_ConstantElementSize ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_BlockMap_ConstantElementSize ( selfID ) &
+  function Epetra_BlockMap_ConstantElementSize ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_ConstantElementSize')
     import :: FT_boolean_t ,FT_Epetra_BlockMap_ID_t
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8249,10 +8733,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_BlockMap_SameAs ( CT_Epetra_BlockMap_ID_t selfID, CT_Epetra_BlockMap_ID_t MapID );
 
-  integer(FT_boolean_t) function Epetra_BlockMap_SameAs ( selfID, MapID ) &
+  function Epetra_BlockMap_SameAs ( selfID, MapID ) result(that) &
         bind(C,name='Epetra_BlockMap_SameAs')
     import :: FT_boolean_t ,FT_Epetra_BlockMap_ID_t
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: MapID
   end function
@@ -8263,10 +8748,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_BlockMap_PointSameAs ( CT_Epetra_BlockMap_ID_t selfID, CT_Epetra_BlockMap_ID_t MapID );
 
-  integer(FT_boolean_t) function Epetra_BlockMap_PointSameAs ( selfID, MapID ) &
+  function Epetra_BlockMap_PointSameAs ( selfID, MapID ) result(that) &
         bind(C,name='Epetra_BlockMap_PointSameAs')
     import :: FT_boolean_t ,FT_Epetra_BlockMap_ID_t
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: MapID
   end function
@@ -8277,10 +8763,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_BlockMap_LinearMap ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_BlockMap_LinearMap ( selfID ) &
+  function Epetra_BlockMap_LinearMap ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_LinearMap')
     import :: FT_boolean_t ,FT_Epetra_BlockMap_ID_t
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8290,10 +8777,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_BlockMap_DistributedGlobal ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_BlockMap_DistributedGlobal ( selfID ) &
+  function Epetra_BlockMap_DistributedGlobal ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_DistributedGlobal')
     import :: FT_boolean_t ,FT_Epetra_BlockMap_ID_t
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8303,10 +8791,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int * Epetra_BlockMap_MyGlobalElements ( CT_Epetra_BlockMap_ID_t selfID );
 
-  type(c_ptr) function Epetra_BlockMap_MyGlobalElements ( selfID ) &
+  function Epetra_BlockMap_MyGlobalElements ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_MyGlobalElements')
     import :: c_ptr ,FT_Epetra_BlockMap_ID_t
     
+    type(c_ptr)                                                    :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8316,10 +8805,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int * Epetra_BlockMap_FirstPointInElementList ( CT_Epetra_BlockMap_ID_t selfID );
 
-  type(c_ptr) function Epetra_BlockMap_FirstPointInElementList ( selfID ) &
+  function Epetra_BlockMap_FirstPointInElementList ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_FirstPointInElementList')
     import :: c_ptr ,FT_Epetra_BlockMap_ID_t
     
+    type(c_ptr)                                                    :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8329,10 +8819,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int * Epetra_BlockMap_ElementSizeList ( CT_Epetra_BlockMap_ID_t selfID );
 
-  type(c_ptr) function Epetra_BlockMap_ElementSizeList ( selfID ) &
+  function Epetra_BlockMap_ElementSizeList ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_ElementSizeList')
     import :: c_ptr ,FT_Epetra_BlockMap_ID_t
     
+    type(c_ptr)                                                    :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8342,10 +8833,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int * Epetra_BlockMap_PointToElementList ( CT_Epetra_BlockMap_ID_t selfID );
 
-  type(c_ptr) function Epetra_BlockMap_PointToElementList ( selfID ) &
+  function Epetra_BlockMap_PointToElementList ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_PointToElementList')
     import :: c_ptr ,FT_Epetra_BlockMap_ID_t
     
+    type(c_ptr)                                                    :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8355,10 +8847,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_ElementSizeList_Fill ( CT_Epetra_BlockMap_ID_t selfID, int * ElementSizeList );
 
-  integer(c_int) function Epetra_BlockMap_ElementSizeList_Fill ( selfID, ElementSizeList ) &
+  function Epetra_BlockMap_ElementSizeList_Fill ( selfID, ElementSizeList ) result(that) &
         bind(C,name='Epetra_BlockMap_ElementSizeList_Fill')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                   ,dimension(*) :: ElementSizeList
   end function
@@ -8369,11 +8862,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_FirstPointInElementList_Fill ( CT_Epetra_BlockMap_ID_t selfID, int * FirstPointInElementList );
 
-  integer(c_int) function Epetra_BlockMap_FirstPointInElementList_Fill ( selfID, &
-        FirstPointInElementList ) &
-        bind(C,name='Epetra_BlockMap_FirstPointInElementList_Fill')
+  function Epetra_BlockMap_FirstPointInElementList_Fill ( selfID, FirstPointInElementList ) &
+        result(that) bind(C,name='Epetra_BlockMap_FirstPointInElementList_Fill')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                   ,dimension(*) :: FirstPointInElementList
   end function
@@ -8384,10 +8877,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_BlockMap_PointToElementList_Fill ( CT_Epetra_BlockMap_ID_t selfID, int * PointToElementList );
 
-  integer(c_int) function Epetra_BlockMap_PointToElementList_Fill ( selfID, &
-        PointToElementList ) bind(C,name='Epetra_BlockMap_PointToElementList_Fill')
+  function Epetra_BlockMap_PointToElementList_Fill ( selfID, PointToElementList ) &
+        result(that) bind(C,name='Epetra_BlockMap_PointToElementList_Fill')
     import :: c_int ,FT_Epetra_BlockMap_ID_t
     
+    integer(c_int)                                                 :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                                   ,dimension(*) :: PointToElementList
   end function
@@ -8398,10 +8892,10 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Comm_ID_t Epetra_BlockMap_Comm ( CT_Epetra_BlockMap_ID_t selfID );
 
-  type(FT_Epetra_Comm_ID_t) function Epetra_BlockMap_Comm ( selfID ) &
-        bind(C,name='Epetra_BlockMap_Comm')
+  function Epetra_BlockMap_Comm ( selfID ) result(that) bind(C,name='Epetra_BlockMap_Comm')
     import :: FT_Epetra_Comm_ID_t ,FT_Epetra_BlockMap_ID_t
     
+    type(FT_Epetra_Comm_ID_t)                                      :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8411,10 +8905,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_BlockMap_IsOneToOne ( CT_Epetra_BlockMap_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_BlockMap_IsOneToOne ( selfID ) &
+  function Epetra_BlockMap_IsOneToOne ( selfID ) result(that) &
         bind(C,name='Epetra_BlockMap_IsOneToOne')
     import :: FT_boolean_t ,FT_Epetra_BlockMap_ID_t
     
+    integer(FT_boolean_t)                                          :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -8444,10 +8939,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_Import_ID_t Epetra_Import_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Import_ID_t) function Epetra_Import_Degeneralize ( id ) &
+  function Epetra_Import_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_Import_Degeneralize')
     import :: FT_Epetra_Import_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_Import_ID_t)                                   :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -8455,10 +8951,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_Import_Generalize ( CT_Epetra_Import_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_Import_Generalize ( id ) &
+  function Epetra_Import_Generalize ( id ) result(that) &
         bind(C,name='Epetra_Import_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Import_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: id
   end function
 
@@ -8468,10 +8965,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Import_ID_t Epetra_Import_Create ( CT_Epetra_BlockMap_ID_t TargetMapID, CT_Epetra_BlockMap_ID_t SourceMapID );
 
-  type(FT_Epetra_Import_ID_t) function Epetra_Import_Create ( TargetMapID, SourceMapID ) &
+  function Epetra_Import_Create ( TargetMapID, SourceMapID ) result(that) &
         bind(C,name='Epetra_Import_Create')
     import :: FT_Epetra_Import_ID_t ,FT_Epetra_BlockMap_ID_t
     
+    type(FT_Epetra_Import_ID_t)                                   :: that
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: TargetMapID
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: SourceMapID
   end function
@@ -8482,10 +8980,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Import_ID_t Epetra_Import_Duplicate ( CT_Epetra_Import_ID_t ImporterID );
 
-  type(FT_Epetra_Import_ID_t) function Epetra_Import_Duplicate ( ImporterID ) &
+  function Epetra_Import_Duplicate ( ImporterID ) result(that) &
         bind(C,name='Epetra_Import_Duplicate')
     import :: FT_Epetra_Import_ID_t
     
+    type(FT_Epetra_Import_ID_t)                                   :: that
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: ImporterID
   end function
 
@@ -8507,10 +9006,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Import_NumSameIDs ( CT_Epetra_Import_ID_t selfID );
 
-  integer(c_int) function Epetra_Import_NumSameIDs ( selfID ) &
+  function Epetra_Import_NumSameIDs ( selfID ) result(that) &
         bind(C,name='Epetra_Import_NumSameIDs')
     import :: c_int ,FT_Epetra_Import_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8520,10 +9020,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Import_NumPermuteIDs ( CT_Epetra_Import_ID_t selfID );
 
-  integer(c_int) function Epetra_Import_NumPermuteIDs ( selfID ) &
+  function Epetra_Import_NumPermuteIDs ( selfID ) result(that) &
         bind(C,name='Epetra_Import_NumPermuteIDs')
     import :: c_int ,FT_Epetra_Import_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8533,10 +9034,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int * Epetra_Import_PermuteFromLIDs ( CT_Epetra_Import_ID_t selfID );
 
-  type(c_ptr) function Epetra_Import_PermuteFromLIDs ( selfID ) &
+  function Epetra_Import_PermuteFromLIDs ( selfID ) result(that) &
         bind(C,name='Epetra_Import_PermuteFromLIDs')
     import :: c_ptr ,FT_Epetra_Import_ID_t
     
+    type(c_ptr)                                                   :: that
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8546,10 +9048,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int * Epetra_Import_PermuteToLIDs ( CT_Epetra_Import_ID_t selfID );
 
-  type(c_ptr) function Epetra_Import_PermuteToLIDs ( selfID ) &
+  function Epetra_Import_PermuteToLIDs ( selfID ) result(that) &
         bind(C,name='Epetra_Import_PermuteToLIDs')
     import :: c_ptr ,FT_Epetra_Import_ID_t
     
+    type(c_ptr)                                                   :: that
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8559,10 +9062,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Import_NumRemoteIDs ( CT_Epetra_Import_ID_t selfID );
 
-  integer(c_int) function Epetra_Import_NumRemoteIDs ( selfID ) &
+  function Epetra_Import_NumRemoteIDs ( selfID ) result(that) &
         bind(C,name='Epetra_Import_NumRemoteIDs')
     import :: c_int ,FT_Epetra_Import_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8572,10 +9076,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int * Epetra_Import_RemoteLIDs ( CT_Epetra_Import_ID_t selfID );
 
-  type(c_ptr) function Epetra_Import_RemoteLIDs ( selfID ) &
+  function Epetra_Import_RemoteLIDs ( selfID ) result(that) &
         bind(C,name='Epetra_Import_RemoteLIDs')
     import :: c_ptr ,FT_Epetra_Import_ID_t
     
+    type(c_ptr)                                                   :: that
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8585,10 +9090,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Import_NumExportIDs ( CT_Epetra_Import_ID_t selfID );
 
-  integer(c_int) function Epetra_Import_NumExportIDs ( selfID ) &
+  function Epetra_Import_NumExportIDs ( selfID ) result(that) &
         bind(C,name='Epetra_Import_NumExportIDs')
     import :: c_int ,FT_Epetra_Import_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8598,10 +9104,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int * Epetra_Import_ExportLIDs ( CT_Epetra_Import_ID_t selfID );
 
-  type(c_ptr) function Epetra_Import_ExportLIDs ( selfID ) &
+  function Epetra_Import_ExportLIDs ( selfID ) result(that) &
         bind(C,name='Epetra_Import_ExportLIDs')
     import :: c_ptr ,FT_Epetra_Import_ID_t
     
+    type(c_ptr)                                                   :: that
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8611,10 +9118,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int * Epetra_Import_ExportPIDs ( CT_Epetra_Import_ID_t selfID );
 
-  type(c_ptr) function Epetra_Import_ExportPIDs ( selfID ) &
+  function Epetra_Import_ExportPIDs ( selfID ) result(that) &
         bind(C,name='Epetra_Import_ExportPIDs')
     import :: c_ptr ,FT_Epetra_Import_ID_t
     
+    type(c_ptr)                                                   :: that
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8624,10 +9132,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Import_NumSend ( CT_Epetra_Import_ID_t selfID );
 
-  integer(c_int) function Epetra_Import_NumSend ( selfID ) &
+  function Epetra_Import_NumSend ( selfID ) result(that) &
         bind(C,name='Epetra_Import_NumSend')
     import :: c_int ,FT_Epetra_Import_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8637,10 +9146,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_Import_NumRecv ( CT_Epetra_Import_ID_t selfID );
 
-  integer(c_int) function Epetra_Import_NumRecv ( selfID ) &
+  function Epetra_Import_NumRecv ( selfID ) result(that) &
         bind(C,name='Epetra_Import_NumRecv')
     import :: c_int ,FT_Epetra_Import_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8650,10 +9160,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_BlockMap_ID_t Epetra_Import_SourceMap ( CT_Epetra_Import_ID_t selfID );
 
-  type(FT_Epetra_BlockMap_ID_t) function Epetra_Import_SourceMap ( selfID ) &
+  function Epetra_Import_SourceMap ( selfID ) result(that) &
         bind(C,name='Epetra_Import_SourceMap')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_Import_ID_t
     
+    type(FT_Epetra_BlockMap_ID_t)                                  :: that
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8663,10 +9174,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_BlockMap_ID_t Epetra_Import_TargetMap ( CT_Epetra_Import_ID_t selfID );
 
-  type(FT_Epetra_BlockMap_ID_t) function Epetra_Import_TargetMap ( selfID ) &
+  function Epetra_Import_TargetMap ( selfID ) result(that) &
         bind(C,name='Epetra_Import_TargetMap')
     import :: FT_Epetra_BlockMap_ID_t ,FT_Epetra_Import_ID_t
     
+    type(FT_Epetra_BlockMap_ID_t)                                  :: that
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8676,10 +9188,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Distributor_ID_t Epetra_Import_Distributor ( CT_Epetra_Import_ID_t selfID );
 
-  type(FT_Epetra_Distributor_ID_t) function Epetra_Import_Distributor ( selfID ) &
+  function Epetra_Import_Distributor ( selfID ) result(that) &
         bind(C,name='Epetra_Import_Distributor')
     import :: FT_Epetra_Distributor_ID_t ,FT_Epetra_Import_ID_t
     
+    type(FT_Epetra_Distributor_ID_t)                                  :: that
     type(FT_Epetra_Import_ID_t) ,intent(in)   ,value              :: selfID
   end function
 
@@ -8696,10 +9209,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_Time_ID_t Epetra_Time_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_Time_ID_t) function Epetra_Time_Degeneralize ( id ) &
+  function Epetra_Time_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_Time_Degeneralize')
     import :: FT_Epetra_Time_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_Time_ID_t)                                     :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -8707,10 +9221,10 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_Time_Generalize ( CT_Epetra_Time_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_Time_Generalize ( id ) &
-        bind(C,name='Epetra_Time_Generalize')
+  function Epetra_Time_Generalize ( id ) result(that) bind(C,name='Epetra_Time_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_Time_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_Time_ID_t)   ,intent(in)   ,value              :: id
   end function
 
@@ -8720,10 +9234,10 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Time_ID_t Epetra_Time_Create ( CT_Epetra_Comm_ID_t CommID );
 
-  type(FT_Epetra_Time_ID_t) function Epetra_Time_Create ( CommID ) &
-        bind(C,name='Epetra_Time_Create')
+  function Epetra_Time_Create ( CommID ) result(that) bind(C,name='Epetra_Time_Create')
     import :: FT_Epetra_Time_ID_t ,FT_Epetra_Comm_ID_t
     
+    type(FT_Epetra_Time_ID_t)                                     :: that
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: CommID
   end function
 
@@ -8733,10 +9247,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Time_ID_t Epetra_Time_Duplicate ( CT_Epetra_Time_ID_t TimeID );
 
-  type(FT_Epetra_Time_ID_t) function Epetra_Time_Duplicate ( TimeID ) &
+  function Epetra_Time_Duplicate ( TimeID ) result(that) &
         bind(C,name='Epetra_Time_Duplicate')
     import :: FT_Epetra_Time_ID_t
     
+    type(FT_Epetra_Time_ID_t)                                     :: that
     type(FT_Epetra_Time_ID_t)   ,intent(in)   ,value              :: TimeID
   end function
 
@@ -8746,10 +9261,10 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_Time_WallTime ( CT_Epetra_Time_ID_t selfID );
 
-  real(c_double) function Epetra_Time_WallTime ( selfID ) &
-        bind(C,name='Epetra_Time_WallTime')
+  function Epetra_Time_WallTime ( selfID ) result(that) bind(C,name='Epetra_Time_WallTime')
     import :: c_double ,FT_Epetra_Time_ID_t
     
+    real(c_double)                                                :: that
     type(FT_Epetra_Time_ID_t)   ,intent(in)   ,value              :: selfID
   end function
 
@@ -8772,10 +9287,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_Time_ElapsedTime ( CT_Epetra_Time_ID_t selfID );
 
-  real(c_double) function Epetra_Time_ElapsedTime ( selfID ) &
+  function Epetra_Time_ElapsedTime ( selfID ) result(that) &
         bind(C,name='Epetra_Time_ElapsedTime')
     import :: c_double ,FT_Epetra_Time_ID_t
     
+    real(c_double)                                                :: that
     type(FT_Epetra_Time_ID_t)   ,intent(in)   ,value              :: selfID
   end function
 
@@ -8817,10 +9333,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_JadMatrix_ID_t Epetra_JadMatrix_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_JadMatrix_ID_t) function Epetra_JadMatrix_Degeneralize ( id ) &
+  function Epetra_JadMatrix_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_JadMatrix_Degeneralize')
     import :: FT_Epetra_JadMatrix_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_JadMatrix_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -8828,10 +9345,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_JadMatrix_Generalize ( CT_Epetra_JadMatrix_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_JadMatrix_Generalize ( id ) &
+  function Epetra_JadMatrix_Generalize ( id ) result(that) &
         bind(C,name='Epetra_JadMatrix_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_JadMatrix_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -8841,10 +9359,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_JadMatrix_ID_t Epetra_JadMatrix_Create ( CT_Epetra_RowMatrix_ID_t MatrixID );
 
-  type(FT_Epetra_JadMatrix_ID_t) function Epetra_JadMatrix_Create ( MatrixID ) &
+  function Epetra_JadMatrix_Create ( MatrixID ) result(that) &
         bind(C,name='Epetra_JadMatrix_Create')
     import :: FT_Epetra_JadMatrix_ID_t ,FT_Epetra_RowMatrix_ID_t
     
+    type(FT_Epetra_JadMatrix_ID_t)                                  :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: MatrixID
   end function
 
@@ -8866,10 +9385,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_JadMatrix_UpdateValues ( CT_Epetra_JadMatrix_ID_t selfID, CT_Epetra_RowMatrix_ID_t MatrixID, boolean CheckStructure );
 
-  integer(c_int) function Epetra_JadMatrix_UpdateValues ( selfID, MatrixID, CheckStructure ) &
+  function Epetra_JadMatrix_UpdateValues ( selfID, MatrixID, CheckStructure ) result(that) &
         bind(C,name='Epetra_JadMatrix_UpdateValues')
     import :: c_int ,FT_Epetra_JadMatrix_ID_t ,FT_Epetra_RowMatrix_ID_t ,FT_boolean_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: MatrixID
     integer(FT_boolean_t)         ,intent(in)   ,value              :: CheckStructure
@@ -8881,10 +9401,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_JadMatrix_ExtractMyRowCopy ( CT_Epetra_JadMatrix_ID_t selfID, int MyRow, int Length, int * NumEntries, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_JadMatrix_ExtractMyRowCopy ( selfID, MyRow, Length, &
-        NumEntries, Values, Indices ) bind(C,name='Epetra_JadMatrix_ExtractMyRowCopy')
+  function Epetra_JadMatrix_ExtractMyRowCopy ( selfID, MyRow, Length, NumEntries, Values, &
+        Indices ) result(that) bind(C,name='Epetra_JadMatrix_ExtractMyRowCopy')
     import :: c_int ,FT_Epetra_JadMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(in)   ,value              :: Length
@@ -8899,10 +9420,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_JadMatrix_ExtractMyEntryView ( CT_Epetra_JadMatrix_ID_t selfID, int CurEntry, double * * Value, int * RowIndex, int * ColIndex );
 
-  integer(c_int) function Epetra_JadMatrix_ExtractMyEntryView ( selfID, CurEntry, Value, &
-        RowIndex, ColIndex ) bind(C,name='Epetra_JadMatrix_ExtractMyEntryView')
+  function Epetra_JadMatrix_ExtractMyEntryView ( selfID, CurEntry, Value, RowIndex, &
+        ColIndex ) result(that) bind(C,name='Epetra_JadMatrix_ExtractMyEntryView')
     import :: c_int ,FT_Epetra_JadMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: CurEntry
     real(c_double)                ,intent(inout)      ,dimension(*) :: Value
@@ -8916,11 +9438,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_JadMatrix_ExtractMyEntryView_Const ( CT_Epetra_JadMatrix_ID_t selfID, int CurEntry, double const ** Value, int * RowIndex, int * ColIndex );
 
-  integer(c_int) function Epetra_JadMatrix_ExtractMyEntryView_Const ( selfID, CurEntry, &
-        Value, RowIndex, ColIndex ) &
-        bind(C,name='Epetra_JadMatrix_ExtractMyEntryView_Const')
+  function Epetra_JadMatrix_ExtractMyEntryView_Const ( selfID, CurEntry, Value, RowIndex, &
+        ColIndex ) result(that) bind(C,name='Epetra_JadMatrix_ExtractMyEntryView_Const')
     import :: c_int ,FT_Epetra_JadMatrix_ID_t ,c_double
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: CurEntry
     real(c_double)                ,intent(in)         ,dimension(*) :: Value
@@ -8934,10 +9456,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_JadMatrix_NumMyRowEntries ( CT_Epetra_JadMatrix_ID_t selfID, int MyRow, int * NumEntries );
 
-  integer(c_int) function Epetra_JadMatrix_NumMyRowEntries ( selfID, MyRow, NumEntries ) &
+  function Epetra_JadMatrix_NumMyRowEntries ( selfID, MyRow, NumEntries ) result(that) &
         bind(C,name='Epetra_JadMatrix_NumMyRowEntries')
     import :: c_int ,FT_Epetra_JadMatrix_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                ,intent(in)   ,value              :: MyRow
     integer(c_int)                ,intent(inout)                    :: NumEntries
@@ -8949,10 +9472,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_JadMatrix_Multiply ( CT_Epetra_JadMatrix_ID_t selfID, boolean TransA, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
-  integer(c_int) function Epetra_JadMatrix_Multiply ( selfID, TransA, XID, YID ) &
+  function Epetra_JadMatrix_Multiply ( selfID, TransA, XID, YID ) result(that) &
         bind(C,name='Epetra_JadMatrix_Multiply')
     import :: c_int ,FT_Epetra_JadMatrix_ID_t ,FT_boolean_t ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(FT_boolean_t)         ,intent(in)   ,value              :: TransA
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: XID
@@ -8965,10 +9489,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_JadMatrix_Solve ( CT_Epetra_JadMatrix_ID_t selfID, boolean Upper, boolean Trans, boolean UnitDiagonal, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
-  integer(c_int) function Epetra_JadMatrix_Solve ( selfID, Upper, Trans, UnitDiagonal, XID, &
-        YID ) bind(C,name='Epetra_JadMatrix_Solve')
+  function Epetra_JadMatrix_Solve ( selfID, Upper, Trans, UnitDiagonal, XID, YID ) &
+        result(that) bind(C,name='Epetra_JadMatrix_Solve')
     import :: c_int ,FT_Epetra_JadMatrix_ID_t ,FT_boolean_t ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                  :: that
     type(FT_Epetra_JadMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(FT_boolean_t)         ,intent(in)   ,value              :: Upper
     integer(FT_boolean_t)         ,intent(in)   ,value              :: Trans
@@ -8990,10 +9515,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_LinearProblem_ID_t) function Epetra_LinearProblem_Degeneralize ( id ) &
+  function Epetra_LinearProblem_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_LinearProblem_Degeneralize')
     import :: FT_Epetra_LinearProblem_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_LinearProblem_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t)  ,intent(in)   ,value              :: id
   end function
 
@@ -9001,10 +9527,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_LinearProblem_Generalize ( CT_Epetra_LinearProblem_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_LinearProblem_Generalize ( id ) &
+  function Epetra_LinearProblem_Generalize ( id ) result(that) &
         bind(C,name='Epetra_LinearProblem_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_LinearProblem_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                    :: that
     type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -9014,10 +9541,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Create (  );
 
-  type(FT_Epetra_LinearProblem_ID_t) function Epetra_LinearProblem_Create (  ) &
+  function Epetra_LinearProblem_Create (  ) result(that) &
         bind(C,name='Epetra_LinearProblem_Create')
     import :: FT_Epetra_LinearProblem_ID_t
     
+    type(FT_Epetra_LinearProblem_ID_t)                                  :: that
   end function
 
 
@@ -9026,11 +9554,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Create_FromMatrix ( CT_Epetra_RowMatrix_ID_t AID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID );
 
-  type(FT_Epetra_LinearProblem_ID_t) function Epetra_LinearProblem_Create_FromMatrix ( AID, &
-        XID, BID ) bind(C,name='Epetra_LinearProblem_Create_FromMatrix')
+  function Epetra_LinearProblem_Create_FromMatrix ( AID, XID, BID ) result(that) &
+        bind(C,name='Epetra_LinearProblem_Create_FromMatrix')
     import :: FT_Epetra_LinearProblem_ID_t ,FT_Epetra_RowMatrix_ID_t , &
           FT_Epetra_MultiVector_ID_t
     
+    type(FT_Epetra_LinearProblem_ID_t)                                  :: that
     type(FT_Epetra_RowMatrix_ID_t)    ,intent(in)   ,value              :: AID
     type(FT_Epetra_MultiVector_ID_t)  ,intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t)  ,intent(in)   ,value              :: BID
@@ -9042,11 +9571,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Create_FromOperator ( CT_Epetra_Operator_ID_t AID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID );
 
-  type(FT_Epetra_LinearProblem_ID_t) function Epetra_LinearProblem_Create_FromOperator ( &
-        AID, XID, BID ) bind(C,name='Epetra_LinearProblem_Create_FromOperator')
+  function Epetra_LinearProblem_Create_FromOperator ( AID, XID, BID ) result(that) &
+        bind(C,name='Epetra_LinearProblem_Create_FromOperator')
     import :: FT_Epetra_LinearProblem_ID_t ,FT_Epetra_Operator_ID_t , &
           FT_Epetra_MultiVector_ID_t
     
+    type(FT_Epetra_LinearProblem_ID_t)                                  :: that
     type(FT_Epetra_Operator_ID_t)     ,intent(in)   ,value              :: AID
     type(FT_Epetra_MultiVector_ID_t)  ,intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t)  ,intent(in)   ,value              :: BID
@@ -9058,10 +9588,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Duplicate ( CT_Epetra_LinearProblem_ID_t ProblemID );
 
-  type(FT_Epetra_LinearProblem_ID_t) function Epetra_LinearProblem_Duplicate ( ProblemID ) &
+  function Epetra_LinearProblem_Duplicate ( ProblemID ) result(that) &
         bind(C,name='Epetra_LinearProblem_Duplicate')
     import :: FT_Epetra_LinearProblem_ID_t
     
+    type(FT_Epetra_LinearProblem_ID_t)                                  :: that
     type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: ProblemID
   end function
 
@@ -9084,10 +9615,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_LinearProblem_CheckInput ( CT_Epetra_LinearProblem_ID_t selfID );
 
-  integer(c_int) function Epetra_LinearProblem_CheckInput ( selfID ) &
+  function Epetra_LinearProblem_CheckInput ( selfID ) result(that) &
         bind(C,name='Epetra_LinearProblem_CheckInput')
     import :: c_int ,FT_Epetra_LinearProblem_ID_t
     
+    integer(c_int)                                                      :: that
     type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -9180,10 +9712,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_LinearProblem_LeftScale ( CT_Epetra_LinearProblem_ID_t selfID, CT_Epetra_Vector_ID_t DID );
 
-  integer(c_int) function Epetra_LinearProblem_LeftScale ( selfID, DID ) &
+  function Epetra_LinearProblem_LeftScale ( selfID, DID ) result(that) &
         bind(C,name='Epetra_LinearProblem_LeftScale')
     import :: c_int ,FT_Epetra_LinearProblem_ID_t ,FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                      :: that
     type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)       ,intent(in)   ,value              :: DID
   end function
@@ -9194,10 +9727,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_LinearProblem_RightScale ( CT_Epetra_LinearProblem_ID_t selfID, CT_Epetra_Vector_ID_t DID );
 
-  integer(c_int) function Epetra_LinearProblem_RightScale ( selfID, DID ) &
+  function Epetra_LinearProblem_RightScale ( selfID, DID ) result(that) &
         bind(C,name='Epetra_LinearProblem_RightScale')
     import :: c_int ,FT_Epetra_LinearProblem_ID_t ,FT_Epetra_Vector_ID_t
     
+    integer(c_int)                                                      :: that
     type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Vector_ID_t)       ,intent(in)   ,value              :: DID
   end function
@@ -9208,10 +9742,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Operator_ID_t Epetra_LinearProblem_GetOperator ( CT_Epetra_LinearProblem_ID_t selfID );
 
-  type(FT_Epetra_Operator_ID_t) function Epetra_LinearProblem_GetOperator ( selfID ) &
+  function Epetra_LinearProblem_GetOperator ( selfID ) result(that) &
         bind(C,name='Epetra_LinearProblem_GetOperator')
     import :: FT_Epetra_Operator_ID_t ,FT_Epetra_LinearProblem_ID_t
     
+    type(FT_Epetra_Operator_ID_t)                                       :: that
     type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -9221,10 +9756,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_RowMatrix_ID_t Epetra_LinearProblem_GetMatrix ( CT_Epetra_LinearProblem_ID_t selfID );
 
-  type(FT_Epetra_RowMatrix_ID_t) function Epetra_LinearProblem_GetMatrix ( selfID ) &
+  function Epetra_LinearProblem_GetMatrix ( selfID ) result(that) &
         bind(C,name='Epetra_LinearProblem_GetMatrix')
     import :: FT_Epetra_RowMatrix_ID_t ,FT_Epetra_LinearProblem_ID_t
     
+    type(FT_Epetra_RowMatrix_ID_t)                                      :: that
     type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -9234,10 +9770,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_MultiVector_ID_t Epetra_LinearProblem_GetLHS ( CT_Epetra_LinearProblem_ID_t selfID );
 
-  type(FT_Epetra_MultiVector_ID_t) function Epetra_LinearProblem_GetLHS ( selfID ) &
+  function Epetra_LinearProblem_GetLHS ( selfID ) result(that) &
         bind(C,name='Epetra_LinearProblem_GetLHS')
     import :: FT_Epetra_MultiVector_ID_t ,FT_Epetra_LinearProblem_ID_t
     
+    type(FT_Epetra_MultiVector_ID_t)                                    :: that
     type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -9247,10 +9784,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_MultiVector_ID_t Epetra_LinearProblem_GetRHS ( CT_Epetra_LinearProblem_ID_t selfID );
 
-  type(FT_Epetra_MultiVector_ID_t) function Epetra_LinearProblem_GetRHS ( selfID ) &
+  function Epetra_LinearProblem_GetRHS ( selfID ) result(that) &
         bind(C,name='Epetra_LinearProblem_GetRHS')
     import :: FT_Epetra_MultiVector_ID_t ,FT_Epetra_LinearProblem_ID_t
     
+    type(FT_Epetra_MultiVector_ID_t)                                    :: that
     type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -9260,10 +9798,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_ProblemDifficultyLevel_E_t Epetra_LinearProblem_GetPDL ( CT_Epetra_LinearProblem_ID_t selfID );
 
-  integer(FT_ProblemDifficultyLevel_E_t) function Epetra_LinearProblem_GetPDL ( selfID ) &
+  function Epetra_LinearProblem_GetPDL ( selfID ) result(that) &
         bind(C,name='Epetra_LinearProblem_GetPDL')
     import :: FT_ProblemDifficultyLevel_E_t ,FT_Epetra_LinearProblem_ID_t
     
+    integer(FT_ProblemDifficultyLevel_E_t)                                  :: that
     type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -9273,10 +9812,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_LinearProblem_IsOperatorSymmetric ( CT_Epetra_LinearProblem_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_LinearProblem_IsOperatorSymmetric ( selfID ) &
+  function Epetra_LinearProblem_IsOperatorSymmetric ( selfID ) result(that) &
         bind(C,name='Epetra_LinearProblem_IsOperatorSymmetric')
     import :: FT_boolean_t ,FT_Epetra_LinearProblem_ID_t
     
+    integer(FT_boolean_t)                                               :: that
     type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -9293,10 +9833,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_LAPACK_ID_t Epetra_LAPACK_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_LAPACK_ID_t) function Epetra_LAPACK_Degeneralize ( id ) &
+  function Epetra_LAPACK_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_LAPACK_Degeneralize')
     import :: FT_Epetra_LAPACK_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_LAPACK_ID_t)                                   :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -9304,10 +9845,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_LAPACK_Generalize ( CT_Epetra_LAPACK_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_LAPACK_Generalize ( id ) &
+  function Epetra_LAPACK_Generalize ( id ) result(that) &
         bind(C,name='Epetra_LAPACK_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_LAPACK_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: id
   end function
 
@@ -9317,10 +9859,10 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_LAPACK_ID_t Epetra_LAPACK_Create (  );
 
-  type(FT_Epetra_LAPACK_ID_t) function Epetra_LAPACK_Create (  ) &
-        bind(C,name='Epetra_LAPACK_Create')
+  function Epetra_LAPACK_Create (  ) result(that) bind(C,name='Epetra_LAPACK_Create')
     import :: FT_Epetra_LAPACK_ID_t
     
+    type(FT_Epetra_LAPACK_ID_t)                                   :: that
   end function
 
 
@@ -9329,10 +9871,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_LAPACK_ID_t Epetra_LAPACK_Duplicate ( CT_Epetra_LAPACK_ID_t LAPACKID );
 
-  type(FT_Epetra_LAPACK_ID_t) function Epetra_LAPACK_Duplicate ( LAPACKID ) &
+  function Epetra_LAPACK_Duplicate ( LAPACKID ) result(that) &
         bind(C,name='Epetra_LAPACK_Duplicate')
     import :: FT_Epetra_LAPACK_ID_t
     
+    type(FT_Epetra_LAPACK_ID_t)                                   :: that
     type(FT_Epetra_LAPACK_ID_t) ,intent(in)   ,value              :: LAPACKID
   end function
 
@@ -11465,10 +12008,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_FECrsMatrix_ID_t) function Epetra_FECrsMatrix_Degeneralize ( id ) &
+  function Epetra_FECrsMatrix_Degeneralize ( id ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_Degeneralize')
     import :: FT_Epetra_FECrsMatrix_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_FECrsMatrix_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -11476,10 +12020,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_FECrsMatrix_Generalize ( CT_Epetra_FECrsMatrix_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_FECrsMatrix_Generalize ( id ) &
+  function Epetra_FECrsMatrix_Generalize ( id ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_FECrsMatrix_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                  :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -11489,12 +12034,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create_Var ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, int * NumEntriesPerRow, boolean ignoreNonLocalEntries );
 
-  type(FT_Epetra_FECrsMatrix_ID_t) function Epetra_FECrsMatrix_Create_Var ( CV, RowMapID, &
-        NumEntriesPerRow, ignoreNonLocalEntries ) &
-        bind(C,name='Epetra_FECrsMatrix_Create_Var')
+  function Epetra_FECrsMatrix_Create_Var ( CV, RowMapID, NumEntriesPerRow, &
+        ignoreNonLocalEntries ) result(that) bind(C,name='Epetra_FECrsMatrix_Create_Var')
     import :: FT_Epetra_FECrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
           c_int ,FT_boolean_t
     
+    type(FT_Epetra_FECrsMatrix_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_Map_ID_t)        ,intent(in)   ,value              :: RowMapID
     integer(c_int)                                      ,dimension(*) :: NumEntriesPerRow
@@ -11507,11 +12052,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, int NumEntriesPerRow, boolean ignoreNonLocalEntries );
 
-  type(FT_Epetra_FECrsMatrix_ID_t) function Epetra_FECrsMatrix_Create ( CV, RowMapID, &
-        NumEntriesPerRow, ignoreNonLocalEntries ) bind(C,name='Epetra_FECrsMatrix_Create')
+  function Epetra_FECrsMatrix_Create ( CV, RowMapID, NumEntriesPerRow, &
+        ignoreNonLocalEntries ) result(that) bind(C,name='Epetra_FECrsMatrix_Create')
     import :: FT_Epetra_FECrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
           c_int ,FT_boolean_t
     
+    type(FT_Epetra_FECrsMatrix_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_Map_ID_t)        ,intent(in)   ,value              :: RowMapID
     integer(c_int)                  ,intent(in)   ,value              :: NumEntriesPerRow
@@ -11524,12 +12070,13 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create_WithColMap_Var ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, int * NumEntriesPerRow, boolean ignoreNonLocalEntries );
 
-  type(FT_Epetra_FECrsMatrix_ID_t) function Epetra_FECrsMatrix_Create_WithColMap_Var ( CV, &
-        RowMapID, ColMapID, NumEntriesPerRow, ignoreNonLocalEntries ) &
+  function Epetra_FECrsMatrix_Create_WithColMap_Var ( CV, RowMapID, ColMapID, &
+        NumEntriesPerRow, ignoreNonLocalEntries ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_Create_WithColMap_Var')
     import :: FT_Epetra_FECrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
           c_int ,FT_boolean_t
     
+    type(FT_Epetra_FECrsMatrix_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_Map_ID_t)        ,intent(in)   ,value              :: RowMapID
     type(FT_Epetra_Map_ID_t)        ,intent(in)   ,value              :: ColMapID
@@ -11543,12 +12090,13 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create_WithColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, int NumEntriesPerRow, boolean ignoreNonLocalEntries );
 
-  type(FT_Epetra_FECrsMatrix_ID_t) function Epetra_FECrsMatrix_Create_WithColMap ( CV, &
-        RowMapID, ColMapID, NumEntriesPerRow, ignoreNonLocalEntries ) &
+  function Epetra_FECrsMatrix_Create_WithColMap ( CV, RowMapID, ColMapID, NumEntriesPerRow, &
+        ignoreNonLocalEntries ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_Create_WithColMap')
     import :: FT_Epetra_FECrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,FT_Epetra_Map_ID_t , &
           c_int ,FT_boolean_t
     
+    type(FT_Epetra_FECrsMatrix_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_Map_ID_t)        ,intent(in)   ,value              :: RowMapID
     type(FT_Epetra_Map_ID_t)        ,intent(in)   ,value              :: ColMapID
@@ -11562,11 +12110,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create_FromGraph ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_CrsGraph_ID_t GraphID, boolean ignoreNonLocalEntries );
 
-  type(FT_Epetra_FECrsMatrix_ID_t) function Epetra_FECrsMatrix_Create_FromGraph ( CV, &
-        GraphID, ignoreNonLocalEntries ) bind(C,name='Epetra_FECrsMatrix_Create_FromGraph')
+  function Epetra_FECrsMatrix_Create_FromGraph ( CV, GraphID, ignoreNonLocalEntries ) &
+        result(that) bind(C,name='Epetra_FECrsMatrix_Create_FromGraph')
     import :: FT_Epetra_FECrsMatrix_ID_t ,FT_Epetra_DataAccess_E_t , &
           FT_Epetra_CrsGraph_ID_t ,FT_boolean_t
     
+    type(FT_Epetra_FECrsMatrix_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t),intent(in)   ,value              :: CV
     type(FT_Epetra_CrsGraph_ID_t)   ,intent(in)   ,value              :: GraphID
     integer(FT_boolean_t)           ,intent(in)   ,value              :: ignoreNonLocalEntries
@@ -11578,10 +12127,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Duplicate ( CT_Epetra_FECrsMatrix_ID_t srcID );
 
-  type(FT_Epetra_FECrsMatrix_ID_t) function Epetra_FECrsMatrix_Duplicate ( srcID ) &
+  function Epetra_FECrsMatrix_Duplicate ( srcID ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_Duplicate')
     import :: FT_Epetra_FECrsMatrix_ID_t
     
+    type(FT_Epetra_FECrsMatrix_ID_t)                                  :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: srcID
   end function
 
@@ -11618,10 +12168,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_SumIntoGlobalValues ( CT_Epetra_FECrsMatrix_ID_t selfID, int GlobalRow, int NumEntries, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_FECrsMatrix_SumIntoGlobalValues ( selfID, GlobalRow, &
-        NumEntries, Values, Indices ) bind(C,name='Epetra_FECrsMatrix_SumIntoGlobalValues')
+  function Epetra_FECrsMatrix_SumIntoGlobalValues ( selfID, GlobalRow, NumEntries, Values, &
+        Indices ) result(that) bind(C,name='Epetra_FECrsMatrix_SumIntoGlobalValues')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                  ,intent(in)   ,value              :: NumEntries
@@ -11635,10 +12186,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_InsertGlobalValues ( CT_Epetra_FECrsMatrix_ID_t selfID, int GlobalRow, int NumEntries, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_FECrsMatrix_InsertGlobalValues ( selfID, GlobalRow, &
-        NumEntries, Values, Indices ) bind(C,name='Epetra_FECrsMatrix_InsertGlobalValues')
+  function Epetra_FECrsMatrix_InsertGlobalValues ( selfID, GlobalRow, NumEntries, Values, &
+        Indices ) result(that) bind(C,name='Epetra_FECrsMatrix_InsertGlobalValues')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                  ,intent(in)   ,value              :: NumEntries
@@ -11652,10 +12204,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_ReplaceGlobalValues ( CT_Epetra_FECrsMatrix_ID_t selfID, int GlobalRow, int NumEntries, double * Values, int * Indices );
 
-  integer(c_int) function Epetra_FECrsMatrix_ReplaceGlobalValues ( selfID, GlobalRow, &
-        NumEntries, Values, Indices ) bind(C,name='Epetra_FECrsMatrix_ReplaceGlobalValues')
+  function Epetra_FECrsMatrix_ReplaceGlobalValues ( selfID, GlobalRow, NumEntries, Values, &
+        Indices ) result(that) bind(C,name='Epetra_FECrsMatrix_ReplaceGlobalValues')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: GlobalRow
     integer(c_int)                  ,intent(in)   ,value              :: NumEntries
@@ -11669,11 +12222,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, int numIndices, const int * indices, const double * values, int format );
 
-  integer(c_int) function Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable_Square ( selfID, &
-        numIndices, indices, values, format ) &
+  function Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable_Square ( selfID, numIndices, &
+        indices, values, format ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable_Square')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: numIndices
     integer(c_int)                  ,intent(in)         ,dimension(*) :: indices
@@ -11687,11 +12241,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, const int * rows, int numCols, const int * cols, const double * values, int format );
 
-  integer(c_int) function Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable ( selfID, numRows, &
-        rows, numCols, cols, values, format ) &
+  function Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable ( selfID, numRows, rows, numCols, &
+        cols, values, format ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: numRows
     integer(c_int)                  ,intent(in)         ,dimension(*) :: rows
@@ -11707,11 +12262,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, int numIndices, const int * indices, const double* const * values, int format );
 
-  integer(c_int) function Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable_Square ( selfID, &
-        numIndices, indices, values, format ) &
+  function Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable_Square ( selfID, numIndices, &
+        indices, values, format ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable_Square')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: numIndices
     integer(c_int)                  ,intent(in)         ,dimension(*) :: indices
@@ -11725,11 +12281,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, const int * rows, int numCols, const int * cols, const double* const * values, int format );
 
-  integer(c_int) function Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable ( selfID, numRows, &
-        rows, numCols, cols, values, format ) &
+  function Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable ( selfID, numRows, rows, numCols, &
+        cols, values, format ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: numRows
     integer(c_int)                  ,intent(in)         ,dimension(*) :: rows
@@ -11745,11 +12302,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_InsertGlobalValues_Ftable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, int numIndices, const int * indices, const double * values, int format );
 
-  integer(c_int) function Epetra_FECrsMatrix_InsertGlobalValues_Ftable_Square ( selfID, &
-        numIndices, indices, values, format ) &
+  function Epetra_FECrsMatrix_InsertGlobalValues_Ftable_Square ( selfID, numIndices, &
+        indices, values, format ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_InsertGlobalValues_Ftable_Square')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: numIndices
     integer(c_int)                  ,intent(in)         ,dimension(*) :: indices
@@ -11763,11 +12321,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_InsertGlobalValues_Ftable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, const int * rows, int numCols, const int * cols, const double * values, int format );
 
-  integer(c_int) function Epetra_FECrsMatrix_InsertGlobalValues_Ftable ( selfID, numRows, &
-        rows, numCols, cols, values, format ) &
+  function Epetra_FECrsMatrix_InsertGlobalValues_Ftable ( selfID, numRows, rows, numCols, &
+        cols, values, format ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_InsertGlobalValues_Ftable')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: numRows
     integer(c_int)                  ,intent(in)         ,dimension(*) :: rows
@@ -11783,11 +12342,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_InsertGlobalValues_Ctable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, int numIndices, const int * indices, const double* const * values, int format );
 
-  integer(c_int) function Epetra_FECrsMatrix_InsertGlobalValues_Ctable_Square ( selfID, &
-        numIndices, indices, values, format ) &
+  function Epetra_FECrsMatrix_InsertGlobalValues_Ctable_Square ( selfID, numIndices, &
+        indices, values, format ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_InsertGlobalValues_Ctable_Square')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: numIndices
     integer(c_int)                  ,intent(in)         ,dimension(*) :: indices
@@ -11801,11 +12361,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_InsertGlobalValues_Ctable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, const int * rows, int numCols, const int * cols, const double* const * values, int format );
 
-  integer(c_int) function Epetra_FECrsMatrix_InsertGlobalValues_Ctable ( selfID, numRows, &
-        rows, numCols, cols, values, format ) &
+  function Epetra_FECrsMatrix_InsertGlobalValues_Ctable ( selfID, numRows, rows, numCols, &
+        cols, values, format ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_InsertGlobalValues_Ctable')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: numRows
     integer(c_int)                  ,intent(in)         ,dimension(*) :: rows
@@ -11821,11 +12382,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, int numIndices, const int * indices, const double * values, int format );
 
-  integer(c_int) function Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable_Square ( selfID, &
-        numIndices, indices, values, format ) &
+  function Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable_Square ( selfID, numIndices, &
+        indices, values, format ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable_Square')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: numIndices
     integer(c_int)                  ,intent(in)         ,dimension(*) :: indices
@@ -11839,11 +12401,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, const int * rows, int numCols, const int * cols, const double * values, int format );
 
-  integer(c_int) function Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable ( selfID, numRows, &
-        rows, numCols, cols, values, format ) &
+  function Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable ( selfID, numRows, rows, numCols, &
+        cols, values, format ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: numRows
     integer(c_int)                  ,intent(in)         ,dimension(*) :: rows
@@ -11859,11 +12422,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, int numIndices, const int * indices, const double* const * values, int format );
 
-  integer(c_int) function Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable_Square ( selfID, &
-        numIndices, indices, values, format ) &
+  function Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable_Square ( selfID, numIndices, &
+        indices, values, format ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable_Square')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: numIndices
     integer(c_int)                  ,intent(in)         ,dimension(*) :: indices
@@ -11877,11 +12441,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, const int * rows, int numCols, const int * cols, const double* const * values, int format );
 
-  integer(c_int) function Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable ( selfID, numRows, &
-        rows, numCols, cols, values, format ) &
+  function Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable ( selfID, numRows, rows, numCols, &
+        cols, values, format ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,c_double
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                  ,intent(in)   ,value              :: numRows
     integer(c_int)                  ,intent(in)         ,dimension(*) :: rows
@@ -11897,12 +12462,13 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_SumIntoGlobalValues_SubMatrix_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, CT_Epetra_IntSerialDenseVector_ID_t indicesID, CT_Epetra_SerialDenseMatrix_ID_t valuesID, int format );
 
-  integer(c_int) function Epetra_FECrsMatrix_SumIntoGlobalValues_SubMatrix_Square ( selfID, &
-        indicesID, valuesID, format ) &
+  function Epetra_FECrsMatrix_SumIntoGlobalValues_SubMatrix_Square ( selfID, indicesID, &
+        valuesID, format ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_SumIntoGlobalValues_SubMatrix_Square')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,FT_Epetra_IntSerialDenseVector_ID_t , &
           FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: indicesID
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: valuesID
@@ -11915,12 +12481,13 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_SumIntoGlobalValues_SubMatrix ( CT_Epetra_FECrsMatrix_ID_t selfID, CT_Epetra_IntSerialDenseVector_ID_t rowsID, CT_Epetra_IntSerialDenseVector_ID_t colsID, CT_Epetra_SerialDenseMatrix_ID_t valuesID, int format );
 
-  integer(c_int) function Epetra_FECrsMatrix_SumIntoGlobalValues_SubMatrix ( selfID, rowsID, &
-        colsID, valuesID, format ) &
+  function Epetra_FECrsMatrix_SumIntoGlobalValues_SubMatrix ( selfID, rowsID, colsID, &
+        valuesID, format ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_SumIntoGlobalValues_SubMatrix')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,FT_Epetra_IntSerialDenseVector_ID_t , &
           FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: rowsID
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: colsID
@@ -11934,12 +12501,13 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_InsertGlobalValues_SubMatrix_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, CT_Epetra_IntSerialDenseVector_ID_t indicesID, CT_Epetra_SerialDenseMatrix_ID_t valuesID, int format );
 
-  integer(c_int) function Epetra_FECrsMatrix_InsertGlobalValues_SubMatrix_Square ( selfID, &
-        indicesID, valuesID, format ) &
+  function Epetra_FECrsMatrix_InsertGlobalValues_SubMatrix_Square ( selfID, indicesID, &
+        valuesID, format ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_InsertGlobalValues_SubMatrix_Square')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,FT_Epetra_IntSerialDenseVector_ID_t , &
           FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: indicesID
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: valuesID
@@ -11952,12 +12520,13 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_InsertGlobalValues_SubMatrix ( CT_Epetra_FECrsMatrix_ID_t selfID, CT_Epetra_IntSerialDenseVector_ID_t rowsID, CT_Epetra_IntSerialDenseVector_ID_t colsID, CT_Epetra_SerialDenseMatrix_ID_t valuesID, int format );
 
-  integer(c_int) function Epetra_FECrsMatrix_InsertGlobalValues_SubMatrix ( selfID, rowsID, &
-        colsID, valuesID, format ) &
+  function Epetra_FECrsMatrix_InsertGlobalValues_SubMatrix ( selfID, rowsID, colsID, &
+        valuesID, format ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_InsertGlobalValues_SubMatrix')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,FT_Epetra_IntSerialDenseVector_ID_t , &
           FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: rowsID
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: colsID
@@ -11971,12 +12540,13 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_ReplaceGlobalValues_SubMatrix_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, CT_Epetra_IntSerialDenseVector_ID_t indicesID, CT_Epetra_SerialDenseMatrix_ID_t valuesID, int format );
 
-  integer(c_int) function Epetra_FECrsMatrix_ReplaceGlobalValues_SubMatrix_Square ( selfID, &
-        indicesID, valuesID, format ) &
+  function Epetra_FECrsMatrix_ReplaceGlobalValues_SubMatrix_Square ( selfID, indicesID, &
+        valuesID, format ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_ReplaceGlobalValues_SubMatrix_Square')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,FT_Epetra_IntSerialDenseVector_ID_t , &
           FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: indicesID
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: valuesID
@@ -11989,12 +12559,13 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_ReplaceGlobalValues_SubMatrix ( CT_Epetra_FECrsMatrix_ID_t selfID, CT_Epetra_IntSerialDenseVector_ID_t rowsID, CT_Epetra_IntSerialDenseVector_ID_t colsID, CT_Epetra_SerialDenseMatrix_ID_t valuesID, int format );
 
-  integer(c_int) function Epetra_FECrsMatrix_ReplaceGlobalValues_SubMatrix ( selfID, rowsID, &
-        colsID, valuesID, format ) &
+  function Epetra_FECrsMatrix_ReplaceGlobalValues_SubMatrix ( selfID, rowsID, colsID, &
+        valuesID, format ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_ReplaceGlobalValues_SubMatrix')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,FT_Epetra_IntSerialDenseVector_ID_t , &
           FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: rowsID
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: colsID
@@ -12008,10 +12579,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_GlobalAssemble ( CT_Epetra_FECrsMatrix_ID_t selfID, boolean callFillComplete );
 
-  integer(c_int) function Epetra_FECrsMatrix_GlobalAssemble ( selfID, callFillComplete ) &
+  function Epetra_FECrsMatrix_GlobalAssemble ( selfID, callFillComplete ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_GlobalAssemble')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,FT_boolean_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(FT_boolean_t)           ,intent(in)   ,value              :: callFillComplete
   end function
@@ -12022,11 +12594,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_FECrsMatrix_GlobalAssemble_WithMaps ( CT_Epetra_FECrsMatrix_ID_t selfID, CT_Epetra_Map_ID_t domain_mapID, CT_Epetra_Map_ID_t range_mapID, boolean callFillComplete );
 
-  integer(c_int) function Epetra_FECrsMatrix_GlobalAssemble_WithMaps ( selfID, domain_mapID, &
-        range_mapID, callFillComplete ) &
+  function Epetra_FECrsMatrix_GlobalAssemble_WithMaps ( selfID, domain_mapID, range_mapID, &
+        callFillComplete ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_GlobalAssemble_WithMaps')
     import :: c_int ,FT_Epetra_FECrsMatrix_ID_t ,FT_Epetra_Map_ID_t ,FT_boolean_t
     
+    integer(c_int)                                                    :: that
     type(FT_Epetra_FECrsMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_Map_ID_t)        ,intent(in)   ,value              :: domain_mapID
     type(FT_Epetra_Map_ID_t)        ,intent(in)   ,value              :: range_mapID
@@ -12060,10 +12633,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_IntSerialDenseVector_ID_t Epetra_IntSerialDenseVector_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_IntSerialDenseVector_ID_t) function Epetra_IntSerialDenseVector_Degeneralize ( &
-        id ) bind(C,name='Epetra_IntSerialDenseVector_Degeneralize')
+  function Epetra_IntSerialDenseVector_Degeneralize ( id ) result(that) &
+        bind(C,name='Epetra_IntSerialDenseVector_Degeneralize')
     import :: FT_Epetra_IntSerialDenseVector_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_IntSerialDenseVector_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t)         ,intent(in)   ,value              :: id
   end function
 
@@ -12071,10 +12645,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_IntSerialDenseVector_Generalize ( CT_Epetra_IntSerialDenseVector_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_IntSerialDenseVector_Generalize ( id ) &
+  function Epetra_IntSerialDenseVector_Generalize ( id ) result(that) &
         bind(C,name='Epetra_IntSerialDenseVector_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_IntSerialDenseVector_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                           :: that
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -12084,10 +12659,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_IntSerialDenseVector_ID_t Epetra_IntSerialDenseVector_Create_Empty ( );
 
-  type(FT_Epetra_IntSerialDenseVector_ID_t) function Epetra_IntSerialDenseVector_Create_Empty (  ) &
+  function Epetra_IntSerialDenseVector_Create_Empty (  ) result(that) &
         bind(C,name='Epetra_IntSerialDenseVector_Create_Empty')
     import :: FT_Epetra_IntSerialDenseVector_ID_t
     
+    type(FT_Epetra_IntSerialDenseVector_ID_t)                                  :: that
   end function
 
 
@@ -12096,10 +12672,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_IntSerialDenseVector_ID_t Epetra_IntSerialDenseVector_Create ( int Length_in );
 
-  type(FT_Epetra_IntSerialDenseVector_ID_t) function Epetra_IntSerialDenseVector_Create ( &
-        Length_in ) bind(C,name='Epetra_IntSerialDenseVector_Create')
+  function Epetra_IntSerialDenseVector_Create ( Length_in ) result(that) &
+        bind(C,name='Epetra_IntSerialDenseVector_Create')
     import :: FT_Epetra_IntSerialDenseVector_ID_t ,c_int
     
+    type(FT_Epetra_IntSerialDenseVector_ID_t)                                  :: that
     integer(c_int)                           ,intent(in)   ,value              :: Length_in
   end function
 
@@ -12109,11 +12686,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_IntSerialDenseVector_ID_t Epetra_IntSerialDenseVector_Create_FromArray ( CT_Epetra_DataAccess_E_t CV_in, int * Values_in, int Length_in );
 
-  type(FT_Epetra_IntSerialDenseVector_ID_t) function Epetra_IntSerialDenseVector_Create_FromArray ( &
-        CV_in, Values_in, Length_in ) &
-        bind(C,name='Epetra_IntSerialDenseVector_Create_FromArray')
+  function Epetra_IntSerialDenseVector_Create_FromArray ( CV_in, Values_in, Length_in ) &
+        result(that) bind(C,name='Epetra_IntSerialDenseVector_Create_FromArray')
     import :: FT_Epetra_IntSerialDenseVector_ID_t ,FT_Epetra_DataAccess_E_t ,c_int
     
+    type(FT_Epetra_IntSerialDenseVector_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t)        ,intent(in)   ,value              :: CV_in
     integer(c_int)                                               ,dimension(*) :: Values_in
     integer(c_int)                           ,intent(in)   ,value              :: Length_in
@@ -12125,10 +12702,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_IntSerialDenseVector_ID_t Epetra_IntSerialDenseVector_Duplicate ( CT_Epetra_IntSerialDenseVector_ID_t SourceID );
 
-  type(FT_Epetra_IntSerialDenseVector_ID_t) function Epetra_IntSerialDenseVector_Duplicate ( &
-        SourceID ) bind(C,name='Epetra_IntSerialDenseVector_Duplicate')
+  function Epetra_IntSerialDenseVector_Duplicate ( SourceID ) result(that) &
+        bind(C,name='Epetra_IntSerialDenseVector_Duplicate')
     import :: FT_Epetra_IntSerialDenseVector_ID_t
     
+    type(FT_Epetra_IntSerialDenseVector_ID_t)                                  :: that
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: SourceID
   end function
 
@@ -12138,10 +12716,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_IntSerialDenseVector_Size ( CT_Epetra_IntSerialDenseVector_ID_t selfID, int Length_in );
 
-  integer(c_int) function Epetra_IntSerialDenseVector_Size ( selfID, Length_in ) &
+  function Epetra_IntSerialDenseVector_Size ( selfID, Length_in ) result(that) &
         bind(C,name='Epetra_IntSerialDenseVector_Size')
     import :: c_int ,FT_Epetra_IntSerialDenseVector_ID_t
     
+    integer(c_int)                                                             :: that
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                           ,intent(in)   ,value              :: Length_in
   end function
@@ -12152,10 +12731,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_IntSerialDenseVector_Resize ( CT_Epetra_IntSerialDenseVector_ID_t selfID, int Length_in );
 
-  integer(c_int) function Epetra_IntSerialDenseVector_Resize ( selfID, Length_in ) &
+  function Epetra_IntSerialDenseVector_Resize ( selfID, Length_in ) result(that) &
         bind(C,name='Epetra_IntSerialDenseVector_Resize')
     import :: c_int ,FT_Epetra_IntSerialDenseVector_ID_t
     
+    integer(c_int)                                                             :: that
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                           ,intent(in)   ,value              :: Length_in
   end function
@@ -12194,10 +12774,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_IntSerialDenseVector_getElement ( CT_Epetra_IntSerialDenseVector_ID_t selfID, int Index );
 
-  integer(c_int) function Epetra_IntSerialDenseVector_getElement ( selfID, Index ) &
+  function Epetra_IntSerialDenseVector_getElement ( selfID, Index ) result(that) &
         bind(C,name='Epetra_IntSerialDenseVector_getElement')
     import :: c_int ,FT_Epetra_IntSerialDenseVector_ID_t
     
+    integer(c_int)                                                             :: that
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                           ,intent(in)   ,value              :: Index
   end function
@@ -12223,10 +12804,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_IntSerialDenseVector_getElement_Bracket ( CT_Epetra_IntSerialDenseVector_ID_t selfID, int Index );
 
-  integer(c_int) function Epetra_IntSerialDenseVector_getElement_Bracket ( selfID, Index ) &
+  function Epetra_IntSerialDenseVector_getElement_Bracket ( selfID, Index ) result(that) &
         bind(C,name='Epetra_IntSerialDenseVector_getElement_Bracket')
     import :: c_int ,FT_Epetra_IntSerialDenseVector_ID_t
     
+    integer(c_int)                                                             :: that
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                           ,intent(in)   ,value              :: Index
   end function
@@ -12237,10 +12819,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_IntSerialDenseVector_Random ( CT_Epetra_IntSerialDenseVector_ID_t selfID );
 
-  integer(c_int) function Epetra_IntSerialDenseVector_Random ( selfID ) &
+  function Epetra_IntSerialDenseVector_Random ( selfID ) result(that) &
         bind(C,name='Epetra_IntSerialDenseVector_Random')
     import :: c_int ,FT_Epetra_IntSerialDenseVector_ID_t
     
+    integer(c_int)                                                             :: that
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12250,10 +12833,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_IntSerialDenseVector_Length ( CT_Epetra_IntSerialDenseVector_ID_t selfID );
 
-  integer(c_int) function Epetra_IntSerialDenseVector_Length ( selfID ) &
+  function Epetra_IntSerialDenseVector_Length ( selfID ) result(that) &
         bind(C,name='Epetra_IntSerialDenseVector_Length')
     import :: c_int ,FT_Epetra_IntSerialDenseVector_ID_t
     
+    integer(c_int)                                                             :: that
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12263,10 +12847,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int * Epetra_IntSerialDenseVector_Values ( CT_Epetra_IntSerialDenseVector_ID_t selfID );
 
-  type(c_ptr) function Epetra_IntSerialDenseVector_Values ( selfID ) &
+  function Epetra_IntSerialDenseVector_Values ( selfID ) result(that) &
         bind(C,name='Epetra_IntSerialDenseVector_Values')
     import :: c_ptr ,FT_Epetra_IntSerialDenseVector_ID_t
     
+    type(c_ptr)                                                                :: that
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12276,10 +12861,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! const int * Epetra_IntSerialDenseVector_Values_Const ( CT_Epetra_IntSerialDenseVector_ID_t selfID );
 
-  type(c_ptr) function Epetra_IntSerialDenseVector_Values_Const ( selfID ) &
+  function Epetra_IntSerialDenseVector_Values_Const ( selfID ) result(that) &
         bind(C,name='Epetra_IntSerialDenseVector_Values_Const')
     import :: c_ptr ,FT_Epetra_IntSerialDenseVector_ID_t
     
+    type(c_ptr)                                                                :: that
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12289,10 +12875,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_DataAccess_E_t Epetra_IntSerialDenseVector_CV ( CT_Epetra_IntSerialDenseVector_ID_t selfID );
 
-  integer(FT_Epetra_DataAccess_E_t) function Epetra_IntSerialDenseVector_CV ( selfID ) &
+  function Epetra_IntSerialDenseVector_CV ( selfID ) result(that) &
         bind(C,name='Epetra_IntSerialDenseVector_CV')
     import :: FT_Epetra_DataAccess_E_t ,FT_Epetra_IntSerialDenseVector_ID_t
     
+    integer(FT_Epetra_DataAccess_E_t)                                          :: that
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12316,10 +12903,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_IntSerialDenseVector_MakeViewOf ( CT_Epetra_IntSerialDenseVector_ID_t selfID, CT_Epetra_IntSerialDenseVector_ID_t SourceID );
 
-  integer(c_int) function Epetra_IntSerialDenseVector_MakeViewOf ( selfID, SourceID ) &
+  function Epetra_IntSerialDenseVector_MakeViewOf ( selfID, SourceID ) result(that) &
         bind(C,name='Epetra_IntSerialDenseVector_MakeViewOf')
     import :: c_int ,FT_Epetra_IntSerialDenseVector_ID_t
     
+    integer(c_int)                                                             :: that
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_IntSerialDenseVector_ID_t),intent(in)   ,value              :: SourceID
   end function
@@ -12337,10 +12925,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CT_Epetra_SerialDenseMatrix_ID_t Epetra_SerialDenseMatrix_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Epetra_SerialDenseMatrix_ID_t) function Epetra_SerialDenseMatrix_Degeneralize ( &
-        id ) bind(C,name='Epetra_SerialDenseMatrix_Degeneralize')
+  function Epetra_SerialDenseMatrix_Degeneralize ( id ) result(that) &
+        bind(C,name='Epetra_SerialDenseMatrix_Degeneralize')
     import :: FT_Epetra_SerialDenseMatrix_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Epetra_SerialDenseMatrix_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t)      ,intent(in)   ,value              :: id
   end function
 
@@ -12348,10 +12937,11 @@ module forepetra
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Epetra_SerialDenseMatrix_Generalize ( CT_Epetra_SerialDenseMatrix_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Epetra_SerialDenseMatrix_Generalize ( id ) &
+  function Epetra_SerialDenseMatrix_Generalize ( id ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                        :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -12361,10 +12951,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_SerialDenseMatrix_ID_t Epetra_SerialDenseMatrix_Create_Empty ( boolean set_object_label );
 
-  type(FT_Epetra_SerialDenseMatrix_ID_t) function Epetra_SerialDenseMatrix_Create_Empty ( &
-        set_object_label ) bind(C,name='Epetra_SerialDenseMatrix_Create_Empty')
+  function Epetra_SerialDenseMatrix_Create_Empty ( set_object_label ) result(that) &
+        bind(C,name='Epetra_SerialDenseMatrix_Create_Empty')
     import :: FT_Epetra_SerialDenseMatrix_ID_t ,FT_boolean_t
     
+    type(FT_Epetra_SerialDenseMatrix_ID_t)                                  :: that
     integer(FT_boolean_t)                 ,intent(in)   ,value              :: set_object_label
   end function
 
@@ -12374,10 +12965,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_SerialDenseMatrix_ID_t Epetra_SerialDenseMatrix_Create ( int NumRows, int NumCols, boolean set_object_label );
 
-  type(FT_Epetra_SerialDenseMatrix_ID_t) function Epetra_SerialDenseMatrix_Create ( NumRows, &
-        NumCols, set_object_label ) bind(C,name='Epetra_SerialDenseMatrix_Create')
+  function Epetra_SerialDenseMatrix_Create ( NumRows, NumCols, set_object_label ) &
+        result(that) bind(C,name='Epetra_SerialDenseMatrix_Create')
     import :: FT_Epetra_SerialDenseMatrix_ID_t ,c_int ,FT_boolean_t
     
+    type(FT_Epetra_SerialDenseMatrix_ID_t)                                  :: that
     integer(c_int)                        ,intent(in)   ,value              :: NumRows
     integer(c_int)                        ,intent(in)   ,value              :: NumCols
     integer(FT_boolean_t)                 ,intent(in)   ,value              :: set_object_label
@@ -12389,12 +12981,13 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_SerialDenseMatrix_ID_t Epetra_SerialDenseMatrix_Create_FromArray ( CT_Epetra_DataAccess_E_t CV, double * A_in, int LDA_in, int NumRows, int NumCols, boolean set_object_label );
 
-  type(FT_Epetra_SerialDenseMatrix_ID_t) function Epetra_SerialDenseMatrix_Create_FromArray ( &
-        CV, A_in, LDA_in, NumRows, NumCols, set_object_label ) &
+  function Epetra_SerialDenseMatrix_Create_FromArray ( CV, A_in, LDA_in, NumRows, NumCols, &
+        set_object_label ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_Create_FromArray')
     import :: FT_Epetra_SerialDenseMatrix_ID_t ,FT_Epetra_DataAccess_E_t ,c_double ,c_int , &
           FT_boolean_t
     
+    type(FT_Epetra_SerialDenseMatrix_ID_t)                                  :: that
     integer(FT_Epetra_DataAccess_E_t)     ,intent(in)   ,value              :: CV
     real(c_double)                                            ,dimension(*) :: A_in
     integer(c_int)                        ,intent(in)   ,value              :: LDA_in
@@ -12409,10 +13002,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_SerialDenseMatrix_ID_t Epetra_SerialDenseMatrix_Duplicate ( CT_Epetra_SerialDenseMatrix_ID_t SourceID );
 
-  type(FT_Epetra_SerialDenseMatrix_ID_t) function Epetra_SerialDenseMatrix_Duplicate ( &
-        SourceID ) bind(C,name='Epetra_SerialDenseMatrix_Duplicate')
+  function Epetra_SerialDenseMatrix_Duplicate ( SourceID ) result(that) &
+        bind(C,name='Epetra_SerialDenseMatrix_Duplicate')
     import :: FT_Epetra_SerialDenseMatrix_ID_t
     
+    type(FT_Epetra_SerialDenseMatrix_ID_t)                                  :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: SourceID
   end function
 
@@ -12435,10 +13029,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialDenseMatrix_Shape ( CT_Epetra_SerialDenseMatrix_ID_t selfID, int NumRows, int NumCols );
 
-  integer(c_int) function Epetra_SerialDenseMatrix_Shape ( selfID, NumRows, NumCols ) &
+  function Epetra_SerialDenseMatrix_Shape ( selfID, NumRows, NumCols ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_Shape')
     import :: c_int ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(c_int)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                        ,intent(in)   ,value              :: NumRows
     integer(c_int)                        ,intent(in)   ,value              :: NumCols
@@ -12450,10 +13045,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialDenseMatrix_Reshape ( CT_Epetra_SerialDenseMatrix_ID_t selfID, int NumRows, int NumCols );
 
-  integer(c_int) function Epetra_SerialDenseMatrix_Reshape ( selfID, NumRows, NumCols ) &
+  function Epetra_SerialDenseMatrix_Reshape ( selfID, NumRows, NumCols ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_Reshape')
     import :: c_int ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(c_int)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                        ,intent(in)   ,value              :: NumRows
     integer(c_int)                        ,intent(in)   ,value              :: NumCols
@@ -12465,11 +13061,12 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialDenseMatrix_Multiply_Matrix ( CT_Epetra_SerialDenseMatrix_ID_t selfID, char TransA, char TransB, double ScalarAB, CT_Epetra_SerialDenseMatrix_ID_t AID, CT_Epetra_SerialDenseMatrix_ID_t BID, double ScalarThis );
 
-  integer(c_int) function Epetra_SerialDenseMatrix_Multiply_Matrix ( selfID, TransA, TransB, &
-        ScalarAB, AID, BID, ScalarThis ) &
+  function Epetra_SerialDenseMatrix_Multiply_Matrix ( selfID, TransA, TransB, ScalarAB, AID, &
+        BID, ScalarThis ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_Multiply_Matrix')
     import :: c_int ,FT_Epetra_SerialDenseMatrix_ID_t ,c_char ,c_double
     
+    integer(c_int)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
     character(kind=c_char)                ,intent(in)   ,value              :: TransA
     character(kind=c_char)                ,intent(in)   ,value              :: TransB
@@ -12485,10 +13082,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialDenseMatrix_Multiply_Vector ( CT_Epetra_SerialDenseMatrix_ID_t selfID, boolean transA, CT_Epetra_SerialDenseMatrix_ID_t xID, CT_Epetra_SerialDenseMatrix_ID_t yID );
 
-  integer(c_int) function Epetra_SerialDenseMatrix_Multiply_Vector ( selfID, transA, xID, &
-        yID ) bind(C,name='Epetra_SerialDenseMatrix_Multiply_Vector')
+  function Epetra_SerialDenseMatrix_Multiply_Vector ( selfID, transA, xID, yID ) &
+        result(that) bind(C,name='Epetra_SerialDenseMatrix_Multiply_Vector')
     import :: c_int ,FT_Epetra_SerialDenseMatrix_ID_t ,FT_boolean_t
     
+    integer(c_int)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(FT_boolean_t)                 ,intent(in)   ,value              :: transA
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: xID
@@ -12501,10 +13099,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialDenseMatrix_Scale ( CT_Epetra_SerialDenseMatrix_ID_t selfID, double ScalarA );
 
-  integer(c_int) function Epetra_SerialDenseMatrix_Scale ( selfID, ScalarA ) &
+  function Epetra_SerialDenseMatrix_Scale ( selfID, ScalarA ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_Scale')
     import :: c_int ,FT_Epetra_SerialDenseMatrix_ID_t ,c_double
     
+    integer(c_int)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
     real(c_double)                        ,intent(in)   ,value              :: ScalarA
   end function
@@ -12515,10 +13114,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_SerialDenseMatrix_NormOne ( CT_Epetra_SerialDenseMatrix_ID_t selfID );
 
-  real(c_double) function Epetra_SerialDenseMatrix_NormOne ( selfID ) &
+  function Epetra_SerialDenseMatrix_NormOne ( selfID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_NormOne')
     import :: c_double ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    real(c_double)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12528,10 +13128,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_SerialDenseMatrix_NormInf ( CT_Epetra_SerialDenseMatrix_ID_t selfID );
 
-  real(c_double) function Epetra_SerialDenseMatrix_NormInf ( selfID ) &
+  function Epetra_SerialDenseMatrix_NormInf ( selfID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_NormInf')
     import :: c_double ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    real(c_double)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12555,10 +13156,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_SerialDenseMatrix_IsEqual ( CT_Epetra_SerialDenseMatrix_ID_t selfID, CT_Epetra_SerialDenseMatrix_ID_t rhsID );
 
-  integer(FT_boolean_t) function Epetra_SerialDenseMatrix_IsEqual ( selfID, rhsID ) &
+  function Epetra_SerialDenseMatrix_IsEqual ( selfID, rhsID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_IsEqual')
     import :: FT_boolean_t ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(FT_boolean_t)                                                   :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: rhsID
   end function
@@ -12569,10 +13171,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_SerialDenseMatrix_NotEqual ( CT_Epetra_SerialDenseMatrix_ID_t selfID, CT_Epetra_SerialDenseMatrix_ID_t rhsID );
 
-  integer(FT_boolean_t) function Epetra_SerialDenseMatrix_NotEqual ( selfID, rhsID ) &
+  function Epetra_SerialDenseMatrix_NotEqual ( selfID, rhsID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_NotEqual')
     import :: FT_boolean_t ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(FT_boolean_t)                                                   :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: rhsID
   end function
@@ -12613,10 +13216,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_SerialDenseMatrix_getElement ( CT_Epetra_SerialDenseMatrix_ID_t selfID, int RowIndex, int ColIndex );
 
-  real(c_double) function Epetra_SerialDenseMatrix_getElement ( selfID, RowIndex, ColIndex ) &
+  function Epetra_SerialDenseMatrix_getElement ( selfID, RowIndex, ColIndex ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_getElement')
     import :: c_double ,FT_Epetra_SerialDenseMatrix_ID_t ,c_int
     
+    real(c_double)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                        ,intent(in)   ,value              :: RowIndex
     integer(c_int)                        ,intent(in)   ,value              :: ColIndex
@@ -12628,10 +13232,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! const double * Epetra_SerialDenseMatrix_getColumn ( CT_Epetra_SerialDenseMatrix_ID_t selfID, int ColIndex );
 
-  type(c_ptr) function Epetra_SerialDenseMatrix_getColumn ( selfID, ColIndex ) &
+  function Epetra_SerialDenseMatrix_getColumn ( selfID, ColIndex ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_getColumn')
     import :: c_ptr ,FT_Epetra_SerialDenseMatrix_ID_t ,c_int
     
+    type(c_ptr)                                                             :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(c_int)                        ,intent(in)   ,value              :: ColIndex
   end function
@@ -12642,10 +13247,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialDenseMatrix_Random ( CT_Epetra_SerialDenseMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_SerialDenseMatrix_Random ( selfID ) &
+  function Epetra_SerialDenseMatrix_Random ( selfID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_Random')
     import :: c_int ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(c_int)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12655,10 +13261,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialDenseMatrix_M ( CT_Epetra_SerialDenseMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_SerialDenseMatrix_M ( selfID ) &
+  function Epetra_SerialDenseMatrix_M ( selfID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_M')
     import :: c_int ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(c_int)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12668,10 +13275,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialDenseMatrix_N ( CT_Epetra_SerialDenseMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_SerialDenseMatrix_N ( selfID ) &
+  function Epetra_SerialDenseMatrix_N ( selfID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_N')
     import :: c_int ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(c_int)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12681,10 +13289,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double * Epetra_SerialDenseMatrix_A_Const ( CT_Epetra_SerialDenseMatrix_ID_t selfID );
 
-  type(c_ptr) function Epetra_SerialDenseMatrix_A_Const ( selfID ) &
+  function Epetra_SerialDenseMatrix_A_Const ( selfID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_A_Const')
     import :: c_ptr ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    type(c_ptr)                                                             :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12694,10 +13303,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double * Epetra_SerialDenseMatrix_A ( CT_Epetra_SerialDenseMatrix_ID_t selfID );
 
-  type(c_ptr) function Epetra_SerialDenseMatrix_A ( selfID ) &
+  function Epetra_SerialDenseMatrix_A ( selfID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_A')
     import :: c_ptr ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    type(c_ptr)                                                             :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12707,10 +13317,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialDenseMatrix_LDA ( CT_Epetra_SerialDenseMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_SerialDenseMatrix_LDA ( selfID ) &
+  function Epetra_SerialDenseMatrix_LDA ( selfID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_LDA')
     import :: c_int ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(c_int)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12720,10 +13331,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_DataAccess_E_t Epetra_SerialDenseMatrix_CV ( CT_Epetra_SerialDenseMatrix_ID_t selfID );
 
-  integer(FT_Epetra_DataAccess_E_t) function Epetra_SerialDenseMatrix_CV ( selfID ) &
+  function Epetra_SerialDenseMatrix_CV ( selfID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_CV')
     import :: FT_Epetra_DataAccess_E_t ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(FT_Epetra_DataAccess_E_t)                                       :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12733,10 +13345,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_SerialDenseMatrix_OneNorm ( CT_Epetra_SerialDenseMatrix_ID_t selfID );
 
-  real(c_double) function Epetra_SerialDenseMatrix_OneNorm ( selfID ) &
+  function Epetra_SerialDenseMatrix_OneNorm ( selfID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_OneNorm')
     import :: c_double ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    real(c_double)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12746,10 +13359,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! double Epetra_SerialDenseMatrix_InfNorm ( CT_Epetra_SerialDenseMatrix_ID_t selfID );
 
-  real(c_double) function Epetra_SerialDenseMatrix_InfNorm ( selfID ) &
+  function Epetra_SerialDenseMatrix_InfNorm ( selfID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_InfNorm')
     import :: c_double ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    real(c_double)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12759,10 +13373,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialDenseMatrix_SetUseTranspose ( CT_Epetra_SerialDenseMatrix_ID_t selfID, boolean UseTranspose_in );
 
-  integer(c_int) function Epetra_SerialDenseMatrix_SetUseTranspose ( selfID, &
-        UseTranspose_in ) bind(C,name='Epetra_SerialDenseMatrix_SetUseTranspose')
+  function Epetra_SerialDenseMatrix_SetUseTranspose ( selfID, UseTranspose_in ) &
+        result(that) bind(C,name='Epetra_SerialDenseMatrix_SetUseTranspose')
     import :: c_int ,FT_Epetra_SerialDenseMatrix_ID_t ,FT_boolean_t
     
+    integer(c_int)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
     integer(FT_boolean_t)                 ,intent(in)   ,value              :: UseTranspose_in
   end function
@@ -12773,10 +13388,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialDenseMatrix_Apply ( CT_Epetra_SerialDenseMatrix_ID_t selfID, CT_Epetra_SerialDenseMatrix_ID_t XID, CT_Epetra_SerialDenseMatrix_ID_t YID );
 
-  integer(c_int) function Epetra_SerialDenseMatrix_Apply ( selfID, XID, YID ) &
+  function Epetra_SerialDenseMatrix_Apply ( selfID, XID, YID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_Apply')
     import :: c_int ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(c_int)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: YID
@@ -12788,10 +13404,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialDenseMatrix_ApplyInverse ( CT_Epetra_SerialDenseMatrix_ID_t selfID, CT_Epetra_SerialDenseMatrix_ID_t XID, CT_Epetra_SerialDenseMatrix_ID_t YID );
 
-  integer(c_int) function Epetra_SerialDenseMatrix_ApplyInverse ( selfID, XID, YID ) &
+  function Epetra_SerialDenseMatrix_ApplyInverse ( selfID, XID, YID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_ApplyInverse')
     import :: c_int ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(c_int)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: XID
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: YID
@@ -12803,10 +13420,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! const char * Epetra_SerialDenseMatrix_Label ( CT_Epetra_SerialDenseMatrix_ID_t selfID );
 
-  type(c_ptr) function Epetra_SerialDenseMatrix_Label ( selfID ) &
+  function Epetra_SerialDenseMatrix_Label ( selfID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_Label')
     import :: c_ptr ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    type(c_ptr)                                                             :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12816,10 +13434,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_SerialDenseMatrix_UseTranspose ( CT_Epetra_SerialDenseMatrix_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_SerialDenseMatrix_UseTranspose ( selfID ) &
+  function Epetra_SerialDenseMatrix_UseTranspose ( selfID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_UseTranspose')
     import :: FT_boolean_t ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(FT_boolean_t)                                                   :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12829,10 +13448,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Epetra_SerialDenseMatrix_HasNormInf ( CT_Epetra_SerialDenseMatrix_ID_t selfID );
 
-  integer(FT_boolean_t) function Epetra_SerialDenseMatrix_HasNormInf ( selfID ) &
+  function Epetra_SerialDenseMatrix_HasNormInf ( selfID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_HasNormInf')
     import :: FT_boolean_t ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(FT_boolean_t)                                                   :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12842,10 +13462,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialDenseMatrix_RowDim ( CT_Epetra_SerialDenseMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_SerialDenseMatrix_RowDim ( selfID ) &
+  function Epetra_SerialDenseMatrix_RowDim ( selfID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_RowDim')
     import :: c_int ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(c_int)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -12855,10 +13476,11 @@ module forepetra
   !> <BR> <BR> CTrilinos prototype:
   !! int Epetra_SerialDenseMatrix_ColDim ( CT_Epetra_SerialDenseMatrix_ID_t selfID );
 
-  integer(c_int) function Epetra_SerialDenseMatrix_ColDim ( selfID ) &
+  function Epetra_SerialDenseMatrix_ColDim ( selfID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_ColDim')
     import :: c_int ,FT_Epetra_SerialDenseMatrix_ID_t
     
+    integer(c_int)                                                          :: that
     type(FT_Epetra_SerialDenseMatrix_ID_t),intent(in)   ,value              :: selfID
   end function
 

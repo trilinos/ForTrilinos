@@ -34,6 +34,7 @@
 ! Questions? Contact M. Nicole Lemaster (mnlemas@sandia.gov) 
 !*********************************************************************
 
+
 #include "ForTrilinos_config.h"
 #ifdef HAVE_FORTRILINOS_IFPACK
 
@@ -42,6 +43,9 @@ module forifpack
   use ForTrilinos_enums
   use ForTrilinos_enum_wrappers
   implicit none   ! Prevent implicit typing
+#ifdef HAVE_MPI
+#include "mpif.h"
+#endif
 
   ! This file provides Fortran interface blocks that bind the argument types,
   ! return value types, and procedure names to those in the C function prototypes
@@ -65,9 +69,10 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Ifpack_ID_t Ifpack_Create (  );
 
-  type(FT_Ifpack_ID_t) function Ifpack_Create (  ) bind(C,name='Ifpack_Create')
+  function Ifpack_Create (  ) result(that) bind(C,name='Ifpack_Create')
     import :: FT_Ifpack_ID_t
     
+    type(FT_Ifpack_ID_t)                                          :: that
   end function
 
 
@@ -88,9 +93,10 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! const char * Ifpack_toString ( const CT_EPrecType_E_t precType );
 
-  type(c_ptr) function Ifpack_toString ( precType ) bind(C,name='Ifpack_toString')
+  function Ifpack_toString ( precType ) result(that) bind(C,name='Ifpack_toString')
     import :: c_ptr ,FT_EPrecType_E_t
     
+    type(c_ptr)                                                   :: that
     integer(FT_EPrecType_E_t)   ,intent(in)   ,value              :: precType
   end function
 
@@ -100,11 +106,12 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Ifpack_Preconditioner_ID_t Ifpack_CreatePreconditioner_UsingType ( CT_EPrecType_E_t PrecType, CT_Epetra_RowMatrix_ID_t MatrixID, const int overlap );
 
-  type(FT_Ifpack_Preconditioner_ID_t) function Ifpack_CreatePreconditioner_UsingType ( &
-        PrecType, MatrixID, overlap ) bind(C,name='Ifpack_CreatePreconditioner_UsingType')
+  function Ifpack_CreatePreconditioner_UsingType ( PrecType, MatrixID, overlap ) &
+        result(that) bind(C,name='Ifpack_CreatePreconditioner_UsingType')
     import :: FT_Ifpack_Preconditioner_ID_t ,FT_EPrecType_E_t ,FT_Epetra_RowMatrix_ID_t , &
           c_int
     
+    type(FT_Ifpack_Preconditioner_ID_t)                                  :: that
     integer(FT_EPrecType_E_t)   ,intent(in)   ,value              :: PrecType
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: MatrixID
     integer(c_int)              ,intent(in)   ,value              :: overlap
@@ -116,12 +123,12 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Ifpack_Preconditioner_ID_t Ifpack_CreatePreconditioner_UsingName ( CT_Ifpack_ID_t selfID, const char PrecType[], CT_Epetra_RowMatrix_ID_t MatrixID, const int overlap );
 
-  type(FT_Ifpack_Preconditioner_ID_t) function Ifpack_CreatePreconditioner_UsingName ( &
-        selfID, PrecType, MatrixID, overlap ) &
-        bind(C,name='Ifpack_CreatePreconditioner_UsingName')
+  function Ifpack_CreatePreconditioner_UsingName ( selfID, PrecType, MatrixID, overlap ) &
+        result(that) bind(C,name='Ifpack_CreatePreconditioner_UsingName')
     import :: FT_Ifpack_Preconditioner_ID_t ,FT_Ifpack_ID_t ,c_char , &
           FT_Epetra_RowMatrix_ID_t ,c_int
     
+    type(FT_Ifpack_Preconditioner_ID_t)                                  :: that
     type(FT_Ifpack_ID_t)        ,intent(in)   ,value              :: selfID
     character(kind=c_char)      ,intent(in)         ,dimension(*) :: PrecType
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: MatrixID
@@ -134,10 +141,11 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! int Ifpack_SetParameters ( CT_Ifpack_ID_t selfID, int argc, char * argv[], CT_Teuchos_ParameterList_ID_t ListID, char * PrecType[], int * Overlap );
 
-  integer(c_int) function Ifpack_SetParameters ( selfID, argc, argv, ListID, PrecType, &
-        Overlap ) bind(C,name='Ifpack_SetParameters')
+  function Ifpack_SetParameters ( selfID, argc, argv, ListID, PrecType, Overlap ) &
+        result(that) bind(C,name='Ifpack_SetParameters')
     import :: c_int ,FT_Ifpack_ID_t ,c_char ,FT_Teuchos_ParameterList_ID_t
     
+    integer(c_int)                                                :: that
     type(FT_Ifpack_ID_t)        ,intent(in)   ,value              :: selfID
     integer(c_int)              ,intent(in)   ,value              :: argc
     character(kind=c_char)                          ,dimension(*) :: argv
@@ -159,10 +167,11 @@ module forifpack
   !> <BR> CTrilinos prototype:
   !! CT_Ifpack_Preconditioner_ID_t Ifpack_Preconditioner_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  type(FT_Ifpack_Preconditioner_ID_t) function Ifpack_Preconditioner_Degeneralize ( id ) &
+  function Ifpack_Preconditioner_Degeneralize ( id ) result(that) &
         bind(C,name='Ifpack_Preconditioner_Degeneralize')
     import :: FT_Ifpack_Preconditioner_ID_t ,ForTrilinos_Universal_ID_t
     
+    type(FT_Ifpack_Preconditioner_ID_t)                                  :: that
     type(ForTrilinos_Universal_ID_t)   ,intent(in)   ,value              :: id
   end function
 
@@ -170,10 +179,11 @@ module forifpack
   !> <BR> CTrilinos prototype:
   !! CTrilinos_Universal_ID_t Ifpack_Preconditioner_Generalize ( CT_Ifpack_Preconditioner_ID_t id );
 
-  type(ForTrilinos_Universal_ID_t) function Ifpack_Preconditioner_Generalize ( id ) &
+  function Ifpack_Preconditioner_Generalize ( id ) result(that) &
         bind(C,name='Ifpack_Preconditioner_Generalize')
     import :: ForTrilinos_Universal_ID_t ,FT_Ifpack_Preconditioner_ID_t
     
+    type(ForTrilinos_Universal_ID_t)                                     :: that
     type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: id
   end function
 
@@ -183,10 +193,11 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! int Ifpack_Preconditioner_SetParameters ( CT_Ifpack_Preconditioner_ID_t selfID, CT_Teuchos_ParameterList_ID_t ListID );
 
-  integer(c_int) function Ifpack_Preconditioner_SetParameters ( selfID, ListID ) &
+  function Ifpack_Preconditioner_SetParameters ( selfID, ListID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_SetParameters')
     import :: c_int ,FT_Ifpack_Preconditioner_ID_t ,FT_Teuchos_ParameterList_ID_t
     
+    integer(c_int)                                                       :: that
     type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: ListID
   end function
@@ -197,10 +208,11 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! int Ifpack_Preconditioner_Initialize ( CT_Ifpack_Preconditioner_ID_t selfID );
 
-  integer(c_int) function Ifpack_Preconditioner_Initialize ( selfID ) &
+  function Ifpack_Preconditioner_Initialize ( selfID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_Initialize')
     import :: c_int ,FT_Ifpack_Preconditioner_ID_t
     
+    integer(c_int)                                                       :: that
     type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -210,10 +222,11 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Ifpack_Preconditioner_IsInitialized ( CT_Ifpack_Preconditioner_ID_t selfID );
 
-  integer(FT_boolean_t) function Ifpack_Preconditioner_IsInitialized ( selfID ) &
+  function Ifpack_Preconditioner_IsInitialized ( selfID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_IsInitialized')
     import :: FT_boolean_t ,FT_Ifpack_Preconditioner_ID_t
     
+    integer(FT_boolean_t)                                                :: that
     type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -223,10 +236,11 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! int Ifpack_Preconditioner_Compute ( CT_Ifpack_Preconditioner_ID_t selfID );
 
-  integer(c_int) function Ifpack_Preconditioner_Compute ( selfID ) &
+  function Ifpack_Preconditioner_Compute ( selfID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_Compute')
     import :: c_int ,FT_Ifpack_Preconditioner_ID_t
     
+    integer(c_int)                                                       :: that
     type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -236,10 +250,11 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! boolean Ifpack_Preconditioner_IsComputed ( CT_Ifpack_Preconditioner_ID_t selfID );
 
-  integer(FT_boolean_t) function Ifpack_Preconditioner_IsComputed ( selfID ) &
+  function Ifpack_Preconditioner_IsComputed ( selfID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_IsComputed')
     import :: FT_boolean_t ,FT_Ifpack_Preconditioner_ID_t
     
+    integer(FT_boolean_t)                                                :: that
     type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -249,10 +264,11 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! double Ifpack_Preconditioner_Condest ( CT_Ifpack_Preconditioner_ID_t selfID );
 
-  real(c_double) function Ifpack_Preconditioner_Condest ( selfID ) &
+  function Ifpack_Preconditioner_Condest ( selfID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_Condest')
     import :: c_double ,FT_Ifpack_Preconditioner_ID_t
     
+    real(c_double)                                                       :: that
     type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -262,10 +278,11 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! int Ifpack_Preconditioner_ApplyInverse ( CT_Ifpack_Preconditioner_ID_t selfID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
-  integer(c_int) function Ifpack_Preconditioner_ApplyInverse ( selfID, XID, YID ) &
+  function Ifpack_Preconditioner_ApplyInverse ( selfID, XID, YID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_ApplyInverse')
     import :: c_int ,FT_Ifpack_Preconditioner_ID_t ,FT_Epetra_MultiVector_ID_t
     
+    integer(c_int)                                                       :: that
     type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
     type(FT_Epetra_MultiVector_ID_t)   ,intent(in)   ,value              :: XID
     type(FT_Epetra_MultiVector_ID_t)   ,intent(in)   ,value              :: YID
@@ -277,10 +294,11 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_RowMatrix_ID_t Ifpack_Preconditioner_Matrix ( CT_Ifpack_Preconditioner_ID_t selfID );
 
-  type(FT_Epetra_RowMatrix_ID_t) function Ifpack_Preconditioner_Matrix ( selfID ) &
+  function Ifpack_Preconditioner_Matrix ( selfID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_Matrix')
     import :: FT_Epetra_RowMatrix_ID_t ,FT_Ifpack_Preconditioner_ID_t
     
+    type(FT_Epetra_RowMatrix_ID_t)                                       :: that
     type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -290,10 +308,11 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! int Ifpack_Preconditioner_NumInitialize ( CT_Ifpack_Preconditioner_ID_t selfID );
 
-  integer(c_int) function Ifpack_Preconditioner_NumInitialize ( selfID ) &
+  function Ifpack_Preconditioner_NumInitialize ( selfID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_NumInitialize')
     import :: c_int ,FT_Ifpack_Preconditioner_ID_t
     
+    integer(c_int)                                                       :: that
     type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -303,10 +322,11 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! int Ifpack_Preconditioner_NumCompute ( CT_Ifpack_Preconditioner_ID_t selfID );
 
-  integer(c_int) function Ifpack_Preconditioner_NumCompute ( selfID ) &
+  function Ifpack_Preconditioner_NumCompute ( selfID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_NumCompute')
     import :: c_int ,FT_Ifpack_Preconditioner_ID_t
     
+    integer(c_int)                                                       :: that
     type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -316,10 +336,11 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! int Ifpack_Preconditioner_NumApplyInverse ( CT_Ifpack_Preconditioner_ID_t selfID );
 
-  integer(c_int) function Ifpack_Preconditioner_NumApplyInverse ( selfID ) &
+  function Ifpack_Preconditioner_NumApplyInverse ( selfID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_NumApplyInverse')
     import :: c_int ,FT_Ifpack_Preconditioner_ID_t
     
+    integer(c_int)                                                       :: that
     type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -329,10 +350,11 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! double Ifpack_Preconditioner_InitializeTime ( CT_Ifpack_Preconditioner_ID_t selfID );
 
-  real(c_double) function Ifpack_Preconditioner_InitializeTime ( selfID ) &
+  function Ifpack_Preconditioner_InitializeTime ( selfID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_InitializeTime')
     import :: c_double ,FT_Ifpack_Preconditioner_ID_t
     
+    real(c_double)                                                       :: that
     type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -342,10 +364,11 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! double Ifpack_Preconditioner_ComputeTime ( CT_Ifpack_Preconditioner_ID_t selfID );
 
-  real(c_double) function Ifpack_Preconditioner_ComputeTime ( selfID ) &
+  function Ifpack_Preconditioner_ComputeTime ( selfID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_ComputeTime')
     import :: c_double ,FT_Ifpack_Preconditioner_ID_t
     
+    real(c_double)                                                       :: that
     type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -355,10 +378,11 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! double Ifpack_Preconditioner_ApplyInverseTime ( CT_Ifpack_Preconditioner_ID_t selfID );
 
-  real(c_double) function Ifpack_Preconditioner_ApplyInverseTime ( selfID ) &
+  function Ifpack_Preconditioner_ApplyInverseTime ( selfID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_ApplyInverseTime')
     import :: c_double ,FT_Ifpack_Preconditioner_ID_t
     
+    real(c_double)                                                       :: that
     type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -368,10 +392,11 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! double Ifpack_Preconditioner_InitializeFlops ( CT_Ifpack_Preconditioner_ID_t selfID );
 
-  real(c_double) function Ifpack_Preconditioner_InitializeFlops ( selfID ) &
+  function Ifpack_Preconditioner_InitializeFlops ( selfID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_InitializeFlops')
     import :: c_double ,FT_Ifpack_Preconditioner_ID_t
     
+    real(c_double)                                                       :: that
     type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -381,10 +406,11 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! double Ifpack_Preconditioner_ComputeFlops ( CT_Ifpack_Preconditioner_ID_t selfID );
 
-  real(c_double) function Ifpack_Preconditioner_ComputeFlops ( selfID ) &
+  function Ifpack_Preconditioner_ComputeFlops ( selfID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_ComputeFlops')
     import :: c_double ,FT_Ifpack_Preconditioner_ID_t
     
+    real(c_double)                                                       :: that
     type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
   end function
 
@@ -394,10 +420,11 @@ module forifpack
   !> <BR> <BR> CTrilinos prototype:
   !! double Ifpack_Preconditioner_ApplyInverseFlops ( CT_Ifpack_Preconditioner_ID_t selfID );
 
-  real(c_double) function Ifpack_Preconditioner_ApplyInverseFlops ( selfID ) &
+  function Ifpack_Preconditioner_ApplyInverseFlops ( selfID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_ApplyInverseFlops')
     import :: c_double ,FT_Ifpack_Preconditioner_ID_t
     
+    real(c_double)                                                       :: that
     type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
   end function
 

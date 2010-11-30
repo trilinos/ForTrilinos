@@ -42,6 +42,9 @@ module forgaleri
   use ForTrilinos_enums
   use ForTrilinos_enum_wrappers
   implicit none   ! Prevent implicit typing
+#ifdef HAVE_MPI
+#include "mpif.h"
+#endif
 
   ! This file provides Fortran interface blocks that bind the argument types,
   ! return value types, and procedure names to those in the C function prototypes
@@ -65,12 +68,12 @@ module forgaleri
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_MultiVector_ID_t Galeri_Utils_CreateCartesianCoordinates ( const char CoordType[], CT_Epetra_BlockMap_ID_t BlockMapID, CT_Teuchos_ParameterList_ID_t ListID );
 
-  type(FT_Epetra_MultiVector_ID_t) function Galeri_Utils_CreateCartesianCoordinates ( &
-        CoordType, BlockMapID, ListID ) &
-        bind(C,name='Galeri_Utils_CreateCartesianCoordinates')
+  function Galeri_Utils_CreateCartesianCoordinates ( CoordType, BlockMapID, ListID ) &
+        result(that) bind(C,name='Galeri_Utils_CreateCartesianCoordinates')
     import :: FT_Epetra_MultiVector_ID_t ,c_char ,FT_Epetra_BlockMap_ID_t , &
           FT_Teuchos_ParameterList_ID_t
     
+    type(FT_Epetra_MultiVector_ID_t)                                  :: that
     character(kind=c_char)      ,intent(in)         ,dimension(*) :: CoordType
     type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: BlockMapID
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: ListID
@@ -110,10 +113,11 @@ module forgaleri
   !> <BR> <BR> CTrilinos prototype:
   !! double Galeri_Utils_ComputeNorm ( CT_Epetra_MultiVector_ID_t LHSID, CT_Epetra_MultiVector_ID_t RHSID );
 
-  real(c_double) function Galeri_Utils_ComputeNorm ( LHSID, RHSID ) &
+  function Galeri_Utils_ComputeNorm ( LHSID, RHSID ) result(that) &
         bind(C,name='Galeri_Utils_ComputeNorm')
     import :: c_double ,FT_Epetra_MultiVector_ID_t
     
+    real(c_double)                                                :: that
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: LHSID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: RHSID
   end function
@@ -124,10 +128,11 @@ module forgaleri
   !> <BR> <BR> CTrilinos prototype:
   !! double Galeri_Utils_ComputeNorm_Matrix ( CT_Epetra_RowMatrix_ID_t AID, CT_Epetra_MultiVector_ID_t LHSID, CT_Epetra_MultiVector_ID_t RHSID );
 
-  real(c_double) function Galeri_Utils_ComputeNorm_Matrix ( AID, LHSID, RHSID ) &
+  function Galeri_Utils_ComputeNorm_Matrix ( AID, LHSID, RHSID ) result(that) &
         bind(C,name='Galeri_Utils_ComputeNorm_Matrix')
     import :: c_double ,FT_Epetra_RowMatrix_ID_t ,FT_Epetra_MultiVector_ID_t
     
+    real(c_double)                                                :: that
     type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: AID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: LHSID
     type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: RHSID
@@ -139,10 +144,11 @@ module forgaleri
   !> <BR> <BR> CTrilinos prototype:
   !! const char * Galeri_Utils_toString_Int ( int x );
 
-  character(kind=c_char) function Galeri_Utils_toString_Int ( x ) &
+  function Galeri_Utils_toString_Int ( x ) result(that) &
         bind(C,name='Galeri_Utils_toString_Int')
     import :: c_char ,c_int
     
+    character(kind=c_char)                                        :: that
     integer(c_int)              ,intent(in)   ,value              :: x
   end function
 
@@ -152,10 +158,11 @@ module forgaleri
   !> <BR> <BR> CTrilinos prototype:
   !! const char * Galeri_Utils_toString_UInt ( unsigned int x );
 
-  character(kind=c_char) function Galeri_Utils_toString_UInt ( x ) &
+  function Galeri_Utils_toString_UInt ( x ) result(that) &
         bind(C,name='Galeri_Utils_toString_UInt')
     import :: c_char ,c_int
     
+    character(kind=c_char)                                        :: that
     integer(c_int)              ,intent(in)   ,value              :: x
   end function
 
@@ -165,10 +172,11 @@ module forgaleri
   !> <BR> <BR> CTrilinos prototype:
   !! const char * Galeri_Utils_toString_Double ( double x );
 
-  character(kind=c_char) function Galeri_Utils_toString_Double ( x ) &
+  function Galeri_Utils_toString_Double ( x ) result(that) &
         bind(C,name='Galeri_Utils_toString_Double')
     import :: c_char ,c_double
     
+    character(kind=c_char)                                        :: that
     real(c_double)              ,intent(in)   ,value              :: x
   end function
 
@@ -268,11 +276,12 @@ module forgaleri
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_Map_ID_t Galeri_Maps_CreateMap ( char MapType[], CT_Epetra_Comm_ID_t CommID, CT_Teuchos_ParameterList_ID_t ListID );
 
-  type(FT_Epetra_Map_ID_t) function Galeri_Maps_CreateMap ( MapType, CommID, ListID ) &
+  function Galeri_Maps_CreateMap ( MapType, CommID, ListID ) result(that) &
         bind(C,name='Galeri_Maps_CreateMap')
     import :: FT_Epetra_Map_ID_t ,c_char ,FT_Epetra_Comm_ID_t , &
           FT_Teuchos_ParameterList_ID_t
     
+    type(FT_Epetra_Map_ID_t)                                      :: that
     character(kind=c_char)                          ,dimension(*) :: MapType
     type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: CommID
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: ListID
@@ -293,11 +302,12 @@ module forgaleri
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Epetra_CrsMatrix_ID_t Galeri_CrsMatrices_CreateCrsMatrix ( char MatrixType[], CT_Epetra_Map_ID_t MapID, CT_Teuchos_ParameterList_ID_t ListID );
 
-  type(FT_Epetra_CrsMatrix_ID_t) function Galeri_CrsMatrices_CreateCrsMatrix ( MatrixType, &
-        MapID, ListID ) bind(C,name='Galeri_CrsMatrices_CreateCrsMatrix')
+  function Galeri_CrsMatrices_CreateCrsMatrix ( MatrixType, MapID, ListID ) result(that) &
+        bind(C,name='Galeri_CrsMatrices_CreateCrsMatrix')
     import :: FT_Epetra_CrsMatrix_ID_t ,c_char ,FT_Epetra_Map_ID_t , &
           FT_Teuchos_ParameterList_ID_t
     
+    type(FT_Epetra_CrsMatrix_ID_t)                                    :: that
     character(kind=c_char)                              ,dimension(*) :: MatrixType
     type(FT_Epetra_Map_ID_t)        ,intent(in)   ,value              :: MapID
     type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: ListID
