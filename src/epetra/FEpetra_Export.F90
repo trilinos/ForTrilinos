@@ -87,8 +87,8 @@ contains
 
   type(Epetra_Export) function create(SourceMap,TargetMap)
    !use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_BlockMap_ID_t
-    type(Epetra_BlockMap), intent(in) :: TargetMap
-    type(Epetra_BlockMap), intent(in) :: SourceMap
+    class(Epetra_BlockMap), intent(in) :: TargetMap
+    class(Epetra_BlockMap), intent(in) :: SourceMap
     type(FT_Epetra_Export_ID_t) :: create_id
     create_id = Epetra_Export_Create(SourceMap%get_EpetraBlockMap_ID(),TargetMap%get_EpetraBlockMap_ID())
     create = from_struct(create_id)

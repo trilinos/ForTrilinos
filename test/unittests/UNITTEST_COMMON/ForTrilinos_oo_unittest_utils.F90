@@ -46,6 +46,14 @@ module ForTrilinos_oo_unittest_utils
   use FEpetra_SerialComm,only:Epetra_SerialComm
 #endif
   implicit none                          ! Prevent implicit typing
+!  public :: comm
+
+!#ifdef HAVE_MPI
+!  type(Epetra_MpiComm) :: comm
+!#else
+!   type(Epetra_SerialComm) :: comm
+!#endif
+!  end type
 
   contains
 

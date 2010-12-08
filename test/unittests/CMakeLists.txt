@@ -38,6 +38,7 @@ ADD_SUBDIRECTORIES(
   Epetra_Map
   Epetra_MultiVector
   Epetra_Vector
+  Epetra_Export
   AztecOO_AztecOO
   )
 

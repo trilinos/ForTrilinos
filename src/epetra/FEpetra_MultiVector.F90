@@ -165,7 +165,7 @@ contains
    use ForTrilinos_utils ,only: generalize_all
    use iso_c_binding     ,only : c_loc
    class(Epetra_MultiVector) ,intent(in) ,target :: this
-   generalize = generalize_all(c_loc(this%MultiVector_ID))
+   generalize = generalize_all(c_loc(this%MultiVector_id))
    ! ____ Use for ForTrilinos function implementation ______
 
    ! ____ Use for CTrilinos function implementation ______
