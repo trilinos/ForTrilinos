@@ -45,7 +45,7 @@ module FEpetra_DistObject
   use FEpetra_SrcDistObject ,only : Epetra_SrcDistObject
   use FEpetra_Export, only: Epetra_Export
   use FEpetra_Import, only: Epetra_Import
-  !use FEpetra_OffsetIndex, only: Epetra_OffsetIndex
+  use FEpetra_OffsetIndex, only: Epetra_OffsetIndex
   use iso_c_binding     ,only : c_int,c_long,c_double,c_char
   use forepetra
   implicit none
@@ -63,9 +63,10 @@ module FEpetra_DistObject
      procedure ,nopass :: alias_EpetraDistObject_ID
      procedure         :: generalize 
      !Import/Export methods
-     !procedure, private:: export_UsingImporter
-     !procedure, private:: export_UsingExporter
-     !generic :: export => export_UsingExporter!, export_UsingImporter
+     procedure, private:: DistObject_Export
+     !procedure, private:: DistObject_Export_UsingImporter
+     !generic :: export => DistObject_Export_UsingImporter!, DistObject_Export
+     generic :: export => DistObject_Export
      !Attribute accessor methods
   end type
 
@@ -135,17 +136,17 @@ contains
    ! ____ Use for CTrilinos function implementation ______
   end function
 
-  !subroutine eport_UsingExporter(this,A,exporter,CombineMode,indexor,err)
-  ! type(Epetra_DistObject), intent(in) :: this 
-  ! class(Epetra_SrcDistObject), intent(in) :: A
-  ! type(Epetra_Export),intent(in) :: exporter
-  ! type(FT_Epetra_CombineMode_E_t), intent(in) :: CombineMode
-  ! type(Epetra_OffsetIndex), intent(in) :: indexor
-  ! type(error),optional,intent(out) :: err
-  ! integer(c_int)     :: error_out
-  ! error_out=Epetra_Export_UsingExporter(this%get_EpetraDistObject_ID(),A%get_SrcDistObject_ID(),exporter%get_EpetraExport_ID(),CombineMode,indexor%get_EpetraOffsetIndex_ID())
-  ! if (present(err)) err=error(error_out)
-  !end subroutine
+  subroutine DistObject_Export(this,A,exporter,CombineMode,indexor,err)
+   class(Epetra_DistObject), intent(in) :: this 
+   class(Epetra_SrcDistObject), intent(in) :: A
+   type(Epetra_Export),intent(in) :: exporter
+   integer(FT_Epetra_CombineMode_E_t), intent(in) :: CombineMode
+   type(Epetra_OffsetIndex), intent(in) :: indexor
+   type(error),optional,intent(out) :: err
+   integer(c_int)     :: error_out
+   error_out=Epetra_DistObject_Export(this%DistObject_id,A%get_EpetraSrcDistObject_ID(),exporter%get_EpetraExport_ID(),CombineMode,indexor%get_EpetraOffsetIndex_ID())
+   if (present(err)) err=error(error_out)
+  end subroutine
 
   subroutine invalidate_EpetraDistObject_ID(this)
     class(Epetra_DistObject),intent(inout) :: this

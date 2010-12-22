@@ -41,6 +41,7 @@ module FEpetra_MultiVector
   use ForTrilinos_table_man
   use ForTrilinos_universal,only:universal
   use ForTrilinos_error
+  use FEpetra_DistObject, only: Epetra_DistObject
   use FEpetra_BlockMap  ,only: Epetra_BlockMap
   use iso_c_binding     ,only: c_int,c_double,c_char
   use forepetra
@@ -48,7 +49,8 @@ module FEpetra_MultiVector
   private                      ! Hide everything by default
   public :: Epetra_MultiVector ! Expose type/constructors/methods
 
-  type ,extends(universal)                    :: Epetra_MultiVector !"shell"
+  type ,extends(Epetra_DistObject)                    :: Epetra_MultiVector !"shell"
+  !type ,extends(universal)                    :: Epetra_MultiVector !"shell"
     private
     type(FT_Epetra_MultiVector_ID_t) :: MultiVector_id 
   contains
@@ -104,6 +106,7 @@ contains
   type(Epetra_MultiVector) function from_struct(id)
      type(FT_Epetra_MultiVector_ID_t) ,intent(in) :: id
      from_struct%MultiVector_id = id
+     from_struct%Epetra_DistObject=Epetra_DistObject(from_struct%alias_EpetraDistObject_ID(from_struct%generalize()))
      call from_struct%register_self
   end function
 
