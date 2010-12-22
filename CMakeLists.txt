@@ -25,6 +25,41 @@ IF("${CMAKE_Fortran_COMPILER_ID}" MATCHES "VisualAge|XL|NAG|Intel|GNU")
     SET(FORTRILINOS_COMPILER_SUPPORTS_LONG_LINES 1)
 ENDIF()
 
+# A) Package-specific configuration options
+#
+# Normalize flags for preprocessing by Fortran compilers
+FOREACH(var
+    HAVE_FORTRILINOS_EXAMPLES
+    HAVE_FORTRILINOS_TESTS
+    HAVE_EXAMPLES
+    HAVE_EXPORT_MAKEFILES
+    HAVE_GNUMAKE
+    ForTrilinos_ASSERTIONS
+    HAVE_MPI
+    HAVE_TESTS
+    HAVE_TEUCHOS_COMPLEX
+    ForTrilinos_ENABLE_EXTENDED
+    HAVE_FORTRILINOS_AMESOS
+    ForTrilinos_ENABLE_Amesos
+    HAVE_FORTRILINOS_AZTECOO
+    ForTrilinos_ENABLE_AztecOO
+    HAVE_FORTRILINOS_IFPACK
+    ForTrilinos_ENABLE_Ifpack
+    HAVE_FORTRILINOS_GALERI
+    ForTrilinos_ENABLE_Galeri
+    )
+  IF(${var})
+    SET(ForTrilinos_config_${var} 1)
+  ELSE()
+    SET(ForTrilinos_config_${var} 0)
+  ENDIF()
+ENDFOREACH()
+
+PACKAGE_CONFIGURE_FILE(${PACKAGE_NAME}_config.h)
+
+
+
+
 ADD_SUBDIRECTORY(src)
 
 PACKAGE_ADD_TEST_DIRECTORIES(test)
