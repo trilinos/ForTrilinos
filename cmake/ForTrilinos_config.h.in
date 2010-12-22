@@ -1,48 +1,135 @@
+#if 0
+/* The if 0 trick is needed because this file is included by both C/C++ and
+   Fortran compilers, and there is no other way to avoid all complaints
+   about comments in the style of the other language. */
 /* src/ForTrilinos_Config.h.in.  Generated from configure.ac by autoheader.  */
+#endif
 
+#if 0
 /* Define if want to build ForTrilinos-examples */
-#cmakedefine HAVE_FORTRILINOS_EXAMPLES
+#endif
 
+#if @ForTrilinos_config_HAVE_FORTRILINOS_EXAMPLES@
+#define HAVE_FORTRILINOS_EXAMPLES
+#endif
+
+#if 0
 /* Define if want to build ForTrilinos-tests */
-#cmakedefine HAVE_FORTRILINOS_TESTS
+#endif
 
+#if @ForTrilinos_config_HAVE_FORTRILINOS_TESTS@
+#define HAVE_FORTRILINOS_TESTS
+#endif
+
+#if 0
 /* Define if want to build examples */
-#cmakedefine HAVE_EXAMPLES
+#endif
 
+#if @ForTrilinos_config_HAVE_EXAMPLES@
+#define HAVE_EXAMPLES
+#endif
+
+#if 0
 /* Define if you want to build export makefiles. */
-#cmakedefine HAVE_EXPORT_MAKEFILES
+#endif
 
+#if @ForTrilinos_config_HAVE_EXPORT_MAKEFILES@
+#define HAVE_EXPORT_MAKEFILES
+#endif
+
+
+#if 0
 /* Define if you are using gnumake - this will shorten your link lines. */
-#cmakedefine HAVE_GNUMAKE
+#endif
 
+#if @ForTrilinos_config_HAVE_GNUMAKE@
+#define HAVE_GNUMAKE
+#endif
+
+
+#if 0
 /* define if we want to use ForTrilinos assertions */
-#cmakedefine ForTrilinos_ASSERTIONS
+#endif
 
+#if @ForTrilinos_config_ForTrilinos_ASSERTIONS@
+#define ForTrilinos_ASSERTIONS
+#endif
+
+
+#if 0
 /* define if we want to use MPI */
-#cmakedefine HAVE_MPI
+#endif
 
+#if @ForTrilinos_config_HAVE_MPI@
+#define HAVE_MPI
+#endif
+
+
+#if 0
 /* Define if want to build tests */
-#cmakedefine HAVE_TESTS
+#endif
 
+#if @ForTrilinos_config_HAVE_TESTS@
+#define HAVE_TESTS
+#endif
+
+
+#if 0
 /* Define if want to build teuchos-complex */
-#cmakedefine HAVE_TEUCHOS_COMPLEX
+#endif
 
+#if @ForTrilinos_config_HAVE_TEUCHOS_COMPLEX@
+#define HAVE_TEUCHOS_COMPLEX
+#endif
+
+
+#if 0
 /* If OO-Fortran features should be built */
-#cmakedefine ForTrilinos_ENABLE_EXTENDED
+#endif
 
+#if @ForTrilinos_config_ForTrilinos_ENABLE_EXTENDED@
+#define ForTrilinos_ENABLE_EXTENDED
+#endif
+
+
+#if 0
 /* If Amesos is built */
-#cmakedefine HAVE_FORTRILINOS_AMESOS
-#cmakedefine ForTrilinos_ENABLE_Amesos
+#endif
 
+#if @ForTrilinos_config_HAVE_FORTRILINOS_AMESOS@
+#define HAVE_FORTRILINOS_AMESOS
+#define ForTrilinos_ENABLE_Amesos
+#endif
+
+
+#if 0
 /* If AztecOO is built */
-#cmakedefine HAVE_FORTRILINOS_AZTECOO
-#cmakedefine ForTrilinos_ENABLE_AztecOO
+#endif
 
+#if @ForTrilinos_config_HAVE_FORTRILINOS_AZTECOO@
+#define HAVE_FORTRILINOS_AZTECOO
+#define ForTrilinos_ENABLE_AztecOO
+#endif
+
+
+#if 0
 /* If Ifpack is built */
-#cmakedefine HAVE_FORTRILINOS_IFPACK
-#cmakedefine ForTrilinos_ENABLE_Ifpack
+#endif
 
+#if @ForTrilinos_config_HAVE_FORTRILINOS_IFPACK@
+#define HAVE_FORTRILINOS_IFPACK
+#define ForTrilinos_ENABLE_Ifpack
+#endif
+
+
+#if 0
 /* If Galeri is built */
-#cmakedefine HAVE_FORTRILINOS_GALERI
-#cmakedefine ForTrilinos_ENABLE_Galeri
+#endif
+
+#if @ForTrilinos_config_HAVE_FORTRILINOS_GALERI@
+#define HAVE_FORTRILINOS_GALERI
+#define ForTrilinos_ENABLE_Galeri
+#endif
+
+
 
