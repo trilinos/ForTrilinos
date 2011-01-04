@@ -102,9 +102,11 @@ module forifpack
 
 
   !> <BR> Original C++ prototype:
-  !! static Ifpack_Preconditioner* Create( EPrecType PrecType, Epetra_RowMatrix* Matrix, const int overlap = 0 );
+  !! static Ifpack_Preconditioner* Create( EPrecType PrecType, Epetra_RowMatrix* Matrix, 
+  !!     const int overlap = 0 );
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Ifpack_Preconditioner_ID_t Ifpack_CreatePreconditioner_UsingType ( CT_EPrecType_E_t PrecType, CT_Epetra_RowMatrix_ID_t MatrixID, const int overlap );
+  !! CT_Ifpack_Preconditioner_ID_t Ifpack_CreatePreconditioner_UsingType ( CT_EPrecType_E_t PrecType, 
+  !!     CT_Epetra_RowMatrix_ID_t MatrixID, const int overlap );
 
   function Ifpack_CreatePreconditioner_UsingType ( PrecType, MatrixID, overlap ) &
         result(that) bind(C,name='Ifpack_CreatePreconditioner_UsingType')
@@ -119,9 +121,11 @@ module forifpack
 
 
   !> <BR> Original C++ prototype:
-  !! Ifpack_Preconditioner* Create(const string PrecType, Epetra_RowMatrix* Matrix, const int overlap = 0);
+  !! Ifpack_Preconditioner* Create(const string PrecType, Epetra_RowMatrix* Matrix, const int overlap = 
+  !!     0);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Ifpack_Preconditioner_ID_t Ifpack_CreatePreconditioner_UsingName ( CT_Ifpack_ID_t selfID, const char PrecType[], CT_Epetra_RowMatrix_ID_t MatrixID, const int overlap );
+  !! CT_Ifpack_Preconditioner_ID_t Ifpack_CreatePreconditioner_UsingName ( CT_Ifpack_ID_t selfID, 
+  !!     const char PrecType[], CT_Epetra_RowMatrix_ID_t MatrixID, const int overlap );
 
   function Ifpack_CreatePreconditioner_UsingName ( selfID, PrecType, MatrixID, overlap ) &
         result(that) bind(C,name='Ifpack_CreatePreconditioner_UsingName')
@@ -137,9 +141,11 @@ module forifpack
 
 
   !> <BR> Original C++ prototype:
-  !! int SetParameters(int argc, char* argv[], Teuchos::ParameterList& List, string& PrecType, int& Overlap);
+  !! int SetParameters(int argc, char* argv[], Teuchos::ParameterList& List, string& PrecType, 
+  !!     int& Overlap);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Ifpack_SetParameters ( CT_Ifpack_ID_t selfID, int argc, char * argv[], CT_Teuchos_ParameterList_ID_t ListID, char * PrecType[], int * Overlap );
+  !! int Ifpack_SetParameters ( CT_Ifpack_ID_t selfID, int argc, char * argv[], 
+  !!     CT_Teuchos_ParameterList_ID_t ListID, char * PrecType[], int * Overlap );
 
   function Ifpack_SetParameters ( selfID, argc, argv, ListID, PrecType, Overlap ) &
         result(that) bind(C,name='Ifpack_SetParameters')
@@ -191,7 +197,8 @@ module forifpack
   !> <BR> Original C++ prototype:
   !! virtual int SetParameters(Teuchos::ParameterList& List) = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Ifpack_Preconditioner_SetParameters ( CT_Ifpack_Preconditioner_ID_t selfID, CT_Teuchos_ParameterList_ID_t ListID );
+  !! int Ifpack_Preconditioner_SetParameters ( CT_Ifpack_Preconditioner_ID_t selfID, 
+  !!     CT_Teuchos_ParameterList_ID_t ListID );
 
   function Ifpack_Preconditioner_SetParameters ( selfID, ListID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_SetParameters')
@@ -276,7 +283,8 @@ module forifpack
   !> <BR> Original C++ prototype:
   !! virtual int ApplyInverse(const Epetra_MultiVector& X, Epetra_MultiVector& Y) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Ifpack_Preconditioner_ApplyInverse ( CT_Ifpack_Preconditioner_ID_t selfID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
+  !! int Ifpack_Preconditioner_ApplyInverse ( CT_Ifpack_Preconditioner_ID_t selfID, 
+  !!     CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
   function Ifpack_Preconditioner_ApplyInverse ( selfID, XID, YID ) result(that) &
         bind(C,name='Ifpack_Preconditioner_ApplyInverse')

@@ -174,7 +174,8 @@ module foramesos
   !> <BR> Original C++ prototype:
   !! virtual int SetParameters( Teuchos::ParameterList &ParameterList ) = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Amesos_BaseSolver_SetParameters ( CT_Amesos_BaseSolver_ID_t selfID, CT_Teuchos_ParameterList_ID_t ParameterListID );
+  !! int Amesos_BaseSolver_SetParameters ( CT_Amesos_BaseSolver_ID_t selfID, 
+  !!     CT_Teuchos_ParameterList_ID_t ParameterListID );
 
   function Amesos_BaseSolver_SetParameters ( selfID, ParameterListID ) result(that) &
         bind(C,name='Amesos_BaseSolver_SetParameters')
@@ -299,7 +300,8 @@ module foramesos
   !> <BR> Original C++ prototype:
   !! virtual void setParameterList(Teuchos::RCP<Teuchos::ParameterList> const& paramList);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Amesos_BaseSolver_setParameterList ( CT_Amesos_BaseSolver_ID_t selfID, CT_Teuchos_ParameterList_ID_t paramListID );
+  !! void Amesos_BaseSolver_setParameterList ( CT_Amesos_BaseSolver_ID_t selfID, 
+  !!     CT_Teuchos_ParameterList_ID_t paramListID );
 
   subroutine Amesos_BaseSolver_setParameterList ( selfID, paramListID ) &
         bind(C,name='Amesos_BaseSolver_setParameterList')
@@ -341,7 +343,8 @@ module foramesos
   !> <BR> Original C++ prototype:
   !! virtual void GetTiming( Teuchos::ParameterList &TimingParameterList ) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Amesos_BaseSolver_GetTiming ( CT_Amesos_BaseSolver_ID_t selfID, CT_Teuchos_ParameterList_ID_t TimingParameterListID );
+  !! void Amesos_BaseSolver_GetTiming ( CT_Amesos_BaseSolver_ID_t selfID, 
+  !!     CT_Teuchos_ParameterList_ID_t TimingParameterListID );
 
   subroutine Amesos_BaseSolver_GetTiming ( selfID, TimingParameterListID ) &
         bind(C,name='Amesos_BaseSolver_GetTiming')
@@ -388,7 +391,8 @@ module foramesos
   !> <BR> Original C++ prototype:
   !! Amesos_BaseSolver *Create(const char *ClassType, const Epetra_LinearProblem& LinearProblem );
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Amesos_BaseSolver_ID_t Amesos_CreateSolver ( CT_Amesos_ID_t selfID, const char * ClassType, CT_Epetra_LinearProblem_ID_t LinearProblemID );
+  !! CT_Amesos_BaseSolver_ID_t Amesos_CreateSolver ( CT_Amesos_ID_t selfID, const char * ClassType, 
+  !!     CT_Epetra_LinearProblem_ID_t LinearProblemID );
 
   function Amesos_CreateSolver ( selfID, ClassType, LinearProblemID ) result(that) &
         bind(C,name='Amesos_CreateSolver')

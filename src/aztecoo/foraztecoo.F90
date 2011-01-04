@@ -67,7 +67,8 @@ module foraztecoo
   !> <BR> Original C++ prototype:
   !! AztecOO(Epetra_Operator * A, Epetra_MultiVector * X, Epetra_MultiVector * B);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_AztecOO_ID_t AztecOO_Create_FromOperator ( CT_Epetra_Operator_ID_t AID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID );
+  !! CT_AztecOO_ID_t AztecOO_Create_FromOperator ( CT_Epetra_Operator_ID_t AID, 
+  !!     CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID );
 
   function AztecOO_Create_FromOperator ( AID, XID, BID ) result(that) &
         bind(C,name='AztecOO_Create_FromOperator')
@@ -83,7 +84,8 @@ module foraztecoo
   !> <BR> Original C++ prototype:
   !! AztecOO(Epetra_RowMatrix * A, Epetra_MultiVector * X, Epetra_MultiVector * B);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_AztecOO_ID_t AztecOO_Create_FromRowMatrix ( CT_Epetra_RowMatrix_ID_t AID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID );
+  !! CT_AztecOO_ID_t AztecOO_Create_FromRowMatrix ( CT_Epetra_RowMatrix_ID_t AID, 
+  !!     CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID );
 
   function AztecOO_Create_FromRowMatrix ( AID, XID, BID ) result(that) &
         bind(C,name='AztecOO_Create_FromRowMatrix')
@@ -150,7 +152,8 @@ module foraztecoo
   !> <BR> Original C++ prototype:
   !! int SetProblem(const Epetra_LinearProblem& prob, bool call_SetPrecMatrix=false);
   !> <BR> <BR> CTrilinos prototype:
-  !! int AztecOO_SetProblem ( CT_AztecOO_ID_t selfID, CT_Epetra_LinearProblem_ID_t probID, boolean call_SetPrecMatrix );
+  !! int AztecOO_SetProblem ( CT_AztecOO_ID_t selfID, CT_Epetra_LinearProblem_ID_t probID, 
+  !!     boolean call_SetPrecMatrix );
 
   function AztecOO_SetProblem ( selfID, probID, call_SetPrecMatrix ) result(that) &
         bind(C,name='AztecOO_SetProblem')
@@ -181,7 +184,8 @@ module foraztecoo
   !> <BR> Original C++ prototype:
   !! int SetUserMatrix(Epetra_RowMatrix * UserMatrix, bool call_SetPrecMatrix=false);
   !> <BR> <BR> CTrilinos prototype:
-  !! int AztecOO_SetUserMatrix ( CT_AztecOO_ID_t selfID, CT_Epetra_RowMatrix_ID_t UserMatrixID, boolean call_SetPrecMatrix );
+  !! int AztecOO_SetUserMatrix ( CT_AztecOO_ID_t selfID, CT_Epetra_RowMatrix_ID_t UserMatrixID, 
+  !!     boolean call_SetPrecMatrix );
 
   function AztecOO_SetUserMatrix ( selfID, UserMatrixID, call_SetPrecMatrix ) result(that) &
         bind(C,name='AztecOO_SetUserMatrix')
@@ -419,7 +423,8 @@ module foraztecoo
   !> <BR> Original C++ prototype:
   !! int SetParameters(Teuchos::ParameterList& parameterlist, bool cerr_warning_if_unused=false);
   !> <BR> <BR> CTrilinos prototype:
-  !! int AztecOO_SetParameters ( CT_AztecOO_ID_t selfID, CT_Teuchos_ParameterList_ID_t parameterlistID, boolean cerr_warning_if_unused );
+  !! int AztecOO_SetParameters ( CT_AztecOO_ID_t selfID, CT_Teuchos_ParameterList_ID_t parameterlistID, 
+  !!     boolean cerr_warning_if_unused );
 
   function AztecOO_SetParameters ( selfID, parameterlistID, cerr_warning_if_unused ) &
         result(that) bind(C,name='AztecOO_SetParameters')
@@ -568,9 +573,11 @@ module foraztecoo
 
 
   !> <BR> Original C++ prototype:
-  !! int Iterate(Epetra_RowMatrix * A, Epetra_MultiVector * X, Epetra_MultiVector * B, int MaxIters, double Tolerance);
+  !! int Iterate(Epetra_RowMatrix * A, Epetra_MultiVector * X, Epetra_MultiVector * B, int MaxIters, 
+  !!     double Tolerance);
   !> <BR> <BR> CTrilinos prototype:
-  !! int AztecOO_Iterate ( CT_AztecOO_ID_t selfID, CT_Epetra_RowMatrix_ID_t AID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID, int MaxIters, double Tolerance );
+  !! int AztecOO_Iterate ( CT_AztecOO_ID_t selfID, CT_Epetra_RowMatrix_ID_t AID, 
+  !!     CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID, int MaxIters, double Tolerance );
 
   function AztecOO_Iterate ( selfID, AID, XID, BID, MaxIters, Tolerance ) result(that) &
         bind(C,name='AztecOO_Iterate')
@@ -632,9 +639,11 @@ module foraztecoo
 
 
   !> <BR> Original C++ prototype:
-  !! int SetAdaptiveParams(int NumTrials, double * athresholds, double * rthresholds, double condestThreshold, double maxFill, int maxKspace);
+  !! int SetAdaptiveParams(int NumTrials, double * athresholds, double * rthresholds, 
+  !!     double condestThreshold, double maxFill, int maxKspace);
   !> <BR> <BR> CTrilinos prototype:
-  !! int AztecOO_SetAdaptiveParams ( CT_AztecOO_ID_t selfID, int NumTrials, double * athresholds, double * rthresholds, double condestThreshold, double maxFill, int maxKspace );
+  !! int AztecOO_SetAdaptiveParams ( CT_AztecOO_ID_t selfID, int NumTrials, double * athresholds, 
+  !!     double * rthresholds, double condestThreshold, double maxFill, int maxKspace );
 
   function AztecOO_SetAdaptiveParams ( selfID, NumTrials, athresholds, rthresholds, &
         condestThreshold, maxFill, maxKspace ) result(that) &
@@ -655,7 +664,8 @@ module foraztecoo
   !> <BR> Original C++ prototype:
   !! int AdaptiveIterate(int MaxIters, int MaxSolveAttempts, double Tolerance);
   !> <BR> <BR> CTrilinos prototype:
-  !! int AztecOO_AdaptiveIterate ( CT_AztecOO_ID_t selfID, int MaxIters, int MaxSolveAttempts, double Tolerance );
+  !! int AztecOO_AdaptiveIterate ( CT_AztecOO_ID_t selfID, int MaxIters, int MaxSolveAttempts, 
+  !!     double Tolerance );
 
   function AztecOO_AdaptiveIterate ( selfID, MaxIters, MaxSolveAttempts, Tolerance ) &
         result(that) bind(C,name='AztecOO_AdaptiveIterate')
@@ -812,9 +822,11 @@ module foraztecoo
 
 
   !> <BR> Original C++ prototype:
-  !! virtual AztecOO_StatusType CheckStatus(int CurrentIter, Epetra_MultiVector * CurrentResVector, double CurrentResNormEst, bool SolutionUpdated) = 0;
+  !! virtual AztecOO_StatusType CheckStatus(int CurrentIter, Epetra_MultiVector * CurrentResVector, 
+  !!     double CurrentResNormEst, bool SolutionUpdated) = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_AztecOO_StatusType_E_t AztecOO_StatusTest_CheckStatus ( CT_AztecOO_StatusTest_ID_t selfID, int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, boolean SolutionUpdated );
+  !! CT_AztecOO_StatusType_E_t AztecOO_StatusTest_CheckStatus ( CT_AztecOO_StatusTest_ID_t selfID, 
+  !!     int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, boolean SolutionUpdated );
 
   function AztecOO_StatusTest_CheckStatus ( selfID, CurrentIter, CurrentResVectorID, &
         CurrentResNormEst, SolutionUpdated ) result(that) &
@@ -895,7 +907,8 @@ module foraztecoo
   !> <BR> Original C++ prototype:
   !! AztecOO_StatusTestCombo(ComboType t, AztecOO_StatusTest& a);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_AztecOO_StatusTestCombo_ID_t AztecOO_StatusTestCombo_Create_OneTest ( CT_ComboType_E_t t, CT_AztecOO_StatusTest_ID_t aID );
+  !! CT_AztecOO_StatusTestCombo_ID_t AztecOO_StatusTestCombo_Create_OneTest ( CT_ComboType_E_t t, 
+  !!     CT_AztecOO_StatusTest_ID_t aID );
 
   function AztecOO_StatusTestCombo_Create_OneTest ( t, aID ) result(that) &
         bind(C,name='AztecOO_StatusTestCombo_Create_OneTest')
@@ -911,7 +924,8 @@ module foraztecoo
   !> <BR> Original C++ prototype:
   !! AztecOO_StatusTestCombo(ComboType t, AztecOO_StatusTest& a, AztecOO_StatusTest& b);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_AztecOO_StatusTestCombo_ID_t AztecOO_StatusTestCombo_Create_TwoTests ( CT_ComboType_E_t t, CT_AztecOO_StatusTest_ID_t aID, CT_AztecOO_StatusTest_ID_t bID );
+  !! CT_AztecOO_StatusTestCombo_ID_t AztecOO_StatusTestCombo_Create_TwoTests ( CT_ComboType_E_t t, 
+  !!     CT_AztecOO_StatusTest_ID_t aID, CT_AztecOO_StatusTest_ID_t bID );
 
   function AztecOO_StatusTestCombo_Create_TwoTests ( t, aID, bID ) result(that) &
         bind(C,name='AztecOO_StatusTestCombo_Create_TwoTests')
@@ -928,7 +942,8 @@ module foraztecoo
   !> <BR> Original C++ prototype:
   !! AztecOO_StatusTestCombo& AddStatusTest(AztecOO_StatusTest& a);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_AztecOO_StatusTestCombo_ID_t AztecOO_StatusTestCombo_AddStatusTest ( CT_AztecOO_StatusTestCombo_ID_t selfID, CT_AztecOO_StatusTest_ID_t aID );
+  !! CT_AztecOO_StatusTestCombo_ID_t AztecOO_StatusTestCombo_AddStatusTest ( CT_AztecOO_StatusTestCombo_ID_t selfID, 
+  !!     CT_AztecOO_StatusTest_ID_t aID );
 
   function AztecOO_StatusTestCombo_AddStatusTest ( selfID, aID ) result(that) &
         bind(C,name='AztecOO_StatusTestCombo_AddStatusTest')
@@ -968,9 +983,11 @@ module foraztecoo
 
 
   !> <BR> Original C++ prototype:
-  !! AztecOO_StatusType CheckStatus(int CurrentIter, Epetra_MultiVector * CurrentResVector, double CurrentResNormEst, bool SolutionUpdated);
+  !! AztecOO_StatusType CheckStatus(int CurrentIter, Epetra_MultiVector * CurrentResVector, 
+  !!     double CurrentResNormEst, bool SolutionUpdated);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_AztecOO_StatusType_E_t AztecOO_StatusTestCombo_CheckStatus ( CT_AztecOO_StatusTestCombo_ID_t selfID, int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, boolean SolutionUpdated );
+  !! CT_AztecOO_StatusType_E_t AztecOO_StatusTestCombo_CheckStatus ( CT_AztecOO_StatusTestCombo_ID_t selfID, 
+  !!     int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, boolean SolutionUpdated );
 
   function AztecOO_StatusTestCombo_CheckStatus ( selfID, CurrentIter, CurrentResVectorID, &
         CurrentResNormEst, SolutionUpdated ) result(that) &
@@ -1090,9 +1107,11 @@ module foraztecoo
 
 
   !> <BR> Original C++ prototype:
-  !! AztecOO_StatusType CheckStatus(int CurrentIter, Epetra_MultiVector * CurrentResVector, double CurrentResNormEst, bool SolutionUpdated);
+  !! AztecOO_StatusType CheckStatus(int CurrentIter, Epetra_MultiVector * CurrentResVector, 
+  !!     double CurrentResNormEst, bool SolutionUpdated);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_AztecOO_StatusType_E_t AztecOO_StatusTestMaxIters_CheckStatus ( CT_AztecOO_StatusTestMaxIters_ID_t selfID, int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, boolean SolutionUpdated );
+  !! CT_AztecOO_StatusType_E_t AztecOO_StatusTestMaxIters_CheckStatus ( CT_AztecOO_StatusTestMaxIters_ID_t selfID, 
+  !!     int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, boolean SolutionUpdated );
 
   function AztecOO_StatusTestMaxIters_CheckStatus ( selfID, CurrentIter, CurrentResVectorID, &
         CurrentResNormEst, SolutionUpdated ) result(that) &
@@ -1185,9 +1204,11 @@ module foraztecoo
 
 
   !> <BR> Original C++ prototype:
-  !! AztecOO_StatusTestResNorm(const Epetra_Operator & Operator, const Epetra_Vector & LHS, const Epetra_Vector & RHS,double Tolerance);
+  !! AztecOO_StatusTestResNorm(const Epetra_Operator & Operator, const Epetra_Vector & LHS, 
+  !!     const Epetra_Vector & RHS,double Tolerance);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_AztecOO_StatusTestResNorm_ID_t AztecOO_StatusTestResNorm_Create ( CT_Epetra_Operator_ID_t OperatorID, CT_Epetra_Vector_ID_t LHSID, CT_Epetra_Vector_ID_t RHSID, double Tolerance );
+  !! CT_AztecOO_StatusTestResNorm_ID_t AztecOO_StatusTestResNorm_Create ( CT_Epetra_Operator_ID_t OperatorID, 
+  !!     CT_Epetra_Vector_ID_t LHSID, CT_Epetra_Vector_ID_t RHSID, double Tolerance );
 
   function AztecOO_StatusTestResNorm_Create ( OperatorID, LHSID, RHSID, Tolerance ) &
         result(that) bind(C,name='AztecOO_StatusTestResNorm_Create')
@@ -1218,7 +1239,8 @@ module foraztecoo
   !> <BR> Original C++ prototype:
   !! int DefineResForm( ResType TypeOfResidual, NormType TypeOfNorm, Epetra_Vector * Weights = 0);
   !> <BR> <BR> CTrilinos prototype:
-  !! int AztecOO_StatusTestResNorm_DefineResForm ( CT_AztecOO_StatusTestResNorm_ID_t selfID, CT_ResType_E_t TypeOfResidual, CT_NormType_E_t TypeOfNorm, CT_Epetra_Vector_ID_t WeightsID );
+  !! int AztecOO_StatusTestResNorm_DefineResForm ( CT_AztecOO_StatusTestResNorm_ID_t selfID, 
+  !!     CT_ResType_E_t TypeOfResidual, CT_NormType_E_t TypeOfNorm, CT_Epetra_Vector_ID_t WeightsID );
 
   function AztecOO_StatusTestResNorm_DefineResForm ( selfID, TypeOfResidual, TypeOfNorm, &
         WeightsID ) result(that) bind(C,name='AztecOO_StatusTestResNorm_DefineResForm')
@@ -1234,9 +1256,11 @@ module foraztecoo
 
 
   !> <BR> Original C++ prototype:
-  !! int DefineScaleForm( ScaleType TypeOfScaling, NormType TypeOfNorm, Epetra_Vector * Weights = 0, double ScaleValue = 1.0);
+  !! int DefineScaleForm( ScaleType TypeOfScaling, NormType TypeOfNorm, Epetra_Vector * Weights = 0, 
+  !!     double ScaleValue = 1.0);
   !> <BR> <BR> CTrilinos prototype:
-  !! int AztecOO_StatusTestResNorm_DefineScaleForm ( CT_AztecOO_StatusTestResNorm_ID_t selfID, CT_ScaleType_E_t TypeOfScaling, CT_NormType_E_t TypeOfNorm, CT_Epetra_Vector_ID_t WeightsID, double ScaleValue );
+  !! int AztecOO_StatusTestResNorm_DefineScaleForm ( CT_AztecOO_StatusTestResNorm_ID_t selfID, 
+  !!     CT_ScaleType_E_t TypeOfScaling, CT_NormType_E_t TypeOfNorm, CT_Epetra_Vector_ID_t WeightsID, double ScaleValue );
 
   function AztecOO_StatusTestResNorm_DefineScaleForm ( selfID, TypeOfScaling, TypeOfNorm, &
         WeightsID, ScaleValue ) result(that) &
@@ -1256,7 +1280,8 @@ module foraztecoo
   !> <BR> Original C++ prototype:
   !! int ResetTolerance(double Tolerance);
   !> <BR> <BR> CTrilinos prototype:
-  !! int AztecOO_StatusTestResNorm_ResetTolerance ( CT_AztecOO_StatusTestResNorm_ID_t selfID, double Tolerance );
+  !! int AztecOO_StatusTestResNorm_ResetTolerance ( CT_AztecOO_StatusTestResNorm_ID_t selfID, 
+  !!     double Tolerance );
 
   function AztecOO_StatusTestResNorm_ResetTolerance ( selfID, Tolerance ) result(that) &
         bind(C,name='AztecOO_StatusTestResNorm_ResetTolerance')
@@ -1271,7 +1296,8 @@ module foraztecoo
   !> <BR> Original C++ prototype:
   !! int SetMaxNumExtraIterations(int maxNumExtraIterations);
   !> <BR> <BR> CTrilinos prototype:
-  !! int AztecOO_StatusTestResNorm_SetMaxNumExtraIterations ( CT_AztecOO_StatusTestResNorm_ID_t selfID, int maxNumExtraIterations );
+  !! int AztecOO_StatusTestResNorm_SetMaxNumExtraIterations ( CT_AztecOO_StatusTestResNorm_ID_t selfID, 
+  !!     int maxNumExtraIterations );
 
   function AztecOO_StatusTestResNorm_SetMaxNumExtraIterations ( selfID, &
         maxNumExtraIterations ) result(that) &
@@ -1313,9 +1339,11 @@ module foraztecoo
 
 
   !> <BR> Original C++ prototype:
-  !! AztecOO_StatusType CheckStatus(int CurrentIter, Epetra_MultiVector * CurrentResVector, double CurrentResNormEst, bool SolutionUpdated);
+  !! AztecOO_StatusType CheckStatus(int CurrentIter, Epetra_MultiVector * CurrentResVector, 
+  !!     double CurrentResNormEst, bool SolutionUpdated);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_AztecOO_StatusType_E_t AztecOO_StatusTestResNorm_CheckStatus ( CT_AztecOO_StatusTestResNorm_ID_t selfID, int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, boolean SolutionUpdated );
+  !! CT_AztecOO_StatusType_E_t AztecOO_StatusTestResNorm_CheckStatus ( CT_AztecOO_StatusTestResNorm_ID_t selfID, 
+  !!     int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, boolean SolutionUpdated );
 
   function AztecOO_StatusTestResNorm_CheckStatus ( selfID, CurrentIter, CurrentResVectorID, &
         CurrentResNormEst, SolutionUpdated ) result(that) &

@@ -34,6 +34,7 @@
 ! Questions? Contact M. Nicole Lemaster (mnlemas@sandia.gov) 
 !*********************************************************************
 
+
 #include "ForTrilinos_config.h"
 module forepetra
   use iso_c_binding ,only : c_int,c_double,c_char,c_bool,c_ptr,c_long,c_float
@@ -113,9 +114,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! virtual int CreateFromSends( const int & NumExportIDs, const int * ExportPIDs, bool Deterministic, int & NumRemoteIDs ) = 0;
+  !! virtual int CreateFromSends( const int & NumExportIDs, const int * ExportPIDs, bool Deterministic, 
+  !!     int & NumRemoteIDs ) = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Distributor_CreateFromSends ( CT_Epetra_Distributor_ID_t selfID, int NumExportIDs, const int * ExportPIDs, boolean Deterministic, int * NumRemoteIDs );
+  !! int Epetra_Distributor_CreateFromSends ( CT_Epetra_Distributor_ID_t selfID, int NumExportIDs, 
+  !!     const int * ExportPIDs, boolean Deterministic, int * NumRemoteIDs );
 
   function Epetra_Distributor_CreateFromSends ( selfID, NumExportIDs, ExportPIDs, &
         Deterministic, NumRemoteIDs ) result(that) &
@@ -132,9 +135,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! virtual int CreateFromRecvs( const int & NumRemoteIDs, const int * RemoteGIDs, const int * RemotePIDs, bool Deterministic, int & NumExportIDs, int *& ExportGIDs, int *& ExportPIDs) = 0;
+  !! virtual int CreateFromRecvs( const int & NumRemoteIDs, const int * RemoteGIDs, 
+  !!     const int * RemotePIDs, bool Deterministic, int & NumExportIDs, int *& ExportGIDs, int *& ExportPIDs) = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Distributor_CreateFromRecvs ( CT_Epetra_Distributor_ID_t selfID, int NumRemoteIDs, const int * RemoteGIDs, const int * RemotePIDs, boolean Deterministic, int * NumExportIDs, int ** ExportGIDs, int ** ExportPIDs );
+  !! int Epetra_Distributor_CreateFromRecvs ( CT_Epetra_Distributor_ID_t selfID, int NumRemoteIDs, 
+  !!     const int * RemoteGIDs, const int * RemotePIDs, boolean Deterministic, int * NumExportIDs, int ** ExportGIDs, 
+  !!     int ** ExportPIDs );
 
   function Epetra_Distributor_CreateFromRecvs ( selfID, NumRemoteIDs, RemoteGIDs, &
         RemotePIDs, Deterministic, NumExportIDs, ExportGIDs, ExportPIDs ) result(that) &
@@ -156,7 +162,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int Do( char * export_objs, int obj_size, int & len_import_objs, char *& import_objs) = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Distributor_Do ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, int obj_size, int * len_import_objs, char ** import_objs );
+  !! int Epetra_Distributor_Do ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, int obj_size, 
+  !!     int * len_import_objs, char ** import_objs );
 
   function Epetra_Distributor_Do ( selfID, export_objs, obj_size, len_import_objs, &
         import_objs ) result(that) bind(C,name='Epetra_Distributor_Do')
@@ -172,9 +179,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! virtual int DoReverse( char * export_objs, int obj_size, int & len_import_objs, char *& import_objs ) = 0;
+  !! virtual int DoReverse( char * export_objs, int obj_size, int & len_import_objs, 
+  !!     char *& import_objs ) = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Distributor_DoReverse ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, int obj_size, int * len_import_objs, char ** import_objs );
+  !! int Epetra_Distributor_DoReverse ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, 
+  !!     int obj_size, int * len_import_objs, char ** import_objs );
 
   function Epetra_Distributor_DoReverse ( selfID, export_objs, obj_size, len_import_objs, &
         import_objs ) result(that) bind(C,name='Epetra_Distributor_DoReverse')
@@ -190,9 +199,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! virtual int DoPosts( char * export_objs, int obj_size, int & len_import_objs, char *& import_objs ) = 0;
+  !! virtual int DoPosts( char * export_objs, int obj_size, int & len_import_objs, 
+  !!     char *& import_objs ) = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Distributor_DoPosts ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, int obj_size, int * len_import_objs, char ** import_objs );
+  !! int Epetra_Distributor_DoPosts ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, 
+  !!     int obj_size, int * len_import_objs, char ** import_objs );
 
   function Epetra_Distributor_DoPosts ( selfID, export_objs, obj_size, len_import_objs, &
         import_objs ) result(that) bind(C,name='Epetra_Distributor_DoPosts')
@@ -222,9 +233,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! virtual int DoReversePosts( char * export_objs, int obj_size, int & len_import_objs, char *& import_objs) = 0;
+  !! virtual int DoReversePosts( char * export_objs, int obj_size, int & len_import_objs, 
+  !!     char *& import_objs) = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Distributor_DoReversePosts ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, int obj_size, int * len_import_objs, char ** import_objs );
+  !! int Epetra_Distributor_DoReversePosts ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, 
+  !!     int obj_size, int * len_import_objs, char ** import_objs );
 
   function Epetra_Distributor_DoReversePosts ( selfID, export_objs, obj_size, &
         len_import_objs, import_objs ) result(that) &
@@ -255,9 +268,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! virtual int Do( char * export_objs, int obj_size, int *& sizes, int & len_import_objs, char *& import_objs) = 0;
+  !! virtual int Do( char * export_objs, int obj_size, int *& sizes, int & len_import_objs, 
+  !!     char *& import_objs) = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Distributor_Do_VarLen ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, int obj_size, int ** sizes, int * len_import_objs, char ** import_objs );
+  !! int Epetra_Distributor_Do_VarLen ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, 
+  !!     int obj_size, int ** sizes, int * len_import_objs, char ** import_objs );
 
   function Epetra_Distributor_Do_VarLen ( selfID, export_objs, obj_size, sizes, &
         len_import_objs, import_objs ) result(that) &
@@ -275,9 +290,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! virtual int DoReverse( char * export_objs, int obj_size, int *& sizes, int & len_import_objs, char *& import_objs) = 0;
+  !! virtual int DoReverse( char * export_objs, int obj_size, int *& sizes, int & len_import_objs, 
+  !!     char *& import_objs) = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Distributor_DoReverse_VarLen ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, int obj_size, int ** sizes, int * len_import_objs, char ** import_objs );
+  !! int Epetra_Distributor_DoReverse_VarLen ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, 
+  !!     int obj_size, int ** sizes, int * len_import_objs, char ** import_objs );
 
   function Epetra_Distributor_DoReverse_VarLen ( selfID, export_objs, obj_size, sizes, &
         len_import_objs, import_objs ) result(that) &
@@ -295,9 +312,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! virtual int DoPosts( char * export_objs, int obj_size, int *& sizes, int & len_import_objs, char *& import_objs) = 0;
+  !! virtual int DoPosts( char * export_objs, int obj_size, int *& sizes, int & len_import_objs, 
+  !!     char *& import_objs) = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Distributor_DoPosts_VarLen ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, int obj_size, int ** sizes, int * len_import_objs, char ** import_objs );
+  !! int Epetra_Distributor_DoPosts_VarLen ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, 
+  !!     int obj_size, int ** sizes, int * len_import_objs, char ** import_objs );
 
   function Epetra_Distributor_DoPosts_VarLen ( selfID, export_objs, obj_size, sizes, &
         len_import_objs, import_objs ) result(that) &
@@ -315,9 +334,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! virtual int DoReversePosts( char * export_objs, int obj_size, int *& sizes, int & len_import_objs, char *& import_objs) = 0;
+  !! virtual int DoReversePosts( char * export_objs, int obj_size, int *& sizes, int & len_import_objs, 
+  !!     char *& import_objs) = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Distributor_DoReversePosts_VarLen ( CT_Epetra_Distributor_ID_t selfID, char * export_objs, int obj_size, int ** sizes, int * len_import_objs, char ** import_objs );
+  !! int Epetra_Distributor_DoReversePosts_VarLen ( CT_Epetra_Distributor_ID_t selfID, 
+  !!     char * export_objs, int obj_size, int ** sizes, int * len_import_objs, char ** import_objs );
 
   function Epetra_Distributor_DoReversePosts_VarLen ( selfID, export_objs, obj_size, sizes, &
         len_import_objs, import_objs ) result(that) &
@@ -435,7 +456,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Broadcast(double * MyVals, int Count, int Root) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_Broadcast_Double ( CT_Epetra_SerialComm_ID_t selfID, double * MyVals, int Count, int Root );
+  !! int Epetra_SerialComm_Broadcast_Double ( CT_Epetra_SerialComm_ID_t selfID, double * MyVals, 
+  !!     int Count, int Root );
 
   function Epetra_SerialComm_Broadcast_Double ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_SerialComm_Broadcast_Double')
@@ -452,7 +474,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Broadcast(int * MyVals, int Count, int Root) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_Broadcast_Int ( CT_Epetra_SerialComm_ID_t selfID, int * MyVals, int Count, int Root );
+  !! int Epetra_SerialComm_Broadcast_Int ( CT_Epetra_SerialComm_ID_t selfID, int * MyVals, int Count, 
+  !!     int Root );
 
   function Epetra_SerialComm_Broadcast_Int ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_SerialComm_Broadcast_Int')
@@ -469,7 +492,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Broadcast(long * MyVals, int Count, int Root) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_Broadcast_Long ( CT_Epetra_SerialComm_ID_t selfID, long * MyVals, int Count, int Root );
+  !! int Epetra_SerialComm_Broadcast_Long ( CT_Epetra_SerialComm_ID_t selfID, long * MyVals, int Count, 
+  !!     int Root );
 
   function Epetra_SerialComm_Broadcast_Long ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_SerialComm_Broadcast_Long')
@@ -486,7 +510,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Broadcast(char * MyVals, int Count, int Root) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_Broadcast_Char ( CT_Epetra_SerialComm_ID_t selfID, char * MyVals, int Count, int Root );
+  !! int Epetra_SerialComm_Broadcast_Char ( CT_Epetra_SerialComm_ID_t selfID, char * MyVals, int Count, 
+  !!     int Root );
 
   function Epetra_SerialComm_Broadcast_Char ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_SerialComm_Broadcast_Char')
@@ -503,7 +528,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int GatherAll(double * MyVals, double * AllVals, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_GatherAll_Double ( CT_Epetra_SerialComm_ID_t selfID, double * MyVals, double * AllVals, int Count );
+  !! int Epetra_SerialComm_GatherAll_Double ( CT_Epetra_SerialComm_ID_t selfID, double * MyVals, 
+  !!     double * AllVals, int Count );
 
   function Epetra_SerialComm_GatherAll_Double ( selfID, MyVals, AllVals, Count ) &
         result(that) bind(C,name='Epetra_SerialComm_GatherAll_Double')
@@ -520,7 +546,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int GatherAll(int * MyVals, int * AllVals, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_GatherAll_Int ( CT_Epetra_SerialComm_ID_t selfID, int * MyVals, int * AllVals, int Count );
+  !! int Epetra_SerialComm_GatherAll_Int ( CT_Epetra_SerialComm_ID_t selfID, int * MyVals, 
+  !!     int * AllVals, int Count );
 
   function Epetra_SerialComm_GatherAll_Int ( selfID, MyVals, AllVals, Count ) result(that) &
         bind(C,name='Epetra_SerialComm_GatherAll_Int')
@@ -537,7 +564,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int GatherAll(long * MyVals, long * AllVals, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_GatherAll_Long ( CT_Epetra_SerialComm_ID_t selfID, long * MyVals, long * AllVals, int Count );
+  !! int Epetra_SerialComm_GatherAll_Long ( CT_Epetra_SerialComm_ID_t selfID, long * MyVals, 
+  !!     long * AllVals, int Count );
 
   function Epetra_SerialComm_GatherAll_Long ( selfID, MyVals, AllVals, Count ) &
         result(that) bind(C,name='Epetra_SerialComm_GatherAll_Long')
@@ -554,7 +582,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int SumAll(double * PartialSums, double * GlobalSums, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_SumAll_Double ( CT_Epetra_SerialComm_ID_t selfID, double * PartialSums, double * GlobalSums, int Count );
+  !! int Epetra_SerialComm_SumAll_Double ( CT_Epetra_SerialComm_ID_t selfID, double * PartialSums, 
+  !!     double * GlobalSums, int Count );
 
   function Epetra_SerialComm_SumAll_Double ( selfID, PartialSums, GlobalSums, Count ) &
         result(that) bind(C,name='Epetra_SerialComm_SumAll_Double')
@@ -571,7 +600,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int SumAll(int * PartialSums, int * GlobalSums, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_SumAll_Int ( CT_Epetra_SerialComm_ID_t selfID, int * PartialSums, int * GlobalSums, int Count );
+  !! int Epetra_SerialComm_SumAll_Int ( CT_Epetra_SerialComm_ID_t selfID, int * PartialSums, 
+  !!     int * GlobalSums, int Count );
 
   function Epetra_SerialComm_SumAll_Int ( selfID, PartialSums, GlobalSums, Count ) &
         result(that) bind(C,name='Epetra_SerialComm_SumAll_Int')
@@ -588,7 +618,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int SumAll(long * PartialSums, long * GlobalSums, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_SumAll_Long ( CT_Epetra_SerialComm_ID_t selfID, long * PartialSums, long * GlobalSums, int Count );
+  !! int Epetra_SerialComm_SumAll_Long ( CT_Epetra_SerialComm_ID_t selfID, long * PartialSums, 
+  !!     long * GlobalSums, int Count );
 
   function Epetra_SerialComm_SumAll_Long ( selfID, PartialSums, GlobalSums, Count ) &
         result(that) bind(C,name='Epetra_SerialComm_SumAll_Long')
@@ -605,7 +636,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int MaxAll(double * PartialMaxs, double * GlobalMaxs, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_MaxAll_Double ( CT_Epetra_SerialComm_ID_t selfID, double * PartialMaxs, double * GlobalMaxs, int Count );
+  !! int Epetra_SerialComm_MaxAll_Double ( CT_Epetra_SerialComm_ID_t selfID, double * PartialMaxs, 
+  !!     double * GlobalMaxs, int Count );
 
   function Epetra_SerialComm_MaxAll_Double ( selfID, PartialMaxs, GlobalMaxs, Count ) &
         result(that) bind(C,name='Epetra_SerialComm_MaxAll_Double')
@@ -622,7 +654,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int MaxAll(int * PartialMaxs, int * GlobalMaxs, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_MaxAll_Int ( CT_Epetra_SerialComm_ID_t selfID, int * PartialMaxs, int * GlobalMaxs, int Count );
+  !! int Epetra_SerialComm_MaxAll_Int ( CT_Epetra_SerialComm_ID_t selfID, int * PartialMaxs, 
+  !!     int * GlobalMaxs, int Count );
 
   function Epetra_SerialComm_MaxAll_Int ( selfID, PartialMaxs, GlobalMaxs, Count ) &
         result(that) bind(C,name='Epetra_SerialComm_MaxAll_Int')
@@ -639,7 +672,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int MaxAll(long * PartialMaxs, long * GlobalMaxs, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_MaxAll_Long ( CT_Epetra_SerialComm_ID_t selfID, long * PartialMaxs, long * GlobalMaxs, int Count );
+  !! int Epetra_SerialComm_MaxAll_Long ( CT_Epetra_SerialComm_ID_t selfID, long * PartialMaxs, 
+  !!     long * GlobalMaxs, int Count );
 
   function Epetra_SerialComm_MaxAll_Long ( selfID, PartialMaxs, GlobalMaxs, Count ) &
         result(that) bind(C,name='Epetra_SerialComm_MaxAll_Long')
@@ -656,7 +690,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int MinAll(double * PartialMins, double * GlobalMins, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_MinAll_Double ( CT_Epetra_SerialComm_ID_t selfID, double * PartialMins, double * GlobalMins, int Count );
+  !! int Epetra_SerialComm_MinAll_Double ( CT_Epetra_SerialComm_ID_t selfID, double * PartialMins, 
+  !!     double * GlobalMins, int Count );
 
   function Epetra_SerialComm_MinAll_Double ( selfID, PartialMins, GlobalMins, Count ) &
         result(that) bind(C,name='Epetra_SerialComm_MinAll_Double')
@@ -673,7 +708,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int MinAll(int * PartialMins, int * GlobalMins, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_MinAll_Int ( CT_Epetra_SerialComm_ID_t selfID, int * PartialMins, int * GlobalMins, int Count );
+  !! int Epetra_SerialComm_MinAll_Int ( CT_Epetra_SerialComm_ID_t selfID, int * PartialMins, 
+  !!     int * GlobalMins, int Count );
 
   function Epetra_SerialComm_MinAll_Int ( selfID, PartialMins, GlobalMins, Count ) &
         result(that) bind(C,name='Epetra_SerialComm_MinAll_Int')
@@ -690,7 +726,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int MinAll(long * PartialMins, long * GlobalMins, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_MinAll_Long ( CT_Epetra_SerialComm_ID_t selfID, long * PartialMins, long * GlobalMins, int Count );
+  !! int Epetra_SerialComm_MinAll_Long ( CT_Epetra_SerialComm_ID_t selfID, long * PartialMins, 
+  !!     long * GlobalMins, int Count );
 
   function Epetra_SerialComm_MinAll_Long ( selfID, PartialMins, GlobalMins, Count ) &
         result(that) bind(C,name='Epetra_SerialComm_MinAll_Long')
@@ -707,7 +744,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ScanSum(double * MyVals, double * ScanSums, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_ScanSum_Double ( CT_Epetra_SerialComm_ID_t selfID, double * MyVals, double * ScanSums, int Count );
+  !! int Epetra_SerialComm_ScanSum_Double ( CT_Epetra_SerialComm_ID_t selfID, double * MyVals, 
+  !!     double * ScanSums, int Count );
 
   function Epetra_SerialComm_ScanSum_Double ( selfID, MyVals, ScanSums, Count ) &
         result(that) bind(C,name='Epetra_SerialComm_ScanSum_Double')
@@ -724,7 +762,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ScanSum(int * MyVals, int * ScanSums, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_ScanSum_Int ( CT_Epetra_SerialComm_ID_t selfID, int * MyVals, int * ScanSums, int Count );
+  !! int Epetra_SerialComm_ScanSum_Int ( CT_Epetra_SerialComm_ID_t selfID, int * MyVals, 
+  !!     int * ScanSums, int Count );
 
   function Epetra_SerialComm_ScanSum_Int ( selfID, MyVals, ScanSums, Count ) result(that) &
         bind(C,name='Epetra_SerialComm_ScanSum_Int')
@@ -741,7 +780,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ScanSum(long * MyVals, long * ScanSums, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialComm_ScanSum_Long ( CT_Epetra_SerialComm_ID_t selfID, long * MyVals, long * ScanSums, int Count );
+  !! int Epetra_SerialComm_ScanSum_Long ( CT_Epetra_SerialComm_ID_t selfID, long * MyVals, 
+  !!     long * ScanSums, int Count );
 
   function Epetra_SerialComm_ScanSum_Long ( selfID, MyVals, ScanSums, Count ) result(that) &
         bind(C,name='Epetra_SerialComm_ScanSum_Long')
@@ -800,7 +840,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_Directory * CreateDirectory(const Epetra_BlockMap & Map) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_Directory_ID_t Epetra_SerialComm_CreateDirectory ( CT_Epetra_SerialComm_ID_t selfID, CT_Epetra_BlockMap_ID_t MapID );
+  !! CT_Epetra_Directory_ID_t Epetra_SerialComm_CreateDirectory ( CT_Epetra_SerialComm_ID_t selfID, 
+  !!     CT_Epetra_BlockMap_ID_t MapID );
 
   function Epetra_SerialComm_CreateDirectory ( selfID, MapID ) result(that) &
         bind(C,name='Epetra_SerialComm_CreateDirectory')
@@ -815,7 +856,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_SerialComm & operator=(const Epetra_SerialComm & Comm);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_SerialComm_Assign ( CT_Epetra_SerialComm_ID_t selfID, CT_Epetra_SerialComm_ID_t CommID );
+  !! void Epetra_SerialComm_Assign ( CT_Epetra_SerialComm_ID_t selfID, 
+  !!     CT_Epetra_SerialComm_ID_t CommID );
 
   subroutine Epetra_SerialComm_Assign ( selfID, CommID ) &
         bind(C,name='Epetra_SerialComm_Assign')
@@ -899,7 +941,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! float ASUM(const int N, const float * X, const int INCX = 1) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! float Epetra_BLAS_ASUM_Float ( CT_Epetra_BLAS_ID_t selfID, const int N, const float * X, const int INCX );
+  !! float Epetra_BLAS_ASUM_Float ( CT_Epetra_BLAS_ID_t selfID, const int N, const float * X, 
+  !!     const int INCX );
 
   function Epetra_BLAS_ASUM_Float ( selfID, N, X, INCX ) result(that) &
         bind(C,name='Epetra_BLAS_ASUM_Float')
@@ -916,7 +959,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! double ASUM(const int N, const double * X, const int INCX = 1) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! double Epetra_BLAS_ASUM_Double ( CT_Epetra_BLAS_ID_t selfID, const int N, const double * X, const int INCX );
+  !! double Epetra_BLAS_ASUM_Double ( CT_Epetra_BLAS_ID_t selfID, const int N, const double * X, 
+  !!     const int INCX );
 
   function Epetra_BLAS_ASUM_Double ( selfID, N, X, INCX ) result(that) &
         bind(C,name='Epetra_BLAS_ASUM_Double')
@@ -931,9 +975,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! float DOT(const int N, const float * X, const float * Y, const int INCX = 1, const int INCY = 1) const;
+  !! float DOT(const int N, const float * X, const float * Y, const int INCX = 1, const int INCY = 
+  !!     1) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! float Epetra_BLAS_DOT_Float ( CT_Epetra_BLAS_ID_t selfID, const int N, const float * X, const float * Y, const int INCX, const int INCY );
+  !! float Epetra_BLAS_DOT_Float ( CT_Epetra_BLAS_ID_t selfID, const int N, const float * X, 
+  !!     const float * Y, const int INCX, const int INCY );
 
   function Epetra_BLAS_DOT_Float ( selfID, N, X, Y, INCX, INCY ) result(that) &
         bind(C,name='Epetra_BLAS_DOT_Float')
@@ -950,9 +996,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! double DOT(const int N, const double * X, const double * Y, const int INCX = 1, const int INCY = 1) const;
+  !! double DOT(const int N, const double * X, const double * Y, const int INCX = 1, const int INCY = 
+  !!     1) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! double Epetra_BLAS_DOT_Double ( CT_Epetra_BLAS_ID_t selfID, const int N, const double * X, const double * Y, const int INCX, const int INCY );
+  !! double Epetra_BLAS_DOT_Double ( CT_Epetra_BLAS_ID_t selfID, const int N, const double * X, 
+  !!     const double * Y, const int INCX, const int INCY );
 
   function Epetra_BLAS_DOT_Double ( selfID, N, X, Y, INCX, INCY ) result(that) &
         bind(C,name='Epetra_BLAS_DOT_Double')
@@ -971,7 +1019,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! float NRM2(const int N, const float * X, const int INCX = 1) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! float Epetra_BLAS_NRM2_Float ( CT_Epetra_BLAS_ID_t selfID, const int N, const float * X, const int INCX );
+  !! float Epetra_BLAS_NRM2_Float ( CT_Epetra_BLAS_ID_t selfID, const int N, const float * X, 
+  !!     const int INCX );
 
   function Epetra_BLAS_NRM2_Float ( selfID, N, X, INCX ) result(that) &
         bind(C,name='Epetra_BLAS_NRM2_Float')
@@ -988,7 +1037,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! double NRM2(const int N, const double * X, const int INCX = 1) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! double Epetra_BLAS_NRM2_Double ( CT_Epetra_BLAS_ID_t selfID, const int N, const double * X, const int INCX );
+  !! double Epetra_BLAS_NRM2_Double ( CT_Epetra_BLAS_ID_t selfID, const int N, const double * X, 
+  !!     const int INCX );
 
   function Epetra_BLAS_NRM2_Double ( selfID, N, X, INCX ) result(that) &
         bind(C,name='Epetra_BLAS_NRM2_Double')
@@ -1005,7 +1055,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! void SCAL( const int N, const float ALPHA, float * X, const int INCX = 1) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_BLAS_SCAL_Float ( CT_Epetra_BLAS_ID_t selfID, const int N, const float ALPHA, float * X, const int INCX );
+  !! void Epetra_BLAS_SCAL_Float ( CT_Epetra_BLAS_ID_t selfID, const int N, const float ALPHA, 
+  !!     float * X, const int INCX );
 
   subroutine Epetra_BLAS_SCAL_Float ( selfID, N, ALPHA, X, INCX ) &
         bind(C,name='Epetra_BLAS_SCAL_Float')
@@ -1022,7 +1073,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! void SCAL( const int N, const double ALPHA, double * X, const int INCX = 1) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_BLAS_SCAL_Double ( CT_Epetra_BLAS_ID_t selfID, const int N, const double ALPHA, double * X, const int INCX );
+  !! void Epetra_BLAS_SCAL_Double ( CT_Epetra_BLAS_ID_t selfID, const int N, const double ALPHA, 
+  !!     double * X, const int INCX );
 
   subroutine Epetra_BLAS_SCAL_Double ( selfID, N, ALPHA, X, INCX ) &
         bind(C,name='Epetra_BLAS_SCAL_Double')
@@ -1039,7 +1091,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! void COPY( const int N, const float * X, float * Y, const int INCX = 1, const int INCY = 1) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_BLAS_COPY_Float ( CT_Epetra_BLAS_ID_t selfID, const int N, const float * X, float * Y, const int INCX, const int INCY );
+  !! void Epetra_BLAS_COPY_Float ( CT_Epetra_BLAS_ID_t selfID, const int N, const float * X, float * Y, 
+  !!     const int INCX, const int INCY );
 
   subroutine Epetra_BLAS_COPY_Float ( selfID, N, X, Y, INCX, INCY ) &
         bind(C,name='Epetra_BLAS_COPY_Float')
@@ -1057,7 +1110,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! void COPY( const int N, const double * X, double * Y, const int INCX = 1, const int INCY = 1) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_BLAS_COPY_Double ( CT_Epetra_BLAS_ID_t selfID, const int N, const double * X, double * Y, const int INCX, const int INCY );
+  !! void Epetra_BLAS_COPY_Double ( CT_Epetra_BLAS_ID_t selfID, const int N, const double * X, 
+  !!     double * Y, const int INCX, const int INCY );
 
   subroutine Epetra_BLAS_COPY_Double ( selfID, N, X, Y, INCX, INCY ) &
         bind(C,name='Epetra_BLAS_COPY_Double')
@@ -1075,7 +1129,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int IAMAX( const int N, const float * X, const int INCX = 1) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_BLAS_IAMAX_Float ( CT_Epetra_BLAS_ID_t selfID, const int N, const float * X, const int INCX );
+  !! int Epetra_BLAS_IAMAX_Float ( CT_Epetra_BLAS_ID_t selfID, const int N, const float * X, 
+  !!     const int INCX );
 
   function Epetra_BLAS_IAMAX_Float ( selfID, N, X, INCX ) result(that) &
         bind(C,name='Epetra_BLAS_IAMAX_Float')
@@ -1092,7 +1147,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int IAMAX( const int N, const double * X, const int INCX = 1) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_BLAS_IAMAX_Double ( CT_Epetra_BLAS_ID_t selfID, const int N, const double * X, const int INCX );
+  !! int Epetra_BLAS_IAMAX_Double ( CT_Epetra_BLAS_ID_t selfID, const int N, const double * X, 
+  !!     const int INCX );
 
   function Epetra_BLAS_IAMAX_Double ( selfID, N, X, INCX ) result(that) &
         bind(C,name='Epetra_BLAS_IAMAX_Double')
@@ -1107,9 +1163,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void AXPY( const int N, const float ALPHA, const float * X, float * Y, const int INCX = 1, const int INCY = 1) const;
+  !! void AXPY( const int N, const float ALPHA, const float * X, float * Y, const int INCX = 1, 
+  !!     const int INCY = 1) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_BLAS_AXPY_Float ( CT_Epetra_BLAS_ID_t selfID, const int N, const float ALPHA, const float * X, float * Y, const int INCX, const int INCY );
+  !! void Epetra_BLAS_AXPY_Float ( CT_Epetra_BLAS_ID_t selfID, const int N, const float ALPHA, 
+  !!     const float * X, float * Y, const int INCX, const int INCY );
 
   subroutine Epetra_BLAS_AXPY_Float ( selfID, N, ALPHA, X, Y, INCX, INCY ) &
         bind(C,name='Epetra_BLAS_AXPY_Float')
@@ -1126,9 +1184,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void AXPY( const int N, const double ALPHA, const double * X, double * Y, const int INCX = 1, const int INCY = 1) const;
+  !! void AXPY( const int N, const double ALPHA, const double * X, double * Y, const int INCX = 1, 
+  !!     const int INCY = 1) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_BLAS_AXPY_Double ( CT_Epetra_BLAS_ID_t selfID, const int N, const double ALPHA, const double * X, double * Y, const int INCX, const int INCY );
+  !! void Epetra_BLAS_AXPY_Double ( CT_Epetra_BLAS_ID_t selfID, const int N, const double ALPHA, 
+  !!     const double * X, double * Y, const int INCX, const int INCY );
 
   subroutine Epetra_BLAS_AXPY_Double ( selfID, N, ALPHA, X, Y, INCX, INCY ) &
         bind(C,name='Epetra_BLAS_AXPY_Double')
@@ -1145,9 +1205,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GEMV(const char TRANS, const int M, const int N, const float ALPHA, const float * A, const int LDA, const float * X, const float BETA, float * Y, const int INCX = 1, const int INCY = 1) const;
+  !! void GEMV(const char TRANS, const int M, const int N, const float ALPHA, const float * A, 
+  !!     const int LDA, const float * X, const float BETA, float * Y, const int INCX = 1, const int INCY = 1) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_BLAS_GEMV_Float ( CT_Epetra_BLAS_ID_t selfID, const char TRANS, const int M, const int N, const float ALPHA, const float * A, const int LDA, const float * X, const float BETA, float * Y, const int INCX, const int INCY );
+  !! void Epetra_BLAS_GEMV_Float ( CT_Epetra_BLAS_ID_t selfID, const char TRANS, const int M, 
+  !!     const int N, const float ALPHA, const float * A, const int LDA, const float * X, const float BETA, float * Y, 
+  !!     const int INCX, const int INCY );
 
   subroutine Epetra_BLAS_GEMV_Float ( selfID, TRANS, M, N, ALPHA, A, LDA, X, BETA, Y, INCX, &
         INCY ) bind(C,name='Epetra_BLAS_GEMV_Float')
@@ -1169,9 +1232,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GEMV(const char TRANS, const int M, const int N, const double ALPHA, const double * A, const int LDA, const double * X, const double BETA, double * Y, const int INCX = 1, const int INCY = 1) const;
+  !! void GEMV(const char TRANS, const int M, const int N, const double ALPHA, const double * A, 
+  !!     const int LDA, const double * X, const double BETA, double * Y, const int INCX = 1, const int INCY = 1) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_BLAS_GEMV_Double ( CT_Epetra_BLAS_ID_t selfID, const char TRANS, const int M, const int N, const double ALPHA, const double * A, const int LDA, const double * X, const double BETA, double * Y, const int INCX, const int INCY );
+  !! void Epetra_BLAS_GEMV_Double ( CT_Epetra_BLAS_ID_t selfID, const char TRANS, const int M, 
+  !!     const int N, const double ALPHA, const double * A, const int LDA, const double * X, const double BETA, double * Y, 
+  !!     const int INCX, const int INCY );
 
   subroutine Epetra_BLAS_GEMV_Double ( selfID, TRANS, M, N, ALPHA, A, LDA, X, BETA, Y, INCX, &
         INCY ) bind(C,name='Epetra_BLAS_GEMV_Double')
@@ -1193,9 +1259,13 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GEMM(const char TRANSA, const char TRANSB, const int M, const int N, const int K, const float ALPHA, const float * A, const int LDA, const float * B, const int LDB, const float BETA, float * C, const int LDC) const;
+  !! void GEMM(const char TRANSA, const char TRANSB, const int M, const int N, const int K, 
+  !!     const float ALPHA, const float * A, const int LDA, const float * B, const int LDB, const float BETA, float * C, 
+  !!     const int LDC) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_BLAS_GEMM_Float ( CT_Epetra_BLAS_ID_t selfID, const char TRANSA, const char TRANSB, const int M, const int N, const int K, const float ALPHA, const float * A, const int LDA, const float * B, const int LDB, const float BETA, float * C, const int LDC );
+  !! void Epetra_BLAS_GEMM_Float ( CT_Epetra_BLAS_ID_t selfID, const char TRANSA, const char TRANSB, 
+  !!     const int M, const int N, const int K, const float ALPHA, const float * A, const int LDA, const float * B, 
+  !!     const int LDB, const float BETA, float * C, const int LDC );
 
   subroutine Epetra_BLAS_GEMM_Float ( selfID, TRANSA, TRANSB, M, N, K, ALPHA, A, LDA, B, &
         LDB, BETA, C, LDC ) bind(C,name='Epetra_BLAS_GEMM_Float')
@@ -1219,9 +1289,13 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GEMM(const char TRANSA, const char TRANSB, const int M, const int N, const int K, const double ALPHA, const double * A, const int LDA, const double * B, const int LDB, const double BETA, double * C, const int LDC) const;
+  !! void GEMM(const char TRANSA, const char TRANSB, const int M, const int N, const int K, 
+  !!     const double ALPHA, const double * A, const int LDA, const double * B, const int LDB, const double BETA, double * C, 
+  !!     const int LDC) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_BLAS_GEMM_Double ( CT_Epetra_BLAS_ID_t selfID, const char TRANSA, const char TRANSB, const int M, const int N, const int K, const double ALPHA, const double * A, const int LDA, const double * B, const int LDB, const double BETA, double * C, const int LDC );
+  !! void Epetra_BLAS_GEMM_Double ( CT_Epetra_BLAS_ID_t selfID, const char TRANSA, const char TRANSB, 
+  !!     const int M, const int N, const int K, const double ALPHA, const double * A, const int LDA, const double * B, 
+  !!     const int LDB, const double BETA, double * C, const int LDC );
 
   subroutine Epetra_BLAS_GEMM_Double ( selfID, TRANSA, TRANSB, M, N, K, ALPHA, A, LDA, B, &
         LDB, BETA, C, LDC ) bind(C,name='Epetra_BLAS_GEMM_Double')
@@ -1245,9 +1319,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void SYMM(const char SIDE, const char UPLO, const int M, const int N, const float ALPHA, const float * A, const int LDA, const float * B, const int LDB, const float BETA, float * C, const int LDC) const;
+  !! void SYMM(const char SIDE, const char UPLO, const int M, const int N, const float ALPHA, 
+  !!     const float * A, const int LDA, const float * B, const int LDB, const float BETA, float * C, const int LDC) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_BLAS_SYMM_Float ( CT_Epetra_BLAS_ID_t selfID, const char SIDE, const char UPLO, const int M, const int N, const float ALPHA, const float * A, const int LDA, const float * B, const int LDB, const float BETA, float * C, const int LDC );
+  !! void Epetra_BLAS_SYMM_Float ( CT_Epetra_BLAS_ID_t selfID, const char SIDE, const char UPLO, 
+  !!     const int M, const int N, const float ALPHA, const float * A, const int LDA, const float * B, const int LDB, 
+  !!     const float BETA, float * C, const int LDC );
 
   subroutine Epetra_BLAS_SYMM_Float ( selfID, SIDE, UPLO, M, N, ALPHA, A, LDA, B, LDB, BETA, &
         C, LDC ) bind(C,name='Epetra_BLAS_SYMM_Float')
@@ -1270,9 +1347,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void SYMM(const char SIDE, const char UPLO, const int M, const int N, const double ALPHA, const double * A, const int LDA, const double * B, const int LDB, const double BETA, double * C, const int LDC) const;
+  !! void SYMM(const char SIDE, const char UPLO, const int M, const int N, const double ALPHA, 
+  !!     const double * A, const int LDA, const double * B, const int LDB, const double BETA, double * C, const int LDC) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_BLAS_SYMM_Double ( CT_Epetra_BLAS_ID_t selfID, const char SIDE, const char UPLO, const int M, const int N, const double ALPHA, const double * A, const int LDA, const double * B, const int LDB, const double BETA, double * C, const int LDC );
+  !! void Epetra_BLAS_SYMM_Double ( CT_Epetra_BLAS_ID_t selfID, const char SIDE, const char UPLO, 
+  !!     const int M, const int N, const double ALPHA, const double * A, const int LDA, const double * B, const int LDB, 
+  !!     const double BETA, double * C, const int LDC );
 
   subroutine Epetra_BLAS_SYMM_Double ( selfID, SIDE, UPLO, M, N, ALPHA, A, LDA, B, LDB, &
         BETA, C, LDC ) bind(C,name='Epetra_BLAS_SYMM_Double')
@@ -1295,9 +1375,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void TRMM(const char SIDE, const char UPLO, const char TRANSA, const char DIAG, const int M, const int N, const float ALPHA, const float * A, const int LDA, float * B, const int LDB) const;
+  !! void TRMM(const char SIDE, const char UPLO, const char TRANSA, const char DIAG, const int M, 
+  !!     const int N, const float ALPHA, const float * A, const int LDA, float * B, const int LDB) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_BLAS_TRMM_Float ( CT_Epetra_BLAS_ID_t selfID, const char SIDE, const char UPLO, const char TRANSA, const char DIAG, const int M, const int N, const float ALPHA, const float * A, const int LDA, float * B, const int LDB );
+  !! void Epetra_BLAS_TRMM_Float ( CT_Epetra_BLAS_ID_t selfID, const char SIDE, const char UPLO, 
+  !!     const char TRANSA, const char DIAG, const int M, const int N, const float ALPHA, const float * A, const int LDA, 
+  !!     float * B, const int LDB );
 
   subroutine Epetra_BLAS_TRMM_Float ( selfID, SIDE, UPLO, TRANSA, DIAG, M, N, ALPHA, A, LDA, &
         B, LDB ) bind(C,name='Epetra_BLAS_TRMM_Float')
@@ -1319,9 +1402,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void TRMM(const char SIDE, const char UPLO, const char TRANSA, const char DIAG, const int M, const int N, const double ALPHA, const double * A, const int LDA, double * B, const int LDB) const;
+  !! void TRMM(const char SIDE, const char UPLO, const char TRANSA, const char DIAG, const int M, 
+  !!     const int N, const double ALPHA, const double * A, const int LDA, double * B, const int LDB) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_BLAS_TRMM_Double ( CT_Epetra_BLAS_ID_t selfID, const char SIDE, const char UPLO, const char TRANSA, const char DIAG, const int M, const int N, const double ALPHA, const double * A, const int LDA, double * B, const int LDB );
+  !! void Epetra_BLAS_TRMM_Double ( CT_Epetra_BLAS_ID_t selfID, const char SIDE, const char UPLO, 
+  !!     const char TRANSA, const char DIAG, const int M, const int N, const double ALPHA, const double * A, const int LDA, 
+  !!     double * B, const int LDB );
 
   subroutine Epetra_BLAS_TRMM_Double ( selfID, SIDE, UPLO, TRANSA, DIAG, M, N, ALPHA, A, &
         LDA, B, LDB ) bind(C,name='Epetra_BLAS_TRMM_Double')
@@ -1414,7 +1500,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int Broadcast(double * MyVals, int Count, int Root) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Comm_Broadcast_Double ( CT_Epetra_Comm_ID_t selfID, double * MyVals, int Count, int Root );
+  !! int Epetra_Comm_Broadcast_Double ( CT_Epetra_Comm_ID_t selfID, double * MyVals, int Count, 
+  !!     int Root );
 
   function Epetra_Comm_Broadcast_Double ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_Comm_Broadcast_Double')
@@ -1482,7 +1569,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int GatherAll(double * MyVals, double * AllVals, int Count) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Comm_GatherAll_Double ( CT_Epetra_Comm_ID_t selfID, double * MyVals, double * AllVals, int Count );
+  !! int Epetra_Comm_GatherAll_Double ( CT_Epetra_Comm_ID_t selfID, double * MyVals, double * AllVals, 
+  !!     int Count );
 
   function Epetra_Comm_GatherAll_Double ( selfID, MyVals, AllVals, Count ) result(that) &
         bind(C,name='Epetra_Comm_GatherAll_Double')
@@ -1499,7 +1587,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int GatherAll(int * MyVals, int * AllVals, int Count) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Comm_GatherAll_Int ( CT_Epetra_Comm_ID_t selfID, int * MyVals, int * AllVals, int Count );
+  !! int Epetra_Comm_GatherAll_Int ( CT_Epetra_Comm_ID_t selfID, int * MyVals, int * AllVals, 
+  !!     int Count );
 
   function Epetra_Comm_GatherAll_Int ( selfID, MyVals, AllVals, Count ) result(that) &
         bind(C,name='Epetra_Comm_GatherAll_Int')
@@ -1516,7 +1605,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int GatherAll(long * MyVals, long * AllVals, int Count) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Comm_GatherAll_Long ( CT_Epetra_Comm_ID_t selfID, long * MyVals, long * AllVals, int Count );
+  !! int Epetra_Comm_GatherAll_Long ( CT_Epetra_Comm_ID_t selfID, long * MyVals, long * AllVals, 
+  !!     int Count );
 
   function Epetra_Comm_GatherAll_Long ( selfID, MyVals, AllVals, Count ) result(that) &
         bind(C,name='Epetra_Comm_GatherAll_Long')
@@ -1533,7 +1623,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int SumAll(double * PartialSums, double * GlobalSums, int Count) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Comm_SumAll_Double ( CT_Epetra_Comm_ID_t selfID, double * PartialSums, double * GlobalSums, int Count );
+  !! int Epetra_Comm_SumAll_Double ( CT_Epetra_Comm_ID_t selfID, double * PartialSums, 
+  !!     double * GlobalSums, int Count );
 
   function Epetra_Comm_SumAll_Double ( selfID, PartialSums, GlobalSums, Count ) &
         result(that) bind(C,name='Epetra_Comm_SumAll_Double')
@@ -1550,7 +1641,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int SumAll(int * PartialSums, int * GlobalSums, int Count) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Comm_SumAll_Int ( CT_Epetra_Comm_ID_t selfID, int * PartialSums, int * GlobalSums, int Count );
+  !! int Epetra_Comm_SumAll_Int ( CT_Epetra_Comm_ID_t selfID, int * PartialSums, int * GlobalSums, 
+  !!     int Count );
 
   function Epetra_Comm_SumAll_Int ( selfID, PartialSums, GlobalSums, Count ) result(that) &
         bind(C,name='Epetra_Comm_SumAll_Int')
@@ -1567,7 +1659,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int SumAll(long * PartialSums, long * GlobalSums, int Count) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Comm_SumAll_Long ( CT_Epetra_Comm_ID_t selfID, long * PartialSums, long * GlobalSums, int Count );
+  !! int Epetra_Comm_SumAll_Long ( CT_Epetra_Comm_ID_t selfID, long * PartialSums, long * GlobalSums, 
+  !!     int Count );
 
   function Epetra_Comm_SumAll_Long ( selfID, PartialSums, GlobalSums, Count ) result(that) &
         bind(C,name='Epetra_Comm_SumAll_Long')
@@ -1584,7 +1677,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int MaxAll(double * PartialMaxs, double * GlobalMaxs, int Count) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Comm_MaxAll_Double ( CT_Epetra_Comm_ID_t selfID, double * PartialMaxs, double * GlobalMaxs, int Count );
+  !! int Epetra_Comm_MaxAll_Double ( CT_Epetra_Comm_ID_t selfID, double * PartialMaxs, 
+  !!     double * GlobalMaxs, int Count );
 
   function Epetra_Comm_MaxAll_Double ( selfID, PartialMaxs, GlobalMaxs, Count ) &
         result(that) bind(C,name='Epetra_Comm_MaxAll_Double')
@@ -1601,7 +1695,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int MaxAll(int * PartialMaxs, int * GlobalMaxs, int Count) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Comm_MaxAll_Int ( CT_Epetra_Comm_ID_t selfID, int * PartialMaxs, int * GlobalMaxs, int Count );
+  !! int Epetra_Comm_MaxAll_Int ( CT_Epetra_Comm_ID_t selfID, int * PartialMaxs, int * GlobalMaxs, 
+  !!     int Count );
 
   function Epetra_Comm_MaxAll_Int ( selfID, PartialMaxs, GlobalMaxs, Count ) result(that) &
         bind(C,name='Epetra_Comm_MaxAll_Int')
@@ -1618,7 +1713,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int MaxAll(long * PartialMaxs, long * GlobalMaxs, int Count) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Comm_MaxAll_Long ( CT_Epetra_Comm_ID_t selfID, long * PartialMaxs, long * GlobalMaxs, int Count );
+  !! int Epetra_Comm_MaxAll_Long ( CT_Epetra_Comm_ID_t selfID, long * PartialMaxs, long * GlobalMaxs, 
+  !!     int Count );
 
   function Epetra_Comm_MaxAll_Long ( selfID, PartialMaxs, GlobalMaxs, Count ) result(that) &
         bind(C,name='Epetra_Comm_MaxAll_Long')
@@ -1635,7 +1731,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int MinAll(double * PartialMins, double * GlobalMins, int Count) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Comm_MinAll_Double ( CT_Epetra_Comm_ID_t selfID, double * PartialMins, double * GlobalMins, int Count );
+  !! int Epetra_Comm_MinAll_Double ( CT_Epetra_Comm_ID_t selfID, double * PartialMins, 
+  !!     double * GlobalMins, int Count );
 
   function Epetra_Comm_MinAll_Double ( selfID, PartialMins, GlobalMins, Count ) &
         result(that) bind(C,name='Epetra_Comm_MinAll_Double')
@@ -1652,7 +1749,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int MinAll(int * PartialMins, int * GlobalMins, int Count) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Comm_MinAll_Int ( CT_Epetra_Comm_ID_t selfID, int * PartialMins, int * GlobalMins, int Count );
+  !! int Epetra_Comm_MinAll_Int ( CT_Epetra_Comm_ID_t selfID, int * PartialMins, int * GlobalMins, 
+  !!     int Count );
 
   function Epetra_Comm_MinAll_Int ( selfID, PartialMins, GlobalMins, Count ) result(that) &
         bind(C,name='Epetra_Comm_MinAll_Int')
@@ -1669,7 +1767,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int MinAll(long * PartialMins, long * GlobalMins, int Count) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Comm_MinAll_Long ( CT_Epetra_Comm_ID_t selfID, long * PartialMins, long * GlobalMins, int Count );
+  !! int Epetra_Comm_MinAll_Long ( CT_Epetra_Comm_ID_t selfID, long * PartialMins, long * GlobalMins, 
+  !!     int Count );
 
   function Epetra_Comm_MinAll_Long ( selfID, PartialMins, GlobalMins, Count ) result(that) &
         bind(C,name='Epetra_Comm_MinAll_Long')
@@ -1686,7 +1785,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int ScanSum(double * MyVals, double * ScanSums, int Count) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Comm_ScanSum_Double ( CT_Epetra_Comm_ID_t selfID, double * MyVals, double * ScanSums, int Count );
+  !! int Epetra_Comm_ScanSum_Double ( CT_Epetra_Comm_ID_t selfID, double * MyVals, double * ScanSums, 
+  !!     int Count );
 
   function Epetra_Comm_ScanSum_Double ( selfID, MyVals, ScanSums, Count ) result(that) &
         bind(C,name='Epetra_Comm_ScanSum_Double')
@@ -1703,7 +1803,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int ScanSum(int * MyVals, int * ScanSums, int Count) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Comm_ScanSum_Int ( CT_Epetra_Comm_ID_t selfID, int * MyVals, int * ScanSums, int Count );
+  !! int Epetra_Comm_ScanSum_Int ( CT_Epetra_Comm_ID_t selfID, int * MyVals, int * ScanSums, 
+  !!     int Count );
 
   function Epetra_Comm_ScanSum_Int ( selfID, MyVals, ScanSums, Count ) result(that) &
         bind(C,name='Epetra_Comm_ScanSum_Int')
@@ -1720,7 +1821,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int ScanSum(long * MyVals, long * ScanSums, int Count) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Comm_ScanSum_Long ( CT_Epetra_Comm_ID_t selfID, long * MyVals, long * ScanSums, int Count );
+  !! int Epetra_Comm_ScanSum_Long ( CT_Epetra_Comm_ID_t selfID, long * MyVals, long * ScanSums, 
+  !!     int Count );
 
   function Epetra_Comm_ScanSum_Long ( selfID, MyVals, ScanSums, Count ) result(that) &
         bind(C,name='Epetra_Comm_ScanSum_Long')
@@ -1777,7 +1879,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual Epetra_Directory * CreateDirectory(const Epetra_BlockMap & Map) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_Directory_ID_t Epetra_Comm_CreateDirectory ( CT_Epetra_Comm_ID_t selfID, CT_Epetra_BlockMap_ID_t MapID );
+  !! CT_Epetra_Directory_ID_t Epetra_Comm_CreateDirectory ( CT_Epetra_Comm_ID_t selfID, 
+  !!     CT_Epetra_BlockMap_ID_t MapID );
 
   function Epetra_Comm_CreateDirectory ( selfID, MapID ) result(that) &
         bind(C,name='Epetra_Comm_CreateDirectory')
@@ -1852,7 +1955,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int Apply(const Epetra_MultiVector& X, Epetra_MultiVector& Y) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Operator_Apply ( CT_Epetra_Operator_ID_t selfID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
+  !! int Epetra_Operator_Apply ( CT_Epetra_Operator_ID_t selfID, CT_Epetra_MultiVector_ID_t XID, 
+  !!     CT_Epetra_MultiVector_ID_t YID );
 
   function Epetra_Operator_Apply ( selfID, XID, YID ) result(that) &
         bind(C,name='Epetra_Operator_Apply')
@@ -1868,7 +1972,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int ApplyInverse(const Epetra_MultiVector& X, Epetra_MultiVector& Y) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Operator_ApplyInverse ( CT_Epetra_Operator_ID_t selfID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
+  !! int Epetra_Operator_ApplyInverse ( CT_Epetra_Operator_ID_t selfID, CT_Epetra_MultiVector_ID_t XID, 
+  !!     CT_Epetra_MultiVector_ID_t YID );
 
   function Epetra_Operator_ApplyInverse ( selfID, XID, YID ) result(that) &
         bind(C,name='Epetra_Operator_ApplyInverse')
@@ -2014,7 +2119,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_MultiVector(const Epetra_BlockMap& Map, int NumVectors, bool zeroOut = true);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create ( CT_Epetra_BlockMap_ID_t MapID, int NumVectors, boolean zeroOut );
+  !! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create ( CT_Epetra_BlockMap_ID_t MapID, 
+  !!     int NumVectors, boolean zeroOut );
 
   function Epetra_MultiVector_Create ( MapID, NumVectors, zeroOut ) result(that) &
         bind(C,name='Epetra_MultiVector_Create')
@@ -2042,9 +2148,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_MultiVector(Epetra_DataAccess CV, const Epetra_BlockMap& Map, double *A, int MyLDA, int NumVectors);
+  !! Epetra_MultiVector(Epetra_DataAccess CV, const Epetra_BlockMap& Map, double *A, int MyLDA, 
+  !!     int NumVectors);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_From2DA ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t MapID, double * A, int MyLDA, int NumVectors );
+  !! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_From2DA ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_BlockMap_ID_t MapID, double * A, int MyLDA, int NumVectors );
 
   function Epetra_MultiVector_Create_From2DA ( CV, MapID, A, MyLDA, NumVectors ) &
         result(that) bind(C,name='Epetra_MultiVector_Create_From2DA')
@@ -2061,9 +2169,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_MultiVector(Epetra_DataAccess CV, const Epetra_BlockMap& Map, double **ArrayOfPointers, int NumVectors);
+  !! Epetra_MultiVector(Epetra_DataAccess CV, const Epetra_BlockMap& Map, double **ArrayOfPointers, 
+  !!     int NumVectors);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_FromAOP ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t MapID, double ** ArrayOfPointers, int NumVectors );
+  !! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_FromAOP ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_BlockMap_ID_t MapID, double ** ArrayOfPointers, int NumVectors );
 
   function Epetra_MultiVector_Create_FromAOP ( CV, MapID, ArrayOfPointers, NumVectors ) &
         result(that) bind(C,name='Epetra_MultiVector_Create_FromAOP')
@@ -2079,9 +2189,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_MultiVector(Epetra_DataAccess CV, const Epetra_MultiVector& Source, int *Indices, int NumVectors);
+  !! Epetra_MultiVector(Epetra_DataAccess CV, const Epetra_MultiVector& Source, int *Indices, 
+  !!     int NumVectors);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_FromList ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_MultiVector_ID_t SourceID, int * Indices, int NumVectors );
+  !! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_FromList ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_MultiVector_ID_t SourceID, int * Indices, int NumVectors );
 
   function Epetra_MultiVector_Create_FromList ( CV, SourceID, Indices, NumVectors ) &
         result(that) bind(C,name='Epetra_MultiVector_Create_FromList')
@@ -2096,9 +2208,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_MultiVector(Epetra_DataAccess CV, const Epetra_MultiVector& Source, int StartIndex, int NumVectors);
+  !! Epetra_MultiVector(Epetra_DataAccess CV, const Epetra_MultiVector& Source, int StartIndex, 
+  !!     int NumVectors);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_FromRange ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_MultiVector_ID_t SourceID, int StartIndex, int NumVectors );
+  !! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create_FromRange ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_MultiVector_ID_t SourceID, int StartIndex, int NumVectors );
 
   function Epetra_MultiVector_Create_FromRange ( CV, SourceID, StartIndex, NumVectors ) &
         result(that) bind(C,name='Epetra_MultiVector_Create_FromRange')
@@ -2128,7 +2242,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ReplaceGlobalValue(int GlobalRow, int VectorIndex, double ScalarValue);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_ReplaceGlobalValue ( CT_Epetra_MultiVector_ID_t selfID, int GlobalRow, int VectorIndex, double ScalarValue );
+  !! int Epetra_MultiVector_ReplaceGlobalValue ( CT_Epetra_MultiVector_ID_t selfID, int GlobalRow, 
+  !!     int VectorIndex, double ScalarValue );
 
   function Epetra_MultiVector_ReplaceGlobalValue ( selfID, GlobalRow, VectorIndex, &
         ScalarValue ) result(that) bind(C,name='Epetra_MultiVector_ReplaceGlobalValue')
@@ -2145,7 +2260,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ReplaceGlobalValue(int GlobalBlockRow, int BlockRowOffset, int VectorIndex, double ScalarValue);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_ReplaceGlobalValue_BlockPos ( CT_Epetra_MultiVector_ID_t selfID, int GlobalBlockRow, int BlockRowOffset, int VectorIndex, double ScalarValue );
+  !! int Epetra_MultiVector_ReplaceGlobalValue_BlockPos ( CT_Epetra_MultiVector_ID_t selfID, 
+  !!     int GlobalBlockRow, int BlockRowOffset, int VectorIndex, double ScalarValue );
 
   function Epetra_MultiVector_ReplaceGlobalValue_BlockPos ( selfID, GlobalBlockRow, &
         BlockRowOffset, VectorIndex, ScalarValue ) result(that) &
@@ -2164,7 +2280,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int SumIntoGlobalValue(int GlobalRow, int VectorIndex, double ScalarValue);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_SumIntoGlobalValue ( CT_Epetra_MultiVector_ID_t selfID, int GlobalRow, int VectorIndex, double ScalarValue );
+  !! int Epetra_MultiVector_SumIntoGlobalValue ( CT_Epetra_MultiVector_ID_t selfID, int GlobalRow, 
+  !!     int VectorIndex, double ScalarValue );
 
   function Epetra_MultiVector_SumIntoGlobalValue ( selfID, GlobalRow, VectorIndex, &
         ScalarValue ) result(that) bind(C,name='Epetra_MultiVector_SumIntoGlobalValue')
@@ -2181,7 +2298,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int SumIntoGlobalValue(int GlobalBlockRow, int BlockRowOffset, int VectorIndex, double ScalarValue);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_SumIntoGlobalValue_BlockPos ( CT_Epetra_MultiVector_ID_t selfID, int GlobalBlockRow, int BlockRowOffset, int VectorIndex, double ScalarValue );
+  !! int Epetra_MultiVector_SumIntoGlobalValue_BlockPos ( CT_Epetra_MultiVector_ID_t selfID, 
+  !!     int GlobalBlockRow, int BlockRowOffset, int VectorIndex, double ScalarValue );
 
   function Epetra_MultiVector_SumIntoGlobalValue_BlockPos ( selfID, GlobalBlockRow, &
         BlockRowOffset, VectorIndex, ScalarValue ) result(that) &
@@ -2200,7 +2318,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ReplaceMyValue(int MyRow, int VectorIndex, double ScalarValue);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_ReplaceMyValue ( CT_Epetra_MultiVector_ID_t selfID, int MyRow, int VectorIndex, double ScalarValue );
+  !! int Epetra_MultiVector_ReplaceMyValue ( CT_Epetra_MultiVector_ID_t selfID, int MyRow, 
+  !!     int VectorIndex, double ScalarValue );
 
   function Epetra_MultiVector_ReplaceMyValue ( selfID, MyRow, VectorIndex, ScalarValue ) &
         result(that) bind(C,name='Epetra_MultiVector_ReplaceMyValue')
@@ -2217,7 +2336,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ReplaceMyValue(int MyBlockRow, int BlockRowOffset, int VectorIndex, double ScalarValue);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_ReplaceMyValue_BlockPos ( CT_Epetra_MultiVector_ID_t selfID, int MyBlockRow, int BlockRowOffset, int VectorIndex, double ScalarValue );
+  !! int Epetra_MultiVector_ReplaceMyValue_BlockPos ( CT_Epetra_MultiVector_ID_t selfID, 
+  !!     int MyBlockRow, int BlockRowOffset, int VectorIndex, double ScalarValue );
 
   function Epetra_MultiVector_ReplaceMyValue_BlockPos ( selfID, MyBlockRow, BlockRowOffset, &
         VectorIndex, ScalarValue ) result(that) &
@@ -2236,7 +2356,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int SumIntoMyValue(int MyRow, int VectorIndex, double ScalarValue);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_SumIntoMyValue ( CT_Epetra_MultiVector_ID_t selfID, int MyRow, int VectorIndex, double ScalarValue );
+  !! int Epetra_MultiVector_SumIntoMyValue ( CT_Epetra_MultiVector_ID_t selfID, int MyRow, 
+  !!     int VectorIndex, double ScalarValue );
 
   function Epetra_MultiVector_SumIntoMyValue ( selfID, MyRow, VectorIndex, ScalarValue ) &
         result(that) bind(C,name='Epetra_MultiVector_SumIntoMyValue')
@@ -2253,7 +2374,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int SumIntoMyValue(int MyBlockRow, int BlockRowOffset, int VectorIndex, double ScalarValue);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_SumIntoMyValue_BlockPos ( CT_Epetra_MultiVector_ID_t selfID, int MyBlockRow, int BlockRowOffset, int VectorIndex, double ScalarValue );
+  !! int Epetra_MultiVector_SumIntoMyValue_BlockPos ( CT_Epetra_MultiVector_ID_t selfID, 
+  !!     int MyBlockRow, int BlockRowOffset, int VectorIndex, double ScalarValue );
 
   function Epetra_MultiVector_SumIntoMyValue_BlockPos ( selfID, MyBlockRow, BlockRowOffset, &
         VectorIndex, ScalarValue ) result(that) &
@@ -2301,7 +2423,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractCopy(double *A, int MyLDA) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_ExtractCopy_Fill2DA ( CT_Epetra_MultiVector_ID_t selfID, double * A, int MyLDA );
+  !! int Epetra_MultiVector_ExtractCopy_Fill2DA ( CT_Epetra_MultiVector_ID_t selfID, double * A, 
+  !!     int MyLDA );
 
   function Epetra_MultiVector_ExtractCopy_Fill2DA ( selfID, A, MyLDA ) result(that) &
         bind(C,name='Epetra_MultiVector_ExtractCopy_Fill2DA')
@@ -2317,7 +2440,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractCopy(double **ArrayOfPointers) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_ExtractCopy_FillAOP ( CT_Epetra_MultiVector_ID_t selfID, double ** ArrayOfPointers );
+  !! int Epetra_MultiVector_ExtractCopy_FillAOP ( CT_Epetra_MultiVector_ID_t selfID, 
+  !!     double ** ArrayOfPointers );
 
   function Epetra_MultiVector_ExtractCopy_FillAOP ( selfID, ArrayOfPointers ) result(that) &
         bind(C,name='Epetra_MultiVector_ExtractCopy_FillAOP')
@@ -2332,7 +2456,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractView(double **A, int *MyLDA) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_ExtractView_Set2DA ( CT_Epetra_MultiVector_ID_t selfID, double ** A, int * MyLDA );
+  !! int Epetra_MultiVector_ExtractView_Set2DA ( CT_Epetra_MultiVector_ID_t selfID, double ** A, 
+  !!     int * MyLDA );
 
   function Epetra_MultiVector_ExtractView_Set2DA ( selfID, A, MyLDA ) result(that) &
         bind(C,name='Epetra_MultiVector_ExtractView_Set2DA')
@@ -2348,7 +2473,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractView(double ***ArrayOfPointers) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_ExtractView_SetAOP ( CT_Epetra_MultiVector_ID_t selfID, double *** ArrayOfPointers );
+  !! int Epetra_MultiVector_ExtractView_SetAOP ( CT_Epetra_MultiVector_ID_t selfID, 
+  !!     double *** ArrayOfPointers );
 
   function Epetra_MultiVector_ExtractView_SetAOP ( selfID, ArrayOfPointers ) result(that) &
         bind(C,name='Epetra_MultiVector_ExtractView_SetAOP')
@@ -2363,7 +2489,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Dot(const Epetra_MultiVector& A, double *Result) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_Dot ( CT_Epetra_MultiVector_ID_t selfID, CT_Epetra_MultiVector_ID_t AID, double * Result );
+  !! int Epetra_MultiVector_Dot ( CT_Epetra_MultiVector_ID_t selfID, CT_Epetra_MultiVector_ID_t AID, 
+  !!     double * Result );
 
   function Epetra_MultiVector_Dot ( selfID, AID, Result ) result(that) &
         bind(C,name='Epetra_MultiVector_Dot')
@@ -2394,7 +2521,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Reciprocal(const Epetra_MultiVector& A);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_Reciprocal ( CT_Epetra_MultiVector_ID_t selfID, CT_Epetra_MultiVector_ID_t AID );
+  !! int Epetra_MultiVector_Reciprocal ( CT_Epetra_MultiVector_ID_t selfID, 
+  !!     CT_Epetra_MultiVector_ID_t AID );
 
   function Epetra_MultiVector_Reciprocal ( selfID, AID ) result(that) &
         bind(C,name='Epetra_MultiVector_Reciprocal')
@@ -2424,7 +2552,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Scale(double ScalarA, const Epetra_MultiVector& A);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_Scale ( CT_Epetra_MultiVector_ID_t selfID, double ScalarA, CT_Epetra_MultiVector_ID_t AID );
+  !! int Epetra_MultiVector_Scale ( CT_Epetra_MultiVector_ID_t selfID, double ScalarA, 
+  !!     CT_Epetra_MultiVector_ID_t AID );
 
   function Epetra_MultiVector_Scale ( selfID, ScalarA, AID ) result(that) &
         bind(C,name='Epetra_MultiVector_Scale')
@@ -2440,7 +2569,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Update(double ScalarA, const Epetra_MultiVector& A, double ScalarThis);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_Update_WithA ( CT_Epetra_MultiVector_ID_t selfID, double ScalarA, CT_Epetra_MultiVector_ID_t AID, double ScalarThis );
+  !! int Epetra_MultiVector_Update_WithA ( CT_Epetra_MultiVector_ID_t selfID, double ScalarA, 
+  !!     CT_Epetra_MultiVector_ID_t AID, double ScalarThis );
 
   function Epetra_MultiVector_Update_WithA ( selfID, ScalarA, AID, ScalarThis ) &
         result(that) bind(C,name='Epetra_MultiVector_Update_WithA')
@@ -2455,9 +2585,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int Update(double ScalarA, const Epetra_MultiVector& A, double ScalarB, const Epetra_MultiVector& B, double ScalarThis);
+  !! int Update(double ScalarA, const Epetra_MultiVector& A, double ScalarB, const Epetra_MultiVector& B, 
+  !!     double ScalarThis);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_Update_WithAB ( CT_Epetra_MultiVector_ID_t selfID, double ScalarA, CT_Epetra_MultiVector_ID_t AID, double ScalarB, CT_Epetra_MultiVector_ID_t BID, double ScalarThis );
+  !! int Epetra_MultiVector_Update_WithAB ( CT_Epetra_MultiVector_ID_t selfID, double ScalarA, 
+  !!     CT_Epetra_MultiVector_ID_t AID, double ScalarB, CT_Epetra_MultiVector_ID_t BID, double ScalarThis );
 
   function Epetra_MultiVector_Update_WithAB ( selfID, ScalarA, AID, ScalarB, BID, &
         ScalarThis ) result(that) bind(C,name='Epetra_MultiVector_Update_WithAB')
@@ -2521,7 +2653,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int NormWeighted (const Epetra_MultiVector& Weights, double * Result) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_NormWeighted ( CT_Epetra_MultiVector_ID_t selfID, CT_Epetra_MultiVector_ID_t WeightsID, double * Result );
+  !! int Epetra_MultiVector_NormWeighted ( CT_Epetra_MultiVector_ID_t selfID, 
+  !!     CT_Epetra_MultiVector_ID_t WeightsID, double * Result );
 
   function Epetra_MultiVector_NormWeighted ( selfID, WeightsID, Result ) result(that) &
         bind(C,name='Epetra_MultiVector_NormWeighted')
@@ -2580,9 +2713,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int Multiply(char TransA, char TransB, double ScalarAB, const Epetra_MultiVector& A, const Epetra_MultiVector& B, double ScalarThis );
+  !! int Multiply(char TransA, char TransB, double ScalarAB, const Epetra_MultiVector& A, 
+  !!     const Epetra_MultiVector& B, double ScalarThis );
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_Multiply_Matrix ( CT_Epetra_MultiVector_ID_t selfID, char TransA, char TransB, double ScalarAB, CT_Epetra_MultiVector_ID_t AID, CT_Epetra_MultiVector_ID_t BID, double ScalarThis );
+  !! int Epetra_MultiVector_Multiply_Matrix ( CT_Epetra_MultiVector_ID_t selfID, char TransA, 
+  !!     char TransB, double ScalarAB, CT_Epetra_MultiVector_ID_t AID, CT_Epetra_MultiVector_ID_t BID, double ScalarThis );
 
   function Epetra_MultiVector_Multiply_Matrix ( selfID, TransA, TransB, ScalarAB, AID, BID, &
         ScalarThis ) result(that) bind(C,name='Epetra_MultiVector_Multiply_Matrix')
@@ -2600,9 +2735,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int Multiply(double ScalarAB, const Epetra_MultiVector& A, const Epetra_MultiVector& B, double ScalarThis );
+  !! int Multiply(double ScalarAB, const Epetra_MultiVector& A, const Epetra_MultiVector& B, 
+  !!     double ScalarThis );
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_Multiply_ByEl ( CT_Epetra_MultiVector_ID_t selfID, double ScalarAB, CT_Epetra_MultiVector_ID_t AID, CT_Epetra_MultiVector_ID_t BID, double ScalarThis );
+  !! int Epetra_MultiVector_Multiply_ByEl ( CT_Epetra_MultiVector_ID_t selfID, double ScalarAB, 
+  !!     CT_Epetra_MultiVector_ID_t AID, CT_Epetra_MultiVector_ID_t BID, double ScalarThis );
 
   function Epetra_MultiVector_Multiply_ByEl ( selfID, ScalarAB, AID, BID, ScalarThis ) &
         result(that) bind(C,name='Epetra_MultiVector_Multiply_ByEl')
@@ -2618,9 +2755,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int ReciprocalMultiply(double ScalarAB, const Epetra_MultiVector& A, const Epetra_MultiVector& B, double ScalarThis );
+  !! int ReciprocalMultiply(double ScalarAB, const Epetra_MultiVector& A, const Epetra_MultiVector& B, 
+  !!     double ScalarThis );
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_ReciprocalMultiply ( CT_Epetra_MultiVector_ID_t selfID, double ScalarAB, CT_Epetra_MultiVector_ID_t AID, CT_Epetra_MultiVector_ID_t BID, double ScalarThis );
+  !! int Epetra_MultiVector_ReciprocalMultiply ( CT_Epetra_MultiVector_ID_t selfID, double ScalarAB, 
+  !!     CT_Epetra_MultiVector_ID_t AID, CT_Epetra_MultiVector_ID_t BID, double ScalarThis );
 
   function Epetra_MultiVector_ReciprocalMultiply ( selfID, ScalarAB, AID, BID, ScalarThis ) &
         result(that) bind(C,name='Epetra_MultiVector_ReciprocalMultiply')
@@ -2667,7 +2806,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_MultiVector& operator = (const Epetra_MultiVector& Source);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_MultiVector_Assign ( CT_Epetra_MultiVector_ID_t selfID, CT_Epetra_MultiVector_ID_t SourceID );
+  !! void Epetra_MultiVector_Assign ( CT_Epetra_MultiVector_ID_t selfID, 
+  !!     CT_Epetra_MultiVector_ID_t SourceID );
 
   subroutine Epetra_MultiVector_Assign ( selfID, SourceID ) &
         bind(C,name='Epetra_MultiVector_Assign')
@@ -2781,7 +2921,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ReplaceMap(const Epetra_BlockMap& map);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MultiVector_ReplaceMap ( CT_Epetra_MultiVector_ID_t selfID, CT_Epetra_BlockMap_ID_t mapID );
+  !! int Epetra_MultiVector_ReplaceMap ( CT_Epetra_MultiVector_ID_t selfID, 
+  !!     CT_Epetra_BlockMap_ID_t mapID );
 
   function Epetra_MultiVector_ReplaceMap ( selfID, mapID ) result(that) &
         bind(C,name='Epetra_MultiVector_ReplaceMap')
@@ -2827,9 +2968,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_OffsetIndex( const Epetra_CrsGraph & SourceGraph, const Epetra_CrsGraph & TargetGraph, Epetra_Import & Importer );
+  !! Epetra_OffsetIndex( const Epetra_CrsGraph & SourceGraph, const Epetra_CrsGraph & TargetGraph, 
+  !!     Epetra_Import & Importer );
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_OffsetIndex_ID_t Epetra_OffsetIndex_Create_FromImporter ( CT_Epetra_CrsGraph_ID_t SourceGraphID, CT_Epetra_CrsGraph_ID_t TargetGraphID, CT_Epetra_Import_ID_t ImporterID );
+  !! CT_Epetra_OffsetIndex_ID_t Epetra_OffsetIndex_Create_FromImporter ( CT_Epetra_CrsGraph_ID_t SourceGraphID, 
+  !!     CT_Epetra_CrsGraph_ID_t TargetGraphID, CT_Epetra_Import_ID_t ImporterID );
 
   function Epetra_OffsetIndex_Create_FromImporter ( SourceGraphID, TargetGraphID, &
         ImporterID ) result(that) bind(C,name='Epetra_OffsetIndex_Create_FromImporter')
@@ -2843,9 +2986,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_OffsetIndex( const Epetra_CrsGraph & SourceGraph, const Epetra_CrsGraph & TargetGraph, Epetra_Export & Exporter );
+  !! Epetra_OffsetIndex( const Epetra_CrsGraph & SourceGraph, const Epetra_CrsGraph & TargetGraph, 
+  !!     Epetra_Export & Exporter );
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_OffsetIndex_ID_t Epetra_OffsetIndex_Create_FromExporter ( CT_Epetra_CrsGraph_ID_t SourceGraphID, CT_Epetra_CrsGraph_ID_t TargetGraphID, CT_Epetra_Export_ID_t ExporterID );
+  !! CT_Epetra_OffsetIndex_ID_t Epetra_OffsetIndex_Create_FromExporter ( CT_Epetra_CrsGraph_ID_t SourceGraphID, 
+  !!     CT_Epetra_CrsGraph_ID_t TargetGraphID, CT_Epetra_Export_ID_t ExporterID );
 
   function Epetra_OffsetIndex_Create_FromExporter ( SourceGraphID, TargetGraphID, &
         ExporterID ) result(that) bind(C,name='Epetra_OffsetIndex_Create_FromExporter')
@@ -2978,7 +3123,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_Object(const char * const Label, int TracebackModeIn = -1);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_Object_ID_t Epetra_Object_Create_WithLabel ( const char * const Label, int TracebackModeIn );
+  !! CT_Epetra_Object_ID_t Epetra_Object_Create_WithLabel ( const char * const Label, 
+  !!     int TracebackModeIn );
 
   function Epetra_Object_Create_WithLabel ( Label, TracebackModeIn ) result(that) &
         bind(C,name='Epetra_Object_Create_WithLabel')
@@ -3071,7 +3217,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int ReportError(const string Message, int ErrorCode) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Object_ReportError ( CT_Epetra_Object_ID_t selfID, const char Message[], int ErrorCode );
+  !! int Epetra_Object_ReportError ( CT_Epetra_Object_ID_t selfID, const char Message[], 
+  !!     int ErrorCode );
 
   function Epetra_Object_ReportError ( selfID, Message, ErrorCode ) result(that) &
         bind(C,name='Epetra_Object_ReportError')
@@ -3132,7 +3279,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int NumMyRowEntries(int MyRow, int & NumEntries) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_RowMatrix_NumMyRowEntries ( CT_Epetra_RowMatrix_ID_t selfID, int MyRow, int * NumEntries );
+  !! int Epetra_RowMatrix_NumMyRowEntries ( CT_Epetra_RowMatrix_ID_t selfID, int MyRow, 
+  !!     int * NumEntries );
 
   function Epetra_RowMatrix_NumMyRowEntries ( selfID, MyRow, NumEntries ) result(that) &
         bind(C,name='Epetra_RowMatrix_NumMyRowEntries')
@@ -3160,9 +3308,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! virtual int ExtractMyRowCopy(int MyRow, int Length, int & NumEntries, double *Values, int * Indices) const = 0;
+  !! virtual int ExtractMyRowCopy(int MyRow, int Length, int & NumEntries, double *Values, 
+  !!     int * Indices) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_RowMatrix_ExtractMyRowCopy ( CT_Epetra_RowMatrix_ID_t selfID, int MyRow, int Length, int * NumEntries, double * Values, int * Indices );
+  !! int Epetra_RowMatrix_ExtractMyRowCopy ( CT_Epetra_RowMatrix_ID_t selfID, int MyRow, int Length, 
+  !!     int * NumEntries, double * Values, int * Indices );
 
   function Epetra_RowMatrix_ExtractMyRowCopy ( selfID, MyRow, Length, NumEntries, Values, &
         Indices ) result(that) bind(C,name='Epetra_RowMatrix_ExtractMyRowCopy')
@@ -3181,7 +3331,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int ExtractDiagonalCopy(Epetra_Vector & Diagonal) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_RowMatrix_ExtractDiagonalCopy ( CT_Epetra_RowMatrix_ID_t selfID, CT_Epetra_Vector_ID_t DiagonalID );
+  !! int Epetra_RowMatrix_ExtractDiagonalCopy ( CT_Epetra_RowMatrix_ID_t selfID, 
+  !!     CT_Epetra_Vector_ID_t DiagonalID );
 
   function Epetra_RowMatrix_ExtractDiagonalCopy ( selfID, DiagonalID ) result(that) &
         bind(C,name='Epetra_RowMatrix_ExtractDiagonalCopy')
@@ -3196,7 +3347,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int Multiply(bool TransA, const Epetra_MultiVector& X, Epetra_MultiVector& Y) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_RowMatrix_Multiply ( CT_Epetra_RowMatrix_ID_t selfID, boolean TransA, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
+  !! int Epetra_RowMatrix_Multiply ( CT_Epetra_RowMatrix_ID_t selfID, boolean TransA, 
+  !!     CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
   function Epetra_RowMatrix_Multiply ( selfID, TransA, XID, YID ) result(that) &
         bind(C,name='Epetra_RowMatrix_Multiply')
@@ -3211,9 +3363,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! virtual int Solve(bool Upper, bool Trans, bool UnitDiagonal, const Epetra_MultiVector& X, Epetra_MultiVector& Y) const = 0;
+  !! virtual int Solve(bool Upper, bool Trans, bool UnitDiagonal, const Epetra_MultiVector& X, 
+  !!     Epetra_MultiVector& Y) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_RowMatrix_Solve ( CT_Epetra_RowMatrix_ID_t selfID, boolean Upper, boolean Trans, boolean UnitDiagonal, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
+  !! int Epetra_RowMatrix_Solve ( CT_Epetra_RowMatrix_ID_t selfID, boolean Upper, boolean Trans, 
+  !!     boolean UnitDiagonal, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
   function Epetra_RowMatrix_Solve ( selfID, Upper, Trans, UnitDiagonal, XID, YID ) &
         result(that) bind(C,name='Epetra_RowMatrix_Solve')
@@ -3588,7 +3742,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! void SetFlopCounter(const Epetra_Flops & FlopCounter_in);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_CompObject_SetFlopCounter ( CT_Epetra_CompObject_ID_t selfID, CT_Epetra_Flops_ID_t FlopCounter_inID );
+  !! void Epetra_CompObject_SetFlopCounter ( CT_Epetra_CompObject_ID_t selfID, 
+  !!     CT_Epetra_Flops_ID_t FlopCounter_inID );
 
   subroutine Epetra_CompObject_SetFlopCounter ( selfID, FlopCounter_inID ) &
         bind(C,name='Epetra_CompObject_SetFlopCounter')
@@ -3602,7 +3757,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! void SetFlopCounter(const Epetra_CompObject & CompObject);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_CompObject_SetFlopCounter_Matching ( CT_Epetra_CompObject_ID_t selfID, CT_Epetra_CompObject_ID_t CompObjectID );
+  !! void Epetra_CompObject_SetFlopCounter_Matching ( CT_Epetra_CompObject_ID_t selfID, 
+  !!     CT_Epetra_CompObject_ID_t CompObjectID );
 
   subroutine Epetra_CompObject_SetFlopCounter_Matching ( selfID, CompObjectID ) &
         bind(C,name='Epetra_CompObject_SetFlopCounter_Matching')
@@ -3726,7 +3882,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_CompObject& operator=(const Epetra_CompObject& src);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_CompObject_Assign ( CT_Epetra_CompObject_ID_t selfID, CT_Epetra_CompObject_ID_t srcID );
+  !! void Epetra_CompObject_Assign ( CT_Epetra_CompObject_ID_t selfID, 
+  !!     CT_Epetra_CompObject_ID_t srcID );
 
   subroutine Epetra_CompObject_Assign ( selfID, srcID ) &
         bind(C,name='Epetra_CompObject_Assign')
@@ -3783,9 +3940,13 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! virtual int GetDirectoryEntries( const Epetra_BlockMap& Map, const int NumEntries, const int * GlobalEntries, int * Procs, int * LocalEntries, int * EntrySizes, bool high_rank_sharing_procs=false) const = 0;
+  !! virtual int GetDirectoryEntries( const Epetra_BlockMap& Map, const int NumEntries, 
+  !!     const int * GlobalEntries, int * Procs, int * LocalEntries, int * EntrySizes, 
+  !!     bool high_rank_sharing_procs=false) const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Directory_GetDirectoryEntries ( CT_Epetra_Directory_ID_t selfID, CT_Epetra_BlockMap_ID_t MapID, const int NumEntries, const int * GlobalEntries, int * Procs, int * LocalEntries, int * EntrySizes, boolean high_rank_sharing_procs );
+  !! int Epetra_Directory_GetDirectoryEntries ( CT_Epetra_Directory_ID_t selfID, 
+  !!     CT_Epetra_BlockMap_ID_t MapID, const int NumEntries, const int * GlobalEntries, int * Procs, int * LocalEntries, 
+  !!     int * EntrySizes, boolean high_rank_sharing_procs );
 
   function Epetra_Directory_GetDirectoryEntries ( selfID, MapID, NumEntries, GlobalEntries, &
         Procs, LocalEntries, EntrySizes, high_rank_sharing_procs ) result(that) &
@@ -4080,7 +4241,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Broadcast(double * MyVals, int Count, int Root) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_Broadcast_Double ( CT_Epetra_MpiComm_ID_t selfID, double * MyVals, int Count, int Root );
+  !! int Epetra_MpiComm_Broadcast_Double ( CT_Epetra_MpiComm_ID_t selfID, double * MyVals, int Count, 
+  !!     int Root );
 
   function Epetra_MpiComm_Broadcast_Double ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_MpiComm_Broadcast_Double')
@@ -4097,7 +4259,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Broadcast(int * MyVals, int Count, int Root) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_Broadcast_Int ( CT_Epetra_MpiComm_ID_t selfID, int * MyVals, int Count, int Root );
+  !! int Epetra_MpiComm_Broadcast_Int ( CT_Epetra_MpiComm_ID_t selfID, int * MyVals, int Count, 
+  !!     int Root );
 
   function Epetra_MpiComm_Broadcast_Int ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_MpiComm_Broadcast_Int')
@@ -4114,7 +4277,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Broadcast(long * MyVals, int Count, int Root) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_Broadcast_Long ( CT_Epetra_MpiComm_ID_t selfID, long * MyVals, int Count, int Root );
+  !! int Epetra_MpiComm_Broadcast_Long ( CT_Epetra_MpiComm_ID_t selfID, long * MyVals, int Count, 
+  !!     int Root );
 
   function Epetra_MpiComm_Broadcast_Long ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_MpiComm_Broadcast_Long')
@@ -4131,7 +4295,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Broadcast(char * MyVals, int Count, int Root) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_Broadcast_Char ( CT_Epetra_MpiComm_ID_t selfID, char * MyVals, int Count, int Root );
+  !! int Epetra_MpiComm_Broadcast_Char ( CT_Epetra_MpiComm_ID_t selfID, char * MyVals, int Count, 
+  !!     int Root );
 
   function Epetra_MpiComm_Broadcast_Char ( selfID, MyVals, Count, Root ) result(that) &
         bind(C,name='Epetra_MpiComm_Broadcast_Char')
@@ -4148,7 +4313,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int GatherAll(double * MyVals, double * AllVals, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_GatherAll_Double ( CT_Epetra_MpiComm_ID_t selfID, double * MyVals, double * AllVals, int Count );
+  !! int Epetra_MpiComm_GatherAll_Double ( CT_Epetra_MpiComm_ID_t selfID, double * MyVals, 
+  !!     double * AllVals, int Count );
 
   function Epetra_MpiComm_GatherAll_Double ( selfID, MyVals, AllVals, Count ) result(that) &
         bind(C,name='Epetra_MpiComm_GatherAll_Double')
@@ -4165,7 +4331,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int GatherAll(int * MyVals, int * AllVals, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_GatherAll_Int ( CT_Epetra_MpiComm_ID_t selfID, int * MyVals, int * AllVals, int Count );
+  !! int Epetra_MpiComm_GatherAll_Int ( CT_Epetra_MpiComm_ID_t selfID, int * MyVals, int * AllVals, 
+  !!     int Count );
 
   function Epetra_MpiComm_GatherAll_Int ( selfID, MyVals, AllVals, Count ) result(that) &
         bind(C,name='Epetra_MpiComm_GatherAll_Int')
@@ -4182,7 +4349,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int GatherAll(long * MyVals, long * AllVals, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_GatherAll_Long ( CT_Epetra_MpiComm_ID_t selfID, long * MyVals, long * AllVals, int Count );
+  !! int Epetra_MpiComm_GatherAll_Long ( CT_Epetra_MpiComm_ID_t selfID, long * MyVals, long * AllVals, 
+  !!     int Count );
 
   function Epetra_MpiComm_GatherAll_Long ( selfID, MyVals, AllVals, Count ) result(that) &
         bind(C,name='Epetra_MpiComm_GatherAll_Long')
@@ -4199,7 +4367,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int SumAll(double * PartialSums, double * GlobalSums, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_SumAll_Double ( CT_Epetra_MpiComm_ID_t selfID, double * PartialSums, double * GlobalSums, int Count );
+  !! int Epetra_MpiComm_SumAll_Double ( CT_Epetra_MpiComm_ID_t selfID, double * PartialSums, 
+  !!     double * GlobalSums, int Count );
 
   function Epetra_MpiComm_SumAll_Double ( selfID, PartialSums, GlobalSums, Count ) &
         result(that) bind(C,name='Epetra_MpiComm_SumAll_Double')
@@ -4216,7 +4385,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int SumAll(int * PartialSums, int * GlobalSums, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_SumAll_Int ( CT_Epetra_MpiComm_ID_t selfID, int * PartialSums, int * GlobalSums, int Count );
+  !! int Epetra_MpiComm_SumAll_Int ( CT_Epetra_MpiComm_ID_t selfID, int * PartialSums, 
+  !!     int * GlobalSums, int Count );
 
   function Epetra_MpiComm_SumAll_Int ( selfID, PartialSums, GlobalSums, Count ) &
         result(that) bind(C,name='Epetra_MpiComm_SumAll_Int')
@@ -4233,7 +4403,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int SumAll(long * PartialSums, long * GlobalSums, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_SumAll_Long ( CT_Epetra_MpiComm_ID_t selfID, long * PartialSums, long * GlobalSums, int Count );
+  !! int Epetra_MpiComm_SumAll_Long ( CT_Epetra_MpiComm_ID_t selfID, long * PartialSums, 
+  !!     long * GlobalSums, int Count );
 
   function Epetra_MpiComm_SumAll_Long ( selfID, PartialSums, GlobalSums, Count ) &
         result(that) bind(C,name='Epetra_MpiComm_SumAll_Long')
@@ -4250,7 +4421,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int MaxAll(double * PartialMaxs, double * GlobalMaxs, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_MaxAll_Double ( CT_Epetra_MpiComm_ID_t selfID, double * PartialMaxs, double * GlobalMaxs, int Count );
+  !! int Epetra_MpiComm_MaxAll_Double ( CT_Epetra_MpiComm_ID_t selfID, double * PartialMaxs, 
+  !!     double * GlobalMaxs, int Count );
 
   function Epetra_MpiComm_MaxAll_Double ( selfID, PartialMaxs, GlobalMaxs, Count ) &
         result(that) bind(C,name='Epetra_MpiComm_MaxAll_Double')
@@ -4267,7 +4439,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int MaxAll(int * PartialMaxs, int * GlobalMaxs, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_MaxAll_Int ( CT_Epetra_MpiComm_ID_t selfID, int * PartialMaxs, int * GlobalMaxs, int Count );
+  !! int Epetra_MpiComm_MaxAll_Int ( CT_Epetra_MpiComm_ID_t selfID, int * PartialMaxs, 
+  !!     int * GlobalMaxs, int Count );
 
   function Epetra_MpiComm_MaxAll_Int ( selfID, PartialMaxs, GlobalMaxs, Count ) &
         result(that) bind(C,name='Epetra_MpiComm_MaxAll_Int')
@@ -4284,7 +4457,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int MaxAll(long * PartialMaxs, long * GlobalMaxs, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_MaxAll_Long ( CT_Epetra_MpiComm_ID_t selfID, long * PartialMaxs, long * GlobalMaxs, int Count );
+  !! int Epetra_MpiComm_MaxAll_Long ( CT_Epetra_MpiComm_ID_t selfID, long * PartialMaxs, 
+  !!     long * GlobalMaxs, int Count );
 
   function Epetra_MpiComm_MaxAll_Long ( selfID, PartialMaxs, GlobalMaxs, Count ) &
         result(that) bind(C,name='Epetra_MpiComm_MaxAll_Long')
@@ -4301,7 +4475,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int MinAll(double * PartialMins, double * GlobalMins, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_MinAll_Double ( CT_Epetra_MpiComm_ID_t selfID, double * PartialMins, double * GlobalMins, int Count );
+  !! int Epetra_MpiComm_MinAll_Double ( CT_Epetra_MpiComm_ID_t selfID, double * PartialMins, 
+  !!     double * GlobalMins, int Count );
 
   function Epetra_MpiComm_MinAll_Double ( selfID, PartialMins, GlobalMins, Count ) &
         result(that) bind(C,name='Epetra_MpiComm_MinAll_Double')
@@ -4318,7 +4493,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int MinAll(int * PartialMins, int * GlobalMins, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_MinAll_Int ( CT_Epetra_MpiComm_ID_t selfID, int * PartialMins, int * GlobalMins, int Count );
+  !! int Epetra_MpiComm_MinAll_Int ( CT_Epetra_MpiComm_ID_t selfID, int * PartialMins, 
+  !!     int * GlobalMins, int Count );
 
   function Epetra_MpiComm_MinAll_Int ( selfID, PartialMins, GlobalMins, Count ) &
         result(that) bind(C,name='Epetra_MpiComm_MinAll_Int')
@@ -4335,7 +4511,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int MinAll(long * PartialMins, long * GlobalMins, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_MinAll_Long ( CT_Epetra_MpiComm_ID_t selfID, long * PartialMins, long * GlobalMins, int Count );
+  !! int Epetra_MpiComm_MinAll_Long ( CT_Epetra_MpiComm_ID_t selfID, long * PartialMins, 
+  !!     long * GlobalMins, int Count );
 
   function Epetra_MpiComm_MinAll_Long ( selfID, PartialMins, GlobalMins, Count ) &
         result(that) bind(C,name='Epetra_MpiComm_MinAll_Long')
@@ -4352,7 +4529,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ScanSum(double * MyVals, double * ScanSums, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_ScanSum_Double ( CT_Epetra_MpiComm_ID_t selfID, double * MyVals, double * ScanSums, int Count );
+  !! int Epetra_MpiComm_ScanSum_Double ( CT_Epetra_MpiComm_ID_t selfID, double * MyVals, 
+  !!     double * ScanSums, int Count );
 
   function Epetra_MpiComm_ScanSum_Double ( selfID, MyVals, ScanSums, Count ) result(that) &
         bind(C,name='Epetra_MpiComm_ScanSum_Double')
@@ -4369,7 +4547,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ScanSum(int * MyVals, int * ScanSums, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_ScanSum_Int ( CT_Epetra_MpiComm_ID_t selfID, int * MyVals, int * ScanSums, int Count );
+  !! int Epetra_MpiComm_ScanSum_Int ( CT_Epetra_MpiComm_ID_t selfID, int * MyVals, int * ScanSums, 
+  !!     int Count );
 
   function Epetra_MpiComm_ScanSum_Int ( selfID, MyVals, ScanSums, Count ) result(that) &
         bind(C,name='Epetra_MpiComm_ScanSum_Int')
@@ -4386,7 +4565,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ScanSum(long * MyVals, long * ScanSums, int Count) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_MpiComm_ScanSum_Long ( CT_Epetra_MpiComm_ID_t selfID, long * MyVals, long * ScanSums, int Count );
+  !! int Epetra_MpiComm_ScanSum_Long ( CT_Epetra_MpiComm_ID_t selfID, long * MyVals, long * ScanSums, 
+  !!     int Count );
 
   function Epetra_MpiComm_ScanSum_Long ( selfID, MyVals, ScanSums, Count ) result(that) &
         bind(C,name='Epetra_MpiComm_ScanSum_Long')
@@ -4444,7 +4624,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_Directory * CreateDirectory(const Epetra_BlockMap & Map) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_Directory_ID_t Epetra_MpiComm_CreateDirectory ( CT_Epetra_MpiComm_ID_t selfID, CT_Epetra_BlockMap_ID_t MapID );
+  !! CT_Epetra_Directory_ID_t Epetra_MpiComm_CreateDirectory ( CT_Epetra_MpiComm_ID_t selfID, 
+  !!     CT_Epetra_BlockMap_ID_t MapID );
 
   function Epetra_MpiComm_CreateDirectory ( selfID, MapID ) result(that) &
         bind(C,name='Epetra_MpiComm_CreateDirectory')
@@ -4520,9 +4701,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const int* NumEntriesPerRow, bool StaticProfile = false);
+  !! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const int* NumEntriesPerRow, 
+  !!     bool StaticProfile = false);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_VarPerRow ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, const int * NumEntriesPerRow, boolean StaticProfile );
+  !! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_VarPerRow ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_Map_ID_t RowMapID, const int * NumEntriesPerRow, boolean StaticProfile );
 
   function Epetra_CrsMatrix_Create_VarPerRow ( CV, RowMapID, NumEntriesPerRow, &
         StaticProfile ) result(that) bind(C,name='Epetra_CrsMatrix_Create_VarPerRow')
@@ -4538,9 +4721,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, int NumEntriesPerRow, bool StaticProfile = false);
+  !! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, int NumEntriesPerRow, 
+  !!     bool StaticProfile = false);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, int NumEntriesPerRow, boolean StaticProfile );
+  !! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_Map_ID_t RowMapID, int NumEntriesPerRow, boolean StaticProfile );
 
   function Epetra_CrsMatrix_Create ( CV, RowMapID, NumEntriesPerRow, StaticProfile ) &
         result(that) bind(C,name='Epetra_CrsMatrix_Create')
@@ -4556,9 +4741,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const Epetra_Map& ColMap, const int* NumEntriesPerRow, bool StaticProfile = false);
+  !! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const Epetra_Map& ColMap, 
+  !!     const int* NumEntriesPerRow, bool StaticProfile = false);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_VarPerRow_WithColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, const int * NumEntriesPerRow, boolean StaticProfile );
+  !! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_VarPerRow_WithColMap ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, const int * NumEntriesPerRow, boolean StaticProfile );
 
   function Epetra_CrsMatrix_Create_VarPerRow_WithColMap ( CV, RowMapID, ColMapID, &
         NumEntriesPerRow, StaticProfile ) result(that) &
@@ -4576,9 +4763,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const Epetra_Map& ColMap, int NumEntriesPerRow, bool StaticProfile = false);
+  !! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const Epetra_Map& ColMap, 
+  !!     int NumEntriesPerRow, bool StaticProfile = false);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_WithColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, int NumEntriesPerRow, boolean StaticProfile );
+  !! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_WithColMap ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, int NumEntriesPerRow, boolean StaticProfile );
 
   function Epetra_CrsMatrix_Create_WithColMap ( CV, RowMapID, ColMapID, NumEntriesPerRow, &
         StaticProfile ) result(that) bind(C,name='Epetra_CrsMatrix_Create_WithColMap')
@@ -4597,7 +4786,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_CrsGraph& Graph);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_FromGraph ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_CrsGraph_ID_t GraphID );
+  !! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_FromGraph ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_CrsGraph_ID_t GraphID );
 
   function Epetra_CrsMatrix_Create_FromGraph ( CV, GraphID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Create_FromGraph')
@@ -4682,7 +4872,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int InsertGlobalValues(int GlobalRow, int NumEntries, double* Values, int* Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_InsertGlobalValues ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, int NumEntries, double * Values, int * Indices );
+  !! int Epetra_CrsMatrix_InsertGlobalValues ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, 
+  !!     int NumEntries, double * Values, int * Indices );
 
   function Epetra_CrsMatrix_InsertGlobalValues ( selfID, GlobalRow, NumEntries, Values, &
         Indices ) result(that) bind(C,name='Epetra_CrsMatrix_InsertGlobalValues')
@@ -4700,7 +4891,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int ReplaceGlobalValues(int GlobalRow, int NumEntries, double* Values, int* Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_ReplaceGlobalValues ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, int NumEntries, double * Values, int * Indices );
+  !! int Epetra_CrsMatrix_ReplaceGlobalValues ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, 
+  !!     int NumEntries, double * Values, int * Indices );
 
   function Epetra_CrsMatrix_ReplaceGlobalValues ( selfID, GlobalRow, NumEntries, Values, &
         Indices ) result(that) bind(C,name='Epetra_CrsMatrix_ReplaceGlobalValues')
@@ -4718,7 +4910,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int SumIntoGlobalValues(int GlobalRow, int NumEntries, double* Values, int* Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_SumIntoGlobalValues ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, int NumEntries, double * Values, int * Indices );
+  !! int Epetra_CrsMatrix_SumIntoGlobalValues ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, 
+  !!     int NumEntries, double * Values, int * Indices );
 
   function Epetra_CrsMatrix_SumIntoGlobalValues ( selfID, GlobalRow, NumEntries, Values, &
         Indices ) result(that) bind(C,name='Epetra_CrsMatrix_SumIntoGlobalValues')
@@ -4736,7 +4929,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int InsertMyValues(int MyRow, int NumEntries, double* Values, int* Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_InsertMyValues ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int NumEntries, double * Values, int * Indices );
+  !! int Epetra_CrsMatrix_InsertMyValues ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int NumEntries, 
+  !!     double * Values, int * Indices );
 
   function Epetra_CrsMatrix_InsertMyValues ( selfID, MyRow, NumEntries, Values, Indices ) &
         result(that) bind(C,name='Epetra_CrsMatrix_InsertMyValues')
@@ -4754,7 +4948,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ReplaceMyValues(int MyRow, int NumEntries, double* Values, int* Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_ReplaceMyValues ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int NumEntries, double * Values, int * Indices );
+  !! int Epetra_CrsMatrix_ReplaceMyValues ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int NumEntries, 
+  !!     double * Values, int * Indices );
 
   function Epetra_CrsMatrix_ReplaceMyValues ( selfID, MyRow, NumEntries, Values, Indices ) &
         result(that) bind(C,name='Epetra_CrsMatrix_ReplaceMyValues')
@@ -4772,7 +4967,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int SumIntoMyValues(int MyRow, int NumEntries, double* Values, int* Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_SumIntoMyValues ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int NumEntries, double * Values, int * Indices );
+  !! int Epetra_CrsMatrix_SumIntoMyValues ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int NumEntries, 
+  !!     double * Values, int * Indices );
 
   function Epetra_CrsMatrix_SumIntoMyValues ( selfID, MyRow, NumEntries, Values, Indices ) &
         result(that) bind(C,name='Epetra_CrsMatrix_SumIntoMyValues')
@@ -4790,7 +4986,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ReplaceDiagonalValues(const Epetra_Vector& Diagonal);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_ReplaceDiagonalValues ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_Vector_ID_t DiagonalID );
+  !! int Epetra_CrsMatrix_ReplaceDiagonalValues ( CT_Epetra_CrsMatrix_ID_t selfID, 
+  !!     CT_Epetra_Vector_ID_t DiagonalID );
 
   function Epetra_CrsMatrix_ReplaceDiagonalValues ( selfID, DiagonalID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_ReplaceDiagonalValues')
@@ -4818,9 +5015,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int FillComplete(const Epetra_Map& DomainMap, const Epetra_Map& RangeMap, bool OptimizeDataStorage = true);
+  !! int FillComplete(const Epetra_Map& DomainMap, const Epetra_Map& RangeMap, bool OptimizeDataStorage = 
+  !!     true);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_FillComplete_UsingMaps ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_Map_ID_t DomainMapID, CT_Epetra_Map_ID_t RangeMapID, boolean OptimizeDataStorage );
+  !! int Epetra_CrsMatrix_FillComplete_UsingMaps ( CT_Epetra_CrsMatrix_ID_t selfID, 
+  !!     CT_Epetra_Map_ID_t DomainMapID, CT_Epetra_Map_ID_t RangeMapID, boolean OptimizeDataStorage );
 
   function Epetra_CrsMatrix_FillComplete_UsingMaps ( selfID, DomainMapID, RangeMapID, &
         OptimizeDataStorage ) result(that) &
@@ -4864,9 +5063,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int ExtractGlobalRowCopy(int GlobalRow, int Length, int& NumEntries, double* Values, int* Indices) const;
+  !! int ExtractGlobalRowCopy(int GlobalRow, int Length, int& NumEntries, double* Values, 
+  !!     int* Indices) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_ExtractGlobalRowCopy_WithIndices ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, int Length, int * NumEntries, double * Values, int * Indices );
+  !! int Epetra_CrsMatrix_ExtractGlobalRowCopy_WithIndices ( CT_Epetra_CrsMatrix_ID_t selfID, 
+  !!     int GlobalRow, int Length, int * NumEntries, double * Values, int * Indices );
 
   function Epetra_CrsMatrix_ExtractGlobalRowCopy_WithIndices ( selfID, GlobalRow, Length, &
         NumEntries, Values, Indices ) result(that) &
@@ -4886,7 +5087,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractMyRowCopy(int MyRow, int Length, int& NumEntries, double* Values, int* Indices) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_ExtractMyRowCopy_WithIndices ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int Length, int * NumEntries, double * Values, int * Indices );
+  !! int Epetra_CrsMatrix_ExtractMyRowCopy_WithIndices ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, 
+  !!     int Length, int * NumEntries, double * Values, int * Indices );
 
   function Epetra_CrsMatrix_ExtractMyRowCopy_WithIndices ( selfID, MyRow, Length, &
         NumEntries, Values, Indices ) result(that) &
@@ -4906,7 +5108,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractGlobalRowCopy(int GlobalRow, int Length, int& NumEntries, double* Values) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_ExtractGlobalRowCopy ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, int Length, int * NumEntries, double * Values );
+  !! int Epetra_CrsMatrix_ExtractGlobalRowCopy ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, 
+  !!     int Length, int * NumEntries, double * Values );
 
   function Epetra_CrsMatrix_ExtractGlobalRowCopy ( selfID, GlobalRow, Length, NumEntries, &
         Values ) result(that) bind(C,name='Epetra_CrsMatrix_ExtractGlobalRowCopy')
@@ -4924,7 +5127,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractMyRowCopy(int MyRow, int Length, int& NumEntries, double* Values) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_ExtractMyRowCopy ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int Length, int * NumEntries, double * Values );
+  !! int Epetra_CrsMatrix_ExtractMyRowCopy ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int Length, 
+  !!     int * NumEntries, double * Values );
 
   function Epetra_CrsMatrix_ExtractMyRowCopy ( selfID, MyRow, Length, NumEntries, Values ) &
         result(that) bind(C,name='Epetra_CrsMatrix_ExtractMyRowCopy')
@@ -4942,7 +5146,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractDiagonalCopy(Epetra_Vector& Diagonal) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_ExtractDiagonalCopy ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_Vector_ID_t DiagonalID );
+  !! int Epetra_CrsMatrix_ExtractDiagonalCopy ( CT_Epetra_CrsMatrix_ID_t selfID, 
+  !!     CT_Epetra_Vector_ID_t DiagonalID );
 
   function Epetra_CrsMatrix_ExtractDiagonalCopy ( selfID, DiagonalID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_ExtractDiagonalCopy')
@@ -4957,7 +5162,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractGlobalRowView(int GlobalRow, int& NumEntries, double*& Values, int*& Indices) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_ExtractGlobalRowView_WithIndices ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, int * NumEntries, double ** Values, int ** Indices );
+  !! int Epetra_CrsMatrix_ExtractGlobalRowView_WithIndices ( CT_Epetra_CrsMatrix_ID_t selfID, 
+  !!     int GlobalRow, int * NumEntries, double ** Values, int ** Indices );
 
   function Epetra_CrsMatrix_ExtractGlobalRowView_WithIndices ( selfID, GlobalRow, &
         NumEntries, Values, Indices ) result(that) &
@@ -4976,7 +5182,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractMyRowView(int MyRow, int& NumEntries, double*& Values, int*& Indices) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_ExtractMyRowView_WithIndices ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int * NumEntries, double ** Values, int ** Indices );
+  !! int Epetra_CrsMatrix_ExtractMyRowView_WithIndices ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, 
+  !!     int * NumEntries, double ** Values, int ** Indices );
 
   function Epetra_CrsMatrix_ExtractMyRowView_WithIndices ( selfID, MyRow, NumEntries, &
         Values, Indices ) result(that) &
@@ -4995,7 +5202,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractGlobalRowView(int GlobalRow, int& NumEntries, double*& Values) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_ExtractGlobalRowView ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, int * NumEntries, double ** Values );
+  !! int Epetra_CrsMatrix_ExtractGlobalRowView ( CT_Epetra_CrsMatrix_ID_t selfID, int GlobalRow, 
+  !!     int * NumEntries, double ** Values );
 
   function Epetra_CrsMatrix_ExtractGlobalRowView ( selfID, GlobalRow, NumEntries, Values ) &
         result(that) bind(C,name='Epetra_CrsMatrix_ExtractGlobalRowView')
@@ -5012,7 +5220,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractMyRowView(int MyRow, int& NumEntries, double*& Values) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_ExtractMyRowView ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int * NumEntries, double ** Values );
+  !! int Epetra_CrsMatrix_ExtractMyRowView ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, 
+  !!     int * NumEntries, double ** Values );
 
   function Epetra_CrsMatrix_ExtractMyRowView ( selfID, MyRow, NumEntries, Values ) &
         result(that) bind(C,name='Epetra_CrsMatrix_ExtractMyRowView')
@@ -5029,7 +5238,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Multiply(bool TransA, const Epetra_Vector& x, Epetra_Vector& y) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_Multiply_Vector ( CT_Epetra_CrsMatrix_ID_t selfID, boolean TransA, CT_Epetra_Vector_ID_t xID, CT_Epetra_Vector_ID_t yID );
+  !! int Epetra_CrsMatrix_Multiply_Vector ( CT_Epetra_CrsMatrix_ID_t selfID, boolean TransA, 
+  !!     CT_Epetra_Vector_ID_t xID, CT_Epetra_Vector_ID_t yID );
 
   function Epetra_CrsMatrix_Multiply_Vector ( selfID, TransA, xID, yID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Multiply_Vector')
@@ -5046,7 +5256,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Multiply1(bool TransA, const Epetra_Vector& x, Epetra_Vector& y) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_Multiply1_Vector ( CT_Epetra_CrsMatrix_ID_t selfID, boolean TransA, CT_Epetra_Vector_ID_t xID, CT_Epetra_Vector_ID_t yID );
+  !! int Epetra_CrsMatrix_Multiply1_Vector ( CT_Epetra_CrsMatrix_ID_t selfID, boolean TransA, 
+  !!     CT_Epetra_Vector_ID_t xID, CT_Epetra_Vector_ID_t yID );
 
   function Epetra_CrsMatrix_Multiply1_Vector ( selfID, TransA, xID, yID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Multiply1_Vector')
@@ -5063,7 +5274,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Multiply(bool TransA, const Epetra_MultiVector& X, Epetra_MultiVector& Y) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_Multiply_MultiVector ( CT_Epetra_CrsMatrix_ID_t selfID, boolean TransA, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
+  !! int Epetra_CrsMatrix_Multiply_MultiVector ( CT_Epetra_CrsMatrix_ID_t selfID, boolean TransA, 
+  !!     CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
   function Epetra_CrsMatrix_Multiply_MultiVector ( selfID, TransA, XID, YID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Multiply_MultiVector')
@@ -5080,7 +5292,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Multiply1(bool TransA, const Epetra_MultiVector& X, Epetra_MultiVector& Y) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_Multiply1_MultiVector ( CT_Epetra_CrsMatrix_ID_t selfID, boolean TransA, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
+  !! int Epetra_CrsMatrix_Multiply1_MultiVector ( CT_Epetra_CrsMatrix_ID_t selfID, boolean TransA, 
+  !!     CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
   function Epetra_CrsMatrix_Multiply1_MultiVector ( selfID, TransA, XID, YID ) &
         result(that) bind(C,name='Epetra_CrsMatrix_Multiply1_MultiVector')
@@ -5097,7 +5310,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Solve(bool Upper, bool Trans, bool UnitDiagonal, const Epetra_Vector& x, Epetra_Vector& y) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_Solve_Vector ( CT_Epetra_CrsMatrix_ID_t selfID, boolean Upper, boolean Trans, boolean UnitDiagonal, CT_Epetra_Vector_ID_t xID, CT_Epetra_Vector_ID_t yID );
+  !! int Epetra_CrsMatrix_Solve_Vector ( CT_Epetra_CrsMatrix_ID_t selfID, boolean Upper, boolean Trans, 
+  !!     boolean UnitDiagonal, CT_Epetra_Vector_ID_t xID, CT_Epetra_Vector_ID_t yID );
 
   function Epetra_CrsMatrix_Solve_Vector ( selfID, Upper, Trans, UnitDiagonal, xID, yID ) &
         result(that) bind(C,name='Epetra_CrsMatrix_Solve_Vector')
@@ -5114,9 +5328,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int Solve(bool Upper, bool Trans, bool UnitDiagonal, const Epetra_MultiVector& X, Epetra_MultiVector& Y) const;
+  !! int Solve(bool Upper, bool Trans, bool UnitDiagonal, const Epetra_MultiVector& X, 
+  !!     Epetra_MultiVector& Y) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_Solve_MultiVector ( CT_Epetra_CrsMatrix_ID_t selfID, boolean Upper, boolean Trans, boolean UnitDiagonal, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
+  !! int Epetra_CrsMatrix_Solve_MultiVector ( CT_Epetra_CrsMatrix_ID_t selfID, boolean Upper, 
+  !!     boolean Trans, boolean UnitDiagonal, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
   function Epetra_CrsMatrix_Solve_MultiVector ( selfID, Upper, Trans, UnitDiagonal, XID, &
         YID ) result(that) bind(C,name='Epetra_CrsMatrix_Solve_MultiVector')
@@ -5635,7 +5851,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ReplaceRowMap(const Epetra_BlockMap& newmap);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_ReplaceRowMap ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_BlockMap_ID_t newmapID );
+  !! int Epetra_CrsMatrix_ReplaceRowMap ( CT_Epetra_CrsMatrix_ID_t selfID, 
+  !!     CT_Epetra_BlockMap_ID_t newmapID );
 
   function Epetra_CrsMatrix_ReplaceRowMap ( selfID, newmapID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_ReplaceRowMap')
@@ -5664,7 +5881,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ReplaceColMap(const Epetra_BlockMap& newmap);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_ReplaceColMap ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_BlockMap_ID_t newmapID );
+  !! int Epetra_CrsMatrix_ReplaceColMap ( CT_Epetra_CrsMatrix_ID_t selfID, 
+  !!     CT_Epetra_BlockMap_ID_t newmapID );
 
   function Epetra_CrsMatrix_ReplaceColMap ( selfID, newmapID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_ReplaceColMap')
@@ -5927,7 +6145,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Apply(const Epetra_MultiVector& X, Epetra_MultiVector& Y) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_Apply ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
+  !! int Epetra_CrsMatrix_Apply ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_MultiVector_ID_t XID, 
+  !!     CT_Epetra_MultiVector_ID_t YID );
 
   function Epetra_CrsMatrix_Apply ( selfID, XID, YID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_Apply')
@@ -5943,7 +6162,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ApplyInverse(const Epetra_MultiVector& X, Epetra_MultiVector& Y) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_ApplyInverse ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
+  !! int Epetra_CrsMatrix_ApplyInverse ( CT_Epetra_CrsMatrix_ID_t selfID, 
+  !!     CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
   function Epetra_CrsMatrix_ApplyInverse ( selfID, XID, YID ) result(that) &
         bind(C,name='Epetra_CrsMatrix_ApplyInverse')
@@ -6015,7 +6235,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int NumMyRowEntries(int MyRow, int& NumEntries) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_NumMyRowEntries ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, int * NumEntries );
+  !! int Epetra_CrsMatrix_NumMyRowEntries ( CT_Epetra_CrsMatrix_ID_t selfID, int MyRow, 
+  !!     int * NumEntries );
 
   function Epetra_CrsMatrix_NumMyRowEntries ( selfID, MyRow, NumEntries ) result(that) &
         bind(C,name='Epetra_CrsMatrix_NumMyRowEntries')
@@ -6116,7 +6337,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int TransformToLocal(const Epetra_Map* DomainMap, const Epetra_Map* RangeMap);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsMatrix_TransformToLocal_UsingMaps ( CT_Epetra_CrsMatrix_ID_t selfID, CT_Epetra_Map_ID_t DomainMapID, CT_Epetra_Map_ID_t RangeMapID );
+  !! int Epetra_CrsMatrix_TransformToLocal_UsingMaps ( CT_Epetra_CrsMatrix_ID_t selfID, 
+  !!     CT_Epetra_Map_ID_t DomainMapID, CT_Epetra_Map_ID_t RangeMapID );
 
   function Epetra_CrsMatrix_TransformToLocal_UsingMaps ( selfID, DomainMapID, RangeMapID ) &
         result(that) bind(C,name='Epetra_CrsMatrix_TransformToLocal_UsingMaps')
@@ -6163,9 +6385,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_CrsGraph(Epetra_DataAccess CV, const Epetra_BlockMap& RowMap, const int* NumIndicesPerRow, bool StaticProfile = false);
+  !! Epetra_CrsGraph(Epetra_DataAccess CV, const Epetra_BlockMap& RowMap, const int* NumIndicesPerRow, 
+  !!     bool StaticProfile = false);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create_VarPerRow ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t RowMapID, const int * NumIndicesPerRow, boolean StaticProfile );
+  !! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create_VarPerRow ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_BlockMap_ID_t RowMapID, const int * NumIndicesPerRow, boolean StaticProfile );
 
   function Epetra_CrsGraph_Create_VarPerRow ( CV, RowMapID, NumIndicesPerRow, StaticProfile ) &
         result(that) bind(C,name='Epetra_CrsGraph_Create_VarPerRow')
@@ -6181,9 +6405,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_CrsGraph(Epetra_DataAccess CV, const Epetra_BlockMap& RowMap, int NumIndicesPerRow, bool StaticProfile = false);
+  !! Epetra_CrsGraph(Epetra_DataAccess CV, const Epetra_BlockMap& RowMap, int NumIndicesPerRow, 
+  !!     bool StaticProfile = false);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t RowMapID, int NumIndicesPerRow, boolean StaticProfile );
+  !! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_BlockMap_ID_t RowMapID, int NumIndicesPerRow, boolean StaticProfile );
 
   function Epetra_CrsGraph_Create ( CV, RowMapID, NumIndicesPerRow, StaticProfile ) &
         result(that) bind(C,name='Epetra_CrsGraph_Create')
@@ -6199,9 +6425,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_CrsGraph(Epetra_DataAccess CV, const Epetra_BlockMap& RowMap, const Epetra_BlockMap& ColMap, const int* NumIndicesPerRow, bool StaticProfile = false);
+  !! Epetra_CrsGraph(Epetra_DataAccess CV, const Epetra_BlockMap& RowMap, const Epetra_BlockMap& ColMap, 
+  !!     const int* NumIndicesPerRow, bool StaticProfile = false);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create_VarPerRow_WithColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t RowMapID, CT_Epetra_BlockMap_ID_t ColMapID, const int * NumIndicesPerRow, boolean StaticProfile );
+  !! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create_VarPerRow_WithColMap ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_BlockMap_ID_t RowMapID, CT_Epetra_BlockMap_ID_t ColMapID, const int * NumIndicesPerRow, 
+  !!     boolean StaticProfile );
 
   function Epetra_CrsGraph_Create_VarPerRow_WithColMap ( CV, RowMapID, ColMapID, &
         NumIndicesPerRow, StaticProfile ) result(that) &
@@ -6219,9 +6448,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_CrsGraph(Epetra_DataAccess CV, const Epetra_BlockMap& RowMap, const Epetra_BlockMap& ColMap, int NumIndicesPerRow, bool StaticProfile = false);
+  !! Epetra_CrsGraph(Epetra_DataAccess CV, const Epetra_BlockMap& RowMap, const Epetra_BlockMap& ColMap, 
+  !!     int NumIndicesPerRow, bool StaticProfile = false);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create_With_ColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t RowMapID, CT_Epetra_BlockMap_ID_t ColMapID, int NumIndicesPerRow, boolean StaticProfile );
+  !! CT_Epetra_CrsGraph_ID_t Epetra_CrsGraph_Create_With_ColMap ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_BlockMap_ID_t RowMapID, CT_Epetra_BlockMap_ID_t ColMapID, int NumIndicesPerRow, boolean StaticProfile );
 
   function Epetra_CrsGraph_Create_With_ColMap ( CV, RowMapID, ColMapID, NumIndicesPerRow, &
         StaticProfile ) result(that) bind(C,name='Epetra_CrsGraph_Create_With_ColMap')
@@ -6266,7 +6497,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int InsertGlobalIndices(int GlobalRow, int NumIndices, int* Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsGraph_InsertGlobalIndices ( CT_Epetra_CrsGraph_ID_t selfID, int GlobalRow, int NumIndices, int * Indices );
+  !! int Epetra_CrsGraph_InsertGlobalIndices ( CT_Epetra_CrsGraph_ID_t selfID, int GlobalRow, 
+  !!     int NumIndices, int * Indices );
 
   function Epetra_CrsGraph_InsertGlobalIndices ( selfID, GlobalRow, NumIndices, Indices ) &
         result(that) bind(C,name='Epetra_CrsGraph_InsertGlobalIndices')
@@ -6283,7 +6515,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int RemoveGlobalIndices(int GlobalRow, int NumIndices, int* Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsGraph_RemoveGlobalIndices ( CT_Epetra_CrsGraph_ID_t selfID, int GlobalRow, int NumIndices, int * Indices );
+  !! int Epetra_CrsGraph_RemoveGlobalIndices ( CT_Epetra_CrsGraph_ID_t selfID, int GlobalRow, 
+  !!     int NumIndices, int * Indices );
 
   function Epetra_CrsGraph_RemoveGlobalIndices ( selfID, GlobalRow, NumIndices, Indices ) &
         result(that) bind(C,name='Epetra_CrsGraph_RemoveGlobalIndices')
@@ -6315,7 +6548,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int InsertMyIndices(int LocalRow, int NumIndices, int* Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsGraph_InsertMyIndices ( CT_Epetra_CrsGraph_ID_t selfID, int LocalRow, int NumIndices, int * Indices );
+  !! int Epetra_CrsGraph_InsertMyIndices ( CT_Epetra_CrsGraph_ID_t selfID, int LocalRow, 
+  !!     int NumIndices, int * Indices );
 
   function Epetra_CrsGraph_InsertMyIndices ( selfID, LocalRow, NumIndices, Indices ) &
         result(that) bind(C,name='Epetra_CrsGraph_InsertMyIndices')
@@ -6332,7 +6566,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int RemoveMyIndices(int LocalRow, int NumIndices, int* Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsGraph_RemoveMyIndices ( CT_Epetra_CrsGraph_ID_t selfID, int LocalRow, int NumIndices, int * Indices );
+  !! int Epetra_CrsGraph_RemoveMyIndices ( CT_Epetra_CrsGraph_ID_t selfID, int LocalRow, 
+  !!     int NumIndices, int * Indices );
 
   function Epetra_CrsGraph_RemoveMyIndices ( selfID, LocalRow, NumIndices, Indices ) &
         result(that) bind(C,name='Epetra_CrsGraph_RemoveMyIndices')
@@ -6378,7 +6613,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int FillComplete(const Epetra_BlockMap& DomainMap, const Epetra_BlockMap& RangeMap);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsGraph_FillComplete_UsingMaps ( CT_Epetra_CrsGraph_ID_t selfID, CT_Epetra_BlockMap_ID_t DomainMapID, CT_Epetra_BlockMap_ID_t RangeMapID );
+  !! int Epetra_CrsGraph_FillComplete_UsingMaps ( CT_Epetra_CrsGraph_ID_t selfID, 
+  !!     CT_Epetra_BlockMap_ID_t DomainMapID, CT_Epetra_BlockMap_ID_t RangeMapID );
 
   function Epetra_CrsGraph_FillComplete_UsingMaps ( selfID, DomainMapID, RangeMapID ) &
         result(that) bind(C,name='Epetra_CrsGraph_FillComplete_UsingMaps')
@@ -6408,7 +6644,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractGlobalRowCopy(int GlobalRow, int LenOfIndices, int& NumIndices, int* Indices) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsGraph_ExtractGlobalRowCopy ( CT_Epetra_CrsGraph_ID_t selfID, int GlobalRow, int LenOfIndices, int * NumIndices, int * Indices );
+  !! int Epetra_CrsGraph_ExtractGlobalRowCopy ( CT_Epetra_CrsGraph_ID_t selfID, int GlobalRow, 
+  !!     int LenOfIndices, int * NumIndices, int * Indices );
 
   function Epetra_CrsGraph_ExtractGlobalRowCopy ( selfID, GlobalRow, LenOfIndices, &
         NumIndices, Indices ) result(that) &
@@ -6427,7 +6664,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractMyRowCopy(int LocalRow, int LenOfIndices, int& NumIndices, int* Indices) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsGraph_ExtractMyRowCopy ( CT_Epetra_CrsGraph_ID_t selfID, int LocalRow, int LenOfIndices, int * NumIndices, int * Indices );
+  !! int Epetra_CrsGraph_ExtractMyRowCopy ( CT_Epetra_CrsGraph_ID_t selfID, int LocalRow, 
+  !!     int LenOfIndices, int * NumIndices, int * Indices );
 
   function Epetra_CrsGraph_ExtractMyRowCopy ( selfID, LocalRow, LenOfIndices, NumIndices, &
         Indices ) result(that) bind(C,name='Epetra_CrsGraph_ExtractMyRowCopy')
@@ -6445,7 +6683,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractGlobalRowView(int GlobalRow, int& NumIndices, int*& Indices) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsGraph_ExtractGlobalRowView ( CT_Epetra_CrsGraph_ID_t selfID, int GlobalRow, int * NumIndices, int ** Indices );
+  !! int Epetra_CrsGraph_ExtractGlobalRowView ( CT_Epetra_CrsGraph_ID_t selfID, int GlobalRow, 
+  !!     int * NumIndices, int ** Indices );
 
   function Epetra_CrsGraph_ExtractGlobalRowView ( selfID, GlobalRow, NumIndices, Indices ) &
         result(that) bind(C,name='Epetra_CrsGraph_ExtractGlobalRowView')
@@ -6462,7 +6701,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractMyRowView(int LocalRow, int& NumIndices, int*& Indices) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsGraph_ExtractMyRowView ( CT_Epetra_CrsGraph_ID_t selfID, int LocalRow, int * NumIndices, int ** Indices );
+  !! int Epetra_CrsGraph_ExtractMyRowView ( CT_Epetra_CrsGraph_ID_t selfID, int LocalRow, 
+  !!     int * NumIndices, int ** Indices );
 
   function Epetra_CrsGraph_ExtractMyRowView ( selfID, LocalRow, NumIndices, Indices ) &
         result(that) bind(C,name='Epetra_CrsGraph_ExtractMyRowView')
@@ -7030,7 +7270,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ReplaceRowMap(const Epetra_BlockMap& newmap);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsGraph_ReplaceRowMap ( CT_Epetra_CrsGraph_ID_t selfID, CT_Epetra_BlockMap_ID_t newmapID );
+  !! int Epetra_CrsGraph_ReplaceRowMap ( CT_Epetra_CrsGraph_ID_t selfID, 
+  !!     CT_Epetra_BlockMap_ID_t newmapID );
 
   function Epetra_CrsGraph_ReplaceRowMap ( selfID, newmapID ) result(that) &
         bind(C,name='Epetra_CrsGraph_ReplaceRowMap')
@@ -7045,7 +7286,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ReplaceColMap(const Epetra_BlockMap& newmap);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsGraph_ReplaceColMap ( CT_Epetra_CrsGraph_ID_t selfID, CT_Epetra_BlockMap_ID_t newmapID );
+  !! int Epetra_CrsGraph_ReplaceColMap ( CT_Epetra_CrsGraph_ID_t selfID, 
+  !!     CT_Epetra_BlockMap_ID_t newmapID );
 
   function Epetra_CrsGraph_ReplaceColMap ( selfID, newmapID ) result(that) &
         bind(C,name='Epetra_CrsGraph_ReplaceColMap')
@@ -7320,7 +7562,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int TransformToLocal(const Epetra_BlockMap* DomainMap, const Epetra_BlockMap* RangeMap);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_CrsGraph_TransformToLocal_UsingMaps ( CT_Epetra_CrsGraph_ID_t selfID, CT_Epetra_BlockMap_ID_t DomainMapID, CT_Epetra_BlockMap_ID_t RangeMapID );
+  !! int Epetra_CrsGraph_TransformToLocal_UsingMaps ( CT_Epetra_CrsGraph_ID_t selfID, 
+  !!     CT_Epetra_BlockMap_ID_t DomainMapID, CT_Epetra_BlockMap_ID_t RangeMapID );
 
   function Epetra_CrsGraph_TransformToLocal_UsingMaps ( selfID, DomainMapID, RangeMapID ) &
         result(that) bind(C,name='Epetra_CrsGraph_TransformToLocal_UsingMaps')
@@ -7379,9 +7622,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int Import(const Epetra_SrcDistObject& A, const Epetra_Import& Importer, Epetra_CombineMode CombineMode, const Epetra_OffsetIndex * Indexor = 0);
+  !! int Import(const Epetra_SrcDistObject& A, const Epetra_Import& Importer, 
+  !!     Epetra_CombineMode CombineMode, const Epetra_OffsetIndex * Indexor = 0);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_DistObject_Import ( CT_Epetra_DistObject_ID_t selfID, CT_Epetra_SrcDistObject_ID_t AID, CT_Epetra_Import_ID_t ImporterID, CT_Epetra_CombineMode_E_t CombineMode, CT_Epetra_OffsetIndex_ID_t IndexorID );
+  !! int Epetra_DistObject_Import ( CT_Epetra_DistObject_ID_t selfID, CT_Epetra_SrcDistObject_ID_t AID, 
+  !!     CT_Epetra_Import_ID_t ImporterID, CT_Epetra_CombineMode_E_t CombineMode, CT_Epetra_OffsetIndex_ID_t IndexorID );
 
   function Epetra_DistObject_Import ( selfID, AID, ImporterID, CombineMode, IndexorID ) &
         result(that) bind(C,name='Epetra_DistObject_Import')
@@ -7398,9 +7643,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int Import(const Epetra_SrcDistObject& A, const Epetra_Export& Exporter, Epetra_CombineMode CombineMode, const Epetra_OffsetIndex * Indexor = 0);
+  !! int Import(const Epetra_SrcDistObject& A, const Epetra_Export& Exporter, 
+  !!     Epetra_CombineMode CombineMode, const Epetra_OffsetIndex * Indexor = 0);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_DistObject_Import_UsingExporter ( CT_Epetra_DistObject_ID_t selfID, CT_Epetra_SrcDistObject_ID_t AID, CT_Epetra_Export_ID_t ExporterID, CT_Epetra_CombineMode_E_t CombineMode, CT_Epetra_OffsetIndex_ID_t IndexorID );
+  !! int Epetra_DistObject_Import_UsingExporter ( CT_Epetra_DistObject_ID_t selfID, 
+  !!     CT_Epetra_SrcDistObject_ID_t AID, CT_Epetra_Export_ID_t ExporterID, CT_Epetra_CombineMode_E_t CombineMode, 
+  !!     CT_Epetra_OffsetIndex_ID_t IndexorID );
 
   function Epetra_DistObject_Import_UsingExporter ( selfID, AID, ExporterID, CombineMode, &
         IndexorID ) result(that) bind(C,name='Epetra_DistObject_Import_UsingExporter')
@@ -7417,9 +7665,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int Export(const Epetra_SrcDistObject& A, const Epetra_Import & Importer, Epetra_CombineMode CombineMode, const Epetra_OffsetIndex * Indexor = 0);
+  !! int Export(const Epetra_SrcDistObject& A, const Epetra_Import & Importer, 
+  !!     Epetra_CombineMode CombineMode, const Epetra_OffsetIndex * Indexor = 0);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_DistObject_Export_UsingImporter ( CT_Epetra_DistObject_ID_t selfID, CT_Epetra_SrcDistObject_ID_t AID, CT_Epetra_Import_ID_t ImporterID, CT_Epetra_CombineMode_E_t CombineMode, CT_Epetra_OffsetIndex_ID_t IndexorID );
+  !! int Epetra_DistObject_Export_UsingImporter ( CT_Epetra_DistObject_ID_t selfID, 
+  !!     CT_Epetra_SrcDistObject_ID_t AID, CT_Epetra_Import_ID_t ImporterID, CT_Epetra_CombineMode_E_t CombineMode, 
+  !!     CT_Epetra_OffsetIndex_ID_t IndexorID );
 
   function Epetra_DistObject_Export_UsingImporter ( selfID, AID, ImporterID, CombineMode, &
         IndexorID ) result(that) bind(C,name='Epetra_DistObject_Export_UsingImporter')
@@ -7436,9 +7687,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int Export(const Epetra_SrcDistObject& A, const Epetra_Export& Exporter, Epetra_CombineMode CombineMode, const Epetra_OffsetIndex * Indexor = 0);
+  !! int Export(const Epetra_SrcDistObject& A, const Epetra_Export& Exporter, 
+  !!     Epetra_CombineMode CombineMode, const Epetra_OffsetIndex * Indexor = 0);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_DistObject_Export ( CT_Epetra_DistObject_ID_t selfID, CT_Epetra_SrcDistObject_ID_t AID, CT_Epetra_Export_ID_t ExporterID, CT_Epetra_CombineMode_E_t CombineMode, CT_Epetra_OffsetIndex_ID_t IndexorID );
+  !! int Epetra_DistObject_Export ( CT_Epetra_DistObject_ID_t selfID, CT_Epetra_SrcDistObject_ID_t AID, 
+  !!     CT_Epetra_Export_ID_t ExporterID, CT_Epetra_CombineMode_E_t CombineMode, CT_Epetra_OffsetIndex_ID_t IndexorID );
 
   function Epetra_DistObject_Export ( selfID, AID, ExporterID, CombineMode, IndexorID ) &
         result(that) bind(C,name='Epetra_DistObject_Export')
@@ -7561,7 +7814,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_Vector(Epetra_DataAccess CV, const Epetra_BlockMap& Map, double *V);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_Vector_ID_t Epetra_Vector_Create_FromArray ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_BlockMap_ID_t MapID, double * V );
+  !! CT_Epetra_Vector_ID_t Epetra_Vector_Create_FromArray ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_BlockMap_ID_t MapID, double * V );
 
   function Epetra_Vector_Create_FromArray ( CV, MapID, V ) result(that) &
         bind(C,name='Epetra_Vector_Create_FromArray')
@@ -7578,7 +7832,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_Vector(Epetra_DataAccess CV, const Epetra_MultiVector& Source, int Index);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_Vector_ID_t Epetra_Vector_FromSource ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_MultiVector_ID_t SourceID, int Index );
+  !! CT_Epetra_Vector_ID_t Epetra_Vector_FromSource ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_MultiVector_ID_t SourceID, int Index );
 
   function Epetra_Vector_FromSource ( CV, SourceID, Index ) result(that) &
         bind(C,name='Epetra_Vector_FromSource')
@@ -7607,7 +7862,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ReplaceGlobalValues(int NumEntries, double * Values, int * Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Vector_ReplaceGlobalValues ( CT_Epetra_Vector_ID_t selfID, int NumEntries, double * Values, int * Indices );
+  !! int Epetra_Vector_ReplaceGlobalValues ( CT_Epetra_Vector_ID_t selfID, int NumEntries, 
+  !!     double * Values, int * Indices );
 
   function Epetra_Vector_ReplaceGlobalValues ( selfID, NumEntries, Values, Indices ) &
         result(that) bind(C,name='Epetra_Vector_ReplaceGlobalValues')
@@ -7624,7 +7880,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ReplaceMyValues(int NumEntries, double * Values, int * Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Vector_ReplaceMyValues ( CT_Epetra_Vector_ID_t selfID, int NumEntries, double * Values, int * Indices );
+  !! int Epetra_Vector_ReplaceMyValues ( CT_Epetra_Vector_ID_t selfID, int NumEntries, double * Values, 
+  !!     int * Indices );
 
   function Epetra_Vector_ReplaceMyValues ( selfID, NumEntries, Values, Indices ) &
         result(that) bind(C,name='Epetra_Vector_ReplaceMyValues')
@@ -7641,7 +7898,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int SumIntoGlobalValues(int NumEntries, double * Values, int * Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Vector_SumIntoGlobalValues ( CT_Epetra_Vector_ID_t selfID, int NumEntries, double * Values, int * Indices );
+  !! int Epetra_Vector_SumIntoGlobalValues ( CT_Epetra_Vector_ID_t selfID, int NumEntries, 
+  !!     double * Values, int * Indices );
 
   function Epetra_Vector_SumIntoGlobalValues ( selfID, NumEntries, Values, Indices ) &
         result(that) bind(C,name='Epetra_Vector_SumIntoGlobalValues')
@@ -7658,7 +7916,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int SumIntoMyValues(int NumEntries, double * Values, int * Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Vector_SumIntoMyValues ( CT_Epetra_Vector_ID_t selfID, int NumEntries, double * Values, int * Indices );
+  !! int Epetra_Vector_SumIntoMyValues ( CT_Epetra_Vector_ID_t selfID, int NumEntries, double * Values, 
+  !!     int * Indices );
 
   function Epetra_Vector_SumIntoMyValues ( selfID, NumEntries, Values, Indices ) &
         result(that) bind(C,name='Epetra_Vector_SumIntoMyValues')
@@ -7675,7 +7934,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ReplaceGlobalValues(int NumEntries, int BlockOffset, double * Values, int * Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Vector_ReplaceGlobalValues_BlockPos ( CT_Epetra_Vector_ID_t selfID, int NumEntries, int BlockOffset, double * Values, int * Indices );
+  !! int Epetra_Vector_ReplaceGlobalValues_BlockPos ( CT_Epetra_Vector_ID_t selfID, int NumEntries, 
+  !!     int BlockOffset, double * Values, int * Indices );
 
   function Epetra_Vector_ReplaceGlobalValues_BlockPos ( selfID, NumEntries, BlockOffset, &
         Values, Indices ) result(that) &
@@ -7694,7 +7954,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ReplaceMyValues(int NumEntries, int BlockOffset, double * Values, int * Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Vector_ReplaceMyValues_BlockPos ( CT_Epetra_Vector_ID_t selfID, int NumEntries, int BlockOffset, double * Values, int * Indices );
+  !! int Epetra_Vector_ReplaceMyValues_BlockPos ( CT_Epetra_Vector_ID_t selfID, int NumEntries, 
+  !!     int BlockOffset, double * Values, int * Indices );
 
   function Epetra_Vector_ReplaceMyValues_BlockPos ( selfID, NumEntries, BlockOffset, Values, &
         Indices ) result(that) bind(C,name='Epetra_Vector_ReplaceMyValues_BlockPos')
@@ -7712,7 +7973,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int SumIntoGlobalValues(int NumEntries, int BlockOffset, double * Values, int * Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Vector_SumIntoGlobalValues_BlockPos ( CT_Epetra_Vector_ID_t selfID, int NumEntries, int BlockOffset, double * Values, int * Indices );
+  !! int Epetra_Vector_SumIntoGlobalValues_BlockPos ( CT_Epetra_Vector_ID_t selfID, int NumEntries, 
+  !!     int BlockOffset, double * Values, int * Indices );
 
   function Epetra_Vector_SumIntoGlobalValues_BlockPos ( selfID, NumEntries, BlockOffset, &
         Values, Indices ) result(that) &
@@ -7731,7 +7993,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int SumIntoMyValues(int NumEntries, int BlockOffset, double * Values, int * Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_Vector_SumIntoMyValues_BlockPos ( CT_Epetra_Vector_ID_t selfID, int NumEntries, int BlockOffset, double * Values, int * Indices );
+  !! int Epetra_Vector_SumIntoMyValues_BlockPos ( CT_Epetra_Vector_ID_t selfID, int NumEntries, 
+  !!     int BlockOffset, double * Values, int * Indices );
 
   function Epetra_Vector_SumIntoMyValues_BlockPos ( selfID, NumEntries, BlockOffset, Values, &
         Indices ) result(that) bind(C,name='Epetra_Vector_SumIntoMyValues_BlockPos')
@@ -7827,7 +8090,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_Export( const Epetra_BlockMap & SourceMap, const Epetra_BlockMap & TargetMap );
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_Export_ID_t Epetra_Export_Create ( CT_Epetra_BlockMap_ID_t SourceMapID, CT_Epetra_BlockMap_ID_t TargetMapID );
+  !! CT_Epetra_Export_ID_t Epetra_Export_Create ( CT_Epetra_BlockMap_ID_t SourceMapID, 
+  !!     CT_Epetra_BlockMap_ID_t TargetMapID );
 
   function Epetra_Export_Create ( SourceMapID, TargetMapID ) result(that) &
         bind(C,name='Epetra_Export_Create')
@@ -8096,7 +8360,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_Map(int NumGlobalElements, int IndexBase, const Epetra_Comm& Comm);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_Map_ID_t Epetra_Map_Create ( int NumGlobalElements, int IndexBase, CT_Epetra_Comm_ID_t CommID );
+  !! CT_Epetra_Map_ID_t Epetra_Map_Create ( int NumGlobalElements, int IndexBase, 
+  !!     CT_Epetra_Comm_ID_t CommID );
 
   function Epetra_Map_Create ( NumGlobalElements, IndexBase, CommID ) result(that) &
         bind(C,name='Epetra_Map_Create')
@@ -8112,7 +8377,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_Map(int NumGlobalElements, int NumMyElements, int IndexBase, const Epetra_Comm& Comm);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_Map_ID_t Epetra_Map_Create_Linear ( int NumGlobalElements, int NumMyElements, int IndexBase, CT_Epetra_Comm_ID_t CommID );
+  !! CT_Epetra_Map_ID_t Epetra_Map_Create_Linear ( int NumGlobalElements, int NumMyElements, 
+  !!     int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
   function Epetra_Map_Create_Linear ( NumGlobalElements, NumMyElements, IndexBase, CommID ) &
         result(that) bind(C,name='Epetra_Map_Create_Linear')
@@ -8127,9 +8393,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_Map(int NumGlobalElements, int NumMyElements, const int *MyGlobalElements, int IndexBase, const Epetra_Comm& Comm);
+  !! Epetra_Map(int NumGlobalElements, int NumMyElements, const int *MyGlobalElements, int IndexBase, 
+  !!     const Epetra_Comm& Comm);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_Map_ID_t Epetra_Map_Create_Arbitrary ( int NumGlobalElements, int NumMyElements, const int * MyGlobalElements, int IndexBase, CT_Epetra_Comm_ID_t CommID );
+  !! CT_Epetra_Map_ID_t Epetra_Map_Create_Arbitrary ( int NumGlobalElements, int NumMyElements, 
+  !!     const int * MyGlobalElements, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
   function Epetra_Map_Create_Arbitrary ( NumGlobalElements, NumMyElements, MyGlobalElements, &
         IndexBase, CommID ) result(that) bind(C,name='Epetra_Map_Create_Arbitrary')
@@ -8218,7 +8486,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_BlockMap(int NumGlobalElements, int ElementSize, int IndexBase, const Epetra_Comm& Comm);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create ( int NumGlobalElements, int ElementSize, int IndexBase, CT_Epetra_Comm_ID_t CommID );
+  !! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create ( int NumGlobalElements, int ElementSize, 
+  !!     int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
   function Epetra_BlockMap_Create ( NumGlobalElements, ElementSize, IndexBase, CommID ) &
         result(that) bind(C,name='Epetra_BlockMap_Create')
@@ -8233,9 +8502,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_BlockMap(int NumGlobalElements, int NumMyElements, int ElementSize, int IndexBase, const Epetra_Comm& Comm);
+  !! Epetra_BlockMap(int NumGlobalElements, int NumMyElements, int ElementSize, int IndexBase, 
+  !!     const Epetra_Comm& Comm);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create_Linear ( int NumGlobalElements, int NumMyElements, int ElementSize, int IndexBase, CT_Epetra_Comm_ID_t CommID );
+  !! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create_Linear ( int NumGlobalElements, int NumMyElements, 
+  !!     int ElementSize, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
   function Epetra_BlockMap_Create_Linear ( NumGlobalElements, NumMyElements, ElementSize, &
         IndexBase, CommID ) result(that) bind(C,name='Epetra_BlockMap_Create_Linear')
@@ -8251,9 +8522,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_BlockMap(int NumGlobalElements, int NumMyElements, const int *MyGlobalElements, int ElementSize, int IndexBase, const Epetra_Comm& Comm);
+  !! Epetra_BlockMap(int NumGlobalElements, int NumMyElements, const int *MyGlobalElements, 
+  !!     int ElementSize, int IndexBase, const Epetra_Comm& Comm);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create_Arbitrary ( int NumGlobalElements, int NumMyElements, const int * MyGlobalElements, int ElementSize, int IndexBase, CT_Epetra_Comm_ID_t CommID );
+  !! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create_Arbitrary ( int NumGlobalElements, 
+  !!     int NumMyElements, const int * MyGlobalElements, int ElementSize, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
   function Epetra_BlockMap_Create_Arbitrary ( NumGlobalElements, NumMyElements, &
         MyGlobalElements, ElementSize, IndexBase, CommID ) result(that) &
@@ -8271,9 +8544,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_BlockMap(int NumGlobalElements, int NumMyElements, const int *MyGlobalElements, const int *ElementSizeList, int IndexBase, const Epetra_Comm& Comm);
+  !! Epetra_BlockMap(int NumGlobalElements, int NumMyElements, const int *MyGlobalElements, 
+  !!     const int *ElementSizeList, int IndexBase, const Epetra_Comm& Comm);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create_Variable ( int NumGlobalElements, int NumMyElements, const int * MyGlobalElements, const int * ElementSizeList, int IndexBase, CT_Epetra_Comm_ID_t CommID );
+  !! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create_Variable ( int NumGlobalElements, 
+  !!     int NumMyElements, const int * MyGlobalElements, const int * ElementSizeList, int IndexBase, 
+  !!     CT_Epetra_Comm_ID_t CommID );
 
   function Epetra_BlockMap_Create_Variable ( NumGlobalElements, NumMyElements, &
         MyGlobalElements, ElementSizeList, IndexBase, CommID ) result(that) &
@@ -8319,7 +8595,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int RemoteIDList(int NumIDs, const int * GIDList, int * PIDList, int * LIDList) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_BlockMap_RemoteIDList ( CT_Epetra_BlockMap_ID_t selfID, int NumIDs, const int * GIDList, int * PIDList, int * LIDList );
+  !! int Epetra_BlockMap_RemoteIDList ( CT_Epetra_BlockMap_ID_t selfID, int NumIDs, 
+  !!     const int * GIDList, int * PIDList, int * LIDList );
 
   function Epetra_BlockMap_RemoteIDList ( selfID, NumIDs, GIDList, PIDList, LIDList ) &
         result(that) bind(C,name='Epetra_BlockMap_RemoteIDList')
@@ -8335,9 +8612,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int RemoteIDList(int NumIDs, const int * GIDList, int * PIDList, int * LIDList, int * SizeList) const;
+  !! int RemoteIDList(int NumIDs, const int * GIDList, int * PIDList, int * LIDList, 
+  !!     int * SizeList) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_BlockMap_RemoteIDList_WithSize ( CT_Epetra_BlockMap_ID_t selfID, int NumIDs, const int * GIDList, int * PIDList, int * LIDList, int * SizeList );
+  !! int Epetra_BlockMap_RemoteIDList_WithSize ( CT_Epetra_BlockMap_ID_t selfID, int NumIDs, 
+  !!     const int * GIDList, int * PIDList, int * LIDList, int * SizeList );
 
   function Epetra_BlockMap_RemoteIDList_WithSize ( selfID, NumIDs, GIDList, PIDList, &
         LIDList, SizeList ) result(that) &
@@ -8387,7 +8666,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int FindLocalElementID(int PointID, int & ElementID, int & ElementOffset) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_BlockMap_FindLocalElementID ( CT_Epetra_BlockMap_ID_t selfID, int PointID, int * ElementID, int * ElementOffset );
+  !! int Epetra_BlockMap_FindLocalElementID ( CT_Epetra_BlockMap_ID_t selfID, int PointID, 
+  !!     int * ElementID, int * ElementOffset );
 
   function Epetra_BlockMap_FindLocalElementID ( selfID, PointID, ElementID, ElementOffset ) &
         result(that) bind(C,name='Epetra_BlockMap_FindLocalElementID')
@@ -8546,7 +8826,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int MyGlobalElements(int * MyGlobalElementList) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_BlockMap_MyGlobalElements_Fill ( CT_Epetra_BlockMap_ID_t selfID, int * MyGlobalElementList );
+  !! int Epetra_BlockMap_MyGlobalElements_Fill ( CT_Epetra_BlockMap_ID_t selfID, 
+  !!     int * MyGlobalElementList );
 
   function Epetra_BlockMap_MyGlobalElements_Fill ( selfID, MyGlobalElementList ) &
         result(that) bind(C,name='Epetra_BlockMap_MyGlobalElements_Fill')
@@ -8746,7 +9027,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! bool PointSameAs(const Epetra_BlockMap & Map) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! boolean Epetra_BlockMap_PointSameAs ( CT_Epetra_BlockMap_ID_t selfID, CT_Epetra_BlockMap_ID_t MapID );
+  !! boolean Epetra_BlockMap_PointSameAs ( CT_Epetra_BlockMap_ID_t selfID, 
+  !!     CT_Epetra_BlockMap_ID_t MapID );
 
   function Epetra_BlockMap_PointSameAs ( selfID, MapID ) result(that) &
         bind(C,name='Epetra_BlockMap_PointSameAs')
@@ -8860,7 +9142,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int FirstPointInElementList(int * FirstPointInElementList)const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_BlockMap_FirstPointInElementList_Fill ( CT_Epetra_BlockMap_ID_t selfID, int * FirstPointInElementList );
+  !! int Epetra_BlockMap_FirstPointInElementList_Fill ( CT_Epetra_BlockMap_ID_t selfID, 
+  !!     int * FirstPointInElementList );
 
   function Epetra_BlockMap_FirstPointInElementList_Fill ( selfID, FirstPointInElementList ) &
         result(that) bind(C,name='Epetra_BlockMap_FirstPointInElementList_Fill')
@@ -8875,7 +9158,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int PointToElementList(int * PointToElementList) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_BlockMap_PointToElementList_Fill ( CT_Epetra_BlockMap_ID_t selfID, int * PointToElementList );
+  !! int Epetra_BlockMap_PointToElementList_Fill ( CT_Epetra_BlockMap_ID_t selfID, 
+  !!     int * PointToElementList );
 
   function Epetra_BlockMap_PointToElementList_Fill ( selfID, PointToElementList ) &
         result(that) bind(C,name='Epetra_BlockMap_PointToElementList_Fill')
@@ -8963,7 +9247,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_Import( const Epetra_BlockMap & TargetMap, const Epetra_BlockMap & SourceMap );
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_Import_ID_t Epetra_Import_Create ( CT_Epetra_BlockMap_ID_t TargetMapID, CT_Epetra_BlockMap_ID_t SourceMapID );
+  !! CT_Epetra_Import_ID_t Epetra_Import_Create ( CT_Epetra_BlockMap_ID_t TargetMapID, 
+  !!     CT_Epetra_BlockMap_ID_t SourceMapID );
 
   function Epetra_Import_Create ( TargetMapID, SourceMapID ) result(that) &
         bind(C,name='Epetra_Import_Create')
@@ -9383,7 +9668,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int UpdateValues(const Epetra_RowMatrix & Matrix, bool CheckStructure = false);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_JadMatrix_UpdateValues ( CT_Epetra_JadMatrix_ID_t selfID, CT_Epetra_RowMatrix_ID_t MatrixID, boolean CheckStructure );
+  !! int Epetra_JadMatrix_UpdateValues ( CT_Epetra_JadMatrix_ID_t selfID, 
+  !!     CT_Epetra_RowMatrix_ID_t MatrixID, boolean CheckStructure );
 
   function Epetra_JadMatrix_UpdateValues ( selfID, MatrixID, CheckStructure ) result(that) &
         bind(C,name='Epetra_JadMatrix_UpdateValues')
@@ -9399,7 +9685,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractMyRowCopy(int MyRow, int Length, int & NumEntries, double *Values, int * Indices) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_JadMatrix_ExtractMyRowCopy ( CT_Epetra_JadMatrix_ID_t selfID, int MyRow, int Length, int * NumEntries, double * Values, int * Indices );
+  !! int Epetra_JadMatrix_ExtractMyRowCopy ( CT_Epetra_JadMatrix_ID_t selfID, int MyRow, int Length, 
+  !!     int * NumEntries, double * Values, int * Indices );
 
   function Epetra_JadMatrix_ExtractMyRowCopy ( selfID, MyRow, Length, NumEntries, Values, &
         Indices ) result(that) bind(C,name='Epetra_JadMatrix_ExtractMyRowCopy')
@@ -9418,7 +9705,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractMyEntryView(int CurEntry, double * &Value, int & RowIndex, int & ColIndex);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_JadMatrix_ExtractMyEntryView ( CT_Epetra_JadMatrix_ID_t selfID, int CurEntry, double * * Value, int * RowIndex, int * ColIndex );
+  !! int Epetra_JadMatrix_ExtractMyEntryView ( CT_Epetra_JadMatrix_ID_t selfID, int CurEntry, 
+  !!     double * * Value, int * RowIndex, int * ColIndex );
 
   function Epetra_JadMatrix_ExtractMyEntryView ( selfID, CurEntry, Value, RowIndex, &
         ColIndex ) result(that) bind(C,name='Epetra_JadMatrix_ExtractMyEntryView')
@@ -9436,7 +9724,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ExtractMyEntryView(int CurEntry, double const * & Value, int & RowIndex, int & ColIndex) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_JadMatrix_ExtractMyEntryView_Const ( CT_Epetra_JadMatrix_ID_t selfID, int CurEntry, double const ** Value, int * RowIndex, int * ColIndex );
+  !! int Epetra_JadMatrix_ExtractMyEntryView_Const ( CT_Epetra_JadMatrix_ID_t selfID, int CurEntry, 
+  !!     double const ** Value, int * RowIndex, int * ColIndex );
 
   function Epetra_JadMatrix_ExtractMyEntryView_Const ( selfID, CurEntry, Value, RowIndex, &
         ColIndex ) result(that) bind(C,name='Epetra_JadMatrix_ExtractMyEntryView_Const')
@@ -9454,7 +9743,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int NumMyRowEntries(int MyRow, int & NumEntries) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_JadMatrix_NumMyRowEntries ( CT_Epetra_JadMatrix_ID_t selfID, int MyRow, int * NumEntries );
+  !! int Epetra_JadMatrix_NumMyRowEntries ( CT_Epetra_JadMatrix_ID_t selfID, int MyRow, 
+  !!     int * NumEntries );
 
   function Epetra_JadMatrix_NumMyRowEntries ( selfID, MyRow, NumEntries ) result(that) &
         bind(C,name='Epetra_JadMatrix_NumMyRowEntries')
@@ -9470,7 +9760,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Multiply(bool TransA, const Epetra_MultiVector& X, Epetra_MultiVector& Y) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_JadMatrix_Multiply ( CT_Epetra_JadMatrix_ID_t selfID, boolean TransA, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
+  !! int Epetra_JadMatrix_Multiply ( CT_Epetra_JadMatrix_ID_t selfID, boolean TransA, 
+  !!     CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
   function Epetra_JadMatrix_Multiply ( selfID, TransA, XID, YID ) result(that) &
         bind(C,name='Epetra_JadMatrix_Multiply')
@@ -9485,9 +9776,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int Solve(bool Upper, bool Trans, bool UnitDiagonal, const Epetra_MultiVector& X, Epetra_MultiVector& Y) const;
+  !! int Solve(bool Upper, bool Trans, bool UnitDiagonal, const Epetra_MultiVector& X, 
+  !!     Epetra_MultiVector& Y) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_JadMatrix_Solve ( CT_Epetra_JadMatrix_ID_t selfID, boolean Upper, boolean Trans, boolean UnitDiagonal, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
+  !! int Epetra_JadMatrix_Solve ( CT_Epetra_JadMatrix_ID_t selfID, boolean Upper, boolean Trans, 
+  !!     boolean UnitDiagonal, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
 
   function Epetra_JadMatrix_Solve ( selfID, Upper, Trans, UnitDiagonal, XID, YID ) &
         result(that) bind(C,name='Epetra_JadMatrix_Solve')
@@ -9552,7 +9845,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_LinearProblem(Epetra_RowMatrix * A, Epetra_MultiVector * X, Epetra_MultiVector * B);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Create_FromMatrix ( CT_Epetra_RowMatrix_ID_t AID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID );
+  !! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Create_FromMatrix ( CT_Epetra_RowMatrix_ID_t AID, 
+  !!     CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID );
 
   function Epetra_LinearProblem_Create_FromMatrix ( AID, XID, BID ) result(that) &
         bind(C,name='Epetra_LinearProblem_Create_FromMatrix')
@@ -9569,7 +9863,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_LinearProblem(Epetra_Operator * A, Epetra_MultiVector * X, Epetra_MultiVector * B);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Create_FromOperator ( CT_Epetra_Operator_ID_t AID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID );
+  !! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Create_FromOperator ( CT_Epetra_Operator_ID_t AID, 
+  !!     CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID );
 
   function Epetra_LinearProblem_Create_FromOperator ( AID, XID, BID ) result(that) &
         bind(C,name='Epetra_LinearProblem_Create_FromOperator')
@@ -9640,7 +9935,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! void SetPDL(ProblemDifficultyLevel PDL);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LinearProblem_SetPDL ( CT_Epetra_LinearProblem_ID_t selfID, CT_ProblemDifficultyLevel_E_t PDL );
+  !! void Epetra_LinearProblem_SetPDL ( CT_Epetra_LinearProblem_ID_t selfID, 
+  !!     CT_ProblemDifficultyLevel_E_t PDL );
 
   subroutine Epetra_LinearProblem_SetPDL ( selfID, PDL ) &
         bind(C,name='Epetra_LinearProblem_SetPDL')
@@ -9654,7 +9950,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! void SetOperator(Epetra_RowMatrix * A);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LinearProblem_SetOperator_Matrix ( CT_Epetra_LinearProblem_ID_t selfID, CT_Epetra_RowMatrix_ID_t AID );
+  !! void Epetra_LinearProblem_SetOperator_Matrix ( CT_Epetra_LinearProblem_ID_t selfID, 
+  !!     CT_Epetra_RowMatrix_ID_t AID );
 
   subroutine Epetra_LinearProblem_SetOperator_Matrix ( selfID, AID ) &
         bind(C,name='Epetra_LinearProblem_SetOperator_Matrix')
@@ -9668,7 +9965,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! void SetOperator(Epetra_Operator * A);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LinearProblem_SetOperator ( CT_Epetra_LinearProblem_ID_t selfID, CT_Epetra_Operator_ID_t AID );
+  !! void Epetra_LinearProblem_SetOperator ( CT_Epetra_LinearProblem_ID_t selfID, 
+  !!     CT_Epetra_Operator_ID_t AID );
 
   subroutine Epetra_LinearProblem_SetOperator ( selfID, AID ) &
         bind(C,name='Epetra_LinearProblem_SetOperator')
@@ -9682,7 +9980,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! void SetLHS(Epetra_MultiVector * X);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LinearProblem_SetLHS ( CT_Epetra_LinearProblem_ID_t selfID, CT_Epetra_MultiVector_ID_t XID );
+  !! void Epetra_LinearProblem_SetLHS ( CT_Epetra_LinearProblem_ID_t selfID, 
+  !!     CT_Epetra_MultiVector_ID_t XID );
 
   subroutine Epetra_LinearProblem_SetLHS ( selfID, XID ) &
         bind(C,name='Epetra_LinearProblem_SetLHS')
@@ -9696,7 +9995,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! void SetRHS(Epetra_MultiVector * B);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LinearProblem_SetRHS ( CT_Epetra_LinearProblem_ID_t selfID, CT_Epetra_MultiVector_ID_t BID );
+  !! void Epetra_LinearProblem_SetRHS ( CT_Epetra_LinearProblem_ID_t selfID, 
+  !!     CT_Epetra_MultiVector_ID_t BID );
 
   subroutine Epetra_LinearProblem_SetRHS ( selfID, BID ) &
         bind(C,name='Epetra_LinearProblem_SetRHS')
@@ -9710,7 +10010,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int LeftScale(const Epetra_Vector & D);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_LinearProblem_LeftScale ( CT_Epetra_LinearProblem_ID_t selfID, CT_Epetra_Vector_ID_t DID );
+  !! int Epetra_LinearProblem_LeftScale ( CT_Epetra_LinearProblem_ID_t selfID, 
+  !!     CT_Epetra_Vector_ID_t DID );
 
   function Epetra_LinearProblem_LeftScale ( selfID, DID ) result(that) &
         bind(C,name='Epetra_LinearProblem_LeftScale')
@@ -9725,7 +10026,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int RightScale(const Epetra_Vector & D);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_LinearProblem_RightScale ( CT_Epetra_LinearProblem_ID_t selfID, CT_Epetra_Vector_ID_t DID );
+  !! int Epetra_LinearProblem_RightScale ( CT_Epetra_LinearProblem_ID_t selfID, 
+  !!     CT_Epetra_Vector_ID_t DID );
 
   function Epetra_LinearProblem_RightScale ( selfID, DID ) result(that) &
         bind(C,name='Epetra_LinearProblem_RightScale')
@@ -9895,7 +10197,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! void POTRF( const char UPLO, const int N, float * A, const int LDA, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_POTRF_float ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, float * A, const int LDA, int * INFO );
+  !! void Epetra_LAPACK_POTRF_float ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, 
+  !!     float * A, const int LDA, int * INFO );
 
   subroutine Epetra_LAPACK_POTRF_float ( selfID, UPLO, N, A, LDA, INFO ) &
         bind(C,name='Epetra_LAPACK_POTRF_float')
@@ -9913,7 +10216,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! void POTRF( const char UPLO, const int N, double * A, const int LDA, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_POTRF_double ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, double * A, const int LDA, int * INFO );
+  !! void Epetra_LAPACK_POTRF_double ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, 
+  !!     double * A, const int LDA, int * INFO );
 
   subroutine Epetra_LAPACK_POTRF_double ( selfID, UPLO, N, A, LDA, INFO ) &
         bind(C,name='Epetra_LAPACK_POTRF_double')
@@ -9929,9 +10233,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void POTRS( const char UPLO, const int N, const int NRHS, const float * A, const int LDA, float * X, const int LDX, int * INFO) const;
+  !! void POTRS( const char UPLO, const int N, const int NRHS, const float * A, const int LDA, float * X, 
+  !!     const int LDX, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_POTRS_float ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, const int NRHS, const float * A, const int LDA, float * X, const int LDX, int * INFO );
+  !! void Epetra_LAPACK_POTRS_float ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, 
+  !!     const int NRHS, const float * A, const int LDA, float * X, const int LDX, int * INFO );
 
   subroutine Epetra_LAPACK_POTRS_float ( selfID, UPLO, N, NRHS, A, LDA, X, LDX, INFO ) &
         bind(C,name='Epetra_LAPACK_POTRS_float')
@@ -9950,9 +10256,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void POTRS( const char UPLO, const int N, const int NRHS, const double * A, const int LDA, double * X, const int LDX, int * INFO) const;
+  !! void POTRS( const char UPLO, const int N, const int NRHS, const double * A, const int LDA, 
+  !!     double * X, const int LDX, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_POTRS_double ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, const int NRHS, const double * A, const int LDA, double * X, const int LDX, int * INFO );
+  !! void Epetra_LAPACK_POTRS_double ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, 
+  !!     const int NRHS, const double * A, const int LDA, double * X, const int LDX, int * INFO );
 
   subroutine Epetra_LAPACK_POTRS_double ( selfID, UPLO, N, NRHS, A, LDA, X, LDX, INFO ) &
         bind(C,name='Epetra_LAPACK_POTRS_double')
@@ -9973,7 +10281,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! void POTRI( const char UPLO, const int N, float * A, const int LDA, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_POTRI_float ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, float * A, const int LDA, int * INFO );
+  !! void Epetra_LAPACK_POTRI_float ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, 
+  !!     float * A, const int LDA, int * INFO );
 
   subroutine Epetra_LAPACK_POTRI_float ( selfID, UPLO, N, A, LDA, INFO ) &
         bind(C,name='Epetra_LAPACK_POTRI_float')
@@ -9991,7 +10300,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! void POTRI( const char UPLO, const int N, double * A, const int LDA, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_POTRI_double ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, double * A, const int LDA, int * INFO );
+  !! void Epetra_LAPACK_POTRI_double ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, 
+  !!     double * A, const int LDA, int * INFO );
 
   subroutine Epetra_LAPACK_POTRI_double ( selfID, UPLO, N, A, LDA, INFO ) &
         bind(C,name='Epetra_LAPACK_POTRI_double')
@@ -10007,9 +10317,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void POCON( const char UPLO, const int N, const float * A, const int LDA, const float ANORM, float * RCOND, float * WORK, int * IWORK, int * INFO) const;
+  !! void POCON( const char UPLO, const int N, const float * A, const int LDA, const float ANORM, 
+  !!     float * RCOND, float * WORK, int * IWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_POCON_float ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, const float * A, const int LDA, const float ANORM, float * RCOND, float * WORK, int * IWORK, int * INFO );
+  !! void Epetra_LAPACK_POCON_float ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, 
+  !!     const float * A, const int LDA, const float ANORM, float * RCOND, float * WORK, int * IWORK, int * INFO );
 
   subroutine Epetra_LAPACK_POCON_float ( selfID, UPLO, N, A, LDA, ANORM, RCOND, WORK, IWORK, &
         INFO ) bind(C,name='Epetra_LAPACK_POCON_float')
@@ -10029,9 +10341,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void POCON( const char UPLO, const int N, const double * A, const int LDA, const double ANORM, double * RCOND, double * WORK, int * IWORK, int * INFO) const;
+  !! void POCON( const char UPLO, const int N, const double * A, const int LDA, const double ANORM, 
+  !!     double * RCOND, double * WORK, int * IWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_POCON_double ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, const double * A, const int LDA, const double ANORM, double * RCOND, double * WORK, int * IWORK, int * INFO );
+  !! void Epetra_LAPACK_POCON_double ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, 
+  !!     const double * A, const int LDA, const double ANORM, double * RCOND, double * WORK, int * IWORK, int * INFO );
 
   subroutine Epetra_LAPACK_POCON_double ( selfID, UPLO, N, A, LDA, ANORM, RCOND, WORK, &
         IWORK, INFO ) bind(C,name='Epetra_LAPACK_POCON_double')
@@ -10051,9 +10365,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void POSV( const char UPLO, const int N, const int NRHS, float * A, const int LDA, float * X, const int LDX, int * INFO) const;
+  !! void POSV( const char UPLO, const int N, const int NRHS, float * A, const int LDA, float * X, 
+  !!     const int LDX, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_POSV_float ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, const int NRHS, float * A, const int LDA, float * X, const int LDX, int * INFO );
+  !! void Epetra_LAPACK_POSV_float ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, 
+  !!     const int NRHS, float * A, const int LDA, float * X, const int LDX, int * INFO );
 
   subroutine Epetra_LAPACK_POSV_float ( selfID, UPLO, N, NRHS, A, LDA, X, LDX, INFO ) &
         bind(C,name='Epetra_LAPACK_POSV_float')
@@ -10072,9 +10388,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void POSV( const char UPLO, const int N, const int NRHS, double * A, const int LDA, double * X, const int LDX, int * INFO) const;
+  !! void POSV( const char UPLO, const int N, const int NRHS, double * A, const int LDA, double * X, 
+  !!     const int LDX, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_POSV_double ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, const int NRHS, double * A, const int LDA, double * X, const int LDX, int * INFO );
+  !! void Epetra_LAPACK_POSV_double ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, 
+  !!     const int NRHS, double * A, const int LDA, double * X, const int LDX, int * INFO );
 
   subroutine Epetra_LAPACK_POSV_double ( selfID, UPLO, N, NRHS, A, LDA, X, LDX, INFO ) &
         bind(C,name='Epetra_LAPACK_POSV_double')
@@ -10093,9 +10411,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void POEQU(const int N, const float * A, const int LDA, float * S, float * SCOND, float * AMAX, int * INFO) const;
+  !! void POEQU(const int N, const float * A, const int LDA, float * S, float * SCOND, float * AMAX, 
+  !!     int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_POEQU_float ( CT_Epetra_LAPACK_ID_t selfID, const int N, const float * A, const int LDA, float * S, float * SCOND, float * AMAX, int * INFO );
+  !! void Epetra_LAPACK_POEQU_float ( CT_Epetra_LAPACK_ID_t selfID, const int N, const float * A, 
+  !!     const int LDA, float * S, float * SCOND, float * AMAX, int * INFO );
 
   subroutine Epetra_LAPACK_POEQU_float ( selfID, N, A, LDA, S, SCOND, AMAX, INFO ) &
         bind(C,name='Epetra_LAPACK_POEQU_float')
@@ -10113,9 +10433,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void POEQU(const int N, const double * A, const int LDA, double * S, double * SCOND, double * AMAX, int * INFO) const;
+  !! void POEQU(const int N, const double * A, const int LDA, double * S, double * SCOND, double * AMAX, 
+  !!     int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_POEQU_double ( CT_Epetra_LAPACK_ID_t selfID, const int N, const double * A, const int LDA, double * S, double * SCOND, double * AMAX, int * INFO );
+  !! void Epetra_LAPACK_POEQU_double ( CT_Epetra_LAPACK_ID_t selfID, const int N, const double * A, 
+  !!     const int LDA, double * S, double * SCOND, double * AMAX, int * INFO );
 
   subroutine Epetra_LAPACK_POEQU_double ( selfID, N, A, LDA, S, SCOND, AMAX, INFO ) &
         bind(C,name='Epetra_LAPACK_POEQU_double')
@@ -10133,9 +10455,13 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void PORFS(const char UPLO, const int N, const int NRHS, const float * A, const int LDA, const float * AF, const int LDAF, const float * B, const int LDB, float * X, const int LDX, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO) const;
+  !! void PORFS(const char UPLO, const int N, const int NRHS, const float * A, const int LDA, 
+  !!     const float * AF, const int LDAF, const float * B, const int LDB, float * X, const int LDX, float * FERR, float * BERR, 
+  !!     float * WORK, int * IWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_PORFS_float ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, const int NRHS, const float * A, const int LDA, const float * AF, const int LDAF, const float * B, const int LDB, float * X, const int LDX, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO );
+  !! void Epetra_LAPACK_PORFS_float ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, 
+  !!     const int NRHS, const float * A, const int LDA, const float * AF, const int LDAF, const float * B, const int LDB, 
+  !!     float * X, const int LDX, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO );
 
   subroutine Epetra_LAPACK_PORFS_float ( selfID, UPLO, N, NRHS, A, LDA, AF, LDAF, B, LDB, X, &
         LDX, FERR, BERR, WORK, IWORK, INFO ) bind(C,name='Epetra_LAPACK_PORFS_float')
@@ -10162,9 +10488,13 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void PORFS(const char UPLO, const int N, const int NRHS, const double * A, const int LDA, const double * AF, const int LDAF, const double * B, const int LDB, double * X, const int LDX, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO) const;
+  !! void PORFS(const char UPLO, const int N, const int NRHS, const double * A, const int LDA, 
+  !!     const double * AF, const int LDAF, const double * B, const int LDB, double * X, const int LDX, double * FERR, 
+  !!     double * BERR, double * WORK, int * IWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_PORFS_double ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, const int NRHS, const double * A, const int LDA, const double * AF, const int LDAF, const double * B, const int LDB, double * X, const int LDX, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO );
+  !! void Epetra_LAPACK_PORFS_double ( CT_Epetra_LAPACK_ID_t selfID, const char UPLO, const int N, 
+  !!     const int NRHS, const double * A, const int LDA, const double * AF, const int LDAF, const double * B, const int LDB, 
+  !!     double * X, const int LDX, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO );
 
   subroutine Epetra_LAPACK_PORFS_double ( selfID, UPLO, N, NRHS, A, LDA, AF, LDAF, B, LDB, &
         X, LDX, FERR, BERR, WORK, IWORK, INFO ) bind(C,name='Epetra_LAPACK_PORFS_double')
@@ -10191,9 +10521,14 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void POSVX(const char FACT, const char UPLO, const int N, const int NRHS, float * A, const int LDA, float * AF, const int LDAF, const char EQUED, float * S, float * B, const int LDB, float * X, const int LDX, float * RCOND, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO) const;
+  !! void POSVX(const char FACT, const char UPLO, const int N, const int NRHS, float * A, const int LDA, 
+  !!     float * AF, const int LDAF, const char EQUED, float * S, float * B, const int LDB, float * X, const int LDX, 
+  !!     float * RCOND, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_POSVX_float ( CT_Epetra_LAPACK_ID_t selfID, const char FACT, const char UPLO, const int N, const int NRHS, float * A, const int LDA, float * AF, const int LDAF, const char EQUED, float * S, float * B, const int LDB, float * X, const int LDX, float * RCOND, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO );
+  !! void Epetra_LAPACK_POSVX_float ( CT_Epetra_LAPACK_ID_t selfID, const char FACT, const char UPLO, 
+  !!     const int N, const int NRHS, float * A, const int LDA, float * AF, const int LDAF, const char EQUED, float * S, 
+  !!     float * B, const int LDB, float * X, const int LDX, float * RCOND, float * FERR, float * BERR, float * WORK, 
+  !!     int * IWORK, int * INFO );
 
   subroutine Epetra_LAPACK_POSVX_float ( selfID, FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, &
         EQUED, S, B, LDB, X, LDX, RCOND, FERR, BERR, WORK, IWORK, INFO ) &
@@ -10225,9 +10560,14 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void POSVX(const char FACT, const char UPLO, const int N, const int NRHS, double * A, const int LDA, double * AF, const int LDAF, const char EQUED, double * S, double * B, const int LDB, double * X, const int LDX, double * RCOND, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO) const;
+  !! void POSVX(const char FACT, const char UPLO, const int N, const int NRHS, double * A, const int LDA, 
+  !!     double * AF, const int LDAF, const char EQUED, double * S, double * B, const int LDB, double * X, const int LDX, 
+  !!     double * RCOND, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_POSVX_double ( CT_Epetra_LAPACK_ID_t selfID, const char FACT, const char UPLO, const int N, const int NRHS, double * A, const int LDA, double * AF, const int LDAF, const char EQUED, double * S, double * B, const int LDB, double * X, const int LDX, double * RCOND, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO );
+  !! void Epetra_LAPACK_POSVX_double ( CT_Epetra_LAPACK_ID_t selfID, const char FACT, const char UPLO, 
+  !!     const int N, const int NRHS, double * A, const int LDA, double * AF, const int LDAF, const char EQUED, double * S, 
+  !!     double * B, const int LDB, double * X, const int LDX, double * RCOND, double * FERR, double * BERR, double * WORK, 
+  !!     int * IWORK, int * INFO );
 
   subroutine Epetra_LAPACK_POSVX_double ( selfID, FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, &
         EQUED, S, B, LDB, X, LDX, RCOND, FERR, BERR, WORK, IWORK, INFO ) &
@@ -10259,9 +10599,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GELS( const char TRANS, const int M, const int N, const int NRHS, double* A, const int LDA, double* B, const int LDB, double* WORK, const int LWORK, int * INFO) const;
+  !! void GELS( const char TRANS, const int M, const int N, const int NRHS, double* A, const int LDA, 
+  !!     double* B, const int LDB, double* WORK, const int LWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GELS_double ( CT_Epetra_LAPACK_ID_t selfID, const char TRANS, const int M, const int N, const int NRHS, double * A, const int LDA, double * B, const int LDB, double * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_GELS_double ( CT_Epetra_LAPACK_ID_t selfID, const char TRANS, const int M, 
+  !!     const int N, const int NRHS, double * A, const int LDA, double * B, const int LDB, double * WORK, const int LWORK, 
+  !!     int * INFO );
 
   subroutine Epetra_LAPACK_GELS_double ( selfID, TRANS, M, N, NRHS, A, LDA, B, LDB, WORK, &
         LWORK, INFO ) bind(C,name='Epetra_LAPACK_GELS_double')
@@ -10285,7 +10628,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! void GETRF( const int M, const int N, float * A, const int LDA, int * IPIV, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GETRF_float ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, float * A, const int LDA, int * IPIV, int * INFO );
+  !! void Epetra_LAPACK_GETRF_float ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, 
+  !!     float * A, const int LDA, int * IPIV, int * INFO );
 
   subroutine Epetra_LAPACK_GETRF_float ( selfID, M, N, A, LDA, IPIV, INFO ) &
         bind(C,name='Epetra_LAPACK_GETRF_float')
@@ -10304,7 +10648,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! void GETRF( const int M, const int N, double * A, const int LDA, int * IPIV, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GETRF_double ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, double * A, const int LDA, int * IPIV, int * INFO );
+  !! void Epetra_LAPACK_GETRF_double ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, 
+  !!     double * A, const int LDA, int * IPIV, int * INFO );
 
   subroutine Epetra_LAPACK_GETRF_double ( selfID, M, N, A, LDA, IPIV, INFO ) &
         bind(C,name='Epetra_LAPACK_GETRF_double')
@@ -10321,9 +10666,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GEQRF( const int M, const int N, float * A, const int LDA, float * TAU, float * WORK, const int lwork, int * INFO) const;
+  !! void GEQRF( const int M, const int N, float * A, const int LDA, float * TAU, float * WORK, 
+  !!     const int lwork, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GEQRF_float ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, float * A, const int LDA, float * TAU, float * WORK, const int lwork, int * INFO );
+  !! void Epetra_LAPACK_GEQRF_float ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, 
+  !!     float * A, const int LDA, float * TAU, float * WORK, const int lwork, int * INFO );
 
   subroutine Epetra_LAPACK_GEQRF_float ( selfID, M, N, A, LDA, TAU, WORK, lwork, INFO ) &
         bind(C,name='Epetra_LAPACK_GEQRF_float')
@@ -10342,9 +10689,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GEQRF( const int M, const int N, double * A, const int LDA, double * TAU, double * WORK, const int lwork, int * INFO) const;
+  !! void GEQRF( const int M, const int N, double * A, const int LDA, double * TAU, double * WORK, 
+  !!     const int lwork, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GEQRF_double ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, double * A, const int LDA, double * TAU, double * WORK, const int lwork, int * INFO );
+  !! void Epetra_LAPACK_GEQRF_double ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, 
+  !!     double * A, const int LDA, double * TAU, double * WORK, const int lwork, int * INFO );
 
   subroutine Epetra_LAPACK_GEQRF_double ( selfID, M, N, A, LDA, TAU, WORK, lwork, INFO ) &
         bind(C,name='Epetra_LAPACK_GEQRF_double')
@@ -10363,9 +10712,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GETRS( const char TRANS, const int N, const int NRHS, const float * A, const int LDA, const int * IPIV, float * X, const int LDX, int * INFO) const;
+  !! void GETRS( const char TRANS, const int N, const int NRHS, const float * A, const int LDA, 
+  !!     const int * IPIV, float * X, const int LDX, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GETRS_float ( CT_Epetra_LAPACK_ID_t selfID, const char TRANS, const int N, const int NRHS, const float * A, const int LDA, const int * IPIV, float * X, const int LDX, int * INFO );
+  !! void Epetra_LAPACK_GETRS_float ( CT_Epetra_LAPACK_ID_t selfID, const char TRANS, const int N, 
+  !!     const int NRHS, const float * A, const int LDA, const int * IPIV, float * X, const int LDX, int * INFO );
 
   subroutine Epetra_LAPACK_GETRS_float ( selfID, TRANS, N, NRHS, A, LDA, IPIV, X, LDX, INFO ) &
         bind(C,name='Epetra_LAPACK_GETRS_float')
@@ -10385,9 +10736,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GETRS( const char TRANS, const int N, const int NRHS, const double * A, const int LDA, const int * IPIV, double * X, const int LDX, int * INFO) const;
+  !! void GETRS( const char TRANS, const int N, const int NRHS, const double * A, const int LDA, 
+  !!     const int * IPIV, double * X, const int LDX, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GETRS_double ( CT_Epetra_LAPACK_ID_t selfID, const char TRANS, const int N, const int NRHS, const double * A, const int LDA, const int * IPIV, double * X, const int LDX, int * INFO );
+  !! void Epetra_LAPACK_GETRS_double ( CT_Epetra_LAPACK_ID_t selfID, const char TRANS, const int N, 
+  !!     const int NRHS, const double * A, const int LDA, const int * IPIV, double * X, const int LDX, int * INFO );
 
   subroutine Epetra_LAPACK_GETRS_double ( selfID, TRANS, N, NRHS, A, LDA, IPIV, X, LDX, &
         INFO ) bind(C,name='Epetra_LAPACK_GETRS_double')
@@ -10407,9 +10760,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GETRI( const int N, float * A, const int LDA, int * IPIV, float * WORK, const int * LWORK, int * INFO) const;
+  !! void GETRI( const int N, float * A, const int LDA, int * IPIV, float * WORK, const int * LWORK, 
+  !!     int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GETRI_float ( CT_Epetra_LAPACK_ID_t selfID, const int N, float * A, const int LDA, int * IPIV, float * WORK, const int * LWORK, int * INFO );
+  !! void Epetra_LAPACK_GETRI_float ( CT_Epetra_LAPACK_ID_t selfID, const int N, float * A, 
+  !!     const int LDA, int * IPIV, float * WORK, const int * LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GETRI_float ( selfID, N, A, LDA, IPIV, WORK, LWORK, INFO ) &
         bind(C,name='Epetra_LAPACK_GETRI_float')
@@ -10427,9 +10782,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GETRI( const int N, double * A, const int LDA, int * IPIV, double * WORK, const int * LWORK, int * INFO) const;
+  !! void GETRI( const int N, double * A, const int LDA, int * IPIV, double * WORK, const int * LWORK, 
+  !!     int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GETRI_double ( CT_Epetra_LAPACK_ID_t selfID, const int N, double * A, const int LDA, int * IPIV, double * WORK, const int * LWORK, int * INFO );
+  !! void Epetra_LAPACK_GETRI_double ( CT_Epetra_LAPACK_ID_t selfID, const int N, double * A, 
+  !!     const int LDA, int * IPIV, double * WORK, const int * LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GETRI_double ( selfID, N, A, LDA, IPIV, WORK, LWORK, INFO ) &
         bind(C,name='Epetra_LAPACK_GETRI_double')
@@ -10447,9 +10804,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GECON( const char NORM, const int N, const float * A, const int LDA, const float ANORM, float * RCOND, float * WORK, int * IWORK, int * INFO) const;
+  !! void GECON( const char NORM, const int N, const float * A, const int LDA, const float ANORM, 
+  !!     float * RCOND, float * WORK, int * IWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GECON_float ( CT_Epetra_LAPACK_ID_t selfID, const char NORM, const int N, const float * A, const int LDA, const float ANORM, float * RCOND, float * WORK, int * IWORK, int * INFO );
+  !! void Epetra_LAPACK_GECON_float ( CT_Epetra_LAPACK_ID_t selfID, const char NORM, const int N, 
+  !!     const float * A, const int LDA, const float ANORM, float * RCOND, float * WORK, int * IWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GECON_float ( selfID, NORM, N, A, LDA, ANORM, RCOND, WORK, IWORK, &
         INFO ) bind(C,name='Epetra_LAPACK_GECON_float')
@@ -10469,9 +10828,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GECON( const char NORM, const int N, const double * A, const int LDA, const double ANORM, double * RCOND, double * WORK, int * IWORK, int * INFO) const;
+  !! void GECON( const char NORM, const int N, const double * A, const int LDA, const double ANORM, 
+  !!     double * RCOND, double * WORK, int * IWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GECON_double ( CT_Epetra_LAPACK_ID_t selfID, const char NORM, const int N, const double * A, const int LDA, const double ANORM, double * RCOND, double * WORK, int * IWORK, int * INFO );
+  !! void Epetra_LAPACK_GECON_double ( CT_Epetra_LAPACK_ID_t selfID, const char NORM, const int N, 
+  !!     const double * A, const int LDA, const double ANORM, double * RCOND, double * WORK, int * IWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GECON_double ( selfID, NORM, N, A, LDA, ANORM, RCOND, WORK, &
         IWORK, INFO ) bind(C,name='Epetra_LAPACK_GECON_double')
@@ -10491,9 +10852,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GESV( const int N, const int NRHS, float * A, const int LDA, int * IPIV, float * X, const int LDX, int * INFO) const;
+  !! void GESV( const int N, const int NRHS, float * A, const int LDA, int * IPIV, float * X, 
+  !!     const int LDX, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GESV_float ( CT_Epetra_LAPACK_ID_t selfID, const int N, const int NRHS, float * A, const int LDA, int * IPIV, float * X, const int LDX, int * INFO );
+  !! void Epetra_LAPACK_GESV_float ( CT_Epetra_LAPACK_ID_t selfID, const int N, const int NRHS, 
+  !!     float * A, const int LDA, int * IPIV, float * X, const int LDX, int * INFO );
 
   subroutine Epetra_LAPACK_GESV_float ( selfID, N, NRHS, A, LDA, IPIV, X, LDX, INFO ) &
         bind(C,name='Epetra_LAPACK_GESV_float')
@@ -10512,9 +10875,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GESV( const int N, const int NRHS, double * A, const int LDA, int * IPIV, double * X, const int LDX, int * INFO) const;
+  !! void GESV( const int N, const int NRHS, double * A, const int LDA, int * IPIV, double * X, 
+  !!     const int LDX, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GESV_double ( CT_Epetra_LAPACK_ID_t selfID, const int N, const int NRHS, double * A, const int LDA, int * IPIV, double * X, const int LDX, int * INFO );
+  !! void Epetra_LAPACK_GESV_double ( CT_Epetra_LAPACK_ID_t selfID, const int N, const int NRHS, 
+  !!     double * A, const int LDA, int * IPIV, double * X, const int LDX, int * INFO );
 
   subroutine Epetra_LAPACK_GESV_double ( selfID, N, NRHS, A, LDA, IPIV, X, LDX, INFO ) &
         bind(C,name='Epetra_LAPACK_GESV_double')
@@ -10533,9 +10898,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GEEQU(const int M, const int N, const float * A, const int LDA, float * R, float * C, float * ROWCND, float * COLCND, float * AMAX, int * INFO) const;
+  !! void GEEQU(const int M, const int N, const float * A, const int LDA, float * R, float * C, 
+  !!     float * ROWCND, float * COLCND, float * AMAX, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GEEQU_float ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, const float * A, const int LDA, float * R, float * C, float * ROWCND, float * COLCND, float * AMAX, int * INFO );
+  !! void Epetra_LAPACK_GEEQU_float ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, 
+  !!     const float * A, const int LDA, float * R, float * C, float * ROWCND, float * COLCND, float * AMAX, int * INFO );
 
   subroutine Epetra_LAPACK_GEEQU_float ( selfID, M, N, A, LDA, R, C, ROWCND, COLCND, AMAX, &
         INFO ) bind(C,name='Epetra_LAPACK_GEEQU_float')
@@ -10556,9 +10923,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GEEQU(const int M, const int N, const double * A, const int LDA, double * R, double * C, double * ROWCND, double * COLCND, double * AMAX, int * INFO) const;
+  !! void GEEQU(const int M, const int N, const double * A, const int LDA, double * R, double * C, 
+  !!     double * ROWCND, double * COLCND, double * AMAX, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GEEQU_double ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, const double * A, const int LDA, double * R, double * C, double * ROWCND, double * COLCND, double * AMAX, int * INFO );
+  !! void Epetra_LAPACK_GEEQU_double ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, 
+  !!     const double * A, const int LDA, double * R, double * C, double * ROWCND, double * COLCND, double * AMAX, int * INFO );
 
   subroutine Epetra_LAPACK_GEEQU_double ( selfID, M, N, A, LDA, R, C, ROWCND, COLCND, AMAX, &
         INFO ) bind(C,name='Epetra_LAPACK_GEEQU_double')
@@ -10579,9 +10948,13 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GERFS(const char TRANS, const int N, const int NRHS, const float * A, const int LDA, const float * AF, const int LDAF, const int * IPIV, const float * B, const int LDB, float * X, const int LDX, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO) const;
+  !! void GERFS(const char TRANS, const int N, const int NRHS, const float * A, const int LDA, 
+  !!     const float * AF, const int LDAF, const int * IPIV, const float * B, const int LDB, float * X, const int LDX, 
+  !!     float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GERFS_float ( CT_Epetra_LAPACK_ID_t selfID, const char TRANS, const int N, const int NRHS, const float * A, const int LDA, const float * AF, const int LDAF, const int * IPIV, const float * B, const int LDB, float * X, const int LDX, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO );
+  !! void Epetra_LAPACK_GERFS_float ( CT_Epetra_LAPACK_ID_t selfID, const char TRANS, const int N, 
+  !!     const int NRHS, const float * A, const int LDA, const float * AF, const int LDAF, const int * IPIV, const float * B, 
+  !!     const int LDB, float * X, const int LDX, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GERFS_float ( selfID, TRANS, N, NRHS, A, LDA, AF, LDAF, IPIV, B, &
         LDB, X, LDX, FERR, BERR, WORK, IWORK, INFO ) &
@@ -10610,9 +10983,13 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GERFS(const char TRANS, const int N, const int NRHS, const double * A, const int LDA, const double * AF, const int LDAF, const int * IPIV, const double * B, const int LDB, double * X, const int LDX, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO) const;
+  !! void GERFS(const char TRANS, const int N, const int NRHS, const double * A, const int LDA, 
+  !!     const double * AF, const int LDAF, const int * IPIV, const double * B, const int LDB, double * X, const int LDX, 
+  !!     double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GERFS_double ( CT_Epetra_LAPACK_ID_t selfID, const char TRANS, const int N, const int NRHS, const double * A, const int LDA, const double * AF, const int LDAF, const int * IPIV, const double * B, const int LDB, double * X, const int LDX, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO );
+  !! void Epetra_LAPACK_GERFS_double ( CT_Epetra_LAPACK_ID_t selfID, const char TRANS, const int N, 
+  !!     const int NRHS, const double * A, const int LDA, const double * AF, const int LDAF, const int * IPIV, const double * B, 
+  !!     const int LDB, double * X, const int LDX, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GERFS_double ( selfID, TRANS, N, NRHS, A, LDA, AF, LDAF, IPIV, B, &
         LDB, X, LDX, FERR, BERR, WORK, IWORK, INFO ) &
@@ -10641,9 +11018,14 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GESVX(const char FACT, const char TRANS, const int N, const int NRHS, float * A, const int LDA, float * AF, const int LDAF, int * IPIV, const char EQUED, float * R, float * C, float * B, const int LDB, float * X, const int LDX, float * RCOND, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO) const;
+  !! void GESVX(const char FACT, const char TRANS, const int N, const int NRHS, float * A, const int LDA, 
+  !!     float * AF, const int LDAF, int * IPIV, const char EQUED, float * R, float * C, float * B, const int LDB, float * X, 
+  !!     const int LDX, float * RCOND, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GESVX_float ( CT_Epetra_LAPACK_ID_t selfID, const char FACT, const char TRANS, const int N, const int NRHS, float * A, const int LDA, float * AF, const int LDAF, int * IPIV, const char EQUED, float * R, float * C, float * B, const int LDB, float * X, const int LDX, float * RCOND, float * FERR, float * BERR, float * WORK, int * IWORK, int * INFO );
+  !! void Epetra_LAPACK_GESVX_float ( CT_Epetra_LAPACK_ID_t selfID, const char FACT, const char TRANS, 
+  !!     const int N, const int NRHS, float * A, const int LDA, float * AF, const int LDAF, int * IPIV, const char EQUED, 
+  !!     float * R, float * C, float * B, const int LDB, float * X, const int LDX, float * RCOND, float * FERR, float * BERR, 
+  !!     float * WORK, int * IWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GESVX_float ( selfID, FACT, TRANS, N, NRHS, A, LDA, AF, LDAF, &
         IPIV, EQUED, R, C, B, LDB, X, LDX, RCOND, FERR, BERR, WORK, IWORK, INFO ) &
@@ -10677,9 +11059,15 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GESVX(const char FACT, const char TRANS, const int N, const int NRHS, double * A, const int LDA, double * AF, const int LDAF, int * IPIV, const char EQUED, double * R, double * C, double * B, const int LDB, double * X, const int LDX, double * RCOND, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO) const;
+  !! void GESVX(const char FACT, const char TRANS, const int N, const int NRHS, double * A, 
+  !!     const int LDA, double * AF, const int LDAF, int * IPIV, const char EQUED, double * R, double * C, double * B, 
+  !!     const int LDB, double * X, const int LDX, double * RCOND, double * FERR, double * BERR, double * WORK, int * IWORK, 
+  !!     int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GESVX_double ( CT_Epetra_LAPACK_ID_t selfID, const char FACT, const char TRANS, const int N, const int NRHS, double * A, const int LDA, double * AF, const int LDAF, int * IPIV, const char EQUED, double * R, double * C, double * B, const int LDB, double * X, const int LDX, double * RCOND, double * FERR, double * BERR, double * WORK, int * IWORK, int * INFO );
+  !! void Epetra_LAPACK_GESVX_double ( CT_Epetra_LAPACK_ID_t selfID, const char FACT, const char TRANS, 
+  !!     const int N, const int NRHS, double * A, const int LDA, double * AF, const int LDAF, int * IPIV, const char EQUED, 
+  !!     double * R, double * C, double * B, const int LDB, double * X, const int LDX, double * RCOND, double * FERR, 
+  !!     double * BERR, double * WORK, int * IWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GESVX_double ( selfID, FACT, TRANS, N, NRHS, A, LDA, AF, LDAF, &
         IPIV, EQUED, R, C, B, LDB, X, LDX, RCOND, FERR, BERR, WORK, IWORK, INFO ) &
@@ -10713,9 +11101,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GEHRD(const int N, const int ILO, const int IHI, float * A, const int LDA, float * TAU, float * WORK, const int LWORK, int * INFO) const;
+  !! void GEHRD(const int N, const int ILO, const int IHI, float * A, const int LDA, float * TAU, 
+  !!     float * WORK, const int LWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GEHRD_float ( CT_Epetra_LAPACK_ID_t selfID, const int N, const int ILO, const int IHI, float * A, const int LDA, float * TAU, float * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_GEHRD_float ( CT_Epetra_LAPACK_ID_t selfID, const int N, const int ILO, 
+  !!     const int IHI, float * A, const int LDA, float * TAU, float * WORK, const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GEHRD_float ( selfID, N, ILO, IHI, A, LDA, TAU, WORK, LWORK, &
         INFO ) bind(C,name='Epetra_LAPACK_GEHRD_float')
@@ -10735,9 +11125,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GEHRD(const int N, const int ILO, const int IHI, double * A, const int LDA, double * TAU, double * WORK, const int LWORK, int * INFO) const;
+  !! void GEHRD(const int N, const int ILO, const int IHI, double * A, const int LDA, double * TAU, 
+  !!     double * WORK, const int LWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GEHRD_double ( CT_Epetra_LAPACK_ID_t selfID, const int N, const int ILO, const int IHI, double * A, const int LDA, double * TAU, double * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_GEHRD_double ( CT_Epetra_LAPACK_ID_t selfID, const int N, const int ILO, 
+  !!     const int IHI, double * A, const int LDA, double * TAU, double * WORK, const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GEHRD_double ( selfID, N, ILO, IHI, A, LDA, TAU, WORK, LWORK, &
         INFO ) bind(C,name='Epetra_LAPACK_GEHRD_double')
@@ -10757,9 +11149,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void HSEQR( const char JOB, const char COMPZ, const int N, const int ILO, const int IHI, float * H, const int LDH, float * WR, float * WI, float * Z, const int LDZ, float * WORK, const int LWORK, int * INFO) const;
+  !! void HSEQR( const char JOB, const char COMPZ, const int N, const int ILO, const int IHI, float * H, 
+  !!     const int LDH, float * WR, float * WI, float * Z, const int LDZ, float * WORK, const int LWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_HSEQR_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOB, const char COMPZ, const int N, const int ILO, const int IHI, float * H, const int LDH, float * WR, float * WI, float * Z, const int LDZ, float * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_HSEQR_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOB, const char COMPZ, 
+  !!     const int N, const int ILO, const int IHI, float * H, const int LDH, float * WR, float * WI, float * Z, const int LDZ, 
+  !!     float * WORK, const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_HSEQR_float ( selfID, JOB, COMPZ, N, ILO, IHI, H, LDH, WR, WI, Z, &
         LDZ, WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_HSEQR_float')
@@ -10784,9 +11179,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void HSEQR( const char JOB, const char COMPZ, const int N, const int ILO, const int IHI, double * H, const int LDH, double * WR, double * WI, double * Z, const int LDZ, double * WORK, const int LWORK, int * INFO) const;
+  !! void HSEQR( const char JOB, const char COMPZ, const int N, const int ILO, const int IHI, double * H, 
+  !!     const int LDH, double * WR, double * WI, double * Z, const int LDZ, double * WORK, const int LWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_HSEQR_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOB, const char COMPZ, const int N, const int ILO, const int IHI, double * H, const int LDH, double * WR, double * WI, double * Z, const int LDZ, double * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_HSEQR_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOB, const char COMPZ, 
+  !!     const int N, const int ILO, const int IHI, double * H, const int LDH, double * WR, double * WI, double * Z, 
+  !!     const int LDZ, double * WORK, const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_HSEQR_double ( selfID, JOB, COMPZ, N, ILO, IHI, H, LDH, WR, WI, &
         Z, LDZ, WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_HSEQR_double')
@@ -10811,9 +11209,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void ORGQR( const int M, const int N, const int K, float * A, const int LDA, float * TAU, float * WORK, const int LWORK, int * INFO) const;
+  !! void ORGQR( const int M, const int N, const int K, float * A, const int LDA, float * TAU, 
+  !!     float * WORK, const int LWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_ORGQR_float ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, const int K, float * A, const int LDA, float * TAU, float * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_ORGQR_float ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, 
+  !!     const int K, float * A, const int LDA, float * TAU, float * WORK, const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_ORGQR_float ( selfID, M, N, K, A, LDA, TAU, WORK, LWORK, INFO ) &
         bind(C,name='Epetra_LAPACK_ORGQR_float')
@@ -10833,9 +11233,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void ORGQR( const int M, const int N, const int K, double * A, const int LDA, double * TAU, double * WORK, const int LWORK, int * INFO) const;
+  !! void ORGQR( const int M, const int N, const int K, double * A, const int LDA, double * TAU, 
+  !!     double * WORK, const int LWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_ORGQR_double ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, const int K, double * A, const int LDA, double * TAU, double * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_ORGQR_double ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, 
+  !!     const int K, double * A, const int LDA, double * TAU, double * WORK, const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_ORGQR_double ( selfID, M, N, K, A, LDA, TAU, WORK, LWORK, INFO ) &
         bind(C,name='Epetra_LAPACK_ORGQR_double')
@@ -10855,9 +11257,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void ORGHR( const int N, const int ILO, const int IHI, float * A, const int LDA, float * TAU, float * WORK, const int LWORK, int * INFO) const;
+  !! void ORGHR( const int N, const int ILO, const int IHI, float * A, const int LDA, float * TAU, 
+  !!     float * WORK, const int LWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_ORGHR_float ( CT_Epetra_LAPACK_ID_t selfID, const int N, const int ILO, const int IHI, float * A, const int LDA, float * TAU, float * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_ORGHR_float ( CT_Epetra_LAPACK_ID_t selfID, const int N, const int ILO, 
+  !!     const int IHI, float * A, const int LDA, float * TAU, float * WORK, const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_ORGHR_float ( selfID, N, ILO, IHI, A, LDA, TAU, WORK, LWORK, &
         INFO ) bind(C,name='Epetra_LAPACK_ORGHR_float')
@@ -10877,9 +11281,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void ORGHR( const int N, const int ILO, const int IHI, double * A, const int LDA, double * TAU, double * WORK, const int LWORK, int * INFO) const;
+  !! void ORGHR( const int N, const int ILO, const int IHI, double * A, const int LDA, double * TAU, 
+  !!     double * WORK, const int LWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_ORGHR_double ( CT_Epetra_LAPACK_ID_t selfID, const int N, const int ILO, const int IHI, double * A, const int LDA, double * TAU, double * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_ORGHR_double ( CT_Epetra_LAPACK_ID_t selfID, const int N, const int ILO, 
+  !!     const int IHI, double * A, const int LDA, double * TAU, double * WORK, const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_ORGHR_double ( selfID, N, ILO, IHI, A, LDA, TAU, WORK, LWORK, &
         INFO ) bind(C,name='Epetra_LAPACK_ORGHR_double')
@@ -10899,9 +11305,13 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void ORMHR( const char SIDE, const char TRANS, const int M, const int N, const int ILO, const int IHI, const float * A, const int LDA, const float * TAU, float * C, const int LDC, float * WORK, const int LWORK, int * INFO) const;
+  !! void ORMHR( const char SIDE, const char TRANS, const int M, const int N, const int ILO, 
+  !!     const int IHI, const float * A, const int LDA, const float * TAU, float * C, const int LDC, float * WORK, 
+  !!     const int LWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_ORMHR_float ( CT_Epetra_LAPACK_ID_t selfID, const char SIDE, const char TRANS, const int M, const int N, const int ILO, const int IHI, const float * A, const int LDA, const float * TAU, float * C, const int LDC, float * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_ORMHR_float ( CT_Epetra_LAPACK_ID_t selfID, const char SIDE, const char TRANS, 
+  !!     const int M, const int N, const int ILO, const int IHI, const float * A, const int LDA, const float * TAU, float * C, 
+  !!     const int LDC, float * WORK, const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_ORMHR_float ( selfID, SIDE, TRANS, M, N, ILO, IHI, A, LDA, TAU, &
         C, LDC, WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_ORMHR_float')
@@ -10926,9 +11336,13 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void ORMHR( const char SIDE, const char TRANS, const int M, const int N, const int ILO, const int IHI, const double * A, const int LDA, const double * TAU, double * C, const int LDC, double * WORK, const int LWORK, int * INFO) const;
+  !! void ORMHR( const char SIDE, const char TRANS, const int M, const int N, const int ILO, 
+  !!     const int IHI, const double * A, const int LDA, const double * TAU, double * C, const int LDC, double * WORK, 
+  !!     const int LWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_ORMHR_double ( CT_Epetra_LAPACK_ID_t selfID, const char SIDE, const char TRANS, const int M, const int N, const int ILO, const int IHI, const double * A, const int LDA, const double * TAU, double * C, const int LDC, double * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_ORMHR_double ( CT_Epetra_LAPACK_ID_t selfID, const char SIDE, const char TRANS, 
+  !!     const int M, const int N, const int ILO, const int IHI, const double * A, const int LDA, const double * TAU, 
+  !!     double * C, const int LDC, double * WORK, const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_ORMHR_double ( selfID, SIDE, TRANS, M, N, ILO, IHI, A, LDA, TAU, &
         C, LDC, WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_ORMHR_double')
@@ -10953,9 +11367,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void LARFT( const char DIRECT, const char STOREV, const int N, const int K, double * V, const int LDV, double * TAU, double * T, const int LDT) const;
+  !! void LARFT( const char DIRECT, const char STOREV, const int N, const int K, double * V, 
+  !!     const int LDV, double * TAU, double * T, const int LDT) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_LARFT_float ( CT_Epetra_LAPACK_ID_t selfID, const char DIRECT, const char STOREV, const int N, const int K, double * V, const int LDV, double * TAU, double * T, const int LDT );
+  !! void Epetra_LAPACK_LARFT_float ( CT_Epetra_LAPACK_ID_t selfID, const char DIRECT, 
+  !!     const char STOREV, const int N, const int K, double * V, const int LDV, double * TAU, double * T, const int LDT );
 
   subroutine Epetra_LAPACK_LARFT_float ( selfID, DIRECT, STOREV, N, K, V, LDV, TAU, T, LDT ) &
         bind(C,name='Epetra_LAPACK_LARFT_float')
@@ -10975,9 +11391,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void LARFT( const char DIRECT, const char STOREV, const int N, const int K, float * V, const int LDV, float * TAU, float * T, const int LDT) const;
+  !! void LARFT( const char DIRECT, const char STOREV, const int N, const int K, float * V, 
+  !!     const int LDV, float * TAU, float * T, const int LDT) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_LARFT_double ( CT_Epetra_LAPACK_ID_t selfID, const char DIRECT, const char STOREV, const int N, const int K, float * V, const int LDV, float * TAU, float * T, const int LDT );
+  !! void Epetra_LAPACK_LARFT_double ( CT_Epetra_LAPACK_ID_t selfID, const char DIRECT, 
+  !!     const char STOREV, const int N, const int K, float * V, const int LDV, float * TAU, float * T, const int LDT );
 
   subroutine Epetra_LAPACK_LARFT_double ( selfID, DIRECT, STOREV, N, K, V, LDV, TAU, T, LDT ) &
         bind(C,name='Epetra_LAPACK_LARFT_double')
@@ -10997,9 +11415,13 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void TREVC( const char SIDE, const char HOWMNY, int * SELECT, const int N, const float * T, const int LDT, float *VL, const int LDVL, float * VR, const int LDVR, const int MM, int * M, float * WORK, int * INFO) const;
+  !! void TREVC( const char SIDE, const char HOWMNY, int * SELECT, const int N, const float * T, 
+  !!     const int LDT, float *VL, const int LDVL, float * VR, const int LDVR, const int MM, int * M, float * WORK, 
+  !!     int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_TREVC_float ( CT_Epetra_LAPACK_ID_t selfID, const char SIDE, const char HOWMNY, int * SELECT, const int N, const float * T, const int LDT, float * VL, const int LDVL, float * VR, const int LDVR, const int MM, int * M, float * WORK, int * INFO );
+  !! void Epetra_LAPACK_TREVC_float ( CT_Epetra_LAPACK_ID_t selfID, const char SIDE, const char HOWMNY, 
+  !!     int * SELECT, const int N, const float * T, const int LDT, float * VL, const int LDVL, float * VR, const int LDVR, 
+  !!     const int MM, int * M, float * WORK, int * INFO );
 
   subroutine Epetra_LAPACK_TREVC_float ( selfID, SIDE, HOWMNY, SELECT, N, T, LDT, VL, LDVL, &
         VR, LDVR, MM, M, WORK, INFO ) bind(C,name='Epetra_LAPACK_TREVC_float')
@@ -11024,9 +11446,13 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void TREVC( const char SIDE, const char HOWMNY, int * SELECT, const int N, const double * T, const int LDT, double *VL, const int LDVL, double * VR, const int LDVR, const int MM, int *M, double * WORK, int * INFO) const;
+  !! void TREVC( const char SIDE, const char HOWMNY, int * SELECT, const int N, const double * T, 
+  !!     const int LDT, double *VL, const int LDVL, double * VR, const int LDVR, const int MM, int *M, double * WORK, 
+  !!     int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_TREVC_double ( CT_Epetra_LAPACK_ID_t selfID, const char SIDE, const char HOWMNY, int * SELECT, const int N, const double * T, const int LDT, double * VL, const int LDVL, double * VR, const int LDVR, const int MM, int * M, double * WORK, int * INFO );
+  !! void Epetra_LAPACK_TREVC_double ( CT_Epetra_LAPACK_ID_t selfID, const char SIDE, 
+  !!     const char HOWMNY, int * SELECT, const int N, const double * T, const int LDT, double * VL, const int LDVL, 
+  !!     double * VR, const int LDVR, const int MM, int * M, double * WORK, int * INFO );
 
   subroutine Epetra_LAPACK_TREVC_double ( selfID, SIDE, HOWMNY, SELECT, N, T, LDT, VL, LDVL, &
         VR, LDVR, MM, M, WORK, INFO ) bind(C,name='Epetra_LAPACK_TREVC_double')
@@ -11051,9 +11477,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void TREXC( const char COMPQ, const int N, float * T, const int LDT, float * Q, const int LDQ, int IFST, int ILST, float * WORK, int * INFO) const;
+  !! void TREXC( const char COMPQ, const int N, float * T, const int LDT, float * Q, const int LDQ, 
+  !!     int IFST, int ILST, float * WORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_TREXC_float ( CT_Epetra_LAPACK_ID_t selfID, const char COMPQ, const int N, float * T, const int LDT, float * Q, const int LDQ, int IFST, int ILST, float * WORK, int * INFO );
+  !! void Epetra_LAPACK_TREXC_float ( CT_Epetra_LAPACK_ID_t selfID, const char COMPQ, const int N, 
+  !!     float * T, const int LDT, float * Q, const int LDQ, int IFST, int ILST, float * WORK, int * INFO );
 
   subroutine Epetra_LAPACK_TREXC_float ( selfID, COMPQ, N, T, LDT, Q, LDQ, IFST, ILST, WORK, &
         INFO ) bind(C,name='Epetra_LAPACK_TREXC_float')
@@ -11074,9 +11502,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void TREXC( const char COMPQ, const int N, double * T, const int LDT, double * Q, const int LDQ, int IFST, int ILST, double * WORK, int * INFO) const;
+  !! void TREXC( const char COMPQ, const int N, double * T, const int LDT, double * Q, const int LDQ, 
+  !!     int IFST, int ILST, double * WORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_TREXC_double ( CT_Epetra_LAPACK_ID_t selfID, const char COMPQ, const int N, double * T, const int LDT, double * Q, const int LDQ, int IFST, int ILST, double * WORK, int * INFO );
+  !! void Epetra_LAPACK_TREXC_double ( CT_Epetra_LAPACK_ID_t selfID, const char COMPQ, const int N, 
+  !!     double * T, const int LDT, double * Q, const int LDQ, int IFST, int ILST, double * WORK, int * INFO );
 
   subroutine Epetra_LAPACK_TREXC_double ( selfID, COMPQ, N, T, LDT, Q, LDQ, IFST, ILST, &
         WORK, INFO ) bind(C,name='Epetra_LAPACK_TREXC_double')
@@ -11097,9 +11527,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GESVD( const char JOBU, const char JOBVT, const int M, const int N, float * A, const int LDA, float * S, float * U, const int LDU, float * VT, const int LDVT, float * WORK, const int * LWORK, int * INFO) const;
+  !! void GESVD( const char JOBU, const char JOBVT, const int M, const int N, float * A, const int LDA, 
+  !!     float * S, float * U, const int LDU, float * VT, const int LDVT, float * WORK, const int * LWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GESVD_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBU, const char JOBVT, const int M, const int N, float * A, const int LDA, float * S, float * U, const int LDU, float * VT, const int LDVT, float * WORK, const int * LWORK, int * INFO );
+  !! void Epetra_LAPACK_GESVD_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBU, const char JOBVT, 
+  !!     const int M, const int N, float * A, const int LDA, float * S, float * U, const int LDU, float * VT, const int LDVT, 
+  !!     float * WORK, const int * LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GESVD_float ( selfID, JOBU, JOBVT, M, N, A, LDA, S, U, LDU, VT, &
         LDVT, WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_GESVD_float')
@@ -11124,9 +11557,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GESVD( const char JOBU, const char JOBVT, const int M, const int N, double * A, const int LDA, double * S, double * U, const int LDU, double * VT, const int LDVT, double * WORK, const int * LWORK, int * INFO) const;
+  !! void GESVD( const char JOBU, const char JOBVT, const int M, const int N, double * A, const int LDA, 
+  !!     double * S, double * U, const int LDU, double * VT, const int LDVT, double * WORK, const int * LWORK, int * INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GESVD_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBU, const char JOBVT, const int M, const int N, double * A, const int LDA, double * S, double * U, const int LDU, double * VT, const int LDVT, double * WORK, const int * LWORK, int * INFO );
+  !! void Epetra_LAPACK_GESVD_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBU, const char JOBVT, 
+  !!     const int M, const int N, double * A, const int LDA, double * S, double * U, const int LDU, double * VT, 
+  !!     const int LDVT, double * WORK, const int * LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GESVD_double ( selfID, JOBU, JOBVT, M, N, A, LDA, S, U, LDU, VT, &
         LDVT, WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_GESVD_double')
@@ -11151,9 +11587,14 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GGSVD(const char JOBU, const char JOBV, const char JOBQ, const int M, const int N, const int P, int * K, int * L, double* A, const int LDA, double* B, const int LDB, double* ALPHA, double* BETA, double* U, const int LDU, double* V, const int LDV, double* Q, const int LDQ, double* WORK, int* IWORK, int* INFO) const;
+  !! void GGSVD(const char JOBU, const char JOBV, const char JOBQ, const int M, const int N, const int P, 
+  !!     int * K, int * L, double* A, const int LDA, double* B, const int LDB, double* ALPHA, double* BETA, double* U, 
+  !!     const int LDU, double* V, const int LDV, double* Q, const int LDQ, double* WORK, int* IWORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GGSVD_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBU, const char JOBV, const char JOBQ, const int M, const int N, const int P, int * K, int * L, double * A, const int LDA, double * B, const int LDB, double * ALPHA, double * BETA, double * U, const int LDU, double * V, const int LDV, double * Q, const int LDQ, double * WORK, int * IWORK, int * INFO );
+  !! void Epetra_LAPACK_GGSVD_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBU, const char JOBV, 
+  !!     const char JOBQ, const int M, const int N, const int P, int * K, int * L, double * A, const int LDA, double * B, 
+  !!     const int LDB, double * ALPHA, double * BETA, double * U, const int LDU, double * V, const int LDV, double * Q, 
+  !!     const int LDQ, double * WORK, int * IWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GGSVD_double ( selfID, JOBU, JOBV, JOBQ, M, N, P, K, L, A, LDA, &
         B, LDB, ALPHA, BETA, U, LDU, V, LDV, Q, LDQ, WORK, IWORK, INFO ) &
@@ -11188,9 +11629,14 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GGSVD(const char JOBU, const char JOBV, const char JOBQ, const int M, const int N, const int P, int * K, int * L, float* A, const int LDA, float* B, const int LDB, float* ALPHA, float* BETA, float* U, const int LDU, float* V, const int LDV, float* Q, const int LDQ, float* WORK, int* IWORK, int* INFO) const;
+  !! void GGSVD(const char JOBU, const char JOBV, const char JOBQ, const int M, const int N, const int P, 
+  !!     int * K, int * L, float* A, const int LDA, float* B, const int LDB, float* ALPHA, float* BETA, float* U, const int LDU, 
+  !!     float* V, const int LDV, float* Q, const int LDQ, float* WORK, int* IWORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GGSVD_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBU, const char JOBV, const char JOBQ, const int M, const int N, const int P, int * K, int * L, float * A, const int LDA, float * B, const int LDB, float * ALPHA, float * BETA, float * U, const int LDU, float * V, const int LDV, float * Q, const int LDQ, float * WORK, int * IWORK, int * INFO );
+  !! void Epetra_LAPACK_GGSVD_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBU, const char JOBV, 
+  !!     const char JOBQ, const int M, const int N, const int P, int * K, int * L, float * A, const int LDA, float * B, 
+  !!     const int LDB, float * ALPHA, float * BETA, float * U, const int LDU, float * V, const int LDV, float * Q, 
+  !!     const int LDQ, float * WORK, int * IWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GGSVD_float ( selfID, JOBU, JOBV, JOBQ, M, N, P, K, L, A, LDA, B, &
         LDB, ALPHA, BETA, U, LDU, V, LDV, Q, LDQ, WORK, IWORK, INFO ) &
@@ -11225,9 +11671,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GEEV(const char JOBVL, const char JOBVR, const int N, double* A, const int LDA, double* WR, double* WI, double* VL, const int LDVL, double* VR, const int LDVR, double* WORK, const int LWORK, int* INFO) const;
+  !! void GEEV(const char JOBVL, const char JOBVR, const int N, double* A, const int LDA, double* WR, 
+  !!     double* WI, double* VL, const int LDVL, double* VR, const int LDVR, double* WORK, const int LWORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GEEV_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBVL, const char JOBVR, const int N, double * A, const int LDA, double * WR, double * WI, double * VL, const int LDVL, double * VR, const int LDVR, double * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_GEEV_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBVL, const char JOBVR, 
+  !!     const int N, double * A, const int LDA, double * WR, double * WI, double * VL, const int LDVL, double * VR, 
+  !!     const int LDVR, double * WORK, const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GEEV_double ( selfID, JOBVL, JOBVR, N, A, LDA, WR, WI, VL, LDVL, &
         VR, LDVR, WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_GEEV_double')
@@ -11252,9 +11701,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GEEV(const char JOBVL, const char JOBVR, const int N, float* A, const int LDA, float* WR, float* WI, float* VL, const int LDVL, float* VR, const int LDVR, float* WORK, const int LWORK, int* INFO) const;
+  !! void GEEV(const char JOBVL, const char JOBVR, const int N, float* A, const int LDA, float* WR, 
+  !!     float* WI, float* VL, const int LDVL, float* VR, const int LDVR, float* WORK, const int LWORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GEEV_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBVL, const char JOBVR, const int N, float * A, const int LDA, float * WR, float * WI, float * VL, const int LDVL, float * VR, const int LDVR, float * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_GEEV_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBVL, const char JOBVR, 
+  !!     const int N, float * A, const int LDA, float * WR, float * WI, float * VL, const int LDVL, float * VR, const int LDVR, 
+  !!     float * WORK, const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GEEV_float ( selfID, JOBVL, JOBVR, N, A, LDA, WR, WI, VL, LDVL, &
         VR, LDVR, WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_GEEV_float')
@@ -11279,9 +11731,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void SPEV(const char JOBZ, const char UPLO, const int N, double* AP, double* W, double* Z, int LDZ, double* WORK, int* INFO) const;
+  !! void SPEV(const char JOBZ, const char UPLO, const int N, double* AP, double* W, double* Z, int LDZ, 
+  !!     double* WORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_SPEV_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char UPLO, const int N, double * AP, double * W, double * Z, int LDZ, double * WORK, int * INFO );
+  !! void Epetra_LAPACK_SPEV_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char UPLO, 
+  !!     const int N, double * AP, double * W, double * Z, int LDZ, double * WORK, int * INFO );
 
   subroutine Epetra_LAPACK_SPEV_double ( selfID, JOBZ, UPLO, N, AP, W, Z, LDZ, WORK, INFO ) &
         bind(C,name='Epetra_LAPACK_SPEV_double')
@@ -11301,9 +11755,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void SPEV(const char JOBZ, const char UPLO, const int N, float* AP, float* W, float* Z, int LDZ, float* WORK, int* INFO) const;
+  !! void SPEV(const char JOBZ, const char UPLO, const int N, float* AP, float* W, float* Z, int LDZ, 
+  !!     float* WORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_SPEV_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char UPLO, const int N, float * AP, float * W, float * Z, int LDZ, float * WORK, int * INFO );
+  !! void Epetra_LAPACK_SPEV_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char UPLO, 
+  !!     const int N, float * AP, float * W, float * Z, int LDZ, float * WORK, int * INFO );
 
   subroutine Epetra_LAPACK_SPEV_float ( selfID, JOBZ, UPLO, N, AP, W, Z, LDZ, WORK, INFO ) &
         bind(C,name='Epetra_LAPACK_SPEV_float')
@@ -11323,9 +11779,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void SPGV(const int ITYPE, const char JOBZ, const char UPLO, const int N, double* AP, double* BP, double* W, double* Z, const int LDZ, double* WORK, int* INFO) const;
+  !! void SPGV(const int ITYPE, const char JOBZ, const char UPLO, const int N, double* AP, double* BP, 
+  !!     double* W, double* Z, const int LDZ, double* WORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_SPGV_double ( CT_Epetra_LAPACK_ID_t selfID, const int ITYPE, const char JOBZ, const char UPLO, const int N, double * AP, double * BP, double * W, double * Z, const int LDZ, double * WORK, int * INFO );
+  !! void Epetra_LAPACK_SPGV_double ( CT_Epetra_LAPACK_ID_t selfID, const int ITYPE, const char JOBZ, 
+  !!     const char UPLO, const int N, double * AP, double * BP, double * W, double * Z, const int LDZ, double * WORK, 
+  !!     int * INFO );
 
   subroutine Epetra_LAPACK_SPGV_double ( selfID, ITYPE, JOBZ, UPLO, N, AP, BP, W, Z, LDZ, &
         WORK, INFO ) bind(C,name='Epetra_LAPACK_SPGV_double')
@@ -11347,9 +11806,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void SPGV(const int ITYPE, const char JOBZ, const char UPLO, const int N, float* AP, float* BP, float* W, float* Z, const int LDZ, float* WORK, int* INFO) const;
+  !! void SPGV(const int ITYPE, const char JOBZ, const char UPLO, const int N, float* AP, float* BP, 
+  !!     float* W, float* Z, const int LDZ, float* WORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_SPGV_float ( CT_Epetra_LAPACK_ID_t selfID, const int ITYPE, const char JOBZ, const char UPLO, const int N, float * AP, float * BP, float * W, float * Z, const int LDZ, float * WORK, int * INFO );
+  !! void Epetra_LAPACK_SPGV_float ( CT_Epetra_LAPACK_ID_t selfID, const int ITYPE, const char JOBZ, 
+  !!     const char UPLO, const int N, float * AP, float * BP, float * W, float * Z, const int LDZ, float * WORK, int * INFO );
 
   subroutine Epetra_LAPACK_SPGV_float ( selfID, ITYPE, JOBZ, UPLO, N, AP, BP, W, Z, LDZ, &
         WORK, INFO ) bind(C,name='Epetra_LAPACK_SPGV_float')
@@ -11371,9 +11832,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void SYEV(const char JOBZ, const char UPLO, const int N, double* A, const int LDA, double* W, double* WORK, const int LWORK, int* INFO) const;
+  !! void SYEV(const char JOBZ, const char UPLO, const int N, double* A, const int LDA, double* W, 
+  !!     double* WORK, const int LWORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_SYEV_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char UPLO, const int N, double * A, const int LDA, double * W, double * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_SYEV_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char UPLO, 
+  !!     const int N, double * A, const int LDA, double * W, double * WORK, const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_SYEV_double ( selfID, JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, &
         INFO ) bind(C,name='Epetra_LAPACK_SYEV_double')
@@ -11393,9 +11856,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void SYEV(const char JOBZ, const char UPLO, const int N, float* A, const int LDA, float* W, float* WORK, const int LWORK, int* INFO) const;
+  !! void SYEV(const char JOBZ, const char UPLO, const int N, float* A, const int LDA, float* W, 
+  !!     float* WORK, const int LWORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_SYEV_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char UPLO, const int N, float * A, const int LDA, float * W, float * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_SYEV_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char UPLO, 
+  !!     const int N, float * A, const int LDA, float * W, float * WORK, const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_SYEV_float ( selfID, JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, INFO ) &
         bind(C,name='Epetra_LAPACK_SYEV_float')
@@ -11415,9 +11880,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void SYEVD(const char JOBZ, const char UPLO, const int N, double* A, const int LDA, double* W, double* WORK, const int LWORK, int* IWORK, const int LIWORK, int* INFO) const;
+  !! void SYEVD(const char JOBZ, const char UPLO, const int N, double* A, const int LDA, double* W, 
+  !!     double* WORK, const int LWORK, int* IWORK, const int LIWORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_SYEVD_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char UPLO, const int N, double * A, const int LDA, double * W, double * WORK, const int LWORK, int * IWORK, const int LIWORK, int * INFO );
+  !! void Epetra_LAPACK_SYEVD_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char UPLO, 
+  !!     const int N, double * A, const int LDA, double * W, double * WORK, const int LWORK, int * IWORK, const int LIWORK, 
+  !!     int * INFO );
 
   subroutine Epetra_LAPACK_SYEVD_double ( selfID, JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, &
         IWORK, LIWORK, INFO ) bind(C,name='Epetra_LAPACK_SYEVD_double')
@@ -11439,9 +11907,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void SYEVD(const char JOBZ, const char UPLO, const int N, float* A, const int LDA, float* W, float* WORK, const int LWORK, int* IWORK, const int LIWORK, int* INFO) const;
+  !! void SYEVD(const char JOBZ, const char UPLO, const int N, float* A, const int LDA, float* W, 
+  !!     float* WORK, const int LWORK, int* IWORK, const int LIWORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_SYEVD_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char UPLO, const int N, float * A, const int LDA, float * W, float * WORK, const int LWORK, int * IWORK, const int LIWORK, int * INFO );
+  !! void Epetra_LAPACK_SYEVD_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char UPLO, 
+  !!     const int N, float * A, const int LDA, float * W, float * WORK, const int LWORK, int * IWORK, const int LIWORK, 
+  !!     int * INFO );
 
   subroutine Epetra_LAPACK_SYEVD_float ( selfID, JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, &
         IWORK, LIWORK, INFO ) bind(C,name='Epetra_LAPACK_SYEVD_float')
@@ -11463,9 +11934,14 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void SYEVX(const char JOBZ, const char RANGE, const char UPLO, const int N, double* A, const int LDA, const double* VL, const double* VU, const int* IL, const int* IU, const double ABSTOL, int * M, double* W, double* Z, const int LDZ, double* WORK, const int LWORK, int* IWORK, int* IFAIL, int* INFO) const;
+  !! void SYEVX(const char JOBZ, const char RANGE, const char UPLO, const int N, double* A, 
+  !!     const int LDA, const double* VL, const double* VU, const int* IL, const int* IU, const double ABSTOL, int * M, 
+  !!     double* W, double* Z, const int LDZ, double* WORK, const int LWORK, int* IWORK, int* IFAIL, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_SYEVX_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char RANGE, const char UPLO, const int N, double * A, const int LDA, const double * VL, const double * VU, const int * IL, const int * IU, const double ABSTOL, int * M, double * W, double * Z, const int LDZ, double * WORK, const int LWORK, int * IWORK, int * IFAIL, int * INFO );
+  !! void Epetra_LAPACK_SYEVX_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char RANGE, 
+  !!     const char UPLO, const int N, double * A, const int LDA, const double * VL, const double * VU, const int * IL, 
+  !!     const int * IU, const double ABSTOL, int * M, double * W, double * Z, const int LDZ, double * WORK, const int LWORK, 
+  !!     int * IWORK, int * IFAIL, int * INFO );
 
   subroutine Epetra_LAPACK_SYEVX_double ( selfID, JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, &
         IU, ABSTOL, M, W, Z, LDZ, WORK, LWORK, IWORK, IFAIL, INFO ) &
@@ -11497,9 +11973,14 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void SYEVX(const char JOBZ, const char RANGE, const char UPLO, const int N, float* A, const int LDA, const float* VL, const float* VU, const int* IL, const int* IU, const float ABSTOL, int * M, float* W, float* Z, const int LDZ, float* WORK, const int LWORK, int* IWORK, int* IFAIL, int* INFO) const;
+  !! void SYEVX(const char JOBZ, const char RANGE, const char UPLO, const int N, float* A, const int LDA, 
+  !!     const float* VL, const float* VU, const int* IL, const int* IU, const float ABSTOL, int * M, float* W, float* Z, 
+  !!     const int LDZ, float* WORK, const int LWORK, int* IWORK, int* IFAIL, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_SYEVX_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char RANGE, const char UPLO, const int N, float * A, const int LDA, const float * VL, const float * VU, const int * IL, const int * IU, const float ABSTOL, int * M, float * W, float * Z, const int LDZ, float * WORK, const int LWORK, int * IWORK, int * IFAIL, int * INFO );
+  !! void Epetra_LAPACK_SYEVX_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char RANGE, 
+  !!     const char UPLO, const int N, float * A, const int LDA, const float * VL, const float * VU, const int * IL, 
+  !!     const int * IU, const float ABSTOL, int * M, float * W, float * Z, const int LDZ, float * WORK, const int LWORK, 
+  !!     int * IWORK, int * IFAIL, int * INFO );
 
   subroutine Epetra_LAPACK_SYEVX_float ( selfID, JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, &
         IU, ABSTOL, M, W, Z, LDZ, WORK, LWORK, IWORK, IFAIL, INFO ) &
@@ -11531,9 +12012,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void SYGV(const int ITYPE, const char JOBZ, const char UPLO, const int N, double* A, const int LDA, double* B, const int LDB, double* W, double* WORK, const int LWORK, int* INFO) const;
+  !! void SYGV(const int ITYPE, const char JOBZ, const char UPLO, const int N, double* A, const int LDA, 
+  !!     double* B, const int LDB, double* W, double* WORK, const int LWORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_SYGV_double ( CT_Epetra_LAPACK_ID_t selfID, const int ITYPE, const char JOBZ, const char UPLO, const int N, double * A, const int LDA, double * B, const int LDB, double * W, double * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_SYGV_double ( CT_Epetra_LAPACK_ID_t selfID, const int ITYPE, const char JOBZ, 
+  !!     const char UPLO, const int N, double * A, const int LDA, double * B, const int LDB, double * W, double * WORK, 
+  !!     const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_SYGV_double ( selfID, ITYPE, JOBZ, UPLO, N, A, LDA, B, LDB, W, &
         WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_SYGV_double')
@@ -11556,9 +12040,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void SYGV(const int ITYPE, const char JOBZ, const char UPLO, const int N, float* A, const int LDA, float* B, const int LDB, float* W, float* WORK, const int LWORK, int* INFO) const;
+  !! void SYGV(const int ITYPE, const char JOBZ, const char UPLO, const int N, float* A, const int LDA, 
+  !!     float* B, const int LDB, float* W, float* WORK, const int LWORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_SYGV_float ( CT_Epetra_LAPACK_ID_t selfID, const int ITYPE, const char JOBZ, const char UPLO, const int N, float * A, const int LDA, float * B, const int LDB, float * W, float * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_SYGV_float ( CT_Epetra_LAPACK_ID_t selfID, const int ITYPE, const char JOBZ, 
+  !!     const char UPLO, const int N, float * A, const int LDA, float * B, const int LDB, float * W, float * WORK, 
+  !!     const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_SYGV_float ( selfID, ITYPE, JOBZ, UPLO, N, A, LDA, B, LDB, W, &
         WORK, LWORK, INFO ) bind(C,name='Epetra_LAPACK_SYGV_float')
@@ -11581,9 +12068,15 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void SYGVX(const int ITYPE, const char JOBZ, const char RANGE, const char UPLO, const int N, double* A, const int LDA, double* B, const int LDB, const double* VL, const double* VU, const int* IL, const int* IU, const double ABSTOL, int* M, double* W, double* Z, const int LDZ, double* WORK, const int LWORK, int* IWORK, int* IFAIL, int* INFO) const;
+  !! void SYGVX(const int ITYPE, const char JOBZ, const char RANGE, const char UPLO, const int N, 
+  !!     double* A, const int LDA, double* B, const int LDB, const double* VL, const double* VU, const int* IL, const int* IU, 
+  !!     const double ABSTOL, int* M, double* W, double* Z, const int LDZ, double* WORK, const int LWORK, int* IWORK, 
+  !!     int* IFAIL, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_SYGVX_double ( CT_Epetra_LAPACK_ID_t selfID, const int ITYPE, const char JOBZ, const char RANGE, const char UPLO, const int N, double * A, const int LDA, double * B, const int LDB, const double * VL, const double * VU, const int * IL, const int * IU, const double ABSTOL, int * M, double * W, double * Z, const int LDZ, double * WORK, const int LWORK, int * IWORK, int * IFAIL, int * INFO );
+  !! void Epetra_LAPACK_SYGVX_double ( CT_Epetra_LAPACK_ID_t selfID, const int ITYPE, const char JOBZ, 
+  !!     const char RANGE, const char UPLO, const int N, double * A, const int LDA, double * B, const int LDB, 
+  !!     const double * VL, const double * VU, const int * IL, const int * IU, const double ABSTOL, int * M, double * W, 
+  !!     double * Z, const int LDZ, double * WORK, const int LWORK, int * IWORK, int * IFAIL, int * INFO );
 
   subroutine Epetra_LAPACK_SYGVX_double ( selfID, ITYPE, JOBZ, RANGE, UPLO, N, A, LDA, B, &
         LDB, VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, LWORK, IWORK, IFAIL, INFO ) &
@@ -11618,9 +12111,15 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void SYGVX(const int ITYPE, const char JOBZ, const char RANGE, const char UPLO, const int N, float* A, const int LDA, float* B, const int LDB, const float* VL, const float* VU, const int* IL, const int* IU, const float ABSTOL, int* M, float* W, float* Z, const int LDZ, float* WORK, const int LWORK, int* IWORK, int* IFAIL, int* INFO) const;
+  !! void SYGVX(const int ITYPE, const char JOBZ, const char RANGE, const char UPLO, const int N, 
+  !!     float* A, const int LDA, float* B, const int LDB, const float* VL, const float* VU, const int* IL, const int* IU, 
+  !!     const float ABSTOL, int* M, float* W, float* Z, const int LDZ, float* WORK, const int LWORK, int* IWORK, int* IFAIL, 
+  !!     int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_SYGVX_float ( CT_Epetra_LAPACK_ID_t selfID, const int ITYPE, const char JOBZ, const char RANGE, const char UPLO, const int N, float * A, const int LDA, float * B, const int LDB, const float * VL, const float * VU, const int * IL, const int * IU, const float ABSTOL, int * M, float * W, float * Z, const int LDZ, float * WORK, const int LWORK, int * IWORK, int * IFAIL, int * INFO );
+  !! void Epetra_LAPACK_SYGVX_float ( CT_Epetra_LAPACK_ID_t selfID, const int ITYPE, const char JOBZ, 
+  !!     const char RANGE, const char UPLO, const int N, float * A, const int LDA, float * B, const int LDB, const float * VL, 
+  !!     const float * VU, const int * IL, const int * IU, const float ABSTOL, int * M, float * W, float * Z, const int LDZ, 
+  !!     float * WORK, const int LWORK, int * IWORK, int * IFAIL, int * INFO );
 
   subroutine Epetra_LAPACK_SYGVX_float ( selfID, ITYPE, JOBZ, RANGE, UPLO, N, A, LDA, B, &
         LDB, VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, LWORK, IWORK, IFAIL, INFO ) &
@@ -11655,9 +12154,15 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void SYEVR(const char JOBZ, const char RANGE, const char UPLO, const int N, double* A, const int LDA, const double* VL, const double* VU, const int *IL, const int *IU, const double ABSTOL, int* M, double* W, double* Z, const int LDZ, int* ISUPPZ, double* WORK, const int LWORK, int* IWORK, const int LIWORK, int* INFO) const;
+  !! void SYEVR(const char JOBZ, const char RANGE, const char UPLO, const int N, double* A, 
+  !!     const int LDA, const double* VL, const double* VU, const int *IL, const int *IU, const double ABSTOL, int* M, 
+  !!     double* W, double* Z, const int LDZ, int* ISUPPZ, double* WORK, const int LWORK, int* IWORK, const int LIWORK, 
+  !!     int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_SYEVR_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char RANGE, const char UPLO, const int N, double * A, const int LDA, const double * VL, const double * VU, const int * IL, const int * IU, const double ABSTOL, int * M, double * W, double * Z, const int LDZ, int * ISUPPZ, double * WORK, const int LWORK, int * IWORK, const int LIWORK, int * INFO );
+  !! void Epetra_LAPACK_SYEVR_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char RANGE, 
+  !!     const char UPLO, const int N, double * A, const int LDA, const double * VL, const double * VU, const int * IL, 
+  !!     const int * IU, const double ABSTOL, int * M, double * W, double * Z, const int LDZ, int * ISUPPZ, double * WORK, 
+  !!     const int LWORK, int * IWORK, const int LIWORK, int * INFO );
 
   subroutine Epetra_LAPACK_SYEVR_double ( selfID, JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, &
         IU, ABSTOL, M, W, Z, LDZ, ISUPPZ, WORK, LWORK, IWORK, LIWORK, INFO ) &
@@ -11690,9 +12195,14 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void SYEVR(const char JOBZ, const char RANGE, const char UPLO, const int N, float* A, const int LDA, const float* VL, const float* VU, const int *IL, const int *IU, const float ABSTOL, int* M, float* W, float* Z, const int LDZ, int* ISUPPZ, float* WORK, const int LWORK, int* IWORK, const int LIWORK, int* INFO) const;
+  !! void SYEVR(const char JOBZ, const char RANGE, const char UPLO, const int N, float* A, const int LDA, 
+  !!     const float* VL, const float* VU, const int *IL, const int *IU, const float ABSTOL, int* M, float* W, float* Z, 
+  !!     const int LDZ, int* ISUPPZ, float* WORK, const int LWORK, int* IWORK, const int LIWORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_SYEVR_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char RANGE, const char UPLO, const int N, float * A, const int LDA, const float * VL, const float * VU, const int * IL, const int * IU, const float ABSTOL, int * M, float * W, float * Z, const int LDZ, int * ISUPPZ, float * WORK, const int LWORK, int * IWORK, const int LIWORK, int * INFO );
+  !! void Epetra_LAPACK_SYEVR_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const char RANGE, 
+  !!     const char UPLO, const int N, float * A, const int LDA, const float * VL, const float * VU, const int * IL, 
+  !!     const int * IU, const float ABSTOL, int * M, float * W, float * Z, const int LDZ, int * ISUPPZ, float * WORK, 
+  !!     const int LWORK, int * IWORK, const int LIWORK, int * INFO );
 
   subroutine Epetra_LAPACK_SYEVR_float ( selfID, JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, &
         IU, ABSTOL, M, W, Z, LDZ, ISUPPZ, WORK, LWORK, IWORK, LIWORK, INFO ) &
@@ -11725,9 +12235,15 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GEEVX(const char BALANC, const char JOBVL, const char JOBVR, const char SENSE, const int N, double* A, const int LDA, double* WR, double* WI, double* VL, const int LDVL, double* VR, const int LDVR, int* ILO, int* IHI, double* SCALE, double* ABNRM, double* RCONDE, double* RCONDV, double* WORK, const int LWORK, int* IWORK, int* INFO) const;
+  !! void GEEVX(const char BALANC, const char JOBVL, const char JOBVR, const char SENSE, const int N, 
+  !!     double* A, const int LDA, double* WR, double* WI, double* VL, const int LDVL, double* VR, const int LDVR, int* ILO, 
+  !!     int* IHI, double* SCALE, double* ABNRM, double* RCONDE, double* RCONDV, double* WORK, const int LWORK, int* IWORK, 
+  !!     int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GEEVX_double ( CT_Epetra_LAPACK_ID_t selfID, const char BALANC, const char JOBVL, const char JOBVR, const char SENSE, const int N, double * A, const int LDA, double * WR, double * WI, double * VL, const int LDVL, double * VR, const int LDVR, int * ILO, int * IHI, double * SCALE, double * ABNRM, double * RCONDE, double * RCONDV, double * WORK, const int LWORK, int * IWORK, int * INFO );
+  !! void Epetra_LAPACK_GEEVX_double ( CT_Epetra_LAPACK_ID_t selfID, const char BALANC, 
+  !!     const char JOBVL, const char JOBVR, const char SENSE, const int N, double * A, const int LDA, double * WR, double * WI, 
+  !!     double * VL, const int LDVL, double * VR, const int LDVR, int * ILO, int * IHI, double * SCALE, double * ABNRM, 
+  !!     double * RCONDE, double * RCONDV, double * WORK, const int LWORK, int * IWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GEEVX_double ( selfID, BALANC, JOBVL, JOBVR, SENSE, N, A, LDA, &
         WR, WI, VL, LDVL, VR, LDVR, ILO, IHI, SCALE, ABNRM, RCONDE, RCONDV, WORK, LWORK, &
@@ -11762,9 +12278,15 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GEEVX(const char BALANC, const char JOBVL, const char JOBVR, const char SENSE, const int N, float* A, const int LDA, float* WR, float* WI, float* VL, const int LDVL, float* VR, const int LDVR, int* ILO, int* IHI, float* SCALE, float* ABNRM, float* RCONDE, float* RCONDV, float* WORK, const int LWORK, int* IWORK, int* INFO) const;
+  !! void GEEVX(const char BALANC, const char JOBVL, const char JOBVR, const char SENSE, const int N, 
+  !!     float* A, const int LDA, float* WR, float* WI, float* VL, const int LDVL, float* VR, const int LDVR, int* ILO, 
+  !!     int* IHI, float* SCALE, float* ABNRM, float* RCONDE, float* RCONDV, float* WORK, const int LWORK, int* IWORK, 
+  !!     int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GEEVX_float ( CT_Epetra_LAPACK_ID_t selfID, const char BALANC, const char JOBVL, const char JOBVR, const char SENSE, const int N, float * A, const int LDA, float * WR, float * WI, float * VL, const int LDVL, float * VR, const int LDVR, int * ILO, int * IHI, float * SCALE, float * ABNRM, float * RCONDE, float * RCONDV, float * WORK, const int LWORK, int * IWORK, int * INFO );
+  !! void Epetra_LAPACK_GEEVX_float ( CT_Epetra_LAPACK_ID_t selfID, const char BALANC, 
+  !!     const char JOBVL, const char JOBVR, const char SENSE, const int N, float * A, const int LDA, float * WR, float * WI, 
+  !!     float * VL, const int LDVL, float * VR, const int LDVR, int * ILO, int * IHI, float * SCALE, float * ABNRM, 
+  !!     float * RCONDE, float * RCONDV, float * WORK, const int LWORK, int * IWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GEEVX_float ( selfID, BALANC, JOBVL, JOBVR, SENSE, N, A, LDA, WR, &
         WI, VL, LDVL, VR, LDVR, ILO, IHI, SCALE, ABNRM, RCONDE, RCONDV, WORK, LWORK, IWORK, &
@@ -11799,9 +12321,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GESDD(const char JOBZ, const int M, const int N, double* A, const int LDA, double* S, double* U, const int LDU, double* VT, const int LDVT, double* WORK, const int LWORK, int* IWORK, int* INFO) const;
+  !! void GESDD(const char JOBZ, const int M, const int N, double* A, const int LDA, double* S, 
+  !!     double* U, const int LDU, double* VT, const int LDVT, double* WORK, const int LWORK, int* IWORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GESDD_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const int M, const int N, double * A, const int LDA, double * S, double * U, const int LDU, double * VT, const int LDVT, double * WORK, const int LWORK, int * IWORK, int * INFO );
+  !! void Epetra_LAPACK_GESDD_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const int M, 
+  !!     const int N, double * A, const int LDA, double * S, double * U, const int LDU, double * VT, const int LDVT, 
+  !!     double * WORK, const int LWORK, int * IWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GESDD_double ( selfID, JOBZ, M, N, A, LDA, S, U, LDU, VT, LDVT, &
         WORK, LWORK, IWORK, INFO ) bind(C,name='Epetra_LAPACK_GESDD_double')
@@ -11826,9 +12351,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GESDD(const char JOBZ, const int M, const int N, float* A, const int LDA, float* S, float* U, const int LDU, float* VT, const int LDVT, float* WORK, const int LWORK, int* IWORK, int* INFO) const;
+  !! void GESDD(const char JOBZ, const int M, const int N, float* A, const int LDA, float* S, float* U, 
+  !!     const int LDU, float* VT, const int LDVT, float* WORK, const int LWORK, int* IWORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GESDD_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const int M, const int N, float * A, const int LDA, float * S, float * U, const int LDU, float * VT, const int LDVT, float * WORK, const int LWORK, int * IWORK, int * INFO );
+  !! void Epetra_LAPACK_GESDD_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBZ, const int M, 
+  !!     const int N, float * A, const int LDA, float * S, float * U, const int LDU, float * VT, const int LDVT, float * WORK, 
+  !!     const int LWORK, int * IWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GESDD_float ( selfID, JOBZ, M, N, A, LDA, S, U, LDU, VT, LDVT, &
         WORK, LWORK, IWORK, INFO ) bind(C,name='Epetra_LAPACK_GESDD_float')
@@ -11853,9 +12381,13 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GGEV(const char JOBVL, const char JOBVR, const int N, double* A, const int LDA, double* B, const int LDB, double* ALPHAR, double* ALPHAI, double* BETA, double* VL, const int LDVL, double* VR, const int LDVR, double* WORK, const int LWORK, int* INFO) const;
+  !! void GGEV(const char JOBVL, const char JOBVR, const int N, double* A, const int LDA, double* B, 
+  !!     const int LDB, double* ALPHAR, double* ALPHAI, double* BETA, double* VL, const int LDVL, double* VR, const int LDVR, 
+  !!     double* WORK, const int LWORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GGEV_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBVL, const char JOBVR, const int N, double * A, const int LDA, double * B, const int LDB, double * ALPHAR, double * ALPHAI, double * BETA, double * VL, const int LDVL, double * VR, const int LDVR, double * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_GGEV_double ( CT_Epetra_LAPACK_ID_t selfID, const char JOBVL, const char JOBVR, 
+  !!     const int N, double * A, const int LDA, double * B, const int LDB, double * ALPHAR, double * ALPHAI, double * BETA, 
+  !!     double * VL, const int LDVL, double * VR, const int LDVR, double * WORK, const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GGEV_double ( selfID, JOBVL, JOBVR, N, A, LDA, B, LDB, ALPHAR, &
         ALPHAI, BETA, VL, LDVL, VR, LDVR, WORK, LWORK, INFO ) &
@@ -11884,9 +12416,13 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GGEV(const char JOBVL, const char JOBVR, const int N, float* A, const int LDA, float* B, const int LDB, float* ALPHAR, float* ALPHAI, float* BETA, float* VL, const int LDVL, float* VR, const int LDVR, float* WORK, const int LWORK, int* INFO) const;
+  !! void GGEV(const char JOBVL, const char JOBVR, const int N, float* A, const int LDA, float* B, 
+  !!     const int LDB, float* ALPHAR, float* ALPHAI, float* BETA, float* VL, const int LDVL, float* VR, const int LDVR, 
+  !!     float* WORK, const int LWORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GGEV_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBVL, const char JOBVR, const int N, float * A, const int LDA, float * B, const int LDB, float * ALPHAR, float * ALPHAI, float * BETA, float * VL, const int LDVL, float * VR, const int LDVR, float * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_GGEV_float ( CT_Epetra_LAPACK_ID_t selfID, const char JOBVL, const char JOBVR, 
+  !!     const int N, float * A, const int LDA, float * B, const int LDB, float * ALPHAR, float * ALPHAI, float * BETA, 
+  !!     float * VL, const int LDVL, float * VR, const int LDVR, float * WORK, const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GGEV_float ( selfID, JOBVL, JOBVR, N, A, LDA, B, LDB, ALPHAR, &
         ALPHAI, BETA, VL, LDVL, VR, LDVR, WORK, LWORK, INFO ) &
@@ -11915,9 +12451,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GGLSE(const int M, const int N, const int P, double* A, const int LDA, double* B, const int LDB, double* C, double* D, double* X, double* WORK, const int LWORK, int* INFO) const;
+  !! void GGLSE(const int M, const int N, const int P, double* A, const int LDA, double* B, 
+  !!     const int LDB, double* C, double* D, double* X, double* WORK, const int LWORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GGLSE_double ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, const int P, double * A, const int LDA, double * B, const int LDB, double * C, double * D, double * X, double * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_GGLSE_double ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, 
+  !!     const int P, double * A, const int LDA, double * B, const int LDB, double * C, double * D, double * X, double * WORK, 
+  !!     const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GGLSE_double ( selfID, M, N, P, A, LDA, B, LDB, C, D, X, WORK, &
         LWORK, INFO ) bind(C,name='Epetra_LAPACK_GGLSE_double')
@@ -11941,9 +12480,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! void GGLSE(const int M, const int N, const int P, float* A, const int LDA, float* B, const int LDB, float* C, float* D, float* X, float* WORK, const int LWORK, int* INFO) const;
+  !! void GGLSE(const int M, const int N, const int P, float* A, const int LDA, float* B, const int LDB, 
+  !!     float* C, float* D, float* X, float* WORK, const int LWORK, int* INFO) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_LAPACK_GGLSE_float ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, const int P, float * A, const int LDA, float * B, const int LDB, float * C, float * D, float * X, float * WORK, const int LWORK, int * INFO );
+  !! void Epetra_LAPACK_GGLSE_float ( CT_Epetra_LAPACK_ID_t selfID, const int M, const int N, 
+  !!     const int P, float * A, const int LDA, float * B, const int LDB, float * C, float * D, float * X, float * WORK, 
+  !!     const int LWORK, int * INFO );
 
   subroutine Epetra_LAPACK_GGLSE_float ( selfID, M, N, P, A, LDA, B, LDB, C, D, X, WORK, &
         LWORK, INFO ) bind(C,name='Epetra_LAPACK_GGLSE_float')
@@ -12030,9 +12572,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_FECrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, int* NumEntriesPerRow, bool ignoreNonLocalEntries=false);
+  !! Epetra_FECrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, int* NumEntriesPerRow, 
+  !!     bool ignoreNonLocalEntries=false);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create_Var ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, int * NumEntriesPerRow, boolean ignoreNonLocalEntries );
+  !! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create_Var ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_Map_ID_t RowMapID, int * NumEntriesPerRow, boolean ignoreNonLocalEntries );
 
   function Epetra_FECrsMatrix_Create_Var ( CV, RowMapID, NumEntriesPerRow, &
         ignoreNonLocalEntries ) result(that) bind(C,name='Epetra_FECrsMatrix_Create_Var')
@@ -12048,9 +12592,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_FECrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, int NumEntriesPerRow, bool ignoreNonLocalEntries=false);
+  !! Epetra_FECrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, int NumEntriesPerRow, 
+  !!     bool ignoreNonLocalEntries=false);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, int NumEntriesPerRow, boolean ignoreNonLocalEntries );
+  !! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_Map_ID_t RowMapID, int NumEntriesPerRow, boolean ignoreNonLocalEntries );
 
   function Epetra_FECrsMatrix_Create ( CV, RowMapID, NumEntriesPerRow, &
         ignoreNonLocalEntries ) result(that) bind(C,name='Epetra_FECrsMatrix_Create')
@@ -12066,9 +12612,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_FECrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const Epetra_Map& ColMap, int* NumEntriesPerRow, bool ignoreNonLocalEntries=false);
+  !! Epetra_FECrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const Epetra_Map& ColMap, 
+  !!     int* NumEntriesPerRow, bool ignoreNonLocalEntries=false);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create_WithColMap_Var ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, int * NumEntriesPerRow, boolean ignoreNonLocalEntries );
+  !! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create_WithColMap_Var ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, int * NumEntriesPerRow, boolean ignoreNonLocalEntries );
 
   function Epetra_FECrsMatrix_Create_WithColMap_Var ( CV, RowMapID, ColMapID, &
         NumEntriesPerRow, ignoreNonLocalEntries ) result(that) &
@@ -12086,9 +12634,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_FECrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const Epetra_Map& ColMap, int NumEntriesPerRow, bool ignoreNonLocalEntries=false);
+  !! Epetra_FECrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const Epetra_Map& ColMap, 
+  !!     int NumEntriesPerRow, bool ignoreNonLocalEntries=false);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create_WithColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, int NumEntriesPerRow, boolean ignoreNonLocalEntries );
+  !! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create_WithColMap ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, int NumEntriesPerRow, boolean ignoreNonLocalEntries );
 
   function Epetra_FECrsMatrix_Create_WithColMap ( CV, RowMapID, ColMapID, NumEntriesPerRow, &
         ignoreNonLocalEntries ) result(that) &
@@ -12106,9 +12656,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_FECrsMatrix(Epetra_DataAccess CV, const Epetra_CrsGraph& Graph, bool ignoreNonLocalEntries=false);
+  !! Epetra_FECrsMatrix(Epetra_DataAccess CV, const Epetra_CrsGraph& Graph, 
+  !!     bool ignoreNonLocalEntries=false);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create_FromGraph ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_CrsGraph_ID_t GraphID, boolean ignoreNonLocalEntries );
+  !! CT_Epetra_FECrsMatrix_ID_t Epetra_FECrsMatrix_Create_FromGraph ( CT_Epetra_DataAccess_E_t CV, 
+  !!     CT_Epetra_CrsGraph_ID_t GraphID, boolean ignoreNonLocalEntries );
 
   function Epetra_FECrsMatrix_Create_FromGraph ( CV, GraphID, ignoreNonLocalEntries ) &
         result(that) bind(C,name='Epetra_FECrsMatrix_Create_FromGraph')
@@ -12152,7 +12704,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_FECrsMatrix& operator=(const Epetra_FECrsMatrix& src);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_FECrsMatrix_Assign ( CT_Epetra_FECrsMatrix_ID_t selfID, CT_Epetra_FECrsMatrix_ID_t srcID );
+  !! void Epetra_FECrsMatrix_Assign ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     CT_Epetra_FECrsMatrix_ID_t srcID );
 
   subroutine Epetra_FECrsMatrix_Assign ( selfID, srcID ) &
         bind(C,name='Epetra_FECrsMatrix_Assign')
@@ -12166,7 +12719,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int SumIntoGlobalValues(int GlobalRow, int NumEntries, double* Values, int* Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_SumIntoGlobalValues ( CT_Epetra_FECrsMatrix_ID_t selfID, int GlobalRow, int NumEntries, double * Values, int * Indices );
+  !! int Epetra_FECrsMatrix_SumIntoGlobalValues ( CT_Epetra_FECrsMatrix_ID_t selfID, int GlobalRow, 
+  !!     int NumEntries, double * Values, int * Indices );
 
   function Epetra_FECrsMatrix_SumIntoGlobalValues ( selfID, GlobalRow, NumEntries, Values, &
         Indices ) result(that) bind(C,name='Epetra_FECrsMatrix_SumIntoGlobalValues')
@@ -12184,7 +12738,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int InsertGlobalValues(int GlobalRow, int NumEntries, double* Values, int* Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_InsertGlobalValues ( CT_Epetra_FECrsMatrix_ID_t selfID, int GlobalRow, int NumEntries, double * Values, int * Indices );
+  !! int Epetra_FECrsMatrix_InsertGlobalValues ( CT_Epetra_FECrsMatrix_ID_t selfID, int GlobalRow, 
+  !!     int NumEntries, double * Values, int * Indices );
 
   function Epetra_FECrsMatrix_InsertGlobalValues ( selfID, GlobalRow, NumEntries, Values, &
         Indices ) result(that) bind(C,name='Epetra_FECrsMatrix_InsertGlobalValues')
@@ -12202,7 +12757,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int ReplaceGlobalValues(int GlobalRow, int NumEntries, double* Values, int* Indices);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_ReplaceGlobalValues ( CT_Epetra_FECrsMatrix_ID_t selfID, int GlobalRow, int NumEntries, double * Values, int * Indices );
+  !! int Epetra_FECrsMatrix_ReplaceGlobalValues ( CT_Epetra_FECrsMatrix_ID_t selfID, int GlobalRow, 
+  !!     int NumEntries, double * Values, int * Indices );
 
   function Epetra_FECrsMatrix_ReplaceGlobalValues ( selfID, GlobalRow, NumEntries, Values, &
         Indices ) result(that) bind(C,name='Epetra_FECrsMatrix_ReplaceGlobalValues')
@@ -12218,9 +12774,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int SumIntoGlobalValues(int numIndices, const int* indices, const double* values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
+  !! int SumIntoGlobalValues(int numIndices, const int* indices, const double* values, 
+  !!     int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, int numIndices, const int * indices, const double * values, int format );
+  !! int Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     int numIndices, const int * indices, const double * values, int format );
 
   function Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable_Square ( selfID, numIndices, &
         indices, values, format ) result(that) &
@@ -12237,9 +12795,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int SumIntoGlobalValues(int numRows, const int* rows, int numCols, const int* cols, const double* values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
+  !! int SumIntoGlobalValues(int numRows, const int* rows, int numCols, const int* cols, 
+  !!     const double* values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, const int * rows, int numCols, const int * cols, const double * values, int format );
+  !! int Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     int numRows, const int * rows, int numCols, const int * cols, const double * values, int format );
 
   function Epetra_FECrsMatrix_SumIntoGlobalValues_Ftable ( selfID, numRows, rows, numCols, &
         cols, values, format ) result(that) &
@@ -12258,9 +12818,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int SumIntoGlobalValues(int numIndices, const int* indices, const double* const* values, int format=Epetra_FECrsMatrix::ROW_MAJOR);
+  !! int SumIntoGlobalValues(int numIndices, const int* indices, const double* const* values, 
+  !!     int format=Epetra_FECrsMatrix::ROW_MAJOR);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, int numIndices, const int * indices, const double* const * values, int format );
+  !! int Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     int numIndices, const int * indices, const double* const * values, int format );
 
   function Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable_Square ( selfID, numIndices, &
         indices, values, format ) result(that) &
@@ -12277,9 +12839,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int SumIntoGlobalValues(int numRows, const int* rows, int numCols, const int* cols, const double* const* values, int format=Epetra_FECrsMatrix::ROW_MAJOR);
+  !! int SumIntoGlobalValues(int numRows, const int* rows, int numCols, const int* cols, 
+  !!     const double* const* values, int format=Epetra_FECrsMatrix::ROW_MAJOR);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, const int * rows, int numCols, const int * cols, const double* const * values, int format );
+  !! int Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     int numRows, const int * rows, int numCols, const int * cols, const double* const * values, int format );
 
   function Epetra_FECrsMatrix_SumIntoGlobalValues_Ctable ( selfID, numRows, rows, numCols, &
         cols, values, format ) result(that) &
@@ -12298,9 +12862,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int InsertGlobalValues(int numIndices, const int* indices, const double* values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
+  !! int InsertGlobalValues(int numIndices, const int* indices, const double* values, 
+  !!     int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_InsertGlobalValues_Ftable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, int numIndices, const int * indices, const double * values, int format );
+  !! int Epetra_FECrsMatrix_InsertGlobalValues_Ftable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     int numIndices, const int * indices, const double * values, int format );
 
   function Epetra_FECrsMatrix_InsertGlobalValues_Ftable_Square ( selfID, numIndices, &
         indices, values, format ) result(that) &
@@ -12317,9 +12883,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int InsertGlobalValues(int numRows, const int* rows, int numCols, const int* cols, const double* values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
+  !! int InsertGlobalValues(int numRows, const int* rows, int numCols, const int* cols, 
+  !!     const double* values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_InsertGlobalValues_Ftable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, const int * rows, int numCols, const int * cols, const double * values, int format );
+  !! int Epetra_FECrsMatrix_InsertGlobalValues_Ftable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, 
+  !!     const int * rows, int numCols, const int * cols, const double * values, int format );
 
   function Epetra_FECrsMatrix_InsertGlobalValues_Ftable ( selfID, numRows, rows, numCols, &
         cols, values, format ) result(that) &
@@ -12338,9 +12906,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int InsertGlobalValues(int numIndices, const int* indices, const double* const* values, int format=Epetra_FECrsMatrix::ROW_MAJOR);
+  !! int InsertGlobalValues(int numIndices, const int* indices, const double* const* values, 
+  !!     int format=Epetra_FECrsMatrix::ROW_MAJOR);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_InsertGlobalValues_Ctable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, int numIndices, const int * indices, const double* const * values, int format );
+  !! int Epetra_FECrsMatrix_InsertGlobalValues_Ctable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     int numIndices, const int * indices, const double* const * values, int format );
 
   function Epetra_FECrsMatrix_InsertGlobalValues_Ctable_Square ( selfID, numIndices, &
         indices, values, format ) result(that) &
@@ -12357,9 +12927,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int InsertGlobalValues(int numRows, const int* rows, int numCols, const int* cols, const double* const* values, int format=Epetra_FECrsMatrix::ROW_MAJOR);
+  !! int InsertGlobalValues(int numRows, const int* rows, int numCols, const int* cols, 
+  !!     const double* const* values, int format=Epetra_FECrsMatrix::ROW_MAJOR);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_InsertGlobalValues_Ctable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, const int * rows, int numCols, const int * cols, const double* const * values, int format );
+  !! int Epetra_FECrsMatrix_InsertGlobalValues_Ctable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, 
+  !!     const int * rows, int numCols, const int * cols, const double* const * values, int format );
 
   function Epetra_FECrsMatrix_InsertGlobalValues_Ctable ( selfID, numRows, rows, numCols, &
         cols, values, format ) result(that) &
@@ -12378,9 +12950,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int ReplaceGlobalValues(int numIndices, const int* indices, const double* values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
+  !! int ReplaceGlobalValues(int numIndices, const int* indices, const double* values, 
+  !!     int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, int numIndices, const int * indices, const double * values, int format );
+  !! int Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     int numIndices, const int * indices, const double * values, int format );
 
   function Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable_Square ( selfID, numIndices, &
         indices, values, format ) result(that) &
@@ -12397,9 +12971,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int ReplaceGlobalValues(int numRows, const int* rows, int numCols, const int* cols, const double* values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
+  !! int ReplaceGlobalValues(int numRows, const int* rows, int numCols, const int* cols, 
+  !!     const double* values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, const int * rows, int numCols, const int * cols, const double * values, int format );
+  !! int Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     int numRows, const int * rows, int numCols, const int * cols, const double * values, int format );
 
   function Epetra_FECrsMatrix_ReplaceGlobalValues_Ftable ( selfID, numRows, rows, numCols, &
         cols, values, format ) result(that) &
@@ -12418,9 +12994,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int ReplaceGlobalValues(int numIndices, const int* indices, const double* const* values, int format=Epetra_FECrsMatrix::ROW_MAJOR);
+  !! int ReplaceGlobalValues(int numIndices, const int* indices, const double* const* values, 
+  !!     int format=Epetra_FECrsMatrix::ROW_MAJOR);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, int numIndices, const int * indices, const double* const * values, int format );
+  !! int Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     int numIndices, const int * indices, const double* const * values, int format );
 
   function Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable_Square ( selfID, numIndices, &
         indices, values, format ) result(that) &
@@ -12437,9 +13015,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int ReplaceGlobalValues(int numRows, const int* rows, int numCols, const int* cols, const double* const* values, int format=Epetra_FECrsMatrix::ROW_MAJOR);
+  !! int ReplaceGlobalValues(int numRows, const int* rows, int numCols, const int* cols, 
+  !!     const double* const* values, int format=Epetra_FECrsMatrix::ROW_MAJOR);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable ( CT_Epetra_FECrsMatrix_ID_t selfID, int numRows, const int * rows, int numCols, const int * cols, const double* const * values, int format );
+  !! int Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     int numRows, const int * rows, int numCols, const int * cols, const double* const * values, int format );
 
   function Epetra_FECrsMatrix_ReplaceGlobalValues_Ctable ( selfID, numRows, rows, numCols, &
         cols, values, format ) result(that) &
@@ -12458,9 +13038,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int SumIntoGlobalValues(const Epetra_IntSerialDenseVector& indices, const Epetra_SerialDenseMatrix& values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
+  !! int SumIntoGlobalValues(const Epetra_IntSerialDenseVector& indices, 
+  !!     const Epetra_SerialDenseMatrix& values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_SumIntoGlobalValues_SubMatrix_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, CT_Epetra_IntSerialDenseVector_ID_t indicesID, CT_Epetra_SerialDenseMatrix_ID_t valuesID, int format );
+  !! int Epetra_FECrsMatrix_SumIntoGlobalValues_SubMatrix_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     CT_Epetra_IntSerialDenseVector_ID_t indicesID, CT_Epetra_SerialDenseMatrix_ID_t valuesID, int format );
 
   function Epetra_FECrsMatrix_SumIntoGlobalValues_SubMatrix_Square ( selfID, indicesID, &
         valuesID, format ) result(that) &
@@ -12477,9 +13059,13 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int SumIntoGlobalValues(const Epetra_IntSerialDenseVector& rows, const Epetra_IntSerialDenseVector& cols, const Epetra_SerialDenseMatrix& values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
+  !! int SumIntoGlobalValues(const Epetra_IntSerialDenseVector& rows, 
+  !!     const Epetra_IntSerialDenseVector& cols, const Epetra_SerialDenseMatrix& values, 
+  !!     int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_SumIntoGlobalValues_SubMatrix ( CT_Epetra_FECrsMatrix_ID_t selfID, CT_Epetra_IntSerialDenseVector_ID_t rowsID, CT_Epetra_IntSerialDenseVector_ID_t colsID, CT_Epetra_SerialDenseMatrix_ID_t valuesID, int format );
+  !! int Epetra_FECrsMatrix_SumIntoGlobalValues_SubMatrix ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     CT_Epetra_IntSerialDenseVector_ID_t rowsID, CT_Epetra_IntSerialDenseVector_ID_t colsID, 
+  !!     CT_Epetra_SerialDenseMatrix_ID_t valuesID, int format );
 
   function Epetra_FECrsMatrix_SumIntoGlobalValues_SubMatrix ( selfID, rowsID, colsID, &
         valuesID, format ) result(that) &
@@ -12497,9 +13083,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int InsertGlobalValues(const Epetra_IntSerialDenseVector& indices, const Epetra_SerialDenseMatrix& values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
+  !! int InsertGlobalValues(const Epetra_IntSerialDenseVector& indices, 
+  !!     const Epetra_SerialDenseMatrix& values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_InsertGlobalValues_SubMatrix_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, CT_Epetra_IntSerialDenseVector_ID_t indicesID, CT_Epetra_SerialDenseMatrix_ID_t valuesID, int format );
+  !! int Epetra_FECrsMatrix_InsertGlobalValues_SubMatrix_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     CT_Epetra_IntSerialDenseVector_ID_t indicesID, CT_Epetra_SerialDenseMatrix_ID_t valuesID, int format );
 
   function Epetra_FECrsMatrix_InsertGlobalValues_SubMatrix_Square ( selfID, indicesID, &
         valuesID, format ) result(that) &
@@ -12516,9 +13104,13 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int InsertGlobalValues(const Epetra_IntSerialDenseVector& rows, const Epetra_IntSerialDenseVector& cols, const Epetra_SerialDenseMatrix& values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
+  !! int InsertGlobalValues(const Epetra_IntSerialDenseVector& rows, 
+  !!     const Epetra_IntSerialDenseVector& cols, const Epetra_SerialDenseMatrix& values, 
+  !!     int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_InsertGlobalValues_SubMatrix ( CT_Epetra_FECrsMatrix_ID_t selfID, CT_Epetra_IntSerialDenseVector_ID_t rowsID, CT_Epetra_IntSerialDenseVector_ID_t colsID, CT_Epetra_SerialDenseMatrix_ID_t valuesID, int format );
+  !! int Epetra_FECrsMatrix_InsertGlobalValues_SubMatrix ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     CT_Epetra_IntSerialDenseVector_ID_t rowsID, CT_Epetra_IntSerialDenseVector_ID_t colsID, 
+  !!     CT_Epetra_SerialDenseMatrix_ID_t valuesID, int format );
 
   function Epetra_FECrsMatrix_InsertGlobalValues_SubMatrix ( selfID, rowsID, colsID, &
         valuesID, format ) result(that) &
@@ -12536,9 +13128,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int ReplaceGlobalValues(const Epetra_IntSerialDenseVector& indices, const Epetra_SerialDenseMatrix& values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
+  !! int ReplaceGlobalValues(const Epetra_IntSerialDenseVector& indices, 
+  !!     const Epetra_SerialDenseMatrix& values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_ReplaceGlobalValues_SubMatrix_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, CT_Epetra_IntSerialDenseVector_ID_t indicesID, CT_Epetra_SerialDenseMatrix_ID_t valuesID, int format );
+  !! int Epetra_FECrsMatrix_ReplaceGlobalValues_SubMatrix_Square ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     CT_Epetra_IntSerialDenseVector_ID_t indicesID, CT_Epetra_SerialDenseMatrix_ID_t valuesID, int format );
 
   function Epetra_FECrsMatrix_ReplaceGlobalValues_SubMatrix_Square ( selfID, indicesID, &
         valuesID, format ) result(that) &
@@ -12555,9 +13149,13 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int ReplaceGlobalValues(const Epetra_IntSerialDenseVector& rows, const Epetra_IntSerialDenseVector& cols, const Epetra_SerialDenseMatrix& values, int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
+  !! int ReplaceGlobalValues(const Epetra_IntSerialDenseVector& rows, 
+  !!     const Epetra_IntSerialDenseVector& cols, const Epetra_SerialDenseMatrix& values, 
+  !!     int format=Epetra_FECrsMatrix::COLUMN_MAJOR);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_ReplaceGlobalValues_SubMatrix ( CT_Epetra_FECrsMatrix_ID_t selfID, CT_Epetra_IntSerialDenseVector_ID_t rowsID, CT_Epetra_IntSerialDenseVector_ID_t colsID, CT_Epetra_SerialDenseMatrix_ID_t valuesID, int format );
+  !! int Epetra_FECrsMatrix_ReplaceGlobalValues_SubMatrix ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     CT_Epetra_IntSerialDenseVector_ID_t rowsID, CT_Epetra_IntSerialDenseVector_ID_t colsID, 
+  !!     CT_Epetra_SerialDenseMatrix_ID_t valuesID, int format );
 
   function Epetra_FECrsMatrix_ReplaceGlobalValues_SubMatrix ( selfID, rowsID, colsID, &
         valuesID, format ) result(that) &
@@ -12577,7 +13175,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int GlobalAssemble(bool callFillComplete=true);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_GlobalAssemble ( CT_Epetra_FECrsMatrix_ID_t selfID, boolean callFillComplete );
+  !! int Epetra_FECrsMatrix_GlobalAssemble ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     boolean callFillComplete );
 
   function Epetra_FECrsMatrix_GlobalAssemble ( selfID, callFillComplete ) result(that) &
         bind(C,name='Epetra_FECrsMatrix_GlobalAssemble')
@@ -12590,9 +13189,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int GlobalAssemble(const Epetra_Map& domain_map, const Epetra_Map& range_map, bool callFillComplete=true);
+  !! int GlobalAssemble(const Epetra_Map& domain_map, const Epetra_Map& range_map, 
+  !!     bool callFillComplete=true);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_FECrsMatrix_GlobalAssemble_WithMaps ( CT_Epetra_FECrsMatrix_ID_t selfID, CT_Epetra_Map_ID_t domain_mapID, CT_Epetra_Map_ID_t range_mapID, boolean callFillComplete );
+  !! int Epetra_FECrsMatrix_GlobalAssemble_WithMaps ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     CT_Epetra_Map_ID_t domain_mapID, CT_Epetra_Map_ID_t range_mapID, boolean callFillComplete );
 
   function Epetra_FECrsMatrix_GlobalAssemble_WithMaps ( selfID, domain_mapID, range_mapID, &
         callFillComplete ) result(that) &
@@ -12610,7 +13211,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! void setIgnoreNonLocalEntries(bool flag);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_FECrsMatrix_setIgnoreNonLocalEntries ( CT_Epetra_FECrsMatrix_ID_t selfID, boolean flag );
+  !! void Epetra_FECrsMatrix_setIgnoreNonLocalEntries ( CT_Epetra_FECrsMatrix_ID_t selfID, 
+  !!     boolean flag );
 
   subroutine Epetra_FECrsMatrix_setIgnoreNonLocalEntries ( selfID, flag ) &
         bind(C,name='Epetra_FECrsMatrix_setIgnoreNonLocalEntries')
@@ -12684,7 +13286,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_IntSerialDenseVector(Epetra_DataAccess CV_in, int* Values_in, int Length_in);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_IntSerialDenseVector_ID_t Epetra_IntSerialDenseVector_Create_FromArray ( CT_Epetra_DataAccess_E_t CV_in, int * Values_in, int Length_in );
+  !! CT_Epetra_IntSerialDenseVector_ID_t Epetra_IntSerialDenseVector_Create_FromArray ( CT_Epetra_DataAccess_E_t CV_in, 
+  !!     int * Values_in, int Length_in );
 
   function Epetra_IntSerialDenseVector_Create_FromArray ( CV_in, Values_in, Length_in ) &
         result(that) bind(C,name='Epetra_IntSerialDenseVector_Create_FromArray')
@@ -12729,7 +13332,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Resize(int Length_in);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_IntSerialDenseVector_Resize ( CT_Epetra_IntSerialDenseVector_ID_t selfID, int Length_in );
+  !! int Epetra_IntSerialDenseVector_Resize ( CT_Epetra_IntSerialDenseVector_ID_t selfID, 
+  !!     int Length_in );
 
   function Epetra_IntSerialDenseVector_Resize ( selfID, Length_in ) result(that) &
         bind(C,name='Epetra_IntSerialDenseVector_Resize')
@@ -12757,7 +13361,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int& operator () (int Index);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_IntSerialDenseVector_setElement ( CT_Epetra_IntSerialDenseVector_ID_t selfID, int Index, int * value );
+  !! void Epetra_IntSerialDenseVector_setElement ( CT_Epetra_IntSerialDenseVector_ID_t selfID, 
+  !!     int Index, int * value );
 
   subroutine Epetra_IntSerialDenseVector_setElement ( selfID, Index, value ) &
         bind(C,name='Epetra_IntSerialDenseVector_setElement')
@@ -12772,7 +13377,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! const int& operator () (int Index) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_IntSerialDenseVector_getElement ( CT_Epetra_IntSerialDenseVector_ID_t selfID, int Index );
+  !! int Epetra_IntSerialDenseVector_getElement ( CT_Epetra_IntSerialDenseVector_ID_t selfID, 
+  !!     int Index );
 
   function Epetra_IntSerialDenseVector_getElement ( selfID, Index ) result(that) &
         bind(C,name='Epetra_IntSerialDenseVector_getElement')
@@ -12787,7 +13393,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int& operator [] (int Index);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_IntSerialDenseVector_setElement_Bracket ( CT_Epetra_IntSerialDenseVector_ID_t selfID, int Index, int * value );
+  !! void Epetra_IntSerialDenseVector_setElement_Bracket ( CT_Epetra_IntSerialDenseVector_ID_t selfID, 
+  !!     int Index, int * value );
 
   subroutine Epetra_IntSerialDenseVector_setElement_Bracket ( selfID, Index, value ) &
         bind(C,name='Epetra_IntSerialDenseVector_setElement_Bracket')
@@ -12802,7 +13409,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! const int& operator [] (int Index) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_IntSerialDenseVector_getElement_Bracket ( CT_Epetra_IntSerialDenseVector_ID_t selfID, int Index );
+  !! int Epetra_IntSerialDenseVector_getElement_Bracket ( CT_Epetra_IntSerialDenseVector_ID_t selfID, 
+  !!     int Index );
 
   function Epetra_IntSerialDenseVector_getElement_Bracket ( selfID, Index ) result(that) &
         bind(C,name='Epetra_IntSerialDenseVector_getElement_Bracket')
@@ -12887,7 +13495,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_IntSerialDenseVector& operator = (const Epetra_IntSerialDenseVector& Source);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_IntSerialDenseVector_Assign ( CT_Epetra_IntSerialDenseVector_ID_t selfID, CT_Epetra_IntSerialDenseVector_ID_t SourceID );
+  !! void Epetra_IntSerialDenseVector_Assign ( CT_Epetra_IntSerialDenseVector_ID_t selfID, 
+  !!     CT_Epetra_IntSerialDenseVector_ID_t SourceID );
 
   subroutine Epetra_IntSerialDenseVector_Assign ( selfID, SourceID ) &
         bind(C,name='Epetra_IntSerialDenseVector_Assign')
@@ -12901,7 +13510,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int MakeViewOf(const Epetra_IntSerialDenseVector& Source);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_IntSerialDenseVector_MakeViewOf ( CT_Epetra_IntSerialDenseVector_ID_t selfID, CT_Epetra_IntSerialDenseVector_ID_t SourceID );
+  !! int Epetra_IntSerialDenseVector_MakeViewOf ( CT_Epetra_IntSerialDenseVector_ID_t selfID, 
+  !!     CT_Epetra_IntSerialDenseVector_ID_t SourceID );
 
   function Epetra_IntSerialDenseVector_MakeViewOf ( selfID, SourceID ) result(that) &
         bind(C,name='Epetra_IntSerialDenseVector_MakeViewOf')
@@ -12963,7 +13573,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_SerialDenseMatrix(int NumRows, int NumCols, bool set_object_label=true);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_SerialDenseMatrix_ID_t Epetra_SerialDenseMatrix_Create ( int NumRows, int NumCols, boolean set_object_label );
+  !! CT_Epetra_SerialDenseMatrix_ID_t Epetra_SerialDenseMatrix_Create ( int NumRows, int NumCols, 
+  !!     boolean set_object_label );
 
   function Epetra_SerialDenseMatrix_Create ( NumRows, NumCols, set_object_label ) &
         result(that) bind(C,name='Epetra_SerialDenseMatrix_Create')
@@ -12977,9 +13588,11 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! Epetra_SerialDenseMatrix(Epetra_DataAccess CV, double* A_in, int LDA_in, int NumRows, int NumCols, bool set_object_label=true);
+  !! Epetra_SerialDenseMatrix(Epetra_DataAccess CV, double* A_in, int LDA_in, int NumRows, int NumCols, 
+  !!     bool set_object_label=true);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_SerialDenseMatrix_ID_t Epetra_SerialDenseMatrix_Create_FromArray ( CT_Epetra_DataAccess_E_t CV, double * A_in, int LDA_in, int NumRows, int NumCols, boolean set_object_label );
+  !! CT_Epetra_SerialDenseMatrix_ID_t Epetra_SerialDenseMatrix_Create_FromArray ( CT_Epetra_DataAccess_E_t CV, 
+  !!     double * A_in, int LDA_in, int NumRows, int NumCols, boolean set_object_label );
 
   function Epetra_SerialDenseMatrix_Create_FromArray ( CV, A_in, LDA_in, NumRows, NumCols, &
         set_object_label ) result(that) &
@@ -13027,7 +13640,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Shape(int NumRows, int NumCols);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialDenseMatrix_Shape ( CT_Epetra_SerialDenseMatrix_ID_t selfID, int NumRows, int NumCols );
+  !! int Epetra_SerialDenseMatrix_Shape ( CT_Epetra_SerialDenseMatrix_ID_t selfID, int NumRows, 
+  !!     int NumCols );
 
   function Epetra_SerialDenseMatrix_Shape ( selfID, NumRows, NumCols ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_Shape')
@@ -13043,7 +13657,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Reshape(int NumRows, int NumCols);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialDenseMatrix_Reshape ( CT_Epetra_SerialDenseMatrix_ID_t selfID, int NumRows, int NumCols );
+  !! int Epetra_SerialDenseMatrix_Reshape ( CT_Epetra_SerialDenseMatrix_ID_t selfID, int NumRows, 
+  !!     int NumCols );
 
   function Epetra_SerialDenseMatrix_Reshape ( selfID, NumRows, NumCols ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_Reshape')
@@ -13057,9 +13672,12 @@ module forepetra
 
 
   !> <BR> Original C++ prototype:
-  !! int Multiply(char TransA, char TransB, double ScalarAB, const Epetra_SerialDenseMatrix& A, const Epetra_SerialDenseMatrix& B, double ScalarThis);
+  !! int Multiply(char TransA, char TransB, double ScalarAB, const Epetra_SerialDenseMatrix& A, 
+  !!     const Epetra_SerialDenseMatrix& B, double ScalarThis);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialDenseMatrix_Multiply_Matrix ( CT_Epetra_SerialDenseMatrix_ID_t selfID, char TransA, char TransB, double ScalarAB, CT_Epetra_SerialDenseMatrix_ID_t AID, CT_Epetra_SerialDenseMatrix_ID_t BID, double ScalarThis );
+  !! int Epetra_SerialDenseMatrix_Multiply_Matrix ( CT_Epetra_SerialDenseMatrix_ID_t selfID, 
+  !!     char TransA, char TransB, double ScalarAB, CT_Epetra_SerialDenseMatrix_ID_t AID, CT_Epetra_SerialDenseMatrix_ID_t BID, 
+  !!     double ScalarThis );
 
   function Epetra_SerialDenseMatrix_Multiply_Matrix ( selfID, TransA, TransB, ScalarAB, AID, &
         BID, ScalarThis ) result(that) &
@@ -13080,7 +13698,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! int Multiply(bool transA, const Epetra_SerialDenseMatrix& x, Epetra_SerialDenseMatrix& y);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialDenseMatrix_Multiply_Vector ( CT_Epetra_SerialDenseMatrix_ID_t selfID, boolean transA, CT_Epetra_SerialDenseMatrix_ID_t xID, CT_Epetra_SerialDenseMatrix_ID_t yID );
+  !! int Epetra_SerialDenseMatrix_Multiply_Vector ( CT_Epetra_SerialDenseMatrix_ID_t selfID, 
+  !!     boolean transA, CT_Epetra_SerialDenseMatrix_ID_t xID, CT_Epetra_SerialDenseMatrix_ID_t yID );
 
   function Epetra_SerialDenseMatrix_Multiply_Vector ( selfID, transA, xID, yID ) &
         result(that) bind(C,name='Epetra_SerialDenseMatrix_Multiply_Vector')
@@ -13140,7 +13759,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_SerialDenseMatrix & operator = (const Epetra_SerialDenseMatrix& Source);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_SerialDenseMatrix_Assign ( CT_Epetra_SerialDenseMatrix_ID_t selfID, CT_Epetra_SerialDenseMatrix_ID_t SourceID );
+  !! void Epetra_SerialDenseMatrix_Assign ( CT_Epetra_SerialDenseMatrix_ID_t selfID, 
+  !!     CT_Epetra_SerialDenseMatrix_ID_t SourceID );
 
   subroutine Epetra_SerialDenseMatrix_Assign ( selfID, SourceID ) &
         bind(C,name='Epetra_SerialDenseMatrix_Assign')
@@ -13154,7 +13774,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! bool operator==(const Epetra_SerialDenseMatrix& rhs) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! boolean Epetra_SerialDenseMatrix_IsEqual ( CT_Epetra_SerialDenseMatrix_ID_t selfID, CT_Epetra_SerialDenseMatrix_ID_t rhsID );
+  !! boolean Epetra_SerialDenseMatrix_IsEqual ( CT_Epetra_SerialDenseMatrix_ID_t selfID, 
+  !!     CT_Epetra_SerialDenseMatrix_ID_t rhsID );
 
   function Epetra_SerialDenseMatrix_IsEqual ( selfID, rhsID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_IsEqual')
@@ -13169,7 +13790,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! bool operator!=(const Epetra_SerialDenseMatrix& rhs) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! boolean Epetra_SerialDenseMatrix_NotEqual ( CT_Epetra_SerialDenseMatrix_ID_t selfID, CT_Epetra_SerialDenseMatrix_ID_t rhsID );
+  !! boolean Epetra_SerialDenseMatrix_NotEqual ( CT_Epetra_SerialDenseMatrix_ID_t selfID, 
+  !!     CT_Epetra_SerialDenseMatrix_ID_t rhsID );
 
   function Epetra_SerialDenseMatrix_NotEqual ( selfID, rhsID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_NotEqual')
@@ -13184,7 +13806,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! Epetra_SerialDenseMatrix & operator += (const Epetra_SerialDenseMatrix& Source);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_SerialDenseMatrix_AddTo ( CT_Epetra_SerialDenseMatrix_ID_t selfID, CT_Epetra_SerialDenseMatrix_ID_t SourceID );
+  !! void Epetra_SerialDenseMatrix_AddTo ( CT_Epetra_SerialDenseMatrix_ID_t selfID, 
+  !!     CT_Epetra_SerialDenseMatrix_ID_t SourceID );
 
   subroutine Epetra_SerialDenseMatrix_AddTo ( selfID, SourceID ) &
         bind(C,name='Epetra_SerialDenseMatrix_AddTo')
@@ -13198,7 +13821,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! double& operator () (int RowIndex, int ColIndex);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Epetra_SerialDenseMatrix_setElement ( CT_Epetra_SerialDenseMatrix_ID_t selfID, int RowIndex, int ColIndex, double * value );
+  !! void Epetra_SerialDenseMatrix_setElement ( CT_Epetra_SerialDenseMatrix_ID_t selfID, int RowIndex, 
+  !!     int ColIndex, double * value );
 
   subroutine Epetra_SerialDenseMatrix_setElement ( selfID, RowIndex, ColIndex, value ) &
         bind(C,name='Epetra_SerialDenseMatrix_setElement')
@@ -13214,7 +13838,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! const double& operator () (int RowIndex, int ColIndex) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! double Epetra_SerialDenseMatrix_getElement ( CT_Epetra_SerialDenseMatrix_ID_t selfID, int RowIndex, int ColIndex );
+  !! double Epetra_SerialDenseMatrix_getElement ( CT_Epetra_SerialDenseMatrix_ID_t selfID, 
+  !!     int RowIndex, int ColIndex );
 
   function Epetra_SerialDenseMatrix_getElement ( selfID, RowIndex, ColIndex ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_getElement')
@@ -13230,7 +13855,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! const double* operator [] (int ColIndex) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! const double * Epetra_SerialDenseMatrix_getColumn ( CT_Epetra_SerialDenseMatrix_ID_t selfID, int ColIndex );
+  !! const double * Epetra_SerialDenseMatrix_getColumn ( CT_Epetra_SerialDenseMatrix_ID_t selfID, 
+  !!     int ColIndex );
 
   function Epetra_SerialDenseMatrix_getColumn ( selfID, ColIndex ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_getColumn')
@@ -13371,7 +13997,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int SetUseTranspose(bool UseTranspose_in);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialDenseMatrix_SetUseTranspose ( CT_Epetra_SerialDenseMatrix_ID_t selfID, boolean UseTranspose_in );
+  !! int Epetra_SerialDenseMatrix_SetUseTranspose ( CT_Epetra_SerialDenseMatrix_ID_t selfID, 
+  !!     boolean UseTranspose_in );
 
   function Epetra_SerialDenseMatrix_SetUseTranspose ( selfID, UseTranspose_in ) &
         result(that) bind(C,name='Epetra_SerialDenseMatrix_SetUseTranspose')
@@ -13386,7 +14013,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int Apply(const Epetra_SerialDenseMatrix& X, Epetra_SerialDenseMatrix& Y);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialDenseMatrix_Apply ( CT_Epetra_SerialDenseMatrix_ID_t selfID, CT_Epetra_SerialDenseMatrix_ID_t XID, CT_Epetra_SerialDenseMatrix_ID_t YID );
+  !! int Epetra_SerialDenseMatrix_Apply ( CT_Epetra_SerialDenseMatrix_ID_t selfID, 
+  !!     CT_Epetra_SerialDenseMatrix_ID_t XID, CT_Epetra_SerialDenseMatrix_ID_t YID );
 
   function Epetra_SerialDenseMatrix_Apply ( selfID, XID, YID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_Apply')
@@ -13402,7 +14030,8 @@ module forepetra
   !> <BR> Original C++ prototype:
   !! virtual int ApplyInverse(const Epetra_SerialDenseMatrix & X, Epetra_SerialDenseMatrix & Y);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Epetra_SerialDenseMatrix_ApplyInverse ( CT_Epetra_SerialDenseMatrix_ID_t selfID, CT_Epetra_SerialDenseMatrix_ID_t XID, CT_Epetra_SerialDenseMatrix_ID_t YID );
+  !! int Epetra_SerialDenseMatrix_ApplyInverse ( CT_Epetra_SerialDenseMatrix_ID_t selfID, 
+  !!     CT_Epetra_SerialDenseMatrix_ID_t XID, CT_Epetra_SerialDenseMatrix_ID_t YID );
 
   function Epetra_SerialDenseMatrix_ApplyInverse ( selfID, XID, YID ) result(that) &
         bind(C,name='Epetra_SerialDenseMatrix_ApplyInverse')
