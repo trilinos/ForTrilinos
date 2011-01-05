@@ -92,7 +92,8 @@ contains
   ! Original C++ prototype:
   ! Epetra_BlockMap(int NumGlobalElements, int ElementSize, int IndexBase, const Epetra_Comm& Comm);
   ! CTrilinos prototype:
-  ! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create ( int NumGlobalElements, int ElementSize, int IndexBase, CT_Epetra_Comm_ID_t CommID );
+  ! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create ( int NumGlobalElements, int ElementSize, 
+  !                                                  int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
   type(Epetra_BlockMap) function from_scratch(Num_GlobalElements,Element_Size,IndexBase,comm)
    !use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
@@ -105,11 +106,11 @@ contains
     from_scratch = from_struct(from_scratch_id)
   end function
 
-! Original C++ prototype:
-  ! Epetra_BlockMap(int NumGlobalElements, int NumMyElements, int ElementSize, int IndexBase, const Epetra_Comm& Comm);
-  ! CTrilinos prototype:
-  ! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create_Linear ( int NumGlobalElements, int NumMyElements, int
-  ! ElementSize, int IndexBase, CT_Epetra_Comm_ID_t CommID );
+ ! Original C++ prototype:
+ ! Epetra_BlockMap(int NumGlobalElements, int NumMyElements, int ElementSize, int IndexBase, const Epetra_Comm& Comm);
+ ! CTrilinos prototype:
+ ! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create_Linear ( int NumGlobalElements, int NumMyElements,
+ !                                       int ElementSize, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
   type(Epetra_BlockMap) function from_scratch_linear(Num_GlobalElements,Num_MyElements,Element_Size,IndexBase,comm)
    !use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
@@ -119,17 +120,20 @@ contains
     integer(c_int) ,intent(in) :: IndexBase
     class(Epetra_Comm)         :: comm
     type(FT_Epetra_BlockMap_ID_t) :: from_scratch_linear_id
-    from_scratch_linear_id = Epetra_BlockMap_Create_Linear(Num_GlobalElements,Num_MyElements,Element_Size,IndexBase,comm%get_EpetraComm_ID())
+    from_scratch_linear_id = &
+           Epetra_BlockMap_Create_Linear(Num_GlobalElements,Num_MyElements,Element_Size,IndexBase,comm%get_EpetraComm_ID())
     from_scratch_linear = from_struct(from_scratch_linear_id)
   end function
 
-!Original C++ prototype:
-  ! Epetra_BlockMap(int NumGlobalElements, int NumMyElements, const int *MyGlobalElements, int ElementSize, int IndexBae, const Epetra_Comm& Comm);
+  !Original C++ prototype:
+  ! Epetra_BlockMap(int NumGlobalElements, int NumMyElements, const int *MyGlobalElements, int ElementSize,
+  !                 int IndexBae, const Epetra_Comm& Comm);
   ! CTrilinos prototype:
   ! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create_Arbitrary ( int NumGlobalElements, int NumMyElements,
   !const int * MyGlobalElements, int ElementSize, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
-  type(Epetra_BlockMap) function from_scratch_arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,Element_Size,IndexBase,comm)
+  type(Epetra_BlockMap) function from_scratch_arbitrary(Num_GlobalElements,Num_MyElements,&
+                                                        My_GlobalElements,Element_Size,IndexBase,comm)
    !use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
     integer(c_int) ,intent(in) :: Num_GlobalElements
     integer(c_int) ,intent(in) :: Num_MyElements
@@ -138,18 +142,20 @@ contains
     integer(c_int) ,intent(in) :: IndexBase
     class(Epetra_Comm)         :: comm
     type(FT_Epetra_BlockMap_ID_t) :: from_scratch_arbitrary_id
-    from_scratch_arbitrary_id = Epetra_BlockMap_Create_Arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,Element_Size,IndexBase,comm%get_EpetraComm_ID())
+    from_scratch_arbitrary_id = Epetra_BlockMap_Create_Arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,Element_Size,&
+                                                                 IndexBase,comm%get_EpetraComm_ID())
     from_scratch_arbitrary = from_struct(from_scratch_arbitrary_id)
   end function
 
-! Original C++ prototype:
-  ! Epetra_BlockMap(int NumGlobalElements, int NumMyElements, const int *MyGlobalElements, const int *ElementSizeList,
-  !int IndexBase, const Epetra_Comm& Comm);
-  ! CTrilinos prototype:
-  ! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create_Variable ( int NumGlobalElements, int NumMyElements,
-  !const int * MyGlobalElements, const int * ElementSizeList, int IndexBase, CT_Epetra_Comm_ID_t CommID );
+ ! Original C++ prototype:
+ ! Epetra_BlockMap(int NumGlobalElements, int NumMyElements, const int *MyGlobalElements, const int *ElementSizeList,
+ !int IndexBase, const Epetra_Comm& Comm);
+ ! CTrilinos prototype:
+ ! CT_Epetra_BlockMap_ID_t Epetra_BlockMap_Create_Variable ( int NumGlobalElements, int NumMyElements,
+ !const int * MyGlobalElements, const int * ElementSizeList, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
-  type(Epetra_BlockMap) function from_scratch_variable(Num_GlobalElements,Num_MyElements,My_GlobalElements,Element_SizeList,IndexBase,comm)
+  type(Epetra_BlockMap) function from_scratch_variable(Num_GlobalElements,Num_MyElements,&
+                                                       My_GlobalElements,Element_SizeList,IndexBase,comm)
    !use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
     integer(c_int) ,intent(in) :: Num_GlobalElements
     integer(c_int) ,intent(in) :: Num_MyElements
@@ -158,7 +164,8 @@ contains
     integer(c_int) ,intent(in) :: IndexBase
     class(Epetra_Comm)         :: comm
     type(FT_Epetra_BlockMap_ID_t) :: from_scratch_variable_id
-    from_scratch_variable_id = Epetra_BlockMap_Create_Variable(Num_GlobalElements,Num_MyElements,My_GlobalElements,Element_SizeList,IndexBase,comm%get_EpetraComm_ID())
+    from_scratch_variable_id = Epetra_BlockMap_Create_Variable(Num_GlobalElements,Num_MyElements,My_GlobalElements,&
+                                                               Element_SizeList,IndexBase,comm%get_EpetraComm_ID())
     from_scratch_variable = from_struct(from_scratch_variable_id)
   end function
 

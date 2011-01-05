@@ -36,7 +36,8 @@
 !*********************************************************************
 
 module FEpetra_Vector
-  use ForTrilinos_enums   ,only: FT_Epetra_MultiVector_ID_t,FT_Epetra_Vector_ID_t,FT_Epetra_BlockMap_ID_t,ForTrilinos_Universal_ID_t,FT_boolean_t 
+  use ForTrilinos_enums   ,only: FT_Epetra_MultiVector_ID_t,FT_Epetra_Vector_ID_t,&
+                                 FT_Epetra_BlockMap_ID_t,ForTrilinos_Universal_ID_t,FT_boolean_t 
   use ForTrilinos_table_man
   use ForTrilinos_error
   use ForTrilinos_universal

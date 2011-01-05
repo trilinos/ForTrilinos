@@ -36,7 +36,8 @@
 !*********************************************************************
 
 module FEpetra_CrsMatrix
-  use ForTrilinos_enums !,only : FT_Epetra_RowMatrix_ID,FT_Epetra_CrsMatrix_ID_t,ForTrilinos_Universal_ID_t,FT_boolean_t,FT_FALSE,FT_TRUE
+  use ForTrilinos_enums !,only : FT_Epetra_RowMatrix_ID,FT_Epetra_CrsMatrix_ID_t,ForTrilinos_Universal_ID_t,
+                        !        FT_boolean_t,FT_FALSE,FT_TRUE
   use ForTrilinos_hermetic,only:hermetic
   use ForTrilinos_enum_wrappers
   use ForTrilinos_table_man
@@ -150,8 +151,8 @@ contains
   ! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const Epetra_Map& ColMap, const int* NumEntriesPerRow, 
   ! bool StaticProfile = false);
   ! CTrilinos prototype:
-  ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_VarPerRow_WithColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, 
-  ! CT_Epetra_Map_ID_t ColMapID, const int * NumEntriesPerRow, boolean StaticProfile );
+  ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_VarPerRow_WithColMap ( CT_Epetra_DataAccess_E_t CV, 
+  !            CT_Epetra_Map_ID_t RowMapID, CT_Epetra_Map_ID_t ColMapID, const int * NumEntriesPerRow, boolean StaticProfile );
 
   type(Epetra_CrsMatrix) function Create_VarPerRow_WithColMap(CV,Row_Map,Col_Map,NumEntriesPerRow,StaticProfile)
     use ForTrilinos_enums,         only: FT_boolean_t,FT_FALSE,FT_TRUE
@@ -169,15 +170,17 @@ contains
     else
       StaticProfile_in=FT_FALSE
     endif
-    Create_id = Epetra_CrsMatrix_Create_VarPerRow_WithColMap(CV,Row_Map%get_EpetraMap_ID(),Col_Map%get_EpetraMap_ID(),NumEntriesPerRow,StaticProfile_in)
+    Create_id = Epetra_CrsMatrix_Create_VarPerRow_WithColMap(CV,Row_Map%get_EpetraMap_ID(),Col_Map%get_EpetraMap_ID(),&
+                                                             NumEntriesPerRow,StaticProfile_in)
     Create_VarPerRow_WithColMap = from_struct(Create_id)
   end function
 
   !Original C++ prototype:
-  ! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const Epetra_Map& ColMap, int NumEntriesPerRow, bool StaticProfile = false);
+  ! Epetra_CrsMatrix(Epetra_DataAccess CV, const Epetra_Map& RowMap, const Epetra_Map& ColMap, int NumEntriesPerRow, 
+  !                  bool StaticProfile = false);
   ! CTrilinos prototype:
   ! CT_Epetra_CrsMatrix_ID_t Epetra_CrsMatrix_Create_WithColMap ( CT_Epetra_DataAccess_E_t CV, CT_Epetra_Map_ID_t RowMapID, 
-  !CT_Epetra_Map_ID_t ColMapID, int NumEntriesPerRow, boolean StaticProfile );
+  !                  CT_Epetra_Map_ID_t ColMapID, int NumEntriesPerRow, boolean StaticProfile );
 
   type(Epetra_CrsMatrix) function Create_WithColMap(CV,Row_Map,Col_Map,NumEntriesPerRow,StaticProfile)
     use ForTrilinos_enums,         only: FT_boolean_t,FT_FALSE,FT_TRUE
@@ -195,7 +198,8 @@ contains
     else
       StaticProfile_in=FT_FALSE
     endif
-    Create_id = Epetra_CrsMatrix_Create_WithColMap(CV,Row_Map%get_EpetraMap_ID(),Col_Map%get_EpetraMap_ID(),NumEntriesPerRow,StaticProfile_in)
+    Create_id = Epetra_CrsMatrix_Create_WithColMap(CV,Row_Map%get_EpetraMap_ID(),Col_Map%get_EpetraMap_ID(),&
+                                                   NumEntriesPerRow,StaticProfile_in)
     Create_WithColMap = from_struct(Create_id)
   end function
 
@@ -399,7 +403,8 @@ contains
   else
     TransA_in=FT_FALSE
   endif
-  error_out=Epetra_CrsMatrix_Multiply_MultiVector(this%CrsMatrix_id,TransA_in,x%get_EpetraMultiVector_ID(),y%get_EpetraMultiVector_ID())    
+  error_out=Epetra_CrsMatrix_Multiply_MultiVector(this%CrsMatrix_id,TransA_in,&
+                                                  x%get_EpetraMultiVector_ID(),y%get_EpetraMultiVector_ID())    
   if (present(err)) err=error(error_out)
  end subroutine
 
