@@ -49,8 +49,7 @@ module FEpetra_MultiVector
   private                      ! Hide everything by default
   public :: Epetra_MultiVector ! Expose type/constructors/methods
 
-  type ,extends(Epetra_DistObject)                    :: Epetra_MultiVector !"shell"
-  !type ,extends(universal)                    :: Epetra_MultiVector !"shell"
+  type ,extends(universal)                    :: Epetra_MultiVector !"shell"
     private
     type(FT_Epetra_MultiVector_ID_t) :: MultiVector_id 
   contains
@@ -106,7 +105,6 @@ contains
   type(Epetra_MultiVector) function from_struct(id)
      type(FT_Epetra_MultiVector_ID_t) ,intent(in) :: id
      from_struct%MultiVector_id = id
-     from_struct%Epetra_DistObject=Epetra_DistObject(from_struct%alias_EpetraDistObject_ID(from_struct%generalize()))
      call from_struct%register_self
   end function
 
