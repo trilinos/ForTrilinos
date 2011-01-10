@@ -19,10 +19,10 @@ ENDIF()
 # Enabled by default for: "NAG", "XL", Intel
 # Limited support: "PGI" (limited to ~250)
 # Flag needed for: "GNU"
+# If not one of these compilers, will need to break lines using sed
 IF("${CMAKE_Fortran_COMPILER_ID}" MATCHES "GNU")
     SET(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -ffree-line-length-none")
 ENDIF()
-# If not one of these compilers, will need to break lines using sed
 IF("${CMAKE_Fortran_COMPILER_ID}" MATCHES "VisualAge|XL|NAG|Intel|GNU")
     SET(FORTRILINOS_COMPILER_SUPPORTS_LONG_LINES 1)
 ENDIF()

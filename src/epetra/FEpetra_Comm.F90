@@ -39,7 +39,7 @@
 module FEpetra_Comm
   use ForTrilinos_universal ,only : universal
   use ForTrilinos_enums !,only: FT_Epetra_Comm_ID_t,ForTrilinos_Universal_ID_t
-  use ForTrilinos_error
+  use ForTrilinos_error, only: error
   use ForTrilinos_table_man
   use forepetra
   implicit none
@@ -279,22 +279,25 @@ module FEpetra_Comm
       integer(c_int)               ,intent(in)    :: count
       type(error)   ,optional      ,intent(inout) :: err
     end subroutine
-    integer(c_int) function MyPID_interface(this)
+    function MyPID_interface(this)
       use iso_c_binding ,only: c_int
       import:: Epetra_Comm
       class(Epetra_Comm), intent(in) :: this
+      integer(c_int) :: MyPID_interface
     end function
-    integer(c_int) function NumProc_interface(this)
+    function NumProc_interface(this)
       use iso_c_binding ,only: c_int
       import:: Epetra_Comm
       class(Epetra_Comm), intent(in) :: this
+      integer(c_int) :: NumProc_interface
     end function
   end interface
 
   contains
   
-  type(FT_Epetra_Comm_ID_t) function get_EpetraComm_ID(this)
+  function get_EpetraComm_ID(this)
     class(Epetra_Comm) ,intent(in) :: this
+    type(FT_Epetra_Comm_ID_t) :: get_EpetraComm_ID
     get_EpetraComm_ID = this%comm_id
   end function
   
@@ -304,7 +307,7 @@ module FEpetra_Comm
     this%comm_id=id
   end subroutine 
   
-  type(FT_Epetra_Comm_ID_t) function alias_EpetraComm_ID(generic_id)
+  function alias_EpetraComm_ID(generic_id)
     use iso_c_binding, only : c_loc,c_int
     use ForTrilinos_table_man
     use ForTrilinos_enums
@@ -312,6 +315,7 @@ module FEpetra_Comm
     type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id
     integer(c_int) :: status 
     type(error) :: ierr
+    type(FT_Epetra_Comm_ID_t) :: alias_EpetraComm_ID
     if (.not.associated(alias_id)) then
       allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_Comm_ID),stat=status)
       ierr=error(status,'FEpetra_Comm:alias_EpetraComm_ID')
@@ -321,25 +325,28 @@ module FEpetra_Comm
     call deallocate_and_check_error(alias_id,'FEpetra_Comm:alias_EpetraComm_ID')
   end function
 
-  type(ForTrilinos_Universal_ID_t) function generalize_EpetraComm(this)
+  function generalize_EpetraComm(this)
    ! ____ Use for ForTrilinos function implementation ______
    use ForTrilinos_utils ,only: generalize_all
    use iso_c_binding ,only : c_loc
    class(Epetra_Comm) ,intent(in) ,target :: this
+   type(ForTrilinos_Universal_ID_t) :: generalize_EpetraComm
    generalize_EpetraComm = generalize_all( c_loc(this%comm_id) )
    ! ____ Use for ForTrilinos function implementation ______
 
    ! ____ Use for CTrilinos function implementation ______
    ! class(Epetra_Comm) ,intent(in) ,target :: this
+   ! type(ForTrilinos_Universal_ID_t) :: generalize_EpetraComm
    ! generalize_EpetraComm = Epetra_Comm_Generalize ( this%comm_id )
    ! ____ Use for CTrilinos function implementation ______
   end function
   
-  type(FT_Epetra_Comm_ID_t) function degeneralize_EpetraComm(generic_id) bind(C)
+  function degeneralize_EpetraComm(generic_id) 
     !use ForTrilinos_enums ,only : ForTrilinos_Universal_ID_t,FT_Epetra_Comm_ID_t
     use ,intrinsic :: iso_c_binding ,only: c_ptr,c_f_pointer
     type(c_ptr)              ,value  :: generic_id
     type(FT_Epetra_Comm_ID_t),pointer:: local_ptr
+    type(FT_Epetra_Comm_ID_t) :: degeneralize_EpetraComm
     call c_f_pointer (generic_id, local_ptr)
     degeneralize_EpetraComm = local_ptr
   end function
