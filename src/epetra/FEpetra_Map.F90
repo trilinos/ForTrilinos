@@ -45,9 +45,9 @@ module FEpetra_Map
   use FEpetra_BlockMap   ,only: Epetra_BlockMap
   use iso_c_binding      ,only: c_int
   use forepetra
+  implicit none
   private                     ! Hide everything by default
   public :: Epetra_Map!,Epetra_BlockMap ! Expose type/constructors/methods
-  implicit none
 
   type, extends(Epetra_BlockMap)      :: Epetra_Map !"shell"
     private

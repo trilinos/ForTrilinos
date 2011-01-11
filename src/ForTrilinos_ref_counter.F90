@@ -37,6 +37,7 @@
 
 module ForTrilinos_ref_counter
   use ForTrilinos_hermetic, only : hermetic
+  implicit none
   private
   public :: ref_counter
   type ref_counter

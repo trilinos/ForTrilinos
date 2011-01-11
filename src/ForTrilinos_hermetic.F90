@@ -37,6 +37,7 @@
 
 
 module ForTrilinos_hermetic
+  implicit none
   private
   public :: hermetic
   type, abstract :: hermetic

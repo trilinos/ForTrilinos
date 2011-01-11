@@ -45,9 +45,9 @@ module FEpetra_Vector
   use FEpetra_BlockMap    !,only: Epetra_BlockMap !use to circumvent reported compiler bug
   use iso_c_binding       ,only: c_int
   use forepetra
+  implicit none
   private                                    ! Hide everything by default
   public :: Epetra_Vector !,Epetra_MultiVector ! Expose type/constructors/methods
-  implicit none
 
   type ,extends(Epetra_MultiVector)      :: Epetra_Vector !"shell"
     private

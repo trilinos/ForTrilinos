@@ -47,9 +47,9 @@ module FEpetra_LinearProblem
   !use FEpetra_Operator, only: Epetra_Operator
   use iso_c_binding      ,only: c_int
   use forepetra
+  implicit none
   private                     ! Hide everything by default
   public :: Epetra_LinearProblem ! Expose type/constructors/methods
-  implicit none
 
   type, extends(universal)      :: Epetra_LinearProblem 
     private
