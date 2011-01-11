@@ -93,7 +93,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     call comm%force_finalize()
   FORTRILINOS_UNITTEST_END
 
-  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Solver)
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Solver_constant)
   FORTRILINOS_UNITTEST_BEGIN
     use ForTrilinos_enums
     implicit none 
@@ -162,6 +162,88 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     TEST_EQUALITY(err%error_code(),0) 
     do i=1, NumMyElements
      TEST_LESSEQUAL(abs((c(i)-0.2_c_double)/0.2_c_double),tolerance)
+    enddo 
+    call Solver%force_finalize()
+    call x%force_finalize()
+    call b%force_finalize()
+    call A%force_finalize()
+    call map%force_finalize()
+    call comm%force_finalize()
+  FORTRILINOS_UNITTEST_END
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Solver_variable)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_enums
+    implicit none 
+#ifdef HAVE_MPI
+    type(Epetra_MpiComm):: comm
+#else
+    type(Epetra_SerialComm):: comm
+#endif
+    type(Epetra_Map) :: map
+    type(Epetra_CrsMatrix) :: A
+    type(Epetra_Vector) :: x,b
+    type(AztecOO) :: Solver
+    type(error) :: err
+    integer(c_int),parameter::IndexBase=1
+    integer(c_int) :: NumGlobalElements = 8, NumMyElements, NumEntries, MaximumIter=100
+    integer(c_int),dimension(:),allocatable :: MyGlobalElements, NumNonZero
+    real(c_double),dimension(:),allocatable:: c,b_values
+    real(c_double),dimension(8):: vector=(/-0.99048,0.58095,0.24762,0.67619, &
+                               0.72381,1.15238,0.81905,2.39048/) ! answer for vector of with NumGlobalElements=8
+    real(c_double) :: values(2)
+    real(c_double), parameter :: tolerance = 1.0E-4,three=3.0
+    integer(c_int) :: MyGlobalElements_diagonal(1),i,indices(2)
+    integer(c_int),parameter :: diagonal=1
+    success = .TRUE.
+    ECHO(comm = UnitTest_EpetraComm_Create())
+    ECHO(map = Epetra_Map(NumGlobalElements,IndexBase,comm))
+    NumMyElements = map%NumMyElements()
+    allocate(MyGlobalElements(NumMyElements))
+    MyGlobalElements = map%MyGlobalElements()
+    allocate(NumNonZero(NumMyElements))
+    NumNonZero = 3  ! Non zero elements per row
+! Create a Epetra_Matrix
+    ECHO(A = Epetra_CrsMatrix(FT_Epetra_DataAccess_E_Copy,map,NumNonZero))
+! Add rows one at a time
+! off diagonal values will always be 1 and 1
+  values(1) = 1.0
+  values(2) = 1.0
+  do i=1,NumMyElements
+    if (MyGlobalElements(i)==1) then
+      indices(1) = NumGlobalElements 
+      indices(2) = 2
+      NumEntries = 2
+    else if(MyGlobalElements(i)==NumGlobalElements) then
+      indices(1) = NumGlobalElements-1
+      indices(2) = 1
+      NumEntries = 2
+    else
+      indices(1) = MyGlobalElements(i)-1
+      indices(2) = MyGlobalElements(i)+1
+      NumEntries = 2
+    end if
+     call A%InsertGlobalValues(MyGlobalElements(i),NumEntries,values,indices)
+  !Put in the diaogonal entry
+     MyGlobalElements_diagonal=MyGlobalElements(i)
+     call A%InsertGlobalValues(MyGlobalElements(i),diagonal,[three],MyGlobalElements_diagonal)
+  end do
+  !Finish up
+    call A%FillComplete(.true.)
+    ECHO(x=Epetra_Vector(map,.true.))
+    ECHO(b=Epetra_Vector(map,.true.))
+    ECHO(call x%Random())
+    ECHO(allocate(b_values(NumMyElements)))
+    ECHO(b_values=real(MyGlobalElements-1))
+    ECHO(call b%ReplaceGlobalValues(NumMyElements,b_values,MyGlobalElements,err))
+    ECHO(Solver=AztecOO(A,x,b))
+    ECHO(call Solver%iterate(A,x,b,MaximumIter,tolerance,err))
+    TEST_EQUALITY(err%error_code(),0) 
+    allocate(c(x%MyLength()))
+    ECHO(c=x%ExtractCopy(err))
+    TEST_EQUALITY(err%error_code(),0) 
+    do i=1, NumMyElements
+     TEST_LESSEQUAL(abs((c(i)-vector(MyGlobalElements(i)))/vector(MyGlobalElements(i))),tolerance)
     enddo 
     call Solver%force_finalize()
     call x%force_finalize()
