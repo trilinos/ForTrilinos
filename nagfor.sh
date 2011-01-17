@@ -28,6 +28,8 @@ forcepre="-fpp"
 # 
 origarg="$*"
 preproc="no"
+debug="no"
+componly="no"
 infile=
 outfile=
 copt=
@@ -49,8 +51,10 @@ fopt=
 #   4. Output clause: -o outfile
 #   
 #   5. Option to force preprocessing even for files in 2.
+#
+#   6. -c to have compile but not link (affects output file name)
 #   
-#   6. Any other option, irrelevant to the preprocessor
+#   7. Any other option, irrelevant to the preprocessor
 #      and intended for the base fortran compiler
 #
 while [ $# -gt 0 ]
@@ -69,6 +73,11 @@ do
 	    ;;
 	-I*|-D*) copt="$copt $1"
 	    ;;
+	-debug) debug="yes"
+	    ;;
+	-c) componly="yes"
+	    fopt="$fopt $1"
+	    ;;
 	-o) shift
 	    outfile=$1
 	    ;; 
@@ -80,7 +89,10 @@ do
     shift
 done
 
-
+if test "x$debug" = "xyes"; then
+    pwd=`pwd`
+    echo "Running NAG script $pwd  preprocessing: $preproc"
+fi
 if test "x$preproc" = "xyes"; then 
     #
     # Build a name for the temporary file
@@ -107,25 +119,49 @@ s|.*/||'`
     #      (just in case the Fortran compiler has troubles)
     #   Make sure to report the return code if gcc -E fails
     # 
+    if test "x$debug" = "xyes"; then
+	echo "preproc:  gcc -undef -E -P $copt -o $pfile $infile"
+    fi    
     gcc -undef -E -P $copt -o $pfile $infile || exit $?
-    if test "x$outfile" = "x"; then
+    #
+    # If -c was given we make sure to have a proper output
+    # file name; otherwise, if no outfile, you get
+    # the compiler's default
+    #
+    if test "x$componly" = "xyes" ; then 
+	if test "x$outfile" = "x"; then
 	#
 	# Make sure outfile has the right name if not already forced
 	# Write in current directory, the compiler would do it anyway
-	# but potentially with the wrong name. 
+	# but potentially with the wrong name if we had to add
+	# a prefix to pfile.
 	# 
-	outfile=`echo $infile | sed 's/\.[Ff][Ff]*[^\.]*$/.o/
+	    outfile=`echo $infile | sed 's/\.[Ff][Ff]*[^\.]*$/.o/
 s|.*/||'`
+	fi
     fi
-    $compiler $copt $fopt $pfile -o $outfile 
-    #
-    # Make sure to exit with the compiler's return code
-    # 
-    rc=$?
+
+    if test "x$outfile" = "x"; then 
+	if test "x$debug" = "xyes"; then
+	    echo "compile:      $compiler $copt $fopt $pfile  "
+	fi
+	$compiler $copt $fopt $pfile 
+	rc=$?
+    else 
+	if test "x$debug" = "xyes"; then
+	    echo "compile:      $compiler $copt $fopt $pfile -o $outfile "
+	fi
+	$compiler $copt $fopt $pfile -o $outfile 
+	rc=$?
+    fi
     /bin/rm -f $pfile
 else
+    if test "x$debug" = "xyes"; then
+	echo "compile:      $compiler $origarg "
+    fi
     $compiler $origarg
     rc=$?
 fi
 
+# Make sure to exit with the compiler's return code
 exit $rc
