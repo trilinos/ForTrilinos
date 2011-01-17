@@ -120,9 +120,9 @@ s|.*/||'`
     #   Make sure to report the return code if gcc -E fails
     # 
     if test "x$debug" = "xyes"; then
-	echo "preproc:  gcc -undef -E -P $copt -o $pfile $infile"
+	echo "preproc:  gcc -undef -cpp -E -P $copt -o $pfile $infile"
     fi    
-    gcc -undef -E -P $copt -o $pfile $infile || exit $?
+    gcc -undef -cpp -E -P $copt -o $pfile $infile || exit $?
     #
     # If -c was given we make sure to have a proper output
     # file name; otherwise, if no outfile, you get
