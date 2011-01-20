@@ -59,15 +59,15 @@ MAIN: for ($i=0; (($i<$#ARGV), $_=$ARGV[$i]) ; $i++) {
 		last SWITCH;   }
 	
 	    
-	if (/^-o(\S.*)$/) {
-		$outfile=$1;
-		last SWITCH;   }
-		
 	if (/^-o$/) {
 		$outfile=$ARGV[$i+1];
 		$i++;
 		last SWITCH;   }
 
+	if (/^-o(.*)$/) {
+		$outfile=$1;
+		last SWITCH;   }
+		
 	if (/^-fpp$/) {
 		$preproc=1;
 		last SWITCH;   }
@@ -82,7 +82,7 @@ MAIN: for ($i=0; (($i<$#ARGV), $_=$ARGV[$i]) ; $i++) {
 }
 
 #
-# Ok, so: we have to preproces if 
+# Ok, so: we have to preprocess if 
 #  1. the flag is set and
 #  2. there is an input file
 #   remember we might just have been called to link
