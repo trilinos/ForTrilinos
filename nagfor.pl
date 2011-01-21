@@ -4,21 +4,19 @@
 # Wrapper for compilers having troubles with preprocessor.
 #
 # Assumes the compiler is in your PATH
-#
-# Works for only 1 input file at a time.
 # 
 # Written for a version of NAG that could not preprocess
 # lines longer than 132 chars.
 # 
 $compiler="nagfor";
-
+$forcepre="-fpp";
 #
 # Scan through the argument list separating:
-#   1. input file needing preprocessing:
+#   1. input files needing preprocessing:
 #      .Fnn .ffnn  where nn are two digits (covers
 #              f77 f90 f95 f03)
 #      .F   .ff   
-#   2. input file not (necessarily) needing preprocessing:
+#   2. input files not (necessarily) needing preprocessing:
 #      .fnn .f   SHOULD WE ADD .FOR?? 
 #
 #   3. Options affecting the preprocessor:
@@ -38,47 +36,53 @@ $compiler="nagfor";
 #      passed to the base compiler. 
 #
 
-MAIN: for ($i=0; (($i<$#ARGV), $_=$ARGV[$i]) ; $i++) {
+MAIN: for ($i=0; (($i<=$#ARGV), $_=$ARGV[$i]) ; $i++) {
 #    print "debug: $_ \n";
     SWITCH: {
 	if (/.*\.F[0-9][0-9]$|.*\.ff[0-9][0-9]$|.*\.F$|.*\.ff$/) {
-		$infile=$_;
-		$preproc=1;
-		last SWITCH;	    }
-	    
-	if (/.*\.f[0-9][0-9]$|.*\.f$/) {
-		$infile=$_;
-		last SWITCH;	   }
-	if (/^-I|^-D/) {
-		push (@ccopt,$_);
-		last SWITCH;   }
-	    
-	if (/^-debug$/) { 
-		$debug=1;
-		splice(@ARGV,$i,1); 
-		last SWITCH;   }
-	
-	    
-	if (/^-o$/) {
-		$outfile=$ARGV[$i+1];
-		$i++;
-		last SWITCH;   }
-
-	if (/^-o(.*)$/) {
-		$outfile=$1;
-		last SWITCH;   }
-		
-	if (/^-fpp$/) {
-		$preproc=1;
-		last SWITCH;   }
-	if (/^-c$/) {
-		$componly=1;
-		push (@fopt,$_);
-		last SWITCH;   }
-
-        push (@fopt,$_);
-		
+	    push (@infiles,$_);
+	    $preproc=1;
+	    last SWITCH;	    
 	}
+	
+	if (/.*\.f[0-9][0-9]$|.*\.f$/) {
+	    push (@infiles,$_);
+	    last SWITCH;	   
+	}
+	if (/^-I|^-D/) {
+	    push (@ccopt,$_);
+	    last SWITCH;   
+	}
+	
+	if (/^-debug$/) { 
+	    $debug=1;
+	    splice(@ARGV,$i,1); 
+	    last SWITCH;   
+	}
+		
+	if (/^-o$/) {
+	    $outfile=$ARGV[++$i];
+	    last SWITCH;   
+	}
+	
+	if (/^-o(.*)$/) {
+	    $outfile=$1;
+	    last SWITCH;   
+	}
+	
+	if (/^$forcepre$/) {
+	    $preproc=1;
+	    last SWITCH;   
+	}
+	if (/^-c$/) {
+	    $componly=1;
+	    push (@fopt,$_);
+	    last SWITCH;   
+	}
+	
+        push (@fopt,$_);
+	
+    }
 }
 
 #
@@ -89,7 +93,7 @@ MAIN: for ($i=0; (($i<$#ARGV), $_=$ARGV[$i]) ; $i++) {
 #   an existing .o
 #
 
-if (($infile)&&(-e $infile)&&($preproc)) {
+if ((@infiles)&&($preproc)) {
     #
     #
     # Build a name for the temporary file
@@ -100,24 +104,34 @@ if (($infile)&&(-e $infile)&&($preproc)) {
     # to conflict with existing files.
     # 
     #
-    $pfile=$infile;
-    $pfile =~ s/.*\///;
-    $pfile =~ s/\.[Ff][Ff]*([0-9]*)$/\.f\1/;
-    while ( -e $pfile ) {
-	$pfile="XtmpX_$pfile";
+    if ($debug) { print "Preproc branch @infiles\n";}
+    foreach $infile (@infiles) {
+	$pfile=$infile;
+	$pfile =~ s/.*\///;
+	$pfile =~ s/\.[Ff][Ff]*([0-9]*)$/\.f\1/;
+	while ( -e $pfile ) {
+	    $pfile="XtmpX_$pfile";
+	}
+	
+	#
+	# Do the preprocessing; adjust return code if needed. 
+	#
+	push (@cpp,"gcc","-traditional-cpp","-undef","-x", "c","-E","-P");
+	push (@cpp,@ccopt,"-o",$pfile,$infile);
+	if ($debug) { print "@cpp \n";}
+	$rc=system(@cpp);
+	
+	if ($rc != 0) { 
+	    foreach $tfile (@pfiles) {
+		unlink $tfile;
+	    }
+	    exit $rc>>8;
+	}
+	@cpp=();
+	push (@pfiles,$pfile);
     }
     
-    #
-    # Do the preprocessing; adjust return code if needed. 
-    #
-    push (@cpp,"gcc","-traditional-cpp","-undef","-x", "c","-E","-P");
-    push (@cpp,@ccopt);
-    push (@cpp,"-o",$pfile,$infile);
-    print "@cpp \n";
-    $rc=system(@cpp);
-    ($rc == 0) or exit $rc>>8;
-
-    
+    if ($debug) { print "Compiling: @pfiles\n";}
     #
     # Now for compilation: if outfile was not forced, and if
     # we are supposed to produce a .o file, we have to
@@ -125,20 +139,39 @@ if (($infile)&&(-e $infile)&&($preproc)) {
     # Need to push the -I options, if any; they are often used
     # to specify search path for module files. 
     #
-    push (@fcomp,$compiler);
-    push (@fcomp,@ccopt,@fopt,$pfile);
+    #    push (@fcomp,$compiler,@ccopt,@fopt,$pfile);
     if ((!$outfile)&&($componly)) {
-	$outfile=$infile;
-	$outfile =~ s/.*\///;
-	$outfile =~ s/\.[Ff][Ff]*([0-9]*)$/\.o/;
-    }
-    if ($outfile) {
-	push (@fcomp,"-o",$outfile);
+	#
+	# Treat @pfiles one at a time
+	#
+	if ($debug) { print "Trating infiles: @infiles $#infiles @pfiles $#pfiles\n";}
+      CLOOP: for ($i=0; $i<=$#infiles; $i++) {
+	  $infile=$infiles[$i];
+	  $pfile=$pfiles[$i];
+	  $outfile=$infile;
+	  $outfile =~ s/.*\///;
+	  $outfile =~ s/\.[Ff][Ff]*([0-9]*)$/\.o/;
+	  push (@fcomp,$compiler,@ccopt,@fopt,$pfile,"-o",$outfile);
+	  if ($debug) { print "Invoking: @fcomp\n";}
+	  $rc=system(@fcomp);
+	  if ($rc != 0) { 
+	      last CLOOP; 
+	  }
+	  @fcomp=();
+      }
+    } else {
+	push (@fcomp,$compiler,@ccopt,@fopt,@pfiles);
+	if ($outfile) {
+	    push (@fcomp,"-o",$outfile);
+	}
+	if ($debug) { print "Invoking: @fcomp\n";}
+	$rc=system(@fcomp);
     } 
-
-    $rc=system(@fcomp);
-    unlink $pfile;
-    exit $rc>>8;    
+    if ($debug) { print "cleaning up\n";}
+    foreach $tfile (@pfiles) {
+	unlink $tfile;
+    }
+    exit $rc>>8;
     
 } else {
     #
@@ -147,7 +180,7 @@ if (($infile)&&(-e $infile)&&($preproc)) {
     # In any case, invoke the base compiler
     # with the arglist (minus script specific options if any)
     # 
-    push (@args,"nagfor");
-    push (@args, @ARGV);
+    push (@args,$compiler,@ARGV);
+    if ($debug) { print "Execing @args \n";}
     exec @args;
 }
