@@ -60,6 +60,7 @@ module FAztecOO
      procedure ,nopass :: alias_AztecOO_ID
      procedure         :: generalize 
      ! Standard AztecOO solve methods
+     procedure         :: SetAztecOption
      procedure         :: iterate_current
      procedure         :: iterate_RowMatrix
      generic :: iterate => iterate_current, iterate_RowMatrix
@@ -185,6 +186,14 @@ contains
     integer(c_int)               :: error_out
     error_out = AztecOO_Iterate(this%AztecOO_id,A%get_EpetraRowMatrix_ID(),x%get_EpetraMultiVector_ID(),b%get_EpetraMultiVector_ID(),MaxIters,tolerance)
     if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine SetAztecOption(this,option,value)
+   class(AztecOO), intent(in) :: this
+   integer(c_int),intent(in) :: option
+   integer(c_int),intent(in) :: value
+   integer(c_int) ::er
+   er=AztecOO_SetAztecOption(this%AztecOO_id,option,value) 
   end subroutine
 
   subroutine invalidate_AztecOO_ID(this)
