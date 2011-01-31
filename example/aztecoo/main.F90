@@ -1,6 +1,5 @@
 program main
 #include "ForTrilinos_config.h"
-#include "az_aztec_defs.h"
 #ifdef HAVE_MPI
   use mpi
   use FEpetra_MpiComm,only:Epetra_MpiComm
@@ -80,7 +79,6 @@ program main
   call x%Random()
   call b%PutScalar(1.0_c_double)
   Solver=AztecOO(A,x,b)
-  call Solver%SetAztecOption(AZ_precond,AZ_jacobi)
   call Solver%iterate(A,x,b,MaximumIter,tolerance,err)
   allocate(c(x%MyLength()))
   c=x%ExtractCopy(err)
