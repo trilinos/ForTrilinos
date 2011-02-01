@@ -116,7 +116,7 @@ module FEpetra_RowMatrix
     use ForTrilinos_table_man
     use ForTrilinos_enums
     type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
-    type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id
+    type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id=>null()
     integer(c_int) :: status
     type(error) :: ierr
     if (.not.associated(alias_id)) then
@@ -146,7 +146,7 @@ module FEpetra_RowMatrix
     !use ForTrilinos_enums ,only : ForTrilinos_Universal_ID_t,FT_Epetra_RowMatrix_ID_t
     use ,intrinsic :: iso_c_binding ,only: c_ptr,c_f_pointer
     type(c_ptr)              ,value  :: generic_id
-    type(FT_Epetra_RowMatrix_ID_t),pointer:: local_ptr
+    type(FT_Epetra_RowMatrix_ID_t),pointer:: local_ptr=>null()
     call c_f_pointer (generic_id, local_ptr)
     degeneralize_EpetraRowMatrix = local_ptr
   end function

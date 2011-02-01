@@ -116,7 +116,7 @@ contains
     use ForTrilinos_enums ,only: ForTrilinos_Universal_ID_t,FT_Epetra_Export_ID
     use iso_c_binding     ,only: c_loc,c_int
     type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
-    type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id
+    type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id=>null()
     integer(c_int) :: status
     type(error) :: ierr
     if (.not.associated(alias_id)) then
@@ -147,7 +147,7 @@ contains
     use ForTrilinos_enums ,only : ForTrilinos_Universal_ID_t,FT_Epetra_Export_ID_t
     use ,intrinsic :: iso_c_binding ,only: c_ptr,c_f_pointer
     type(c_ptr)                   ,value   :: generic_id
-    type(FT_Epetra_Export_ID_t) ,pointer :: local_ptr
+    type(FT_Epetra_Export_ID_t) ,pointer :: local_ptr=>null()
     call c_f_pointer (generic_id, local_ptr)
     degeneralize_EpetraExport = local_ptr
    ! ____ Use for ForTrilinos function implementation ______
