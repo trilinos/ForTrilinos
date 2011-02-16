@@ -66,33 +66,33 @@ module FEpetra_Comm
     !Barrier Methods
     procedure(barrier_interface)          ,deferred          ::barrier
     !Broadcast Methods
-    procedure(broadcast_double_interface) ,private,deferred  ::broadcast_double
-    procedure(broadcast_int_interface)    ,private,deferred  ::broadcast_int
-    procedure(broadcast_long_interface)           ,deferred  ::broadcast_long
-    procedure(broadcast_char_interface)   ,private,deferred  ::broadcast_char
+    procedure(broadcast_double_interface) ,deferred  ::broadcast_double
+    procedure(broadcast_int_interface)    ,deferred  ::broadcast_int
+    procedure(broadcast_long_interface)   ,deferred  ::broadcast_long
+    procedure(broadcast_char_interface)   ,deferred  ::broadcast_char
     generic :: broadcast=>broadcast_double,broadcast_int,broadcast_char
     !Gather Methods
-    procedure(gather_double_interface),private   ,deferred  ::gather_double
-    procedure(gather_int_interface)   ,private   ,deferred  ::gather_int
+    procedure(gather_double_interface),deferred  ::gather_double
+    procedure(gather_int_interface)   ,deferred  ::gather_int
     procedure(gather_long_interface)             ,deferred  ::gather_long
     generic :: GatherAll=>gather_double,gather_int
     !Sum Methods
-    procedure(sum_double_interface),private     ,deferred   ::sum_double
-    procedure(sum_int_interface)   ,private     ,deferred   ::sum_int
+    procedure(sum_double_interface),deferred   ::sum_double
+    procedure(sum_int_interface)   ,deferred   ::sum_int
     procedure(sum_long_interface)               ,deferred   ::sum_long
     generic :: SumAll=>sum_double,sum_int
     !Max/Min Methods
-    procedure(max_double_interface) ,private    ,deferred   ::max_double
-    procedure(max_int_interface)    ,private    ,deferred   ::max_int
-    procedure(max_long_interface)               ,deferred   ::max_long
+    procedure(max_double_interface) ,deferred   ::max_double
+    procedure(max_int_interface)    ,deferred   ::max_int
+    procedure(max_long_interface)   ,deferred   ::max_long
     generic :: MaxAll=>max_double,max_int
-    procedure(min_double_interface) ,private    ,deferred   ::min_double
-    procedure(min_int_interface)    ,private    ,deferred   ::min_int
+    procedure(min_double_interface) ,deferred   ::min_double
+    procedure(min_int_interface)    ,deferred   ::min_int
     procedure(min_long_interface)               ,deferred   ::min_long
     generic :: MinAll=>min_double,min_int
     !Parallel Prefix Methods
-    procedure(ScanSum_double_interface) ,private    ,deferred   ::ScanSum_double
-    procedure(ScanSum_int_interface)    ,private    ,deferred   ::ScanSum_int
+    procedure(ScanSum_double_interface) ,deferred   ::ScanSum_double
+    procedure(ScanSum_int_interface)    ,deferred   ::ScanSum_int
     procedure(ScanSum_long_interface)               ,deferred   ::ScanSum_long
     generic :: ScanSum=>ScanSum_double,ScanSum_int
     !Attribute Accessor Methods
