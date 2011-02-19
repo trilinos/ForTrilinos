@@ -79,6 +79,7 @@ program main
   
 ! Create a serial comm
   communicator= Epetra_SerialComm() 
+  stop 'The executable produced by nagfor Build 822 does not reach this line.'
 
 ! Create a map 
   numGlobalElements_local = 4 

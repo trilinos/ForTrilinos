@@ -135,11 +135,15 @@ contains
     character(len=*) ,intent(in) :: message
     integer(c_int) :: status
     type(error) :: ierr
+    print *,'ForTrilinos_error deallocate_ForTrilinos_Universal_ID_t: start'
     if (associated(garbage)) then
+      print *,'ForTrilinos_error deallocate_ForTrilinos_Universal_ID_t: argument associated'
       deallocate(garbage,stat=status)
+      print *,'Executable produced by NAG does not reach this line.'
       ierr=error(status,message)
       call ierr%check_success()
     endif
+    print *,'ForTrilinos_error deallocate_ForTrilinos_Universal_ID_t: NAG does executable not reach this line'
   end subroutine
 
 end module ForTrilinos_error 
