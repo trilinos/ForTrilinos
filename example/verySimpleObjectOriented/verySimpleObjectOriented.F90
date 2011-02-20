@@ -78,13 +78,15 @@ program main
   ! Executable code
   
 ! Create a serial comm
+  print *,'verySimpleObjectOriented: starting Epetra_SerialCommm construction'
   communicator= Epetra_SerialComm() 
+  print *,'verySimpleObjectOriented: Epetra_SerialCommm construction completed'
 
 ! Create a map 
   numGlobalElements_local = 4 
   map = Epetra_Map(numGlobalElements_local,Index_Base,communicator)
+  print *,'verySimpleObjectOriented: Epetra_Map construction completed'
   numGlobalElements_return = map%NumGlobalElements()
-  stop 'main: Teuchos throws an error before execution reaches this line'
   print *,'NumGlobalElements = ', numGlobalElements_return
   print *,'NumMyElements=', map%NumMyElements()
   if ( numGlobalElements_local /= numGlobalElements_return ) &
