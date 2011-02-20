@@ -79,12 +79,12 @@ program main
   
 ! Create a serial comm
   communicator= Epetra_SerialComm() 
-  stop 'The executable produced by nagfor Build 822 does not reach this line.'
 
 ! Create a map 
   numGlobalElements_local = 4 
   map = Epetra_Map(numGlobalElements_local,Index_Base,communicator)
   numGlobalElements_return = map%NumGlobalElements()
+  stop 'main: Teuchos throws an error before execution reaches this line'
   print *,'NumGlobalElements = ', numGlobalElements_return
   print *,'NumMyElements=', map%NumMyElements()
   if ( numGlobalElements_local /= numGlobalElements_return ) &

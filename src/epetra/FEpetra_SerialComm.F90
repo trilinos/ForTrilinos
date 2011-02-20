@@ -106,7 +106,6 @@ contains
   type(Epetra_SerialComm) function from_struct(id)
    type(FT_Epetra_SerialComm_ID_t) ,intent(in) :: id
    from_struct%SerialComm_id = id
-   print *,'Epetra_SerialComm from_struct: start'
    call from_struct%set_EpetraComm_ID(from_struct%alias_EpetraComm_ID(from_struct%generalize()))
    call from_struct%register_self
   end function
@@ -118,7 +117,6 @@ contains
   
   type(Epetra_SerialComm) function from_scratch()
    type(FT_Epetra_SerialComm_ID_t) :: from_scratch_id
-   print *,'Epetra_SerialComm from_scratch: start'
    from_scratch_id = Epetra_SerialComm_Create()
    from_scratch=from_struct(from_scratch_id)
   end function
@@ -163,9 +161,7 @@ contains
    use ForTrilinos_utils ,only: generalize_all
    use iso_c_binding ,only : c_loc
    class(Epetra_SerialComm) ,intent(in) ,target :: this
-   print *,'Epetra_SerialComm generalize: start'
    generalize = generalize_all( c_loc(this%SerialComm_id) )
-   print *,'Epetra_SerialComm generalize: end'
    ! ____ Use for ForTrilinos function implementation ______
    
    ! ____ Use for CTrilinos function implementation ______

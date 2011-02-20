@@ -316,7 +316,6 @@ module FEpetra_Comm
     integer(c_int) :: status 
     type(error) :: ierr
     type(FT_Epetra_Comm_ID_t) :: alias_EpetraComm_ID
-    print *,'EpetraComm alias_Epetra_Comm_ID: start'
     if (.not.associated(alias_id)) then
       allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_Comm_ID),stat=status)
       ierr=error(status,'FEpetra_Comm:alias_EpetraComm_ID')
@@ -324,7 +323,6 @@ module FEpetra_Comm
     endif
     alias_EpetraComm_ID=degeneralize_EpetraComm(c_loc(alias_id))
     call deallocate_and_check_error(alias_id,'FEpetra_Comm:alias_EpetraComm_ID')
-    print *,'EpetraComm alias_Epetra_Comm_ID: (NAG executable does not reach this line'
   end function
 
   function generalize_EpetraComm(this)
@@ -333,7 +331,6 @@ module FEpetra_Comm
    use iso_c_binding ,only : c_loc
    class(Epetra_Comm) ,intent(in) ,target :: this
    type(ForTrilinos_Universal_ID_t) :: generalize_EpetraComm
-   print *,'EpetraComm generalize_EpetraComm:  start'
    generalize_EpetraComm = generalize_all( c_loc(this%comm_id) )
    ! ____ Use for ForTrilinos function implementation ______
 
@@ -342,7 +339,6 @@ module FEpetra_Comm
    ! type(ForTrilinos_Universal_ID_t) :: generalize_EpetraComm
    ! generalize_EpetraComm = Epetra_Comm_Generalize ( this%comm_id )
    ! ____ Use for CTrilinos function implementation ______
-   print *,'EpetraComm generalize_EpetraComm:  end'
   end function
   
   function degeneralize_EpetraComm(generic_id) 

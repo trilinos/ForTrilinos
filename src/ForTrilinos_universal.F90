@@ -68,7 +68,8 @@ module ForTrilinos_universal
 
   subroutine register_self (this)
     class(universal), intent(inout) :: this
-
+    print *,'Universal%register_self: start'
     this%counter = ref_counter(this)
+    print *,'Universal%register_self: end'
   end subroutine
 end module

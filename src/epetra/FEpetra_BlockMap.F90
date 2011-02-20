@@ -235,7 +235,9 @@ contains
  
   integer(c_int) function NumGlobalElements(this)
     class(Epetra_BlockMap) ,intent(in) :: this
+    print *,'Epetra_BlockMap%NumGlobalElements(): start'
     NumGlobalElements=Epetra_BlockMap_NumGlobalElements(this%BlockMap_id)
+    stop 'If this line has been reached, then the Teuchos::RangeError has been fixed.'
   end function 
 
   integer(c_int) function NumMyElements(this)

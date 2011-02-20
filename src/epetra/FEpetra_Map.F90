@@ -85,8 +85,10 @@ contains
     integer(c_int) ,intent(in) :: IndexBase
     class(Epetra_Comm)         :: comm
     type(FT_Epetra_Map_ID_t) :: from_scratch_id
+    print *,'Epetra_Map%from_scratch: start'
     from_scratch_id = Epetra_Map_Create(Num_GlobalElements,IndexBase,comm%get_EpetraComm_ID())
     from_scratch = from_struct(from_scratch_id)
+    print *,'Epetra_Map%from_scratch: end'
   end function
 
 ! Original C++ prototype:
@@ -200,7 +202,9 @@ contains
 
   subroutine ctrilinos_delete_EpetraMap(this)
     class(Epetra_Map),intent(inout) :: this
+    print *,'Epetra_Map%ctrilinos_delete_EpetraMap: start'
     call Epetra_Map_Destroy( this%map_id ) 
+    print *,'Epetra_Map%ctrilinos_delete_EpetraMap: end'
   end subroutine
 
 end module 
