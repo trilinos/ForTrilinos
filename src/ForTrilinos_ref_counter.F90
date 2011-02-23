@@ -36,7 +36,8 @@
 !*********************************************************************
 
 module ForTrilinos_ref_counter
-  use ForTrilinos_hermetic, only : hermetic
+  use ForTrilinos_hermetic ,only : hermetic
+  use ForTrilinos_assertion_utility ,only : assert,error_message
   implicit none
   private
   public :: ref_counter
@@ -56,15 +57,18 @@ module ForTrilinos_ref_counter
       module procedure constructor
   end interface
 
+#ifdef ForTrilinos_ASSERTIONS
+  logical ,parameter :: assertions=.true.
+#else
+  logical ,parameter :: assertions=.false.
+#endif
+
 contains
 
   subroutine grab(this)
     class(ref_counter), intent(inout) :: this
-    if (associated(this%count)) then
-      this%count = this%count + 1
-    else
-      stop 'Error in Ref_counter%grab: count not associated.'
-    end if
+    if (assertions) call assert( [associated(this%count)], [error_message('Ref_counter%grab: count not associated.')] )
+    this%count = this%count + 1
   end subroutine
 
   recursive subroutine release(this)
@@ -72,18 +76,15 @@ contains
     class (ref_counter), intent(inout) :: this
     integer :: status
     type(error) :: ierr
-    if (associated(this%count)) then
-      this%count = this%count - 1
-      if (this%count == 0) then
-        deallocate (this%count,stat=status)
-        ierr=error(status,'Ref_counter%release: this%count')
-        call ierr%check_success()
-        deallocate (this%obj,stat=status)
-        ierr=error(status,'Ref_counter%release: this%obj')
-        call ierr%check_success()
-      end if
-    else
-      stop 'Error in Ref_counter%release: count not associated'
+    if (assertions) call assert( [associated(this%count)], [error_message('Ref_counter%release: count not associated.')] )
+    this%count = this%count - 1
+    if (this%count == 0) then
+      deallocate (this%count,stat=status)
+      ierr=error(status,'Ref_counter%release: this%count')
+      call ierr%check_success()
+      deallocate (this%obj,stat=status)
+      ierr=error(status,'Ref_counter%release: this%obj')
+      call ierr%check_success()
     end if
   end subroutine
 
