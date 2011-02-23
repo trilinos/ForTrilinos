@@ -68,18 +68,24 @@ contains
     integer(c_int) ,intent(in) :: new_code
     character(len=*) ,intent(in) ,optional :: new_message
     type(error) :: new_error
+    print *,'new_error: start'
     new_error%code = new_code 
     if (present(new_message)) new_error%error_message = error_message(new_message)
+    print *,'new_error: end'
   end function
 
   integer(c_int) function error_code(this)
     class(error) ,intent(in) :: this
+    print *,'error_code: start'
     error_code = this%code
+    print *,'error_code: end'
   end function
 
   subroutine check_success(this)
-   class(error), intent(in) :: this
-   call assert( [this%code==0], [this%error_message] )
+    class(error), intent(in) :: this
+    print *,'check_success: start'
+    call assert( [this%code==0], [this%error_message] )
+    print *,'check_success: end'
   end subroutine
 
   subroutine deallocate_integer_rank1(garbage,message)
@@ -135,11 +141,13 @@ contains
     character(len=*) ,intent(in) :: message
     integer(c_int) :: status
     type(error) :: ierr
+    print *,'deallocate_ForTrilinos_Universal_ID_t: start'
     if (associated(garbage)) then
       deallocate(garbage,stat=status)
       ierr=error(status,message)
       call ierr%check_success()
     endif
+    print *,'deallocate_ForTrilinos_Universal_ID_t: end'
   end subroutine
 
 end module ForTrilinos_error 

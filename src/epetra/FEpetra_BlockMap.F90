@@ -187,20 +187,20 @@ contains
   end function
   
   type(FT_Epetra_BlockMap_ID_t) function alias_EpetraBlockMap_ID(generic_id)
-    use ForTrilinos_table_man
+    use ForTrilinos_table_man, only : CT_Alias
     use ForTrilinos_enums ,only: ForTrilinos_Universal_ID_t,FT_Epetra_BlockMap_ID
     use iso_c_binding     ,only: c_loc,c_int
     type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
-    type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id=>null()
+    type(ForTrilinos_Universal_ID_t) ,allocatable ,target :: alias_id
     integer(c_int) :: status
     type(error) :: ierr
-    if(.not.associated(alias_id)) then
-      allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_BlockMap_ID),stat=status)
-      ierr=error(status,'FEpetra_BlockMap:alias_EpetraBlockMap_ID')
-      call ierr%check_success()
-    endif
+    allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_BlockMap_ID),stat=status)
+    ierr=error(status,'FEpetra_BlockMap:alias_EpetraBlockMap_ID')
+    call ierr%check_success()
     alias_EpetraBlockMap_ID=degeneralize_EpetraBlockMap(c_loc(alias_id))
-    call deallocate_and_check_error(alias_id,'FEpetra_BlockMap:alias_EpetraBlockMap_ID')
+    print *,'alias_EpetraBlockMap_ID%table=',alias_EpetraBlockMap_ID%table
+    print *,'alias_EpetraBlockMap_ID%index=',alias_EpetraBlockMap_ID%index
+    print *,'alias_EpetraBlockMap_ID%is_const=',alias_EpetraBlockMap_ID%is_const
   end function
 
   type(ForTrilinos_Universal_ID_t) function generalize(this)
@@ -225,6 +225,7 @@ contains
     type(FT_Epetra_BlockMap_ID_t) ,pointer :: local_ptr=>null()
     call c_f_pointer (generic_id, local_ptr)
     degeneralize_EpetraBlockMap = local_ptr
+   !deallocate(local_ptr)
    ! ____ Use for ForTrilinos function implementation ______
 
    ! ____ Use for CTrilinos function implementation ______
@@ -237,7 +238,6 @@ contains
     class(Epetra_BlockMap) ,intent(in) :: this
     print *,'Epetra_BlockMap%NumGlobalElements(): start'
     NumGlobalElements=Epetra_BlockMap_NumGlobalElements(this%BlockMap_id)
-    stop 'If this line has been reached, then the Teuchos::RangeError has been fixed.'
   end function 
 
   integer(c_int) function NumMyElements(this)

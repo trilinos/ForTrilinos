@@ -312,17 +312,18 @@ module FEpetra_Comm
     use ForTrilinos_table_man
     use ForTrilinos_enums
     type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
-    type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id=>null()
+   !type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id=>null()
+    type(ForTrilinos_Universal_ID_t) ,allocatable ,target :: alias_id
     integer(c_int) :: status 
     type(error) :: ierr
     type(FT_Epetra_Comm_ID_t) :: alias_EpetraComm_ID
-    if (.not.associated(alias_id)) then
-      allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_Comm_ID),stat=status)
-      ierr=error(status,'FEpetra_Comm:alias_EpetraComm_ID')
-      call ierr%check_success()
-    endif
+   !if (.not.associated(alias_id)) then
+    allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_Comm_ID),stat=status)
+    ierr=error(status,'FEpetra_Comm:alias_EpetraComm_ID')
+    call ierr%check_success()
+   !endif
     alias_EpetraComm_ID=degeneralize_EpetraComm(c_loc(alias_id))
-    call deallocate_and_check_error(alias_id,'FEpetra_Comm:alias_EpetraComm_ID')
+   !call deallocate_and_check_error(alias_id,'FEpetra_Comm:alias_EpetraComm_ID')
   end function
 
   function generalize_EpetraComm(this)

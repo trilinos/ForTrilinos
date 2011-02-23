@@ -71,13 +71,18 @@ contains
 
   !type(ForTrilinos_Universal_ID_t) function generalize_all(object_id) bind(C,name="for_linking_only") 
   type(ForTrilinos_Universal_ID_t) function generalize_all(object_id) bind(C) 
+    use ForTrilinos_error
     use ForTrilinos_enums ,only : ForTrilinos_Universal_ID_t
     use ,intrinsic :: iso_c_binding ,only: c_ptr,c_f_pointer
     type(c_ptr) ,value :: object_id
     type(ForTrilinos_Universal_ID_t), pointer :: local_ptr=>null()
+    integer ::st
 
     call c_f_pointer (object_id, local_ptr)
     generalize_all = local_ptr
+    print *,'generalize_all%table=',generalize_all%table    
+    print *,'generalize_all%index=',generalize_all%index
+    print *,'generalize_all%is_const=',generalize_all%is_const
   end function
 
   ! This procedure checks the values of parameters required to interoperate with CTrilinos.  The Fortran 2003 

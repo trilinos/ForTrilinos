@@ -43,8 +43,7 @@ module ForTrilinos_universal
   type ,abstract ,extends(hermetic) :: universal
     private
     type(ref_counter) :: counter
-
-    contains
+  contains
     procedure(invalidate_id_interface) , deferred :: invalidate_id 
     procedure, non_overridable :: force_finalize
     procedure, non_overridable :: register_self
@@ -61,12 +60,16 @@ contains
 
   subroutine force_finalize (this)
     class(universal), intent(inout) :: this
+    print *,'Universal%force_finalize: start'
     call this%counter%release
     call this%invalidate_id
+    print *,'Universal%force_finalize: end'
   end subroutine
 
   subroutine register_self (this)
     class(universal), intent(inout) :: this
+    print *,'Universal%register_self: start'
     this%counter = ref_counter(this)
+    print *,'Universal%register_self: end'
   end subroutine
 end module

@@ -64,7 +64,7 @@ contains
     if (associated(this%count)) then
       this%count = this%count + 1
     else
-      stop 'Error in Ref_counter%grab: count not associated.'
+       stop 'Error in Ref_counter%grab: count not associated.'
     end if
     print *,'Ref_counter%grab (count=',this%count,'): end'
   end subroutine
@@ -87,16 +87,8 @@ contains
   subroutine assign (lhs, rhs)
     class (ref_counter), intent(inout) :: lhs
     class (ref_counter), intent(in) :: rhs
-    if (associated(lhs%count)) then 
-      print *,'Ref_counter%assign associated(lhs%count)=',associated(lhs%count)
-    else
-      print *,'Ref_counter%assign associated(lhs%count) not associated'
-    end if
-    if (associated(rhs%count)) then 
-      print *,'Ref_counter%assign associated(rhs%count)=',associated(rhs%count)
-    else
-      print *,'Ref_counter%assign associated(rhs%count) not associated'
-    end if
+    print *,'Ref_counter%assign (lhs%count=',lhs%count,'): start'
+    print *,'Ref_counter%assign (rhs%count=',rhs%count,')'
     if (associated(lhs%count)) call lhs%release
     lhs%count => rhs%count
     lhs%obj => rhs%obj

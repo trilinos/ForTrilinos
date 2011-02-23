@@ -78,12 +78,14 @@ program main
   ! Executable code
   
 ! Create a serial comm
-  print *,'verySimpleObjectOriented: starting Epetra_SerialCommm construction'
+  print *,'verySimpleObjectOriented: Epetra_SerialCommm construction starting'
   communicator= Epetra_SerialComm() 
   print *,'verySimpleObjectOriented: Epetra_SerialCommm construction completed'
+  print *
 
 ! Create a map 
   numGlobalElements_local = 4 
+  print *,'verySimpleObjectOriented: Epetra_Map construction starting'
   map = Epetra_Map(numGlobalElements_local,Index_Base,communicator)
   print *,'verySimpleObjectOriented: Epetra_Map construction completed'
   numGlobalElements_return = map%NumGlobalElements()
