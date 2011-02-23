@@ -198,9 +198,6 @@ contains
     ierr=error(status,'FEpetra_BlockMap:alias_EpetraBlockMap_ID')
     call ierr%check_success()
     alias_EpetraBlockMap_ID=degeneralize_EpetraBlockMap(c_loc(alias_id))
-    print *,'alias_EpetraBlockMap_ID%table=',alias_EpetraBlockMap_ID%table
-    print *,'alias_EpetraBlockMap_ID%index=',alias_EpetraBlockMap_ID%index
-    print *,'alias_EpetraBlockMap_ID%is_const=',alias_EpetraBlockMap_ID%is_const
   end function
 
   type(ForTrilinos_Universal_ID_t) function generalize(this)
@@ -225,7 +222,6 @@ contains
     type(FT_Epetra_BlockMap_ID_t) ,pointer :: local_ptr=>null()
     call c_f_pointer (generic_id, local_ptr)
     degeneralize_EpetraBlockMap = local_ptr
-   !deallocate(local_ptr)
    ! ____ Use for ForTrilinos function implementation ______
 
    ! ____ Use for CTrilinos function implementation ______
@@ -236,7 +232,6 @@ contains
  
   integer(c_int) function NumGlobalElements(this)
     class(Epetra_BlockMap) ,intent(in) :: this
-    print *,'Epetra_BlockMap%NumGlobalElements(): start'
     NumGlobalElements=Epetra_BlockMap_NumGlobalElements(this%BlockMap_id)
   end function 
 

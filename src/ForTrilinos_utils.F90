@@ -80,9 +80,6 @@ contains
 
     call c_f_pointer (object_id, local_ptr)
     generalize_all = local_ptr
-    print *,'generalize_all%table=',generalize_all%table    
-    print *,'generalize_all%index=',generalize_all%index
-    print *,'generalize_all%is_const=',generalize_all%is_const
   end function
 
   ! This procedure checks the values of parameters required to interoperate with CTrilinos.  The Fortran 2003 

@@ -80,7 +80,6 @@ contains
     type(FT_Epetra_Vector_ID_t) ,intent(in) :: id
     from_struct%vector_id = id
     from_struct%Epetra_MultiVector=Epetra_MultiVector(from_struct%alias_EpetraMultiVector_ID(from_struct%generalize()))
-    call from_struct%register_self 
   end function
 
   ! Original C++ prototype:
@@ -139,16 +138,13 @@ contains
     use ForTrilinos_enums    ,only: ForTrilinos_Universal_ID_t, FT_Epetra_Vector_ID
     use ForTrilinos_table_man,only: CT_Alias 
     type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
-    type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id=>null()
+    type(ForTrilinos_Universal_ID_t) ,allocatable ,target :: alias_id
     integer(c_int) :: status
     type(error) :: ierr
-    if (.not.associated(alias_id)) then
-      allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_Vector_ID),stat=status)
-      ierr=error(status,'FEpetra_Vector:alias_Epetra_Vector_ID')
-      call ierr%check_success()
-    endif
+    allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_Vector_ID),stat=status)
+    ierr=error(status,'FEpetra_Vector:alias_Epetra_Vector_ID')
+    call ierr%check_success()
     alias_EpetraVector_ID=degeneralize_EpetraVector(c_loc(alias_id))
-    call deallocate_and_check_error(alias_id,'FEpetra_Vector:alias_Epetra_Vector_ID')
   end function
 
   type(ForTrilinos_Universal_ID_t) function generalize(this)
@@ -170,7 +166,7 @@ contains
     use ForTrilinos_enums           ,only: ForTrilinos_Universal_ID_t,FT_Epetra_Vector_ID_t
     use ,intrinsic :: iso_c_binding ,only: c_ptr,c_f_pointer
     type(c_ptr)                 ,value   :: generic_id
-    type(FT_Epetra_Vector_ID_t) ,pointer :: local_ptr=>null()
+    type(FT_Epetra_Vector_ID_t) ,pointer :: local_ptr
     call c_f_pointer (generic_id, local_ptr)
     degeneralize_EpetraVector = local_ptr
    ! ____ Use for ForTrilinos function implementation ______
@@ -239,6 +235,5 @@ contains
     class(Epetra_Vector) ,intent(inout) :: this
     call Epetra_Vector_Destroy(this%vector_id) 
   end subroutine
-
 end module 
 

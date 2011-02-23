@@ -60,66 +60,53 @@ contains
 
   subroutine grab(this)
     class(ref_counter), intent(inout) :: this
-    print *,'Ref_counter%grab (count=',this%count,'): start'
     if (associated(this%count)) then
       this%count = this%count + 1
     else
       stop 'Error in Ref_counter%grab: count not associated.'
     end if
-    print *,'Ref_counter%grab (count=',this%count,'): end'
   end subroutine
 
   recursive subroutine release(this)
+    use ForTrilinos_error ,only : error
     class (ref_counter), intent(inout) :: this
-    print *,'Ref_counter%release (count=',this%count,'): start'
+    integer :: status
+    type(error) :: ierr
     if (associated(this%count)) then
       this%count = this%count - 1
       if (this%count == 0) then
-          call this%obj%ctrilinos_delete
-          deallocate (this%count, this%obj)
+        deallocate (this%count,stat=status)
+        ierr=error(status,'Ref_counter%release: this%count')
+        call ierr%check_success()
+        deallocate (this%obj,stat=status)
+        ierr=error(status,'Ref_counter%release: this%obj')
+        call ierr%check_success()
       end if
     else
       stop 'Error in Ref_counter%release: count not associated'
     end if
-    print *,'Ref_counter%release (count=',this%count,'): end'
   end subroutine
 
   subroutine assign (lhs, rhs)
     class (ref_counter), intent(inout) :: lhs
     class (ref_counter), intent(in) :: rhs
-    if (associated(lhs%count)) then 
-      print *,'Ref_counter%assign associated(lhs%count)=',associated(lhs%count)
-    else
-      print *,'Ref_counter%assign associated(lhs%count) not associated'
-    end if
-    if (associated(rhs%count)) then 
-      print *,'Ref_counter%assign associated(rhs%count)=',associated(rhs%count)
-    else
-      print *,'Ref_counter%assign associated(rhs%count) not associated'
-    end if
     if (associated(lhs%count)) call lhs%release
     lhs%count => rhs%count
     lhs%obj => rhs%obj
     call lhs%grab
-    print *,'Ref_counter%assign (lhs%count=',lhs%count,')'
-    print *,'Ref_counter%assign (rhs%count=',rhs%count,'): end'
   end subroutine
 
   subroutine finalize_ref_counter (this)
     type(ref_counter), intent(inout) :: this
-    print *,'Ref_counter%finalize_ref_counter: start'
     if (associated(this%count)) call this%release
-    print *,'Ref_counter%finalize_ref_counter: end'
   end subroutine
 
   function constructor (object)
     class(hermetic), intent(in) :: object
     type(ref_counter), allocatable :: constructor
-    print *,'Ref_counter constructor: start'
     allocate (constructor)
     allocate (constructor%count, source=0)
     allocate (constructor%obj, source=object)
     call constructor%grab
-    print *,'Ref_counter constructor: end'
   end function
 end module

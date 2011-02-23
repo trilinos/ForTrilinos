@@ -60,16 +60,12 @@ contains
 
   subroutine force_finalize (this)
     class(universal), intent(inout) :: this
-    print *,'Universal%force_finalize: start'
     call this%counter%release
     call this%invalidate_id
-    print *,'Universal%force_finalize: end'
   end subroutine
 
   subroutine register_self (this)
     class(universal), intent(inout) :: this
-    print *,'Universal%register_self: start'
     this%counter = ref_counter(this)
-    print *,'Universal%register_self: end'
   end subroutine
 end module

@@ -103,11 +103,9 @@ program main
   call x%Update(two, b, zero) ! /* x = 2*b */
  
   bnorm = b%Norm2(err)
-  print *,'Error value from b%Norm2():',err%error_code()
-  print *,'Error message from b%Norm2():',err%text()
+  if (err%error_code()/=0) print *,'Error message from b%Norm2():',err%text()
   xnorm = x%Norm2(err)
-  print *,'Error value from x%Norm2():',err%error_code()
-  print *,'Error message from x%Norm2():',err%text()
+  if (err%error_code()/=0) print *,'Error message from x%Norm2():',err%text()
  
   print *, "2 norm of x = ", xnorm(1) 
   print *, "2 norm of b = ", bnorm(1) 

@@ -105,14 +105,9 @@ contains
 
   type(Epetra_SerialComm) function from_struct(id)
     type(FT_Epetra_SerialComm_ID_t) ,intent(in) :: id
-    print *,'Epetra_SerialComm from_struct: start'
     from_struct%SerialComm_id = id
-    print *,'Epetra_SerialComm from_struct: id assigned'
     call from_struct%set_EpetraComm_ID(from_struct%alias_EpetraComm_ID(from_struct%generalize()))
-    print *,'Epetra_SerialComm from_struct: EpetraComm id set'
     call from_struct%register_self
-    print *,'Epetra_SerialComm from_struct: self-registered'
-    print *,'Epetra_SerialComm from_struct: end'
   end function
 
   ! Original C++ prototype:
@@ -122,10 +117,8 @@ contains
   
   type(Epetra_SerialComm) function from_scratch()
     type(FT_Epetra_SerialComm_ID_t) :: from_scratch_id
-    print *,'Epetra_SerialComm from_scratch: start'
     from_scratch_id = Epetra_SerialComm_Create()
     from_scratch=from_struct(from_scratch_id)
-    print *,'Epetra_SerialComm from_scratch: end'
   end function
 
   ! Original C++ prototype:
@@ -150,17 +143,13 @@ contains
     use ForTrilinos_enums    ,only: FT_Epetra_SerialComm_ID,ForTrilinos_Universal_ID_t
     use ForTrilinos_table_man,only: CT_Alias
     type(Fortrilinos_Universal_ID_t) ,intent(in) :: generic_id
-   !type(Fortrilinos_Universal_ID_t) ,pointer    :: alias_id=>null()
     type(Fortrilinos_Universal_ID_t) ,allocatable ,target :: alias_id
     integer(c_int) :: status
     type(error) :: ierr
-   !if (.not.associated(alias_id)) then
     allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_SerialComm_ID),stat=status)
     ierr=error(status,'FEpetra_SerialComm:alias_EpetraSerialComm_ID')
     call ierr%check_success()
-   !endif
     alias_EpetraSerialComm_ID=degeneralize_EpetraSerialComm(c_loc(alias_id))
-   !call deallocate_and_check_error(alias_id,'FEpetra_SerialComm:alias_EpetraSerialComm_ID')
   end function
 
 
