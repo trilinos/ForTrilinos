@@ -78,8 +78,8 @@ contains
   end function
 
   subroutine check_success(this)
-   class(error), intent(in) :: this
-   call assert( [this%code==0], [this%error_message] )
+    class(error), intent(in) :: this
+    call assert( [this%code==0], [this%error_message] )
   end subroutine
 
   subroutine deallocate_integer_rank1(garbage,message)
@@ -131,7 +131,7 @@ contains
   end subroutine
 
   subroutine deallocate_ForTrilinos_Universal_ID_t(garbage,message)
-    type(ForTrilinos_Universal_ID_t) ,pointer,intent(out) :: garbage
+    type(ForTrilinos_Universal_ID_t) ,pointer,intent(inout) :: garbage
     character(len=*) ,intent(in) :: message
     integer(c_int) :: status
     type(error) :: ierr

@@ -120,16 +120,13 @@ contains
     use ForTrilinos_enums ,only: ForTrilinos_Universal_ID_t,FT_Epetra_Import_ID
     use iso_c_binding     ,only: c_loc,c_int
     type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
-    type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id=>null()
+    type(ForTrilinos_Universal_ID_t) ,allocatable ,target :: alias_id
     integer(c_int) :: status
     type(error) :: ierr
-    if (.not.associated(alias_id)) then
-     allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_Import_ID),stat=status)
-     ierr=error(status,'FEpetra_Import:alias_EpetraImport_ID')
-     call ierr%check_success()
-    endif
+    allocate(alias_id,source=CT_Alias(generic_id,FT_Epetra_Import_ID),stat=status)
+    ierr=error(status,'FEpetra_Import:alias_EpetraImport_ID')
+    call ierr%check_success()
     alias_EpetraImport_ID=degeneralize_EpetraImport(c_loc(alias_id))
-    call deallocate_and_check_error(alias_id,'FEpetra_Import:alias_EpetraImport_ID')
   end function
 
   type(ForTrilinos_Universal_ID_t) function generalize(this)
@@ -236,4 +233,3 @@ contains
     call Epetra_Import_Destroy( this%Import_id ) 
   end subroutine
 end module 
-

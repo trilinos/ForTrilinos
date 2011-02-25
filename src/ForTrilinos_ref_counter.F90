@@ -36,7 +36,8 @@
 !*********************************************************************
 
 module ForTrilinos_ref_counter
-  use ForTrilinos_hermetic, only : hermetic
+  use ForTrilinos_hermetic ,only : hermetic
+  use ForTrilinos_assertion_utility ,only : assert,error_message
   implicit none
   private
   public :: ref_counter
@@ -56,52 +57,57 @@ module ForTrilinos_ref_counter
       module procedure constructor
   end interface
 
+#ifdef ForTrilinos_ASSERTIONS
+  logical ,parameter :: assertions=.true.
+#else
+  logical ,parameter :: assertions=.false.
+#endif
+
 contains
 
   subroutine grab(this)
-      class(ref_counter), intent(inout) :: this
-      if (associated(this%count)) then
-          this%count = this%count + 1
-      else
-!          stop 'Error in grab: count not associated'
-      end if
+    class(ref_counter), intent(inout) :: this
+    if (assertions) call assert( [associated(this%count)], [error_message('Ref_counter%grab: count not associated.')] )
+    this%count = this%count + 1
   end subroutine
 
   recursive subroutine release(this)
-      class (ref_counter), intent(inout) :: this
-      if (associated(this%count)) then
-          this%count = this%count - 1
- 
-          if (this%count == 0) then
-              call this%obj%ctrilinos_delete
-              deallocate (this%count, this%obj)
-          end if
-      else
-!          stop 'Error in release: count not associated'
-      end if
+    use ForTrilinos_error ,only : error
+    class (ref_counter), intent(inout) :: this
+    integer :: status
+    type(error) :: ierr
+    if (assertions) call assert( [associated(this%count)], [error_message('Ref_counter%release: count not associated.')] )
+    this%count = this%count - 1
+    if (this%count == 0) then
+      deallocate (this%count,stat=status)
+      ierr=error(status,'Ref_counter%release: this%count')
+      call ierr%check_success()
+      deallocate (this%obj,stat=status)
+      ierr=error(status,'Ref_counter%release: this%obj')
+      call ierr%check_success()
+    end if
   end subroutine
 
   subroutine assign (lhs, rhs)
-      class (ref_counter), intent(inout) :: lhs
-      class (ref_counter), intent(in) :: rhs
-      if (associated(lhs%count)) call lhs%release
-      lhs%count => rhs%count
-      lhs%obj => rhs%obj
-      call lhs%grab
+    class (ref_counter), intent(inout) :: lhs
+    class (ref_counter), intent(in) :: rhs
+    if (associated(lhs%count)) call lhs%release
+    lhs%count => rhs%count
+    lhs%obj => rhs%obj
+    call lhs%grab
   end subroutine
 
   subroutine finalize_ref_counter (this)
-      type(ref_counter), intent(inout) :: this
-      !if (associated(this%count)) call this%release
-      call this%release
+    type(ref_counter), intent(inout) :: this
+    if (associated(this%count)) call this%release
   end subroutine
 
   function constructor (object)
-      class(hermetic), intent(in) :: object
-      type(ref_counter), allocatable :: constructor
-      allocate (constructor)
-      allocate (constructor%count, source=0)
-      allocate (constructor%obj, source=object)
-      call constructor%grab
+    class(hermetic), intent(in) :: object
+    type(ref_counter), allocatable :: constructor
+    allocate (constructor)
+    allocate (constructor%count, source=0)
+    allocate (constructor%obj, source=object)
+    call constructor%grab
   end function
 end module

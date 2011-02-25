@@ -78,11 +78,16 @@ program main
   ! Executable code
   
 ! Create a serial comm
+  print *,'verySimpleObjectOriented: Epetra_SerialCommm construction starting'
   communicator= Epetra_SerialComm() 
+  print *,'verySimpleObjectOriented: Epetra_SerialCommm construction completed'
+  print *
 
 ! Create a map 
   numGlobalElements_local = 4 
+  print *,'verySimpleObjectOriented: Epetra_Map construction starting'
   map = Epetra_Map(numGlobalElements_local,Index_Base,communicator)
+  print *,'verySimpleObjectOriented: Epetra_Map construction completed'
   numGlobalElements_return = map%NumGlobalElements()
   print *,'NumGlobalElements = ', numGlobalElements_return
   print *,'NumMyElements=', map%NumMyElements()
@@ -98,11 +103,9 @@ program main
   call x%Update(two, b, zero) ! /* x = 2*b */
  
   bnorm = b%Norm2(err)
-  print *,'Error value from b%Norm2():',err%error_code()
-  print *,'Error message from b%Norm2():',err%text()
+  if (err%error_code()/=0) print *,'Error message from b%Norm2():',err%text()
   xnorm = x%Norm2(err)
-  print *,'Error value from x%Norm2():',err%error_code()
-  print *,'Error message from x%Norm2():',err%text()
+  if (err%error_code()/=0) print *,'Error message from x%Norm2():',err%text()
  
   print *, "2 norm of x = ", xnorm(1) 
   print *, "2 norm of b = ", bnorm(1) 
