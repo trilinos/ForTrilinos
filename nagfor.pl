@@ -116,7 +116,7 @@ if ((@infiles)&&($preproc)) {
 	#
 	# Do the preprocessing; adjust return code if needed. 
 	#
-	push (@cpp,"gcc","-undef","-x", "c","-E","-P");
+	push (@cpp,"gcc","-x", "c","-undef","-E","-P","-C");
 	if ($pfile =~ /\.[Ff]$/) {
 	    # This is really needed for .f files
 	    push (@cpp,"--traditional-cpp");
