@@ -117,6 +117,10 @@ if ((@infiles)&&($preproc)) {
 	# Do the preprocessing; adjust return code if needed. 
 	#
 	push (@cpp,"gcc","-undef","-x", "c","-E","-P");
+	if ($pfile =~ /\.[Ff]$/) {
+	    # This is really needed for .f files
+	    push (@cpp,"--traditional-cpp");
+	}
 	push (@cpp,@ccopt,"-o",$pfile,$infile);
 	if ($debug) { print "@cpp \n";}
 	$rc=system(@cpp);
@@ -170,7 +174,7 @@ if ((@infiles)&&($preproc)) {
     if ($debug) { print "cleaning up\n";}
     foreach $tfile (@pfiles) {
 	unlink $tfile;
-   }
+    }
     exit $rc>>8;
     
 } else {
