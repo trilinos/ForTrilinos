@@ -71,7 +71,7 @@ contains
     this%count = this%count + 1
   end subroutine
 
-  recursive subroutine release(this)
+  subroutine release(this)
     use ForTrilinos_error ,only : error
     class (ref_counter), intent(inout) :: this
     integer :: status
@@ -97,7 +97,7 @@ contains
     call lhs%grab
   end subroutine
 
-  subroutine finalize_ref_counter (this)
+  recursive subroutine finalize_ref_counter (this)
     type(ref_counter), intent(inout) :: this
     if (associated(this%count)) call this%release
   end subroutine

@@ -15,6 +15,7 @@ IF(${PACKAGE_NAME}_ENABLE_EXTENDED)
   ENDIF()
 
   ADD_SUBDIRECTORIES(
+   Burgers_Solver_Central_Difference
    verySimpleObjectOriented
    FEpetra_power_method
     )
