@@ -116,12 +116,13 @@ if ((@infiles)&&($preproc)) {
 	#
 	# Do the preprocessing; adjust return code if needed. 
 	#
-	push (@cpp,"gcc","-x", "c","-undef","-E","-P","-C");
+	
+	push (@cpp,"cpp","-undef","-P","-ansi");
 	if ($pfile =~ /\.[Ff]$/) {
 	    # This is really needed for .f files
-	    push (@cpp,"--traditional-cpp");
+	    push (@cpp,"-traditional-cpp");
 	}
-	push (@cpp,@ccopt,"-o",$pfile,$infile);
+	push (@cpp,@ccopt,$infile,$pfile);
 	if ($debug) { print "@cpp \n";}
 	$rc=system(@cpp);
 	
