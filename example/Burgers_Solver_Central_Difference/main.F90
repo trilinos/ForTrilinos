@@ -453,8 +453,8 @@ program main
   procedure(initial_field) ,pointer :: initial 
   real(c_double) :: dt,half=0.5,t=0.,t_final=0.4,nu=1.
   real(c_double) :: t_start,t_end
-  integer(c_int) :: tstep
-  integer(c_int), parameter :: grid_resolution=64**2
+  integer(c_int) :: tstep=1
+  integer(c_int), parameter :: grid_resolution=64
   integer(c_int)      :: MyPID, NumProc
   logical             :: verbose
   integer :: rc,ierr 
@@ -473,8 +473,7 @@ program main
   initial => zero
   half_uu = periodic_2nd_order(initial,grid_resolution,comm)
   u_half = periodic_2nd_order(initial,grid_resolution,comm)
-  do while (t<=t_final) 
-  !do tstep=1,1000 !2nd-order Runge-Kutta:
+  do while (t<=t_final) !2nd-order Runge-Kutta: 
    dt = u%runge_kutta_2nd_step(nu ,grid_resolution)
     half_uu = u*u*half
     u_half = u + (u%xx()*nu - half_uu%x())*dt*half ! first substep
@@ -482,14 +481,15 @@ program main
     u  = u + (u_half%xx()*nu - half_uu%x())*dt ! second substep
     t = t + dt
     if (comm%MyPID()==0) print *,'timestep=',tstep
+    tstep=tstep+1
   end do
-  if (comm%MyPID()==0) write(10,*) 'u at t=',t
+  if (comm%MyPID()==0) print *,'u at t=',t
 #ifdef HAVE_MPI
   t_end= MPI_Wtime()
 #else
   call cpu_time(t_end)
 #endif
-  if (comm%MyPID()==0) write(10,*) 'Elapsed CPU time=',t_end-t_start
+  if (comm%MyPID()==0) print *,'Elapsed CPU time=',t_end-t_start
   call u%output(comm)
   call half_uu%force_finalize
   call u_half%force_finalize
