@@ -118,12 +118,15 @@ if ((@infiles)&&($preproc)) {
 	# Do the preprocessing; adjust return code if needed. 
 	#
 	
-	push (@cpp,"cpp","-undef","-P","-ansi");
+	push (@cpp,"gcc","-undef","-x", "c","-E","-P");
+
 	if ($pfile =~ /\.[Ff]$/) {
 	    # This is really needed for .f files
 	    push (@cpp,"-traditional-cpp");
+	} else {
+	    push (@cpp,"-ansi");
 	}
-	push (@cpp,@ccopt,$infile,$pfile);
+	push (@cpp,@ccopt,$infile,"-o",$pfile);
 	if ($debug) { print "@cpp \n";}
 	$rc=system(@cpp);
 	
@@ -155,7 +158,7 @@ if ((@infiles)&&($preproc)) {
 	  $infile=$infiles[$i];
 	  $pfile=$pfiles[$i];
 	  $outfile=$infile;
-	  $outfile =~ s/.*\///;
+  	  $outfile =~ s/.*\///;
 	  $outfile =~ s/\.[Ff][Ff]*([0-9]*)$/\.o/;
 	  push (@fcomp,$compiler,@ccopt,@fopt,$pfile,"-o",$outfile);
 	  if ($debug) { print "Invoking: @fcomp\n";}
