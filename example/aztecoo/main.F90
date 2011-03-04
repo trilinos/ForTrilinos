@@ -34,6 +34,7 @@ program main
   real(c_double), parameter :: tolerance = 1.0E-4,three=3.0
   integer(c_int) :: MyGlobalElements_diagonal(1),i,indices(2)
   integer(c_int),parameter :: diagonal=1
+  logical        :: success = .true.
  
 #ifdef HAVE_MPI
   call MPI_INIT(ierr) 
@@ -83,8 +84,16 @@ program main
   allocate(c(x%MyLength()))
   c=x%ExtractCopy(err)
   do i=1, NumMyElements
+   if (abs((c(i)-0.2)/0.2)>tolerance) success = .false.
    print *,c(i)
   enddo 
+   if (success) then
+    print *
+    print *, "End Result: TEST PASSED"
+  else
+    print *
+    print *, "End Result: TEST FAILED"
+  end if
   call Solver%force_finalize
   call A%force_finalize
   call b%force_finalize
