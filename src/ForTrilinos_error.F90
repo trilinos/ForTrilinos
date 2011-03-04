@@ -43,8 +43,8 @@ module ForTrilinos_error
   implicit none
   private
   public :: error
-  public :: deallocate_and_check_error
-
+ !public :: deallocate_and_check_error ! As of 3/3/2011, this is not used anywhere in ForTrilinos: we have no explicit deallocations
+                                       ! because we allocate memory via allocatable entities only (never via pointers).
   type ,extends(error_message) :: error
     private
     integer(c_int) :: code
@@ -60,7 +60,6 @@ module ForTrilinos_error
   interface deallocate_and_check_error
     module procedure deallocate_real_rank1,deallocate_real_rank2
     module procedure deallocate_integer_rank1,deallocate_integer_rank2
-    module procedure deallocate_ForTrilinos_Universal_ID_t
   end interface
   
 contains
@@ -124,18 +123,6 @@ contains
     integer(c_int) :: status
     type(error) :: ierr
     if (allocated(garbage)) then
-      deallocate(garbage,stat=status)
-      ierr=error(status,message)
-      call ierr%check_success()
-    endif
-  end subroutine
-
-  subroutine deallocate_ForTrilinos_Universal_ID_t(garbage,message)
-    type(ForTrilinos_Universal_ID_t) ,pointer,intent(inout) :: garbage
-    character(len=*) ,intent(in) :: message
-    integer(c_int) :: status
-    type(error) :: ierr
-    if (associated(garbage)) then
       deallocate(garbage,stat=status)
       ierr=error(status,message)
       call ierr%check_success()

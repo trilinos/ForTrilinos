@@ -177,11 +177,9 @@ contains
     integer(c_int),pointer :: PermuteFromLIDs_local_ptr=>null()
     integer(c_int) :: status
     type(error) :: ierr
-    if (.not.allocated(PermuteFromLIDs)) then
-     allocate(PermuteFromLIDs(this%NumPermuteIDs()),stat=status)
-     ierr=error(status,'FEpetra_Import:alias_EpetraImport_ID')
-     call ierr%check_success()
-    endif
+    allocate(PermuteFromLIDs(this%NumPermuteIDs()),stat=status)
+    ierr=error(status,'FEpetra_Import:alias_EpetraImport_ID')
+    call ierr%check_success()
     PermuteFromLIDs_external_ptr=Epetra_Import_PermuteFromLIDs(this%Import_id)
     call c_f_pointer (PermuteFromLIDs_external_ptr, PermuteFromLIDs_local_ptr)
     PermuteFromLIDs=PermuteFromLIDs_local_ptr

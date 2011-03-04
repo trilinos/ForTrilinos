@@ -44,10 +44,10 @@ module FAmesos
   use iso_c_binding     ,only: c_int,c_double,c_char
   use foramesos
   implicit none
-  private                      ! Hide everything by default
+  private          ! Hide everything by default
   public :: Amesos ! Expose type/constructors/methods
 
-  type ,extends(universal)                    :: Amesos !"shell"
+  type ,extends(universal) :: Amesos 
     private
     type(FT_Amesos_ID_t) :: Amesos_id 
   contains
@@ -87,16 +87,13 @@ contains
     use iso_c_binding        ,only: c_loc,c_int
     use ForTrilinos_enums    ,only: ForTrilinos_Universal_ID_t,FT_Amesos_ID
     type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
-    type(ForTrilinos_Universal_ID_t) ,pointer    :: alias_id
+    type(ForTrilinos_Universal_ID_t) ,allocatable ,target :: alias_id
     integer(c_int) :: status
     type(error) :: ierr
-    if (.not.associated(alias_id)) then
-      allocate(alias_id,source=CT_Alias(generic_id,FT_Amesos_ID),stat=status)
-      ierr=error(status,'FAmesos:alias_Amesos_ID')
-      call ierr%check_success()
-    endif
+    allocate(alias_id,source=CT_Alias(generic_id,FT_Amesos_ID),stat=status)
+    ierr=error(status,'FAmesos:alias_Amesos_ID')
+    call ierr%check_success()
     alias_Amesos_ID=degeneralize_Amesos(c_loc(alias_id))
-    call deallocate_and_check_error(alias_id,'FAmesos:alias_Amesos_ID')
   end function
 
   type(ForTrilinos_Universal_ID_t) function generalize(this)
