@@ -57,6 +57,7 @@ MAIN: for ($i=0; (($i<=$#ARGV), $_=$ARGV[$i]) ; $i++) {
 	if (/^-debug$/) { 
 	    $debug=1;
 	    splice(@ARGV,$i,1); 
+	    $i--;
 	    last SWITCH;   
 	}
 		
@@ -116,12 +117,13 @@ if ((@infiles)&&($preproc)) {
 	#
 	# Do the preprocessing; adjust return code if needed. 
 	#
-	push (@cpp,"gcc","-undef","-x", "c","-E","-P");
+	
+	push (@cpp,"cpp","-undef","-P","-ansi");
 	if ($pfile =~ /\.[Ff]$/) {
 	    # This is really needed for .f files
-	    push (@cpp,"--traditional-cpp");
+	    push (@cpp,"-traditional-cpp");
 	}
-	push (@cpp,@ccopt,"-o",$pfile,$infile);
+	push (@cpp,@ccopt,$infile,$pfile);
 	if ($debug) { print "@cpp \n";}
 	$rc=system(@cpp);
 	
