@@ -57,6 +57,7 @@ MAIN: for ($i=0; (($i<=$#ARGV), $_=$ARGV[$i]) ; $i++) {
 	if (/^-debug$/) { 
 	    $debug=1;
 	    splice(@ARGV,$i,1); 
+	    $i--;
 	    last SWITCH;   
 	}
 		
