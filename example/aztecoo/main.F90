@@ -24,7 +24,7 @@ program main
   type(Epetra_Vector) :: x,b
   type(AztecOO) :: Solver
   type(error) ::err
-  integer(c_int), parameter :: grid_resolution=8!(64**3)/4
+  integer(c_int), parameter :: grid_resolution=8
   integer :: rc,ierr 
   integer(c_int),parameter::IndexBase=1
   integer(c_int) :: NumGlobalElements = 8, NumMyElements, NumEntries, MaximumIter=100

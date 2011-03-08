@@ -314,7 +314,7 @@ contains
    integer(c_int) :: status
    type(error) :: ierr
    if (.not.allocated(A)) then 
-     allocate(A(this%NumVectors(),this%MyLength()),stat=status)
+     allocate(A(this%MyLength(),this%NumVectors()),stat=status) ! To match a user's Fortran-style array in Trilinos
      ierr=error(status,'FEpetra_MultiVector:ExtractCopy_2DA')
      call ierr%check_success()
    endif

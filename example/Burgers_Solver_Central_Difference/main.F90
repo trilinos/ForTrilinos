@@ -423,7 +423,30 @@ contains
     do i=1,NumGlobalElements
      if (comm%MyPID()==0) write(20,'(2(E20.12,1x))') x_node(i),f(i)
     enddo
+    call check_solution(f,NumGlobalElements)
   end subroutine
+
+  subroutine check_solution(f,NumGlobalElements)
+    integer(c_int) :: i,NumGlobalElements
+    real(c_double), dimension(:), allocatable :: f,exact
+    real(c_double),parameter :: tolerance=10.0E-1
+    integer(c_int),parameter :: exact_grid=16
+    logical :: success=.true.
+    allocate(exact(exact_grid))
+    exact=(/0.0, 0.686, 1.37, 2.053, 2.73, 3.387, 3.918, 3.57, & !exact solution at t=0.4626377
+            0.0,-3.57,-3.918,-3.387,-2.73,-2.053,-1.37,-0.686/) !exact solution at t=0.4626377
+    if (NumGlobalElements==exact_grid) then
+     if  (sqrt(sum((f-exact)**2))>tolerance) success=.false.
+     print *,sqrt(sum((f-exact)**2))
+    endif
+    if (success) then
+      print *
+      print *, "End Result: TEST PASSED"
+    else
+      print *
+      print *, "End Result: TEST FAILED"
+    end if
+  end subroutine 
   
   subroutine force_finalize(this)
     class(periodic_2nd_order), intent(inout) :: this
@@ -454,7 +477,7 @@ program main
   real(c_double) :: dt,half=0.5,t=0.,t_final=0.4,nu=1.
   real(c_double) :: t_start,t_end
   integer(c_int) :: tstep=1
-  integer(c_int), parameter :: grid_resolution=64
+  integer(c_int), parameter :: grid_resolution=16
   integer(c_int)      :: MyPID, NumProc
   logical             :: verbose
   integer :: rc,ierr 
@@ -473,7 +496,7 @@ program main
   initial => zero
   half_uu = periodic_2nd_order(initial,grid_resolution,comm)
   u_half = periodic_2nd_order(initial,grid_resolution,comm)
-  do while (t<=t_final) !2nd-order Runge-Kutta: 
+  do while(t<=t_final) !2nd-order Runge-Kutta: 
    dt = u%runge_kutta_2nd_step(nu ,grid_resolution)
     half_uu = u*u*half
     u_half = u + (u%xx()*nu - half_uu%x())*dt*half ! first substep
