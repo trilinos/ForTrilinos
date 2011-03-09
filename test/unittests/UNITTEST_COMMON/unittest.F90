@@ -4,10 +4,10 @@ program main
   use iso_fortran_env ,only : error_unit ,output_unit
   use ForTrilinos_external_utils
   use TEST_CALLS_FILE
-  implicit none
 #ifdef HAVE_MPI
-include 'mpif.h'
+  use mpi
 #endif
+  implicit none
 
   logical :: success,fullsuccess,multi
   character(len=100) :: which_test
@@ -132,7 +132,7 @@ include 'mpif.h'
     end subroutine
 #else
     subroutine get_test_list(rank,list,cnt,multi)
-      integer,intent(in) :: rank
+      integer,intent(inout) :: rank
       character(len=100),dimension(100),intent(out) :: list
       integer,intent(out) :: cnt
       logical,intent(out) :: multi
