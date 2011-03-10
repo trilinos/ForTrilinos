@@ -108,7 +108,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     integer(c_int) :: NumGlobalElements_source = 8, NumGlobalElements_target,i
     integer(c_int) :: Export_Elements=4, NumMyElements_target, NumMyElements_source
     real(c_double),dimension(:),allocatable :: x_values,y_values
-    integer(c_int),dimension(:),allocatable :: MyGlobalElements_source
+    integer(c_int),dimension(:),allocatable :: MyGlobalElements_source,MyGlobalElements_target
     success = .TRUE.
     ECHO(comm = UnitTest_EpetraComm_Create())
     ! Creating source map and vector
@@ -119,25 +119,29 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ECHO(x=Epetra_Vector(map_source))
     ECHO(allocate(x_values(map_source%NumMyElements())))
     do i=1,map_source%NumMyElements()
-     x_values(i)=2.0*MyGlobalElements_source(i)
+     x_values(i)=1.0*MyGlobalElements_source(i)
     enddo
     ECHO(call x%ReplaceGlobalValues(NumMyElements_source,x_values,MyGlobalElements_source,err))
     TEST_EQUALITY(err%error_code(),0)
     ! Creating target map, Export object and new vector
     ECHO(NumMyElements_target=map_source%NumMyElements()+Export_Elements)
-    ECHO(map_target = Epetra_Map(-1_c_int,NumMyElements_target,IndexBase,comm))
+    ECHO(allocate(MyGlobalElements_target(NumMyElements_target)))
+    ECHO(MyGlobalElements_target(1:2)=MyGlobalElements_source(NumMyElements_source-1:NumMyElements_source))
+    ECHO(MyGlobalElements_target(3:NumMyElements_target-2)=MyGlobalElements_source(1:NumMyElements_source))
+    ECHO(MyGlobalElements_target(NumMyElements_target-1:NumMyElements_target)=MyGlobalElements_source(1:2))
+    ECHO(map_target = Epetra_Map(-1_c_int,NumMyElements_target,MyGlobalElements_target,IndexBase,comm))
     ECHO(exporter = Epetra_Export(map_source,map_target))
     ECHO(graph_source = Epetra_CrsGraph(CV,map_source,NumMyElements_source,.false.))
     ECHO(graph_target = Epetra_CrsGraph(CV,map_target,NumMyElements_target,.false.))
     ECHO(index=Epetra_OffsetIndex(graph_source,graph_target,exporter))
     ECHO(y=Epetra_Vector(map_target))
-    !ECHO(call y%export(x,exporter,combine_mode,index))
-    !ECHO(allocate(y_values(map_target%NumMyElements())))
-    !ECHO(y_values=y%ExtractCopy(err))
-    !TEST_EQUALITY(err%error_code(),0)
-    !do i=1,map_target%NumMyElements()
-    ! TEST_EQUALITY(y_values(i),0.0_c_double)
-    !enddo
+    ECHO(call y%export(x,exporter,combine_mode,index))
+    ECHO(allocate(y_values(map_target%NumMyElements())))
+    ECHO(y_values=y%ExtractCopy(err))
+    TEST_EQUALITY(err%error_code(),0)
+    do i=1,map_target%NumMyElements()
+     TEST_EQUALITY(y_values(i),0.0_c_double)
+    enddo
     call exporter%force_finalize()
     call x%force_finalize()
     call y%force_finalize()
@@ -146,7 +150,6 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     call map_target%force_finalize()
     call map_source%force_finalize()
     call comm%force_finalize()
-
   FORTRILINOS_UNITTEST_END
 
 FORTRILINOS_UNITTEST_MODULE_END(CLASS_BEING_TESTED)

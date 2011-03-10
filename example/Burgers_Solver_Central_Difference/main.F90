@@ -503,7 +503,7 @@ program main
     half_uu = u_half*u_half*half
     u  = u + (u_half%xx()*nu - half_uu%x())*dt ! second substep
     t = t + dt
-    if (comm%MyPID()==0) print *,'timestep=',tstep
+    if (comm%MyPID()==0) print *,'timestep=',tstep,'time=',t
     tstep=tstep+1
   end do
   if (comm%MyPID()==0) print *,'u at t=',t
