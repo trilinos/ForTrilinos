@@ -64,9 +64,11 @@ module FEpetra_DistObject
      procedure         :: generalize 
      !Import/Export methods
      procedure, private:: DistObject_Export
-     !procedure, private:: DistObject_Export_UsingImporter
-     !generic :: export => DistObject_Export_UsingImporter!, DistObject_Export
-     generic :: export => DistObject_Export
+     procedure, private:: DistObject_Export_UsingImporter
+     generic :: export => DistObject_Export_UsingImporter, DistObject_Export
+     procedure, private:: DistObject_Import
+     procedure, private:: DistObject_Import_UsingExporter
+     generic :: import => DistObject_Import_UsingExporter, DistObject_Import
      !Attribute accessor methods
   end type
 
@@ -141,6 +143,42 @@ contains
    type(error),optional,intent(out) :: err
    integer(c_int)     :: error_out
    error_out=Epetra_DistObject_Export(this%DistObject_id,A%get_EpetraSrcDistObject_ID(),exporter%get_EpetraExport_ID(),CombineMode,indexor%get_EpetraOffsetIndex_ID())
+   if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine DistObject_Export_UsingImporter(this,A,importer,CombineMode,indexor,err)
+   class(Epetra_DistObject), intent(in) :: this
+   class(Epetra_SrcDistObject), intent(in) :: A
+   type(Epetra_Import),intent(in) :: importer
+   integer(FT_Epetra_CombineMode_E_t), intent(in) :: CombineMode
+   type(Epetra_OffsetIndex), intent(in) :: indexor
+   type(error),optional,intent(out) :: err
+   integer(c_int)     :: error_out
+   error_out=Epetra_DistObject_Export_UsingImporter(this%DistObject_id,A%get_EpetraSrcDistObject_ID(),importer%get_EpetraImport_ID(),CombineMode,indexor%get_EpetraOffsetIndex_ID())
+   if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine DistObject_Import(this,A,importer,CombineMode,indexor,err)
+   class(Epetra_DistObject), intent(in) :: this
+   class(Epetra_SrcDistObject), intent(in) :: A
+   type(Epetra_Import),intent(in) :: importer
+   integer(FT_Epetra_CombineMode_E_t), intent(in) :: CombineMode
+   type(Epetra_OffsetIndex), intent(in) :: indexor
+   type(error),optional,intent(out) :: err
+   integer(c_int)     :: error_out
+   error_out=Epetra_DistObject_Import(this%DistObject_id,A%get_EpetraSrcDistObject_ID(),importer%get_EpetraImport_ID(),CombineMode,indexor%get_EpetraOffsetIndex_ID())
+   if (present(err)) err=error(error_out)
+  end subroutine
+
+  subroutine DistObject_Import_UsingExporter(this,A,exporter,CombineMode,indexor,err)
+   class(Epetra_DistObject), intent(in) :: this
+   class(Epetra_SrcDistObject), intent(in) :: A
+   type(Epetra_Export),intent(in) :: exporter
+   integer(FT_Epetra_CombineMode_E_t), intent(in) :: CombineMode
+   type(Epetra_OffsetIndex), intent(in) :: indexor
+   type(error),optional,intent(out) :: err
+   integer(c_int)     :: error_out
+   error_out=Epetra_DistObject_Import_UsingExporter(this%DistObject_id,A%get_EpetraSrcDistObject_ID(),exporter%get_EpetraExport_ID(),CombineMode,indexor%get_EpetraOffsetIndex_ID())
    if (present(err)) err=error(error_out)
   end subroutine
 
