@@ -95,9 +95,9 @@ contains
   end function
 
   ! Original C++ prototype:
-  ! Epetra_Export(const Epetra_Import& Importer);
+  ! Epetra_Export(const Epetra_Export& Exporter);
   ! CTrilinos prototype:
-  ! CT_Epetra_Export_ID_t Epetra_Export_Duplicate ( CT_Epetra_Import_ID_t ImporterID );
+  ! CT_Epetra_Export_ID_t Epetra_Export_Duplicate ( CT_Epetra_Export_ID_t ExporterID );
 
   type(Epetra_Export) function duplicate(this)
     type(Epetra_Export) ,intent(in) :: this

@@ -328,6 +328,7 @@ contains
     call move_alloc(local_Comm,communicator)
 #endif
  end subroutine
+
   subroutine invalidate_EpetraBlockMap_ID(this)
     class(Epetra_BlockMap),intent(inout) :: this
     this%BlockMap_id%table = FT_Invalid_ID

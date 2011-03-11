@@ -56,7 +56,7 @@ FORTRILINOS_UNITTEST_MODULE_DEF(CLASS_BEING_TESTED)
     use ForTrilinos_error
     use ForTrilinos_enum_wrappers
     use ForTrilinos_enums
-FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
+ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
 
   FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Create)
   FORTRILINOS_UNITTEST_BEGIN
@@ -67,28 +67,28 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     type(Epetra_SerialComm):: comm
 #endif
     type(Epetra_Map) :: map_source, map_target
-    type(Epetra_Import) :: exporter
+    type(Epetra_Import) :: importer
     type(FT_Epetra_Import_ID_t) :: Import_ID
     integer(c_int),parameter::IndexBase=1
-    integer(c_int) :: NumGlobalElements_source = 8, NumGlobalElements_target
+    integer(c_int) :: NumGlobalElements_source=8, NumGlobalElements_target
     integer(c_int) :: Import_Elements=4, NumMyElements_target
     success = .TRUE.
     ECHO(comm = UnitTest_EpetraComm_Create())
     ECHO(map_source = Epetra_Map(NumGlobalElements_source,IndexBase,comm))
     ECHO(NumMyElements_target=map_source%NumMyElements()+Import_Elements)
     ECHO(map_target = Epetra_Map(-1_c_int,NumMyElements_target,IndexBase,comm))
-    ECHO(exporter = Epetra_Import(map_source,map_target))
-    ECHO(Import_ID = exporter%get_EpetraImport_ID())
-    TEST_EQUALITY(Import_ID%table, FT_Epetra_Import_ID)
-    TEST_EQUALITY(Import_ID%index, 0)
-    TEST_EQUALITY(Import_ID%is_const, FT_False)
-    call exporter%force_finalize()
+    !ECHO(importer = Epetra_Import(map_target,map_source))
+    !ECHO(Import_ID = importer%get_EpetraImport_ID())
+    !TEST_EQUALITY(Import_ID%table, FT_Epetra_Import_ID)
+    !TEST_EQUALITY(Import_ID%index, 0)
+    !TEST_EQUALITY(Import_ID%is_const, FT_False)
+    !call importer%force_finalize()
     call map_target%force_finalize()
     call map_source%force_finalize()
     call comm%force_finalize()
   FORTRILINOS_UNITTEST_END
 
-  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, ImportVector)
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, ExportVector_UsingImport)
   FORTRILINOS_UNITTEST_BEGIN
     implicit none 
 #ifdef HAVE_MPI
@@ -98,7 +98,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
 #endif
     type(Epetra_Map) :: map_source, map_target
     type(Epetra_Vector) :: x,y
-    type(Epetra_Import) :: exporter
+    type(Epetra_Import) :: importer
     type(Epetra_OffsetIndex) :: index
     integer(FT_Epetra_CombineMode_E_t) :: combine_mode=FT_Epetra_CombineMode_E_Insert
     integer(FT_Epetra_DataAccess_E_t) :: CV = FT_Epetra_DataAccess_E_Copy
@@ -123,10 +123,10 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     enddo
     ECHO(call x%ReplaceGlobalValues(NumMyElements_source,x_values,MyGlobalElements_source,err))
     TEST_EQUALITY(err%error_code(),0)
+
     ! Creating target map, Import object and new vector
     ECHO(NumMyElements_target=map_source%NumMyElements()+Import_Elements)
     ECHO(allocate(MyGlobalElements_target(NumMyElements_target)))
-
     !Creating MyGlobalElements array for target map
     if (0==comm%MyPID().and.1==comm%NumProc()) then
       ECHO(MyGlobalElements_target(1:2)=MyGlobalElements_source(NumGlobalElements_source-1:NumGlobalElements_source))
@@ -150,27 +150,27 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ! Creating target map
     ECHO(map_target = Epetra_Map(-1_c_int,NumMyElements_target,MyGlobalElements_target,IndexBase,comm))
 
-    ECHO(exporter = Epetra_Import(map_source,map_target))
-    ECHO(graph_source = Epetra_CrsGraph(CV,map_source,NumMyElements_source,.false.))
-    ECHO(graph_target = Epetra_CrsGraph(CV,map_target,NumMyElements_target,.false.))
-    ECHO(index=Epetra_OffsetIndex(graph_source,graph_target,exporter))
-    ECHO(y=Epetra_Vector(map_target))
-    ECHO(call y%export(x,exporter,combine_mode,index))
-    ECHO(allocate(y_values(map_target%NumMyElements())))
-    ECHO(y_values=y%ExtractCopy(err))
-    TEST_EQUALITY(err%error_code(),0)
-    TEST_EQUALITY(y_values(1),x_values(map_source%NumMyElements()-1))
-    TEST_EQUALITY(y_values(2),x_values(map_source%NumMyElements()))
-    TEST_EQUALITY(y_values(map_target%NumMyElements()-1),x_values(1))
-    TEST_EQUALITY(y_values(map_target%NumMyElements()),x_values(2))
-    do i=1,map_source%NumMyElements()
-     TEST_EQUALITY(y_values(i+2),x_values(i))
-    enddo
-    call exporter%force_finalize()
+!    ECHO(importer = Epetra_Import(map_target,map_source))
+!    ECHO(graph_source = Epetra_CrsGraph(CV,map_source,NumMyElements_source,.false.))
+!    ECHO(graph_target = Epetra_CrsGraph(CV,map_target,NumMyElements_target,.false.))
+!    ECHO(index=Epetra_OffsetIndex(graph_source,graph_target,importer))
+!    ECHO(y=Epetra_Vector(map_target))
+!    ECHO(call y%export(x,importer,combine_mode,index))
+!    ECHO(allocate(y_values(map_target%NumMyElements())))
+!    ECHO(y_values=y%ExtractCopy(err))
+!    TEST_EQUALITY(err%error_code(),0)
+!    TEST_EQUALITY(y_values(1),x_values(map_source%NumMyElements()-1))
+!    TEST_EQUALITY(y_values(2),x_values(map_source%NumMyElements()))
+!    TEST_EQUALITY(y_values(map_target%NumMyElements()-1),x_values(1))
+!    TEST_EQUALITY(y_values(map_target%NumMyElements()),x_values(2))
+!    do i=1,map_source%NumMyElements()
+!     TEST_EQUALITY(y_values(i+2),x_values(i))
+!    enddo
+!    call importer%force_finalize()
     call x%force_finalize()
     call y%force_finalize()
-    call graph_target%force_finalize()
-    call graph_source%force_finalize()
+!    call graph_target%force_finalize()
+!    call graph_source%force_finalize()
     call map_target%force_finalize()
     call map_source%force_finalize()
     call comm%force_finalize()

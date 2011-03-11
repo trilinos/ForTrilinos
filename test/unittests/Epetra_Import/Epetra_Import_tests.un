@@ -32,7 +32,6 @@
 ! SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 !
 ! Questions? Contact Karla Morris  (knmorri@sandia.gov)
-!                    Damian Rouson (rouson@sandia.gov)
 !*********************************************************************
 
 #include "ForTrilinos_config.h"
