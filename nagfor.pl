@@ -8,7 +8,7 @@
 # Written for a version of NAG that could not preprocess
 # lines longer than 132 chars.
 # 
-$compiler="nagfor";
+$compiler=$ENV{TRILINOS_NAG_COMPILER} || "nagfor";
 $forcepre="-fpp";
 #
 # Scan through the argument list separating:
