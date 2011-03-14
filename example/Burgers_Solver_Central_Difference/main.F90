@@ -437,7 +437,6 @@ contains
             0.0,-3.57,-3.918,-3.387,-2.73,-2.053,-1.37,-0.686/) !exact solution at t=0.4626377
     if (NumGlobalElements==exact_grid) then
      if  (sqrt(sum((f-exact)**2))>tolerance) success=.false.
-     print *,sqrt(sum((f-exact)**2))
     endif
     if (success) then
       print *
