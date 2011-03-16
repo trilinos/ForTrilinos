@@ -76,8 +76,8 @@ module forteuchos
 
 
   !> <BR> Original C++ prototype:
-  !! CommandLineProcessor( bool throwExceptions = true ,bool recogniseAllOptions = 
-  !!     true ,bool addOutputSetupOptions = false );
+  !! CommandLineProcessor( bool throwExceptions = true ,bool recogniseAllOptions = true ,
+  !!     bool addOutputSetupOptions = false );
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Teuchos_CommandLineProcessor_ID_t Teuchos_CommandLineProcessor_Create ( boolean throwExceptions, 
   !!     boolean recogniseAllOptions, boolean addOutputSetupOptions );
@@ -199,11 +199,12 @@ module forteuchos
 
 
   !> <BR> Original C++ prototype:
-  !! void setOption( 
-  !!     const char option_true[] ,const char option_false[] ,bool *option_val ,const char documentation[] = NULL );
+  !! void setOption( const char option_true[] ,const char option_false[] ,bool *option_val ,
+  !!     const char documentation[] = NULL );
   !> <BR> <BR> CTrilinos prototype:
   !! void Teuchos_CommandLineProcessor_setOption_bool ( CT_Teuchos_CommandLineProcessor_ID_t selfID, 
-  !!     const char option_true[], const char option_false[], boolean * option_val, const char documentation[] );
+  !!     const char option_true[], const char option_false[], boolean * option_val, 
+  !!     const char documentation[] );
 
   subroutine Teuchos_CommandLineProcessor_setOption_bool ( selfID, option_true, &
         option_false, option_val, documentation ) &
@@ -219,11 +220,12 @@ module forteuchos
 
 
   !> <BR> Original C++ prototype:
-  !! void setOption( const char option_name[] ,int *option_val ,const char documentation[] = 
-  !!     NULL ,const bool required = false );
+  !! void setOption( const char option_name[] ,int *option_val ,const char documentation[] = NULL ,
+  !!     const bool required = false );
   !> <BR> <BR> CTrilinos prototype:
   !! void Teuchos_CommandLineProcessor_setOption_int ( CT_Teuchos_CommandLineProcessor_ID_t selfID, 
-  !!     const char option_name[], int * option_val, const char documentation[], const boolean required );
+  !!     const char option_name[], int * option_val, const char documentation[], 
+  !!     const boolean required );
 
   subroutine Teuchos_CommandLineProcessor_setOption_int ( selfID, option_name, option_val, &
         documentation, required ) bind(C,name='Teuchos_CommandLineProcessor_setOption_int')
@@ -238,11 +240,12 @@ module forteuchos
 
 
   !> <BR> Original C++ prototype:
-  !! void setOption( const char option_name[] ,double *option_val ,const char documentation[] = 
-  !!     NULL ,const bool required = false );
+  !! void setOption( const char option_name[] ,double *option_val ,const char documentation[] = NULL ,
+  !!     const bool required = false );
   !> <BR> <BR> CTrilinos prototype:
   !! void Teuchos_CommandLineProcessor_setOption_double ( CT_Teuchos_CommandLineProcessor_ID_t selfID, 
-  !!     const char option_name[], double * option_val, const char documentation[], const boolean required );
+  !!     const char option_name[], double * option_val, const char documentation[], 
+  !!     const boolean required );
 
   subroutine Teuchos_CommandLineProcessor_setOption_double ( selfID, option_name, &
         option_val, documentation, required ) &
@@ -258,11 +261,12 @@ module forteuchos
 
 
   !> <BR> Original C++ prototype:
-  !! void setOption( const char option_name[] ,std::string *option_val ,const char documentation[] = 
-  !!     NULL ,const bool required = false );
+  !! void setOption( const char option_name[] ,std::string *option_val ,
+  !!     const char documentation[] = NULL ,const bool required = false );
   !> <BR> <BR> CTrilinos prototype:
   !! void Teuchos_CommandLineProcessor_setOption_str ( CT_Teuchos_CommandLineProcessor_ID_t selfID, 
-  !!     const char option_name[], char * option_val[], const char documentation[], const boolean required );
+  !!     const char option_name[], char * option_val[], const char documentation[], 
+  !!     const boolean required );
 
   subroutine Teuchos_CommandLineProcessor_setOption_str ( selfID, option_name, option_val, &
         documentation, required ) bind(C,name='Teuchos_CommandLineProcessor_setOption_str')
@@ -442,7 +446,8 @@ module forteuchos
 
   !> <BR> Original C++ prototype:
   !! template<typename T> ParameterList& set( std::string const& name, T const& value, 
-  !!     std::string const& docString = "" ,RCP<const ParameterEntryValidator> const& validator = Teuchos::null );
+  !!     std::string const& docString = "" ,
+  !!     RCP<const ParameterEntryValidator> const& validator = Teuchos::null );
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Teuchos_ParameterList_ID_t Teuchos_ParameterList_set_double ( CT_Teuchos_ParameterList_ID_t selfID, 
   !!     char const name[], double value, char const docString[] );
@@ -461,7 +466,8 @@ module forteuchos
 
   !> <BR> Original C++ prototype:
   !! template<typename T> ParameterList& set( std::string const& name, T const& value, 
-  !!     std::string const& docString = "" ,RCP<const ParameterEntryValidator> const& validator = Teuchos::null );
+  !!     std::string const& docString = "" ,
+  !!     RCP<const ParameterEntryValidator> const& validator = Teuchos::null );
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Teuchos_ParameterList_ID_t Teuchos_ParameterList_set_int ( CT_Teuchos_ParameterList_ID_t selfID, 
   !!     char const name[], int value, char const docString[] );
@@ -479,8 +485,8 @@ module forteuchos
 
 
   !> <BR> Original C++ prototype:
-  !! ParameterList& set( std::string const& name, char value[], std::string const& docString = 
-  !!     "" ,RCP<const ParameterEntryValidator> const& validator = Teuchos::null );
+  !! ParameterList& set( std::string const& name, char value[], std::string const& docString = "" ,
+  !!     RCP<const ParameterEntryValidator> const& validator = Teuchos::null );
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Teuchos_ParameterList_ID_t Teuchos_ParameterList_set_str ( CT_Teuchos_ParameterList_ID_t selfID, 
   !!     char const name[], char value[], char const docString[] );
@@ -683,7 +689,8 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename T> inline T* getPtr(const std::string& name);
   !> <BR> <BR> CTrilinos prototype:
-  !! int * Teuchos_ParameterList_getPtr_int ( CT_Teuchos_ParameterList_ID_t selfID, const char name[] );
+  !! int * Teuchos_ParameterList_getPtr_int ( CT_Teuchos_ParameterList_ID_t selfID, 
+  !!     const char name[] );
 
   function Teuchos_ParameterList_getPtr_int ( selfID, name ) result(that) &
         bind(C,name='Teuchos_ParameterList_getPtr_int')
@@ -809,8 +816,8 @@ module forteuchos
 
 
   !> <BR> Original C++ prototype:
-  !! ParameterList& sublist( const std::string& name, bool mustAlreadyExist = 
-  !!     false ,const std::string& docString = "" );
+  !! ParameterList& sublist( const std::string& name, bool mustAlreadyExist = false ,
+  !!     const std::string& docString = "" );
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Teuchos_ParameterList_ID_t Teuchos_ParameterList_sublist ( CT_Teuchos_ParameterList_ID_t selfID, 
   !!     const char name[], boolean mustAlreadyExist, const char docString[] );
@@ -971,12 +978,12 @@ module forteuchos
 
   !> <BR> Original C++ prototype:
   !! void validateParameters( ParameterList const& validParamList, int const depth = 1000, 
-  !!     EValidateUsed const validateUsed = VALIDATE_USED_ENABLED, EValidateDefaults const validateDefaults = 
-  !!     VALIDATE_DEFAULTS_ENABLED ) const;
+  !!     EValidateUsed const validateUsed = VALIDATE_USED_ENABLED, 
+  !!     EValidateDefaults const validateDefaults = VALIDATE_DEFAULTS_ENABLED ) const;
   !> <BR> <BR> CTrilinos prototype:
   !! void Teuchos_ParameterList_validateParameters ( CT_Teuchos_ParameterList_ID_t selfID, 
-  !!     CT_Teuchos_ParameterList_ID_t validParamListID, int const depth, const CT_EValidateUsed_E_t validateUsed, 
-  !!     const CT_EValidateDefaults_E_t validateDefaults );
+  !!     CT_Teuchos_ParameterList_ID_t validParamListID, int const depth, 
+  !!     const CT_EValidateUsed_E_t validateUsed, const CT_EValidateDefaults_E_t validateDefaults );
 
   subroutine Teuchos_ParameterList_validateParameters ( selfID, validParamListID, depth, &
         validateUsed, validateDefaults ) &
@@ -993,7 +1000,8 @@ module forteuchos
 
 
   !> <BR> Original C++ prototype:
-  !! void validateParametersAndSetDefaults( ParameterList const& validParamList, int const depth = 1000 );
+  !! void validateParametersAndSetDefaults( ParameterList const& validParamList, 
+  !!     int const depth = 1000 );
   !> <BR> <BR> CTrilinos prototype:
   !! void Teuchos_ParameterList_validateParametersAndSetDefaults ( CT_Teuchos_ParameterList_ID_t selfID, 
   !!     CT_Teuchos_ParameterList_ID_t validParamListID, int const depth );

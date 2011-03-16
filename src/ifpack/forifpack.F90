@@ -121,8 +121,8 @@ module forifpack
 
 
   !> <BR> Original C++ prototype:
-  !! Ifpack_Preconditioner* Create(const string PrecType, Epetra_RowMatrix* Matrix, const int overlap = 
-  !!     0);
+  !! Ifpack_Preconditioner* Create(const string PrecType, Epetra_RowMatrix* Matrix, 
+  !!     const int overlap = 0);
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Ifpack_Preconditioner_ID_t Ifpack_CreatePreconditioner_UsingName ( CT_Ifpack_ID_t selfID, 
   !!     const char PrecType[], CT_Epetra_RowMatrix_ID_t MatrixID, const int overlap );

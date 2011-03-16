@@ -423,8 +423,8 @@ module foraztecoo
   !> <BR> Original C++ prototype:
   !! int SetParameters(Teuchos::ParameterList& parameterlist, bool cerr_warning_if_unused=false);
   !> <BR> <BR> CTrilinos prototype:
-  !! int AztecOO_SetParameters ( CT_AztecOO_ID_t selfID, CT_Teuchos_ParameterList_ID_t parameterlistID, 
-  !!     boolean cerr_warning_if_unused );
+  !! int AztecOO_SetParameters ( CT_AztecOO_ID_t selfID, 
+  !!     CT_Teuchos_ParameterList_ID_t parameterlistID, boolean cerr_warning_if_unused );
 
   function AztecOO_SetParameters ( selfID, parameterlistID, cerr_warning_if_unused ) &
         result(that) bind(C,name='AztecOO_SetParameters')
@@ -577,7 +577,8 @@ module foraztecoo
   !!     double Tolerance);
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_Iterate ( CT_AztecOO_ID_t selfID, CT_Epetra_RowMatrix_ID_t AID, 
-  !!     CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID, int MaxIters, double Tolerance );
+  !!     CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID, int MaxIters, 
+  !!     double Tolerance );
 
   function AztecOO_Iterate ( selfID, AID, XID, BID, MaxIters, Tolerance ) result(that) &
         bind(C,name='AztecOO_Iterate')
@@ -826,7 +827,8 @@ module foraztecoo
   !!     double CurrentResNormEst, bool SolutionUpdated) = 0;
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusType_E_t AztecOO_StatusTest_CheckStatus ( CT_AztecOO_StatusTest_ID_t selfID, 
-  !!     int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, boolean SolutionUpdated );
+  !!     int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, 
+  !!     boolean SolutionUpdated );
 
   function AztecOO_StatusTest_CheckStatus ( selfID, CurrentIter, CurrentResVectorID, &
         CurrentResNormEst, SolutionUpdated ) result(that) &
@@ -987,7 +989,8 @@ module foraztecoo
   !!     double CurrentResNormEst, bool SolutionUpdated);
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusType_E_t AztecOO_StatusTestCombo_CheckStatus ( CT_AztecOO_StatusTestCombo_ID_t selfID, 
-  !!     int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, boolean SolutionUpdated );
+  !!     int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, 
+  !!     boolean SolutionUpdated );
 
   function AztecOO_StatusTestCombo_CheckStatus ( selfID, CurrentIter, CurrentResVectorID, &
         CurrentResNormEst, SolutionUpdated ) result(that) &
@@ -1111,7 +1114,8 @@ module foraztecoo
   !!     double CurrentResNormEst, bool SolutionUpdated);
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusType_E_t AztecOO_StatusTestMaxIters_CheckStatus ( CT_AztecOO_StatusTestMaxIters_ID_t selfID, 
-  !!     int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, boolean SolutionUpdated );
+  !!     int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, 
+  !!     boolean SolutionUpdated );
 
   function AztecOO_StatusTestMaxIters_CheckStatus ( selfID, CurrentIter, CurrentResVectorID, &
         CurrentResNormEst, SolutionUpdated ) result(that) &
@@ -1240,7 +1244,8 @@ module foraztecoo
   !! int DefineResForm( ResType TypeOfResidual, NormType TypeOfNorm, Epetra_Vector * Weights = 0);
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_StatusTestResNorm_DefineResForm ( CT_AztecOO_StatusTestResNorm_ID_t selfID, 
-  !!     CT_ResType_E_t TypeOfResidual, CT_NormType_E_t TypeOfNorm, CT_Epetra_Vector_ID_t WeightsID );
+  !!     CT_ResType_E_t TypeOfResidual, CT_NormType_E_t TypeOfNorm, 
+  !!     CT_Epetra_Vector_ID_t WeightsID );
 
   function AztecOO_StatusTestResNorm_DefineResForm ( selfID, TypeOfResidual, TypeOfNorm, &
         WeightsID ) result(that) bind(C,name='AztecOO_StatusTestResNorm_DefineResForm')
@@ -1260,7 +1265,8 @@ module foraztecoo
   !!     double ScaleValue = 1.0);
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_StatusTestResNorm_DefineScaleForm ( CT_AztecOO_StatusTestResNorm_ID_t selfID, 
-  !!     CT_ScaleType_E_t TypeOfScaling, CT_NormType_E_t TypeOfNorm, CT_Epetra_Vector_ID_t WeightsID, double ScaleValue );
+  !!     CT_ScaleType_E_t TypeOfScaling, CT_NormType_E_t TypeOfNorm, 
+  !!     CT_Epetra_Vector_ID_t WeightsID, double ScaleValue );
 
   function AztecOO_StatusTestResNorm_DefineScaleForm ( selfID, TypeOfScaling, TypeOfNorm, &
         WeightsID, ScaleValue ) result(that) &
@@ -1343,7 +1349,8 @@ module foraztecoo
   !!     double CurrentResNormEst, bool SolutionUpdated);
   !> <BR> <BR> CTrilinos prototype:
   !! CT_AztecOO_StatusType_E_t AztecOO_StatusTestResNorm_CheckStatus ( CT_AztecOO_StatusTestResNorm_ID_t selfID, 
-  !!     int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, boolean SolutionUpdated );
+  !!     int CurrentIter, CT_Epetra_MultiVector_ID_t CurrentResVectorID, double CurrentResNormEst, 
+  !!     boolean SolutionUpdated );
 
   function AztecOO_StatusTestResNorm_CheckStatus ( selfID, CurrentIter, CurrentResVectorID, &
         CurrentResNormEst, SolutionUpdated ) result(that) &
