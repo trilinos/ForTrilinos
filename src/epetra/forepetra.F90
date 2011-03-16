@@ -14230,6 +14230,301 @@ module forepetra
 !> @}
 
 
+!> @name Epetra_SerialDenseVector interface
+!! @{
+
+  ! _________________ Epetra_SerialDenseVector interface bodies _________________
+
+
+  !> <BR> CTrilinos prototype:
+  !! CT_Epetra_SerialDenseVector_ID_t Epetra_SerialDenseVector_Degeneralize ( CTrilinos_Universal_ID_t id );
+
+  function Epetra_SerialDenseVector_Degeneralize ( id ) result(that) &
+        bind(C,name='Epetra_SerialDenseVector_Degeneralize')
+    import :: FT_Epetra_SerialDenseVector_ID_t ,ForTrilinos_Universal_ID_t
+    
+    type(FT_Epetra_SerialDenseVector_ID_t)                                  :: that
+    type(ForTrilinos_Universal_ID_t)      ,intent(in)   ,value              :: id
+  end function
+
+
+  !> <BR> CTrilinos prototype:
+  !! CTrilinos_Universal_ID_t Epetra_SerialDenseVector_Generalize ( CT_Epetra_SerialDenseVector_ID_t id );
+
+  function Epetra_SerialDenseVector_Generalize ( id ) result(that) &
+        bind(C,name='Epetra_SerialDenseVector_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Epetra_SerialDenseVector_ID_t
+    
+    type(ForTrilinos_Universal_ID_t)                                        :: that
+    type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: id
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! Epetra_SerialDenseVector();
+  !> <BR> <BR> CTrilinos prototype:
+  !! CT_Epetra_SerialDenseVector_ID_t Epetra_SerialDenseVector_Create_Empty ( );
+
+  function Epetra_SerialDenseVector_Create_Empty (  ) result(that) &
+        bind(C,name='Epetra_SerialDenseVector_Create_Empty')
+    import :: FT_Epetra_SerialDenseVector_ID_t
+    
+    type(FT_Epetra_SerialDenseVector_ID_t)                                  :: that
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! Epetra_SerialDenseVector(int Length);
+  !> <BR> <BR> CTrilinos prototype:
+  !! CT_Epetra_SerialDenseVector_ID_t Epetra_SerialDenseVector_Create ( int Length );
+
+  function Epetra_SerialDenseVector_Create ( Length ) result(that) &
+        bind(C,name='Epetra_SerialDenseVector_Create')
+    import :: FT_Epetra_SerialDenseVector_ID_t ,c_int
+    
+    type(FT_Epetra_SerialDenseVector_ID_t)                                  :: that
+    integer(c_int)                        ,intent(in)   ,value              :: Length
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! Epetra_SerialDenseVector(Epetra_DataAccess CV, double* Values, int Length);
+  !> <BR> <BR> CTrilinos prototype:
+  !! CT_Epetra_SerialDenseVector_ID_t Epetra_SerialDenseVector_Create_FromArray ( CT_Epetra_DataAccess_E_t CV, 
+  !!     double * Values, int Length );
+
+  function Epetra_SerialDenseVector_Create_FromArray ( CV, Values, Length ) result(that) &
+        bind(C,name='Epetra_SerialDenseVector_Create_FromArray')
+    import :: FT_Epetra_SerialDenseVector_ID_t ,FT_Epetra_DataAccess_E_t ,c_double ,c_int
+    
+    type(FT_Epetra_SerialDenseVector_ID_t)                                  :: that
+    integer(FT_Epetra_DataAccess_E_t)     ,intent(in)   ,value              :: CV
+    real(c_double)                                            ,dimension(*) :: Values
+    integer(c_int)                        ,intent(in)   ,value              :: Length
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! Epetra_SerialDenseVector(const Epetra_SerialDenseVector& Source);
+  !> <BR> <BR> CTrilinos prototype:
+  !! CT_Epetra_SerialDenseVector_ID_t Epetra_SerialDenseVector_Duplicate ( CT_Epetra_SerialDenseVector_ID_t SourceID );
+
+  function Epetra_SerialDenseVector_Duplicate ( SourceID ) result(that) &
+        bind(C,name='Epetra_SerialDenseVector_Duplicate')
+    import :: FT_Epetra_SerialDenseVector_ID_t
+    
+    type(FT_Epetra_SerialDenseVector_ID_t)                                  :: that
+    type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: SourceID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! virtual ~Epetra_SerialDenseVector ();
+  !> <BR> <BR> CTrilinos prototype:
+  !! void Epetra_SerialDenseVector_Destroy ( CT_Epetra_SerialDenseVector_ID_t * selfID );
+
+  subroutine Epetra_SerialDenseVector_Destroy ( selfID ) &
+        bind(C,name='Epetra_SerialDenseVector_Destroy')
+    import :: FT_Epetra_SerialDenseVector_ID_t
+    
+    type(FT_Epetra_SerialDenseVector_ID_t)                                  :: selfID
+  end subroutine
+
+
+  !> <BR> Original C++ prototype:
+  !! int Size(int Length_in);
+  !> <BR> <BR> CTrilinos prototype:
+  !! int Epetra_SerialDenseVector_Size ( CT_Epetra_SerialDenseVector_ID_t selfID, int Length_in );
+
+  function Epetra_SerialDenseVector_Size ( selfID, Length_in ) result(that) &
+        bind(C,name='Epetra_SerialDenseVector_Size')
+    import :: c_int ,FT_Epetra_SerialDenseVector_ID_t
+    
+    integer(c_int)                                                          :: that
+    type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                        ,intent(in)   ,value              :: Length_in
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! int Resize(int Length_in);
+  !> <BR> <BR> CTrilinos prototype:
+  !! int Epetra_SerialDenseVector_Resize ( CT_Epetra_SerialDenseVector_ID_t selfID, int Length_in );
+
+  function Epetra_SerialDenseVector_Resize ( selfID, Length_in ) result(that) &
+        bind(C,name='Epetra_SerialDenseVector_Resize')
+    import :: c_int ,FT_Epetra_SerialDenseVector_ID_t
+    
+    integer(c_int)                                                          :: that
+    type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                        ,intent(in)   ,value              :: Length_in
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! Epetra_SerialDenseVector& operator = (const Epetra_SerialDenseVector& Source);
+  !> <BR> <BR> CTrilinos prototype:
+  !! void Epetra_SerialDenseVector_Assign ( CT_Epetra_SerialDenseVector_ID_t selfID, 
+  !!     CT_Epetra_SerialDenseVector_ID_t SourceID );
+
+  subroutine Epetra_SerialDenseVector_Assign ( selfID, SourceID ) &
+        bind(C,name='Epetra_SerialDenseVector_Assign')
+    import :: FT_Epetra_SerialDenseVector_ID_t
+    
+    type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: selfID
+    type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: SourceID
+  end subroutine
+
+
+  !> <BR> Original C++ prototype:
+  !! double& operator () (int Index);
+  !> <BR> <BR> CTrilinos prototype:
+  !! void Epetra_SerialDenseVector_setElement ( CT_Epetra_SerialDenseVector_ID_t selfID, int Index, 
+  !!     double * value );
+
+  subroutine Epetra_SerialDenseVector_setElement ( selfID, Index, value ) &
+        bind(C,name='Epetra_SerialDenseVector_setElement')
+    import :: FT_Epetra_SerialDenseVector_ID_t ,c_int ,c_double
+    
+    type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                        ,intent(in)   ,value              :: Index
+    real(c_double)                        ,intent(inout)                    :: value
+  end subroutine
+
+
+  !> <BR> Original C++ prototype:
+  !! const double& operator () (int Index) const;
+  !> <BR> <BR> CTrilinos prototype:
+  !! double Epetra_SerialDenseVector_getElement ( CT_Epetra_SerialDenseVector_ID_t selfID, 
+  !!     int Index );
+
+  function Epetra_SerialDenseVector_getElement ( selfID, Index ) result(that) &
+        bind(C,name='Epetra_SerialDenseVector_getElement')
+    import :: c_double ,FT_Epetra_SerialDenseVector_ID_t ,c_int
+    
+    real(c_double)                                                          :: that
+    type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: selfID
+    integer(c_int)                        ,intent(in)   ,value              :: Index
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! int Random();
+  !> <BR> <BR> CTrilinos prototype:
+  !! int Epetra_SerialDenseVector_Random ( CT_Epetra_SerialDenseVector_ID_t selfID );
+
+  function Epetra_SerialDenseVector_Random ( selfID ) result(that) &
+        bind(C,name='Epetra_SerialDenseVector_Random')
+    import :: c_int ,FT_Epetra_SerialDenseVector_ID_t
+    
+    integer(c_int)                                                          :: that
+    type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! double Dot(const Epetra_SerialDenseVector & x) const;
+  !> <BR> <BR> CTrilinos prototype:
+  !! double Epetra_SerialDenseVector_Dot ( CT_Epetra_SerialDenseVector_ID_t selfID, 
+  !!     CT_Epetra_SerialDenseVector_ID_t xID );
+
+  function Epetra_SerialDenseVector_Dot ( selfID, xID ) result(that) &
+        bind(C,name='Epetra_SerialDenseVector_Dot')
+    import :: c_double ,FT_Epetra_SerialDenseVector_ID_t
+    
+    real(c_double)                                                          :: that
+    type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: selfID
+    type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: xID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! double Norm1() const;
+  !> <BR> <BR> CTrilinos prototype:
+  !! double Epetra_SerialDenseVector_Norm1 ( CT_Epetra_SerialDenseVector_ID_t selfID );
+
+  function Epetra_SerialDenseVector_Norm1 ( selfID ) result(that) &
+        bind(C,name='Epetra_SerialDenseVector_Norm1')
+    import :: c_double ,FT_Epetra_SerialDenseVector_ID_t
+    
+    real(c_double)                                                          :: that
+    type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! double Norm2() const;
+  !> <BR> <BR> CTrilinos prototype:
+  !! double Epetra_SerialDenseVector_Norm2 ( CT_Epetra_SerialDenseVector_ID_t selfID );
+
+  function Epetra_SerialDenseVector_Norm2 ( selfID ) result(that) &
+        bind(C,name='Epetra_SerialDenseVector_Norm2')
+    import :: c_double ,FT_Epetra_SerialDenseVector_ID_t
+    
+    real(c_double)                                                          :: that
+    type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! double NormInf() const;
+  !> <BR> <BR> CTrilinos prototype:
+  !! double Epetra_SerialDenseVector_NormInf ( CT_Epetra_SerialDenseVector_ID_t selfID );
+
+  function Epetra_SerialDenseVector_NormInf ( selfID ) result(that) &
+        bind(C,name='Epetra_SerialDenseVector_NormInf')
+    import :: c_double ,FT_Epetra_SerialDenseVector_ID_t
+    
+    real(c_double)                                                          :: that
+    type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! int Length() const;
+  !> <BR> <BR> CTrilinos prototype:
+  !! int Epetra_SerialDenseVector_Length ( CT_Epetra_SerialDenseVector_ID_t selfID );
+
+  function Epetra_SerialDenseVector_Length ( selfID ) result(that) &
+        bind(C,name='Epetra_SerialDenseVector_Length')
+    import :: c_int ,FT_Epetra_SerialDenseVector_ID_t
+    
+    integer(c_int)                                                          :: that
+    type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! double* Values() const;
+  !> <BR> <BR> CTrilinos prototype:
+  !! double * Epetra_SerialDenseVector_Values ( CT_Epetra_SerialDenseVector_ID_t selfID );
+
+  function Epetra_SerialDenseVector_Values ( selfID ) result(that) &
+        bind(C,name='Epetra_SerialDenseVector_Values')
+    import :: c_ptr ,FT_Epetra_SerialDenseVector_ID_t
+    
+    type(c_ptr)                                                             :: that
+    type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! Epetra_DataAccess CV() const;
+  !> <BR> <BR> CTrilinos prototype:
+  !! CT_Epetra_DataAccess_E_t Epetra_SerialDenseVector_CV ( CT_Epetra_SerialDenseVector_ID_t selfID );
+
+  function Epetra_SerialDenseVector_CV ( selfID ) result(that) &
+        bind(C,name='Epetra_SerialDenseVector_CV')
+    import :: FT_Epetra_DataAccess_E_t ,FT_Epetra_SerialDenseVector_ID_t
+    
+    integer(FT_Epetra_DataAccess_E_t)                                       :: that
+    type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+!> @}
+
+
   end interface
 end module forepetra
 
