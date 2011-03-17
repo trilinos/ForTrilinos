@@ -134,8 +134,10 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
       ECHO(MyGlobalElements_source(NumMyElements_source  )=MyGlobalElements_target(2))
     elseif (0==comm%MyPID()) then
       ECHO(MyGlobalElements_source(1:2)=MyGlobalElements_target(NumGlobalElements_target-1:NumGlobalElements_target))
-      ECHO(MyGlobalElements_source(NumMyElements_source-1)=MyGlobalElements_target(NumMyElements_target)+1)
-      ECHO(MyGlobalElements_source(NumMyElements_source  )=MyGlobalElements_target(NumMyElements_target)+2)
+      !ECHO(MyGlobalElements_source(NumMyElements_source-1)=MyGlobalElements_target(NumMyElements_target)+1)
+      !ECHO(MyGlobalElements_source(NumMyElements_source  )=MyGlobalElements_target(NumMyElements_target)+2)
+      ECHO(MyGlobalElements_source(NumMyElements_source  )=MyGlobalElements_target(NumMyElements_source)+2)
+      ECHO(MyGlobalElements_source(NumMyElements_source-1)=MyGlobalElements_target(NumMyElements_source)+1)
     elseif (comm%NumProc()==comm%MyPID()) then 
       ECHO(MyGlobalElements_source(1)=MyGlobalElements_target(1)-2)
       ECHO(MyGlobalElements_source(2)=MyGlobalElements_target(1)-1)
@@ -143,8 +145,10 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     else
       ECHO(MyGlobalElements_source(1)=MyGlobalElements_target(1)-2)
       ECHO(MyGlobalElements_source(2)=MyGlobalElements_target(1)-1)
-      ECHO(MyGlobalElements_source(NumMyElements_source-1)=MyGlobalElements_target(NumMyElements_target)+1)
-      ECHO(MyGlobalElements_source(NumMyElements_source  )=MyGlobalElements_target(NumMyElements_target)+2)
+      !ECHO(MyGlobalElements_source(NumMyElements_source-1)=MyGlobalElements_target(NumMyElements_target)+1)
+      !ECHO(MyGlobalElements_source(NumMyElements_source  )=MyGlobalElements_target(NumMyElements_target)+2)
+      ECHO(MyGlobalElements_source(NumMyElements_source-1)=MyGlobalElements_target(NumMyElements_source)+1)
+      ECHO(MyGlobalElements_source(NumMyElements_source  )=MyGlobalElements_target(NumMyElements_source)+2)
     endif
     ECHO(MyGlobalElements_source(3:NumMyElements_source-2)=MyGlobalElements_target(1:NumMyElements_target))
     ! Creating source map
