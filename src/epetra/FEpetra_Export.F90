@@ -85,12 +85,12 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_Export_ID_t Epetra_Export_Create ( CT_Epetra_BlockMap_ID_t SourceMapID, CT_Epetra_BlockMap_ID_t TargetMapID );
 
-  type(Epetra_Export) function create(SourceMap,TargetMap)
+  type(Epetra_Export) function create(Source_Map,Target_Map)
    !use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_BlockMap_ID_t
-    class(Epetra_BlockMap), intent(in) :: TargetMap
-    class(Epetra_BlockMap), intent(in) :: SourceMap
+    class(Epetra_BlockMap), intent(in) :: Source_Map
+    class(Epetra_BlockMap), intent(in) :: Target_Map
     type(FT_Epetra_Export_ID_t) :: create_id
-    create_id = Epetra_Export_Create(SourceMap%get_EpetraBlockMap_ID(),TargetMap%get_EpetraBlockMap_ID())
+    create_id = Epetra_Export_Create(Source_Map%get_EpetraBlockMap_ID(),Target_Map%get_EpetraBlockMap_ID())
     create = from_struct(create_id)
   end function
 
