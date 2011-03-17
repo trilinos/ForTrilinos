@@ -56,7 +56,7 @@ FORTRILINOS_UNITTEST_MODULE_DEF(CLASS_BEING_TESTED)
     use ForTrilinos_error
     use ForTrilinos_enum_wrappers
     use ForTrilinos_enums
- FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
+FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
 
   FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Create)
   FORTRILINOS_UNITTEST_BEGIN
@@ -66,29 +66,42 @@ FORTRILINOS_UNITTEST_MODULE_DEF(CLASS_BEING_TESTED)
 #else
     type(Epetra_SerialComm):: comm
 #endif
-    type(Epetra_Map) :: map_source, map_target
+    type(Epetra_Map) :: map, map_source
     type(Epetra_Import) :: importer
     type(FT_Epetra_Import_ID_t) :: Import_ID
     integer(c_int),parameter::IndexBase=1
-    integer(c_int) :: NumGlobalElements_source=8, NumGlobalElements_target
-    integer(c_int) :: Import_Elements=4, NumMyElements_target
+    integer(c_int) :: NumGlobalElements_source=9
+    integer(c_int) :: NumMyElements, i
+    integer(c_int), dimension(:), allocatable :: MyGlobalElements
     success = .TRUE.
     ECHO(comm = UnitTest_EpetraComm_Create())
     ECHO(map_source = Epetra_Map(NumGlobalElements_source,IndexBase,comm))
-    ECHO(NumMyElements_target=map_source%NumMyElements()+Import_Elements)
-    ECHO(map_target = Epetra_Map(-1_c_int,NumMyElements_target,IndexBase,comm))
-    ECHO(importer = Epetra_Import(map_target,map_source))
+    if (comm%MyPID()==0) then
+      NumMyElements=map_source%NumMyElements()+1
+    elseif (comm%MyPID()==comm%NumProc()-1) then
+      NumMyElements=map_source%NumMyElements()+1
+    else
+      NumMyElements=map_source%NumMyElements()+2
+    endif
+    ECHO(allocate(MyGlobalElements(NumMyElements)))
+    if (comm%MyPID()==0) MyGlobalElements=(/1,2,3,4/)
+    if (comm%MyPID()==1) MyGlobalElements=(/3,4,5,6,7/)
+    if (comm%MyPID()==comm%NumProc()-1) MyGlobalElements=(/6,7,8,9/)
+    ECHO(map = Epetra_Map(-1_c_int,NumMyElements,MyGlobalElements,IndexBase,comm))
+    TEST_EQUALITY(map%NumMyElements(),NumMyElements)
+    TEST_EQUALITY(map_source%NumMyElements(),3)
+    ECHO(importer = Epetra_Import(map,map_source))
     ECHO(Import_ID = importer%get_EpetraImport_ID())
     TEST_EQUALITY(Import_ID%table, FT_Epetra_Import_ID)
     TEST_EQUALITY(Import_ID%index, 0)
     TEST_EQUALITY(Import_ID%is_const, FT_False)
     call importer%force_finalize()
-    call map_target%force_finalize()
     call map_source%force_finalize()
+    call map%force_finalize()
     call comm%force_finalize()
   FORTRILINOS_UNITTEST_END
 
-  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, ExportVector_UsingImport)
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, ImportVector_UsingImport)
   FORTRILINOS_UNITTEST_BEGIN
     implicit none 
 #ifdef HAVE_MPI
@@ -96,19 +109,19 @@ FORTRILINOS_UNITTEST_MODULE_DEF(CLASS_BEING_TESTED)
 #else
     type(Epetra_SerialComm):: comm
 #endif
-    type(Epetra_Map) :: map_source, map_target
+    type(Epetra_Map) :: map, map_source
     type(Epetra_Vector) :: x,y
     type(Epetra_Import) :: importer
     type(Epetra_OffsetIndex) :: index
     integer(FT_Epetra_CombineMode_E_t) :: combine_mode=FT_Epetra_CombineMode_E_Insert
     integer(FT_Epetra_DataAccess_E_t) :: CV = FT_Epetra_DataAccess_E_Copy
-    type(Epetra_CrsGraph) :: graph_source, graph_target
+    type(Epetra_CrsGraph) :: graph, graph_source
     type(error) :: err
     integer(c_int),parameter::IndexBase=1
-    integer(c_int) :: NumGlobalElements_source = 8, NumGlobalElements_target,i
-    integer(c_int) :: Import_Elements=4, NumMyElements_target, NumMyElements_source
+    integer(c_int) :: NumGlobalElements_source = 16, i
+    integer(c_int) :: Import_Elements=4, NumMyElements_source, NumMyElements
     real(c_double),dimension(:),allocatable :: x_values,y_values
-    integer(c_int),dimension(:),allocatable :: MyGlobalElements_source,MyGlobalElements_target
+    integer(c_int),dimension(:),allocatable :: MyGlobalElements,MyGlobalElements_source
     success = .TRUE.
     ECHO(comm = UnitTest_EpetraComm_Create())
     ! Creating source map and vector
@@ -123,56 +136,77 @@ FORTRILINOS_UNITTEST_MODULE_DEF(CLASS_BEING_TESTED)
     enddo
     ECHO(call x%ReplaceGlobalValues(NumMyElements_source,x_values,MyGlobalElements_source,err))
     TEST_EQUALITY(err%error_code(),0)
+    
+    TEST_EQUALITY(size(MyGlobalElements_source),map_source%NumMyElements())
 
-    ! Creating target map, Import object and new vector
-    ECHO(NumMyElements_target=map_source%NumMyElements()+Import_Elements)
-    ECHO(allocate(MyGlobalElements_target(NumMyElements_target)))
-    !Creating MyGlobalElements array for target map
+    ! Creating source map, Import object and new vector
+    ECHO(NumMyElements=map_source%NumMyElements()+Import_Elements)
+    ECHO(allocate(MyGlobalElements(NumMyElements)))
+    !Creating MyGlobalElements array for source map
     if (0==comm%MyPID().and.1==comm%NumProc()) then
-      ECHO(MyGlobalElements_target(1:2)=MyGlobalElements_source(NumGlobalElements_source-1:NumGlobalElements_source))
-      ECHO(MyGlobalElements_target(NumMyElements_target-1)=MyGlobalElements_source(1))
-      ECHO(MyGlobalElements_target(NumMyElements_target  )=MyGlobalElements_source(2))
+      ECHO(MyGlobalElements(1:2)=MyGlobalElements_source(NumGlobalElements_source-1:NumGlobalElements_source))
+      ECHO(MyGlobalElements(NumMyElements-1)=MyGlobalElements_source(1))
+      ECHO(MyGlobalElements(NumMyElements  )=MyGlobalElements_source(2))
     elseif (0==comm%MyPID()) then
-      ECHO(MyGlobalElements_target(1:2)=MyGlobalElements_source(NumGlobalElements_source-1:NumGlobalElements_source))
-      ECHO(MyGlobalElements_target(NumMyElements_target-1)=MyGlobalElements_source(NumMyElements_source)+1)
-      ECHO(MyGlobalElements_target(NumMyElements_target  )=MyGlobalElements_source(NumMyElements_source)+2)
-    elseif (comm%NumProc()==comm%MyPID()) then 
-      ECHO(MyGlobalElements_target(1)=MyGlobalElements_source(1)-2)
-      ECHO(MyGlobalElements_target(2)=MyGlobalElements_source(1)-1)
-      ECHO(MyGlobalElements_target(NumMyElements_target-1:NumMyElements_target)=MyGlobalElements_source(1:2))
+      ECHO(MyGlobalElements(1)=NumGlobalElements_source-1)
+      ECHO(MyGlobalElements(2)=NumGlobalElements_source)
+      ECHO(MyGlobalElements(NumMyElements-1)=MyGlobalElements_source(NumMyElements_source)+1)
+      ECHO(MyGlobalElements(NumMyElements  )=MyGlobalElements_source(NumMyElements_source)+2)
+    elseif (comm%NumProc()-1==comm%MyPID()) then 
+      ECHO(MyGlobalElements(1)=MyGlobalElements_source(1)-2)
+      ECHO(MyGlobalElements(2)=MyGlobalElements_source(1)-1)
+      ECHO(MyGlobalElements(NumMyElements-1)=1)
+      ECHO(MyGlobalElements(NumMyElements)=2)
     else
-      ECHO(MyGlobalElements_target(1)=MyGlobalElements_source(1)-2)
-      ECHO(MyGlobalElements_target(2)=MyGlobalElements_source(1)-1)
-      ECHO(MyGlobalElements_target(NumMyElements_target-1)=MyGlobalElements_source(NumMyElements_source)+1)
-      ECHO(MyGlobalElements_target(NumMyElements_target  )=MyGlobalElements_source(NumMyElements_source)+2)
+      ECHO(MyGlobalElements(1)=MyGlobalElements_source(1)-2)
+      ECHO(MyGlobalElements(2)=MyGlobalElements_source(1)-1)
+      ECHO(MyGlobalElements(NumMyElements-1)=MyGlobalElements_source(NumMyElements_source)+1)
+      ECHO(MyGlobalElements(NumMyElements  )=MyGlobalElements_source(NumMyElements_source)+2)
     endif
-    ECHO(MyGlobalElements_target(3:NumMyElements_target-2)=MyGlobalElements_source(1:NumMyElements_source))
-    ! Creating target map
-    ECHO(map_target = Epetra_Map(-1_c_int,NumMyElements_target,MyGlobalElements_target,IndexBase,comm))
+    ECHO(MyGlobalElements(3:NumMyElements-2)=MyGlobalElements_source(1:NumMyElements_source))
+    ! Creating source map
+    ECHO(map = Epetra_Map(-1_c_int,NumMyElements,MyGlobalElements,IndexBase,comm))
 
-    !ECHO(importer = Epetra_Import(map_target,map_source))
-    !ECHO(graph_source = Epetra_CrsGraph(CV,map_source,NumMyElements_source,.false.))
-    !ECHO(graph_target = Epetra_CrsGraph(CV,map_target,NumMyElements_target,.false.))
-    !ECHO(index=Epetra_OffsetIndex(graph_source,graph_target,importer))
-    !ECHO(y=Epetra_Vector(map_target))
-    !ECHO(call y%export(x,importer,combine_mode,index))
-    !ECHO(allocate(y_values(map_target%NumMyElements())))
-    !ECHO(y_values=y%ExtractCopy(err))
-    !TEST_EQUALITY(err%error_code(),0)
-    !TEST_EQUALITY(y_values(1),x_values(map_source%NumMyElements()-1))
-    !TEST_EQUALITY(y_values(2),x_values(map_source%NumMyElements()))
-    !TEST_EQUALITY(y_values(map_target%NumMyElements()-1),x_values(1))
-    !!TEST_EQUALITY(y_values(map_target%NumMyElements()),x_values(2))
-    !do i=1,map_source%NumMyElements()
-    ! TEST_EQUALITY(y_values(i+2),x_values(i))
-    !enddo
+    ECHO(importer = Epetra_Import(map,map_source))
+    ECHO(graph = Epetra_CrsGraph(CV,map,NumMyElements,.false.))
+    ECHO(graph_source = Epetra_CrsGraph(CV,map_source,NumMyElements_source,.false.))
+    ECHO(index=Epetra_OffsetIndex(graph,graph_source,importer))
+    ECHO(y=Epetra_Vector(map))
+    ECHO(call y%import(x,importer,combine_mode,index))
+    ECHO(allocate(y_values(map%NumMyElements())))
+    ECHO(y_values=y%ExtractCopy(err))
+    TEST_EQUALITY(err%error_code(),0)
+    if (comm%MyPID()==0) then
+      TEST_EQUALITY(y_values(1),NumGlobalElements_source-1)
+      TEST_EQUALITY(y_values(2),NumGlobalElements_source)
+      TEST_EQUALITY(y_values(NumMyElements-1),NumMyElements_source+1)
+      TEST_EQUALITY(y_values(NumMyElements),NumMyElements_source+2)
+    elseif (comm%MyPID()==0.and.1==comm%NumProc()) then
+      TEST_EQUALITY(y_values(1),NumGlobalElements_source-1)
+      TEST_EQUALITY(y_values(2),NumGlobalElements_source)
+      TEST_EQUALITY(y_values(NumMyElements-1),1)
+      TEST_EQUALITY(y_values(NumMyElements),2)
+    elseif (comm%MyPID()==comm%NumProc()-1) then
+      TEST_EQUALITY(y_values(1),NumGlobalElements_source-NumMyElements_source-1)
+      TEST_EQUALITY(y_values(2),NumGlobalElements_source-NumMyElements_source)
+      TEST_EQUALITY(y_values(map%NumMyElements()-1),1)
+      TEST_EQUALITY(y_values(map%NumMyElements()),2)
+    else
+      TEST_EQUALITY(y_values(1),MyGlobalElements_source(1)-2)
+      TEST_EQUALITY(y_values(2),MyGlobalElements_source(1)-1)
+      TEST_EQUALITY(y_values(NumMyElements-1),MyGlobalElements_source(NumMyElements_source)+1)
+      TEST_EQUALITY(y_values(NumMyElements),MyGlobalElements_source(NumMyElements_source)+2)
+    endif
+    do i=1,map_source%NumMyElements()
+     TEST_EQUALITY(y_values(i+2),x_values(i))
+    enddo
     call importer%force_finalize()
     call x%force_finalize()
     call y%force_finalize()
-    !call graph_target%force_finalize()
-    !call graph_source%force_finalize()
-    call map_target%force_finalize()
+    call graph_source%force_finalize()
+    call graph%force_finalize()
     call map_source%force_finalize()
+    call map%force_finalize()
     call comm%force_finalize()
   FORTRILINOS_UNITTEST_END
 
