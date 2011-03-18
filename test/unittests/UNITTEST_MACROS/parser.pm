@@ -14,6 +14,8 @@ sub distinct_parens {
   my $lpar = ($tmp =~ tr/\(/X/);
   my $rpar = ($tmp =~ tr/\)/X/);
 
+  die "parentheses are unbalanced" if ($lpar != $rpar);
+
   my @groups;
   my $search_pos = 0;
   my $begin_group = 0;
@@ -33,13 +35,13 @@ sub distinct_parens {
         $begin_group = $rp+1;
       }
     } else {
-      die "unknown error";
+      die "unknown error when trying to isolate parentheses";
     }
-    die "rank negative" if ($rank < 0);
+    die "incorrect parenthesis order" if ($rank < 0);
     $lp = index($line, '(', $search_pos);
     $rp = index($line, ')', $search_pos);
   }
-  die "final rank not-zero" if ($rank != 0);
+  die "parentheses are unbalanced" if ($rank != 0);
 
   if ($search_pos != length($line)) {
     my $last_grp = "";
@@ -60,7 +62,7 @@ sub parse_parens {
   my $lpar = ($tmp =~ tr/\(/X/);
   my $rpar = ($tmp =~ tr/\)/X/);
 
-  die "Mismatch in parens: " . $line if ($lpar != $rpar);
+  die "parentheses are unbalanced" if ($lpar != $rpar);
 
   my ($before, $within, $after);
 
@@ -76,10 +78,10 @@ sub parse_parens {
     my $lp = index($within, "(");
     if ($lp >= 0) {
       my $rp = index($within, ")");
-      die "We don't support non-overlapping parentheses yet" if ($rp < $lp);
+      die "incorrect parenthesis order" if ($rp < $lp);
     }
   } else {
-    die "unable to parse parens: $line";
+    die "unable to parse parentheses";
   }
 
   return ($before, $within, $after);
@@ -93,11 +95,9 @@ sub separate_key {
   if ($pre_paren =~ /^(.*\W)(\w+)$/) {
     $pre = $1;
     $key = $2;
-  } elsif ($pre_paren ne "") {
+  } else {
     $pre = "";
     $key = $pre_paren;
-  } else {
-    die "NULL key " . $pre_paren;
   }
 
   return ($pre, $key);
@@ -113,9 +113,13 @@ sub recursive_replace {
     if (defined($within)) {
       my ($pre, $key) = separate_key($before);
       my $replaced = recursive_replace($within);
-      my $expanded = macroexp::expand_macro($key, $replaced);
-      if (defined($expanded)) {
-        $output .= $pre . $expanded . $after;
+      if ($key ne "") {
+        my $expanded = macroexp::expand_macro($key, $replaced);
+        if (defined($expanded)) {
+          $output .= $pre . $expanded . $after;
+        } else {
+          $output .= $grp;
+        }
       } else {
         $output .= $grp;
       }
