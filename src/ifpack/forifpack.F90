@@ -443,4 +443,4 @@ module forifpack
   end interface
 end module forifpack
 
-#endif /* HAVE_FORTRILINOS_IFPACK */
+#endif

@@ -279,4 +279,4 @@ module forpliris
   end interface
 end module forpliris
 
-#endif /* HAVE_FORTRILINOS_PLIRIS */
+#endif

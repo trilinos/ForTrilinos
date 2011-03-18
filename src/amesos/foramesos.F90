@@ -439,4 +439,4 @@ module foramesos
   end interface
 end module foramesos
 
-#endif /* HAVE_FORTRILINOS_AMESOS */
+#endif

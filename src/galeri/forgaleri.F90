@@ -339,4 +339,4 @@ module forgaleri
   end interface
 end module forgaleri
 
-#endif /* HAVE_FORTRILINOS_GALERI */
+#endif

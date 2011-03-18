@@ -1456,4 +1456,4 @@ module foraztecoo
   end interface
 end module foraztecoo
 
-#endif /* HAVE_FORTRILINOS_AZTECOO */
+#endif
