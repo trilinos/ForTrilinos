@@ -36,21 +36,20 @@
 
 
 #include "ForTrilinos_config.h"
-#ifdef HAVE_FORTRILINOS_AMESOS
+#ifdef HAVE_FORTRILINOS_IFPACK
 
-module foramesos
+module forifpack
   use iso_c_binding ,only : c_int,c_double,c_char,c_bool,c_ptr,c_long,c_float
   use ForTrilinos_enums
   use ForTrilinos_enum_wrappers
-#ifdef HAVE_MPI
-! #include "mpif.h"
-  use  MPI
-#endif
   implicit none   ! Prevent implicit typing
+#ifdef HAVE_MPI
+#include "mpif.h"
+#endif
 
   ! This file provides Fortran interface blocks that bind the argument types,
   ! return value types, and procedure names to those in the C function prototypes
-  ! in each of the CTrilinos/src/amesos/CAmesos*.h header files.  The Fortran
+  ! in each of the CTrilinos/src/ifpack/CIfpack*.h header files.  The Fortran
   ! 2003 standard guarantees that the types and names used in these bindings
   ! interoperate with a standard-conforming, companion C compiler.
 
@@ -59,378 +58,382 @@ module foramesos
 
   interface
 
-!> @name Amesos_BaseSolver interface
+!> @name Ifpack interface
 !! @{
 
-  ! _________________ Amesos_BaseSolver interface bodies _________________
+  ! _________________ Ifpack interface bodies _________________
 
 
-  !> <BR> CTrilinos prototype:
-  !! CT_Amesos_BaseSolver_ID_t Amesos_BaseSolver_Degeneralize ( CTrilinos_Universal_ID_t id );
+  !> <BR> Original C++ prototype:
+  !! Ifpack();
+  !> <BR> <BR> CTrilinos prototype:
+  !! CT_Ifpack_ID_t Ifpack_Create (  );
 
-  function Amesos_BaseSolver_Degeneralize ( id ) result(that) &
-        bind(C,name='Amesos_BaseSolver_Degeneralize')
-    import :: FT_Amesos_BaseSolver_ID_t ,ForTrilinos_Universal_ID_t
+  function Ifpack_Create (  ) result(that) bind(C,name='Ifpack_Create')
+    import :: FT_Ifpack_ID_t
     
-    type(FT_Amesos_BaseSolver_ID_t)                                  :: that
-    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
-  end function
-
-
-  !> <BR> CTrilinos prototype:
-  !! CTrilinos_Universal_ID_t Amesos_BaseSolver_Generalize ( CT_Amesos_BaseSolver_ID_t id );
-
-  function Amesos_BaseSolver_Generalize ( id ) result(that) &
-        bind(C,name='Amesos_BaseSolver_Generalize')
-    import :: ForTrilinos_Universal_ID_t ,FT_Amesos_BaseSolver_ID_t
-    
-    type(ForTrilinos_Universal_ID_t)                                  :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: id
+    type(FT_Ifpack_ID_t)                                          :: that
   end function
 
 
   !> <BR> Original C++ prototype:
-  !! virtual ~Amesos_BaseSolver();
+  !! ~Ifpack();
   !> <BR> <BR> CTrilinos prototype:
-  !! void Amesos_BaseSolver_Destroy ( CT_Amesos_BaseSolver_ID_t * selfID );
+  !! void Ifpack_Destroy ( CT_Ifpack_ID_t * selfID );
 
-  subroutine Amesos_BaseSolver_Destroy ( selfID ) bind(C,name='Amesos_BaseSolver_Destroy')
-    import :: FT_Amesos_BaseSolver_ID_t
+  subroutine Ifpack_Destroy ( selfID ) bind(C,name='Ifpack_Destroy')
+    import :: FT_Ifpack_ID_t
     
-    type(FT_Amesos_BaseSolver_ID_t)                                  :: selfID
+    type(FT_Ifpack_ID_t)                                          :: selfID
   end subroutine
 
 
   !> <BR> Original C++ prototype:
-  !! virtual int SymbolicFactorization() = 0;
+  !! static const char* toString(const EPrecType precType);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Amesos_BaseSolver_SymbolicFactorization ( CT_Amesos_BaseSolver_ID_t selfID );
+  !! const char * Ifpack_toString ( const CT_EPrecType_E_t precType );
 
-  function Amesos_BaseSolver_SymbolicFactorization ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_SymbolicFactorization')
-    import :: c_int ,FT_Amesos_BaseSolver_ID_t
+  function Ifpack_toString ( precType ) result(that) bind(C,name='Ifpack_toString')
+    import :: c_ptr ,FT_EPrecType_E_t
     
-    integer(c_int)                                                   :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
+    type(c_ptr)                                                   :: that
+    integer(FT_EPrecType_E_t)   ,intent(in)   ,value              :: precType
   end function
 
 
   !> <BR> Original C++ prototype:
-  !! virtual int NumericFactorization() = 0;
+  !! static Ifpack_Preconditioner* Create( EPrecType PrecType, Epetra_RowMatrix* Matrix, 
+  !!     const int overlap = 0 );
   !> <BR> <BR> CTrilinos prototype:
-  !! int Amesos_BaseSolver_NumericFactorization ( CT_Amesos_BaseSolver_ID_t selfID );
+  !! CT_Ifpack_Preconditioner_ID_t Ifpack_CreatePreconditioner_UsingType ( CT_EPrecType_E_t PrecType, 
+  !!     CT_Epetra_RowMatrix_ID_t MatrixID, const int overlap );
 
-  function Amesos_BaseSolver_NumericFactorization ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_NumericFactorization')
-    import :: c_int ,FT_Amesos_BaseSolver_ID_t
+  function Ifpack_CreatePreconditioner_UsingType ( PrecType, MatrixID, overlap ) &
+        result(that) bind(C,name='Ifpack_CreatePreconditioner_UsingType')
+    import :: FT_Ifpack_Preconditioner_ID_t ,FT_EPrecType_E_t ,FT_Epetra_RowMatrix_ID_t , &
+          c_int
     
-    integer(c_int)                                                   :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
+    type(FT_Ifpack_Preconditioner_ID_t)                                  :: that
+    integer(FT_EPrecType_E_t)   ,intent(in)   ,value              :: PrecType
+    type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: MatrixID
+    integer(c_int)              ,intent(in)   ,value              :: overlap
   end function
 
 
   !> <BR> Original C++ prototype:
-  !! virtual int Solve() = 0;
+  !! Ifpack_Preconditioner* Create(const string PrecType, Epetra_RowMatrix* Matrix, const int overlap = 
+  !!     0);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Amesos_BaseSolver_Solve ( CT_Amesos_BaseSolver_ID_t selfID );
+  !! CT_Ifpack_Preconditioner_ID_t Ifpack_CreatePreconditioner_UsingName ( CT_Ifpack_ID_t selfID, 
+  !!     const char PrecType[], CT_Epetra_RowMatrix_ID_t MatrixID, const int overlap );
 
-  function Amesos_BaseSolver_Solve ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_Solve')
-    import :: c_int ,FT_Amesos_BaseSolver_ID_t
+  function Ifpack_CreatePreconditioner_UsingName ( selfID, PrecType, MatrixID, overlap ) &
+        result(that) bind(C,name='Ifpack_CreatePreconditioner_UsingName')
+    import :: FT_Ifpack_Preconditioner_ID_t ,FT_Ifpack_ID_t ,c_char , &
+          FT_Epetra_RowMatrix_ID_t ,c_int
     
-    integer(c_int)                                                   :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
+    type(FT_Ifpack_Preconditioner_ID_t)                                  :: that
+    type(FT_Ifpack_ID_t)        ,intent(in)   ,value              :: selfID
+    character(kind=c_char)      ,intent(in)         ,dimension(*) :: PrecType
+    type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: MatrixID
+    integer(c_int)              ,intent(in)   ,value              :: overlap
   end function
 
 
   !> <BR> Original C++ prototype:
-  !! virtual int SetUseTranspose(bool UseTranspose) = 0;
+  !! int SetParameters(int argc, char* argv[], Teuchos::ParameterList& List, string& PrecType, 
+  !!     int& Overlap);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Amesos_BaseSolver_SetUseTranspose ( CT_Amesos_BaseSolver_ID_t selfID, boolean UseTranspose );
+  !! int Ifpack_SetParameters ( CT_Ifpack_ID_t selfID, int argc, char * argv[], 
+  !!     CT_Teuchos_ParameterList_ID_t ListID, char * PrecType[], int * Overlap );
 
-  function Amesos_BaseSolver_SetUseTranspose ( selfID, UseTranspose ) result(that) &
-        bind(C,name='Amesos_BaseSolver_SetUseTranspose')
-    import :: c_int ,FT_Amesos_BaseSolver_ID_t ,FT_boolean_t
+  function Ifpack_SetParameters ( selfID, argc, argv, ListID, PrecType, Overlap ) &
+        result(that) bind(C,name='Ifpack_SetParameters')
+    import :: c_int ,FT_Ifpack_ID_t ,c_char ,FT_Teuchos_ParameterList_ID_t
     
-    integer(c_int)                                                   :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-    integer(FT_boolean_t)          ,intent(in)   ,value              :: UseTranspose
+    integer(c_int)                                                :: that
+    type(FT_Ifpack_ID_t)        ,intent(in)   ,value              :: selfID
+    integer(c_int)              ,intent(in)   ,value              :: argc
+    character(kind=c_char)                          ,dimension(*) :: argv
+    type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: ListID
+    character(kind=c_char)                          ,dimension(*) :: PrecType
+    integer(c_int)              ,intent(inout)                    :: Overlap
   end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual bool UseTranspose() const = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! boolean Amesos_BaseSolver_UseTranspose ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_UseTranspose ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_UseTranspose')
-    import :: FT_boolean_t ,FT_Amesos_BaseSolver_ID_t
-    
-    integer(FT_boolean_t)                                            :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual int SetParameters( Teuchos::ParameterList &ParameterList ) = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! int Amesos_BaseSolver_SetParameters ( CT_Amesos_BaseSolver_ID_t selfID, 
-  !!     CT_Teuchos_ParameterList_ID_t ParameterListID );
-
-  function Amesos_BaseSolver_SetParameters ( selfID, ParameterListID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_SetParameters')
-    import :: c_int ,FT_Amesos_BaseSolver_ID_t ,FT_Teuchos_ParameterList_ID_t
-    
-    integer(c_int)                                                   :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-    type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: ParameterListID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual const Epetra_LinearProblem* GetProblem() const = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_LinearProblem_ID_t Amesos_BaseSolver_GetProblem ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_GetProblem ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_GetProblem')
-    import :: FT_Epetra_LinearProblem_ID_t ,FT_Amesos_BaseSolver_ID_t
-    
-    type(FT_Epetra_LinearProblem_ID_t)                                  :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual bool MatrixShapeOK() const = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! boolean Amesos_BaseSolver_MatrixShapeOK ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_MatrixShapeOK ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_MatrixShapeOK')
-    import :: FT_boolean_t ,FT_Amesos_BaseSolver_ID_t
-    
-    integer(FT_boolean_t)                                            :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual const Epetra_Comm & Comm() const = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_Comm_ID_t Amesos_BaseSolver_Comm ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_Comm ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_Comm')
-    import :: FT_Epetra_Comm_ID_t ,FT_Amesos_BaseSolver_ID_t
-    
-    type(FT_Epetra_Comm_ID_t)                                        :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual int NumSymbolicFact() const = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! int Amesos_BaseSolver_NumSymbolicFact ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_NumSymbolicFact ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_NumSymbolicFact')
-    import :: c_int ,FT_Amesos_BaseSolver_ID_t
-    
-    integer(c_int)                                                   :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual int NumNumericFact() const = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! int Amesos_BaseSolver_NumNumericFact ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_NumNumericFact ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_NumNumericFact')
-    import :: c_int ,FT_Amesos_BaseSolver_ID_t
-    
-    integer(c_int)                                                   :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual int NumSolve() const = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! int Amesos_BaseSolver_NumSolve ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_NumSolve ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_NumSolve')
-    import :: c_int ,FT_Amesos_BaseSolver_ID_t
-    
-    integer(c_int)                                                   :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual void PrintStatus() const = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! void Amesos_BaseSolver_PrintStatus ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  subroutine Amesos_BaseSolver_PrintStatus ( selfID ) &
-        bind(C,name='Amesos_BaseSolver_PrintStatus')
-    import :: FT_Amesos_BaseSolver_ID_t
-    
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end subroutine
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual void PrintTiming() const = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! void Amesos_BaseSolver_PrintTiming ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  subroutine Amesos_BaseSolver_PrintTiming ( selfID ) &
-        bind(C,name='Amesos_BaseSolver_PrintTiming')
-    import :: FT_Amesos_BaseSolver_ID_t
-    
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end subroutine
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual void setParameterList(Teuchos::RCP<Teuchos::ParameterList> const& paramList);
-  !> <BR> <BR> CTrilinos prototype:
-  !! void Amesos_BaseSolver_setParameterList ( CT_Amesos_BaseSolver_ID_t selfID, 
-  !!     CT_Teuchos_ParameterList_ID_t paramListID );
-
-  subroutine Amesos_BaseSolver_setParameterList ( selfID, paramListID ) &
-        bind(C,name='Amesos_BaseSolver_setParameterList')
-    import :: FT_Amesos_BaseSolver_ID_t ,FT_Teuchos_ParameterList_ID_t
-    
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-    type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: paramListID
-  end subroutine
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual Teuchos::RCP<Teuchos::ParameterList> getNonconstParameterList();
-  !> <BR> <BR> CTrilinos prototype:
-  !! CT_Teuchos_ParameterList_ID_t Amesos_BaseSolver_getNonconstParameterList ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_getNonconstParameterList ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_getNonconstParameterList')
-    import :: FT_Teuchos_ParameterList_ID_t ,FT_Amesos_BaseSolver_ID_t
-    
-    type(FT_Teuchos_ParameterList_ID_t)                                  :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual Teuchos::RCP<Teuchos::ParameterList> unsetParameterList();
-  !> <BR> <BR> CTrilinos prototype:
-  !! CT_Teuchos_ParameterList_ID_t Amesos_BaseSolver_unsetParameterList ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_unsetParameterList ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_unsetParameterList')
-    import :: FT_Teuchos_ParameterList_ID_t ,FT_Amesos_BaseSolver_ID_t
-    
-    type(FT_Teuchos_ParameterList_ID_t)                                  :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual void GetTiming( Teuchos::ParameterList &TimingParameterList ) const;
-  !> <BR> <BR> CTrilinos prototype:
-  !! void Amesos_BaseSolver_GetTiming ( CT_Amesos_BaseSolver_ID_t selfID, 
-  !!     CT_Teuchos_ParameterList_ID_t TimingParameterListID );
-
-  subroutine Amesos_BaseSolver_GetTiming ( selfID, TimingParameterListID ) &
-        bind(C,name='Amesos_BaseSolver_GetTiming')
-    import :: FT_Amesos_BaseSolver_ID_t ,FT_Teuchos_ParameterList_ID_t
-    
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-    type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: TimingParameterListID
-  end subroutine
 
 
 !> @}
 
 
-!> @name Amesos interface
+!> @name Ifpack_Preconditioner interface
 !! @{
 
-  ! _________________ Amesos interface bodies _________________
+  ! _________________ Ifpack_Preconditioner interface bodies _________________
 
 
-  !> <BR> Original C++ prototype:
-  !! Amesos();
-  !> <BR> <BR> CTrilinos prototype:
-  !! CT_Amesos_ID_t Amesos_Create (  );
+  !> <BR> CTrilinos prototype:
+  !! CT_Ifpack_Preconditioner_ID_t Ifpack_Preconditioner_Degeneralize ( CTrilinos_Universal_ID_t id );
 
-  function Amesos_Create (  ) result(that) bind(C,name='Amesos_Create')
-    import :: FT_Amesos_ID_t
+  function Ifpack_Preconditioner_Degeneralize ( id ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_Degeneralize')
+    import :: FT_Ifpack_Preconditioner_ID_t ,ForTrilinos_Universal_ID_t
     
-    type(FT_Amesos_ID_t)                                          :: that
+    type(FT_Ifpack_Preconditioner_ID_t)                                  :: that
+    type(ForTrilinos_Universal_ID_t)   ,intent(in)   ,value              :: id
+  end function
+
+
+  !> <BR> CTrilinos prototype:
+  !! CTrilinos_Universal_ID_t Ifpack_Preconditioner_Generalize ( CT_Ifpack_Preconditioner_ID_t id );
+
+  function Ifpack_Preconditioner_Generalize ( id ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_Generalize')
+    import :: ForTrilinos_Universal_ID_t ,FT_Ifpack_Preconditioner_ID_t
+    
+    type(ForTrilinos_Universal_ID_t)                                     :: that
+    type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: id
   end function
 
 
   !> <BR> Original C++ prototype:
-  !! ~Amesos();
+  !! virtual int SetParameters(Teuchos::ParameterList& List) = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! void Amesos_Destroy ( CT_Amesos_ID_t * selfID );
+  !! int Ifpack_Preconditioner_SetParameters ( CT_Ifpack_Preconditioner_ID_t selfID, 
+  !!     CT_Teuchos_ParameterList_ID_t ListID );
 
-  subroutine Amesos_Destroy ( selfID ) bind(C,name='Amesos_Destroy')
-    import :: FT_Amesos_ID_t
+  function Ifpack_Preconditioner_SetParameters ( selfID, ListID ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_SetParameters')
+    import :: c_int ,FT_Ifpack_Preconditioner_ID_t ,FT_Teuchos_ParameterList_ID_t
     
-    type(FT_Amesos_ID_t)                                          :: selfID
-  end subroutine
-
-
-  !> <BR> Original C++ prototype:
-  !! Amesos_BaseSolver *Create(const char *ClassType, const Epetra_LinearProblem& LinearProblem );
-  !> <BR> <BR> CTrilinos prototype:
-  !! CT_Amesos_BaseSolver_ID_t Amesos_CreateSolver ( CT_Amesos_ID_t selfID, const char * ClassType, 
-  !!     CT_Epetra_LinearProblem_ID_t LinearProblemID );
-
-  function Amesos_CreateSolver ( selfID, ClassType, LinearProblemID ) result(that) &
-        bind(C,name='Amesos_CreateSolver')
-    import :: FT_Amesos_BaseSolver_ID_t ,FT_Amesos_ID_t ,c_char , &
-          FT_Epetra_LinearProblem_ID_t
-    
-    type(FT_Amesos_BaseSolver_ID_t)                                  :: that
-    type(FT_Amesos_ID_t)        ,intent(in)   ,value              :: selfID
-    character(kind=c_char)      ,intent(in)         ,dimension(*) :: ClassType
-    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: LinearProblemID
+    integer(c_int)                                                       :: that
+    type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
+    type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: ListID
   end function
 
 
   !> <BR> Original C++ prototype:
-  !! bool Query(const char * ClassType);
+  !! virtual int Initialize() = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! boolean Amesos_Query ( CT_Amesos_ID_t selfID, const char * ClassType );
+  !! int Ifpack_Preconditioner_Initialize ( CT_Ifpack_Preconditioner_ID_t selfID );
 
-  function Amesos_Query ( selfID, ClassType ) result(that) bind(C,name='Amesos_Query')
-    import :: FT_boolean_t ,FT_Amesos_ID_t ,c_char
+  function Ifpack_Preconditioner_Initialize ( selfID ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_Initialize')
+    import :: c_int ,FT_Ifpack_Preconditioner_ID_t
     
-    integer(FT_boolean_t)                                         :: that
-    type(FT_Amesos_ID_t)        ,intent(in)   ,value              :: selfID
-    character(kind=c_char)      ,intent(in)         ,dimension(*) :: ClassType
+    integer(c_int)                                                       :: that
+    type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
   end function
 
 
   !> <BR> Original C++ prototype:
-  !! static Teuchos::ParameterList GetValidParameters();
+  !! virtual bool IsInitialized() const = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Teuchos_ParameterList_ID_t Amesos_GetValidParameters (  );
+  !! boolean Ifpack_Preconditioner_IsInitialized ( CT_Ifpack_Preconditioner_ID_t selfID );
 
-  function Amesos_GetValidParameters (  ) result(that) &
-        bind(C,name='Amesos_GetValidParameters')
-    import :: FT_Teuchos_ParameterList_ID_t
+  function Ifpack_Preconditioner_IsInitialized ( selfID ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_IsInitialized')
+    import :: FT_boolean_t ,FT_Ifpack_Preconditioner_ID_t
     
-    type(FT_Teuchos_ParameterList_ID_t)                                  :: that
+    integer(FT_boolean_t)                                                :: that
+    type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! virtual int Compute() = 0;
+  !> <BR> <BR> CTrilinos prototype:
+  !! int Ifpack_Preconditioner_Compute ( CT_Ifpack_Preconditioner_ID_t selfID );
+
+  function Ifpack_Preconditioner_Compute ( selfID ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_Compute')
+    import :: c_int ,FT_Ifpack_Preconditioner_ID_t
+    
+    integer(c_int)                                                       :: that
+    type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! virtual bool IsComputed() const = 0;
+  !> <BR> <BR> CTrilinos prototype:
+  !! boolean Ifpack_Preconditioner_IsComputed ( CT_Ifpack_Preconditioner_ID_t selfID );
+
+  function Ifpack_Preconditioner_IsComputed ( selfID ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_IsComputed')
+    import :: FT_boolean_t ,FT_Ifpack_Preconditioner_ID_t
+    
+    integer(FT_boolean_t)                                                :: that
+    type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! virtual double Condest() const = 0;
+  !> <BR> <BR> CTrilinos prototype:
+  !! double Ifpack_Preconditioner_Condest ( CT_Ifpack_Preconditioner_ID_t selfID );
+
+  function Ifpack_Preconditioner_Condest ( selfID ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_Condest')
+    import :: c_double ,FT_Ifpack_Preconditioner_ID_t
+    
+    real(c_double)                                                       :: that
+    type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! virtual int ApplyInverse(const Epetra_MultiVector& X, Epetra_MultiVector& Y) const = 0;
+  !> <BR> <BR> CTrilinos prototype:
+  !! int Ifpack_Preconditioner_ApplyInverse ( CT_Ifpack_Preconditioner_ID_t selfID, 
+  !!     CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t YID );
+
+  function Ifpack_Preconditioner_ApplyInverse ( selfID, XID, YID ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_ApplyInverse')
+    import :: c_int ,FT_Ifpack_Preconditioner_ID_t ,FT_Epetra_MultiVector_ID_t
+    
+    integer(c_int)                                                       :: that
+    type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
+    type(FT_Epetra_MultiVector_ID_t)   ,intent(in)   ,value              :: XID
+    type(FT_Epetra_MultiVector_ID_t)   ,intent(in)   ,value              :: YID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! virtual const Epetra_RowMatrix& Matrix() const = 0;
+  !> <BR> <BR> CTrilinos prototype:
+  !! CT_Epetra_RowMatrix_ID_t Ifpack_Preconditioner_Matrix ( CT_Ifpack_Preconditioner_ID_t selfID );
+
+  function Ifpack_Preconditioner_Matrix ( selfID ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_Matrix')
+    import :: FT_Epetra_RowMatrix_ID_t ,FT_Ifpack_Preconditioner_ID_t
+    
+    type(FT_Epetra_RowMatrix_ID_t)                                       :: that
+    type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! virtual int NumInitialize() const = 0;
+  !> <BR> <BR> CTrilinos prototype:
+  !! int Ifpack_Preconditioner_NumInitialize ( CT_Ifpack_Preconditioner_ID_t selfID );
+
+  function Ifpack_Preconditioner_NumInitialize ( selfID ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_NumInitialize')
+    import :: c_int ,FT_Ifpack_Preconditioner_ID_t
+    
+    integer(c_int)                                                       :: that
+    type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! virtual int NumCompute() const = 0;
+  !> <BR> <BR> CTrilinos prototype:
+  !! int Ifpack_Preconditioner_NumCompute ( CT_Ifpack_Preconditioner_ID_t selfID );
+
+  function Ifpack_Preconditioner_NumCompute ( selfID ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_NumCompute')
+    import :: c_int ,FT_Ifpack_Preconditioner_ID_t
+    
+    integer(c_int)                                                       :: that
+    type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! virtual int NumApplyInverse() const = 0;
+  !> <BR> <BR> CTrilinos prototype:
+  !! int Ifpack_Preconditioner_NumApplyInverse ( CT_Ifpack_Preconditioner_ID_t selfID );
+
+  function Ifpack_Preconditioner_NumApplyInverse ( selfID ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_NumApplyInverse')
+    import :: c_int ,FT_Ifpack_Preconditioner_ID_t
+    
+    integer(c_int)                                                       :: that
+    type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! virtual double InitializeTime() const = 0;
+  !> <BR> <BR> CTrilinos prototype:
+  !! double Ifpack_Preconditioner_InitializeTime ( CT_Ifpack_Preconditioner_ID_t selfID );
+
+  function Ifpack_Preconditioner_InitializeTime ( selfID ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_InitializeTime')
+    import :: c_double ,FT_Ifpack_Preconditioner_ID_t
+    
+    real(c_double)                                                       :: that
+    type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! virtual double ComputeTime() const = 0;
+  !> <BR> <BR> CTrilinos prototype:
+  !! double Ifpack_Preconditioner_ComputeTime ( CT_Ifpack_Preconditioner_ID_t selfID );
+
+  function Ifpack_Preconditioner_ComputeTime ( selfID ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_ComputeTime')
+    import :: c_double ,FT_Ifpack_Preconditioner_ID_t
+    
+    real(c_double)                                                       :: that
+    type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! virtual double ApplyInverseTime() const = 0;
+  !> <BR> <BR> CTrilinos prototype:
+  !! double Ifpack_Preconditioner_ApplyInverseTime ( CT_Ifpack_Preconditioner_ID_t selfID );
+
+  function Ifpack_Preconditioner_ApplyInverseTime ( selfID ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_ApplyInverseTime')
+    import :: c_double ,FT_Ifpack_Preconditioner_ID_t
+    
+    real(c_double)                                                       :: that
+    type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! virtual double InitializeFlops() const = 0;
+  !> <BR> <BR> CTrilinos prototype:
+  !! double Ifpack_Preconditioner_InitializeFlops ( CT_Ifpack_Preconditioner_ID_t selfID );
+
+  function Ifpack_Preconditioner_InitializeFlops ( selfID ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_InitializeFlops')
+    import :: c_double ,FT_Ifpack_Preconditioner_ID_t
+    
+    real(c_double)                                                       :: that
+    type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! virtual double ComputeFlops() const = 0;
+  !> <BR> <BR> CTrilinos prototype:
+  !! double Ifpack_Preconditioner_ComputeFlops ( CT_Ifpack_Preconditioner_ID_t selfID );
+
+  function Ifpack_Preconditioner_ComputeFlops ( selfID ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_ComputeFlops')
+    import :: c_double ,FT_Ifpack_Preconditioner_ID_t
+    
+    real(c_double)                                                       :: that
+    type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! virtual double ApplyInverseFlops() const = 0;
+  !> <BR> <BR> CTrilinos prototype:
+  !! double Ifpack_Preconditioner_ApplyInverseFlops ( CT_Ifpack_Preconditioner_ID_t selfID );
+
+  function Ifpack_Preconditioner_ApplyInverseFlops ( selfID ) result(that) &
+        bind(C,name='Ifpack_Preconditioner_ApplyInverseFlops')
+    import :: c_double ,FT_Ifpack_Preconditioner_ID_t
+    
+    real(c_double)                                                       :: that
+    type(FT_Ifpack_Preconditioner_ID_t),intent(in)   ,value              :: selfID
   end function
 
 
@@ -438,6 +441,6 @@ module foramesos
 
 
   end interface
-end module foramesos
+end module forifpack
 
-#endif /* HAVE_FORTRILINOS_AMESOS */
+#endif /* HAVE_FORTRILINOS_IFPACK */

@@ -36,21 +36,20 @@
 
 
 #include "ForTrilinos_config.h"
-#ifdef HAVE_FORTRILINOS_AMESOS
+#ifdef HAVE_FORTRILINOS_GALERI
 
-module foramesos
+module forgaleri
   use iso_c_binding ,only : c_int,c_double,c_char,c_bool,c_ptr,c_long,c_float
   use ForTrilinos_enums
   use ForTrilinos_enum_wrappers
-#ifdef HAVE_MPI
-! #include "mpif.h"
-  use  MPI
-#endif
   implicit none   ! Prevent implicit typing
+#ifdef HAVE_MPI
+#include "mpif.h"
+#endif
 
   ! This file provides Fortran interface blocks that bind the argument types,
   ! return value types, and procedure names to those in the C function prototypes
-  ! in each of the CTrilinos/src/amesos/CAmesos*.h header files.  The Fortran
+  ! in each of the CTrilinos/src/galeri/CGaleri*.h header files.  The Fortran
   ! 2003 standard guarantees that the types and names used in these bindings
   ! interoperate with a standard-conforming, companion C compiler.
 
@@ -59,378 +58,277 @@ module foramesos
 
   interface
 
-!> @name Amesos_BaseSolver interface
+!> @name Galeri_Utils interface
 !! @{
 
-  ! _________________ Amesos_BaseSolver interface bodies _________________
+  ! _________________ Galeri_Utils interface bodies _________________
 
 
-  !> <BR> CTrilinos prototype:
-  !! CT_Amesos_BaseSolver_ID_t Amesos_BaseSolver_Degeneralize ( CTrilinos_Universal_ID_t id );
+  !> <BR> Original C++ prototype:
+  !! Epetra_MultiVector* CreateCartesianCoordinates(const string CoordType, 
+  !!     const Epetra_BlockMap* BlockMap, Teuchos::ParameterList& List);
+  !> <BR> <BR> CTrilinos prototype:
+  !! CT_Epetra_MultiVector_ID_t Galeri_Utils_CreateCartesianCoordinates ( const char CoordType[], 
+  !!     CT_Epetra_BlockMap_ID_t BlockMapID, CT_Teuchos_ParameterList_ID_t ListID );
 
-  function Amesos_BaseSolver_Degeneralize ( id ) result(that) &
-        bind(C,name='Amesos_BaseSolver_Degeneralize')
-    import :: FT_Amesos_BaseSolver_ID_t ,ForTrilinos_Universal_ID_t
+  function Galeri_Utils_CreateCartesianCoordinates ( CoordType, BlockMapID, ListID ) &
+        result(that) bind(C,name='Galeri_Utils_CreateCartesianCoordinates')
+    import :: FT_Epetra_MultiVector_ID_t ,c_char ,FT_Epetra_BlockMap_ID_t , &
+          FT_Teuchos_ParameterList_ID_t
     
-    type(FT_Amesos_BaseSolver_ID_t)                                  :: that
-    type(ForTrilinos_Universal_ID_t),intent(in)   ,value              :: id
-  end function
-
-
-  !> <BR> CTrilinos prototype:
-  !! CTrilinos_Universal_ID_t Amesos_BaseSolver_Generalize ( CT_Amesos_BaseSolver_ID_t id );
-
-  function Amesos_BaseSolver_Generalize ( id ) result(that) &
-        bind(C,name='Amesos_BaseSolver_Generalize')
-    import :: ForTrilinos_Universal_ID_t ,FT_Amesos_BaseSolver_ID_t
-    
-    type(ForTrilinos_Universal_ID_t)                                  :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: id
+    type(FT_Epetra_MultiVector_ID_t)                                  :: that
+    character(kind=c_char)      ,intent(in)         ,dimension(*) :: CoordType
+    type(FT_Epetra_BlockMap_ID_t),intent(in)   ,value              :: BlockMapID
+    type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: ListID
   end function
 
 
   !> <BR> Original C++ prototype:
-  !! virtual ~Amesos_BaseSolver();
+  !! void Solve(const Epetra_LinearProblem Problem);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Amesos_BaseSolver_Destroy ( CT_Amesos_BaseSolver_ID_t * selfID );
+  !! void Galeri_Utils_Solve_LinearProblem ( CT_Epetra_LinearProblem_ID_t ProblemID );
 
-  subroutine Amesos_BaseSolver_Destroy ( selfID ) bind(C,name='Amesos_BaseSolver_Destroy')
-    import :: FT_Amesos_BaseSolver_ID_t
+  subroutine Galeri_Utils_Solve_LinearProblem ( ProblemID ) &
+        bind(C,name='Galeri_Utils_Solve_LinearProblem')
+    import :: FT_Epetra_LinearProblem_ID_t
     
-    type(FT_Amesos_BaseSolver_ID_t)                                  :: selfID
+    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: ProblemID
   end subroutine
 
 
   !> <BR> Original C++ prototype:
-  !! virtual int SymbolicFactorization() = 0;
+  !! void Solve(const Epetra_RowMatrix* Matrix, const Epetra_MultiVector* LHS, 
+  !!     const Epetra_MultiVector* RHS);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Amesos_BaseSolver_SymbolicFactorization ( CT_Amesos_BaseSolver_ID_t selfID );
+  !! void Galeri_Utils_Solve_Matrix ( CT_Epetra_RowMatrix_ID_t MatrixID, 
+  !!     CT_Epetra_MultiVector_ID_t LHSID, CT_Epetra_MultiVector_ID_t RHSID );
 
-  function Amesos_BaseSolver_SymbolicFactorization ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_SymbolicFactorization')
-    import :: c_int ,FT_Amesos_BaseSolver_ID_t
+  subroutine Galeri_Utils_Solve_Matrix ( MatrixID, LHSID, RHSID ) &
+        bind(C,name='Galeri_Utils_Solve_Matrix')
+    import :: FT_Epetra_RowMatrix_ID_t ,FT_Epetra_MultiVector_ID_t
     
-    integer(c_int)                                                   :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual int NumericFactorization() = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! int Amesos_BaseSolver_NumericFactorization ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_NumericFactorization ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_NumericFactorization')
-    import :: c_int ,FT_Amesos_BaseSolver_ID_t
-    
-    integer(c_int)                                                   :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual int Solve() = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! int Amesos_BaseSolver_Solve ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_Solve ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_Solve')
-    import :: c_int ,FT_Amesos_BaseSolver_ID_t
-    
-    integer(c_int)                                                   :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual int SetUseTranspose(bool UseTranspose) = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! int Amesos_BaseSolver_SetUseTranspose ( CT_Amesos_BaseSolver_ID_t selfID, boolean UseTranspose );
-
-  function Amesos_BaseSolver_SetUseTranspose ( selfID, UseTranspose ) result(that) &
-        bind(C,name='Amesos_BaseSolver_SetUseTranspose')
-    import :: c_int ,FT_Amesos_BaseSolver_ID_t ,FT_boolean_t
-    
-    integer(c_int)                                                   :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-    integer(FT_boolean_t)          ,intent(in)   ,value              :: UseTranspose
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual bool UseTranspose() const = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! boolean Amesos_BaseSolver_UseTranspose ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_UseTranspose ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_UseTranspose')
-    import :: FT_boolean_t ,FT_Amesos_BaseSolver_ID_t
-    
-    integer(FT_boolean_t)                                            :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual int SetParameters( Teuchos::ParameterList &ParameterList ) = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! int Amesos_BaseSolver_SetParameters ( CT_Amesos_BaseSolver_ID_t selfID, 
-  !!     CT_Teuchos_ParameterList_ID_t ParameterListID );
-
-  function Amesos_BaseSolver_SetParameters ( selfID, ParameterListID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_SetParameters')
-    import :: c_int ,FT_Amesos_BaseSolver_ID_t ,FT_Teuchos_ParameterList_ID_t
-    
-    integer(c_int)                                                   :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-    type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: ParameterListID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual const Epetra_LinearProblem* GetProblem() const = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_LinearProblem_ID_t Amesos_BaseSolver_GetProblem ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_GetProblem ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_GetProblem')
-    import :: FT_Epetra_LinearProblem_ID_t ,FT_Amesos_BaseSolver_ID_t
-    
-    type(FT_Epetra_LinearProblem_ID_t)                                  :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual bool MatrixShapeOK() const = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! boolean Amesos_BaseSolver_MatrixShapeOK ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_MatrixShapeOK ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_MatrixShapeOK')
-    import :: FT_boolean_t ,FT_Amesos_BaseSolver_ID_t
-    
-    integer(FT_boolean_t)                                            :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual const Epetra_Comm & Comm() const = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! CT_Epetra_Comm_ID_t Amesos_BaseSolver_Comm ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_Comm ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_Comm')
-    import :: FT_Epetra_Comm_ID_t ,FT_Amesos_BaseSolver_ID_t
-    
-    type(FT_Epetra_Comm_ID_t)                                        :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual int NumSymbolicFact() const = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! int Amesos_BaseSolver_NumSymbolicFact ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_NumSymbolicFact ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_NumSymbolicFact')
-    import :: c_int ,FT_Amesos_BaseSolver_ID_t
-    
-    integer(c_int)                                                   :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual int NumNumericFact() const = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! int Amesos_BaseSolver_NumNumericFact ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_NumNumericFact ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_NumNumericFact')
-    import :: c_int ,FT_Amesos_BaseSolver_ID_t
-    
-    integer(c_int)                                                   :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual int NumSolve() const = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! int Amesos_BaseSolver_NumSolve ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_NumSolve ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_NumSolve')
-    import :: c_int ,FT_Amesos_BaseSolver_ID_t
-    
-    integer(c_int)                                                   :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual void PrintStatus() const = 0;
-  !> <BR> <BR> CTrilinos prototype:
-  !! void Amesos_BaseSolver_PrintStatus ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  subroutine Amesos_BaseSolver_PrintStatus ( selfID ) &
-        bind(C,name='Amesos_BaseSolver_PrintStatus')
-    import :: FT_Amesos_BaseSolver_ID_t
-    
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
+    type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: MatrixID
+    type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: LHSID
+    type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: RHSID
   end subroutine
 
 
   !> <BR> Original C++ prototype:
-  !! virtual void PrintTiming() const = 0;
+  !! double ComputeNorm(const Epetra_MultiVector* LHS, const Epetra_MultiVector* RHS);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Amesos_BaseSolver_PrintTiming ( CT_Amesos_BaseSolver_ID_t selfID );
+  !! double Galeri_Utils_ComputeNorm ( CT_Epetra_MultiVector_ID_t LHSID, 
+  !!     CT_Epetra_MultiVector_ID_t RHSID );
 
-  subroutine Amesos_BaseSolver_PrintTiming ( selfID ) &
-        bind(C,name='Amesos_BaseSolver_PrintTiming')
-    import :: FT_Amesos_BaseSolver_ID_t
+  function Galeri_Utils_ComputeNorm ( LHSID, RHSID ) result(that) &
+        bind(C,name='Galeri_Utils_ComputeNorm')
+    import :: c_double ,FT_Epetra_MultiVector_ID_t
     
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-  end subroutine
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual void setParameterList(Teuchos::RCP<Teuchos::ParameterList> const& paramList);
-  !> <BR> <BR> CTrilinos prototype:
-  !! void Amesos_BaseSolver_setParameterList ( CT_Amesos_BaseSolver_ID_t selfID, 
-  !!     CT_Teuchos_ParameterList_ID_t paramListID );
-
-  subroutine Amesos_BaseSolver_setParameterList ( selfID, paramListID ) &
-        bind(C,name='Amesos_BaseSolver_setParameterList')
-    import :: FT_Amesos_BaseSolver_ID_t ,FT_Teuchos_ParameterList_ID_t
-    
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-    type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: paramListID
-  end subroutine
-
-
-  !> <BR> Original C++ prototype:
-  !! virtual Teuchos::RCP<Teuchos::ParameterList> getNonconstParameterList();
-  !> <BR> <BR> CTrilinos prototype:
-  !! CT_Teuchos_ParameterList_ID_t Amesos_BaseSolver_getNonconstParameterList ( CT_Amesos_BaseSolver_ID_t selfID );
-
-  function Amesos_BaseSolver_getNonconstParameterList ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_getNonconstParameterList')
-    import :: FT_Teuchos_ParameterList_ID_t ,FT_Amesos_BaseSolver_ID_t
-    
-    type(FT_Teuchos_ParameterList_ID_t)                                  :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
+    real(c_double)                                                :: that
+    type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: LHSID
+    type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: RHSID
   end function
 
 
   !> <BR> Original C++ prototype:
-  !! virtual Teuchos::RCP<Teuchos::ParameterList> unsetParameterList();
+  !! double ComputeNorm(const Epetra_RowMatrix* A, const Epetra_MultiVector* LHS, 
+  !!     const Epetra_MultiVector* RHS);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Teuchos_ParameterList_ID_t Amesos_BaseSolver_unsetParameterList ( CT_Amesos_BaseSolver_ID_t selfID );
+  !! double Galeri_Utils_ComputeNorm_Matrix ( CT_Epetra_RowMatrix_ID_t AID, 
+  !!     CT_Epetra_MultiVector_ID_t LHSID, CT_Epetra_MultiVector_ID_t RHSID );
 
-  function Amesos_BaseSolver_unsetParameterList ( selfID ) result(that) &
-        bind(C,name='Amesos_BaseSolver_unsetParameterList')
-    import :: FT_Teuchos_ParameterList_ID_t ,FT_Amesos_BaseSolver_ID_t
+  function Galeri_Utils_ComputeNorm_Matrix ( AID, LHSID, RHSID ) result(that) &
+        bind(C,name='Galeri_Utils_ComputeNorm_Matrix')
+    import :: c_double ,FT_Epetra_RowMatrix_ID_t ,FT_Epetra_MultiVector_ID_t
     
-    type(FT_Teuchos_ParameterList_ID_t)                                  :: that
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
+    real(c_double)                                                :: that
+    type(FT_Epetra_RowMatrix_ID_t),intent(in)   ,value              :: AID
+    type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: LHSID
+    type(FT_Epetra_MultiVector_ID_t),intent(in)   ,value              :: RHSID
   end function
 
 
   !> <BR> Original C++ prototype:
-  !! virtual void GetTiming( Teuchos::ParameterList &TimingParameterList ) const;
+  !! string toString(const int& x);
   !> <BR> <BR> CTrilinos prototype:
-  !! void Amesos_BaseSolver_GetTiming ( CT_Amesos_BaseSolver_ID_t selfID, 
-  !!     CT_Teuchos_ParameterList_ID_t TimingParameterListID );
+  !! const char * Galeri_Utils_toString_Int ( int x );
 
-  subroutine Amesos_BaseSolver_GetTiming ( selfID, TimingParameterListID ) &
-        bind(C,name='Amesos_BaseSolver_GetTiming')
-    import :: FT_Amesos_BaseSolver_ID_t ,FT_Teuchos_ParameterList_ID_t
+  function Galeri_Utils_toString_Int ( x ) result(that) &
+        bind(C,name='Galeri_Utils_toString_Int')
+    import :: c_char ,c_int
     
-    type(FT_Amesos_BaseSolver_ID_t),intent(in)   ,value              :: selfID
-    type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: TimingParameterListID
+    character(kind=c_char)                                        :: that
+    integer(c_int)              ,intent(in)   ,value              :: x
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! string toString(const unsigned int& x);
+  !> <BR> <BR> CTrilinos prototype:
+  !! const char * Galeri_Utils_toString_UInt ( unsigned int x );
+
+  function Galeri_Utils_toString_UInt ( x ) result(that) &
+        bind(C,name='Galeri_Utils_toString_UInt')
+    import :: c_char ,c_int
+    
+    character(kind=c_char)                                        :: that
+    integer(c_int)              ,intent(in)   ,value              :: x
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! string toString(const double& x);
+  !> <BR> <BR> CTrilinos prototype:
+  !! const char * Galeri_Utils_toString_Double ( double x );
+
+  function Galeri_Utils_toString_Double ( x ) result(that) &
+        bind(C,name='Galeri_Utils_toString_Double')
+    import :: c_char ,c_double
+    
+    character(kind=c_char)                                        :: that
+    real(c_double)              ,intent(in)   ,value              :: x
+  end function
+
+
+  !> <BR> Original C++ prototype:
+  !! void GetNeighboursCartesian2d(const int i, const int nx, const int ny, int & left, int & right, 
+  !!     int & lower, int & upper);
+  !> <BR> <BR> CTrilinos prototype:
+  !! void Galeri_Utils_GetNeighboursCartesian2d ( const int i, const int nx, const int ny, int * left, 
+  !!     int * right, int * lower, int * upper );
+
+  subroutine Galeri_Utils_GetNeighboursCartesian2d ( i, nx, ny, left, right, lower, upper ) &
+        bind(C,name='Galeri_Utils_GetNeighboursCartesian2d')
+    import :: c_int
+    
+    integer(c_int)              ,intent(in)   ,value              :: i
+    integer(c_int)              ,intent(in)   ,value              :: nx
+    integer(c_int)              ,intent(in)   ,value              :: ny
+    integer(c_int)              ,intent(inout)                    :: left
+    integer(c_int)              ,intent(inout)                    :: right
+    integer(c_int)              ,intent(inout)                    :: lower
+    integer(c_int)              ,intent(inout)                    :: upper
+  end subroutine
+
+
+  !> <BR> Original C++ prototype:
+  !! void GetNeighboursCartesian2d(const int i, const int nx, const int ny, int& left, int& right, 
+  !!     int& lower, int& upper, int& left2, int& right2, int& lower2, int& upper2);
+  !> <BR> <BR> CTrilinos prototype:
+  !! void Galeri_Utils_GetNeighboursCartesian2d_Both ( const int i, const int nx, const int ny, 
+  !!     int * left, int * right, int * lower, int * upper, int * left2, int * right2, int * lower2, int * upper2 );
+
+  subroutine Galeri_Utils_GetNeighboursCartesian2d_Both ( i, nx, ny, left, right, lower, &
+        upper, left2, right2, lower2, upper2 ) &
+        bind(C,name='Galeri_Utils_GetNeighboursCartesian2d_Both')
+    import :: c_int
+    
+    integer(c_int)              ,intent(in)   ,value              :: i
+    integer(c_int)              ,intent(in)   ,value              :: nx
+    integer(c_int)              ,intent(in)   ,value              :: ny
+    integer(c_int)              ,intent(inout)                    :: left
+    integer(c_int)              ,intent(inout)                    :: right
+    integer(c_int)              ,intent(inout)                    :: lower
+    integer(c_int)              ,intent(inout)                    :: upper
+    integer(c_int)              ,intent(inout)                    :: left2
+    integer(c_int)              ,intent(inout)                    :: right2
+    integer(c_int)              ,intent(inout)                    :: lower2
+    integer(c_int)              ,intent(inout)                    :: upper2
+  end subroutine
+
+
+  !> <BR> Original C++ prototype:
+  !! void GetNeighboursCartesian3d(const int i, const int nx, const int ny, const int nz, int& left, 
+  !!     int& right, int& lower, int& upper, int& below, int& above);
+  !> <BR> <BR> CTrilinos prototype:
+  !! void Galeri_Utils_GetNeighboursCartesian3d ( const int i, const int nx, const int ny, 
+  !!     const int nz, int * left, int * right, int * lower, int * upper, int * below, int * above );
+
+  subroutine Galeri_Utils_GetNeighboursCartesian3d ( i, nx, ny, nz, left, right, lower, &
+        upper, below, above ) bind(C,name='Galeri_Utils_GetNeighboursCartesian3d')
+    import :: c_int
+    
+    integer(c_int)              ,intent(in)   ,value              :: i
+    integer(c_int)              ,intent(in)   ,value              :: nx
+    integer(c_int)              ,intent(in)   ,value              :: ny
+    integer(c_int)              ,intent(in)   ,value              :: nz
+    integer(c_int)              ,intent(inout)                    :: left
+    integer(c_int)              ,intent(inout)                    :: right
+    integer(c_int)              ,intent(inout)                    :: lower
+    integer(c_int)              ,intent(inout)                    :: upper
+    integer(c_int)              ,intent(inout)                    :: below
+    integer(c_int)              ,intent(inout)                    :: above
+  end subroutine
+
+
+  !> <BR> Original C++ prototype:
+  !! void PrintStencil2D(const Epetra_CrsMatrix* Matrix, const int nx, const int ny, int GID = -1);
+  !> <BR> <BR> CTrilinos prototype:
+  !! void Galeri_Utils_PrintStencil2D ( CT_Epetra_CrsMatrix_ID_t MatrixID, const int nx, const int ny, 
+  !!     int GID );
+
+  subroutine Galeri_Utils_PrintStencil2D ( MatrixID, nx, ny, GID ) &
+        bind(C,name='Galeri_Utils_PrintStencil2D')
+    import :: FT_Epetra_CrsMatrix_ID_t ,c_int
+    
+    type(FT_Epetra_CrsMatrix_ID_t),intent(in)   ,value              :: MatrixID
+    integer(c_int)              ,intent(in)   ,value              :: nx
+    integer(c_int)              ,intent(in)   ,value              :: ny
+    integer(c_int)              ,intent(in)   ,value              :: GID
   end subroutine
 
 
 !> @}
 
 
-!> @name Amesos interface
+!> @name Galeri_Maps interface
 !! @{
 
-  ! _________________ Amesos interface bodies _________________
+  ! _________________ Galeri_Maps interface bodies _________________
 
 
   !> <BR> Original C++ prototype:
-  !! Amesos();
+  !! Epetra_Map* CreateMap(string MapType, Epetra_Comm& Comm, Teuchos::ParameterList& List);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Amesos_ID_t Amesos_Create (  );
+  !! CT_Epetra_Map_ID_t Galeri_Maps_CreateMap ( char MapType[], CT_Epetra_Comm_ID_t CommID, 
+  !!     CT_Teuchos_ParameterList_ID_t ListID );
 
-  function Amesos_Create (  ) result(that) bind(C,name='Amesos_Create')
-    import :: FT_Amesos_ID_t
+  function Galeri_Maps_CreateMap ( MapType, CommID, ListID ) result(that) &
+        bind(C,name='Galeri_Maps_CreateMap')
+    import :: FT_Epetra_Map_ID_t ,c_char ,FT_Epetra_Comm_ID_t , &
+          FT_Teuchos_ParameterList_ID_t
     
-    type(FT_Amesos_ID_t)                                          :: that
+    type(FT_Epetra_Map_ID_t)                                      :: that
+    character(kind=c_char)                          ,dimension(*) :: MapType
+    type(FT_Epetra_Comm_ID_t)   ,intent(in)   ,value              :: CommID
+    type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: ListID
   end function
 
 
-  !> <BR> Original C++ prototype:
-  !! ~Amesos();
-  !> <BR> <BR> CTrilinos prototype:
-  !! void Amesos_Destroy ( CT_Amesos_ID_t * selfID );
+!> @}
 
-  subroutine Amesos_Destroy ( selfID ) bind(C,name='Amesos_Destroy')
-    import :: FT_Amesos_ID_t
-    
-    type(FT_Amesos_ID_t)                                          :: selfID
-  end subroutine
+
+!> @name Galeri_CrsMatrices interface
+!! @{
+
+  ! _________________ Galeri_CrsMatrices interface bodies _________________
 
 
   !> <BR> Original C++ prototype:
-  !! Amesos_BaseSolver *Create(const char *ClassType, const Epetra_LinearProblem& LinearProblem );
+  !! Epetra_CrsMatrix* CreateCrsMatrix(string MatrixType, const Epetra_Map* Map, 
+  !!     Teuchos::ParameterList& List);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Amesos_BaseSolver_ID_t Amesos_CreateSolver ( CT_Amesos_ID_t selfID, const char * ClassType, 
-  !!     CT_Epetra_LinearProblem_ID_t LinearProblemID );
+  !! CT_Epetra_CrsMatrix_ID_t Galeri_CrsMatrices_CreateCrsMatrix ( char MatrixType[], 
+  !!     CT_Epetra_Map_ID_t MapID, CT_Teuchos_ParameterList_ID_t ListID );
 
-  function Amesos_CreateSolver ( selfID, ClassType, LinearProblemID ) result(that) &
-        bind(C,name='Amesos_CreateSolver')
-    import :: FT_Amesos_BaseSolver_ID_t ,FT_Amesos_ID_t ,c_char , &
-          FT_Epetra_LinearProblem_ID_t
+  function Galeri_CrsMatrices_CreateCrsMatrix ( MatrixType, MapID, ListID ) result(that) &
+        bind(C,name='Galeri_CrsMatrices_CreateCrsMatrix')
+    import :: FT_Epetra_CrsMatrix_ID_t ,c_char ,FT_Epetra_Map_ID_t , &
+          FT_Teuchos_ParameterList_ID_t
     
-    type(FT_Amesos_BaseSolver_ID_t)                                  :: that
-    type(FT_Amesos_ID_t)        ,intent(in)   ,value              :: selfID
-    character(kind=c_char)      ,intent(in)         ,dimension(*) :: ClassType
-    type(FT_Epetra_LinearProblem_ID_t),intent(in)   ,value              :: LinearProblemID
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! bool Query(const char * ClassType);
-  !> <BR> <BR> CTrilinos prototype:
-  !! boolean Amesos_Query ( CT_Amesos_ID_t selfID, const char * ClassType );
-
-  function Amesos_Query ( selfID, ClassType ) result(that) bind(C,name='Amesos_Query')
-    import :: FT_boolean_t ,FT_Amesos_ID_t ,c_char
-    
-    integer(FT_boolean_t)                                         :: that
-    type(FT_Amesos_ID_t)        ,intent(in)   ,value              :: selfID
-    character(kind=c_char)      ,intent(in)         ,dimension(*) :: ClassType
-  end function
-
-
-  !> <BR> Original C++ prototype:
-  !! static Teuchos::ParameterList GetValidParameters();
-  !> <BR> <BR> CTrilinos prototype:
-  !! CT_Teuchos_ParameterList_ID_t Amesos_GetValidParameters (  );
-
-  function Amesos_GetValidParameters (  ) result(that) &
-        bind(C,name='Amesos_GetValidParameters')
-    import :: FT_Teuchos_ParameterList_ID_t
-    
-    type(FT_Teuchos_ParameterList_ID_t)                                  :: that
+    type(FT_Epetra_CrsMatrix_ID_t)                                    :: that
+    character(kind=c_char)                              ,dimension(*) :: MatrixType
+    type(FT_Epetra_Map_ID_t)        ,intent(in)   ,value              :: MapID
+    type(FT_Teuchos_ParameterList_ID_t),intent(in)   ,value              :: ListID
   end function
 
 
@@ -438,6 +336,6 @@ module foramesos
 
 
   end interface
-end module foramesos
+end module forgaleri
 
-#endif /* HAVE_FORTRILINOS_AMESOS */
+#endif /* HAVE_FORTRILINOS_GALERI */

@@ -42,11 +42,10 @@ module foramesos
   use iso_c_binding ,only : c_int,c_double,c_char,c_bool,c_ptr,c_long,c_float
   use ForTrilinos_enums
   use ForTrilinos_enum_wrappers
-#ifdef HAVE_MPI
-! #include "mpif.h"
-  use  MPI
-#endif
   implicit none   ! Prevent implicit typing
+#ifdef HAVE_MPI
+#include "mpif.h"
+#endif
 
   ! This file provides Fortran interface blocks that bind the argument types,
   ! return value types, and procedure names to those in the C function prototypes
