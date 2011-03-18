@@ -9,16 +9,10 @@ INCLUDE_DIRECTORIES(
 
 ######################################################################
 
-IF(FORTRILINOS_COMPILER_SUPPORTS_LONG_LINES)
-  SET(FORTRILINOS_LINE_BREAKER
-    -DFT_SUPPORTS_LONG_LINES
-    )
-ELSE()
-  MESSAGE("*** ForTrilinos unit tests will be skipped! ***")
+FIND_PROGRAM(PERL_PATH perl)
+IF(NOT PERL_PATH)
+  MESSAGE("*** Perl not found. ForTrilinos unit tests will be skipped! ***")
   SET(FORTRILINOS_SKIP_UNITTESTS 1)
-#    SET(FORTRILINOS_LINE_BREAKER
-#      | sed 's/@@/\\n/g'
-#      )
 ENDIF()
 
 ######################################################################

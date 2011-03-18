@@ -159,7 +159,7 @@ int main(int argc, char *argv[])
   std::string modname(argv[1]);
   std::string inputpath(argv[2]);
   std::string ifname = inputpath + std::string("/") + modname + std::string("_tests.un");
-  std::string impl_fname = modname + std::string("_test_impls.F90");
+  std::string impl_fname = modname + std::string("_test_impls-tmp.F90");
   std::string calls_fname = modname + std::string("_test_calls.F90");
   std::string list_fname = modname + std::string("_tests.tests");
   std::string mpilist_fname = modname + std::string("_tests.mpitests");
