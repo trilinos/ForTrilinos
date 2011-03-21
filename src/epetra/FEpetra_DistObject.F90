@@ -142,7 +142,8 @@ contains
    type(Epetra_OffsetIndex), intent(in) :: indexor
    type(error),optional,intent(out) :: err
    integer(c_int)     :: error_out
-   error_out=Epetra_DistObject_Export(this%DistObject_id,A%get_EpetraSrcDistObject_ID(),exporter%get_EpetraExport_ID(),CombineMode,indexor%get_EpetraOffsetIndex_ID())
+   error_out=Epetra_DistObject_Export(this%DistObject_id,A%get_EpetraSrcDistObject_ID(),&
+                exporter%get_EpetraExport_ID(),CombineMode,indexor%get_EpetraOffsetIndex_ID())
    if (present(err)) err=error(error_out)
   end subroutine
 
@@ -154,7 +155,8 @@ contains
    type(Epetra_OffsetIndex), intent(in) :: indexor
    type(error),optional,intent(out) :: err
    integer(c_int)     :: error_out
-   error_out=Epetra_DistObject_Export_UsingImporter(this%DistObject_id,A%get_EpetraSrcDistObject_ID(),importer%get_EpetraImport_ID(),CombineMode,indexor%get_EpetraOffsetIndex_ID())
+   error_out=Epetra_DistObject_Export_UsingImporter(this%DistObject_id,A%get_EpetraSrcDistObject_ID(),&
+          importer%get_EpetraImport_ID(),CombineMode,indexor%get_EpetraOffsetIndex_ID())
    if (present(err)) err=error(error_out)
   end subroutine
 
@@ -166,7 +168,8 @@ contains
    type(Epetra_OffsetIndex), intent(in) :: indexor
    type(error),optional,intent(out) :: err
    integer(c_int)     :: error_out
-   error_out=Epetra_DistObject_Import(this%DistObject_id,A%get_EpetraSrcDistObject_ID(),importer%get_EpetraImport_ID(),CombineMode,indexor%get_EpetraOffsetIndex_ID())
+   error_out=Epetra_DistObject_Import(this%DistObject_id,A%get_EpetraSrcDistObject_ID(),&
+       importer%get_EpetraImport_ID(),CombineMode,indexor%get_EpetraOffsetIndex_ID())
    if (present(err)) err=error(error_out)
   end subroutine
 
@@ -178,7 +181,8 @@ contains
    type(Epetra_OffsetIndex), intent(in) :: indexor
    type(error),optional,intent(out) :: err
    integer(c_int)     :: error_out
-   error_out=Epetra_DistObject_Import_UsingExporter(this%DistObject_id,A%get_EpetraSrcDistObject_ID(),exporter%get_EpetraExport_ID(),CombineMode,indexor%get_EpetraOffsetIndex_ID())
+   error_out=Epetra_DistObject_Import_UsingExporter(this%DistObject_id,A%get_EpetraSrcDistObject_ID(),&
+         exporter%get_EpetraExport_ID(),CombineMode,indexor%get_EpetraOffsetIndex_ID())
    if (present(err)) err=error(error_out)
   end subroutine
 

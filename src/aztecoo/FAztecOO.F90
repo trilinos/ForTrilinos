@@ -81,7 +81,8 @@ contains
   !> <BR> Original C++ prototype:
   !! AztecOO(Epetra_RowMatrix * A, Epetra_MultiVector * X, Epetra_MultiVector * B);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_AztecOO_ID_t AztecOO_Create_FromRowMatrix ( CT_Epetra_RowMatrix_ID_t AID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID );
+  !! CT_AztecOO_ID_t AztecOO_Create_FromRowMatrix ( CT_Epetra_RowMatrix_ID_t AID,
+  ! CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID );
   !> <BR> <BR> ForTrilinos prototype:
   !! AztecOO (Epetra_RowMatrix A, Epetra_MultiVector x, Epetra_MultiVector b);
 
@@ -89,7 +90,8 @@ contains
    class(Epetra_RowMatrix) ,intent(in) :: A 
    class(Epetra_MultiVector) ,intent(in) :: x,b 
    type(FT_AztecOO_ID_t) :: from_RowMatrix_id
-   from_RowMatrix_id = AztecOO_Create_FromRowMatrix(A%get_EpetraRowMatrix_ID(),x%get_EpetraMultiVector_ID(),b%get_EpetraMultiVector_ID())
+   from_RowMatrix_id = AztecOO_Create_FromRowMatrix(A%get_EpetraRowMatrix_ID(),&
+       x%get_EpetraMultiVector_ID(),b%get_EpetraMultiVector_ID())
    from_RowMatrix = from_struct(from_RowMatrix_id)
   end function
 
@@ -169,9 +171,11 @@ contains
   !> <BR> Original C++ prototype:
   !! int Iterate(Epetra_RowMatrix * A, Epetra_MultiVector * X, Epetra_MultiVector * B, int MaxIters, double Tolerance);
   !> <BR> <BR> CTrilinos prototype:
-  !! int AztecOO_Iterate ( CT_AztecOO_ID_t selfID, CT_Epetra_RowMatrix_ID_t AID, CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID, int  MaxIters, double Tolerance );
+  !! int AztecOO_Iterate ( CT_AztecOO_ID_t selfID, CT_Epetra_RowMatrix_ID_t AID,
+  ! CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID, int  MaxIters, double Tolerance );
   !> <BR> <BR> <BR> ForTrilinos prototype:
-  !!  iterate ( AztecOO this, Epetra_RowMatrix A, Epetra_MultiVector x, Epetra_MultiVector b, int MaxIters, double Tolerance, ForTrilinos_error err );
+  !!  iterate ( AztecOO this, Epetra_RowMatrix A, Epetra_MultiVector x, Epetra_MultiVector b, 
+  ! int MaxIters, double Tolerance, ForTrilinos_error err );
 
   subroutine iterate_RowMatrix(this,A,x,b,MaxIters,tolerance,err) 
     class(AztecOO)   ,intent(in) :: this
@@ -181,7 +185,8 @@ contains
     real(c_double)   ,intent(in) :: tolerance
     type(error) ,optional    ,intent(out) :: err
     integer(c_int)               :: error_out
-    error_out = AztecOO_Iterate(this%AztecOO_id,A%get_EpetraRowMatrix_ID(),x%get_EpetraMultiVector_ID(),b%get_EpetraMultiVector_ID(),MaxIters,tolerance)
+    error_out = AztecOO_Iterate(this%AztecOO_id,A%get_EpetraRowMatrix_ID(),&
+         x%get_EpetraMultiVector_ID(),b%get_EpetraMultiVector_ID(),MaxIters,tolerance)
     if (present(err)) err=error(error_out)
   end subroutine
 

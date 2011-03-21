@@ -77,7 +77,8 @@ contains
    class(Epetra_CrsGraph),intent(in) :: TargetGraph
    type(Epetra_Export), intent(in) :: exporter
    type(FT_Epetra_OffsetIndex_ID_t) :: Create_FromExporter_id
-   Create_FromExporter_id = Epetra_OffsetIndex_Create_FromExporter(SourceGraph%get_EpetraCrsGraph_ID(),TargetGraph%get_EpetraCrsGraph_ID(),exporter%get_EpetraExport_ID())
+   Create_FromExporter_id = Epetra_OffsetIndex_Create_FromExporter(SourceGraph%get_EpetraCrsGraph_ID(),&
+         TargetGraph%get_EpetraCrsGraph_ID(),exporter%get_EpetraExport_ID())
    Create_FromExporter = from_struct(Create_FromExporter_id)
   end function
 
@@ -86,7 +87,8 @@ contains
    class(Epetra_CrsGraph),intent(in) :: TargetGraph
    type(Epetra_Import), intent(in) :: importer
    type(FT_Epetra_OffsetIndex_ID_t) :: Create_FromImporter_id
-   Create_FromImporter_id = Epetra_OffsetIndex_Create_FromImporter(SourceGraph%get_EpetraCrsGraph_ID(),TargetGraph%get_EpetraCrsGraph_ID(),importer%get_EpetraImport_ID())
+   Create_FromImporter_id = Epetra_OffsetIndex_Create_FromImporter(SourceGraph%get_EpetraCrsGraph_ID(),&
+        TargetGraph%get_EpetraCrsGraph_ID(),importer%get_EpetraImport_ID())
    Create_FromImporter = from_struct(Create_FromImporter_id)
   end function
 

@@ -120,7 +120,8 @@ contains
     integer(c_int) ,intent(in)              :: IndexBase
     class(Epetra_Comm)                      :: comm
     type(FT_Epetra_Map_ID_t) :: from_scratch_arbitrary_id
-    from_scratch_arbitrary_id = Epetra_Map_Create_Arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm%get_EpetraComm_ID())
+    from_scratch_arbitrary_id = Epetra_Map_Create_Arbitrary(Num_GlobalElements,&
+        Num_MyElements,My_GlobalElements,IndexBase,comm%get_EpetraComm_ID())
     from_scratch_arbitrary = from_struct(from_scratch_arbitrary_id)
   end function
 
