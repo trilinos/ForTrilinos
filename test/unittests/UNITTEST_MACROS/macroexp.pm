@@ -60,6 +60,9 @@ sub load_macros {
   $macro_map{'PRINTANY'} = "macroexp::printany";
   $macro_map{'PRINTLIT'} = "macroexp::printlit";
   $macro_map{'TEST_EQUALITY'} = "macroexp::test_equality";
+  $macro_map{'TEST_INEQUALITY'} = "macroexp::test_inequality";
+  $macro_map{'TEST_EQUIV'} = "macroexp::test_equiv";
+  $macro_map{'TEST_LESSEQUAL'} = "macroexp::test_lessequal";
 }
 
 sub expand_macro {
