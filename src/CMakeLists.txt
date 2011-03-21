@@ -47,6 +47,18 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 APPEND_SET(HEADERS
   )
 
+# Store Fortran modules in a dedicated directory.
+SET(CMAKE_Fortran_MODULE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/mod")
+INCLUDE_DIRECTORIES("${CMAKE_Fortran_MODULE_DIRECTORY}")
+
+# Install *.mod from the module directory to the include directory.
+INSTALL(
+  DIRECTORY "${CMAKE_Fortran_MODULE_DIRECTORY}/"
+  DESTINATION "${${PROJECT_NAME}_INSTALL_INCLUDE_DIR}"
+  COMPONENT ${PACKAGE_NAME}
+  FILES_MATCHING PATTERN "*.mod"
+  )
+
 # Set sources for link-layer build
 
 APPEND_SET(SOURCES
