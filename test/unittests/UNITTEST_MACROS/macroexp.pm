@@ -6,15 +6,15 @@ use warnings;
 use parser;
 
 sub strfy { return "\"" . $_[0] . "\""; }
-sub printany { return "print *, " . $_[0]; }
-sub printlit { return "print *, " . strfy($_[0]); }
+sub printany { return "print *," . $_[0]; }
+sub printlit { return "print *," . strfy($_[0]); }
 sub echo { return printlit($_[0]) . "\n" . doit($_[0]); }
 
 sub printany_list {
   my @terms = @_;
   my $str = "print *";
   foreach my $t (@terms) {
-    $str .= ", " . $t;
+    $str .= "," . $t;
   }
   return $str;
 }
@@ -23,7 +23,7 @@ sub printlit_list {
   my @terms = @_;
   my $str = "print *";
   foreach my $t (@terms) {
-    $str .= ", " . strfy($t);
+    $str .= "," . strfy($t);
   }
   return $str;
 }
@@ -33,8 +33,8 @@ sub doit { return "$_[0]"; }
 sub assert_fail { return $_[0] . " = .FALSE.\n" . printlit_list("Assertion failed on line ", $_[1]); }
 
 sub print_test {
-  return printany_list(strfy("TEST: "), strfy($_[0]), strfy(" = "), srnd($_[0]),
-            strfy(" ?" . $_[1] . "? "), strfy($_[2]), strfy(" = "), srnd($_[2])); }
+  return printany_list(strfy("TEST: $_[0] = "), $_[0],
+                    strfy(" ?$_[1]? $_[2] = "), $_[2]); }
 
 sub binary_test {
   # pass string with comma-separated args, comparison op string, fail operator
