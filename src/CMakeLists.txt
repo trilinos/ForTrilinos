@@ -104,11 +104,13 @@ IF (${PACKAGE_NAME}_ENABLE_Ifpack)
 ENDIF()
 
 IF (${PACKAGE_NAME}_ENABLE_Pliris)
+  IF (TPL_ENABLE_MPI)
 
-  APPEND_SET(SOURCES
-    ${DIRPLIRIS}/forpliris.F90
-    )
+    APPEND_SET(SOURCES
+      ${DIRPLIRIS}/forpliris.F90
+      )
 
+  ENDIF()
 ENDIF()
 
 # Set additional sources for object-oriented build
@@ -140,14 +142,22 @@ IF(${PACKAGE_NAME}_ENABLE_EXTENDED)
 
   IF (${PACKAGE_NAME}_ENABLE_Galeri)
 
-    APPEND_GLOB(SOURCES ${DIRAZTECOO}/FGaleri*.F90)
+    APPEND_GLOB(SOURCES ${DIRGALERI}/FGaleri*.F90)
 
   ENDIF()
 
   IF (${PACKAGE_NAME}_ENABLE_Ifpack)
 
-    APPEND_GLOB(SOURCES ${DIRAZTECOO}/FIfpack*.F90)
+    APPEND_GLOB(SOURCES ${DIRIFPACK}/FIfpack*.F90)
 
+  ENDIF()
+
+  IF (${PACKAGE_NAME}_ENABLE_Pliris)
+    IF (TPL_ENABLE_MPI)
+
+      APPEND_GLOB(SOURCES ${DIRPLIRIS}/FPliris*.F90)
+
+    ENDIF()
   ENDIF()
 
 ENDIF()
