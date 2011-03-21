@@ -47,6 +47,8 @@ FOREACH(var
     ForTrilinos_ENABLE_Ifpack
     HAVE_FORTRILINOS_GALERI
     ForTrilinos_ENABLE_Galeri
+    HAVE_FORTRILINOS_PLIRIS
+    ForTrilinos_ENABLE_Pliris
     )
   IF(${var})
     SET(ForTrilinos_config_${var} 1)

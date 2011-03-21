@@ -132,4 +132,14 @@
 #endif
 
 
+#if 0
+/* If Pliris is built */
+#endif
+
+#if @ForTrilinos_config_HAVE_FORTRILINOS_PLIRIS@
+#define HAVE_FORTRILINOS_PLIRIS
+#define ForTrilinos_ENABLE_Pliris
+#endif
+
+
 
