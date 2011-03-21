@@ -277,9 +277,11 @@ module ForTrilinos_enums
     integer(ForTrilinos_Table_ID_t) :: table; integer(c_int) :: index; integer(FT_boolean_t) :: is_const
   end type
 #ifdef HAVE_FORTRILINOS_PLIRIS
+#ifdef HAVE_MPI
   type ,bind(C) :: FT_Pliris_ID_t
     integer(ForTrilinos_Table_ID_t) :: table; integer(c_int) :: index; integer(FT_boolean_t) :: is_const
   end type
+#endif /* HAVE_MPI */
 #endif /* HAVE_FORTRILINOS_PLIRIS */
 
 end module ForTrilinos_enums

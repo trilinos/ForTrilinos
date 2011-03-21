@@ -64,6 +64,12 @@ module forpliris
   ! _________________ Pliris interface bodies _________________
 
 
+
+
+
+#ifdef HAVE_MPI
+
+
   !> <BR> Original C++ prototype:
   !! Pliris(Epetra_Vector * A, Epetra_MultiVector * X, Epetra_MultiVector * B);
   !> <BR> <BR> CTrilinos prototype:
@@ -271,6 +277,9 @@ module forpliris
     
     type(FT_Pliris_ID_t)                                          :: selfID
   end subroutine
+
+
+#endif /* HAVE_MPI */
 
 
 !> @}
