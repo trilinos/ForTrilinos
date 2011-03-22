@@ -189,8 +189,11 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     integer(c_int) :: NumGlobalElements = 8, NumMyElements, NumEntries, MaximumIter=100
     integer(c_int),dimension(:),allocatable :: MyGlobalElements, NumNonZero
     real(c_double),dimension(:),allocatable:: c,b_values
-    real(c_double),dimension(8):: vector=(/-0.99048,0.58095,0.24762,0.67619, &
-                               0.72381,1.15238,0.81905,2.39048/) ! answer for vector of with NumGlobalElements=8
+    ! vector holds the answer for vector of with NumGlobalElements=8
+    real(c_double),dimension(8):: vector=(/-0.99048,0.58095, &
+                                            0.24762,0.67619, &
+                                            0.72381,1.15238, &
+                                            0.81905,2.39048/) 
     real(c_double) :: values(2)
     real(c_double), parameter :: tolerance = 1.0E-4,three=3.0
     integer(c_int) :: MyGlobalElements_diagonal(1),i,indices(2)
