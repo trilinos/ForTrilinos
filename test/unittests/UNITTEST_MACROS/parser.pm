@@ -22,11 +22,11 @@ sub distinct_parens {
   my $rank = 0;
   my $lp = index($line, '(', $search_pos);
   my $rp = index($line, ')', $search_pos);
-  while (($lp > 0) or ($rp > 0)) {
-    if (($lp > 0) and (($lp < $rp) or ($rp < 0))) {
+  while (($lp >= 0) or ($rp >= 0)) {
+    if (($lp >= 0) and (($lp < $rp) or ($rp < 0))) {
       $search_pos = $lp+1;
       $rank++;
-    } elsif (($rp > 0) and (($rp < $lp) or ($lp < 0))) {
+    } elsif (($rp >= 0) and (($rp < $lp) or ($lp < 0))) {
       $search_pos = $rp+1;
       $rank--;
       if ($rank == 0) {
@@ -35,7 +35,7 @@ sub distinct_parens {
         $begin_group = $rp+1;
       }
     } else {
-      die "unknown error when trying to isolate parentheses";
+      die "unknown error when trying to isolate parentheses ";
     }
     die "incorrect parenthesis order" if ($rank < 0);
     $lp = index($line, '(', $search_pos);
