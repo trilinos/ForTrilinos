@@ -406,8 +406,7 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     Allocate (MyGlobalElements(NumMyElements))
     MyGlobalElements=map%MyGlobalElements()
     do i=1,NumMyElements
-      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col
-,err))
+      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col,err))
       TEST_EQUALITY(err%error_code(),0)
     end do
     ECHO(call A%FillComplete(.true.,err))
