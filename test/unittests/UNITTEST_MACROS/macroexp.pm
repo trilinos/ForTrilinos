@@ -6,15 +6,15 @@ use warnings;
 use parser;
 
 sub strfy { return "\"" . $_[0] . "\""; }
-sub printany { return "print *," . $_[0]; }
-sub printlit { return "print *," . strfy($_[0]); }
+sub printany { return "print *, " . $_[0]; }
+sub printlit { return "print *, " . strfy($_[0]); }
 sub echo { return printlit($_[0]) . "\n" . doit($_[0]); }
 
 sub printany_list {
   my @terms = @_;
   my $str = "print *";
   foreach my $t (@terms) {
-    $str .= "," . $t;
+    $str .= ", " . $t;
   }
   return $str;
 }
@@ -23,7 +23,7 @@ sub printlit_list {
   my @terms = @_;
   my $str = "print *";
   foreach my $t (@terms) {
-    $str .= "," . strfy($t);
+    $str .= ", " . strfy($t);
   }
   return $str;
 }

@@ -143,7 +143,7 @@ sub break_args {
       my $tmp = $string;
       my $lpar = ($tmp =~ tr/\(/X/);
       if ($lpar > 0) {
-        my ($ext, $new_string, $pre) = extract_bracketed($string,'()','[^()]+');
+        my ($ext, $new_string, $pre) = extract_bracketed($string,'()','[^()]*');
         $string = $new_string;
         push(@params, "$pre$ext");
         $string =~ s/^\s*,\s*//;
