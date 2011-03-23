@@ -7,6 +7,11 @@ use Text::Balanced qw(extract_bracketed);
 
 use macroexp;
 
+######################################################################
+# distinct_parens: separate each outer paren pair, including the text
+#                  between pairs with the pair that follows it; for
+#                  text with no following pair, it stands alone
+######################################################################
 sub distinct_parens {
   my ($line) = @_;
 
@@ -55,6 +60,11 @@ sub distinct_parens {
   return @groups;
 }
 
+######################################################################
+# parse_parens: for string containing at most one pair of parens,
+#               separate what comes before/within/after parens; if no
+#               parens, return everything as "before" variable
+######################################################################
 sub parse_parens {
   my ($line) = @_;
 
@@ -87,6 +97,10 @@ sub parse_parens {
   return ($before, $within, $after);
 }
 
+######################################################################
+# separate_key: when given all text before a pair of parens, separate
+#               the macro name from anything else that may be there
+######################################################################
 sub separate_key {
   my ($pre_paren) = @_;
 
@@ -103,6 +117,10 @@ sub separate_key {
   return ($pre, $key);
 }
 
+######################################################################
+# recursive_replace: recursively process nested and/or adjacent paren
+#                    pairs, expanding any macros found
+######################################################################
 sub recursive_replace {
   my ($line) = @_;
 
@@ -130,6 +148,10 @@ sub recursive_replace {
   return $output;
 }
 
+######################################################################
+# break_args: split up each term of an argument list, carefully
+#             watching for commas that are protected by parentheses
+######################################################################
 sub break_args {
   my ($argstr) = @_;
 
@@ -156,6 +178,9 @@ sub break_args {
   return @params;
 }
 
+######################################################################
+# expand_line: initiate the processing of non-blank lines
+######################################################################
 sub expand_line {
   my ($line) = @_;
   $line =~ s/^(\s+)//;
@@ -168,4 +193,5 @@ sub expand_line {
   }
 }
 
+# module load successful (required)
 1;
