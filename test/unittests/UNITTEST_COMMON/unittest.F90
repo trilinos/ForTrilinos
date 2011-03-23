@@ -31,7 +31,8 @@ program main
   do test_num = 1,test_cnt
     which_test = test_list(test_num)
 
-    if (rank == 0) print *,"Testing ",TEST_IMPLS_FILE_STR,"::",trim(which_test),"_UnitTest"
+    if (rank == 0) print *,"Testing ",TEST_IMPLS_FILE_STR, &
+        & "::",trim(which_test),"_UnitTest"
 
     call test_setup()
     success = select_test(which_test)
@@ -211,7 +212,8 @@ program main
 
       integer :: ierr
 
-      print *, "ERROR: "//trim(msg)//" (line ", line, " of "//__FILE__//"). TEST FAILED"
+      print *, "ERROR: "//trim(msg)//" (line ", line, &
+              & " of "//__FILE__//"). TEST FAILED"
       flush(output_unit)
 #ifdef HAVE_MPI
       call MPI_Abort(MPI_COMM_WORLD,1,ierr)
