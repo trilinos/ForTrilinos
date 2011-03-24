@@ -79,7 +79,7 @@ contains
     if (assertions) call assert( [associated(this%count)], [error_message('Ref_counter%release: count not associated.')] )
     this%count = this%count - 1
     if (this%count == 0) then
-      call this%obj%cpp_delete
+      call this%obj%ctrilinos_delete
       deallocate (this%count,stat=status)
       ierr=error(status,'Ref_counter%release: this%count')
       call ierr%check_success()
