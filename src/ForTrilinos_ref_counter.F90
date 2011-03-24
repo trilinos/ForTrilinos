@@ -77,8 +77,8 @@ contains
     integer :: status
     type(error) :: ierr
     call assert( [associated(this%count)], [error_message('Ref_counter%release: count not associated.')] )
+    call assert( [this%count>=1], [error_message('Ref_counter%release: non-positive count.')] )
     this%count = this%count - 1
-    call assert( [this%count>=0], [error_message('Ref_counter%release: non-positive count.')] )
     if (this%count == 0) then
       call this%obj%ctrilinos_delete
       deallocate (this%count,stat=status)
@@ -87,8 +87,6 @@ contains
       deallocate (this%obj,stat=status)
       ierr=error(status,'Ref_counter%release: this%obj')
       call ierr%check_success()
-    else
-      this%count=>1
     end if
   end subroutine
 
