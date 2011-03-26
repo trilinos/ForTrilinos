@@ -40,7 +40,8 @@ module fortrilinos_utils
 #include "ForTrilinos_config.h"
   implicit none
   private
-  public :: count
+  public :: c_strlen
+  public :: fortran_string
   public :: generalize_all
   public :: valid_kind_parameters
 contains
@@ -49,20 +50,28 @@ contains
   ! an array of character values.  A C string is interoperable with the second type of 
   ! Fortran string with the primary distinction being that Fortran strings carry their
   ! own string-length information, whereas the length of C strings is indicated by a 
-  ! terminating null character. The "count" procedure calculates C string length by 
-  ! searching for the null terminator.
+  ! terminating null character. This is a Fortran implementation of the C strlen function
+  ! that returns the C string length by searching for the null terminator.
 
-  function count(ptr) bind(C,name="forLinkingOnly") 
+  function c_strlen(c_string)
     use ,intrinsic :: iso_c_binding ,only: c_char ,c_int  ,c_null_char
-    implicit none 
-    character(kind=c_char) :: ptr(*) 
-    integer(c_int) :: count 
-    count = 0 
-    do 
-       if(ptr(count+1) == c_null_char) return 
-       count = count+1 
-    end do 
-  end function 
+    character(kind=c_char) :: c_string(*)
+    integer(c_int) :: c_strlen
+    c_strlen = 0
+    do
+       if(c_string(c_strlen+1) == c_null_char) return
+       c_strlen = c_strlen+1
+    end do
+  end function
+
+  ! This procedure converts a C string to a variable-length Fortran string.
+
+  function fortran_string(c_string) 
+    use ,intrinsic :: iso_c_binding ,only: c_char
+    character(kind=c_char,len=*) :: c_string
+    character(:) ,allocatable :: fortran_string
+    fortran_string  = c_string
+  end function
 
   ! This is a Fortran implementation of the functionality in the Epetra_*_Abstract procedures
   ! in each CTrilinos/src/CEpetra* file.  It effectively casts any given Epetra derived type
