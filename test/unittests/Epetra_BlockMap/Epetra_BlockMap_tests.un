@@ -77,9 +77,8 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     GIDList(2) = NumGlobalElements-3
     ECHO(ret = Epetra_BlockMap_RemoteIDList(MapID, NumIDs, GIDList, PIDList, LIDList))
     TEST_EQUALITY(ret, 0)
-
     do i = 1, NumIDs
-      TEST_EQUALITY(PIDList(i), GIDList(i) / NumMyElements)
+      TEST_EQUALITY(PIDList(i), (GIDList(i)/NumMyElements))
       TEST_EQUALITY(LIDList(i), mod(GIDList(i), NumMyElements))
     end do
   FORTRILINOS_UNITTEST_END
