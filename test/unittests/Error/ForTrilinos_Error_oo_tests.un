@@ -1,0 +1,19 @@
+#include "ForTrilinos_config.h"
+#include "runtime_macros.h"
+
+FORTRILINOS_UNITTEST_MODULE_DEF(CLASS_BEING_TESTED)
+FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
+
+  FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED, Error)
+  FORTRILINOS_UNITTEST_BEGIN
+    use ForTrilinos_error ,only : error
+    type(error) :: ierr 
+    integer ,parameter :: no_error=0
+    implicit none 
+    success = .TRUE.  ! Initialize
+    ECHO(ierr=error(no_error,'Error construction failed.')
+    ECHO(call ierr%check_success)
+    TEST_EQUALITY(1,1)
+  FORTRILINOS_UNITTEST_END
+
+FORTRILINOS_UNITTEST_MODULE_END(CLASS_BEING_TESTED)
