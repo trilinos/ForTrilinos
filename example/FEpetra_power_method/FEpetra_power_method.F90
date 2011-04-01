@@ -45,9 +45,8 @@ program main
   ! This file represents the preferred style for using ForTrilinos and is recommended for 
   ! Fortran users whose compilers support the object-oriented features of Fortran 2003.
   ! As of the Trilinos 10.4 release date, the latest versions of the IBM and Cray compilers 
-  ! nominally support the required features.  The Numerical Algorithms Group (NAG) and Intel 
-  ! compilers support all features but one: final subroutines.  (In each case, the support is
-  ! somewhat immature and buggy.)  
+  ! nominally support the required features.  The Numerical Algorithms Group (NAG) 
+  ! supports all of the required features of Fortran 2003.  
 
 #include "ForTrilinos_config.h"
 #ifdef HAVE_MPI
@@ -113,7 +112,7 @@ program main
   map = Epetra_Map(NumGlobalElements,Index_Base,communicator)
   NumGlobalElements_return = map%NumGlobalElements()   ! test line
 
-! Get update list and number of local equations from newly created Map
+! Get updated list and number of local equations from newly created Map
   NumMyElements = map%NumMyElements()
   print *,'NumGlobalElements = ', numGlobalElements_return  ! test line
   print *,'NumMyElements=', map%NumMyElements()             ! test line
@@ -122,7 +121,7 @@ program main
   allocate(MyGlobalElements(NumMyElements))
   MyGlobalElements = map%MyGlobalElements()
 
-! Create an integer vector NumNz tat is used to build the Epetra Matrix
+! Create an integer vector NumNz that is used to build the Epetra Matrix
 ! NumNz(i) is the number of OFF-DIAGONAL term for the ith global equation
 ! on this processor
   allocate(NumNz(NumMyElements))
