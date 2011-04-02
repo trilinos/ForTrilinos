@@ -38,7 +38,6 @@
 module FEpetra_CrsMatrix
   use ForTrilinos_enums !,only : FT_Epetra_RowMatrix_ID,FT_Epetra_CrsMatrix_ID_t,ForTrilinos_Universal_ID_t,
                         !        FT_Epetra_Map_ID_t,FT_boolean_t,FT_FALSE,FT_TRUE
-  use ForTrilinos_hermetic,only:hermetic
   use ForTrilinos_enum_wrappers
   use ForTrilinos_table_man
   use ForTrilinos_error

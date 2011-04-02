@@ -40,7 +40,6 @@ module FEpetra_LinearProblem
   use ForTrilinos_enums !,only: FT_Epetra_LinearProblem_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_universal, only: universal
   use ForTrilinos_table_man
-  use ForTrilinos_hermetic,only:hermetic
   use ForTrilinos_error
   use FEpetra_MultiVector, only: Epetra_MultiVector
   use FEpetra_RowMatrix, only: Epetra_RowMatrix

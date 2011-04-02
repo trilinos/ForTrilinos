@@ -42,7 +42,6 @@ module FEpetra_MpiComm
   use ForTrilinos_table_man
   use ForTrilinos_error
   use ForTrilinos_external_utils
-  use ForTrilinos_hermetic, only : hermetic
   use FEpetra_Comm      ,only: Epetra_Comm
   use iso_c_binding     ,only: c_int,c_double,c_long,c_char
   use forepetra

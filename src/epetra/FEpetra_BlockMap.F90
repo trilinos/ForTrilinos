@@ -37,19 +37,18 @@
 
 
 module FEpetra_BlockMap
-  use ForTrilinos_enums ,only: FT_Epetra_Comm_ID_t,FT_Epetra_BlockMap_ID_t,FT_Epetra_Map_ID_t,ForTrilinos_Universal_ID_t
+  use ForTrilinos_enums ,only: FT_Epetra_Comm_ID_t,FT_Epetra_BlockMap_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
-  use ForTrilinos_hermetic,only:hermetic
-  use ForTrilinos_universal,only:universal
-  use ForTrilinos_error
-  use FEpetra_Comm  ,only: Epetra_Comm
-  use iso_c_binding ,only: c_int
+  use ForTrilinos_universal ,only : universal
+  use ForTrilinos_error ,only : error
+  use FEpetra_Comm  ,only : Epetra_Comm
+  use iso_c_binding ,only : c_int
   use forepetra
   implicit none
   private                   ! Hide everything by default
   public :: Epetra_BlockMap ! Expose type/constructors/methods
 
-  type ,extends(universal)      :: Epetra_BlockMap !"shell"
+  type ,extends(universal)      :: Epetra_BlockMap 
     private
     type(FT_Epetra_BlockMap_ID_t) :: BlockMap_id 
   contains
@@ -96,7 +95,6 @@ contains
   !                                                  int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
   type(Epetra_BlockMap) function from_scratch(Num_GlobalElements,Element_Size,IndexBase,comm)
-   !use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
     integer(c_int) ,intent(in) :: Num_GlobalElements
     integer(c_int) ,intent(in) :: Element_Size
     integer(c_int) ,intent(in) :: IndexBase
@@ -113,7 +111,6 @@ contains
  !                                       int ElementSize, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
   type(Epetra_BlockMap) function from_scratch_linear(Num_GlobalElements,Num_MyElements,Element_Size,IndexBase,comm)
-   !use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
     integer(c_int) ,intent(in) :: Num_GlobalElements
     integer(c_int) ,intent(in) :: Num_MyElements
     integer(c_int) ,intent(in) :: Element_Size
@@ -134,7 +131,6 @@ contains
 
   type(Epetra_BlockMap) function from_scratch_arbitrary(Num_GlobalElements,Num_MyElements,&
                                                         My_GlobalElements,Element_Size,IndexBase,comm)
-   !use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
     integer(c_int) ,intent(in) :: Num_GlobalElements
     integer(c_int) ,intent(in) :: Num_MyElements
     integer(c_int) ,intent(in) ,dimension(:) :: My_GlobalElements  
@@ -156,7 +152,6 @@ contains
 
   type(Epetra_BlockMap) function from_scratch_variable(Num_GlobalElements,Num_MyElements,&
                                                        My_GlobalElements,Element_SizeList,IndexBase,comm)
-   !use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
     integer(c_int) ,intent(in) :: Num_GlobalElements
     integer(c_int) ,intent(in) :: Num_MyElements
     integer(c_int) ,intent(in) ,dimension(:) :: My_GlobalElements  
