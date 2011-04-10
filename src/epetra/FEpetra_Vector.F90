@@ -185,7 +185,7 @@ contains
     type(error),optional,intent(out) :: err
     integer(c_int)                      :: error_out
     error_out=Epetra_Vector_ReplaceGlobalValues(this%vector_id,NumEntries,values,indices)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_Vector%ReplaceGlobalValues: failed.')
   end subroutine
 
   subroutine SumIntoGlobalValues(this,NumEntries,values,indices,err)
@@ -196,23 +196,23 @@ contains
     type(error),optional,intent(out) :: err
     integer(c_int)                      :: error_out
     error_out=Epetra_Vector_SumIntoGlobalValues(this%vector_id,NumEntries,values,indices)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_Vector%SumIntoGlobalValues: failed.')
   end subroutine
 
   function ExtractCopy_EpetraVector(this,err) result(ExtractCopy_out)
-   class(Epetra_Vector), intent(in) :: this
-   real(c_double), dimension(:), allocatable::  ExtractCopy_out 
-   type(error),optional,intent(out) :: err
-   integer(c_int)                      :: error_out
-   integer(c_int) :: status
-   type(error) :: ierr
-   if (.not.allocated(ExtractCopy_out)) then
-     allocate(ExtractCopy_out(this%MyLength()),stat=status)
-     ierr=error(status,'FEpetra_Vector:ExtractCopy_EpetraVector')
-     call ierr%check_success()
-   endif
-   error_out = Epetra_Vector_ExtractCopy(this%vector_id,ExtractCopy_out)
-   if (present(err)) err=error(error_out)
+    class(Epetra_Vector), intent(in) :: this
+    real(c_double), dimension(:), allocatable::  ExtractCopy_out 
+    type(error),optional,intent(out) :: err
+    integer(c_int)                      :: error_out
+    integer(c_int) :: status
+    type(error) :: ierr
+    if (.not.allocated(ExtractCopy_out)) then
+      allocate(ExtractCopy_out(this%MyLength()),stat=status)
+      ierr=error(status,'FEpetra_Vector:ExtractCopy_EpetraVector')
+      call ierr%check_success()
+    endif
+    error_out = Epetra_Vector_ExtractCopy(this%vector_id,ExtractCopy_out)
+    if (present(err)) err=error(error_out,'Epetra_Vector%ExtractCopy_EpetraVector: failed.')
   end function 
  
   real(c_double) function get_element_EpetraVector(this,index)

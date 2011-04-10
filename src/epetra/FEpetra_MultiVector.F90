@@ -206,7 +206,7 @@ contains
     integer(c_int)     :: error_out
     VectorIndex_c=VectorIndex-FT_Index_OffSet ! To account for Fortran index base 1
     error_out=Epetra_MultiVector_ReplaceGlobalValue(this%MultiVector_id,GlobalRow,VectorIndex_c,ScalarValue)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%ReplaceGlobalValue_GlobalRow: failed')
   end subroutine
   
   subroutine ReplaceGlobalValue_GlobalBlockRow(this,GlobalRow,BlockRowOffset,VectorIndex,ScalarValue,err)
@@ -220,42 +220,42 @@ contains
     integer(c_int)     :: error_out
     VectorIndex_c=VectorIndex-FT_Index_OffSet ! To account for Fortran index base 1
     error_out=Epetra_MultiVector_ReplaceGlobalValue_BlockPos(this%MultiVector_id,GlobalRow,BlockRowOffset,VectorIndex_c,ScalarValue)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%ReplaceGlobalValue_GlobalBlockRow: failed')
   end subroutine
 
   function Dot(this,x,err) result(dot_)
-   class(Epetra_MultiVector), intent(in) :: this
-   class(Epetra_MultiVector), intent(in) :: x
-   real(c_double),dimension(:),allocatable :: dot_ 
-   type(error),optional,intent(out)   :: err
-   integer(c_int)                        :: error_out
-   integer(c_int) :: status
-   type(error) :: ierr
-   if (.not.allocated(dot_)) then
-    allocate(dot_(this%NumVectors()),stat=status)
-    ierr=error(status,'FEpetra_MultiVector:Dot')
-    call ierr%check_success()
-   endif
-   error_out=Epetra_MultiVector_Dot(this%MultiVector_id,x%MultiVector_id,dot_)
-   if (present(err)) err=error(error_out)
+    class(Epetra_MultiVector), intent(in) :: this
+    class(Epetra_MultiVector), intent(in) :: x
+    real(c_double),dimension(:),allocatable :: dot_ 
+    type(error),optional,intent(out)   :: err
+    integer(c_int)                        :: error_out
+    integer(c_int) :: status
+    type(error) :: ierr
+    if (.not.allocated(dot_)) then
+      allocate(dot_(this%NumVectors()),stat=status)
+      ierr=error(status,'FEpetra_MultiVector:Dot')
+      call ierr%check_success()
+    endif
+    error_out=Epetra_MultiVector_Dot(this%MultiVector_id,x%MultiVector_id,dot_)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%Dot: failed')
   end function 
 
   subroutine Abs(this,A,err)
-   class(Epetra_MultiVector), intent(inout) :: this
-   class(Epetra_MultiVector), intent(in) :: A 
-   type(error),optional,intent(out)   :: err
-   integer(c_int)                        :: error_out
-   error_out=Epetra_MultiVector_Abs(this%MultiVector_id,A%MultiVector_id)
-   if (present(err)) err=error(error_out)
+    class(Epetra_MultiVector), intent(inout) :: this
+    class(Epetra_MultiVector), intent(in) :: A 
+    type(error),optional,intent(out)   :: err
+    integer(c_int)                        :: error_out
+    error_out=Epetra_MultiVector_Abs(this%MultiVector_id,A%MultiVector_id)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%Abs: failed')
   end subroutine
 
   subroutine Reciprocal(this,A,err)
-   class(Epetra_MultiVector), intent(inout) :: this
-   class(Epetra_MultiVector), intent(in) :: A
-   type(error),optional,intent(out)   :: err
-   integer(c_int)                        :: error_out
-   error_out=Epetra_MultiVector_Reciprocal(this%MultiVector_id,A%MultiVector_id)
-   if (present(err)) err=error(error_out)
+    class(Epetra_MultiVector), intent(inout) :: this
+    class(Epetra_MultiVector), intent(in) :: A
+    type(error),optional,intent(out)   :: err
+    integer(c_int)                        :: error_out
+    error_out=Epetra_MultiVector_Reciprocal(this%MultiVector_id,A%MultiVector_id)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%Reciprocal: failed')
   end subroutine
  
   subroutine Scale_Self(this,scalar_value,err)
@@ -264,7 +264,7 @@ contains
     type(error),optional,intent(out)      :: err
     integer(c_int)                           :: error_out
     error_out=Epetra_MultiVector_Scale_Self(this%MultiVector_id,scalar_value)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%Scale_Self: failed')
   end subroutine
   
   subroutine Scale_Other(this,scalar_value,MultiVector,err)
@@ -274,41 +274,41 @@ contains
     type(error),optional,intent(out)      :: err
     integer(c_int)                           :: error_out
     error_out=Epetra_MultiVector_Scale(this%MultiVector_id,scalar_value,MultiVector%MultiVector_id)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%Scale_Other: failed')
   end subroutine
 
   subroutine PutScalar(this,scalar,err)
-   class(Epetra_MultiVector) ,intent(inout) :: this
-   type(error) ,optional  ,intent(out)   :: err
-   real(c_double)            ,intent(in)    :: scalar
-   integer(c_int)                           :: error_out
-   error_out=Epetra_MultiVector_PutScalar(this%MultiVector_id,scalar)
-   if (present(err)) err=error(error_out)
+    class(Epetra_MultiVector) ,intent(inout) :: this
+    type(error) ,optional  ,intent(out)   :: err
+    real(c_double)            ,intent(in)    :: scalar
+    integer(c_int)                           :: error_out
+    error_out=Epetra_MultiVector_PutScalar(this%MultiVector_id,scalar)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%Put_Scalar: failed')
   end subroutine
  
   subroutine Random(this,err)
-   class(Epetra_MultiVector) ,intent(inout) :: this
-   type(error) ,optional  ,intent(out)   :: err
-   integer(c_int)                           :: error_out
-   error_out = Epetra_MultiVector_Random (this%MultiVector_id)
-   if (present(err)) err=error(error_out)
+    class(Epetra_MultiVector) ,intent(inout) :: this
+    type(error) ,optional  ,intent(out)   :: err
+    integer(c_int)                           :: error_out
+    error_out = Epetra_MultiVector_Random (this%MultiVector_id)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%Random: failed')
   end subroutine
 
   function ExtractCopy_2DA(this,MyLDA,err) result(A)
-   class(Epetra_MultiVector),intent(in) :: this
-   real(c_double),dimension(:,:),allocatable :: A
-   integer(c_int),intent(in) :: MyLDA
-   type(error),optional,intent(out) :: err
-   integer(c_int)           :: error_out
-   integer(c_int) :: status
-   type(error) :: ierr
-   if (.not.allocated(A)) then 
-     allocate(A(this%MyLength(),this%NumVectors()),stat=status) ! To match a user's Fortran-style array in Trilinos
-     ierr=error(status,'FEpetra_MultiVector:ExtractCopy_2DA')
-     call ierr%check_success()
-   endif
-   error_out=Epetra_MultiVector_ExtractCopy_Fill2DA(this%MultiVector_id,A,MyLDA)
-   if (present(err)) err=error(error_out)
+    class(Epetra_MultiVector),intent(in) :: this
+    real(c_double),dimension(:,:),allocatable :: A
+    integer(c_int),intent(in) :: MyLDA
+    type(error),optional,intent(out) :: err
+    integer(c_int)           :: error_out
+    integer(c_int) :: status
+    type(error) :: ierr
+    if (.not.allocated(A)) then 
+      allocate(A(this%MyLength(),this%NumVectors()),stat=status) ! To match a user's Fortran-style array in Trilinos
+      ierr=error(status,'FEpetra_MultiVector:ExtractCopy_2DA')
+      call ierr%check_success()
+    endif
+    error_out=Epetra_MultiVector_ExtractCopy_Fill2DA(this%MultiVector_id,A,MyLDA)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%ExtractCopy_2DA: failed')
   end function
 
   subroutine Update_WithA(this,scalarA,A,scalarThis,err)
@@ -319,7 +319,7 @@ contains
     type(error) ,optional  ,intent(out):: err
     integer(c_int)                        :: error_out
     error_out = Epetra_MultiVector_Update_WithA(this%MultiVector_id,scalarA,A%MultiVector_id,scalarThis)
-     if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%Update_WithA: failed')
   end subroutine 
 
   subroutine Update_WithAB(this,scalarA,A,scalarB,B,scalarThis,err)
@@ -332,7 +332,7 @@ contains
     type(error) ,optional  ,intent(out):: err
     integer(c_int)                        :: error_out
     error_out = Epetra_MultiVector_Update_WithAB(this%MultiVector_id,scalarA,A%MultiVector_id,scalarB,B%MultiVector_id,scalarThis)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%Update_WithAB: failed')
   end subroutine
 
   function Norm1(this,err) result(Norm1_val)
@@ -348,7 +348,7 @@ contains
       call ierr%check_success()
     endif
     error_out = Epetra_MultiVector_Norm1(this%MultiVector_id,Norm1_val)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%Norm: failed')
   end function 
  
   function Norm2(this,err) result(Norm2_val)
@@ -364,7 +364,7 @@ contains
       call ierr%check_success()
     endif
     error_out = Epetra_MultiVector_Norm2(this%MultiVector_id,Norm2_val)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%Norm2: failed')
   end function
  
   function NormInf(this,err) result(NormInf_val)
@@ -380,7 +380,7 @@ contains
       call ierr%check_success()
     endif
     error_out = Epetra_MultiVector_NormInf(this%MultiVector_id,NormInf_val)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%NormInf: failed')
   end function 
 
   function NormWeighted(this,weights,err) result(NormWeighted_val)
@@ -397,7 +397,7 @@ contains
       call ierr%check_success()
     endif
     error_out = Epetra_MultiVector_NormWeighted(this%MultiVector_id,weights%MultiVector_id,NormWeighted_val)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%NormWeighted: failed')
   end function 
 
   function MinValue(this,err) result(MinValue_val)
@@ -413,7 +413,7 @@ contains
       call ierr%check_success()
     endif
     error_out = Epetra_MultiVector_MinValue(this%MultiVector_id,MinValue_val)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%MinValue: failed')
   end function
  
  function MaxValue(this,err) result(MaxValue_val)
@@ -429,7 +429,7 @@ contains
       call ierr%check_success()
     endif
     error_out = Epetra_MultiVector_MaxValue(this%MultiVector_id,MaxValue_val)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%MaxValue: failed')
   end function
 
  function MeanValue(this,err) result(MeanValue_val)
@@ -445,7 +445,7 @@ contains
       call ierr%check_success()
     endif
     error_out = Epetra_MultiVector_MeanValue(this%MultiVector_id,MeanValue_val)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%MeanValue: failed')
   end function
 
   subroutine Multiply_Matrix(this,TransA,TransB,ScalarAB,A,B,ScalarThis,err) 
@@ -458,7 +458,7 @@ contains
     integer(c_int)                           :: error_out
     error_out = Epetra_MultiVector_Multiply_Matrix(this%MultiVector_id,TransA,TransB,ScalarAB,&
                                  A%MultiVector_id,B%MultiVector_id,ScalarThis)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%Multiply_Matrix: failed')
   end subroutine
 
  subroutine Multiply_ByEl(this,ScalarAB,A,B,ScalarThis,err)
@@ -469,7 +469,7 @@ contains
     integer(c_int)                           :: error_out
     error_out = Epetra_MultiVector_Multiply_ByEl(this%MultiVector_id,ScalarAB,&
                                  A%MultiVector_id,B%MultiVector_id,ScalarThis)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%Multiply_ByEl: failed')
   end subroutine
 
   subroutine ReciprocalMultiply(this,ScalarAB,A,B,ScalarThis,err)
@@ -480,7 +480,7 @@ contains
     integer(c_int)                           :: error_out
     error_out = Epetra_MultiVector_ReciprocalMultiply(this%MultiVector_id,ScalarAB,&
                                  A%MultiVector_id,B%MultiVector_id,ScalarThis)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%ReciprocalMultiply: failed')
   end subroutine
 
   integer(c_int) function NumVectors(this)
@@ -510,63 +510,63 @@ contains
   end function 
 
  subroutine Export_UsingExporter(this,A,exporter,CombineMode,indexor,err)
-   use FEpetra_SrcDistObject, only: Epetra_SrcDistObject
-   use FEpetra_OffsetIndex, only: Epetra_OffsetIndex
-   use FEpetra_Export, only: Epetra_Export
-   use ForTrilinos_enum_wrappers, only: FT_Epetra_CombineMode_E_t
-   class(Epetra_MultiVector), intent(in) :: this,A 
-   type(Epetra_Export),intent(in) :: exporter
-   integer(FT_Epetra_CombineMode_E_t), intent(in) :: CombineMode
-   type(Epetra_OffsetIndex), intent(in) :: indexor
-   type(error),optional,intent(out) :: err 
-   integer(c_int)     :: error_out
-   call this%DistObject%export(A%DistObject,exporter,CombineMode,indexor,err)
-   if (present(err)) err=error(error_out)
+    use FEpetra_SrcDistObject, only: Epetra_SrcDistObject
+    use FEpetra_OffsetIndex, only: Epetra_OffsetIndex
+    use FEpetra_Export, only: Epetra_Export
+    use ForTrilinos_enum_wrappers, only: FT_Epetra_CombineMode_E_t
+    class(Epetra_MultiVector), intent(in) :: this,A 
+    type(Epetra_Export),intent(in) :: exporter
+    integer(FT_Epetra_CombineMode_E_t), intent(in) :: CombineMode
+    type(Epetra_OffsetIndex), intent(in) :: indexor
+    type(error),optional,intent(out) :: err 
+    integer(c_int)     :: error_out
+    call this%DistObject%export(A%DistObject,exporter,CombineMode,indexor,err)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%Export_UsingExporter: failed')
   end subroutine
 
   subroutine Export_UsingImporter(this,A,importer,CombineMode,indexor,err)
-   use FEpetra_SrcDistObject, only: Epetra_SrcDistObject
-   use FEpetra_OffsetIndex, only: Epetra_OffsetIndex
-   use FEpetra_Import, only: Epetra_Import
-   use ForTrilinos_enum_wrappers, only: FT_Epetra_CombineMode_E_t
-   class(Epetra_MultiVector), intent(in) :: this,A
-   type(Epetra_Import),intent(in) :: importer
-   integer(FT_Epetra_CombineMode_E_t), intent(in) :: CombineMode
-   type(Epetra_OffsetIndex), intent(in) :: indexor
-   type(error),optional,intent(out) :: err 
-   integer(c_int)     :: error_out
-   call this%DistObject%export(A%DistObject,importer,CombineMode,indexor,err)
-   if (present(err)) err=error(error_out)
+    use FEpetra_SrcDistObject, only: Epetra_SrcDistObject
+    use FEpetra_OffsetIndex, only: Epetra_OffsetIndex
+    use FEpetra_Import, only: Epetra_Import
+    use ForTrilinos_enum_wrappers, only: FT_Epetra_CombineMode_E_t
+    class(Epetra_MultiVector), intent(in) :: this,A
+    type(Epetra_Import),intent(in) :: importer
+    integer(FT_Epetra_CombineMode_E_t), intent(in) :: CombineMode
+    type(Epetra_OffsetIndex), intent(in) :: indexor
+    type(error),optional,intent(out) :: err 
+    integer(c_int)     :: error_out
+    call this%DistObject%export(A%DistObject,importer,CombineMode,indexor,err)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%Export_UsingImporter: failed')
   end subroutine
 
  subroutine Import_UsingExporter(this,A,exporter,CombineMode,indexor,err)
-   use FEpetra_SrcDistObject, only: Epetra_SrcDistObject
-   use FEpetra_OffsetIndex, only: Epetra_OffsetIndex
-   use FEpetra_Export, only: Epetra_Export
-   use ForTrilinos_enum_wrappers, only: FT_Epetra_CombineMode_E_t
-   class(Epetra_MultiVector), intent(in) :: this,A 
-   type(Epetra_Export),intent(in) :: exporter
-   integer(FT_Epetra_CombineMode_E_t), intent(in) :: CombineMode
-   type(Epetra_OffsetIndex), intent(in) :: indexor
-   type(error),optional,intent(out) :: err 
-   integer(c_int)     :: error_out
-   call this%DistObject%import(A%DistObject,exporter,CombineMode,indexor,err)
-   if (present(err)) err=error(error_out)
+    use FEpetra_SrcDistObject, only: Epetra_SrcDistObject
+    use FEpetra_OffsetIndex, only: Epetra_OffsetIndex
+    use FEpetra_Export, only: Epetra_Export
+    use ForTrilinos_enum_wrappers, only: FT_Epetra_CombineMode_E_t
+    class(Epetra_MultiVector), intent(in) :: this,A 
+    type(Epetra_Export),intent(in) :: exporter
+    integer(FT_Epetra_CombineMode_E_t), intent(in) :: CombineMode
+    type(Epetra_OffsetIndex), intent(in) :: indexor
+    type(error),optional,intent(out) :: err 
+    integer(c_int)     :: error_out
+    call this%DistObject%import(A%DistObject,exporter,CombineMode,indexor,err)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%Import_UsingExporter: failed')
   end subroutine
 
   subroutine Import_UsingImporter(this,A,importer,CombineMode,indexor,err)
-   use FEpetra_SrcDistObject, only: Epetra_SrcDistObject
-   use FEpetra_OffsetIndex, only: Epetra_OffsetIndex
-   use FEpetra_Import, only: Epetra_Import
-   use ForTrilinos_enum_wrappers, only: FT_Epetra_CombineMode_E_t
-   class(Epetra_MultiVector), intent(in) :: this,A
-   type(Epetra_Import),intent(in) :: importer
-   integer(FT_Epetra_CombineMode_E_t), intent(in) :: CombineMode
-   type(Epetra_OffsetIndex), intent(in) :: indexor
-   type(error),optional,intent(out) :: err 
-   integer(c_int)     :: error_out
-   call this%DistObject%import(A%DistObject,importer,CombineMode,indexor,err)
-   if (present(err)) err=error(error_out)
+    use FEpetra_SrcDistObject, only: Epetra_SrcDistObject
+    use FEpetra_OffsetIndex, only: Epetra_OffsetIndex
+    use FEpetra_Import, only: Epetra_Import
+    use ForTrilinos_enum_wrappers, only: FT_Epetra_CombineMode_E_t
+    class(Epetra_MultiVector), intent(in) :: this,A
+    type(Epetra_Import),intent(in) :: importer
+    integer(FT_Epetra_CombineMode_E_t), intent(in) :: CombineMode
+    type(Epetra_OffsetIndex), intent(in) :: indexor
+    type(error),optional,intent(out) :: err 
+    integer(c_int)     :: error_out
+    call this%DistObject%import(A%DistObject,importer,CombineMode,indexor,err)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%Import_UsingImporter: failed')
   end subroutine
 
   subroutine invalidate_EpetraMultiVector_ID(this)

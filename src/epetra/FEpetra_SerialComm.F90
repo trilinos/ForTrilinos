@@ -39,7 +39,7 @@
 module FEpetra_SerialComm
   use ForTrilinos_enums ,only : FT_Epetra_Comm_ID,FT_Epetra_SerialComm_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
-  use ForTrilinos_error
+  use ForTrilinos_error ,only : error
   use FEpetra_Comm      ,only : Epetra_Comm
   use iso_c_binding     ,only : c_int,c_long,c_double,c_char
   use forepetra
@@ -189,7 +189,7 @@ contains
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
     error_out = Epetra_SerialComm_Broadcast_Double(this%SerialComm_id,MyVals,count,root)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_SerialComm%broadcast_double: failed.')
   end subroutine
 
   subroutine broadcast_int(this,MyVals,count,root,err)
@@ -200,7 +200,7 @@ contains
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
     error_out = Epetra_SerialComm_Broadcast_Int(this%SerialComm_id,MyVals,count,root)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_SerialComm%broadcast_int: failed.')
   end subroutine
 
   subroutine broadcast_long(this,MyVals,count,root,err)
@@ -211,7 +211,7 @@ contains
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
     error_out = Epetra_SerialComm_Broadcast_Long(this%SerialComm_id,MyVals,count,root)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_SerialComm%broadcast_long: failed.')
   end subroutine
  
   subroutine broadcast_char(this,MyVals,count,root,err)
@@ -222,7 +222,7 @@ contains
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
     error_out = Epetra_SerialComm_Broadcast_Char(this%SerialComm_id,MyVals,count,root)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_SerialComm%broadcast_char: failed.')
   end subroutine
   
  subroutine gather_double(this,MyVals,AllVals,count,err)
@@ -233,7 +233,7 @@ contains
    type(error) ,optional, intent(inout) :: err
    integer(c_int)     :: error_out
    error_out = Epetra_SerialComm_GatherAll_Double(this%SerialComm_id,MyVals,AllVals,count)
-   if (present(err)) err=error(error_out)
+   if (present(err)) err=error(error_out,'Epetra_SerialComm%gather_double: failed.')
   end subroutine
 
   subroutine gather_int(this,MyVals,AllVals,count,err)
@@ -244,7 +244,7 @@ contains
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
     error_out = Epetra_SerialComm_GatherAll_Int(this%SerialComm_id,MyVals,AllVals,count)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_SerialComm%gather_int: failed.')
   end subroutine
 
   subroutine gather_long(this,MyVals,AllVals,count,err)
@@ -255,7 +255,7 @@ contains
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
     error_out = Epetra_SerialComm_GatherAll_Long(this%SerialComm_id,MyVals,AllVals,count)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_SerialComm%gather_long: failed.')
   end subroutine
 
   subroutine sum_double(this,PartialSums,GlobalSums,count,err)
@@ -266,7 +266,7 @@ contains
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
     error_out = Epetra_SerialComm_SumAll_Double(this%SerialComm_id,PartialSums,GlobalSums,count)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_SerialComm%sum_double: failed.')
   end subroutine
 
   subroutine sum_int(this,PartialSums,GlobalSums,count,err)
@@ -277,7 +277,7 @@ contains
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
     error_out = Epetra_SerialComm_SumAll_Int(this%SerialComm_id,PartialSums,GlobalSums,count)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_SerialComm%sum_int: failed.')
   end subroutine
 
   subroutine sum_long(this,PartialSums,GlobalSums,count,err)
@@ -288,7 +288,7 @@ contains
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
     error_out = Epetra_SerialComm_SumAll_Long(this%SerialComm_id,PartialSums,GlobalSums,count)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_SerialComm%sum_long: failed.')
   end subroutine
   
   subroutine max_double(this,PartialMaxs,GlobalMaxs,count,err)
@@ -299,7 +299,7 @@ contains
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
     error_out = Epetra_SerialComm_MaxAll_Double(this%SerialComm_id,PartialMaxs,GlobalMaxs,count)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_SerialComm%max_double: failed.')
   end subroutine
 
   subroutine max_int(this,PartialMaxs,GlobalMaxs,count,err)
@@ -310,7 +310,7 @@ contains
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
     error_out = Epetra_SerialComm_MaxAll_Int(this%SerialComm_id,PartialMaxs,GlobalMaxs,count)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_SerialComm%max_int: failed.')
   end subroutine
 
   subroutine max_long(this,PartialMaxs,GlobalMaxs,count,err)
@@ -321,7 +321,7 @@ contains
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
     error_out = Epetra_SerialComm_MaxAll_Long(this%SerialComm_id,PartialMaxs,GlobalMaxs,count)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_SerialComm%max_long: failed.')
   end subroutine
   
   subroutine min_double(this,PartialMins,GlobalMins,count,err)
@@ -332,7 +332,7 @@ contains
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
     error_out = Epetra_SerialComm_MinAll_Double(this%SerialComm_id,PartialMins,GlobalMins,count)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_SerialComm%min_double: failed.')
   end subroutine
 
   subroutine min_int(this,PartialMins,GlobalMins,count,err)
@@ -343,7 +343,7 @@ contains
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
     error_out = Epetra_SerialComm_MinAll_Int(this%SerialComm_id,PartialMins,GlobalMins,count)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_SerialComm%min_int: failed.')
   end subroutine
 
   subroutine min_long(this,PartialMins,GlobalMins,count,err)
@@ -354,7 +354,7 @@ contains
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
     error_out = Epetra_SerialComm_MinAll_Long(this%SerialComm_id,PartialMins,GlobalMins,count)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_SerialComm%min_long: failed.')
   end subroutine
 
   subroutine ScanSum_double(this,MyVals,scan_sums,count,err)
@@ -365,7 +365,7 @@ contains
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
     error_out = Epetra_SerialComm_ScanSum_Double(this%SerialComm_id,MyVals,scan_sums,count)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_SerialComm%ScanSum_double: failed.')
   end subroutine
 
   subroutine ScanSum_int(this,MyVals,scan_sums,count,err)
@@ -376,7 +376,7 @@ contains
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
     error_out = Epetra_SerialComm_ScanSum_Int(this%SerialComm_id,MyVals,scan_sums,count)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_SerialComm%ScanSum_int: failed.')
   end subroutine
 
   subroutine ScanSum_long(this,MyVals,scan_sums,count,err)
@@ -387,7 +387,7 @@ contains
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
     error_out = Epetra_SerialComm_ScanSum_Long(this%SerialComm_id,MyVals,scan_sums,count)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'Epetra_SerialComm%ScanSum_long: failed.')
   end subroutine
 
   integer(c_int) function MyPID(this)

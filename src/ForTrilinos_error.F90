@@ -58,10 +58,10 @@ module ForTrilinos_error
 contains
   function new_error(new_code,new_message) 
     integer(c_int) ,intent(in) :: new_code
-    character(len=*) ,intent(in) ,optional :: new_message
+    character(len=*) ,intent(in) :: new_message
     type(error) :: new_error
     new_error%code = new_code 
-    if (present(new_message)) new_error%error_message = error_message(new_message)
+    new_error%error_message = error_message(new_message)
   end function
 
   integer(c_int) function error_code(this)

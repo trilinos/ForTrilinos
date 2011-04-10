@@ -41,7 +41,7 @@ module FEpetra_DistObject
   use ForTrilinos_enum_wrappers, only: FT_Epetra_CombineMode_E_t
   use ForTrilinos_universal
   use ForTrilinos_table_man
-  use ForTrilinos_error
+  use ForTrilinos_error ,only : error
   use FEpetra_SrcDistObject ,only : Epetra_SrcDistObject
   use FEpetra_Export, only: Epetra_Export
   use FEpetra_Import, only: Epetra_Import
@@ -69,7 +69,6 @@ module FEpetra_DistObject
      procedure, private:: DistObject_Import
      procedure, private:: DistObject_Import_UsingExporter
      generic :: import => DistObject_Import_UsingExporter, DistObject_Import
-     !Attribute accessor methods
   end type
 
    interface Epetra_DistObject ! constructors
@@ -144,7 +143,7 @@ contains
    integer(c_int)     :: error_out
    error_out=Epetra_DistObject_Export(this%DistObject_id,A%get_EpetraSrcDistObject_ID(),&
                 exporter%get_EpetraExport_ID(),CombineMode,indexor%get_EpetraOffsetIndex_ID())
-   if (present(err)) err=error(error_out)
+   if (present(err)) err=error(error_out,'Epetra_DistObject%Export: failed.')
   end subroutine
 
   subroutine DistObject_Export_UsingImporter(this,A,importer,CombineMode,indexor,err)
@@ -157,7 +156,7 @@ contains
    integer(c_int)     :: error_out
    error_out=Epetra_DistObject_Export_UsingImporter(this%DistObject_id,A%get_EpetraSrcDistObject_ID(),&
           importer%get_EpetraImport_ID(),CombineMode,indexor%get_EpetraOffsetIndex_ID())
-   if (present(err)) err=error(error_out)
+   if (present(err)) err=error(error_out,'Epetra_DistObject%Export_UsingImporter: failed.')
   end subroutine
 
   subroutine DistObject_Import(this,A,importer,CombineMode,indexor,err)
@@ -170,7 +169,7 @@ contains
    integer(c_int)     :: error_out
    error_out=Epetra_DistObject_Import(this%DistObject_id,A%get_EpetraSrcDistObject_ID(),&
        importer%get_EpetraImport_ID(),CombineMode,indexor%get_EpetraOffsetIndex_ID())
-   if (present(err)) err=error(error_out)
+   if (present(err)) err=error(error_out,'Epetra_DistObject%Import: failed.')
   end subroutine
 
   subroutine DistObject_Import_UsingExporter(this,A,exporter,CombineMode,indexor,err)
@@ -183,7 +182,7 @@ contains
    integer(c_int)     :: error_out
    error_out=Epetra_DistObject_Import_UsingExporter(this%DistObject_id,A%get_EpetraSrcDistObject_ID(),&
          exporter%get_EpetraExport_ID(),CombineMode,indexor%get_EpetraOffsetIndex_ID())
-   if (present(err)) err=error(error_out)
+   if (present(err)) err=error(error_out,'Epetra_DistObject%Import: failed.')
   end subroutine
 
   subroutine invalidate_EpetraDistObject_ID(this)

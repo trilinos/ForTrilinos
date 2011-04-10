@@ -270,7 +270,7 @@ contains
    type(error), optional, intent(out) :: err
    integer(c_int)                          :: error_out
    error_out=Epetra_CrsMatrix_PutScalar(this%CrsMatrix_id,scalar)
-   if (present(err)) err=error(error_out)
+   if (present(err)) err=error(error_out,'Epetra_CrsMatrix%PutScalar: failed.')
   end subroutine
   
   subroutine InsertGlobalValues(this,GlobalRow,NumEntries,values,indices,err)
@@ -282,7 +282,7 @@ contains
    type(error), optional, intent(out) :: err
    integer(c_int)                          :: error_out
    error_out=Epetra_CrsMatrix_InsertGlobalValues(this%CrsMatrix_id,GlobalRow,NumEntries,values,indices)
-   if (present(err)) err=error(error_out)
+   if (present(err)) err=error(error_out,'Epetra_CrsMatrix%InsertGlobalValues')
   end subroutine
 
   subroutine ReplaceGlobalValues(this,GlobalRow,NumEntries,values,indices,err)
@@ -294,7 +294,7 @@ contains
    type(error), optional, intent(out) :: err
    integer(c_int)                          :: error_out
    error_out=Epetra_CrsMatrix_ReplaceGlobalValues(this%CrsMatrix_id,GlobalRow,NumEntries,values,indices)
-   if (present(err)) err=error(error_out)
+   if (present(err)) err=error(error_out,'Epetra_CrsMatrix%ReplaceGlobalValues: failed.')
   end subroutine
   
   subroutine FillComplete_Op(this,OptimizeDataStorage,err)
@@ -312,7 +312,7 @@ contains
      OptimizeDataStorage_in=FT_FALSE
    endif
    error_out=Epetra_CrsMatrix_FillComplete(this%CrsMatrix_id,OptimizeDataStorage_in)
-   if (present(err)) err=error(error_out)
+   if (present(err)) err=error(error_out,'Epetra_CrsMatrix%FillComplete_On: failed.')
   end subroutine
 
   subroutine FillComplete_Map(this,DomainMap,RangeMap,OptimizeDataStorage,err)
@@ -333,7 +333,7 @@ contains
    endif
    error_out=Epetra_CrsMatrix_FillComplete_UsingMaps(this%CrsMatrix_id,DomainMap%get_EpetraMap_ID(),&
         RangeMap%get_EpetraMap_ID(),OptimizeDataStorage_in)
-   if (present(err)) err=error(error_out)
+   if (present(err)) err=error(error_out,'Epetra_CrsMatrix%FillComplete_Map: failed.')
   end subroutine
 
  subroutine ExtractGlobalRowCopy(this,GlobalRow,length,NumEntries,values,indices,err)
@@ -346,7 +346,7 @@ contains
    type(error), optional, intent(out) :: err
    integer(c_int)                          :: error_out
    error_out=Epetra_CrsMatrix_ExtractGlobalRowCopy_WithIndices(this%CrsMatrix_id,GlobalRow,length,NumEntries,values,indices)
-   if (present(err)) err=error(error_out)
+   if (present(err)) err=error(error_out,'Epetra_CrsMatrix%ExtractGlobalRowCopy: failed')
  end subroutine
 
  integer(c_int) function NumMyRowEntries(this,MyRow)
@@ -365,42 +365,42 @@ contains
  end function
  
  subroutine Multiply_Vector(this,TransA,x,y,err)
-  use ForTrilinos_enums, only: FT_boolean_t,FT_FALSE,FT_TRUE
-  use FEpetra_Vector, only:Epetra_Vector
-  class(Epetra_CrsMatrix), intent(in) :: this
-  logical, intent(in) :: TransA
-  integer(FT_boolean_t)  :: TransA_in
-  class(Epetra_Vector), intent(in) :: x
-  class(Epetra_Vector), intent(inout) :: y 
-  type(error), optional, intent(inout) :: err
-  integer(c_int)                       :: error_out
-  if (TransA) then
-    TransA_in=FT_TRUE
-  else
-    TransA_in=FT_FALSE
-  endif
-  error_out=Epetra_CrsMatrix_Multiply_Vector(this%CrsMatrix_id,TransA_in,x%get_EpetraVector_ID(),y%get_EpetraVector_ID())    
-  if (present(err)) err=error(error_out)
+   use ForTrilinos_enums, only: FT_boolean_t,FT_FALSE,FT_TRUE
+   use FEpetra_Vector, only:Epetra_Vector
+   class(Epetra_CrsMatrix), intent(in) :: this
+   logical, intent(in) :: TransA
+   integer(FT_boolean_t)  :: TransA_in
+   class(Epetra_Vector), intent(in) :: x
+   class(Epetra_Vector), intent(inout) :: y 
+   type(error), optional, intent(inout) :: err
+   integer(c_int)                       :: error_out
+   if (TransA) then
+     TransA_in=FT_TRUE
+   else
+     TransA_in=FT_FALSE
+   endif
+   error_out=Epetra_CrsMatrix_Multiply_Vector(this%CrsMatrix_id,TransA_in,x%get_EpetraVector_ID(),y%get_EpetraVector_ID())    
+   if (present(err)) err=error(error_out,'Epetra_CrsMatrix%Multiply_Vector: failed')
  end subroutine
 
  subroutine Multiply_MultiVector(this,TransA,x,y,err)
-  use ForTrilinos_enums, only: FT_boolean_t,FT_FALSE,FT_TRUE
-  use FEpetra_MultiVector, only:Epetra_MultiVector
-  class(Epetra_CrsMatrix), intent(in) :: this
-  logical, intent(in) :: TransA
-  integer(FT_boolean_t)  :: TransA_in
-  class(Epetra_MultiVector), intent(in) :: x
-  class(Epetra_MultiVector), intent(inout) :: y 
-  type(error), optional, intent(inout) :: err
-  integer(c_int)                       :: error_out
-  if (TransA) then
-    TransA_in=FT_TRUE
-  else
-    TransA_in=FT_FALSE
-  endif
-  error_out=Epetra_CrsMatrix_Multiply_MultiVector(this%CrsMatrix_id,TransA_in,&
+   use ForTrilinos_enums, only: FT_boolean_t,FT_FALSE,FT_TRUE
+   use FEpetra_MultiVector, only:Epetra_MultiVector
+   class(Epetra_CrsMatrix), intent(in) :: this
+   logical, intent(in) :: TransA
+   integer(FT_boolean_t)  :: TransA_in
+   class(Epetra_MultiVector), intent(in) :: x
+   class(Epetra_MultiVector), intent(inout) :: y 
+   type(error), optional, intent(inout) :: err
+   integer(c_int)                       :: error_out
+   if (TransA) then
+     TransA_in=FT_TRUE
+   else
+     TransA_in=FT_FALSE
+   endif
+   error_out=Epetra_CrsMatrix_Multiply_MultiVector(this%CrsMatrix_id,TransA_in,&
                                                   x%get_EpetraMultiVector_ID(),y%get_EpetraMultiVector_ID())    
-  if (present(err)) err=error(error_out)
+   if (present(err)) err=error(error_out,'Epetra_CrsMatrix%Multiply_MultiVector: failed')
  end subroutine
 
  logical function MyGlobalRow(this,GID)

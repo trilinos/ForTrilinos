@@ -165,7 +165,7 @@ contains
     type(error) ,optional    ,intent(out) :: err
     integer(c_int)               :: error_out
     error_out = AztecOO_Iterate_Current(this%AztecOO_id,MaxIters,tolerance)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'AztecOO%iterate_current: failed')
   end subroutine
 
   !> <BR> Original C++ prototype:
@@ -187,7 +187,7 @@ contains
     integer(c_int)               :: error_out
     error_out = AztecOO_Iterate(this%AztecOO_id,A%get_EpetraRowMatrix_ID(),&
          x%get_EpetraMultiVector_ID(),b%get_EpetraMultiVector_ID(),MaxIters,tolerance)
-    if (present(err)) err=error(error_out)
+    if (present(err)) err=error(error_out,'AztecOO%iterate_RowMatrix: failed')
   end subroutine
 
   subroutine SetAztecOption(this,option,value)
