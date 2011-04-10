@@ -200,9 +200,9 @@ module forpliris
     type(FT_Epetra_Vector_ID_t) ,intent(in)   ,value              :: AID
     integer(c_int)              ,intent(in)   ,value              :: my_rows
     integer(c_int)              ,intent(in)   ,value              :: my_cols
-    integer(c_int)              ,intent(in)   ,value              :: matrix_size
-    integer(c_int)              ,intent(in)   ,value              :: num_procsr
-    integer(c_int)              ,intent(in)   ,value              :: num_rhs
+    integer(c_int)              ,intent(in)                       :: matrix_size
+    integer(c_int)              ,intent(in)                       :: num_procsr
+    integer(c_int)              ,intent(in)                       :: num_rhs
     real(c_double)              ,intent(out)                      :: secs
   end function
 
@@ -215,20 +215,20 @@ module forpliris
   !!     int my_rows, int my_cols, int * matrix_size, int * num_procsr, int * num_rhs, 
   !!     double * secs );
 
-  function Pliris_FactorSolve_Serial ( selfID, AAID, my_rows, my_cols, matrix_size, &
-        num_procsr, num_rhs, secs ) result(that) bind(C,name='Pliris_FactorSolve_Serial')
-    import :: c_int ,FT_Pliris_ID_t ,FT_Epetra_SerialDenseVector_ID_t ,c_double
-    
-    integer(c_int)                                                :: that
-    type(FT_Pliris_ID_t)        ,intent(in)   ,value              :: selfID
-    type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: AAID
-    integer(c_int)              ,intent(in)   ,value              :: my_rows
-    integer(c_int)              ,intent(in)   ,value              :: my_cols
-    integer(c_int)              ,intent(in)   ,value              :: matrix_size
-    integer(c_int)              ,intent(in)   ,value              :: num_procsr
-    integer(c_int)              ,intent(in)   ,value              :: num_rhs
-    real(c_double)              ,intent(out)                      :: secs
-  end function
+! function Pliris_FactorSolve_Serial ( selfID, AAID, my_rows, my_cols, matrix_size, &
+!       num_procsr, num_rhs, secs ) result(that) bind(C,name='Pliris_FactorSolve_Serial')
+!   import :: c_int ,FT_Pliris_ID_t ,FT_Epetra_SerialDenseVector_ID_t ,c_double
+!   
+!   integer(c_int)                                                :: that
+!   type(FT_Pliris_ID_t)        ,intent(in)   ,value              :: selfID
+!   type(FT_Epetra_SerialDenseVector_ID_t),intent(in)   ,value              :: AAID
+!   integer(c_int)              ,intent(in)   ,value              :: my_rows
+!   integer(c_int)              ,intent(in)   ,value              :: my_cols
+!   integer(c_int)              ,intent(in)   ,value              :: matrix_size
+!   integer(c_int)              ,intent(in)   ,value              :: num_procsr
+!   integer(c_int)              ,intent(in)   ,value              :: num_rhs
+!   real(c_double)              ,intent(out)                      :: secs
+! end function
 
 
   !> <BR> Original C++ prototype:
