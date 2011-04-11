@@ -79,7 +79,7 @@ contains
     do i=1,size(assertion)
       if (.not. assertion(i)) then
         any_failures=.true.
-        write(error_unit,*) 'Assertion failed with message: '
+        write(error_unit,fmt='(31a)',advance="no") 'Assertion failed with message: '
         if (allocated(text(i)%string)) then
           write(error_unit,*) text(i)%string
         else

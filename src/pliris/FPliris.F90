@@ -51,7 +51,7 @@ module FPliris
     private
     type(FT_Pliris_ID_t) :: FT_Pliris_id 
   contains
-     !User interface:
+     !User interface -- type-bound procedures intended for use by end applications:
      procedure         :: SetLHS
      procedure         :: SetRHS
      procedure         :: SetMatrix
@@ -61,7 +61,8 @@ module FPliris
     !procedure         :: FactorSolve_Serial
      procedure         :: Factor
      procedure         :: Solve
-     ! Developers only:
+
+     !Developers only -- to be called by developers from other ForTrilinos modules, not by end applications:
      procedure         :: invalidate_id => invalidate_PlirisID
      procedure         :: ctrilinos_delete => ctrilinos_delete_Pliris
      procedure         :: get_PlirisID 
@@ -70,24 +71,24 @@ module FPliris
   end type
 
    interface Pliris ! Constructors
-     ! User interface:
+     !User interface -- constructors for use by end applications:
      module procedure from_scratch,from_thin_air
-     ! Developers only:
+     !Developers only -- to be called by developers from other ForTrilinos modules, not by end applications:
      module procedure from_struct
    end interface
  
 contains
 
   ! -------------------- User-defined constructors ------------------ 
-
-  type(Pliris) function from_thin_air()
-    from_thin_air%FT_Pliris_id = Pliris_Create_Default ()
-  end function
-
+   
   type(Pliris) function from_struct(id)
      type(FT_Pliris_ID_t) ,intent(in) :: id
      from_struct%FT_Pliris_id = id
-     call from_struct%register_self()
+     call from_struct%register_self
+  end function
+
+  type(Pliris) function from_thin_air()
+    from_thin_air = from_struct(Pliris_Create_Default())
   end function
 
   type(Pliris) function from_scratch(A,x,b)

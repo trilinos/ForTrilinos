@@ -67,7 +67,10 @@ contains
 
   subroutine grab(this)
     class(ref_counter), intent(inout) :: this
-    call assert( [associated(this%count)], [error_message('Ref_counter%grab: count not associated.')] )
+    type(error_message) ,dimension(1) :: errmess
+    errmess(1) =error_message('Ref_counter%grab: count not associated.')
+    call assert( [associated(this%count)], errmess )
+   !call assert( [associated(this%count)], [error_message('Ref_counter%grab: count not associated.')] )
     this%count = this%count + 1
   end subroutine
 
@@ -76,8 +79,13 @@ contains
     class (ref_counter), intent(inout) :: this
     integer  :: status
     type(error) :: ierr
-    call assert( [associated(this%count)], [error_message('Ref_counter%release: count not associated.')] )
-    call assert( [this%count>=1], [error_message('Ref_counter%release: non-positive count.')] )
+    type(error_message) ,dimension(1) :: errmess
+    errmess(1) =error_message('Ref_counter%release: count not associated.')
+    call assert( [associated(this%count)], errmess )
+   !call assert( [associated(this%count)], [error_message('Ref_counter%release: count not associated.')] )
+    errmess(1) =error_message('Ref_counter%release: non-positive count.')
+    call assert( [this%count>=1], errmess )
+   !call assert( [this%count>=1], [error_message('Ref_counter%release: non-positive count.')] )
     this%count = this%count - 1
     if (this%count == 0) then
       call this%obj%ctrilinos_delete
@@ -96,7 +104,10 @@ contains
   subroutine assign (lhs, rhs)
     class (ref_counter), intent(inout) :: lhs
     class (ref_counter), intent(in) :: rhs
-    call assert( [associated(rhs%count)], [error_message('Ref_counter%assign: rhs%count not associated.')] )
+    type(error_message) ,dimension(1) :: errmess
+    errmess(1) =error_message('Ref_counter%assign: rhs%count not associated.')
+    call assert( [associated(rhs%count)], errmess )
+   !call assert( [associated(rhs%count)], [error_message('Ref_counter%assign: rhs%count not associated.')] )
     lhs%count => rhs%count
     lhs%obj => rhs%obj
     call lhs%grab

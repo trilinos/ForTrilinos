@@ -50,7 +50,9 @@ module F$Package_$Class
     private
     type(FT_$Package_$Class_ID_t) :: $Class_id 
   contains
-     !Developers only
+     !User interface -- insert here type-bound procedures intended for use by end applications:
+
+     !Developers only -- to be called by developers from other ForTrilinos modules, not by end applications:
      procedure         :: invalidate_id => invalidate_$Package$Class_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_$Package$Class
      procedure         :: get_$Package$Class_ID 
@@ -58,19 +60,26 @@ module F$Package_$Class
      procedure         :: generalize 
   end type
 
-   interface $Package_$Class ! constructors
-     module procedure from_scratch,duplicate,from_struct
+   interface $Package_$Class 
+     !User interface -- constructors for use by end applications:
+     module procedure from_scratch,duplicate
+     !Developers only -- to be called by developers from other ForTrilinos modules, not by end applications:
+     module procedure from_struct
    end interface
  
 contains
 
   ! Common type-bound procedures begin here: all ForTrilinos classes at the base of the API have procedures analogous to these.
+  ! The function from_struct should be called by developers only from other ForTrilinos modules, never by end applications:
 
   typ($Package_$Class) function from_struct(id)
      type(FT_$Package_$Class_ID_t) ,intent(in) :: id
      from_struct%$Class_id = id
      call from_struct%register_self()
   end function
+ 
+  ! All additional constructors should take two steps: (1) obtain a struct ID by invoking a procedural binding and then (2) pass
+  ! this ID to from_struct to initialize the constructed object's ID component and register the object for reference counting.
  
   type($Package_$Class) function from_scratch($args)
     ! Declare args
@@ -86,10 +95,14 @@ contains
     duplicate = from_struct(duplicate_id)
   end function
 
+  !----------------- Data access ---------------------------------------------
+
   type(FT_$Package_$Class_ID_t) function get_$Package$Class_ID(this)
     class($Package_$Class) ,intent(in) :: this 
     get_$Package$Class_ID=this%$Class_id
   end function
+
+  !----------------- Type casting ---------------------------------------------
   
   type(FT_$Package_$Class_ID_t) function alias_$Package$Class_ID(generic_id)
     use ForTrilinos_table_man, only : CT_Alias
