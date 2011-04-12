@@ -170,17 +170,17 @@ module forpliris
     import :: c_int ,FT_Pliris_ID_t
     
     integer(c_int)                                                :: that
-    type(FT_Pliris_ID_t)        ,intent(in)   ,value              :: selfID
-    integer(c_int)              ,intent(in)   ,value              :: nprocs_row
-    integer(c_int)              ,intent(in)   ,value              :: number_of_unknowns
-    integer(c_int)              ,intent(in)   ,value              :: nrhs
-    integer(c_int)              ,intent(out)                      :: my_rows
-    integer(c_int)              ,intent(out)                      :: my_cols
-    integer(c_int)              ,intent(out)                      :: my_first_row
-    integer(c_int)              ,intent(out)                      :: my_first_col
-    integer(c_int)              ,intent(out)                      :: my_rhs
-    integer(c_int)              ,intent(out)                      :: my_row
-    integer(c_int)              ,intent(out)                      :: my_col
+    type(FT_Pliris_ID_t) ,intent(in)   ,value              :: selfID
+    integer(c_int)       ,intent(in)                       :: nprocs_row
+    integer(c_int)       ,intent(in)                       :: number_of_unknowns
+    integer(c_int)       ,intent(in)                       :: nrhs
+    integer(c_int)       ,intent(out)                      :: my_rows
+    integer(c_int)       ,intent(out)                      :: my_cols
+    integer(c_int)       ,intent(out)                      :: my_first_row
+    integer(c_int)       ,intent(out)                      :: my_first_col
+    integer(c_int)       ,intent(out)                      :: my_rhs
+    integer(c_int)       ,intent(out)                      :: my_row
+    integer(c_int)       ,intent(out)                      :: my_col
   end function
 
 

@@ -72,7 +72,7 @@ module FPliris
 
    interface Pliris ! Constructors
      !User interface -- constructors for use by end applications:
-     module procedure from_scratch,from_thin_air
+     module procedure Create_Default,Create
      !Developers only -- to be called by developers from other ForTrilinos modules, not by end applications:
      module procedure from_struct
    end interface
@@ -87,18 +87,16 @@ contains
      call from_struct%register_self
   end function
 
-  type(Pliris) function from_thin_air()
-    from_thin_air = from_struct(Pliris_Create_Default())
+  type(Pliris) function Create_Default()
+    Create_Default = from_struct(Pliris_Create_Default())
   end function
 
-  type(Pliris) function from_scratch(A,x,b)
+  type(Pliris) function Create(A,x,b)
     use FEpetra_Vector ,only : Epetra_Vector
     use FEpetra_MultiVector ,only : Epetra_MultiVector
     type(Epetra_Vector) ,intent(in) :: A
     type(Epetra_MultiVector) ,intent(in) :: x,b
-    type(FT_Pliris_ID_t) :: from_scratch_id
-    from_scratch_id = Pliris_Create(A%get_EpetraVector_ID(),x%get_EpetraMultiVector_ID(),b%get_EpetraMultiVector_ID())
-    from_scratch = from_struct(from_scratch_id)
+    Create = from_struct(Pliris_Create(A%get_EpetraVector_ID(),x%get_EpetraMultiVector_ID(),b%get_EpetraMultiVector_ID()))
   end function
 
   !----------------- Destructor ---------------------------------------
