@@ -106,7 +106,6 @@ contains
     call Pliris_Destroy( this%FT_Pliris_id ) 
   end subroutine
 
-  
   !----------------- Data access ---------------------------------------------
 
   type(FT_Pliris_ID_t) function get_PlirisID(this)
@@ -131,34 +130,19 @@ contains
   end function
 
   type(ForTrilinos_Universal_ID_t) function generalize(this)
-   ! ____ Use for ForTrilinos function implementation ______
    use ForTrilinos_utils ,only: generalize_all
    use iso_c_binding     ,only: c_loc
    class(Pliris) ,intent(in) ,target :: this
    generalize = generalize_all(c_loc(this%FT_Pliris_id))
-   ! ____ Use for ForTrilinos function implementation ______
-
-   ! ____ Use for CTrilinos function implementation ______
-   !class(Pliris) ,intent(in) ,target :: this
-   !generalize = Pliris_Generalize ( this%FT_Pliris_id)
-   ! ____ Use for CTrilinos function implementation ______
   end function
 
  type(FT_Pliris_ID_t) function degeneralize_Pliris(generic_id) bind(C)
-   ! ____ Use for ForTrilinos function implementation ______
     use ForTrilinos_enums ,only : FT_Pliris_ID_t
     use ,intrinsic :: iso_c_binding ,only: c_ptr,c_f_pointer
     type(c_ptr)                   ,value   :: generic_id
     type(FT_Pliris_ID_t) ,pointer :: local_ptr=>null()
     call c_f_pointer (generic_id, local_ptr)
     degeneralize_Pliris = local_ptr
-   ! ____ Use for ForTrilinos function implementation ______
-
-   ! ____ Use for CTrilinos function implementation ______
-   !use ForTrilinos_enums ,only : ForTrilinos_Universal_ID_t,FT_Pliris_ID_t
-   !type(ForTrilinos_Universal_ID_t) ,intent(in) :: generic_id
-   !degeneralize_Pliris = Pliris_Degeneralize(generic_id)
-   ! ____ Use for CTrilinos function implementation ______
   end function
  
   subroutine invalidate_PlirisID(this)
@@ -213,7 +197,7 @@ contains
   subroutine FactorSolve ( this, A, my_rows, my_cols, matrix_size, num_procsr, num_rhs, secs )
     use FEpetra_Vector ,only : Epetra_Vector
     class(Pliris)       ,intent(in)  :: this
-    type(Epetra_Vector) ,intent(in)  ,value :: A
+    type(Epetra_Vector) ,intent(in)  :: A
     integer(c_int)      ,intent(in)  ,value :: my_rows,my_cols
     integer(c_int)      ,intent(in)  :: matrix_size,num_procsr,num_rhs
     real(c_double)      ,intent(out) :: secs
