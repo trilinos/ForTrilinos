@@ -60,8 +60,18 @@ module FEpetra_Vector
      procedure ,nopass :: alias_EpetraVector_ID
      procedure         :: generalize 
      !Post-construction modfication routines
-     procedure         :: ReplaceGlobalValues
-     procedure         :: SumIntoGlobalValues
+     procedure ,private:: ReplaceGlobalValues_NoOffset
+     procedure ,private:: ReplaceGlobalValues_BlockPos
+     generic :: ReplaceGlobalValues => ReplaceGlobalValues_NoOffset,ReplaceGlobalValues_BlockPos
+     procedure ,private:: ReplaceMyValues_NoOffset
+     procedure ,private:: ReplaceMyValues_BlockPos
+     generic :: ReplaceMyValues => ReplaceMyValues_NoOffset,ReplaceMyValues_BlockPos
+     procedure         :: SumIntoGlobalValues_NoOffset
+     procedure         :: SumIntoGlobalValues_BlockPos
+     generic :: SumIntoGlobalValues => SumIntoGlobalValues_NoOffset,SumIntoGlobalValues_BlockPos
+     procedure         :: SumIntoMyValues_NoOffset
+     procedure         :: SumIntoMyValues_BlockPos
+     generic :: SumIntoMyValues => SumIntoMyValues_NoOffset,SumIntoMyValues_BlockPos
      ! Extraction methods
      procedure         :: ExtractCopy_EpetraVector
      generic :: ExtractCopy => ExtractCopy_EpetraVector
@@ -177,7 +187,7 @@ contains
    ! ____ Use for CTrilinos function implementation ______
   end function
 
-  subroutine ReplaceGlobalValues(this,NumEntries,values,indices,err)
+  subroutine ReplaceGlobalValues_NoOffset(this,NumEntries,values,indices,err)
     class(Epetra_Vector), intent(in) :: this
     integer(c_int),       intent(in) :: NumEntries
     real(c_double),dimension(:),intent(in) :: values
@@ -185,10 +195,45 @@ contains
     type(error),optional,intent(out) :: err
     integer(c_int)                      :: error_out
     error_out=Epetra_Vector_ReplaceGlobalValues(this%vector_id,NumEntries,values,indices)
-    if (present(err)) err=error(error_out,'Epetra_Vector%ReplaceGlobalValues: failed.')
+    if (present(err)) err=error(error_out,'Epetra_Vector%ReplaceGlobalValues_NoOffset: failed.')
   end subroutine
 
-  subroutine SumIntoGlobalValues(this,NumEntries,values,indices,err)
+  subroutine ReplaceGlobalValues_BlockPos(this,NumEntries,BlockOffset,values,indices,err)
+    class(Epetra_Vector), intent(in) :: this
+    integer(c_int),       intent(in) :: NumEntries
+    integer(c_int)       ,intent(in) :: BlockOffset
+    real(c_double),dimension(:),intent(in) :: values
+    integer(c_int),dimension(:),intent(in) :: indices 
+    type(error),optional,intent(out) :: err
+    integer(c_int)                      :: error_out
+    error_out=Epetra_Vector_ReplaceGlobalValues_BlockPos(this%vector_id,NumEntries,BlockOffset,values,indices)
+    if (present(err)) err=error(error_out,'Epetra_Vector%ReplaceGlobalValues_BlockPos: failed.')
+  end subroutine
+  
+  subroutine ReplaceMyValues_NoOffset(this,NumEntries,values,indices,err)
+    class(Epetra_Vector), intent(in) :: this
+    integer(c_int),       intent(in) :: NumEntries
+    real(c_double),dimension(:),intent(in) :: values
+    integer(c_int),dimension(:),intent(in) :: indices 
+    type(error),optional,intent(out) :: err
+    integer(c_int)                      :: error_out
+    error_out=Epetra_Vector_ReplaceMyValues(this%vector_id,NumEntries,values,indices)
+    if (present(err)) err=error(error_out,'Epetra_Vector%ReplaceMyValues_NoOffset: failed.')
+  end subroutine
+
+  subroutine ReplaceMyValues_BlockPos(this,NumEntries,BlockOffset,values,indices,err)
+    class(Epetra_Vector), intent(in) :: this
+    integer(c_int),       intent(in) :: NumEntries
+    integer(c_int)       ,intent(in) :: BlockOffset
+    real(c_double),dimension(:),intent(in) :: values
+    integer(c_int),dimension(:),intent(in) :: indices 
+    type(error),optional,intent(out) :: err
+    integer(c_int)                      :: error_out
+    error_out=Epetra_Vector_ReplaceMyValues_BlockPos(this%vector_id,NumEntries,BlockOffset,values,indices)
+    if (present(err)) err=error(error_out,'Epetra_Vector%ReplaceMyValues_BlockPos: failed.')
+  end subroutine
+
+  subroutine SumIntoGlobalValues_NoOffset(this,NumEntries,values,indices,err)
     class(Epetra_Vector), intent(in) :: this
     integer(c_int),       intent(in) :: NumEntries
     real(c_double),dimension(:),intent(in) :: values
@@ -196,7 +241,42 @@ contains
     type(error),optional,intent(out) :: err
     integer(c_int)                      :: error_out
     error_out=Epetra_Vector_SumIntoGlobalValues(this%vector_id,NumEntries,values,indices)
-    if (present(err)) err=error(error_out,'Epetra_Vector%SumIntoGlobalValues: failed.')
+    if (present(err)) err=error(error_out,'Epetra_Vector%SumIntoGlobalValues_NoOffset: failed.')
+  end subroutine
+  
+  subroutine SumIntoGlobalValues_BlockPos(this,NumEntries,BlockOffset,values,indices,err)
+    class(Epetra_Vector), intent(in) :: this
+    integer(c_int),       intent(in) :: NumEntries
+    integer(c_int)       ,intent(in) :: BlockOffset
+    real(c_double),dimension(:),intent(in) :: values
+    integer(c_int),dimension(:),intent(in) :: indices 
+    type(error),optional,intent(out) :: err
+    integer(c_int)                      :: error_out
+    error_out=Epetra_Vector_SumIntoGlobalValues_BlockPos(this%vector_id,NumEntries,BlockOffset,values,indices)
+    if (present(err)) err=error(error_out,'Epetra_Vector%SumIntoGlobalValues_BlockPos: failed.')
+  end subroutine
+
+  subroutine SumIntoMyValues_NoOffset(this,NumEntries,values,indices,err)
+    class(Epetra_Vector), intent(in) :: this
+    integer(c_int),       intent(in) :: NumEntries
+    real(c_double),dimension(:),intent(in) :: values
+    integer(c_int),dimension(:),intent(in) :: indices 
+    type(error),optional,intent(out) :: err
+    integer(c_int)                      :: error_out
+    error_out=Epetra_Vector_SumIntoMyValues(this%vector_id,NumEntries,values,indices)
+    if (present(err)) err=error(error_out,'Epetra_Vector%SumIntoMyValues_NoOffset: failed.')
+  end subroutine
+  
+  subroutine SumIntoMyValues_BlockPos(this,NumEntries,BlockOffset,values,indices,err)
+    class(Epetra_Vector), intent(in) :: this
+    integer(c_int),       intent(in) :: NumEntries
+    integer(c_int)       ,intent(in) :: BlockOffset
+    real(c_double),dimension(:),intent(in) :: values
+    integer(c_int),dimension(:),intent(in) :: indices 
+    type(error),optional,intent(out) :: err
+    integer(c_int)                      :: error_out
+    error_out=Epetra_Vector_SumIntoMyValues_BlockPos(this%vector_id,NumEntries,BlockOffset,values,indices)
+    if (present(err)) err=error(error_out,'Epetra_Vector%SumIntoMyValues_BlockPos: failed.')
   end subroutine
 
   function ExtractCopy_EpetraVector(this,err) result(ExtractCopy_out)
