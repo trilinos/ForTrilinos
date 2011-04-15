@@ -215,9 +215,11 @@ contains
     integer(c_int),       intent(in) :: NumEntries
     real(c_double),dimension(:),intent(in) :: values
     integer(c_int),dimension(:),intent(in) :: indices 
+    integer(c_int),dimension(size(indices)):: indices_c
     type(error),optional,intent(out) :: err
     integer(c_int)                      :: error_out
-    error_out=Epetra_Vector_ReplaceMyValues(this%vector_id,NumEntries,values,indices)
+    indices_c=indices-FT_Index_OffSet ! To account for Fortran index base 1 
+    error_out=Epetra_Vector_ReplaceMyValues(this%vector_id,NumEntries,values,indices_c)
     if (present(err)) err=error(error_out,'Epetra_Vector%ReplaceMyValues_NoOffset: failed.')
   end subroutine
 
@@ -227,9 +229,11 @@ contains
     integer(c_int)       ,intent(in) :: BlockOffset
     real(c_double),dimension(:),intent(in) :: values
     integer(c_int),dimension(:),intent(in) :: indices 
+    integer(c_int),dimension(size(indices)):: indices_c
     type(error),optional,intent(out) :: err
     integer(c_int)                      :: error_out
-    error_out=Epetra_Vector_ReplaceMyValues_BlockPos(this%vector_id,NumEntries,BlockOffset,values,indices)
+    indices_c=indices-FT_Index_OffSet ! To account for Fortran index base 1
+    error_out=Epetra_Vector_ReplaceMyValues_BlockPos(this%vector_id,NumEntries,BlockOffset,values,indices_c)
     if (present(err)) err=error(error_out,'Epetra_Vector%ReplaceMyValues_BlockPos: failed.')
   end subroutine
 
@@ -261,9 +265,11 @@ contains
     integer(c_int),       intent(in) :: NumEntries
     real(c_double),dimension(:),intent(in) :: values
     integer(c_int),dimension(:),intent(in) :: indices 
+    integer(c_int),dimension(size(indices)):: indices_c   
     type(error),optional,intent(out) :: err
     integer(c_int)                      :: error_out
-    error_out=Epetra_Vector_SumIntoMyValues(this%vector_id,NumEntries,values,indices)
+    indices_c=indices-FT_Index_OffSet ! To account for Fortran index base 1
+    error_out=Epetra_Vector_SumIntoMyValues(this%vector_id,NumEntries,values,indices_c)
     if (present(err)) err=error(error_out,'Epetra_Vector%SumIntoMyValues_NoOffset: failed.')
   end subroutine
   
