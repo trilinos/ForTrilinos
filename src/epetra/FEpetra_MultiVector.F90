@@ -60,9 +60,18 @@ module FEpetra_MultiVector
      procedure ,nopass :: alias_EpetraMultiVector_ID
      procedure         :: generalize 
      ! Post-construction modification procedure 
-     procedure         :: ReplaceGlobalValue_GlobalRow
-     procedure         :: ReplaceGlobalValue_GlobalBlockRow
-     generic :: ReplaceGlobalValue=>ReplaceGlobalValue_GlobalRow,ReplaceGlobalValue_GlobalBlockRow
+     procedure ,private:: ReplaceGlobalValue_NoOffset
+     procedure ,private:: ReplaceGlobalValue_BlockPos
+     generic :: ReplaceGlobalValue=>ReplaceGlobalValue_NoOffset,ReplaceGlobalValue_BlockPos
+     procedure ,private:: ReplaceMyValue_NoOffset
+     procedure ,private:: ReplaceMyValue_BlockPos
+     generic :: ReplaceMyValue=>ReplaceMyValue_NoOffset,ReplaceMyValue_BlockPos
+     procedure ,private:: SumIntoGlobalValue_NoOffset
+     procedure ,private:: SumIntoGlobalValue_BlockPos
+     generic :: SumIntoGlobalValue=>SumIntoGlobalValue_NoOffset,SumIntoGlobalValue_BlockPos
+     procedure ,private:: SumIntoMyValue_NoOffset
+     procedure ,private:: SumIntoMyValue_BlockPos
+     generic :: SumIntoMyValue=>SumIntoMyValue_NoOffset,SumIntoMyValue_BlockPos
      !Mathematical Methods
      procedure         :: Dot
      procedure         :: Abs
@@ -195,8 +204,8 @@ contains
   !degeneralize_EpetraMultiVector = Epetra_MultiVector_Degeneralize(generic_id)
   ! ____ Use for CTrilinos function implementation ______
   end function
- 
-  subroutine ReplaceGlobalValue_GlobalRow(this,GlobalRow,VectorIndex,ScalarValue,err)
+
+  subroutine ReplaceGlobalValue_NoOffset(this,GlobalRow,VectorIndex,ScalarValue,err)
     class(Epetra_MultiVector), intent(in) :: this
     integer(c_int), intent(in) :: GlobalRow
     integer(c_int), intent(in) :: VectorIndex 
@@ -206,12 +215,12 @@ contains
     integer(c_int)     :: error_out
     VectorIndex_c=VectorIndex-FT_Index_OffSet ! To account for Fortran index base 1
     error_out=Epetra_MultiVector_ReplaceGlobalValue(this%MultiVector_id,GlobalRow,VectorIndex_c,ScalarValue)
-    if (present(err)) err=error(error_out,'Epetra_MultiVector%ReplaceGlobalValue_GlobalRow: failed')
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%ReplaceGlobalValue_NoOffset: failed')
   end subroutine
   
-  subroutine ReplaceGlobalValue_GlobalBlockRow(this,GlobalRow,BlockRowOffset,VectorIndex,ScalarValue,err)
+  subroutine ReplaceGlobalValue_BlockPos(this,GlobalBlockRow,BlockRowOffset,VectorIndex,ScalarValue,err)
     class(Epetra_MultiVector), intent(in) :: this
-    integer(c_int), intent(in) :: GlobalRow
+    integer(c_int), intent(in) :: GlobalBlockRow
     integer(c_int), intent(in) :: BlockRowOffset
     integer(c_int), intent(in) :: VectorIndex 
     integer(c_int)             :: VectorIndex_c ! To account for Fortran index base 1
@@ -219,9 +228,95 @@ contains
     type(error),optional,intent(out) :: err
     integer(c_int)     :: error_out
     VectorIndex_c=VectorIndex-FT_Index_OffSet ! To account for Fortran index base 1
-    error_out=Epetra_MultiVector_ReplaceGlobalValue_BlockPos(this%MultiVector_id,GlobalRow,BlockRowOffset,VectorIndex_c,ScalarValue)
-    if (present(err)) err=error(error_out,'Epetra_MultiVector%ReplaceGlobalValue_GlobalBlockRow: failed')
+    error_out=Epetra_MultiVector_ReplaceGlobalValue_BlockPos(this%MultiVector_id,GlobalBlockRow,BlockRowOffset,&
+                                                             VectorIndex_c,ScalarValue)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%ReplaceGlobalValue_BlockPos: failed')
   end subroutine
+ 
+  subroutine ReplaceMyValue_NoOffset(this,MyRow,VectorIndex,ScalarValue,err)
+    class(Epetra_MultiVector), intent(in) :: this
+    integer(c_int), intent(in) :: MyRow
+    integer(c_int), intent(in) :: VectorIndex 
+    integer(c_int)             :: VectorIndex_c
+    real(c_double), intent(in) :: ScalarValue 
+    type(error),optional,intent(out) :: err
+    integer(c_int)     :: error_out
+    VectorIndex_c=VectorIndex-FT_Index_OffSet ! To account for Fortran index base 1
+    error_out=Epetra_MultiVector_ReplaceMyValue(this%MultiVector_id,MyRow,VectorIndex_c,ScalarValue)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%ReplaceMyValue_NoOffset: failed')
+  end subroutine
+  
+  subroutine ReplaceMyValue_BlockPos(this,MyBlockRow,BlockRowOffset,VectorIndex,ScalarValue,err)
+    class(Epetra_MultiVector), intent(in) :: this
+    integer(c_int), intent(in) :: MyBlockRow
+    integer(c_int), intent(in) :: BlockRowOffset
+    integer(c_int), intent(in) :: VectorIndex 
+    integer(c_int)             :: VectorIndex_c ! To account for Fortran index base 1
+    real(c_double), intent(in) :: ScalarValue 
+    type(error),optional,intent(out) :: err
+    integer(c_int)     :: error_out
+    VectorIndex_c=VectorIndex-FT_Index_OffSet ! To account for Fortran index base 1
+    error_out=Epetra_MultiVector_ReplaceMyValue_BlockPos(this%MultiVector_id,MyBlockRow,BlockRowOffset,&
+                                                         VectorIndex_c,ScalarValue)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%ReplaceMyValue_BlockPos: failed')
+  end subroutine
+
+  subroutine SumIntoGlobalValue_NoOffset ( this,GlobalRow,VectorIndex,ScalarValue,err)
+    class(Epetra_MultiVector), intent(in) :: this
+    integer(c_int), intent(in) :: GlobalRow
+    integer(c_int), intent(in) :: VectorIndex 
+    integer(c_int)             :: VectorIndex_c ! To account for Fortran index base 1
+    real(c_double), intent(in) :: ScalarValue 
+    type(error),optional,intent(out) :: err
+    integer(c_int)     :: error_out
+    VectorIndex_c=VectorIndex-FT_Index_OffSet ! To account for Fortran index base 1
+    error_out=Epetra_MultiVector_SumIntoGlobalValue(this%MultiVector_id,GlobalRow,VectorIndex_c,ScalarValue)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%SumIntoGlobalValue_NoOffset: failed')
+  end subroutine
+  
+  subroutine SumIntoGlobalValue_BlockPos ( this,GlobalBlockRow,BlockRowOffset,VectorIndex,ScalarValue,err)
+    class(Epetra_MultiVector), intent(in) :: this
+    integer(c_int), intent(in) :: GlobalBlockRow
+    integer(c_int), intent(in) :: BlockRowOffset
+    integer(c_int), intent(in) :: VectorIndex 
+    integer(c_int)             :: VectorIndex_c ! To account for Fortran index base 1
+    real(c_double), intent(in) :: ScalarValue 
+    type(error),optional,intent(out) :: err
+    integer(c_int)     :: error_out
+    VectorIndex_c=VectorIndex-FT_Index_OffSet ! To account for Fortran index base 1
+    error_out=Epetra_MultiVector_SumIntoGlobalValue_BlockPos(this%MultiVector_id,GlobalBlockRow,BlockRowOffset,&
+                                                             VectorIndex_c,ScalarValue)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%SumIntoGlobalValue_BlockPos: failed')
+  end subroutine
+
+  subroutine SumIntoMyValue_NoOffset ( this,MyRow,VectorIndex,ScalarValue,err)
+    class(Epetra_MultiVector), intent(in) :: this
+    integer(c_int), intent(in) :: MyRow
+    integer(c_int), intent(in) :: VectorIndex 
+    integer(c_int)             :: VectorIndex_c ! To account for Fortran index base 1
+    real(c_double), intent(in) :: ScalarValue 
+    type(error),optional,intent(out) :: err
+    integer(c_int)     :: error_out
+    VectorIndex_c=VectorIndex-FT_Index_OffSet ! To account for Fortran index base 1
+    error_out=Epetra_MultiVector_SumIntoMyValue(this%MultiVector_id,MyRow,VectorIndex_c,ScalarValue)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%SumIntoMyValue_NoOffset: failed')
+  end subroutine
+  
+  subroutine SumIntoMyValue_BlockPos ( this,MyBlockRow,BlockRowOffset,VectorIndex,ScalarValue,err)
+    class(Epetra_MultiVector), intent(in) :: this
+    integer(c_int), intent(in) :: MyBlockRow
+    integer(c_int), intent(in) :: BlockRowOffset
+    integer(c_int), intent(in) :: VectorIndex 
+    integer(c_int)             :: VectorIndex_c ! To account for Fortran index base 1
+    real(c_double), intent(in) :: ScalarValue 
+    type(error),optional,intent(out) :: err
+    integer(c_int)     :: error_out
+    VectorIndex_c=VectorIndex-FT_Index_OffSet ! To account for Fortran index base 1
+    error_out=Epetra_MultiVector_SumIntoMyValue_BlockPos(this%MultiVector_id,MyBlockRow,BlockRowOffset,&
+                                                         VectorIndex_c,ScalarValue)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%SumIntoMyValue_BlockPos: failed')
+  end subroutine
+
 
   function Dot(this,x,err) result(dot_)
     class(Epetra_MultiVector), intent(in) :: this
