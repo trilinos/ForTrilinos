@@ -46,13 +46,13 @@ module FEpetra_Map
   use forepetra
   implicit none
   private                     ! Hide everything by default
-  public :: Epetra_Map!,Epetra_BlockMap ! Expose type/constructors/methods
+  public :: Epetra_Map        ! Expose type/constructors/methods
 
   type, extends(Epetra_BlockMap) :: Epetra_Map 
     private
     type(FT_Epetra_Map_ID_t) :: map_id
   contains
-     !Developers only
+     !Developers only  -- to be called by developers from other ForTrilinos modules, not by end applications:
      procedure         :: invalidate_id => invalidate_EpetraMap_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraMap
      procedure         :: get_EpetraMap_ID 
@@ -61,10 +61,16 @@ module FEpetra_Map
   end type
 
    interface Epetra_Map ! constructors
-     module procedure from_scratch,duplicate,from_struct,from_scratch_linear,from_scratch_arbitrary
+     !User interface -- constructors for use by end applications:
+     module procedure create,duplicate,create_linear,create_arbitrary
+     !Developers only -- to be called by developers from other ForTrilinos modules, not by end applications:
+     module procedure from_struct
    end interface
  
 contains
+  ! Common type-bound procedures begin here: all ForTrilinos child classes of the API have procedures analogous to these.
+  ! The function from_struct must construct a struct id for the extended parent class
+  ! The function from_struct should be called by developers only from other ForTrilinos modules, never by end applications:
 
   type(Epetra_Map) function from_struct(id)
     type(FT_Epetra_Map_ID_t),intent(in) :: id
@@ -72,74 +78,97 @@ contains
     from_struct%Epetra_BlockMap=Epetra_BlockMap(from_struct%alias_EpetraBlockMap_ID(from_struct%generalize()))
   end function
 
+  ! All additional constructors should take two steps: (1) obtain a struct ID by invoking a procedural binding and then (2) pass
+  ! this ID to from_struct to initialize the constructed object's ID component and register the object for reference counting.
+
+  !> @name Constructors
+  !! @brief These should all be called as Epetra_Map(...)
+  !! @{
+
   ! Original C++ prototype:
   ! Epetra_Map(int NumGlobalElements, int IndexBase, const Epetra_Comm& Comm);
   ! CTrilinos prototype:
   ! CT_Epetra_Map_ID_t Epetra_Map_Create ( int NumGlobalElements, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
-  type(Epetra_Map) function from_scratch(Num_GlobalElements,IndexBase,comm)
+  type(Epetra_Map) function create(Num_GlobalElements,IndexBase,comm)
     use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
     integer(c_int) ,intent(in) :: Num_GlobalElements
     integer(c_int) ,intent(in) :: IndexBase
     class(Epetra_Comm)         :: comm
-    type(FT_Epetra_Map_ID_t) :: from_scratch_id
-    from_scratch_id = Epetra_Map_Create(Num_GlobalElements,IndexBase,comm%get_EpetraComm_ID())
-    from_scratch = from_struct(from_scratch_id)
+    type(FT_Epetra_Map_ID_t) :: create_id
+    create_id = Epetra_Map_Create(Num_GlobalElements,IndexBase,comm%get_EpetraComm_ID())
+    create = from_struct(create_id)
   end function
 
-! Original C++ prototype:
+  !> @name Constructors
+  !! @brief These should all be called as Epetra_Map(...)
+  !! @{
+
+  ! Original C++ prototype:
   ! Epetra_Map(int NumGlobalElements, int NumMyElements, int IndexBase, const Epetra_Comm& Comm);
   ! CTrilinos prototype:
   ! CT_Epetra_Map_ID_t Epetra_Map_Create_Linear ( int NumGlobalElements, int NumMyElements, int IndexBase,
   ! CT_Epetra_Comm_ID_t CommID );
 
-  type(Epetra_Map) function from_scratch_linear(Num_GlobalElements,Num_MyElements,IndexBase,comm)
+  type(Epetra_Map) function create_linear(Num_GlobalElements,Num_MyElements,IndexBase,comm)
     use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
     integer(c_int) ,intent(in) :: Num_GlobalElements
     integer(c_int) ,intent(in) :: Num_MyElements
     integer(c_int) ,intent(in) :: IndexBase
     class(Epetra_Comm)         :: comm
-    type(FT_Epetra_Map_ID_t) :: from_scratch_linear_id
-    from_scratch_linear_id = Epetra_Map_Create_Linear(Num_GlobalElements,Num_MyElements,IndexBase,comm%get_EpetraComm_ID())
-    from_scratch_linear = from_struct(from_scratch_linear_id)
+    type(FT_Epetra_Map_ID_t) :: create_linear_id
+    create_linear_id = Epetra_Map_Create_Linear(Num_GlobalElements,Num_MyElements,IndexBase,comm%get_EpetraComm_ID())
+    create_linear = from_struct(create_linear_id)
   end function
+  
+  !> @name Constructors
+  !! @brief These should all be called as Epetra_Map(...)
+  !! @{
 
-! Original C++ prototype:
+  ! Original C++ prototype:
   ! Epetra_Map(int NumGlobalElements, int NumMyElements, const int *MyGlobalElements, int IndexBase, const
   ! Epetra_Comm& Comm);
   ! CTrilinos prototype:
   ! CT_Epetra_Map_ID_t Epetra_Map_Create_Arbitrary ( int NumGlobalElements, int NumMyElements, const int
   !* MyGlobalElements, int IndexBase, CT_Epetra_Comm_ID_t CommID );
 
- type(Epetra_Map) function from_scratch_arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm)
+  type(Epetra_Map) function create_arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm)
     use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
     integer(c_int) ,intent(in)              :: Num_GlobalElements
     integer(c_int) ,intent(in)              :: Num_MyElements
     integer(c_int) ,intent(in) ,dimension(:),allocatable:: My_GlobalElements
     integer(c_int) ,intent(in)              :: IndexBase
     class(Epetra_Comm)                      :: comm
-    type(FT_Epetra_Map_ID_t) :: from_scratch_arbitrary_id
-    from_scratch_arbitrary_id = Epetra_Map_Create_Arbitrary(Num_GlobalElements,&
+    type(FT_Epetra_Map_ID_t) :: create_arbitrary_id
+    create_arbitrary_id = Epetra_Map_Create_Arbitrary(Num_GlobalElements,&
         Num_MyElements,My_GlobalElements,IndexBase,comm%get_EpetraComm_ID())
-    from_scratch_arbitrary = from_struct(from_scratch_arbitrary_id)
+    create_arbitrary = from_struct(create_arbitrary_id)
   end function
+ 
+  !> @name Constructors
+  !! @brief These should all be called as Epetra_Map(...)
+  !! @{
 
   ! Original C++ prototype:
   ! Epetra_Map(const Epetra_Map& map);
   ! CTrilinos prototype:
   ! CT_Epetra_Map_ID_t Epetra_Map_Duplicate ( CT_Epetra_Map_ID_t mapID );
 
-  type(Epetra_Map) function duplicate(this)
-    type(Epetra_Map) ,intent(in) :: this
+  type(Epetra_Map) function duplicate(this) !< Epetra_Map copy constructor
+    type(Epetra_Map) ,intent(in) :: this 
     type(FT_Epetra_Map_ID_t) :: duplicate_id
     duplicate_id = Epetra_Map_Duplicate(this%map_id)
     duplicate = from_struct(duplicate_id)
   end function
 
+  !----------------- Struct access ---------------------------------------------
+
   type(FT_Epetra_Map_ID_t) function get_EpetraMap_ID(this)
     class(Epetra_Map) ,intent(in) :: this 
     get_EpetraMap_ID=this%map_id
   end function
+
+  !----------------- Type casting ---------------------------------------------
  
   type(FT_Epetra_Map_ID_t) function alias_EpetraMap_ID(generic_id)
     use iso_c_binding        ,only: c_loc,c_int
@@ -156,22 +185,13 @@ contains
   end function
 
   type(ForTrilinos_Universal_ID_t) function generalize(this)
-   ! ____ Use for ForTrilinos function implementation ______
    use ForTrilinos_utils ,only: generalize_all 
    use iso_c_binding     ,only: c_loc
    class(Epetra_Map) ,intent(in) ,target :: this
    generalize =generalize_all(c_loc(this%map_id))
-   ! ____ Use for ForTrilinos function implementation ______
-
-   ! ____ Use for CTrilinos function implementation ______
-   !class(Epetra_Map) ,intent(in) ,target :: this
-   !generalize = Epetra_Map_Generalize ( this%map_id )
-   ! ____ Use for CTrilinos function implementation ______
-  
   end function
   
   type(FT_Epetra_Map_ID_t) function degeneralize_EpetraMap(generic_id) bind(C)
-   ! ____ Use for ForTrilinos function implementation ______
     use ForTrilinos_enums ,only : ForTrilinos_Universal_ID_t,FT_Epetra_Map_ID_t
     use ,intrinsic :: iso_c_binding ,only: c_ptr,c_f_pointer
     type(c_ptr)              ,value   :: generic_id
@@ -179,13 +199,9 @@ contains
     call c_f_pointer (generic_id, local_ptr)
     degeneralize_EpetraMap = local_ptr
     local_ptr => null()
-   ! ____ Use for ForTrilinos function implementation ______
-   
-   ! ____ Use for CTrilinos function implementation ______
-   ! type(ForTrilinos_Universal_ID_t) ,intent(in) : generic_id
-   ! degeneralize_EpetraMap = Epetra_Map_Degeneralize(generic_id)
-   ! ____ Use for CTrilinos function implementation ______
   end function
+
+ !__________ Garbage collection __________________________________________________
 
   subroutine invalidate_EpetraMap_ID(this)
     class(Epetra_Map),intent(inout) :: this

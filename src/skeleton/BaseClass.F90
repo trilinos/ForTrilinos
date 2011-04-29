@@ -93,7 +93,7 @@ contains
     duplicate = from_struct($Package_$Class_Duplicate(this%$Class_id))
   end function
 
-  !----------------- Data access ---------------------------------------------
+  !----------------- Struct access ---------------------------------------------
 
   type(FT_$Package_$Class_ID_t) function get_$Package$Class_ID(this)
     class($Package_$Class) ,intent(in) :: this 
@@ -131,6 +131,8 @@ contains
     call c_f_pointer (generic_id, local_ptr)
     degeneralize_$Package$Class = local_ptr
   end function
+ 
+ !__________ Garbage collection __________________________________________________
  
   subroutine invalidate_$Package$Class_ID(this)
     class($Package_$Class),intent(inout) :: this
