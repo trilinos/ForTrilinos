@@ -323,23 +323,14 @@ module FEpetra_Comm
   end function
 
   function generalize_EpetraComm(this)
-   ! ____ Use for ForTrilinos function implementation ______
    use ForTrilinos_utils ,only: generalize_all
    use iso_c_binding ,only : c_loc
    class(Epetra_Comm) ,intent(in) ,target :: this
    type(ForTrilinos_Universal_ID_t) :: generalize_EpetraComm
    generalize_EpetraComm = generalize_all( c_loc(this%comm_id) )
-   ! ____ Use for ForTrilinos function implementation ______
-
-   ! ____ Use for CTrilinos function implementation ______
-   ! class(Epetra_Comm) ,intent(in) ,target :: this
-   ! type(ForTrilinos_Universal_ID_t) :: generalize_EpetraComm
-   ! generalize_EpetraComm = Epetra_Comm_Generalize ( this%comm_id )
-   ! ____ Use for CTrilinos function implementation ______
   end function
   
   function degeneralize_EpetraComm(generic_id) 
-    !use ForTrilinos_enums ,only : ForTrilinos_Universal_ID_t,FT_Epetra_Comm_ID_t
     use ,intrinsic :: iso_c_binding ,only: c_ptr,c_f_pointer
     type(c_ptr)              ,value  :: generic_id
     type(FT_Epetra_Comm_ID_t),pointer:: local_ptr=>null()
