@@ -81,7 +81,7 @@ module FEpetra_Vector
   end type
 
    interface Epetra_Vector ! constructors
-     module procedure constructor1,constructor2,duplicate,from_struct
+     module procedure create,create_FromArray,duplicate,from_struct
    end interface
  
 contains
@@ -97,13 +97,13 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_Vector_ID_t Epetra_Vector_Create ( CT_Epetra_BlockMap_ID_t MapID, boolean zeroOut );
 
-  type(Epetra_Vector) function constructor1(BlockMap,zero_initial)
+  type(Epetra_Vector) function create(BlockMap,zero_initial)
     use ForTrilinos_enums ,only: FT_boolean_t,FT_FALSE,FT_TRUE,FT_Epetra_BlockMap_ID_t
     use FEpetra_BlockMap  ,only: Epetra_BlockMap
     class(Epetra_BlockMap) ,intent(in) :: BlockMap
     logical ,optional      ,intent(in) :: zero_initial
     integer(FT_boolean_t)              :: zero_out
-    type(FT_Epetra_Vector_ID_t) :: constructor1_id
+    type(FT_Epetra_Vector_ID_t) :: create_id
     if (.not.present(zero_initial)) then
      zero_out=FT_FALSE
     elseif (zero_initial) then
@@ -111,19 +111,19 @@ contains
     else
      zero_out=FT_FALSE
     endif
-    constructor1_id = Epetra_Vector_Create(BlockMap%get_EpetraBlockMap_ID(),zero_out)
-    constructor1 = from_struct(constructor1_id)
+    create_id = Epetra_Vector_Create(BlockMap%get_EpetraBlockMap_ID(),zero_out)
+    create = from_struct(create_id)
   end function
   
-  type(Epetra_Vector) function constructor2(CV,BlockMap,V)
+  type(Epetra_Vector) function create_FromArray(CV,BlockMap,V)
     use ForTrilinos_enum_wrappers
     use FEpetra_BlockMap  ,only: Epetra_BlockMap
     class(Epetra_BlockMap) ,intent(in) :: BlockMap
     integer(FT_Epetra_DataAccess_E_t), intent(in) :: CV
     real(c_double),dimension(:) :: V
-    type(FT_Epetra_Vector_ID_t) :: constructor2_id
-    constructor2_id = Epetra_Vector_Create_FromArray(CV,BlockMap%get_EpetraBlockMap_ID(),V)
-    constructor2 = from_struct(constructor2_id) 
+    type(FT_Epetra_Vector_ID_t) :: create_FromArray_id
+    create_FromArray_id = Epetra_Vector_Create_FromArray(CV,BlockMap%get_EpetraBlockMap_ID(),V)
+    create_FromArray = from_struct(create_FromArray_id) 
   end function
 
   ! Original C++ prototype:

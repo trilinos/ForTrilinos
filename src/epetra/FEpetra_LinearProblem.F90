@@ -83,7 +83,7 @@ module FEpetra_LinearProblem
   end type
 
    interface Epetra_LinearProblem ! constructors
-     module procedure from_scratch,duplicate,from_struct,from_scratch_matrix!,from_scratch_operator
+     module procedure create,duplicate,from_struct,create_matrix!,create_operator
    end interface
  
 contains
@@ -99,10 +99,10 @@ contains
 !> <BR> <BR> CTrilinos prototype:
 !! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Create (  );
 
-  type(Epetra_LinearProblem) function from_scratch()
-    type(FT_Epetra_LinearProblem_ID_t) :: from_scratch_id
-    from_scratch_id = Epetra_LinearProblem_Create()
-    from_scratch = from_struct(from_scratch_id)
+  type(Epetra_LinearProblem) function create()
+    type(FT_Epetra_LinearProblem_ID_t) :: create_id
+    create_id = Epetra_LinearProblem_Create()
+    create = from_struct(create_id)
   end function
 
 !> <BR> Original C++ prototype:
@@ -112,13 +112,13 @@ contains
 !  CT_Epetra_MultiVector_ID_t XID, 
 !CT_Epetra_MultiVector_ID_t BID );
 
-  type(Epetra_LinearProblem) function from_scratch_matrix(A,X,B)
+  type(Epetra_LinearProblem) function create_matrix(A,X,B)
     class(Epetra_RowMatrix), intent(in) :: A
     class(Epetra_MultiVector), intent(in) :: X, B 
-    type(FT_Epetra_LinearProblem_ID_t) :: from_scratch_matrix_id
-    from_scratch_matrix_id = Epetra_LinearProblem_Create_FromMatrix(A%get_EpetraRowMatrix_ID(),&
+    type(FT_Epetra_LinearProblem_ID_t) :: create_matrix_id
+    create_matrix_id = Epetra_LinearProblem_Create_FromMatrix(A%get_EpetraRowMatrix_ID(),&
       X%get_EpetraMultiVector_ID(),B%get_EpetraMultiVector_ID())
-    from_scratch_matrix = from_struct(from_scratch_matrix_id)
+    create_matrix = from_struct(create_matrix_id)
   end function
 
 !> <BR> Original C++ prototype:
@@ -129,13 +129,13 @@ contains
 ! CT_Epetra_MultiVector_ID_t BID );
 
 
-! type(Epetra_LinearProblem) function from_scratch_operator(A,X,B)
+! type(Epetra_LinearProblem) function create_operator(A,X,B)
 !    class(Epetra_Operator), intent(in) :: A
 !    class(Epetra_MultiVector), intent(in) :: X, B
-!    type(FT_Epetra_LinearProblem_ID_t) :: from_scratch_operator_id
-!    from_scratch_operator_id = Epetra_LinearProblem_Create_FromOperator(A%get_EpetraOperator_ID(),&
+!    type(FT_Epetra_LinearProblem_ID_t) :: create_operator_id
+!    create_operator_id = Epetra_LinearProblem_Create_FromOperator(A%get_EpetraOperator_ID(),&
 !       X%get_EpetraMultiVector_ID(),B%get_EpetraMultiVector_ID())
-!    from_scratch_operator = from_struct(from_scratch_operator_id)
+!    create_operator = from_struct(create_operator_id)
 !  end function
 
  !> <BR> Original C++ prototype:

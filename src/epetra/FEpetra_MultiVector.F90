@@ -114,7 +114,7 @@ module FEpetra_MultiVector
   end type
 
    interface Epetra_MultiVector ! constructors
-     module procedure from_scratch,duplicate,from_struct
+     module procedure create,duplicate,from_struct
    end interface
 
 contains
@@ -130,18 +130,18 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create ( CT_Epetra_BlockMap_ID_t MapID, int NumVectors, boolean zeroOut ); 
 
-  type(Epetra_MultiVector) function from_scratch(BlockMap,Num_Vectors,zero)
+  type(Epetra_MultiVector) function create(BlockMap,Num_Vectors,zero)
    use ForTrilinos_enums ,only: FT_boolean_t,FT_TRUE,FT_FALSE
    use iso_c_binding     ,only: c_int
    class(Epetra_BlockMap) ,intent(in) :: BlockMap
    integer(c_int)         ,intent(in) :: Num_Vectors
    logical  ,intent(in) :: zero 
    integer(FT_boolean_t) :: zero_in 
-   type(FT_Epetra_MultiVector_ID_t) :: from_scratch_id
+   type(FT_Epetra_MultiVector_ID_t) :: create_id
    if (zero) zero_in=FT_TRUE
    if (.not.zero) zero_in=FT_FALSE
-   from_scratch_id = Epetra_MultiVector_Create(BlockMap%get_EpetraBlockMap_ID(),Num_Vectors,zero_in)
-   from_scratch = from_struct(from_scratch_id)
+   create_id = Epetra_MultiVector_Create(BlockMap%get_EpetraBlockMap_ID(),Num_Vectors,zero_in)
+   create = from_struct(create_id)
   end function
 
   ! Original C++ prototype:

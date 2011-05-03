@@ -62,7 +62,7 @@ module FEpetra_OffsetIndex
   end type
 
    interface Epetra_OffsetIndex ! constructors
-     module procedure duplicate,from_struct,Create_FromExporter, Create_FromImporter
+     module procedure duplicate,from_struct,create_FromExporter, create_FromImporter
    end interface
 
 contains
@@ -72,24 +72,24 @@ contains
      call from_struct%register_self
   end function
 
-  type(Epetra_OffsetIndex) function Create_FromExporter(SourceGraph,TargetGraph,exporter)
+  type(Epetra_OffsetIndex) function create_FromExporter(SourceGraph,TargetGraph,exporter)
    class(Epetra_CrsGraph),intent(in) :: SourceGraph
    class(Epetra_CrsGraph),intent(in) :: TargetGraph
    type(Epetra_Export), intent(in) :: exporter
-   type(FT_Epetra_OffsetIndex_ID_t) :: Create_FromExporter_id
-   Create_FromExporter_id = Epetra_OffsetIndex_Create_FromExporter(SourceGraph%get_EpetraCrsGraph_ID(),&
+   type(FT_Epetra_OffsetIndex_ID_t) :: create_FromExporter_id
+   create_FromExporter_id = Epetra_OffsetIndex_Create_FromExporter(SourceGraph%get_EpetraCrsGraph_ID(),&
          TargetGraph%get_EpetraCrsGraph_ID(),exporter%get_EpetraExport_ID())
-   Create_FromExporter = from_struct(Create_FromExporter_id)
+   create_FromExporter = from_struct(create_FromExporter_id)
   end function
 
-  type(Epetra_OffsetIndex) function Create_FromImporter(SourceGraph,TargetGraph,importer)
+  type(Epetra_OffsetIndex) function create_FromImporter(SourceGraph,TargetGraph,importer)
    class(Epetra_CrsGraph),intent(in) :: SourceGraph
    class(Epetra_CrsGraph),intent(in) :: TargetGraph
    type(Epetra_Import), intent(in) :: importer
-   type(FT_Epetra_OffsetIndex_ID_t) :: Create_FromImporter_id
-   Create_FromImporter_id = Epetra_OffsetIndex_Create_FromImporter(SourceGraph%get_EpetraCrsGraph_ID(),&
+   type(FT_Epetra_OffsetIndex_ID_t) :: create_FromImporter_id
+   create_FromImporter_id = Epetra_OffsetIndex_Create_FromImporter(SourceGraph%get_EpetraCrsGraph_ID(),&
         TargetGraph%get_EpetraCrsGraph_ID(),importer%get_EpetraImport_ID())
-   Create_FromImporter = from_struct(Create_FromImporter_id)
+   create_FromImporter = from_struct(create_FromImporter_id)
   end function
 
   type(Epetra_OffsetIndex) function duplicate(this)
