@@ -50,23 +50,7 @@ module FEpetra_BlockMap
 
   type :: Epetra_BlockMap !,extends(universal)      :: Epetra_BlockMap 
   contains
-     !Local/Global ID accessor methods
-     !Size and dimension acccessor functions
-     procedure         :: NumGlobalElements
-     procedure         :: NumMyElements
-     procedure         :: IndexBase
-     procedure         :: SameAs
-     procedure         :: PointSameAs
-     procedure         :: MyGlobalElements
-     procedure         :: ElementSize_Const
-     procedure         :: ElementSize_LID
-     generic :: ElementSize=>ElementSize_Const,ElementSize_LID
-     !Miscellaneous boolean tests
-     procedure         :: LinearMap
-     procedure         :: DistributedGlobal
-     !Array accessor functions
-     !Miscellaneous
-     !procedure         :: Comm
+     !I take out all type-bound procedure so there is no duppplicate in the     documnetation.  The second copy has a inheritance graph but doesn't list th    e arguments of the functions
     end type
 
  

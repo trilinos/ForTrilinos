@@ -47,7 +47,7 @@ module FEpetra_Map
   private                     ! Hide everything by default
   public :: Epetra_Map        ! Expose type/constructors/methods
 
-  type :: Epetra_Map !, extends(Epetra_BlockMap) :: Epetra_Map 
+  type , extends(Epetra_BlockMap) :: Epetra_Map 
   end type
 
 contains
