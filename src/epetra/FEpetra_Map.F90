@@ -81,15 +81,6 @@ contains
   ! All additional constructors should take two steps: (1) obtain a struct ID by invoking a procedural binding and then (2) pass
   ! this ID to from_struct to initialize the constructed object's ID component and register the object for reference counting.
 
-  !> @name Constructors
-  !! @brief These should all be called as Epetra_Map(...)
-  !! @{
-
-  ! Original C++ prototype:
-  ! Epetra_Map(int NumGlobalElements, int IndexBase, const Epetra_Comm& Comm);
-  ! CTrilinos prototype:
-  ! CT_Epetra_Map_ID_t Epetra_Map_Create ( int NumGlobalElements, int IndexBase, CT_Epetra_Comm_ID_t CommID );
-
   type(Epetra_Map) function create(Num_GlobalElements,IndexBase,comm)
     use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
     integer(c_int) ,intent(in) :: Num_GlobalElements
@@ -99,16 +90,6 @@ contains
     create_id = Epetra_Map_Create(Num_GlobalElements,IndexBase,comm%get_EpetraComm_ID())
     create = from_struct(create_id)
   end function
-
-  !> @name Constructors
-  !! @brief These should all be called as Epetra_Map(...)
-  !! @{
-
-  ! Original C++ prototype:
-  ! Epetra_Map(int NumGlobalElements, int NumMyElements, int IndexBase, const Epetra_Comm& Comm);
-  ! CTrilinos prototype:
-  ! CT_Epetra_Map_ID_t Epetra_Map_Create_Linear ( int NumGlobalElements, int NumMyElements, int IndexBase,
-  ! CT_Epetra_Comm_ID_t CommID );
 
   type(Epetra_Map) function create_linear(Num_GlobalElements,Num_MyElements,IndexBase,comm)
     use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
@@ -121,17 +102,6 @@ contains
     create_linear = from_struct(create_linear_id)
   end function
   
-  !> @name Constructors
-  !! @brief These should all be called as Epetra_Map(...)
-  !! @{
-
-  ! Original C++ prototype:
-  ! Epetra_Map(int NumGlobalElements, int NumMyElements, const int *MyGlobalElements, int IndexBase, const
-  ! Epetra_Comm& Comm);
-  ! CTrilinos prototype:
-  ! CT_Epetra_Map_ID_t Epetra_Map_Create_Arbitrary ( int NumGlobalElements, int NumMyElements, const int
-  !* MyGlobalElements, int IndexBase, CT_Epetra_Comm_ID_t CommID );
-
   type(Epetra_Map) function create_arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm)
     use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_Map_ID_t
     integer(c_int) ,intent(in)              :: Num_GlobalElements
@@ -145,16 +115,7 @@ contains
     create_arbitrary = from_struct(create_arbitrary_id)
   end function
  
-  !> @name Constructors
-  !! @brief These should all be called as Epetra_Map(...)
-  !! @{
-
-  ! Original C++ prototype:
-  ! Epetra_Map(const Epetra_Map& map);
-  ! CTrilinos prototype:
-  ! CT_Epetra_Map_ID_t Epetra_Map_Duplicate ( CT_Epetra_Map_ID_t mapID );
-
-  type(Epetra_Map) function duplicate(this) !< Epetra_Map copy constructor
+  type(Epetra_Map) function duplicate(this) 
     type(Epetra_Map) ,intent(in) :: this 
     type(FT_Epetra_Map_ID_t) :: duplicate_id
     duplicate_id = Epetra_Map_Duplicate(this%map_id)

@@ -47,11 +47,11 @@ module FEpetra_SerialComm
   private                     ! Hide everything by default
   public :: Epetra_SerialComm ! Expose type/constructors/methods
 
-  type ,extends(Epetra_Comm)                 :: Epetra_SerialComm !"shell"
+  type ,extends(Epetra_Comm)        :: Epetra_SerialComm 
     private
     type(FT_Epetra_SerialComm_ID_t) :: SerialComm_id 
   contains
-     !Developers only
+     !Developers only  -- to be called by developers from other ForTrilinos modules, not by end applications:
      procedure         :: invalidate_id => invalidate_EpetraSerialComm_ID 
      procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraSerialComm
      procedure         :: get_EpetraSerialComm_ID 
@@ -67,34 +67,40 @@ module FEpetra_SerialComm
      !Gather Methods
      procedure :: gather_double
      procedure :: gather_int
-     procedure                 :: gather_long
+     procedure :: gather_long
      !Sum Methods
-     procedure                 :: sum_double
-     procedure                 :: sum_int
-     procedure                 :: sum_long
+     procedure :: sum_double
+     procedure :: sum_int
+     procedure :: sum_long
      !Max/Min Methods
-     procedure                 :: max_double
-     procedure                 :: max_int
-     procedure                 :: max_long
-     procedure                 :: min_double
-     procedure                 :: min_int
-     procedure                 :: min_long
+     procedure :: max_double
+     procedure :: max_int
+     procedure :: max_long
+     procedure :: min_double
+     procedure :: min_int
+     procedure :: min_long
      !Parallel Prefix Methods
-     procedure                 :: ScanSum_double
-     procedure                 :: ScanSum_int
-     procedure                 :: ScanSum_long
+     procedure :: ScanSum_double
+     procedure :: ScanSum_int
+     procedure :: ScanSum_long
      !Attribute Accessor Methods
-     procedure         :: MyPID
-     procedure         :: NumProc
+     procedure :: MyPID
+     procedure :: NumProc
      !Gather/catter and Directory Constructors
      !I/O methods
   end type
 
    interface Epetra_SerialComm ! constructors
-     module procedure from_scratch,duplicate,from_struct
+    !User interface -- constructors for use by end applications:
+    module procedure create,duplicate
+    !Developers only -- to be called by developers from other ForTrilinos modules, not by end applications:
+    module procedure from_struct
    end interface
 
 contains
+  ! Common type-bound procedures begin here: all ForTrilinos child classes of the API have procedures analogous to these.
+  ! The function from_struct must construct a struct id for the extended parent class
+  ! The function from_struct should be called by developers only from other ForTrilinos modules, never by end applications:
 
   type(Epetra_SerialComm) function from_struct(id)
     type(FT_Epetra_SerialComm_ID_t) ,intent(in) :: id
@@ -103,21 +109,11 @@ contains
     call from_struct%register_self
   end function
 
-  ! Original C++ prototype:
-  ! Epetra_SerialComm();
-  ! CTrilinos prototype:
-  ! CT_Epetra_SerialComm_ID_t Epetra_SerialComm_Create (  );
-  
-  type(Epetra_SerialComm) function from_scratch()
-    type(FT_Epetra_SerialComm_ID_t) :: from_scratch_id
-    from_scratch_id = Epetra_SerialComm_Create()
-    from_scratch=from_struct(from_scratch_id)
+  type(Epetra_SerialComm) function create()
+    type(FT_Epetra_SerialComm_ID_t) :: create_id
+    create_id = Epetra_SerialComm_Create()
+    create=from_struct(create_id)
   end function
-
-  ! Original C++ prototype:
-  ! Epetra_SerialComm(const Epetra_SerialComm& Comm);
-  ! CTrilinos prototype:
-  ! CT_Epetra_SerialComm_ID_t Epetra_SerialComm_Duplicate ( CT_Epetra_SerialComm_ID_t CommID );
 
   type(Epetra_SerialComm) function duplicate(this)
     type(Epetra_SerialComm) ,intent(in) :: this 
@@ -126,11 +122,15 @@ contains
     duplicate = from_struct(duplicate_id)
   end function
 
+  !----------------- Struct access ---------------------------------------------
+
   type(FT_Epetra_SerialComm_ID_t) function get_EpetraSerialComm_ID(this)
     class(Epetra_SerialComm) ,intent(in) :: this 
     get_EpetraSerialComm_ID=this%SerialComm_id
   end function
   
+ !----------------- Type casting ---------------------------------------------
+
   type(FT_Epetra_SerialComm_ID_t) function alias_EpetraSerialComm_ID(generic_id)
     use iso_c_binding        ,only: c_loc,c_int
     use ForTrilinos_enums    ,only: FT_Epetra_SerialComm_ID,ForTrilinos_Universal_ID_t
@@ -147,33 +147,19 @@ contains
 
 
   type(ForTrilinos_Universal_ID_t) function generalize(this)
-    ! ____ Use for ForTrilinos function implementation ______
     use ForTrilinos_utils ,only: generalize_all
     use iso_c_binding ,only : c_loc
     class(Epetra_SerialComm) ,intent(in) ,target :: this
     generalize = generalize_all( c_loc(this%SerialComm_id) )
-    ! ____ Use for ForTrilinos function implementation ______
-    
-    ! ____ Use for CTrilinos function implementation ______
-    ! class(Epetra_SerialComm) ,intent(in) ,target :: this
-    ! generalize = Epetra_SerialComm_Generalize ( this%SerialComm_id ) 
-    ! ____ Use for CTrilinos function implementation ______
   end function
  
  type(FT_Epetra_SerialComm_ID_t) function degeneralize_EpetraSerialComm(generic_id) bind(C)
-    ! ____ Use for ForTrilinos function implementation ______
     use ForTrilinos_enums ,only : ForTrilinos_Universal_ID_t,FT_Epetra_SerialComm_ID_t
     use ,intrinsic :: iso_c_binding ,only: c_ptr,c_f_pointer
     type(c_ptr)                     ,value   :: generic_id
     type(FT_Epetra_SerialComm_ID_t) ,pointer :: local_ptr=>null()
     call c_f_pointer (generic_id, local_ptr)
     degeneralize_EpetraSerialComm = local_ptr
-    ! ____ Use for ForTrilinos function implementation ______
-    
-    ! ____ Use for CTrilinos function implementation ______
-    ! type(Fortrilinos_Universal_ID_t) ,intent(in) :: generic_id
-    ! degeneralize_EpetraSerialComm = Epetra_SerialComm_Degeneralize( generic_id )
-    ! ____ Use for CTrilinos function implementation ______
   end function
  
   subroutine barrier(this)
@@ -399,6 +385,8 @@ contains
     class(Epetra_SerialComm)     , intent(in) :: this
     NumProc=Epetra_SerialComm_NumProc(this%SerialComm_id)
   end function
+
+  !__________ Garbage collection __________________________________________________ 
 
   subroutine invalidate_EpetraSerialComm_ID(this)
     class(Epetra_SerialComm),intent(inout) :: this

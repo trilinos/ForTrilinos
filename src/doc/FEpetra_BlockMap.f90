@@ -220,7 +220,7 @@ contains
   !! @{ 
 
   !> <BR> Returns the size of elements in the map; only valid if map has constant element size.
-  integer(c_int) function ElementSize_Const(this)
+  integer(c_int) function ElementSize(this)
     type(Epetra_BlockMap) ,intent(in) :: this
   end function 
 
@@ -228,7 +228,7 @@ contains
   !! @{ 
 
   !> <BR> Size of element for specified L_ID
-  integer(c_int) function ElementSize_LID(this,L_ID)
+  integer(c_int) function ElementSize(this,L_ID)
     type(Epetra_BlockMap) ,intent(in) :: this
     integer(c_int)         ,intent(in) :: L_ID
   end function 
