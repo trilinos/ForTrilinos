@@ -69,7 +69,7 @@ contains
      !< Number of points or vector entries per element.
     integer(c_int) ,intent(in) :: IndexBase &
      !< Minimum index value used for arrays that use this map. Typically 1 for Fortran.
-    type(Epetra_Comm)         :: comm &
+    class(Epetra_Comm)         :: comm &
      !< Polymorphic type Epetra_Comm communicator containing information on the number of processors.
   end function
 
@@ -88,7 +88,7 @@ contains
      !< Number of points or vector entries per element.
     integer(c_int) ,intent(in) :: IndexBase &
      !< Minimum index value used for arrays that use this map. Typically 1 for Fortran.
-    type(Epetra_Comm)         :: comm &
+    class(Epetra_Comm)         :: comm &
      !< Polymorphic type Epetra_Comm communicator containing information on the number of processors.
   end function
 
@@ -110,7 +110,7 @@ contains
      !< Number of points or vector entries per element.
     integer(c_int) ,intent(in) :: IndexBase &
      !< Minimum index value used for arrays that use this map. Typically 1 for Fortran.
-    type(Epetra_Comm)         :: comm &
+    class(Epetra_Comm)         :: comm &
      !< Polymorphic type Epetra_Comm communicator containing information on the number of processors.
   end function
 
@@ -133,7 +133,7 @@ contains
      !< A list of the element sizes for elements owned by the calling processor. The ith entry contains the element size of the ith element on this processor.  
     integer(c_int) ,intent(in) :: IndexBase  &
      !<  Minimum index value used for arrays that use this map. Typically 1 for Fortran.
-    type(Epetra_Comm)         :: comm  &
+    class(Epetra_Comm)         :: comm  &
      !< Polymorphic type Epetra_Comm communicator containing information on the number of processors.
   end function
   

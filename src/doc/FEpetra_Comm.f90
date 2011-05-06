@@ -53,41 +53,42 @@ module FEpetra_Comm
     !Broadcast Methods
   !  procedure(broadcast) ,deferred  ::broadcast_double
   !  procedure(broadcast)    ,deferred  ::broadcast_int
-    procedure(broadcast_long_interface)   ,deferred  ::broadcast_long
-    procedure(broadcast_char_interface)   ,deferred  ::broadcast_char
-    generic :: broadcast=>broadcast_double,broadcast_int,broadcast_char
-    !Gather Methods
-    procedure(gather_double_interface),deferred  ::gather_double
-    procedure(gather_int_interface)   ,deferred  ::gather_int
-    procedure(gather_long_interface)  ,deferred  ::gather_long
-    generic :: GatherAll=>gather_double,gather_int
-    !Sum Methods
-    procedure(sum_double_interface),deferred   ::sum_double
-    procedure(sum_int_interface)   ,deferred   ::sum_int
-    procedure(sum_long_interface)  ,deferred   ::sum_long
-    generic :: SumAll=>sum_double,sum_int
-    !Max/Min Methods
-    procedure(max_double_interface) ,deferred   ::max_double
-    procedure(max_int_interface)    ,deferred   ::max_int
-    procedure(max_long_interface)   ,deferred   ::max_long
-    generic :: MaxAll=>max_double,max_int
-    procedure(min_double_interface) ,deferred   ::min_double
-    procedure(min_int_interface)    ,deferred   ::min_int
-    procedure(min_long_interface)               ,deferred   ::min_long
-    generic :: MinAll=>min_double,min_int
-    !Parallel Prefix Methods
-    procedure(ScanSum_double_interface) ,deferred   ::ScanSum_double
-    procedure(ScanSum_int_interface)    ,deferred   ::ScanSum_int
-    procedure(ScanSum_long_interface)   ,deferred   ::ScanSum_long
-    generic :: ScanSum=>ScanSum_double,ScanSum_int
-    !Attribute Accessor Methods
-    procedure(MyPID_interface)           ,deferred::MyPID
-    procedure(NumProc_interface)         ,deferred::NumProc
-    !Gather/catter and Directory Constructors
-    !I/O methods
+  !  procedure(broadcast_long_interface)   ,deferred  ::broadcast_long
+  !  procedure(broadcast_char_interface)   ,deferred  ::broadcast_char
+  !  generic :: broadcast=>broadcast_double,broadcast_int,broadcast_char
+  !  !Gather Methods
+  !  procedure(gather_double_interface),deferred  ::gather_double
+  !  procedure(gather_int_interface)   ,deferred  ::gather_int
+  !  procedure(gather_long_interface)  ,deferred  ::gather_long
+  !  generic :: GatherAll=>gather_double,gather_int
+  !  !Sum Methods
+  !  procedure(sum_double_interface),deferred   ::sum_double
+  !  procedure(sum_int_interface)   ,deferred   ::sum_int
+  !  procedure(sum_long_interface)  ,deferred   ::sum_long
+  !  generic :: SumAll=>sum_double,sum_int
+  !  !Max/Min Methods
+  !  procedure(max_double_interface) ,deferred   ::max_double
+  !  procedure(max_int_interface)    ,deferred   ::max_int
+  !  procedure(max_long_interface)   ,deferred   ::max_long
+  !  generic :: MaxAll=>max_double,max_int
+  !  procedure(min_double_interface) ,deferred   ::min_double
+  !  procedure(min_int_interface)    ,deferred   ::min_int
+  !  procedure(min_long_interface)               ,deferred   ::min_long
+  !  generic :: MinAll=>min_double,min_int
+  !  !Parallel Prefix Methods
+  !  procedure(ScanSum_double_interface) ,deferred   ::ScanSum_double
+  !  procedure(ScanSum_int_interface)    ,deferred   ::ScanSum_int
+  !  procedure(ScanSum_long_interface)   ,deferred   ::ScanSum_long
+  !  generic :: ScanSum=>ScanSum_double,ScanSum_int
+  !  !Attribute Accessor Methods
+  !  procedure(MyPID_interface)           ,deferred::MyPID
+  !  procedure(NumProc_interface)         ,deferred::NumProc
+  !  !Gather/catter and Directory Constructors
+  !  !I/O methods
   end type
   
   abstract interface
+
     !> @name Barrier Methods
     !! @{
  
@@ -95,17 +96,20 @@ module FEpetra_Comm
     !> @brief Each processor must wait at the point the barrier is called until all processors have arrived.
     !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
     subroutine barrier(this) 
-      !import:: Epetra_Comm
-      class(Epetra_Comm) ,intent(in)  :: this
+      import:: Epetra_Comm
+      class(Epetra_Comm) ,intent(in)  :: this &
+       !< Polymorphic type Epetra_Comm communicator containing processors information 
     end subroutine
+
     !> @name Broadcast Methods
     !! @{
 
     !> <BR> Epetra_Comm Broadcast function.
     !> @brief Take list of input values from the root processor and sends to all other processors.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
     subroutine broadcast(this,MyVals,count,root,err) 
       use iso_c_binding ,only: c_int,c_double
-     ! import:: Epetra_Comm, error
+      import:: Epetra_Comm, error
       class(Epetra_Comm)           ,intent(in)    :: this &
        !< Polymorphic type Epetra_Comm communicator containing processors information 
       real(c_double) ,dimension(:) ,intent(inout) :: MyVals &
@@ -115,181 +119,412 @@ module FEpetra_Comm
       integer(c_int)               ,intent(in)    :: root &
        !< In On entry, contains the processor from which all processors will receive a copy of Values.
       type(error)   ,optional      ,intent(inout) :: err &
-       !< Return any error information.
+       !< Returns  error information.
     end subroutine
+
+    !> @name Broadcast Methods
+    !! @{
+
+    !> <BR> Epetra_Comm Broadcast function.
+    !> @brief Take list of input values from the root processor and sends to all other processors.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
     subroutine broadcast(this,MyVals,count,root,err) 
       use iso_c_binding ,only: c_int
       import:: Epetra_Comm,error
-      class(Epetra_Comm)           ,intent(in)    :: this
-      integer(c_int) ,dimension(:) ,intent(inout) :: MyVals
-      integer(c_int)               ,intent(in)    :: count
-      integer(c_int)               ,intent(in)    :: root
-      type(error)   ,optional      ,intent(inout) :: err
+      class(Epetra_Comm)           ,intent(in)    :: this &
+       !< Polymorphic type Epetra_Comm communicator containing processors information
+      integer(c_int) ,dimension(:) ,intent(inout) :: MyVals &
+        !< InOut On entry, the root processor contains the list of values. On exit, all processors will have the same list of values. Note that values must be allocated on all processor before the broadcast.
+      integer(c_int)               ,intent(in)    :: count &
+       !< In On entry, contains the length of the list of Values.
+      integer(c_int)               ,intent(in)    :: root &
+       !< In On entry, contains the processor from which all processors will receive a copy of Values.
+      type(error)   ,optional      ,intent(inout) :: err &
+      !< Returns  error information.
     end subroutine
-    subroutine broadcast_long_interface(this,MyVals,count,root,err) 
+    
+    !> @name Broadcast Methods
+    !! @{
+
+    !> <BR> Epetra_Comm Broadcast function.
+    !> @brief Take list of input values from the root processor and sends to all other processors.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    subroutine broadcast_long(this,MyVals,count,root,err) 
       use iso_c_binding ,only: c_int,c_long
       import:: Epetra_Comm,error
-      class(Epetra_Comm)           ,intent(in)    :: this
-      integer(c_long),dimension(:) ,intent(inout) :: MyVals
-      integer(c_int)               ,intent(in)    :: count
-      integer(c_int)               ,intent(in)    :: root
-      type(error)   ,optional      ,intent(inout) :: err
+      class(Epetra_Comm)           ,intent(in)    :: this &
+       !< Polymorphic type Epetra_Comm communicator containing processors information
+      integer(c_long),dimension(:) ,intent(inout) :: MyVals &
+       !< InOut On entry, the root processor contains the list of values. On exit, all processors will have the same list of values. Note that values must be allocated on all processor before the broadcast.
+      integer(c_int)               ,intent(in)    :: count &
+       !< In On entry, contains the length of the list of Values.
+      integer(c_int)               ,intent(in)    :: root&
+       !< In On entry, contains the processor from which all processors will receive a copy of Values.
+      type(error)   ,optional      ,intent(inout) :: err &
+      !< Returns  error information.
     end subroutine
-    subroutine broadcast_char_interface(this,MyVals,count,root,err) 
+    
+    !> @name Broadcast Methods
+    !! @{
+
+    !> <BR> Epetra_Comm Broadcast function.
+    !> @brief Take list of input values from the root processor and sends to all other processors.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    subroutine broadcast(this,MyVals,count,root,err) 
       use iso_c_binding ,only: c_int,c_char
       import:: Epetra_Comm, error
-      class(Epetra_Comm)                 ,intent(in)    :: this
-      character(kind=c_char),dimension(:),intent(inout) :: MyVals
-      integer(c_int)                     ,intent(in)    :: count
-      integer(c_int)                     ,intent(in)    :: root
-      type(error)   ,optional            ,intent(inout) :: err
+      class(Epetra_Comm)                 ,intent(in)    :: this &
+        !< Polymorphic type Epetra_Comm communicator containing processors information
+      character(kind=c_char),dimension(:),intent(inout) :: MyVals &
+        !< InOut On entry, the root processor contains the list of values. On exit, all processors will have the same list of values. Note that values must be allocated on all processor before the broadcast.
+      integer(c_int)                     ,intent(in)    :: count &
+       !< In On entry, contains the length of the list of Values.
+      integer(c_int)                     ,intent(in)    :: root &
+       !< In On entry, contains the processor from which all processors will receive a copy of Values.
+      type(error)   ,optional            ,intent(inout) :: err &
+       !< Returns  error information.
     end subroutine
-    subroutine gather_double_interface(this,MyVals,AllVals,count,err) 
+    
+    !> @name Gather Methods
+    !! @{
+
+    !> <BR> Epetra_Comm All Gather function.
+    !> @brief Take list of input values from all processors in the communicator and creates an ordered contiguous list of those values on each processor.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    subroutine GatherAll(this,MyVals,AllVals,count,err) 
       use iso_c_binding ,only: c_int,c_double
       import:: Epetra_Comm, error
-      class(Epetra_Comm)         ,intent(in)    :: this
-      real(c_double),dimension(:),intent(in)    :: MyVals
-      real(c_double),dimension(:),intent(inout) :: AllVals
-      integer(c_int)             ,intent(in)    :: count
-      type(error)   ,optional    ,intent(inout) :: err
+      class(Epetra_Comm)         ,intent(in)    :: this &
+        !< Polymorphic type Epetra_Comm communicator containing processors information
+      real(c_double),dimension(:),intent(in)    :: MyVals &
+        !< In On entry, contains the list of values to be sent to all processors.
+      real(c_double),dimension(:),intent(inout) :: AllVals  &
+        !< Out On exit, contains the list of values from all processors. Must be of size NumProc*count.
+      integer(c_int)             ,intent(in)    :: count &
+        !< In On entry, contains the length of the list of MyVals.
+      type(error)   ,optional    ,intent(inout) :: err &
+       !< Returns  error information.
     end subroutine
-    subroutine gather_int_interface(this,MyVals,AllVals,count,err) 
+
+    !> @name Gather Methods
+    !! @{
+
+    !> <BR> Epetra_Comm All Gather function.
+    !> @brief Take list of input values from all processors in the communicator and creates an ordered contiguous list of those values on each processor.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    subroutine GatherAll(this,MyVals,AllVals,count,err) 
       use iso_c_binding ,only: c_int
       import:: Epetra_Comm, error
-      class(Epetra_Comm)         ,intent(in)   :: this
-      integer(c_int),dimension(:),intent(in)   :: MyVals
-      integer(c_int),dimension(:),intent(inout):: AllVals
-      integer(c_int)             ,intent(in)    :: count
-      type(error)   ,optional    ,intent(inout) :: err
+      class(Epetra_Comm)         ,intent(in)   :: this &
+       !< Polymorphic type Epetra_Comm communicator containing processors information
+      integer(c_int),dimension(:),intent(in)   :: MyVals &
+       !< In On entry, contains the list of values to be sent to all processors.
+      integer(c_int),dimension(:),intent(inout):: AllVals &
+       !< Out On exit, contains the list of values from all processors. Must be of size NumProc*count.
+      integer(c_int)             ,intent(in)    :: count &
+       !< In On entry, contains the length of the list of MyVals.
+      type(error)   ,optional    ,intent(inout) :: err &
+       !< Returns  error information.
     end subroutine
-    subroutine gather_long_interface(this,MyVals,AllVals,count,err) 
+
+    !> @name Gather Methods
+    !! @{
+
+    !> <BR> Epetra_Comm All Gather function.
+    !> @brief Take list of input values from all processors in the communicator and creates an ordered contiguous list of those values on each processor.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    subroutine gather_long(this,MyVals,AllVals,count,err) 
       use iso_c_binding ,only: c_int,c_long
       import:: Epetra_Comm, error
-      class(Epetra_Comm)           ,intent(in)    :: this
-      integer(c_long),dimension(:) ,intent(in)    :: MyVals
-      integer(c_long),dimension(:) ,intent(inout):: AllVals
-      integer(c_int)               ,intent(in)    :: count
-      type(error)   ,optional      ,intent(inout) :: err
+      class(Epetra_Comm)           ,intent(in)    :: this &
+       !< Polymorphic type Epetra_Comm communicator containing processors information
+      integer(c_long),dimension(:) ,intent(in)    :: MyVals &
+       !< In On entry, contains the list of values to be sent to all processors.
+      integer(c_long),dimension(:) ,intent(inout):: AllVals &
+       !< Out On exit, contains the list of values from all processors. Must be of size NumProc*count.
+      integer(c_int)               ,intent(in)    :: count &
+       !< In On entry, contains the length of the list of MyVals.
+      type(error)   ,optional      ,intent(inout) :: err &
+       !< Returns  error information.
     end subroutine
-    subroutine sum_double_interface(this,PartialSums,GlobalSums,count,err) 
+
+    !> @name Sum Methods
+    !! @{
+
+    !> <BR> Epetra_Comm Sum function.
+    !> @brief Take list of input values from all processors in the communicator, computes the sum and returns the sum to all processors.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    subroutine SumAll(this,PartialSums,GlobalSums,count,err) 
       use iso_c_binding ,only: c_int,c_double
       import:: Epetra_Comm, error
-      class(Epetra_Comm)           ,intent(in)    :: this
-      real(c_double),dimension(:)  ,intent(in)    :: PartialSums
-      real(c_double),dimension(:)  ,intent(inout) :: GlobalSums
-      integer(c_int)               ,intent(in)    :: count
-      type(error)   ,optional      ,intent(inout) :: err
+      class(Epetra_Comm)           ,intent(in)    :: this &
+       !< Polymorphic type Epetra_Comm communicator containing processors information
+      real(c_double),dimension(:)  ,intent(in)    :: PartialSums &
+       !< In On entry, contains the list of values, usually partial sums computed locally, to be summed across all processors.
+      real(c_double),dimension(:)  ,intent(inout) :: GlobalSums &
+       !< Out On exit, contains the list of values summed across all processors.
+      integer(c_int)               ,intent(in)    :: count &
+       !< In On entry, contains the length of the list of values.
+      type(error)   ,optional      ,intent(inout) :: err &
+       !< Returns  error information.
     end subroutine
-    subroutine sum_int_interface(this,PartialSums,GlobalSums,count,err) 
+
+    !> @name Sum Methods
+    !! @{
+
+    !> <BR> Epetra_Comm Sum function.
+    !> @brief Take list of input values from all processors in the communicator, computes the sum and returns the sum to all processors.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    subroutine SumAll(this,PartialSums,GlobalSums,count,err) 
       use iso_c_binding ,only: c_int
       import:: Epetra_Comm, error
-      class(Epetra_Comm)           ,intent(in)    :: this
-      integer(c_int), dimension(:) ,intent(in)    :: PartialSums
-      integer(c_int), dimension(:) ,intent(inout) :: GlobalSums
-      integer(c_int)               ,intent(in)    :: count
-      type(error)   ,optional      ,intent(inout) :: err
+      class(Epetra_Comm)           ,intent(in)    :: this &
+        !< Polymorphic type Epetra_Comm communicator containing processors information
+      integer(c_int), dimension(:) ,intent(in)    :: PartialSums &
+        !< In On entry, contains the list of values, usually partial sums computed locally, to be summed across all processors.
+      integer(c_int), dimension(:) ,intent(inout) :: GlobalSums &
+       !< Out On exit, contains the list of values summed across all processors.
+      integer(c_int)               ,intent(in)    :: count &
+       !< In On entry, contains the length of the list of values.
+      type(error)   ,optional      ,intent(inout) :: err &
+       !< Returns  error information.
     end subroutine
-    subroutine sum_long_interface(this,PartialSums,GlobalSums,count,err) 
+
+    !> @name Sum Methods
+    !! @{
+
+    !> <BR> Epetra_Comm Sum function.
+    !> @brief Take list of input values from all processors in the communicator, computes the sum and returns the sum to all processors.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    subroutine sum_long(this,PartialSums,GlobalSums,count,err) 
       use iso_c_binding ,only: c_int,c_long
       import:: Epetra_Comm, error
-      class(Epetra_Comm)           ,intent(in)    :: this
-      integer(c_long), dimension(:),intent(in)    :: PartialSums
-      integer(c_long), dimension(:),intent(inout) :: GlobalSums
-      integer(c_int)               ,intent(in)    :: count
-      type(error)   ,optional      ,intent(inout) :: err
+      class(Epetra_Comm)           ,intent(in)    :: this &
+       !< Polymorphic type Epetra_Comm communicator containing processors information
+      integer(c_long), dimension(:),intent(in)    :: PartialSums &
+       !< In On entry, contains the list of values, usually partial sums computed locally, to be summed across all processors.
+      integer(c_long), dimension(:),intent(inout) :: GlobalSums &
+       !< Out On exit, contains the list of values summed across all processors.
+      integer(c_int)               ,intent(in)    :: count &
+       !< In On entry, contains the length of the list of values.
+      type(error)   ,optional      ,intent(inout) :: err &
+       !< Returns  error information.
     end subroutine
-    subroutine max_double_interface(this,PartialMaxs,GlobalMaxs,count,err) 
+
+    !> @name Max/Min Methods
+    !! @{
+
+    !> <BR> Epetra_Comm Global Max function.
+    !> @brief Take list of input values from all processors in the communicator, computes the max and returns the max to all processors.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    subroutine MaxAll(this,PartialMaxs,GlobalMaxs,count,err) 
       use iso_c_binding ,only: c_int,c_double
       import:: Epetra_Comm, error
-      class(Epetra_Comm)           ,intent(in)    :: this
-      real(c_double), dimension(:) ,intent(in)    :: PartialMaxs
-      real(c_double), dimension(:) ,intent(inout) :: GlobalMaxs
-      integer(c_int)               ,intent(in)    :: count
-      type(error)   ,optional      ,intent(inout) :: err
+      class(Epetra_Comm)           ,intent(in)    :: this &
+       !< Polymorphic type Epetra_Comm communicator containing processors information
+      real(c_double), dimension(:) ,intent(in)    :: PartialMaxs &
+       !< In On entry, contains the list of values, usually partial maxs computed locally; using these Partial Maxs, the max across all processors will be computed.
+      real(c_double), dimension(:) ,intent(inout) :: GlobalMaxs &
+       !< Out On exit, contains the list of maxs computed across all processors.
+      integer(c_int)               ,intent(in)    :: count &
+       !< In On entry, contains the length of the list of values.
+      type(error)   ,optional      ,intent(inout) :: err &
+       !< Returns  error information.
     end subroutine
-    subroutine max_int_interface(this,PartialMaxs,GlobalMaxs,count,err) 
+
+    !> @name Max/Min Methods
+    !! @{
+
+    !> <BR> Epetra_Comm Global Max function.
+    !> @brief Take list of input values from all processors in the communicator, computes the max and returns the max to all processors.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    subroutine MaxAll(this,PartialMaxs,GlobalMaxs,count,err) 
       use iso_c_binding ,only: c_int,c_int
       import:: Epetra_Comm, error
-      class(Epetra_Comm)           ,intent(in)    :: this
-      integer(c_int), dimension(:) ,intent(in)    :: PartialMaxs
-      integer(c_int), dimension(:) ,intent(inout) :: GlobalMaxs
-      integer(c_int)               ,intent(in)    :: count
-      type(error)   ,optional      ,intent(inout) :: err
+      class(Epetra_Comm)           ,intent(in)    :: this &
+       !< Polymorphic type Epetra_Comm communicator containing processors information
+      integer(c_int), dimension(:) ,intent(in)    :: PartialMaxs &
+       !< In On entry, contains the list of values, usually partial maxs computed locally; using these Partial Maxs, the max across all processors will be computed.
+      integer(c_int), dimension(:) ,intent(inout) :: GlobalMaxs &
+       !< Out On exit, contains the list of maxs computed across all processors.
+      integer(c_int)               ,intent(in)    :: count &
+       !< In On entry, contains the length of the list of values.
+      type(error)   ,optional      ,intent(inout) :: err &
+       !< Returns  error information.
     end subroutine
-    subroutine max_long_interface(this,PartialMaxs,GlobalMaxs,count,err) 
+    !> @name Max/Min Methods
+    !! @{
+
+    !> <BR> Epetra_Comm Global Max function.
+    !> @brief Take list of input values from all processors in the communicator, computes the max and returns the max to all processors.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    subroutine max_long(this,PartialMaxs,GlobalMaxs,count,err) 
       use iso_c_binding ,only: c_int,c_long
       import:: Epetra_Comm, error
-      class(Epetra_Comm)           ,intent(in)    :: this
-      integer(c_long), dimension(:),intent(in)    :: PartialMaxs
-      integer(c_long), dimension(:),intent(inout) :: GlobalMaxs
-      integer(c_int)               ,intent(in)    :: count
-      type(error)   ,optional      ,intent(inout) :: err
+      class(Epetra_Comm)           ,intent(in)    :: this &
+       !< Polymorphic type Epetra_Comm communicator containing processors information
+      integer(c_long), dimension(:),intent(in)    :: PartialMaxs &
+       !< In On entry, contains the list of values, usually partial maxs computed locally; using these Partial Maxs, the max across all processors will be computed.
+      integer(c_long), dimension(:),intent(inout) :: GlobalMaxs &
+       !< Out On exit, contains the list of maxs computed across all processors.
+      integer(c_int)               ,intent(in)    :: count &
+       !< In On entry, contains the length of the list of values.
+      type(error)   ,optional      ,intent(inout) :: err &
+       !< Returns  error information.
     end subroutine
-    subroutine min_double_interface(this,PartialMins,GlobalMins,count,err) 
+
+    !> @name Max/Min Methods
+    !! @{
+
+    !> <BR> Epetra_Comm Global Min function.
+    !> @brief Take list of input values from all processors in the communicator, computes the min and returns the min to all processors.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    subroutine MinAll(this,PartialMins,GlobalMins,count,err) 
       use iso_c_binding ,only: c_int,c_double
       import:: Epetra_Comm, error
-      class(Epetra_Comm)           ,intent(in)    :: this
-      real(c_double), dimension(:) ,intent(in)    :: PartialMins
-      real(c_double), dimension(:) ,intent(inout) :: GlobalMins
-      integer(c_int)               ,intent(in)    :: count
-      type(error)   ,optional      ,intent(inout) :: err
+      class(Epetra_Comm)           ,intent(in)    :: this &
+       !< Polymorphic type Epetra_Comm communicator containing processors information
+      real(c_double), dimension(:) ,intent(in)    :: PartialMins &
+       !< In On entry, contains the list of values, usually partial mins computed locally; using these Partial Mins, the min across all processors will be computed.
+      real(c_double), dimension(:) ,intent(inout) :: GlobalMins &
+      !< Out On exit, contains the list of mins computed across all processors.
+      integer(c_int)               ,intent(in)    :: count &
+      !< In On entry, contains the length of the list of values.
+      type(error)   ,optional      ,intent(inout) :: err &
+       !< Returns  error information.
     end subroutine
-    subroutine min_int_interface(this,PartialMins,GlobalMins,count,err) 
+
+    !> @name Max/Min Methods
+    !! @{
+
+    !> <BR> Epetra_Comm Global Min function.
+    !> @brief Take list of input values from all processors in the communicator, computes the min and returns the min to all processors.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    subroutine MinAll(this,PartialMins,GlobalMins,count,err) 
       use iso_c_binding ,only: c_int,c_int
       import:: Epetra_Comm, error
-      class(Epetra_Comm)           ,intent(in)    :: this
-      integer(c_int), dimension(:) ,intent(in)    :: PartialMins
-      integer(c_int), dimension(:) ,intent(inout) :: GlobalMins
-      integer(c_int)               ,intent(in)    :: count
-      type(error)   ,optional      ,intent(inout) :: err
+      class(Epetra_Comm)           ,intent(in)    :: this &
+      !< Polymorphic type Epetra_Comm communicator containing processors information
+      integer(c_int), dimension(:) ,intent(in)    :: PartialMins &
+      !< In On entry, contains the list of values, usually partial mins computed locally; using these Partial Mins, the min across all processors will be computed.
+      integer(c_int), dimension(:) ,intent(inout) :: GlobalMins &
+      !< Out On exit, contains the list of mins computed across all processors.
+      integer(c_int)               ,intent(in)    :: count &
+      !< In On entry, contains the length of the list of values.
+      type(error)   ,optional      ,intent(inout) :: err &
+       !< Returns  error information.
     end subroutine
-    subroutine min_long_interface(this,PartialMins,GlobalMins,count,err) 
+
+    !> @name Max/Min Methods
+    !! @{
+
+    !> <BR> Epetra_Comm Global Min function.
+    !> @brief Take list of input values from all processors in the communicator, computes the min and returns the min to all processors.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    subroutine min_long(this,PartialMins,GlobalMins,count,err) 
       use iso_c_binding ,only: c_int,c_long
       import:: Epetra_Comm, error
-      class(Epetra_Comm)           ,intent(in)    :: this
-      integer(c_long), dimension(:),intent(in)    :: PartialMins
-      integer(c_long), dimension(:),intent(inout) :: GlobalMins
-      integer(c_int)               ,intent(in)    :: count
-      type(error)   ,optional      ,intent(inout) :: err
+      class(Epetra_Comm)           ,intent(in)    :: this &
+      !< Polymorphic type Epetra_Comm communicator containing processors information
+      integer(c_long), dimension(:),intent(in)    :: PartialMins &
+      !< In On entry, contains the list of values, usually partial mins computed locally; using these Partial Mins, the min across all processors will be computed.
+      integer(c_long), dimension(:),intent(inout) :: GlobalMins &
+      !< Out On exit, contains the list of mins computed across all processors.
+      integer(c_int)               ,intent(in)    :: count &
+       !< In On entry, contains the length of the list of values.
+      type(error)   ,optional      ,intent(inout) :: err &
+       !< Returns  error information.
     end subroutine
-    subroutine ScanSum_double_interface(this,MyVals,scan_sums,count,err) 
+
+    !> @name Parallel Prefix Methods
+    !! @{
+
+    !> <BR> Epetra_Comm Scan Sum function.
+    !> @brief Take list of input values from all processors in the communicator, computes the scan sum and returns it to all processors such that processor i contains the sum of values from processor 0 up to and including processor i.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    subroutine ScanSum(this,MyVals,scan_sums,count,err) 
       use iso_c_binding ,only: c_int,c_double
       import:: Epetra_Comm, error
-      class(Epetra_Comm)           ,intent(in)    :: this
-      real(c_double), dimension(:) ,intent(in)    :: MyVals
-      real(c_double), dimension(:) ,intent(inout) :: scan_sums 
-      integer(c_int)               ,intent(in)    :: count
-      type(error)   ,optional      ,intent(inout) :: err
+      class(Epetra_Comm)           ,intent(in)    :: this &
+       !< Polymorphic type Epetra_Comm communicator containing processors information
+      real(c_double), dimension(:) ,intent(in)    :: MyVals &
+       !< In On entry, contains the list of values to be summed across all processors.
+      real(c_double), dimension(:) ,intent(inout) :: scan_sums &
+       !< Out On exit, contains the list of values summed across processors 0 through i. 
+      integer(c_int)               ,intent(in)    :: count &
+       !< In On entry, contains the length of the list of values.
+      type(error)   ,optional      ,intent(inout) :: err  &
+       !< Returns  error information.
     end subroutine
-    subroutine ScanSum_int_interface(this,MyVals,scan_sums,count,err) 
+
+    !> @name Parallel Prefix Methods
+    !! @{
+
+    !> <BR> Epetra_Comm Scan Sum function.
+    !> @brief Take list of input values from all processors in the communicator, computes the scan sum and returns it to all processors such that processor i contains the sum of values from processor 0 up to and including processor i.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    subroutine ScanSum(this,MyVals,scan_sums,count,err) 
       use iso_c_binding ,only: c_int
       import:: Epetra_Comm, error
-      class(Epetra_Comm)           ,intent(in)    :: this
-      integer(c_int), dimension(:) ,intent(in)    :: MyVals
-      integer(c_int), dimension(:) ,intent(inout) :: scan_sums 
-      integer(c_int)               ,intent(in)    :: count
-      type(error)   ,optional      ,intent(inout) :: err
+      class(Epetra_Comm)           ,intent(in)    :: this &
+      !< Polymorphic type Epetra_Comm communicator containing processors information
+      integer(c_int), dimension(:) ,intent(in)    :: MyVals &
+      !< In On entry, contains the list of values to be summed across all processors.
+      integer(c_int), dimension(:) ,intent(inout) :: scan_sums &
+      !< Out On exit, contains the list of values summed across processors 0 through i.
+      integer(c_int)               ,intent(in)    :: count &
+      !< In On entry, contains the length of the list of values.
+      type(error)   ,optional      ,intent(inout) :: err &
+      !< Returns  error information.
     end subroutine
-    subroutine ScanSum_long_interface(this,MyVals,scan_sums,count,err) 
+
+    !> @name Parallel Prefix Methods
+    !! @{
+
+    !> <BR> Epetra_Comm Scan Sum function.
+    !> @brief Take list of input values from all processors in the communicator, computes the scan sum and returns it to all processors such that processor i contains the sum of values from processor 0 up to and including processor i.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    subroutine ScanSum_long(this,MyVals,scan_sums,count,err) 
       use iso_c_binding ,only: c_int,c_long
       import:: Epetra_Comm, error
-      class(Epetra_Comm)           ,intent(in)    :: this
-      integer(c_long), dimension(:),intent(in)    :: MyVals
-      integer(c_long), dimension(:),intent(inout) :: scan_sums 
-      integer(c_int)               ,intent(in)    :: count
-      type(error)   ,optional      ,intent(inout) :: err
+      class(Epetra_Comm)           ,intent(in)    :: this &
+       !< Polymorphic type Epetra_Comm communicator containing processors information
+      integer(c_long), dimension(:),intent(in)    :: MyVals &
+      !< In On entry, contains the list of values to be summed across all processors.
+      integer(c_long), dimension(:),intent(inout) :: scan_sums &
+      !< Out On exit, contains the list of values summed across processors 0 through i.
+      integer(c_int)               ,intent(in)    :: count &
+      !< In On entry, contains the length of the list of values.
+      type(error)   ,optional      ,intent(inout) :: err &
+      !< Returns  error information.
     end subroutine
-    function MyPID_interface(this)
+
+    !> @name Attribute Accessor Methods
+    !! @{
+
+    !> <BR> Return my process ID.
+    !> @brief In MPI mode returns the rank of the calling process. In serial mode returns 0.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    function MyPID(this)
       use iso_c_binding ,only: c_int
       import:: Epetra_Comm
-      class(Epetra_Comm), intent(in) :: this
-      integer(c_int) :: MyPID_interface
+      class(Epetra_Comm), intent(in) :: this &
+       !< Polymorphic type Epetra_Comm communicator containing processors information
+      integer(c_int) :: MyPID
     end function
-    function NumProc_interface(this)
+
+    !> @name Attribute Accessor Methods
+    !! @{
+
+    !> <BR> Returns total number of processes.
+    !> @brief In MPI mode returns the size of the MPI communicator. In serial mode returns 1.
+    !!Implemented in Epetra_MpiComm, and Epetra_SerialComm.
+    function NumProc(this)
       use iso_c_binding ,only: c_int
       import:: Epetra_Comm
-      class(Epetra_Comm), intent(in) :: this
-      integer(c_int) :: NumProc_interface
+      class(Epetra_Comm), intent(in) :: this &
+       !< Polymorphic type Epetra_Comm communicator containing processors information
+      integer(c_int) :: NumProc
     end function
   end interface
 

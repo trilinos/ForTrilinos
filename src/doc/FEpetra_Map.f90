@@ -61,7 +61,7 @@ contains
       !< Number of elements to distribute.
     integer(c_int)   ,intent(in) :: IndexBase &
       !< Minimum index value used for arrays that use this map. Typically 1 for Fortran
-    type(Epetra_Comm),intent(in) :: comm &
+    class(Epetra_Comm),intent(in) :: comm &
       !< Polymorphic class Epetra_Comm communicator containing information on the number of processors.
   end function
 
@@ -77,7 +77,7 @@ contains
      !< Number of elements owned by the calling processor.
     integer(c_int)    ,intent(in) :: IndexBase  &
      !< Minimum index value used for arrays that use this map. Typically 1 for Fortran
-    type(Epetra_Comm) ,intent(in) :: comm  &
+    class(Epetra_Comm) ,intent(in) :: comm  &
      !< Polymorphic class Epetra_Comm communicator containing information on the number of processors.
   end function
   
@@ -94,7 +94,7 @@ contains
      !< Integer array of length NumMyElements. The ith entry contains the global index value of the ith element on this processor. Index values are not required to be contiguous on a processor, or to be within the range of 0 to NumGlobalElements. As long as the index values are consistently defined and used, any set of NumGlobalElements distinct integer values is acceptable.
     integer(c_int) ,intent(in)              :: IndexBase  &
      !< Minimum index value used for arrays that use this map. Typically 1 for Fortran
-    type(Epetra_Comm)                      :: comm &
+    class(Epetra_Comm)                      :: comm &
      !< Polymorphic class Epetra_Comm communicator containing information on the number of processors.
   end function
 
