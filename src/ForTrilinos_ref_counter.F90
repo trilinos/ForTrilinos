@@ -57,12 +57,6 @@ module ForTrilinos_ref_counter
       module procedure new_ref_counter
   end interface
 
-#ifdef ForTrilinos_ASSERTIONS
-  logical ,parameter :: assertions=.true.
-#else
-  logical ,parameter :: assertions=.false.
-#endif
-
 contains
 
   subroutine grab(this)
