@@ -63,6 +63,7 @@ module FAztecOO
      procedure         :: SetAztecOption
      procedure         :: iterate_current
      procedure         :: iterate_RowMatrix
+     procedure         :: RecursiveIterate
      generic :: iterate => iterate_current, iterate_RowMatrix
   end type
 
@@ -188,6 +189,16 @@ contains
     error_out = AztecOO_Iterate(this%AztecOO_id,A%get_EpetraRowMatrix_ID(),&
          x%get_EpetraMultiVector_ID(),b%get_EpetraMultiVector_ID(),MaxIters,tolerance)
     if (present(err)) err=error(error_out,'AztecOO%iterate_RowMatrix: failed')
+  end subroutine
+
+  subroutine RecursiveIterate(this,MaxIters,tolerance,err) 
+    class(AztecOO)   ,intent(in) :: this
+    integer(c_int)   ,intent(in) :: MaxIters
+    real(c_double)   ,intent(in) :: tolerance
+    type(error) ,optional    ,intent(out) :: err
+    integer(c_int)               :: error_out
+    error_out = AztecOO_recursiveIterate(this%AztecOO_id,MaxIters,tolerance)
+    if (present(err)) err=error(error_out,'AztecOO%RecursiveIterate: failed')
   end subroutine
 
   subroutine SetAztecOption(this,option,value)
