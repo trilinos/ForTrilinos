@@ -53,10 +53,6 @@ module FEpetra_MultiVector
   contains
   end type
 
-   interface Epetra_MultiVector ! constructors
-     module procedure create,duplicate,from_struct
-   end interface
-
 contains
 
   ! Original C++ prototype:
