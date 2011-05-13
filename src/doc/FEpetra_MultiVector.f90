@@ -347,7 +347,7 @@ contains
   !! @{
 
   !> <BR> Element-by-element multiplication  this = ScalarThis*This + ScalarAB*A*B
-  subroutine Multiply_ByEl(this,ScalarAB,A,B,ScalarThis,err)
+  subroutine Multiply(this,ScalarAB,A,B,ScalarThis,err)
     type(Epetra_MultiVector)   ,intent(in) :: this
     type(Epetra_MultiVector)   ,intent(in)  :: A,B
     real(c_double), intent(in) :: ScalarAB, ScalarThis
