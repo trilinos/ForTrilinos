@@ -95,7 +95,7 @@ contains
     use FEpetra_Vector ,only : Epetra_Vector
     use FEpetra_MultiVector ,only : Epetra_MultiVector
     type(Epetra_Vector) ,intent(in) :: A
-    type(Epetra_MultiVector) ,intent(in) :: x,b
+    class(Epetra_MultiVector) ,intent(in) :: x,b
     Create = from_struct(Pliris_Create(A%get_EpetraVector_ID(),x%get_EpetraMultiVector_ID(),b%get_EpetraMultiVector_ID()))
   end function
 
@@ -155,7 +155,7 @@ contains
   subroutine SetLHS(this,x)  
     use FEpetra_MultiVector ,only : Epetra_MultiVector
     class(Pliris) ,intent(in) :: this
-    type(Epetra_MultiVector) ,intent(inout) :: x
+    class(Epetra_MultiVector) ,intent(inout) :: x
     integer(c_int) :: success
     success = Pliris_SetLHS ( this%FT_Pliris_ID, x%get_EpetraMultiVector_ID() ) 
   end subroutine
@@ -163,7 +163,7 @@ contains
   subroutine SetRHS (this,b) 
     use FEpetra_MultiVector ,only : Epetra_MultiVector
     class(Pliris) ,intent(in) :: this
-    type(Epetra_MultiVector) ,intent(inout) :: b
+    class(Epetra_MultiVector) ,intent(inout) :: b
     integer(c_int) :: success
     success = Pliris_SetRHS ( this%FT_Pliris_ID, b%get_EpetraMultiVector_ID() ) 
   end subroutine
