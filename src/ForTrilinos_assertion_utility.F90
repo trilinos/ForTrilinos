@@ -52,6 +52,10 @@ module ForTrilinos_assertion_utility
     module procedure new_message
   end interface 
 
+  interface assert
+    module procedure scalar_assert,vector_assert
+  end interface
+
 contains
 
   type(error_message) function new_message(message)
@@ -69,7 +73,20 @@ contains
     end if
   end function
 
-  subroutine assert(assertion,text)
+  subroutine scalar_assert(assertion,text)
+    logical ,intent(in) :: assertion
+    type(error_message) ,intent(in) :: text
+    if (.not. assertion) then
+      write(error_unit,fmt='(31a)',advance="no") 'Assertion failed with message: '
+      if (allocated(text%string)) then
+        write(error_unit,*) text%string
+      else
+        write(error_unit,*) '(no message provided).'
+      end if
+    end if
+  end subroutine
+
+  subroutine vector_assert(assertion,text)
     logical ,dimension(:) ,intent(in) :: assertion
     type(error_message) ,dimension(:) ,intent(in) :: text
     integer :: i
@@ -89,6 +106,7 @@ contains
     end do
     if (any_failures) stop 'Execution halted on failed assertion(s)!'
   end subroutine
+
   subroutine assert_identical(integers)
     integer ,dimension(:) ,intent(in) :: integers
     integer :: i

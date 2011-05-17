@@ -46,12 +46,6 @@ module FEpetra_Comm
   private               ! Hide everything by default
   public :: Epetra_Comm ! Expose type/methods
 
-#ifdef ForTrilinos_ASSERTIONS
-  logical ,parameter :: assertions=.true.
-#else
-  logical ,parameter :: assertions=.false.
-#endif
-
   type ,abstract ,extends(universal) :: Epetra_Comm
    private
    type(FT_Epetra_Comm_ID_t)         :: comm_id 
