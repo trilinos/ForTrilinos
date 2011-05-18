@@ -65,9 +65,12 @@ contains
  
   !> <BR> Epetra_MultiVector constructor conformal to a BlockMap, optionally zero the newly created vector.
   type(Epetra_MultiVector) function Epetra_MultiVector(BlockMap,Num_Vectors,zero)
-    type(Epetra_BlockMap) ,intent(in) :: BlockMap
-    integer(c_int)         ,intent(in) :: Num_Vectors
-    logical  ,intent(in) :: zero 
+    class(Epetra_BlockMap) ,intent(in) :: BlockMap &
+         !< In The map to which the vector will conform 
+    integer(c_int)         ,intent(in) :: Num_Vectors &
+    !< In  Number of vectors in multivector
+    logical  ,intent(in) :: zero  &
+    !< In Optionally zero out the output. 
   end function
 
   ! Original C++ prototype:
@@ -80,45 +83,62 @@ contains
  
   !> <BR> Epetra_MultiVector copy constructor.
   type(Epetra_MultiVector) function Epetra_MultiVector(this)
-    type(Epetra_MultiVector) ,intent(in) :: this
-  end function
-
+    class(Epetra_MultiVector) ,intent(in) :: this
+  end function 
+  
 
   !> @name Post-construction modification routines
   !! @{
 
   !> <BR> Replaces value at location (GlobalRow,VectorIndex) with ScalarValue
+  !> @brief The index of the specified location must correspond to an index owned by the map on the calling process; i.e. no communication takes place.
   subroutine ReplaceGlobalValue(this,GlobalRow,VectorIndex,ScalarValue,err)
-    type(Epetra_MultiVector), intent(in) :: this
-    integer(c_int), intent(in) :: GlobalRow
-    integer(c_int), intent(in) :: VectorIndex 
-    real(c_double), intent(in) :: ScalarValue 
-    type(error),optional,intent(out) :: err
+    class(Epetra_MultiVector), intent(in) :: this
+    integer(c_int), intent(in) :: GlobalRow &
+         !< In The global row to be set 
+    integer(c_int), intent(in) :: VectorIndex &
+    !< In The vector index within the multivector to be set
+    real(c_double), intent(in) :: ScalarValue &
+    !< In The value to be set
+    type(error),optional,intent(out) :: err &
+         !< Returns  error information.
+
   end subroutine
   
   !> @name Post-construction modification routines
   !! @{
 
   !> <BR>  Replaces value at location (GlobalBlockRow,BlockRowOffset,VectorIndex) with ScalarValue
+  !> @brief The index of the specified location must correspond to an index owned by the map on the calling process; i.e. no communication takes place.
   subroutine ReplaceGlobalValue(this,GlobalBlockRow,BlockRowOffset,VectorIndex,ScalarValue,err)
-    type(Epetra_MultiVector), intent(in) :: this
-    integer(c_int), intent(in) :: GlobalBlockRow
-    integer(c_int), intent(in) :: BlockRowOffset
-    integer(c_int), intent(in) :: VectorIndex 
-    real(c_double), intent(in) :: ScalarValue 
-    type(error),optional,intent(out) :: err
+    class(Epetra_MultiVector), intent(in) :: this
+    integer(c_int), intent(in) :: GlobalBlockRow &
+         !< In The global block row to be set
+    integer(c_int), intent(in) :: BlockRowOffset &
+         !< In The global block row offest to be set
+    integer(c_int), intent(in) :: VectorIndex  &
+         !< In The vector index within the multivector to be set
+    real(c_double), intent(in) :: ScalarValue  &
+         !< In The scalar value to be set 
+    type(error),optional,intent(out) :: err &
+         !< Returns  error information.
   end subroutine
  
   !> @name Post-construction modification routines
   !! @{
 
   !> <BR>  Replaces value at location (MyRow,VectorIndex) with ScalarValue
+  !> @brief The index of the specified location must be that of a locally owned element. 
   subroutine ReplaceMyValue(this,MyRow,VectorIndex,ScalarValue,err)
-    type(Epetra_MultiVector), intent(in) :: this
-    integer(c_int), intent(in) :: MyRow
-    integer(c_int), intent(in) :: VectorIndex 
-    real(c_double), intent(in) :: ScalarValue 
-    type(error),optional,intent(out) :: err
+    class(Epetra_MultiVector), intent(in) :: this
+    integer(c_int), intent(in) :: MyRow &
+         !< In The local row to be set
+    integer(c_int), intent(in) :: VectorIndex   &
+         !< In The vector index within the multivector to be set
+    real(c_double), intent(in) :: ScalarValue  &
+         !< In The scalar value to be set  
+    type(error),optional,intent(out) :: err &
+         !< Returns  error information.
   end subroutine
   
   !> @name Post-construction modification routines
@@ -126,11 +146,15 @@ contains
 
   !> <BR> Replaces value at location (MyBlockRow,BlockRowOffset,VectorIndex) with ScalarValue
   subroutine ReplaceMyValue(this,MyBlockRow,BlockRowOffset,VectorIndex,ScalarValue,err)
-    type(Epetra_MultiVector), intent(in) :: this
-    integer(c_int), intent(in) :: MyBlockRow
-    integer(c_int), intent(in) :: BlockRowOffset
-    integer(c_int), intent(in) :: VectorIndex 
-    real(c_double), intent(in) :: ScalarValue 
+    class(Epetra_MultiVector), intent(in) :: this
+    integer(c_int), intent(in) :: MyBlockRow &
+         !< In The local block row to be set 
+    integer(c_int), intent(in) :: BlockRowOffset &
+         !< In The local block row offset to be set 
+    integer(c_int), intent(in) :: VectorIndex   &
+         !< In The vector index within the multivector to be set
+    real(c_double), intent(in) :: ScalarValue  &
+         !< In The scalar value to be set  
     type(error),optional,intent(out) :: err
   end subroutine
 
@@ -140,10 +164,13 @@ contains
 
   !> <BR>  Adds ScalarValue to value at location (GlobalRow,VectorIndex) 
   subroutine SumIntoGlobalValue ( this,GlobalRow,VectorIndex,ScalarValue,err)
-    type(Epetra_MultiVector), intent(in) :: this
-    integer(c_int), intent(in) :: GlobalRow
-    integer(c_int), intent(in) :: VectorIndex 
-    real(c_double), intent(in) :: ScalarValue 
+    class(Epetra_MultiVector), intent(in) :: this
+    integer(c_int), intent(in) :: GlobalRow &
+         !< In The global row to be modified
+    integer(c_int), intent(in) :: VectorIndex   &
+         !< In The vector index within the multivector to be modified
+    real(c_double), intent(in) :: ScalarValue   &
+         !< In The scalar value to be added 
     type(error),optional,intent(out) :: err
   end subroutine
   
@@ -152,11 +179,17 @@ contains
 
   !> <BR>  Adds ScalarValue to value at location (GlobalBlockRow,BlockRowOffset,VectorIndex) 
   subroutine SumIntoGlobalValue ( this,GlobalBlockRow,BlockRowOffset,VectorIndex,ScalarValue,err)
-    type(Epetra_MultiVector), intent(in) :: this
-    integer(c_int), intent(in) :: GlobalBlockRow
-    integer(c_int), intent(in) :: BlockRowOffset
-    integer(c_int), intent(in) :: VectorIndex 
-    real(c_double), intent(in) :: ScalarValue 
+    class(Epetra_MultiVector), intent(in) :: this
+    integer(c_int), intent(in) :: GlobalBlockRow &
+         !< In The global block row to be modified
+    integer(c_int), intent(in) :: BlockRowOffset &
+         !< In The global block row offset to be modified
+    integer(c_int), intent(in) :: VectorIndex  &
+         !< In The vector index within the multivector to be modified
+    real(c_double), intent(in) :: ScalarValue   &
+         !< In The scalar value to be added 
+    type(error),optional,intent(out) :: err &
+         !< Returns  error information.
   end subroutine
 
   !> @name Post-construction modification routines
@@ -164,11 +197,15 @@ contains
 
   !> <BR>  Adds ScalarValue to value at location (MyRow,VectorIndex) 
   subroutine SumIntoMyValue ( this,MyRow,VectorIndex,ScalarValue,err)
-    type(Epetra_MultiVector), intent(in) :: this
-    integer(c_int), intent(in) :: MyRow
-    integer(c_int), intent(in) :: VectorIndex 
-    real(c_double), intent(in) :: ScalarValue 
-    type(error),optional,intent(out) :: err
+    class(Epetra_MultiVector), intent(in) :: this
+    integer(c_int), intent(in) :: MyRow &
+         !< In The local row to be modified
+    integer(c_int), intent(in) :: VectorIndex  &
+         !< In The vector index within the multivector to be modified
+    real(c_double), intent(in) :: ScalarValue   &
+         !< In The scalar value to be added  
+    type(error),optional,intent(out) :: err &
+         !< Returns  error information.
   end subroutine
   
   !> @name Post-construction modification routines
@@ -176,32 +213,40 @@ contains
 
   !> <BR>  Adds ScalarValue to value at location (MyBlockRow,BlockRowOffset,VectorIndex) 
   subroutine SumIntoMyValue ( this,MyBlockRow,BlockRowOffset,VectorIndex,ScalarValue,err)
-    type(Epetra_MultiVector), intent(in) :: this
-    integer(c_int), intent(in) :: MyBlockRow
-    integer(c_int), intent(in) :: BlockRowOffset
-    integer(c_int), intent(in) :: VectorIndex 
-    real(c_double), intent(in) :: ScalarValue 
-    type(error),optional,intent(out) :: err
+    class(Epetra_MultiVector), intent(in) :: this
+    integer(c_int), intent(in) :: MyBlockRow &
+         !< In The local block row to be modified
+    integer(c_int), intent(in) :: BlockRowOffset &
+         !< In The local block row offset to be modified
+    integer(c_int), intent(in) :: VectorIndex  &
+         !< In The vector index within the multivector to be modified
+    real(c_double), intent(in) :: ScalarValue  &
+         !< In The scalar value to be added  
+    type(error),optional,intent(out) :: err &
+         !< Returns  error information.
   end subroutine
 
 
   !> @name Post-construction modification routines
   !! @{
 
-  !> <BR>  Replaces all entries with scalar
+  !> <BR>  Replaces all entries with scalar value.
   subroutine PutScalar(this,scalar,err)
-    type(Epetra_MultiVector) ,intent(inout) :: this
-    type(error) ,optional  ,intent(out)   :: err
-    real(c_double)            ,intent(in)    :: scalar
+    class(Epetra_MultiVector) ,intent(inout) :: this
+    real(c_double)            ,intent(in)    :: scalar &
+         !< In The scalar to which all entries will be set
+    type(error) ,optional  ,intent(out)   :: err &
+         !< Returns  error information.
   end subroutine
  
   !> @name Post-construction modification routines
   !! @{
 
-  !> <BR> Replaces all entries with random values
+  !> <BR> Replaces all entries with random values. 
   subroutine Random(this,err)
-    type(Epetra_MultiVector) ,intent(inout) :: this
-    type(error) ,optional  ,intent(out)   :: err
+    class(Epetra_MultiVector) ,intent(inout) :: this
+    type(error) ,optional  ,intent(out)   :: err &
+         !< Returns  error information.
   end subroutine
 
 
@@ -211,10 +256,13 @@ contains
 
   !> <BR> Computes the scalar product of corresponding pairs of vectors.
   function Dot(this,x,err) result(dot_)
-    type(Epetra_MultiVector), intent(in) :: this
-    type(Epetra_MultiVector), intent(in) :: x
-    real(c_double),dimension(:),allocatable :: dot_ 
-    type(error),optional,intent(out)   :: err
+    class(Epetra_MultiVector), intent(in) :: this
+    class(Epetra_MultiVector), intent(in) :: x &
+         !< In The multivector to be used in conjunction with the "this"  multivector
+    real(c_double),dimension(:),allocatable :: dot_  &
+         !< Result: dot_(i) will contain the dot product of corresponding i-th vectors. 
+    type(error),optional,intent(out)   :: err &
+         !< Returns  error information.
   end function 
 
   !> @name Mathematical methods
@@ -222,9 +270,11 @@ contains
 
   !> <BR> Replaces target with element-wise absolute value of input
   subroutine Abs(this,A,err)
-    type(Epetra_MultiVector), intent(inout) :: this
-    type(Epetra_MultiVector), intent(in) :: A 
-    type(error),optional,intent(out)   :: err
+    class(Epetra_MultiVector), intent(inout) :: this
+    class(Epetra_MultiVector), intent(in) :: A &
+         !< In The source multivector.
+    type(error),optional,intent(out)   :: err &
+         !< Returns  error information.
   end subroutine
 
   !> @name Mathematical methods
@@ -232,9 +282,11 @@ contains
 
   !> <BR> Reciprocal  replaces target with element-wise reciprocal value of input
   subroutine Reciprocal(this,A,err)
-    type(Epetra_MultiVector), intent(inout) :: this
-    type(Epetra_MultiVector), intent(in) :: A
-    type(error),optional,intent(out)   :: err
+    class(Epetra_MultiVector), intent(inout) :: this
+    class(Epetra_MultiVector), intent(in) :: A &
+         !< In The source multivector.
+    type(error),optional,intent(out)   :: err &
+         !< Returns  error information.
   end subroutine
  
   !> @name Mathematical methods
@@ -242,9 +294,11 @@ contains
 
   !> <BR> Scales current values  this = scalar_value*this
   subroutine Scale(this,scalar_value,err)
-    type(Epetra_MultiVector), intent(inout) :: this
-    real(c_double),            intent(in)    :: scalar_value
-    type(error),optional,intent(out)      :: err
+    class(Epetra_MultiVector), intent(inout) :: this
+    real(c_double),            intent(in)    :: scalar_value &
+         !< In The scale factor.
+    type(error),optional,intent(out)      :: err &
+         !< Returns  error information.
   end subroutine
   
   !> @name Mathematical methods
@@ -252,10 +306,13 @@ contains
 
   !> <BR> Replaces current values with scaled input  this = scalar_value*MultiVector
   subroutine Scale(this,scalar_value,MultiVector,err)
-    type(Epetra_MultiVector), intent(inout) :: this
-    type(Epetra_MultiVector), intent(in)    :: MultiVector 
-    real(c_double),            intent(in)    :: scalar_value
-    type(error),optional,intent(out)      :: err
+    class(Epetra_MultiVector), intent(inout) :: this
+    class(Epetra_MultiVector), intent(in)    :: MultiVector  &
+         !< In The source multivector.
+    real(c_double),            intent(in)    :: scalar_value &
+         !< In The scale factor.
+    type(error),optional,intent(out)      :: err &
+         !< Returns  error information.
   end subroutine
 
 
@@ -264,9 +321,11 @@ contains
 
   !> <BR> Computes 1-norm of each vector in the input
   function Norm1(this,err) result(Norm1_val)
-    type(Epetra_MultiVector)   ,intent(in)  :: this
-    type(error) ,optional    ,intent(out) :: err
-    real(c_double) ,dimension(:),allocatable :: Norm1_val 
+    class(Epetra_MultiVector)   ,intent(in)  :: this
+    real(c_double) ,dimension(:),allocatable :: Norm1_val  &
+         !< Result: Norm1_val(i) will contain the 1-norm of the i-th vector. 
+    type(error) ,optional    ,intent(out) :: err &
+         !< Returns  error information.
   end function 
  
   !> @name Mathematical methods
@@ -274,9 +333,11 @@ contains
 
   !> <BR> Computes 2-norm of each vector in the input
   function Norm2(this,err) result(Norm2_val)
-    type(Epetra_MultiVector)   ,intent(in)  :: this
-    type(error) ,optional    ,intent(out) :: err
-    real(c_double) ,dimension(:),allocatable :: Norm2_val 
+    class(Epetra_MultiVector)   ,intent(in)  :: this
+    real(c_double) ,dimension(:),allocatable :: Norm2_val  &
+         !< Result: Norm2_val(i) will contain the 2-norm of the i-th vector. 
+    type(error) ,optional    ,intent(out) :: err &
+         !< Returns  error information.
   end function
  
   !> @name Mathematical methods
@@ -284,9 +345,11 @@ contains
 
   !> <BR> Computes infinity norm of each vector in the input
   function NormInf(this,err) result(NormInf_val)
-    type(Epetra_MultiVector)   ,intent(in)  :: this
-    type(error) ,optional    ,intent(out) :: err
-    real(c_double) ,dimension(:),allocatable :: NormInf_val 
+    class(Epetra_MultiVector)   ,intent(in)  :: this
+    real(c_double) ,dimension(:),allocatable :: NormInf_val  &
+         !< Result: NormInf_val(i) will contain the infinity-norm of the i-th vector. 
+    type(error) ,optional    ,intent(out) :: err &
+         !< Returns  error information.
   end function 
 
   !> @name Mathematical methods
@@ -294,10 +357,13 @@ contains
 
   !> <BR> Computes weighted  norm (RMS norm) of each vector in the input
   function NormWeighted(this,weights,err) result(NormWeighted_val)
-    type(Epetra_MultiVector)   ,intent(in)  :: this
-    type(Epetra_MultiVector)   ,intent(in)  :: weights 
-    type(error) ,optional    ,intent(out) :: err
-    real(c_double) ,dimension(:),allocatable :: NormWeighted_val 
+    class(Epetra_MultiVector)   ,intent(in)  :: this
+    class(Epetra_MultiVector)   ,intent(in)  :: weights   &
+         !< In: the weights.
+    real(c_double) ,dimension(:),allocatable :: NormWeighted_val   &
+         !< Result: NormWieghted_val(i) will contain the RMS-norm of the i-th vector. 
+    type(error) ,optional    ,intent(out) :: err &
+         !< Returns  error information.
   end function 
 
   !> @name Mathematical methods
@@ -305,9 +371,11 @@ contains
 
   !> <BR> Computes minimum value of each vector in the input
   function MinValue(this,err) result(MinValue_val)
-    type(Epetra_MultiVector)   ,intent(in)  :: this
-    type(error) ,optional    ,intent(out) :: err
-    real(c_double) ,dimension(:),allocatable :: MinValue_val
+    class(Epetra_MultiVector)   ,intent(in)  :: this
+    real(c_double) ,dimension(:),allocatable :: MinValue_val  &
+         !< Result: MinValue_val(i) will contain the minimum value of the i-th vector. 
+    type(error) ,optional    ,intent(out) :: err &
+         !< Returns  error information.
   end function
  
   !> @name Mathematical methods
@@ -315,9 +383,11 @@ contains
 
   !> <BR> MaxValue: compute maximum value of each vector in the input
  function MaxValue(this,err) result(MaxValue_val)
-    type(Epetra_MultiVector)   ,intent(in)  :: this
-    type(error) ,optional    ,intent(out) :: err
-    real(c_double) ,dimension(:),allocatable :: MaxValue_val
+    class(Epetra_MultiVector)   ,intent(in)  :: this
+    real(c_double) ,dimension(:),allocatable :: MaxValue_val &
+         !< Result: MaxValue_val(i) will contain the maximum value of the i-th vector. 
+    type(error) ,optional    ,intent(out) :: err &
+         !< Returns  error information.
   end function
 
   !> @name Mathematical methods
@@ -325,22 +395,34 @@ contains
 
   !> <BR> Computes mean (average) value of each vector in the input
  function MeanValue(this,err) result(MeanValue_val)
-    type(Epetra_MultiVector)   ,intent(in)  :: this
-    type(error) ,optional    ,intent(out) :: err
-    real(c_double) ,dimension(:),allocatable :: MeanValue_val
+    class(Epetra_MultiVector)   ,intent(in)  :: this
+    real(c_double) ,dimension(:),allocatable :: MeanValue_val &
+         !< Result: MeanValue_val(i) will contain the average value of the i-th vector. 
+    type(error) ,optional    ,intent(out) :: err &
+         !< Returns  error information.
   end function
 
   !> @name Mathematical methods
   !! @{
 
   !> <BR> Matrix-matrix multiplication  this = ScalarThis*This + ScalarAB*MATMUL(A,B)
+    !> @brief This routine will compute the product of the two multivectors A and B and use it to update "this", like the BLAS routine GEMM. 
   subroutine Multiply(this,TransA,TransB,ScalarAB,A,B,ScalarThis,err) 
-    type(Epetra_MultiVector)   ,intent(in) :: this
-    character(c_char), intent(in) :: TransA
-    character(c_char), intent(in) :: TransB
-    type(Epetra_MultiVector)   ,intent(in)  :: A,B
-    real(c_double), intent(in) :: ScalarAB, ScalarThis 
-    type(error) ,optional    ,intent(out) :: err
+    class(Epetra_MultiVector)   ,intent(in) :: this
+    character(c_char), intent(in) :: TransA &
+    !< In: Choose transpose status of A
+    character(c_char), intent(in) :: TransB &
+    !< In: Choose transpose status of B
+    class(Epetra_MultiVector)   ,intent(in)  :: A &
+    !< In: Input multivector A 
+    class(Epetra_MultiVector)   ,intent(in)  :: B &
+    !< In: Input multivector B
+    real(c_double), intent(in) :: ScalarAB &
+    !< In: scale factor for product MATMUL(A,B)
+    real(c_double), intent(in) :: ScalarThis  &
+    !< In: scale factor for "this"
+    type(error) ,optional    ,intent(out) :: err &
+         !< Returns  error information.
   end subroutine
 
   !> @name Mathematical methods
@@ -348,10 +430,17 @@ contains
 
   !> <BR> Element-by-element multiplication  this = ScalarThis*This + ScalarAB*A*B
   subroutine Multiply(this,ScalarAB,A,B,ScalarThis,err)
-    type(Epetra_MultiVector)   ,intent(in) :: this
-    type(Epetra_MultiVector)   ,intent(in)  :: A,B
-    real(c_double), intent(in) :: ScalarAB, ScalarThis
-    type(error) ,optional    ,intent(out) :: err
+    class(Epetra_MultiVector)   ,intent(in) :: this
+    class(Epetra_MultiVector)   ,intent(in)  :: A &
+    !< In: Input multivector A 
+    class(Epetra_MultiVector)   ,intent(in)  :: B &
+    !< In: Input multivector B
+    real(c_double), intent(in) :: ScalarAB &
+    !< In: scale factor for product A*B
+    real(c_double), intent(in) :: ScalarThis  &
+    !< In: scale factor for "this"
+    type(error) ,optional    ,intent(out) :: err &
+         !< Returns  error information.
   end subroutine
 
   !> @name Mathematical methods
@@ -359,10 +448,17 @@ contains
 
   !> <BR> Element-by-element multiplication by reciprocal   this = ScalarThis*This + ScalarAB*A/B
   subroutine ReciprocalMultiply(this,ScalarAB,A,B,ScalarThis,err)
-    type(Epetra_MultiVector)   ,intent(in) :: this
-    type(Epetra_MultiVector)   ,intent(in)  :: A,B
-    real(c_double), intent(in) :: ScalarAB, ScalarThis
-    type(error) ,optional    ,intent(out) :: err
+    class(Epetra_MultiVector)   ,intent(in) :: this
+    class(Epetra_MultiVector)   ,intent(in)  :: A &
+    !< In: Input multivector A 
+    class(Epetra_MultiVector)   ,intent(in)  :: B &
+    !< In: Input multivector B
+    real(c_double), intent(in) :: ScalarAB &
+    !< In: scale factor for reciprocal product A/B
+    real(c_double), intent(in) :: ScalarThis  &
+    !< In: scale factor for "this"
+    type(error) ,optional    ,intent(out) :: err &
+         !< Returns  error information.
   end subroutine
 
 
@@ -371,11 +467,15 @@ contains
 
   !> <BR> Updates with scaled copy of input this = ScalarThis*This + ScalarA*A
   subroutine Update(this,scalarA,A,scalarThis,err)
-    type(Epetra_MultiVector) ,intent(inout) :: this
-    real(c_double)            ,intent(in) :: scalarA
-    type(Epetra_MultiVector) ,intent(in) :: A
-    real(c_double)            ,intent(in) :: scalarThis
-    type(error) ,optional  ,intent(out):: err
+    class(Epetra_MultiVector) ,intent(inout) :: this
+    class(Epetra_MultiVector)   ,intent(in)  :: A &
+    !< In: Input multivector A 
+    real(c_double), intent(in) :: ScalarA &
+    !< In: scale factor for p A
+    real(c_double), intent(in) :: ScalarThis  &
+    !< In: scale factor for "this"
+    type(error) ,optional  ,intent(out):: err &
+         !< Returns  error information.
   end subroutine 
 
   !> @name Mathematical methods
@@ -383,13 +483,19 @@ contains
 
   !> <BR> Updates with scaled copies of inputs this = ScalarThis*This + ScalarA*A + ScalarB*B
   subroutine Update(this,scalarA,A,scalarB,B,scalarThis,err)
-    type(Epetra_MultiVector) ,intent(inout) :: this
-    real(c_double)            ,intent(in) :: scalarA
-    type(Epetra_MultiVector) ,intent(in) :: A
-    real(c_double)            ,intent(in) :: scalarB
-    type(Epetra_MultiVector) ,intent(in) :: B
-    real(c_double)            ,intent(in) :: scalarThis
-    type(error) ,optional  ,intent(out):: err
+    class(Epetra_MultiVector) ,intent(inout) :: this
+    real(c_double), intent(in) :: ScalarA &
+    !< In: scale factor for A
+    class(Epetra_MultiVector)   ,intent(in)  :: A &
+    !< In: Input multivector A 
+    real(c_double), intent(in) :: ScalarB &
+    !< In: scale factor for B
+    class(Epetra_MultiVector)   ,intent(in)  :: B &
+    !< In: Input multivector B
+    real(c_double), intent(in) :: ScalarThis  &
+    !< In: scale factor for "this"
+    type(error) ,optional  ,intent(out):: err &
+         !< Returns  error information.
   end subroutine
 
 
@@ -398,10 +504,13 @@ contains
 
   !> <BR> Copies multivector contents into target
   function ExtractCopy(this,MyLDA,err) result(A)
-    type(Epetra_MultiVector),intent(in) :: this
-    real(c_double),dimension(:,:),allocatable :: A
-    integer(c_int),intent(in) :: MyLDA
-    type(error),optional,intent(out) :: err
+    class(Epetra_MultiVector),intent(in) :: this
+    integer(c_int),intent(in) :: MyLDA &
+         !< In: Leading dimension of multivector. 
+    real(c_double),dimension(:,:),allocatable :: A &
+         !< Result: the copy of the local data
+    type(error),optional,intent(out) :: err &
+         !< Returns  error information.
   end function
 
 
@@ -410,7 +519,7 @@ contains
 
   !> <BR> Number of vectors in  multivector
   integer(c_int) function NumVectors(this)
-    type(Epetra_MultiVector) ,intent(in) :: this
+    class(Epetra_MultiVector) ,intent(in) :: this
   end function 
 
   !> @name Attribute access
@@ -418,7 +527,7 @@ contains
 
   !> <BR> Local vector length
   integer(c_int) function MyLength(this)
-    type(Epetra_MultiVector) ,intent(in) :: this
+    class(Epetra_MultiVector) ,intent(in) :: this
   end function 
 
   !> @name Attribute access
@@ -426,7 +535,7 @@ contains
 
   !> <BR> Global vector length
   integer(c_int) function GlobalLength(this)
-    type(Epetra_MultiVector) ,intent(in) :: this
+    class(Epetra_MultiVector) ,intent(in) :: this
   end function 
 
   !> @name Attribute access
@@ -434,7 +543,7 @@ contains
 
   !> <BR> Stride between successive vectors in multivector (only meaningful if ConstantStride()==true)
   integer(c_int) function Stride(this)
-    type(Epetra_MultiVector) ,intent(in) :: this
+    class(Epetra_MultiVector) ,intent(in) :: this
   end function 
 
   !> @name Attribute access
@@ -443,7 +552,7 @@ contains
   !> <BR> True if stride between successive vectors is constant
   integer(FT_boolean_t) function ConstantStride(this)
     use ForTrilinos_enums ,only:FT_Epetra_MultiVector_ID_t,FT_boolean_t
-    type(Epetra_MultiVector) ,intent(in) :: this
+    class(Epetra_MultiVector) ,intent(in) :: this
   end function 
 
 ! !$ subroutine Export_UsingExporter(this,A,exporter,CombineMode,indexor,err)
