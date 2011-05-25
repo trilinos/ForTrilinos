@@ -503,10 +503,11 @@ contains
   !! @{
 
   !> <BR> Copies multivector contents into target
+  !> @brief The input argument MyLDA is a user request for the size of the output; the actual size will be the maximum between this and the stride of the multivector object.
   function ExtractCopy(this,MyLDA,err) result(A)
     class(Epetra_MultiVector),intent(in) :: this
     integer(c_int),intent(in) :: MyLDA &
-         !< In: Leading dimension of multivector. 
+         !< In: Minimum leading dimension of result. 
     real(c_double),dimension(:,:),allocatable :: A &
          !< Result: the copy of the local data
     type(error),optional,intent(out) :: err &

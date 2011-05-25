@@ -392,17 +392,20 @@ contains
   function ExtractCopy_2DA(this,MyLDA,err) result(A)
     class(Epetra_MultiVector),intent(in) :: this
     real(c_double),dimension(:,:),allocatable :: A
-    integer(c_int),intent(in) :: MyLDA
+    integer(c_int), intent(in) :: MyLDA
     type(error),optional,intent(out) :: err
     integer(c_int)           :: error_out
-    integer(c_int) :: status
+    integer(c_int) :: status,lda
     type(error) :: ierr
+
+    lda = max(MyLDA,this%MyLength())
+    
     if (.not.allocated(A)) then 
-      allocate(A(this%MyLength(),this%NumVectors()),stat=status) ! To match a user's Fortran-style array in Trilinos
+      allocate(A(lda,this%NumVectors()),stat=status) ! To match a user's Fortran-style array in Trilinos
       ierr=error(status,'FEpetra_MultiVector:ExtractCopy_2DA')
       call ierr%check_success()
     endif
-    error_out=Epetra_MultiVector_ExtractCopy_Fill2DA(this%MultiVector_id,A,MyLDA)
+    error_out=Epetra_MultiVector_ExtractCopy_Fill2DA(this%MultiVector_id,A,lda)
     if (present(err)) err=error(error_out,'Epetra_MultiVector%ExtractCopy_2DA: failed')
   end function
 
