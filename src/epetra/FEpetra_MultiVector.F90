@@ -83,7 +83,8 @@ module FEpetra_MultiVector
      procedure         :: Random
      ! Extraction Methods
      procedure         :: ExtractCopy_2DA
-     generic :: ExtractCopy=>ExtractCopy_2DA
+     procedure         :: ExtractCopy_MoldR2
+     generic :: ExtractCopy=>ExtractCopy_2DA, ExtractCopy_MoldR2
      ! Mathematical Methods
      procedure         :: Update_WithA
      procedure         :: Update_WithAB
@@ -399,15 +400,30 @@ contains
     type(error) :: ierr
 
     lda = max(MyLDA,this%MyLength())
-    
-    if (.not.allocated(A)) then 
-      allocate(A(lda,this%NumVectors()),stat=status) ! To match a user's Fortran-style array in Trilinos
-      ierr=error(status,'FEpetra_MultiVector:ExtractCopy_2DA')
-      call ierr%check_success()
-    endif
+    ! Note: a function result cannot possibly be allocated at this point
+    allocate(A(lda,this%NumVectors()),stat=status) ! To match a user's Fortran-style array in Trilinos
+    ierr=error(status,'FEpetra_MultiVector:ExtractCopy_2DA')
+    call ierr%check_success()
     error_out=Epetra_MultiVector_ExtractCopy_Fill2DA(this%MultiVector_id,A,lda)
     if (present(err)) err=error(error_out,'Epetra_MultiVector%ExtractCopy_2DA: failed')
   end function
+
+  function ExtractCopy_MoldR2(this,mold,err) result(A)
+    class(Epetra_MultiVector), intent(in)       :: this
+    real(c_double), dimension(:,:), allocatable :: A
+    real(c_double), dimension(:,:), intent(in)  :: mold
+    type(error),optional,intent(out) :: err
+    integer(c_int) :: error_out
+    integer(c_int) :: status,lda
+    type(error)    :: ierr
+
+    lda = this%MyLength()
+    allocate(A(lda,this%NumVectors()),stat=status) ! To match a user's Fortran-style array in Trilinos
+    ierr=error(status,'FEpetra_MultiVector:ExtractCopy_MoldR2')
+    call ierr%check_success()
+    error_out=Epetra_MultiVector_ExtractCopy_Fill2DA(this%MultiVector_id,A,lda)
+    if (present(err)) err=error(error_out,'Epetra_MultiVector%ExtractCopy_Fill2DA: failed')
+  end function ExtractCopy_MoldR2
 
   subroutine Update_WithA(this,scalarA,A,scalarThis,err)
     class(Epetra_MultiVector) ,intent(inout) :: this

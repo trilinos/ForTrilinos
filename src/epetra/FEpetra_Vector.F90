@@ -74,7 +74,8 @@ module FEpetra_Vector
      generic :: SumIntoMyValues => SumIntoMyValues_NoOffset,SumIntoMyValues_BlockPos
      ! Extraction methods
      procedure         :: ExtractCopy_EpetraVector
-     generic :: ExtractCopy => ExtractCopy_EpetraVector
+     procedure         :: ExtractCopy_MoldR1
+     generic :: ExtractCopy => ExtractCopy_EpetraVector,ExtractCopy_MoldR1
      !overloaded operators
      procedure         :: get_element_EpetraVector
      generic :: get_Element => get_element_EpetraVector 
@@ -292,14 +293,31 @@ contains
     integer(c_int)                      :: error_out
     integer(c_int) :: status
     type(error) :: ierr
-    if (.not.allocated(ExtractCopy_out)) then
-      allocate(ExtractCopy_out(this%MyLength()),stat=status)
-      ierr=error(status,'FEpetra_Vector:ExtractCopy_EpetraVector')
-      call ierr%check_success()
-    endif
+
+    allocate(ExtractCopy_out(this%MyLength()),stat=status)
+    ierr=error(status,'FEpetra_Vector:ExtractCopy_EpetraVector')
+    call ierr%check_success()
     error_out = Epetra_Vector_ExtractCopy(this%vector_id,ExtractCopy_out)
     if (present(err)) err=error(error_out,'Epetra_Vector%ExtractCopy_EpetraVector: failed.')
   end function 
+
+
+  function ExtractCopy_MoldR1(this,mold,err) result(V)
+    class(Epetra_Vector), intent(in)       :: this
+    real(c_double), dimension(:), allocatable :: V
+    real(c_double), dimension(:), intent(in)  :: mold
+    type(error),optional,intent(out) :: err
+    integer(c_int) :: error_out
+    integer(c_int) :: status
+    type(error)    :: ierr
+
+    allocate(V(this%MyLength()),stat=status) ! To match a user's Fortran-style array in Trilinos
+    ierr=error(status,'FEpetra_MultiVector:ExtractCopy_MoldR1')
+    call ierr%check_success()
+    error_out=Epetra_Vector_ExtractCopy(this%vector_id,V)
+    if (present(err)) err=error(error_out,'Epetra_Vector%ExtractCopy_EpetraVector: failed')
+  end function ExtractCopy_MoldR1
+
  
   real(c_double) function get_element_EpetraVector(this,index)
     class(Epetra_Vector), intent(in) :: this
