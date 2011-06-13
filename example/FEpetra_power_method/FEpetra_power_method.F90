@@ -179,8 +179,7 @@ program main
 
   if (A%MyGlobalRow(1_c_int)) then
     numvals=A%NumGlobalEntries(1_c_int)
-    allocate(Rowvals(numvals),Rowinds(numvals))
-    call A%ExtractGlobalRowCopy(1_c_int,numvals,numvals,Rowvals,Rowinds) ! get A(1,1)
+    call A%ExtractGlobalRowCopy(1_c_int,Rowvals,Rowinds) ! get A(1,1)
   do i=1,numvals
    if (Rowinds(i)==1) Rowvals(i)=10.0*Rowvals(i)
   enddo  

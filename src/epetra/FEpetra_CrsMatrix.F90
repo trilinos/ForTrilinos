@@ -41,6 +41,7 @@ module FEpetra_CrsMatrix
   use ForTrilinos_enum_wrappers
   use ForTrilinos_table_man
   use ForTrilinos_error
+  use ForTrilinos_assertion_utility
   use FEpetra_RowMatrix ,only : Epetra_RowMatrix
   use FEpetra_Map     !  ,only : Epetra_Map
   use iso_c_binding     ,only : c_int,c_long,c_double,c_char
@@ -70,6 +71,7 @@ module FEpetra_CrsMatrix
      !Matrix data extraction routines
      procedure         :: ExtractGlobalRowCopy
      procedure         :: NumMyRowEntries
+     procedure         :: NumMyEntries
      procedure         :: MaxNumEntries
     !Computational Methods
      procedure         :: Multiply_Vector
@@ -336,26 +338,41 @@ contains
    if (present(err)) err=error(error_out,'Epetra_CrsMatrix%FillComplete_Map: failed.')
   end subroutine
 
- subroutine ExtractGlobalRowCopy(this,GlobalRow,length,NumEntries,values,indices,err)
+ subroutine ExtractGlobalRowCopy(this,GlobalRow,values,indices,err)
    class(Epetra_CrsMatrix), intent(in) :: this
    integer(c_int),          intent(in) :: GlobalRow
-   integer(c_int),          intent(in) :: length 
-   integer(c_int),          intent(inout) :: NumEntries
-   real(c_double), dimension(:),intent(inout):: values 
-   integer(c_int), dimension(:),intent(inout):: indices 
-   type(error), optional, intent(out) :: err
-   integer(c_int)                          :: error_out
-   error_out=Epetra_CrsMatrix_ExtractGlobalRowCopy_WithIndices(this%CrsMatrix_id,GlobalRow,length,NumEntries,values,indices)
+   integer(c_int)                      :: NumEntries,length  ! This is just there to match the binding
+   real(c_double), allocatable, dimension(:),intent(out):: values 
+   integer(c_int), allocatable, dimension(:),intent(out):: indices 
+   type(error), optional,       intent(out)  :: err
+   integer(c_int)                            :: error_out
+   allocate(values(this%NumGlobalEntries(GlobalRow)))
+   allocate(indices(this%NumGlobalEntries(GlobalRow)))
+   length=size(values)
+   error_out=Epetra_CrsMatrix_ExtractGlobalRowCopy_WithIndices(this%CrsMatrix_id,GlobalRow,&
+                         length,NumEntries,values,indices)
+   call assert(NumEntries==this%NumGlobalEntries(GlobalRow) &
+        ,error_message('ExtractGlobalRowCopy: Mismatch between NumEntries and size(values)'))
    if (present(err)) err=error(error_out,'Epetra_CrsMatrix%ExtractGlobalRowCopy: failed')
  end subroutine
+
+ integer(c_int) function NumMyEntries(this,MyRow)
+   use iso_c_binding, only : c_int
+   class(Epetra_CrsMatrix), intent(in) :: this
+   integer(c_int),          intent(in) :: MyRow
+   integer(c_int)                      :: MyRow_c
+   MyRow_c=MyRow-FT_Index_OffSet ! To account for Fortran index base 1
+   NumMyEntries=Epetra_CrsMatrix_NumMyEntries(this%CrsMatrix_id,MyRow_c)
+ end function
 
  integer(c_int) function NumMyRowEntries(this,MyRow)
    use iso_c_binding, only : c_int
    class(Epetra_CrsMatrix), intent(in) :: this
    integer(c_int),          intent(in) :: MyRow
    integer(c_int)                      :: MyRow_c
+   integer(c_int)                      :: junk
    MyRow_c=MyRow-FT_Index_OffSet ! To account for Fortran index base 1
-   NumMyRowEntries=Epetra_CrsMatrix_NumMyEntries(this%CrsMatrix_id,MyRow_c)
+   junk=Epetra_CrsMatrix_NumMyRowEntries(this%CrsMatrix_id,MyRow_c,NumMyRowEntries)
  end function
 
  integer(c_int) function MaxNumEntries(this)
@@ -432,10 +449,10 @@ contains
   RowMap=Epetra_Map(RowMap_ID)
  end function
 
- integer(c_int) function NumGlobalEntries(this,row)
+ integer(c_int) function NumGlobalEntries(this,GlobalRow)
    class(Epetra_CrsMatrix), intent(in) :: this
-   integer(c_int), intent(in) :: row
-   NumGlobalEntries=Epetra_CrsMatrix_NumGlobalEntries(this%CrsMatrix_id,row)
+   integer(c_int), intent(in) :: GlobalRow
+   NumGlobalEntries=Epetra_CrsMatrix_NumGlobalEntries(this%CrsMatrix_id,GlobalRow)
  end function
 
   subroutine invalidate_EpetraCrsMatrix_ID(this)
