@@ -76,7 +76,6 @@ contains
      type(FT_AztecOO_ID_t) ,intent(in) :: id
      from_struct%AztecOO_id = id
      call from_struct%register_self
-   print *,'Inside AztecOO constructor'
   end function
   
   !> <BR> Original C++ prototype:
