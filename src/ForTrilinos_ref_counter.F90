@@ -78,11 +78,11 @@ contains
       deallocate(this%count,stat=status)
       ierr=error(status,'Ref_counter%release: this%count deallocation failed.')
       call ierr%check_success()
-      this%count=>null()
-
       deallocate(this%obj,stat=status)
       ierr=error(status,'Ref_counter%release: this%obj deallocation failed.')
       call ierr%check_success()
+    else
+      this%count=>null()
       this%obj=>null()
     end if
   end subroutine
@@ -90,7 +90,8 @@ contains
   subroutine assign (lhs, rhs)
     class (ref_counter), intent(inout) :: lhs
     class (ref_counter), intent(in) :: rhs
-    call assert( [associated(rhs%count)], [error_message('Ref_counter%assign: rhs%count not associated.')] )
+    call assert( associated(rhs%count), error_message('Ref_counter%assign: rhs%count not associated.') )
+    call assert( associated(rhs%obj), error_message('Ref_counter%assign: rhs%obj not associated.') )
     lhs%count => rhs%count
     lhs%obj => rhs%obj
     call lhs%grab
