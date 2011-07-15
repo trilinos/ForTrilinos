@@ -35,8 +35,6 @@
 !                    Damian Rouson (rouson@sandia.gov)
 !*********************************************************************
 
-
-
 program main
   use iso_c_binding ,only : c_int,c_double,c_bool
   use iso_fortran_env ,only : error_unit ,output_unit
@@ -46,12 +44,14 @@ program main
 
   ! This file is the Fortran equivalent of CTrilionos/example/verySimple.c.
   ! As such, it makes direct use of the procedural bindings in forepetra.F90.
-  ! This style of accessing Trilinos is recommended for Fortran users whose
-  ! compilers do not support the object-oriented features of Fortran 2003.
+  ! Although we deprecate the use of this style, we retain this file for instructive
+  ! purposes: users who are learning Fortran 2003 and know an earlier version of Fortran
+  ! might find it useful to compare this Fortran 90-style code with the analogous object-
+  ! oriented code in ../verySimpleObjectOriented.F90.
   
-  !/*
-  ! * Data declarations 
-  ! */
+  !
+  ! Data declarations 
+  !
 
   integer(c_int) numGlobalElements, numGlobalElements_rtn ;
   integer(c_int) junk;
@@ -68,42 +68,42 @@ program main
 
   logical(c_bool) :: success = .TRUE.;
 
-  !/*
-  ! * Executable code
-  ! */
+  !
+  ! Executable code
+  !
 
   if (.not. valid_kind_parameters()) &
      stop 'In ForTrilinos (verySimple.F90): C interoperability not supported on this platform.'
   
-  !/* Create an Epetra_SerialComm but store it as an Epetra_Comm so that
-  ! * it can be passed to functions expecting the latter */
+  ! Create an Epetra_SerialComm but store it as an Epetra_Comm so that
+  ! it can be passed to functions expecting the latter 
 
   commID = Epetra_Comm_Degeneralize(Epetra_SerialComm_Generalize(Epetra_SerialComm_Create()));
 
-  !/* Create an Epetra_Map and store it as an Epetra_BlockMap so that
-  ! * a) it can be passed to functions expecting the latter and
-  ! * b) methods implemented only in BlockMap can be invoked on the Map */
+  ! Create an Epetra_Map and store it as an Epetra_BlockMap so that
+  ! a) it can be passed to functions expecting the latter and
+  ! b) methods implemented only in BlockMap can be invoked on the Map
 
   numGlobalElements = 4;
-  !/* use indexBase = 0 unless you know what you're doing! */
+  ! use indexBase = 0 unless you know what you're doing!
   bmapID = Epetra_BlockMap_Degeneralize(Epetra_Map_Generalize(Epetra_Map_Create(numGlobalElements, indexBase=0,CommID=commID)));
 
-  !/* Check the properties of the map */
+  ! Check the properties of the map 
   numGlobalElements_rtn = Epetra_BlockMap_NumGlobalElements(bmapID);
   print *, "NumGlobalElements = ", numGlobalElements_rtn ;
   if ( numGlobalElements /= numGlobalElements_rtn ) stop 'main: incorrect numGlobalElements_rtn';
 
   print *,"NumMyElements = ", Epetra_BlockMap_NumMyElements(bmapID);
   
-  !/* Create an Epetra_Vector and store it as an Epetra_MultiVector so that
-  ! * methods implemented only in MultiVector can be invoked on the Vector */
-  !/* zero this one */
+  ! Create an Epetra_Vector and store it as an Epetra_MultiVector so that
+  ! methods implemented only in MultiVector can be invoked on the Vector 
+  ! zero this one 
   mxID = Epetra_MultiVector_Degeneralize(Epetra_Vector_Generalize(Epetra_Vector_Create(bmapID, FT_TRUE)));
 
-  !/* Do the same thing, but do not initialize this one to zero */
+  ! Do the same thing, but do not initialize this one to zero 
   mbID = Epetra_MultiVector_Degeneralize(Epetra_Vector_Generalize(Epetra_Vector_Create(bmapID, FT_FALSE)));
 
-  !/* Do some vector operations */
+  ! Do some vector operations 
   junk = Epetra_MultiVector_PutScalar(mbID, 2.0_c_double);
   junk = Epetra_MultiVector_Update_WithA(mxID, 2.0_c_double, mbID, 0.0_c_double);!/* x = 2*b */
 
@@ -113,7 +113,7 @@ program main
   print *,"2 norm of x = ", xnorm;
   print *,"2 norm of b = ", bnorm;
 
-  !/* Test the expected value */
+  ! Test the expected value 
   expected_bnorm = sqrt( 2.0 * 2.0 * numGlobalElements );
   expected_xnorm = sqrt( 4.0 * 4.0 * numGlobalElements );
   bnorm_err = abs( expected_bnorm - bnorm(1) ) / expected_bnorm;
@@ -124,15 +124,11 @@ program main
   if (bnorm_err > err_tol) success = .FALSE.;
   if (xnorm_err > err_tol) success = .FALSE.;
 
-  !/* Clean up memory (in reverse order)! */
+  ! Clean up memory (in reverse order)
   call Epetra_MultiVector_Destroy(mxID);
   call Epetra_MultiVector_Destroy(mbID);
   call Epetra_BlockMap_Destroy(bmapID);
   call Epetra_Comm_Destroy(commID);
-
-  !/* This should throw an exception and print an error message
-  ! * since the object has already been destroyed! */
-  !/* Epetra_BlockMap_NumGlobalElements(bmapID); */
 
   if (success) then
     write(output_unit,*) 
@@ -142,6 +138,4 @@ program main
     write(error_unit,fmt='(a)') "End Result: TEST FAILED" ;
   end if
   
-  ! return ( (success == .TRUE.) ? 0 : 1 );
-
 end program

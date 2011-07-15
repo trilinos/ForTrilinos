@@ -36,9 +36,8 @@
 !*********************************************************************
 
 module ForTrilinos_error
-  use ForTrilinos_enums
-  use iso_c_binding, only:c_int,c_char,c_double
-  use ForTrilinos_assertion_utility ,only : error_message,assert,assert_identical
+  use iso_c_binding, only:c_int
+  use ForTrilinos_assertion_utility ,only : error_message,assert
 
   implicit none
   private

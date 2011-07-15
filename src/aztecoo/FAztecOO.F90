@@ -53,18 +53,18 @@ module FAztecOO
     private
     type(FT_AztecOO_ID_t) :: AztecOO_id 
   contains
-     ! Developers only
-     procedure         :: invalidate_id => invalidate_AztecOO_ID
-     procedure         :: ctrilinos_delete => ctrilinos_delete_AztecOO
-     procedure         :: get_AztecOO_ID 
-     procedure ,nopass :: alias_AztecOO_ID
-     procedure         :: generalize 
      ! Standard AztecOO solve methods
      procedure         :: SetAztecOption
      procedure         :: iterate_current
      procedure         :: iterate_RowMatrix
      procedure         :: RecursiveIterate
      generic :: iterate => iterate_current, iterate_RowMatrix
+     ! Developers only
+     procedure         :: invalidate_id => invalidate_AztecOO_ID
+     procedure         :: ctrilinos_delete => ctrilinos_delete_AztecOO
+     procedure         :: get_AztecOO_ID 
+     procedure ,nopass :: alias_AztecOO_ID
+     procedure         :: generalize 
   end type
 
    interface AztecOO ! constructors
