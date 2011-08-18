@@ -38,6 +38,7 @@
 module ForTrilinos_ref_counter
   use ForTrilinos_hermetic ,only : hermetic
   use ForTrilinos_assertion_utility ,only : assert,error_message
+  use ForTrilinos_error ,only : error
   implicit none
   private
   public :: ref_counter
@@ -66,7 +67,6 @@ contains
   end subroutine
 
   subroutine release(this)
-    use ForTrilinos_error ,only : error
     class (ref_counter), intent(inout) :: this
     integer  :: status
     type(error) :: ierr
@@ -103,7 +103,6 @@ contains
   end subroutine
 
   function new_ref_counter(object)
-    use ForTrilinos_error ,only : error
     class(hermetic), intent(in) :: object
     integer :: status
     type(error) :: ierr
