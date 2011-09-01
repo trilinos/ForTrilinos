@@ -108,8 +108,8 @@ module forifpack
   !! CT_Ifpack_Preconditioner_ID_t Ifpack_CreatePreconditioner_UsingType ( CT_EPrecType_E_t PrecType, 
   !!     CT_Epetra_RowMatrix_ID_t MatrixID, const int overlap );
 
-  function Ifpack_CreatePreconditioner_UsingType ( PrecType, MatrixID, overlap ) &
-        result(that) bind(C,name='Ifpack_CreatePreconditioner_UsingType')
+  function Ifpack_CreatePreconditioner_UsingType ( PrecType, MatrixID, overlap ) result(that) &
+        bind(C,name='Ifpack_CreatePreconditioner_UsingType')
     import :: FT_Ifpack_Preconditioner_ID_t ,FT_EPrecType_E_t ,FT_Epetra_RowMatrix_ID_t , &
           c_int
     
@@ -127,8 +127,8 @@ module forifpack
   !! CT_Ifpack_Preconditioner_ID_t Ifpack_CreatePreconditioner_UsingName ( CT_Ifpack_ID_t selfID, 
   !!     const char PrecType[], CT_Epetra_RowMatrix_ID_t MatrixID, const int overlap );
 
-  function Ifpack_CreatePreconditioner_UsingName ( selfID, PrecType, MatrixID, overlap ) &
-        result(that) bind(C,name='Ifpack_CreatePreconditioner_UsingName')
+  function Ifpack_CreatePreconditioner_UsingName ( selfID, PrecType, MatrixID, overlap ) result(that) &
+        bind(C,name='Ifpack_CreatePreconditioner_UsingName')
     import :: FT_Ifpack_Preconditioner_ID_t ,FT_Ifpack_ID_t ,c_char , &
           FT_Epetra_RowMatrix_ID_t ,c_int
     
@@ -147,8 +147,8 @@ module forifpack
   !! int Ifpack_SetParameters ( CT_Ifpack_ID_t selfID, int argc, char * argv[], 
   !!     CT_Teuchos_ParameterList_ID_t ListID, char * PrecType[], int * Overlap );
 
-  function Ifpack_SetParameters ( selfID, argc, argv, ListID, PrecType, Overlap ) &
-        result(that) bind(C,name='Ifpack_SetParameters')
+  function Ifpack_SetParameters ( selfID, argc, argv, ListID, PrecType, Overlap ) result(that) &
+        bind(C,name='Ifpack_SetParameters')
     import :: c_int ,FT_Ifpack_ID_t ,c_char ,FT_Teuchos_ParameterList_ID_t
     
     integer(c_int)                                                :: that
@@ -443,4 +443,4 @@ module forifpack
   end interface
 end module forifpack
 
-#endif
+#endif /* HAVE_FORTRILINOS_IFPACK */

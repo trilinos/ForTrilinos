@@ -426,8 +426,8 @@ module foraztecoo
   !! int AztecOO_SetParameters ( CT_AztecOO_ID_t selfID, 
   !!     CT_Teuchos_ParameterList_ID_t parameterlistID, boolean cerr_warning_if_unused );
 
-  function AztecOO_SetParameters ( selfID, parameterlistID, cerr_warning_if_unused ) &
-        result(that) bind(C,name='AztecOO_SetParameters')
+  function AztecOO_SetParameters ( selfID, parameterlistID, cerr_warning_if_unused ) result(that) &
+        bind(C,name='AztecOO_SetParameters')
     import :: c_int ,FT_AztecOO_ID_t ,FT_Teuchos_ParameterList_ID_t ,FT_boolean_t
     
     integer(c_int)                                                :: that
@@ -573,8 +573,8 @@ module foraztecoo
 
 
   !> <BR> Original C++ prototype:
-  !! int Iterate(Epetra_RowMatrix * A, Epetra_MultiVector * X, Epetra_MultiVector * B, int MaxIters, 
-  !!     double Tolerance);
+  !! int Iterate(Epetra_RowMatrix * A, Epetra_MultiVector * X, Epetra_MultiVector * B, 
+  !!     int MaxIters, double Tolerance);
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_Iterate ( CT_AztecOO_ID_t selfID, CT_Epetra_RowMatrix_ID_t AID, 
   !!     CT_Epetra_MultiVector_ID_t XID, CT_Epetra_MultiVector_ID_t BID, int MaxIters, 
@@ -668,8 +668,8 @@ module foraztecoo
   !! int AztecOO_AdaptiveIterate ( CT_AztecOO_ID_t selfID, int MaxIters, int MaxSolveAttempts, 
   !!     double Tolerance );
 
-  function AztecOO_AdaptiveIterate ( selfID, MaxIters, MaxSolveAttempts, Tolerance ) &
-        result(that) bind(C,name='AztecOO_AdaptiveIterate')
+  function AztecOO_AdaptiveIterate ( selfID, MaxIters, MaxSolveAttempts, Tolerance ) result(that) &
+        bind(C,name='AztecOO_AdaptiveIterate')
     import :: c_int ,FT_AztecOO_ID_t ,c_double
     
     integer(c_int)                                                :: that
@@ -1214,8 +1214,8 @@ module foraztecoo
   !! CT_AztecOO_StatusTestResNorm_ID_t AztecOO_StatusTestResNorm_Create ( CT_Epetra_Operator_ID_t OperatorID, 
   !!     CT_Epetra_Vector_ID_t LHSID, CT_Epetra_Vector_ID_t RHSID, double Tolerance );
 
-  function AztecOO_StatusTestResNorm_Create ( OperatorID, LHSID, RHSID, Tolerance ) &
-        result(that) bind(C,name='AztecOO_StatusTestResNorm_Create')
+  function AztecOO_StatusTestResNorm_Create ( OperatorID, LHSID, RHSID, Tolerance ) result(that) &
+        bind(C,name='AztecOO_StatusTestResNorm_Create')
     import :: FT_AztecOO_StatusTestResNorm_ID_t ,FT_Epetra_Operator_ID_t , &
           FT_Epetra_Vector_ID_t ,c_double
     
@@ -1261,8 +1261,8 @@ module foraztecoo
 
 
   !> <BR> Original C++ prototype:
-  !! int DefineScaleForm( ScaleType TypeOfScaling, NormType TypeOfNorm, Epetra_Vector * Weights = 0, 
-  !!     double ScaleValue = 1.0);
+  !! int DefineScaleForm( ScaleType TypeOfScaling, NormType TypeOfNorm, Epetra_Vector * Weights = 
+  !!     0, double ScaleValue = 1.0);
   !> <BR> <BR> CTrilinos prototype:
   !! int AztecOO_StatusTestResNorm_DefineScaleForm ( CT_AztecOO_StatusTestResNorm_ID_t selfID, 
   !!     CT_ScaleType_E_t TypeOfScaling, CT_NormType_E_t TypeOfNorm, 
@@ -1456,4 +1456,4 @@ module foraztecoo
   end interface
 end module foraztecoo
 
-#endif
+#endif /* HAVE_FORTRILINOS_AZTECOO */

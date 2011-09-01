@@ -71,8 +71,8 @@ module forgaleri
   !! CT_Epetra_MultiVector_ID_t Galeri_Utils_CreateCartesianCoordinates ( const char CoordType[], 
   !!     CT_Epetra_BlockMap_ID_t BlockMapID, CT_Teuchos_ParameterList_ID_t ListID );
 
-  function Galeri_Utils_CreateCartesianCoordinates ( CoordType, BlockMapID, ListID ) &
-        result(that) bind(C,name='Galeri_Utils_CreateCartesianCoordinates')
+  function Galeri_Utils_CreateCartesianCoordinates ( CoordType, BlockMapID, ListID ) result(that) &
+        bind(C,name='Galeri_Utils_CreateCartesianCoordinates')
     import :: FT_Epetra_MultiVector_ID_t ,c_char ,FT_Epetra_BlockMap_ID_t , &
           FT_Teuchos_ParameterList_ID_t
     
@@ -190,8 +190,8 @@ module forgaleri
 
 
   !> <BR> Original C++ prototype:
-  !! void GetNeighboursCartesian2d(const int i, const int nx, const int ny, int & left, int & right, 
-  !!     int & lower, int & upper);
+  !! void GetNeighboursCartesian2d(const int i, const int nx, const int ny, int & left, 
+  !!     int & right, int & lower, int & upper);
   !> <BR> <BR> CTrilinos prototype:
   !! void Galeri_Utils_GetNeighboursCartesian2d ( const int i, const int nx, const int ny, 
   !!     int * left, int * right, int * lower, int * upper );
@@ -215,8 +215,8 @@ module forgaleri
   !!     int& lower, int& upper, int& left2, int& right2, int& lower2, int& upper2);
   !> <BR> <BR> CTrilinos prototype:
   !! void Galeri_Utils_GetNeighboursCartesian2d_Both ( const int i, const int nx, const int ny, 
-  !!     int * left, int * right, int * lower, int * upper, int * left2, int * right2, int * lower2, 
-  !!     int * upper2 );
+  !!     int * left, int * right, int * lower, int * upper, int * left2, int * right2, 
+  !!     int * lower2, int * upper2 );
 
   subroutine Galeri_Utils_GetNeighboursCartesian2d_Both ( i, nx, ny, left, right, lower, &
         upper, left2, right2, lower2, upper2 ) &
@@ -238,11 +238,12 @@ module forgaleri
 
 
   !> <BR> Original C++ prototype:
-  !! void GetNeighboursCartesian3d(const int i, const int nx, const int ny, const int nz, int& left, 
-  !!     int& right, int& lower, int& upper, int& below, int& above);
+  !! void GetNeighboursCartesian3d(const int i, const int nx, const int ny, const int nz, 
+  !!     int& left, int& right, int& lower, int& upper, int& below, int& above);
   !> <BR> <BR> CTrilinos prototype:
   !! void Galeri_Utils_GetNeighboursCartesian3d ( const int i, const int nx, const int ny, 
-  !!     const int nz, int * left, int * right, int * lower, int * upper, int * below, int * above );
+  !!     const int nz, int * left, int * right, int * lower, int * upper, int * below, 
+  !!     int * above );
 
   subroutine Galeri_Utils_GetNeighboursCartesian3d ( i, nx, ny, nz, left, right, lower, &
         upper, below, above ) bind(C,name='Galeri_Utils_GetNeighboursCartesian3d')
@@ -339,4 +340,4 @@ module forgaleri
   end interface
 end module forgaleri
 
-#endif
+#endif /* HAVE_FORTRILINOS_GALERI */

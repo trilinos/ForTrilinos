@@ -145,7 +145,8 @@ module foramesos
   !> <BR> Original C++ prototype:
   !! virtual int SetUseTranspose(bool UseTranspose) = 0;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Amesos_BaseSolver_SetUseTranspose ( CT_Amesos_BaseSolver_ID_t selfID, boolean UseTranspose );
+  !! int Amesos_BaseSolver_SetUseTranspose ( CT_Amesos_BaseSolver_ID_t selfID, 
+  !!     boolean UseTranspose );
 
   function Amesos_BaseSolver_SetUseTranspose ( selfID, UseTranspose ) result(that) &
         bind(C,name='Amesos_BaseSolver_SetUseTranspose')
@@ -439,4 +440,4 @@ module foramesos
   end interface
 end module foramesos
 
-#endif
+#endif /* HAVE_FORTRILINOS_AMESOS */

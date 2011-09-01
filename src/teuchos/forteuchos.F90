@@ -76,8 +76,8 @@ module forteuchos
 
 
   !> <BR> Original C++ prototype:
-  !! CommandLineProcessor( bool throwExceptions = true ,bool recogniseAllOptions = true ,
-  !!     bool addOutputSetupOptions = false );
+  !! CommandLineProcessor( bool throwExceptions = true ,bool recogniseAllOptions = 
+  !!     true ,bool addOutputSetupOptions = false );
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Teuchos_CommandLineProcessor_ID_t Teuchos_CommandLineProcessor_Create ( boolean throwExceptions, 
   !!     boolean recogniseAllOptions, boolean addOutputSetupOptions );
@@ -199,8 +199,9 @@ module forteuchos
 
 
   !> <BR> Original C++ prototype:
-  !! void setOption( const char option_true[] ,const char option_false[] ,bool *option_val ,
-  !!     const char documentation[] = NULL );
+  !! void setOption( 
+  !!     const char option_true[] ,const char option_false[] ,bool *option_val ,const char documentation[] = 
+  !!     NULL );
   !> <BR> <BR> CTrilinos prototype:
   !! void Teuchos_CommandLineProcessor_setOption_bool ( CT_Teuchos_CommandLineProcessor_ID_t selfID, 
   !!     const char option_true[], const char option_false[], boolean * option_val, 
@@ -220,8 +221,8 @@ module forteuchos
 
 
   !> <BR> Original C++ prototype:
-  !! void setOption( const char option_name[] ,int *option_val ,const char documentation[] = NULL ,
-  !!     const bool required = false );
+  !! void setOption( const char option_name[] ,int *option_val ,const char documentation[] = 
+  !!     NULL ,const bool required = false );
   !> <BR> <BR> CTrilinos prototype:
   !! void Teuchos_CommandLineProcessor_setOption_int ( CT_Teuchos_CommandLineProcessor_ID_t selfID, 
   !!     const char option_name[], int * option_val, const char documentation[], 
@@ -240,8 +241,8 @@ module forteuchos
 
 
   !> <BR> Original C++ prototype:
-  !! void setOption( const char option_name[] ,double *option_val ,const char documentation[] = NULL ,
-  !!     const bool required = false );
+  !! void setOption( const char option_name[] ,double *option_val ,const char documentation[] = 
+  !!     NULL ,const bool required = false );
   !> <BR> <BR> CTrilinos prototype:
   !! void Teuchos_CommandLineProcessor_setOption_double ( CT_Teuchos_CommandLineProcessor_ID_t selfID, 
   !!     const char option_name[], double * option_val, const char documentation[], 
@@ -261,8 +262,9 @@ module forteuchos
 
 
   !> <BR> Original C++ prototype:
-  !! void setOption( const char option_name[] ,std::string *option_val ,
-  !!     const char documentation[] = NULL ,const bool required = false );
+  !! void setOption( 
+  !!     const char option_name[] ,std::string *option_val ,const char documentation[] = 
+  !!     NULL ,const bool required = false );
   !> <BR> <BR> CTrilinos prototype:
   !! void Teuchos_CommandLineProcessor_setOption_str ( CT_Teuchos_CommandLineProcessor_ID_t selfID, 
   !!     const char option_name[], char * option_val[], const char documentation[], 
@@ -420,8 +422,8 @@ module forteuchos
   !! CT_Teuchos_ParameterList_ID_t Teuchos_ParameterList_setParametersNotAlreadySet ( CT_Teuchos_ParameterList_ID_t selfID, 
   !!     CT_Teuchos_ParameterList_ID_t sourceID );
 
-  function Teuchos_ParameterList_setParametersNotAlreadySet ( selfID, sourceID ) &
-        result(that) bind(C,name='Teuchos_ParameterList_setParametersNotAlreadySet')
+  function Teuchos_ParameterList_setParametersNotAlreadySet ( selfID, sourceID ) result(that) &
+        bind(C,name='Teuchos_ParameterList_setParametersNotAlreadySet')
     import :: FT_Teuchos_ParameterList_ID_t
     
     type(FT_Teuchos_ParameterList_ID_t)                                  :: that
@@ -446,14 +448,14 @@ module forteuchos
 
   !> <BR> Original C++ prototype:
   !! template<typename T> ParameterList& set( std::string const& name, T const& value, 
-  !!     std::string const& docString = "" ,
-  !!     RCP<const ParameterEntryValidator> const& validator = Teuchos::null );
+  !!     std::string const& docString = "" ,RCP<const ParameterEntryValidator> const& validator = 
+  !!     Teuchos::null );
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Teuchos_ParameterList_ID_t Teuchos_ParameterList_set_double ( CT_Teuchos_ParameterList_ID_t selfID, 
-  !!     char const name[], double value, char const docString[] );
+  !! CT_Teuchos_ParameterList_ID_t Teuchos_ParameterList_set_T ( CT_Teuchos_ParameterList_ID_t selfID, 
+  !!     char const name[], T value, char const docString[] );
 
-  function Teuchos_ParameterList_set_double ( selfID, name, value, docString ) &
-        result(that) bind(C,name='Teuchos_ParameterList_set_double')
+  function Teuchos_ParameterList_set_double ( selfID, name, value, docString ) result(that) &
+        bind(C,name='Teuchos_ParameterList_set_double')
     import :: FT_Teuchos_ParameterList_ID_t ,c_char ,c_double
     
     type(FT_Teuchos_ParameterList_ID_t)                                  :: that
@@ -466,11 +468,11 @@ module forteuchos
 
   !> <BR> Original C++ prototype:
   !! template<typename T> ParameterList& set( std::string const& name, T const& value, 
-  !!     std::string const& docString = "" ,
-  !!     RCP<const ParameterEntryValidator> const& validator = Teuchos::null );
+  !!     std::string const& docString = "" ,RCP<const ParameterEntryValidator> const& validator = 
+  !!     Teuchos::null );
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Teuchos_ParameterList_ID_t Teuchos_ParameterList_set_int ( CT_Teuchos_ParameterList_ID_t selfID, 
-  !!     char const name[], int value, char const docString[] );
+  !! CT_Teuchos_ParameterList_ID_t Teuchos_ParameterList_set_T ( CT_Teuchos_ParameterList_ID_t selfID, 
+  !!     char const name[], T value, char const docString[] );
 
   function Teuchos_ParameterList_set_int ( selfID, name, value, docString ) result(that) &
         bind(C,name='Teuchos_ParameterList_set_int')
@@ -485,8 +487,8 @@ module forteuchos
 
 
   !> <BR> Original C++ prototype:
-  !! ParameterList& set( std::string const& name, char value[], std::string const& docString = "" ,
-  !!     RCP<const ParameterEntryValidator> const& validator = Teuchos::null );
+  !! ParameterList& set( std::string const& name, char value[], std::string const& docString = 
+  !!     "" ,RCP<const ParameterEntryValidator> const& validator = Teuchos::null );
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Teuchos_ParameterList_ID_t Teuchos_ParameterList_set_str ( CT_Teuchos_ParameterList_ID_t selfID, 
   !!     char const name[], char value[], char const docString[] );
@@ -542,11 +544,11 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename T> T& get(const std::string& name, T def_value);
   !> <BR> <BR> CTrilinos prototype:
-  !! double Teuchos_ParameterList_get_double_def ( CT_Teuchos_ParameterList_ID_t selfID, 
-  !!     const char name[], double def_value );
+  !! T Teuchos_ParameterList_get_def_T ( CT_Teuchos_ParameterList_ID_t selfID, const char name[], 
+  !!     T def_value );
 
-  function Teuchos_ParameterList_get_double_def ( selfID, name, def_value ) result(that) &
-        bind(C,name='Teuchos_ParameterList_get_double_def')
+  function Teuchos_ParameterList_get_def_double ( selfID, name, def_value ) result(that) &
+        bind(C,name='Teuchos_ParameterList_get_def_double')
     import :: c_double ,FT_Teuchos_ParameterList_ID_t ,c_char
     
     real(c_double)                                                       :: that
@@ -559,11 +561,11 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename T> T& get(const std::string& name, T def_value);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Teuchos_ParameterList_get_int_def ( CT_Teuchos_ParameterList_ID_t selfID, const char name[], 
-  !!     int def_value );
+  !! T Teuchos_ParameterList_get_def_T ( CT_Teuchos_ParameterList_ID_t selfID, const char name[], 
+  !!     T def_value );
 
-  function Teuchos_ParameterList_get_int_def ( selfID, name, def_value ) result(that) &
-        bind(C,name='Teuchos_ParameterList_get_int_def')
+  function Teuchos_ParameterList_get_def_int ( selfID, name, def_value ) result(that) &
+        bind(C,name='Teuchos_ParameterList_get_def_int')
     import :: c_int ,FT_Teuchos_ParameterList_ID_t ,c_char
     
     integer(c_int)                                                       :: that
@@ -576,11 +578,11 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! std::string& get(const std::string& name, char def_value[]);
   !> <BR> <BR> CTrilinos prototype:
-  !! const char * Teuchos_ParameterList_get_char_def ( CT_Teuchos_ParameterList_ID_t selfID, 
+  !! const char * Teuchos_ParameterList_get_def_char ( CT_Teuchos_ParameterList_ID_t selfID, 
   !!     const char name[], char def_value[] );
 
-  function Teuchos_ParameterList_get_char_def ( selfID, name, def_value ) result(that) &
-        bind(C,name='Teuchos_ParameterList_get_char_def')
+  function Teuchos_ParameterList_get_def_char ( selfID, name, def_value ) result(that) &
+        bind(C,name='Teuchos_ParameterList_get_def_char')
     import :: c_char ,FT_Teuchos_ParameterList_ID_t
     
     character(kind=c_char)                                               :: that
@@ -593,11 +595,11 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! std::string& get(const std::string& name, const char def_value[]);
   !> <BR> <BR> CTrilinos prototype:
-  !! const char * Teuchos_ParameterList_get_const_char_def ( CT_Teuchos_ParameterList_ID_t selfID, 
+  !! const char * Teuchos_ParameterList_get_def_const_char ( CT_Teuchos_ParameterList_ID_t selfID, 
   !!     const char name[], const char def_value[] );
 
-  function Teuchos_ParameterList_get_const_char_def ( selfID, name, def_value ) &
-        result(that) bind(C,name='Teuchos_ParameterList_get_const_char_def')
+  function Teuchos_ParameterList_get_def_const_char ( selfID, name, def_value ) result(that) &
+        bind(C,name='Teuchos_ParameterList_get_def_const_char')
     import :: c_char ,FT_Teuchos_ParameterList_ID_t
     
     character(kind=c_char)                                               :: that
@@ -610,8 +612,7 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename T> T& get(const std::string& name);
   !> <BR> <BR> CTrilinos prototype:
-  !! double Teuchos_ParameterList_get_double ( CT_Teuchos_ParameterList_ID_t selfID, 
-  !!     const char name[] );
+  !! T Teuchos_ParameterList_get ( CT_Teuchos_ParameterList_ID_t selfID, const char name[] );
 
   function Teuchos_ParameterList_get_double ( selfID, name ) result(that) &
         bind(C,name='Teuchos_ParameterList_get_double')
@@ -626,7 +627,7 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename T> T& get(const std::string& name);
   !> <BR> <BR> CTrilinos prototype:
-  !! int Teuchos_ParameterList_get_int ( CT_Teuchos_ParameterList_ID_t selfID, const char name[] );
+  !! T Teuchos_ParameterList_get ( CT_Teuchos_ParameterList_ID_t selfID, const char name[] );
 
   function Teuchos_ParameterList_get_int ( selfID, name ) result(that) &
         bind(C,name='Teuchos_ParameterList_get_int')
@@ -641,11 +642,10 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename T> const T& get(const std::string& name) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! double Teuchos_ParameterList_get_double_const ( CT_Teuchos_ParameterList_ID_t selfID, 
-  !!     const char name[] );
+  !! T Teuchos_ParameterList_get_const ( CT_Teuchos_ParameterList_ID_t selfID, const char name[] );
 
-  function Teuchos_ParameterList_get_double_const ( selfID, name ) result(that) &
-        bind(C,name='Teuchos_ParameterList_get_double_const')
+  function Teuchos_ParameterList_get_const_double ( selfID, name ) result(that) &
+        bind(C,name='Teuchos_ParameterList_get_const_double')
     import :: c_double ,FT_Teuchos_ParameterList_ID_t ,c_char
     
     real(c_double)                                                       :: that
@@ -657,11 +657,10 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename T> const T& get(const std::string& name) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Teuchos_ParameterList_get_int_const ( CT_Teuchos_ParameterList_ID_t selfID, 
-  !!     const char name[] );
+  !! T Teuchos_ParameterList_get_const ( CT_Teuchos_ParameterList_ID_t selfID, const char name[] );
 
-  function Teuchos_ParameterList_get_int_const ( selfID, name ) result(that) &
-        bind(C,name='Teuchos_ParameterList_get_int_const')
+  function Teuchos_ParameterList_get_const_int ( selfID, name ) result(that) &
+        bind(C,name='Teuchos_ParameterList_get_const_int')
     import :: c_int ,FT_Teuchos_ParameterList_ID_t ,c_char
     
     integer(c_int)                                                       :: that
@@ -673,8 +672,7 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename T> inline T* getPtr(const std::string& name);
   !> <BR> <BR> CTrilinos prototype:
-  !! double * Teuchos_ParameterList_getPtr_double ( CT_Teuchos_ParameterList_ID_t selfID, 
-  !!     const char name[] );
+  !! T * Teuchos_ParameterList_getPtr ( CT_Teuchos_ParameterList_ID_t selfID, const char name[] );
 
   function Teuchos_ParameterList_getPtr_double ( selfID, name ) result(that) &
         bind(C,name='Teuchos_ParameterList_getPtr_double')
@@ -689,8 +687,7 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename T> inline T* getPtr(const std::string& name);
   !> <BR> <BR> CTrilinos prototype:
-  !! int * Teuchos_ParameterList_getPtr_int ( CT_Teuchos_ParameterList_ID_t selfID, 
-  !!     const char name[] );
+  !! T * Teuchos_ParameterList_getPtr ( CT_Teuchos_ParameterList_ID_t selfID, const char name[] );
 
   function Teuchos_ParameterList_getPtr_int ( selfID, name ) result(that) &
         bind(C,name='Teuchos_ParameterList_getPtr_int')
@@ -705,11 +702,11 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename T> inline const T* getPtr(const std::string& name) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! const double * Teuchos_ParameterList_getPtr_double_const ( CT_Teuchos_ParameterList_ID_t selfID, 
+  !! const T * Teuchos_ParameterList_getPtr_const ( CT_Teuchos_ParameterList_ID_t selfID, 
   !!     const char name[] );
 
-  function Teuchos_ParameterList_getPtr_double_const ( selfID, name ) result(that) &
-        bind(C,name='Teuchos_ParameterList_getPtr_double_const')
+  function Teuchos_ParameterList_getPtr_const_double ( selfID, name ) result(that) &
+        bind(C,name='Teuchos_ParameterList_getPtr_const_double')
     import :: c_ptr ,FT_Teuchos_ParameterList_ID_t ,c_char
     
     type(c_ptr)                                                          :: that
@@ -721,11 +718,11 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename T> inline const T* getPtr(const std::string& name) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! const int * Teuchos_ParameterList_getPtr_int_const ( CT_Teuchos_ParameterList_ID_t selfID, 
+  !! const T * Teuchos_ParameterList_getPtr_const ( CT_Teuchos_ParameterList_ID_t selfID, 
   !!     const char name[] );
 
-  function Teuchos_ParameterList_getPtr_int_const ( selfID, name ) result(that) &
-        bind(C,name='Teuchos_ParameterList_getPtr_int_const')
+  function Teuchos_ParameterList_getPtr_const_int ( selfID, name ) result(that) &
+        bind(C,name='Teuchos_ParameterList_getPtr_const_int')
     import :: c_ptr ,FT_Teuchos_ParameterList_ID_t ,c_char
     
     type(c_ptr)                                                          :: that
@@ -801,8 +798,8 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! bool remove( std::string const& name, bool throwIfNotExists = true );
   !> <BR> <BR> CTrilinos prototype:
-  !! boolean Teuchos_ParameterList_remove ( CT_Teuchos_ParameterList_ID_t selfID, char const name[], 
-  !!     boolean throwIfNotExists );
+  !! boolean Teuchos_ParameterList_remove ( CT_Teuchos_ParameterList_ID_t selfID, 
+  !!     char const name[], boolean throwIfNotExists );
 
   function Teuchos_ParameterList_remove ( selfID, name, throwIfNotExists ) result(that) &
         bind(C,name='Teuchos_ParameterList_remove')
@@ -816,14 +813,14 @@ module forteuchos
 
 
   !> <BR> Original C++ prototype:
-  !! ParameterList& sublist( const std::string& name, bool mustAlreadyExist = false ,
-  !!     const std::string& docString = "" );
+  !! ParameterList& sublist( const std::string& name, bool mustAlreadyExist = 
+  !!     false ,const std::string& docString = "" );
   !> <BR> <BR> CTrilinos prototype:
   !! CT_Teuchos_ParameterList_ID_t Teuchos_ParameterList_sublist ( CT_Teuchos_ParameterList_ID_t selfID, 
   !!     const char name[], boolean mustAlreadyExist, const char docString[] );
 
-  function Teuchos_ParameterList_sublist ( selfID, name, mustAlreadyExist, docString ) &
-        result(that) bind(C,name='Teuchos_ParameterList_sublist')
+  function Teuchos_ParameterList_sublist ( selfID, name, mustAlreadyExist, docString ) result(that) &
+        bind(C,name='Teuchos_ParameterList_sublist')
     import :: FT_Teuchos_ParameterList_ID_t ,c_char ,FT_boolean_t
     
     type(FT_Teuchos_ParameterList_ID_t)                                  :: that
@@ -899,7 +896,7 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename T> bool isType(const std::string& name) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! boolean Teuchos_ParameterList_isType_double ( CT_Teuchos_ParameterList_ID_t selfID, 
+  !! boolean Teuchos_ParameterList_isType ( CT_Teuchos_ParameterList_ID_t selfID, 
   !!     const char name[] );
 
   function Teuchos_ParameterList_isType_double ( selfID, name ) result(that) &
@@ -915,7 +912,7 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename T> bool isType(const std::string& name) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! boolean Teuchos_ParameterList_isType_int ( CT_Teuchos_ParameterList_ID_t selfID, 
+  !! boolean Teuchos_ParameterList_isType ( CT_Teuchos_ParameterList_ID_t selfID, 
   !!     const char name[] );
 
   function Teuchos_ParameterList_isType_int ( selfID, name ) result(that) &
@@ -931,11 +928,11 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename T> bool isType(const std::string& name, T* ptr) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! boolean Teuchos_ParameterList_isType_double_type ( CT_Teuchos_ParameterList_ID_t selfID, 
-  !!     const char name[], double * ptr );
+  !! boolean Teuchos_ParameterList_isType_type_T ( CT_Teuchos_ParameterList_ID_t selfID, 
+  !!     const char name[], T * ptr );
 
-  function Teuchos_ParameterList_isType_double_type ( selfID, name, ptr ) result(that) &
-        bind(C,name='Teuchos_ParameterList_isType_double_type')
+  function Teuchos_ParameterList_isType_type_double ( selfID, name, ptr ) result(that) &
+        bind(C,name='Teuchos_ParameterList_isType_type_double')
     import :: FT_boolean_t ,FT_Teuchos_ParameterList_ID_t ,c_char ,c_double
     
     integer(FT_boolean_t)                                                :: that
@@ -948,11 +945,11 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename T> bool isType(const std::string& name, T* ptr) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! boolean Teuchos_ParameterList_isType_int_type ( CT_Teuchos_ParameterList_ID_t selfID, 
-  !!     const char name[], int * ptr );
+  !! boolean Teuchos_ParameterList_isType_type_T ( CT_Teuchos_ParameterList_ID_t selfID, 
+  !!     const char name[], T * ptr );
 
-  function Teuchos_ParameterList_isType_int_type ( selfID, name, ptr ) result(that) &
-        bind(C,name='Teuchos_ParameterList_isType_int_type')
+  function Teuchos_ParameterList_isType_type_int ( selfID, name, ptr ) result(that) &
+        bind(C,name='Teuchos_ParameterList_isType_type_int')
     import :: FT_boolean_t ,FT_Teuchos_ParameterList_ID_t ,c_char ,c_int
     
     integer(FT_boolean_t)                                                :: that
@@ -983,7 +980,8 @@ module forteuchos
   !> <BR> <BR> CTrilinos prototype:
   !! void Teuchos_ParameterList_validateParameters ( CT_Teuchos_ParameterList_ID_t selfID, 
   !!     CT_Teuchos_ParameterList_ID_t validParamListID, int const depth, 
-  !!     const CT_EValidateUsed_E_t validateUsed, const CT_EValidateDefaults_E_t validateDefaults );
+  !!     const CT_EValidateUsed_E_t validateUsed, 
+  !!     const CT_EValidateDefaults_E_t validateDefaults );
 
   subroutine Teuchos_ParameterList_validateParameters ( selfID, validParamListID, depth, &
         validateUsed, validateDefaults ) &
@@ -1000,8 +998,8 @@ module forteuchos
 
 
   !> <BR> Original C++ prototype:
-  !! void validateParametersAndSetDefaults( ParameterList const& validParamList, 
-  !!     int const depth = 1000 );
+  !! void validateParametersAndSetDefaults( ParameterList const& validParamList, int const depth = 
+  !!     1000 );
   !> <BR> <BR> CTrilinos prototype:
   !! void Teuchos_ParameterList_validateParametersAndSetDefaults ( CT_Teuchos_ParameterList_ID_t selfID, 
   !!     CT_Teuchos_ParameterList_ID_t validParamListID, int const depth );
@@ -1133,8 +1131,7 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename T> inline T& getValue(T *ptr) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! double Teuchos_ParameterEntry_getValue_double ( CT_Teuchos_ParameterEntry_ID_t selfID, 
-  !!     double * ptr );
+  !! T Teuchos_ParameterEntry_getValue_T ( CT_Teuchos_ParameterEntry_ID_t selfID, T * ptr );
 
   function Teuchos_ParameterEntry_getValue_double ( selfID, ptr ) result(that) &
         bind(C,name='Teuchos_ParameterEntry_getValue_double')
@@ -1149,7 +1146,7 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename T> inline T& getValue(T *ptr) const;
   !> <BR> <BR> CTrilinos prototype:
-  !! int Teuchos_ParameterEntry_getValue_int ( CT_Teuchos_ParameterEntry_ID_t selfID, int * ptr );
+  !! T Teuchos_ParameterEntry_getValue_T ( CT_Teuchos_ParameterEntry_ID_t selfID, T * ptr );
 
   function Teuchos_ParameterEntry_getValue_int ( selfID, ptr ) result(that) &
         bind(C,name='Teuchos_ParameterEntry_getValue_int')
@@ -1224,7 +1221,7 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template <typename T> inline bool isType() const;
   !> <BR> <BR> CTrilinos prototype:
-  !! boolean Teuchos_ParameterEntry_isType_double ( CT_Teuchos_ParameterEntry_ID_t selfID );
+  !! boolean Teuchos_ParameterEntry_isType ( CT_Teuchos_ParameterEntry_ID_t selfID );
 
   function Teuchos_ParameterEntry_isType_double ( selfID ) result(that) &
         bind(C,name='Teuchos_ParameterEntry_isType_double')
@@ -1238,7 +1235,7 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template <typename T> inline bool isType() const;
   !> <BR> <BR> CTrilinos prototype:
-  !! boolean Teuchos_ParameterEntry_isType_int ( CT_Teuchos_ParameterEntry_ID_t selfID );
+  !! boolean Teuchos_ParameterEntry_isType ( CT_Teuchos_ParameterEntry_ID_t selfID );
 
   function Teuchos_ParameterEntry_isType_int ( selfID ) result(that) &
         bind(C,name='Teuchos_ParameterEntry_isType_int')
@@ -1301,7 +1298,7 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename ValueType> explicit any(const ValueType & value);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Teuchos_any_ID_t Teuchos_any_Create_double ( double value );
+  !! CT_Teuchos_any_ID_t Teuchos_any_Create_ValueType ( ValueType value );
 
   function Teuchos_any_Create_double ( value ) result(that) &
         bind(C,name='Teuchos_any_Create_double')
@@ -1315,7 +1312,7 @@ module forteuchos
   !> <BR> Original C++ prototype:
   !! template<typename ValueType> explicit any(const ValueType & value);
   !> <BR> <BR> CTrilinos prototype:
-  !! CT_Teuchos_any_ID_t Teuchos_any_Create_int ( int value );
+  !! CT_Teuchos_any_ID_t Teuchos_any_Create_ValueType ( ValueType value );
 
   function Teuchos_any_Create_int ( value ) result(that) &
         bind(C,name='Teuchos_any_Create_int')
