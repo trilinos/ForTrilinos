@@ -46,6 +46,12 @@ module FEpetra_Comm
   !private               ! Hide everything by default
   !public :: Epetra_Comm ! Expose type/methods
 
+  !> <BR> Epetra_Comm:  The Epetra Communication Abstract Base Class.
+  !> @{
+
+  !> @brief The Epetra_Comm class is an interface that encapsulates the general information and services needed for other Epetra classes to run on a parallel computer. An Epetra_Comm object is required for building all Epetra Map objects, which in turn are required for all other Epetra classes.
+  !! Epetra_Comm has default implementations, via Epetra_SerialComm and Epetra_MpiComm, for both serial execution and MPI distributed memory execution.  It is meant to insulate the user from the specifics of communication that are not required for normal manipulation of linear algebra objects.  
+
   type, abstract :: Epetra_Comm !,abstract ,extends(universal) :: Epetra_Comm
   contains
     !Barrier Methods
