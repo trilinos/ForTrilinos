@@ -82,7 +82,7 @@ contains
    type(Epetra_Export),intent(in) :: exporter &
    !< A Epetra_Export object specifying the communication required.
    integer(FT_Epetra_CombineMode_E_t), intent(in) :: CombineMode &
-   !< A Epetra_CombineMode enumerated type specifying how results should be combined on the receiving processor.
+   !< A FT_Epetra_CombineMode_E_t enumerated type specifying how results should be combined on the receiving processor.
    type(Epetra_OffsetIndex), intent(in) :: indexor
    type(error),optional,intent(out) :: err
    !< Returns  error information.
@@ -99,7 +99,7 @@ contains
    type(Epetra_Import),intent(in) :: importer &
    !< A Epetra_Import object specifying the communication required.
    integer(FT_Epetra_CombineMode_E_t), intent(in) :: CombineMode &
-   !< A Epetra_CombineMode enumerated type specifying how results should be combined on the receiving processor.
+   !< A FT_Epetra_CombineMode_E_t enumerated type specifying how results should be combined on the receiving processor.
    type(Epetra_OffsetIndex), intent(in) :: indexor
    type(error),optional,intent(out) :: err &
    !< Returns  error information.
@@ -116,7 +116,7 @@ contains
    type(Epetra_Import),intent(in) :: importer &
    !< A Epetra_Import object specifying the communication required.
    integer(FT_Epetra_CombineMode_E_t), intent(in) :: CombineMode &
-   !< A Epetra_CombineMode enumerated type specifying how results should be combined on the receiving processor.
+   !< A FT_Epetra_CombineMode_E_t enumerated type specifying how results should be combined on the receiving processor.
    type(Epetra_OffsetIndex), intent(in) :: indexor
    type(error),optional,intent(out) :: err &
    !< Returns  error information.
@@ -133,7 +133,7 @@ contains
    type(Epetra_Export),intent(in) :: exporter &
    !< A Epetra_Export object specifying the communication required.
    integer(FT_Epetra_CombineMode_E_t), intent(in) :: CombineMode &
-   !< A Epetra_CombineMode enumerated type specifying how results should be combined on the receiving processor.
+   !< A FT_Epetra_CombineMode_E_t enumerated type specifying how results should be combined on the receiving processor.
    type(Epetra_OffsetIndex), intent(in) :: indexor
    type(error),optional,intent(out) :: err &
    !< Returns  error information.

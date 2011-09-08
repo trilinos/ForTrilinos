@@ -69,7 +69,7 @@ module FEpetra_CrsGraph
    use ForTrilinos_enums ,only: FT_boolean_t,FT_TRUE,FT_FALSE
    use iso_c_binding     ,only: c_int
    integer(FT_Epetra_DataAccess_E_t), intent(in) :: CV &
-   !< (In) A Epetra_DataAccess enumerated type set to Copy or View.
+   !< (In) A FT_Epetra_DataAccess_E_t enumerated type set to Copy or View.
    class(Epetra_BlockMap) ,intent(in) :: RowMap &
    !< (In) An Epetra_BlockMap (or Epetra_Map or Epetra_LocalMap) listing the rows that this processor will contribute to.
    integer(c_int)         ,intent(in) :: NumIndicesPerRow &
@@ -88,7 +88,7 @@ module FEpetra_CrsGraph
    use ForTrilinos_enums ,only: FT_boolean_t,FT_TRUE,FT_FALSE
    use iso_c_binding     ,only: c_int
    integer(FT_Epetra_DataAccess_E_t), intent(in) :: CV &
-   !< (In) A Epetra_DataAccess enumerated type set to Copy or View.
+   !< (In) A FT_Epetra_DataAccess_E_t enumerated type set to Copy or View.
    class(Epetra_BlockMap) ,intent(in) :: RowMap &
    !< (In) An Epetra_BlockMap (or Epetra_Map or Epetra_LocalMap) listing the rows that this processor will contribute to
    integer(c_int),dimension(:) ,intent(in) :: NumIndicesPerRow &
