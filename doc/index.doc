@@ -1,0 +1,31 @@
+/*! \mainpage Trilinos/ForTrilinos: Object-Oriented Fortran interface.
+\htmlonly
+\endhtmlonly
+
+\section What_is What is ForTrilinos?
+ForTrilinos provides a set of object-oriented Fortran 2003 interfaces to packages in Trilinos, a massively scalable, open source, C++ software library.  ForTrilinos offers Fortran applications direct access to capabilities in the Trilinos project. ForTrilinos emphasizes portability and scalable development. Portability is achieved via standards conformance, specifically by leveraging the recent Fortran 2003 standard compiler support of C interoperability constructs.  Scalable development is achieved by automating the labor-intensive portions of the interface construction process and by Object-Oriented Design (OOD).
+
+<ul>
+<li>\ref ForTrilinos_intro
+<li>\ref ForTrilinos_startup
+  <ul>
+  <li>\ref ForTrilinos_example
+  </ul>
+</ul>
+
+\section ForTrilinos_intro Introduction
+    Bla bla bla goes here
+\section ForTrilinos_startup Overview of ForTrilinos.
+
+\htmlonly
+\endhtmlonly
+
+    Bla bla bla goes here
+ 
+
+\subsection ForTrilinos_Examples Examples
+
+    Bla bla bla goes here
+
+
+*/
