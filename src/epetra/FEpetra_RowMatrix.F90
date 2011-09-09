@@ -56,10 +56,10 @@ module FEpetra_RowMatrix
     ! Developers only
     procedure                          :: invalidate_EpetraRowMatrix_ID
     procedure                          :: ctrilinos_delete_EpetraRowMatrix
-    procedure                                     :: get_EpetraRowMatrix_ID
-    procedure                                     :: set_EpetraRowMatrix_ID
-    procedure                 ,nopass             :: alias_EpetraRowMatrix_ID
-    procedure ,non_overridable                    :: generalize_EpetraRowMatrix
+    procedure                          :: get_EpetraRowMatrix_ID
+    procedure                          :: set_EpetraRowMatrix_ID
+    procedure                 ,nopass  :: alias_EpetraRowMatrix_ID
+    procedure ,non_overridable         :: generalize_EpetraRowMatrix
     !Matrix data extraction routines
     procedure(NumMyRowEntries_interface),deferred :: NumMyRowEntries
     procedure(MaxNumEntries_interface)  ,deferred :: MaxNumEntries

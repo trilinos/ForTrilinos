@@ -76,6 +76,7 @@ contains
     type(FT_Epetra_Map_ID_t),intent(in) :: id
     from_struct%map_id = id
     from_struct%Epetra_BlockMap=Epetra_BlockMap(from_struct%alias_EpetraBlockMap_ID(from_struct%generalize()))
+    call from_struct%register_self()
   end function
 
   ! All additional constructors should take two steps: (1) obtain a struct ID by invoking a procedural binding and then (2) pass

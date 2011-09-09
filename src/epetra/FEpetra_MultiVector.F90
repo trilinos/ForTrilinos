@@ -56,6 +56,7 @@ module FEpetra_MultiVector
   contains
      procedure         :: invalidate_id => invalidate_EpetraMultiVector_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraMultiVector
+     procedure         :: component_finalization => component_finalization_EpetraMultiVector
      procedure         :: get_EpetraMultiVector_ID 
      procedure ,nopass :: alias_EpetraMultiVector_ID
      procedure         :: generalize 
@@ -689,6 +690,11 @@ contains
     this%MultiVector_id%table = FT_Invalid_ID
     this%MultiVector_id%index = FT_Invalid_Index 
     this%MultiVector_id%is_const = FT_FALSE
+  end subroutine
+
+  subroutine component_finalization_EpetraMultiVector(this)
+    class(Epetra_MultiVector),intent(inout) :: this
+    call this%DistObject%force_finalize() 
   end subroutine
 
   subroutine ctrilinos_delete_EpetraMultiVector(this)

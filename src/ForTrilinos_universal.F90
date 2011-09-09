@@ -47,6 +47,7 @@ module ForTrilinos_universal
     procedure(invalidate_id_interface) , deferred :: invalidate_id 
     procedure, non_overridable :: force_finalize
     procedure, non_overridable :: register_self
+    procedure                  :: component_finalization
   end type
 
   abstract interface
@@ -58,10 +59,15 @@ module ForTrilinos_universal
 
 contains
 
-  subroutine force_finalize (this)
+  recursive subroutine force_finalize (this)
     class(universal), intent(inout) :: this
+    call this%component_finalization
     call this%counter%release
     call this%invalidate_id
+  end subroutine
+
+  subroutine component_finalization (this)
+    class(universal), intent(inout) :: this
   end subroutine
 
   subroutine register_self (this)

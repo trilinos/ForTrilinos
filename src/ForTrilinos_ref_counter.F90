@@ -50,8 +50,8 @@ module ForTrilinos_ref_counter
       procedure, non_overridable :: grab
       procedure, non_overridable :: release
       procedure :: assign
-      final :: finalize_ref_counter
-      generic :: assignment(=) => assign
+      final     :: finalize_ref_counter
+      generic   :: assignment(=) => assign
   end type
 
   interface ref_counter
@@ -78,9 +78,12 @@ contains
       deallocate(this%count,stat=status)
       ierr=error(status,'Ref_counter%release: this%count deallocation failed.')
       call ierr%check_success()
-      deallocate(this%obj,stat=status)
-      ierr=error(status,'Ref_counter%release: this%obj deallocation failed.')
-      call ierr%check_success()
+      !This would be use once allocate(this%obj,mold=object) is working
+      !deallocate(this%obj,stat=status)
+      !ierr=error(status,'Ref_counter%release: this%obj deallocation failed.')
+      !call ierr%check_success()
+      !This would be use once allocate(this%obj,mold=object) is working
+      this%obj => null() ! workaround for lack of mold feature deals with invalid value in this%count of a reference counted component.
     else
       this%count=>null()
       this%obj=>null()
@@ -94,7 +97,7 @@ contains
     call assert( associated(rhs%obj), error_message('Ref_counter%assign: rhs%obj not associated.') )
     lhs%count => rhs%count
     lhs%obj => rhs%obj
-    call lhs%grab
+    if (associated(lhs%count)) call lhs%grab
   end subroutine
 
   recursive subroutine finalize_ref_counter (this)

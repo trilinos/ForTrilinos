@@ -337,6 +337,7 @@ contains
   
   subroutine ctrilinos_delete_EpetraVector(this)
     class(Epetra_Vector) ,intent(inout) :: this
+    call this%Epetra_MultiVector%ctrilinos_delete
     call Epetra_Vector_Destroy(this%vector_id) 
   end subroutine
 end module 

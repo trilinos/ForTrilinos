@@ -58,7 +58,7 @@ module FEpetra_Comm
     procedure                 ,nopass             :: alias_EpetraComm_ID
     procedure ,non_overridable                    :: generalize_EpetraComm
     !Barrier Methods
-    procedure(barrier_interface)          ,deferred          ::barrier
+    procedure(barrier_interface)          ,deferred  ::barrier
     !Broadcast Methods
     procedure(broadcast_double_interface) ,deferred  ::broadcast_double
     procedure(broadcast_int_interface)    ,deferred  ::broadcast_int
