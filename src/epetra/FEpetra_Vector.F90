@@ -91,6 +91,7 @@ contains
     type(FT_Epetra_Vector_ID_t) ,intent(in) :: id
     from_struct%vector_id = id
     from_struct%Epetra_MultiVector=Epetra_MultiVector(from_struct%alias_EpetraMultiVector_ID(from_struct%generalize()))
+    call from_struct%register_self()
   end function
 
   ! Original C++ prototype:
