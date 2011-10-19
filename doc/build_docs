@@ -13,8 +13,3 @@ echo
 
 doxygen Doxyfile
 
-echo
-echo "Generating doxygen browser documentation for all of ForTrilinos ..."
-echo
-
-doxygen ../browser/doc/Doxyfile
