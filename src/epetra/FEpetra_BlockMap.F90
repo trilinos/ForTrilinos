@@ -37,6 +37,7 @@
 
 
 module FEpetra_BlockMap
+#include "ForTrilinos_config.h"
   use ForTrilinos_enums ,only: FT_Epetra_Comm_ID_t,FT_Epetra_BlockMap_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
   use ForTrilinos_universal ,only : universal
@@ -285,12 +286,12 @@ contains
 #ifdef HAVE_MPI
     type(Epetra_MpiComm), allocatable :: local_Comm
     allocate(Epetra_MpiComm :: local_Comm)
-    Comm = Epetra_MpiComm(Epetra_BlockMap_Comm(this%BlockMap_id) )
+    local_Comm = Epetra_MpiComm(Epetra_BlockMap_Comm(this%BlockMap_id) )
     call move_alloc(local_Comm, communicator)
 #else     
     type(Epetra_SerialComm), allocatable :: local_Comm
     allocate(Epetra_SerialComm :: local_Comm)
-!    Comm = Epetra_SerialComm(Epetra_BlockMap_Comm(this%BlockMap_id) )
+    local_Comm = Epetra_SerialComm(Epetra_BlockMap_Comm(this%BlockMap_id) )
     call move_alloc(local_Comm,communicator)
 #endif
  end subroutine

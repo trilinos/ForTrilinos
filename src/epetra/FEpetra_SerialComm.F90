@@ -94,7 +94,7 @@ module FEpetra_SerialComm
     !User interface -- constructors for use by end applications:
     module procedure create,duplicate
     !Developers only -- to be called by developers from other ForTrilinos modules, not by end applications:
-    module procedure from_struct
+    module procedure from_struct, from_comm
    end interface
 
 contains
@@ -107,6 +107,13 @@ contains
     from_struct%SerialComm_id = id
     call from_struct%set_EpetraComm_ID(from_struct%alias_EpetraComm_ID(from_struct%generalize()))
     call from_struct%register_self
+  end function
+
+  type(Epetra_SerialComm) function from_comm(id)
+   type(FT_Epetra_Comm_ID_t) ,intent(in) :: id
+   call from_comm%set_EpetraComm_ID(id)
+   from_comm%SerialComm_id = from_comm%alias_EpetraSerialComm_ID(from_comm%generalize_EpetraComm())
+   call from_comm%register_self
   end function
 
   type(Epetra_SerialComm) function create()
