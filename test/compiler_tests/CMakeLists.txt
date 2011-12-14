@@ -11,7 +11,9 @@ TRIBITS_ADD_EXECUTABLE_AND_TEST(
   STANDARD_PASS_OUTPUT
   )
 
-TRIBITS_ADD_EXECUTABLE_AND_TEST(
+IF(${PACKAGE_NAME}_ENABLE_EXTENDED)
+ 
+ TRIBITS_ADD_EXECUTABLE_AND_TEST(
   check_for_memory_leaks
   SOURCES 
     check_compiler_for_memory_leaks.F90
@@ -20,15 +22,17 @@ TRIBITS_ADD_EXECUTABLE_AND_TEST(
   NUM_MPI_PROCS 4
   ARGS -v
   STANDARD_PASS_OUTPUT
-)
+ )
 
-#TRIBITS_ADD_EXECUTABLE_AND_TEST(
-#  check_compiler_for_leaks_with_arrays
-# SOURCES 
-#   check_compiler_for_leaks_with_arrays.F90
-#   ${PACKAGE_SOURCE_DIR}/test/compiler_tests/check_compiler_for_leaks_with_arrays.F90
-# COMM serial mpi
-# NUM_MPI_PROCS 4
-# ARGS -v
-# STANDARD_PASS_OUTPUT
-#)
+ #TRIBITS_ADD_EXECUTABLE_AND_TEST(
+ #  check_compiler_for_leaks_with_arrays
+ # SOURCES 
+ #   check_compiler_for_leaks_with_arrays.F90
+ #   ${PACKAGE_SOURCE_DIR}/test/compiler_tests/check_compiler_for_leaks_with_arrays.F90
+ # COMM serial mpi
+ # NUM_MPI_PROCS 4
+ # ARGS -v
+ # STANDARD_PASS_OUTPUT
+ #)
+
+ENDIF()
