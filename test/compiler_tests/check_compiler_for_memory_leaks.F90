@@ -41,7 +41,10 @@ contains
     if (associated(this%count)) then
       this%count = this%count - 1
       if (this%count == 0) then
-        call this%obj%cpp_delete; deallocate (this%count, this%obj)
+        call this%obj%cpp_delete
+        deallocate (this%count); this%count => null()
+        !deallocate (this%obj); this%obj => null() !This is the behaviour we want but  we need a workaround to avoid having a nested recursive function
+        this%obj => null() ! workaround to avoid nested recursive function (small memory leak)
       else; this%count => null(); this%obj => null()
       end if
     else; stop 'Error in release: count not associated'
@@ -65,11 +68,16 @@ module universal_interface
   contains
     procedure, non_overridable :: force_finalize
     procedure, non_overridable :: register_self
+    procedure                  :: component_finalization
   end type
 contains
-  subroutine force_finalize (this)
+  recursive subroutine force_finalize (this)
     class(universal), intent(inout) :: this
+    call this%component_finalization
     call this%counter%release
+  end subroutine
+  subroutine component_finalization(this)
+    class(universal), intent(inout) :: this
   end subroutine
   subroutine register_self (this)
     class(universal), intent(inout) :: this
@@ -114,26 +122,6 @@ contains
   end function
 end module
 
-module foo_parent_implementation
-  use faux_cpp_server, only : cpp_initialize_object, cpp_delete_object
-  use universal_interface ,only: universal
-  implicit none
-  type, extends(universal) :: foo_parent
-    integer :: foo_parent_id ! C++ object identification tag
-  contains
-     procedure :: cpp_delete => call_cpp_delete_foo_parent
-  end type
-contains
-  type(foo_parent) function new_foo_parent()
-    new_foo_parent%foo_parent_id = cpp_initialize_object()
-    call new_foo_parent%register_self
-  end function
-  subroutine call_cpp_delete_foo_parent(this)
-    class(foo_parent),intent(inout) :: this
-    call cpp_delete_object(this%foo_parent_id)
-  end subroutine
-end module
-
 module foo_component_implementation
   use faux_cpp_server, only: cpp_initialize_object, cpp_delete_object
   use universal_interface ,only: universal
@@ -154,13 +142,39 @@ contains
   end subroutine
 end module
 
+module foo_parent_implementation
+  use faux_cpp_server, only : cpp_initialize_object, cpp_delete_object
+  use universal_interface ,only: universal
+  use foo_component_implementation ,only: foo_component,new_foo_component
+  implicit none
+  type, extends(universal) :: foo_parent
+    type(foo_component) :: component
+    integer :: foo_parent_id ! C++ object identification tag
+  contains
+     procedure :: component_finalization => component_finalization_foo_parent_component
+     procedure :: cpp_delete => call_cpp_delete_foo_parent
+  end type
+contains
+  type(foo_parent) function new_foo_parent()
+    new_foo_parent%foo_parent_id = cpp_initialize_object()
+    new_foo_parent%component = new_foo_component()
+    call new_foo_parent%register_self
+  end function
+  subroutine component_finalization_foo_parent_component(this)
+    class(foo_parent) ,intent(inout) :: this
+    call this%component%force_finalize()
+  end subroutine
+  subroutine call_cpp_delete_foo_parent(this)
+    class(foo_parent),intent(inout) :: this
+    call cpp_delete_object(this%foo_parent_id)
+  end subroutine
+end module
+
 module foo_implementation
   use faux_cpp_server, only: cpp_initialize_object, cpp_delete_object
   use foo_parent_implementation ,only: foo_parent,new_foo_parent
-  use foo_component_implementation ,only: foo_component,new_foo_component
   implicit none
   type, extends(foo_parent) :: foo
-    type(foo_component) :: component
     integer :: foo_id ! C++ object identification tag
   contains
      procedure :: cpp_delete => call_cpp_delete_foo
@@ -169,11 +183,11 @@ contains
   type(foo) function new_foo()
     new_foo%foo_id = cpp_initialize_object()
     new_foo%foo_parent = new_foo_parent()
-    new_foo%component = new_foo_component()
     call new_foo%register_self
   end function
   subroutine call_cpp_delete_foo(this)
     class(foo),intent(inout) :: this
+    call this%foo_parent%cpp_delete()
     call cpp_delete_object(this%foo_id)
   end subroutine
 end module
