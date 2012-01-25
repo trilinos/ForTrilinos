@@ -114,9 +114,7 @@ IF (${PACKAGE_NAME}_ENABLE_Pliris)
 ENDIF()
 
 # Set additional sources for object-oriented build
-
-IF(${PACKAGE_NAME}_ENABLE_EXTENDED)
-
+IF(${PACKAGE_NAME}_ENABLE_OBJECT_ORIENTED)
   APPEND_SET(SOURCES
     ForTrilinos_hermetic.F90
     ForTrilinos_ref_counter.F90

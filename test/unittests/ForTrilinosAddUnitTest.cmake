@@ -103,7 +103,7 @@ TRIBITS_ADD_TEST(
 ######################################################################
 ######################################################################
 
-IF(ForTrilinos_ENABLE_EXTENDED)
+IF(ForTrilinos_ENABLE_OBJECT_ORIENTED)
 
 ADD_CUSTOM_COMMAND(
   OUTPUT ${FORTRAN_IMPLS_STEM_OO}-tmp.F90 ${FORTRAN_CALLS_STEM_OO}.F90 ${FORTRAN_DRIVER_STEM_OO}.tests ${FORTRAN_DRIVER_STEM_OO}.mpitests

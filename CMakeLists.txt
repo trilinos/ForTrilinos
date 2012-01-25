@@ -27,6 +27,14 @@ ENDIF()
 
 # A) Package-specific configuration options
 #
+
+# DEPRECATED Flag remove for Trilinos 11.0, 
+# Change to ForTrilinos_ENABLE_OBEJCT_ORIENTED
+IF(${PACKAGE_NAME}_ENABLE_EXTENDED)
+  SET (${PACKAGE_NAME}_ENABLE_OBJECT_ORIENTED "${PACKAGE_NAME}_ENABLE_EXTENDED")  
+  message(WARNING "ForTrilinos_ENABLE_EXTENDED is a deprecated configure flag use ForTrilinos_ENABLE_OBJECT_ORIENTED")
+ENDIF()
+
 # Normalize flags for preprocessing by Fortran compilers
 FOREACH(var
     HAVE_FORTRILINOS_EXAMPLES
@@ -38,7 +46,8 @@ FOREACH(var
     HAVE_MPI
     HAVE_TESTS
     HAVE_TEUCHOS_COMPLEX
-    ForTrilinos_ENABLE_EXTENDED
+    ForTrilinos_ENABLE_EXTENDED  # DEPRECATED Flag remove in Trilinos 11.0, change to ForTrilinos_ENABLE_OBJECT_ORIENTED
+    ForTrilinos_ENABLE_OBJECT_ORIENTED
     HAVE_FORTRILINOS_AMESOS
     ForTrilinos_ENABLE_Amesos
     HAVE_FORTRILINOS_AZTECOO

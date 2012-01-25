@@ -82,9 +82,17 @@
 #define HAVE_TEUCHOS_COMPLEX
 #endif
 
+#if 0
+/* If OO-Fortran features should be built */
+#endif
+
+#if @ForTrilinos_config_ForTrilinos_ENABLE_OBJECT_ORIENTED@
+#define ForTrilinos_ENABLE_OBJECT_ORIENTED
+#endif
 
 #if 0
 /* If OO-Fortran features should be built */
+/* Deprecated configure flag use ForTrilinos_ENABLE_OBJECT_ORIENTED */
 #endif
 
 #if @ForTrilinos_config_ForTrilinos_ENABLE_EXTENDED@
