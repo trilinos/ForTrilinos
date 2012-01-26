@@ -61,7 +61,7 @@ module FEpetra_RowMatrix
     !procedure(MaxNumEntries_interface)  ,deferred :: MaxNumEntries
     ! Computational Methods
     !procedure(Multiply_interface) ,deferred :: Multiply
-    !Atribute access functions
+    !Attribute access functions
     !procedure(RowMatrixRowMap_interface),deferred :: RowMatrixRowMap
   end type
 
