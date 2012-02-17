@@ -83,6 +83,22 @@
 #endif
 
 #if 0
+/* Specify whether compiler supports Fortran 2003 final subroutines */
+#endif
+
+#if @ForTrilinos_config_ForTrilinos_HAVE_FINAL_SUBROUTINES@
+#define ForTrilinos_HAVE_FINAL_SUBROUTINES
+#endif
+
+#if 0
+/* Specify wheter to build object-oriented Fortran 2003 */
+#endif
+
+#if @ForTrilinos_config_ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS@
+#define ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS
+#endif
+
+#if 0
 /* If OO-Fortran features should be built */
 #endif
 

@@ -35,6 +35,7 @@
 !                    Damian Rouson (rouson@sandia.gov)
 !*********************************************************************
 
+#include "ForTrilinos_config.h"
 module ForTrilinos_assertion_utility
   use iso_fortran_env ,only : error_unit  
   implicit none
@@ -43,7 +44,11 @@ module ForTrilinos_assertion_utility
 
   type error_message
     private
+#ifdef ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS
     character(:) ,allocatable :: string
+#else
+    character(len=256) :: string ! gfortran 4.7.0 workaround
+#endif /* ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS */
   contains 
     procedure :: text
   end type
@@ -65,12 +70,13 @@ contains
 
   function text(this)
     class(error_message) ,intent(in) :: this
-    character(:) ,allocatable :: text
-    if (allocated(this%string)) then
+    character(len=256) ,allocatable :: text
+   !character(:) ,allocatable :: text
+   !if (allocated(this%string)) then
        text = this%string
-    else
-       text = 'No error message provided.'
-    end if
+   !else
+   !   text = 'No error message provided.'
+   !end if
   end function
 
   subroutine scalar_assert(assertion,text)
@@ -78,11 +84,11 @@ contains
     type(error_message) ,intent(in) :: text
     if (.not. assertion) then
       write(error_unit,fmt='(31a)',advance="no") 'Assertion failed with message: '
-      if (allocated(text%string)) then
+     !if (allocated(text%string)) then
         write(error_unit,*) text%string
-      else
-        write(error_unit,*) '(no message provided).'
-      end if
+     !else
+     !  write(error_unit,*) '(no message provided).'
+     !end if
     end if
   end subroutine
 
@@ -97,11 +103,11 @@ contains
       if (.not. assertion(i)) then
         any_failures=.true.
         write(error_unit,fmt='(31a)',advance="no") 'Assertion failed with message: '
-        if (allocated(text(i)%string)) then
+       !if (allocated(text(i)%string)) then
           write(error_unit,*) text(i)%string
-        else
-          write(error_unit,*) '(no message provided).'
-        end if
+       !else
+       !  write(error_unit,*) '(no message provided).'
+       !end if
       end if
     end do
     if (any_failures) stop 'Execution halted on failed assertion(s)!'

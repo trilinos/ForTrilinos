@@ -20,7 +20,9 @@ module ref_counter_implementation
     procedure, non_overridable :: grab
     procedure, non_overridable :: release
     procedure :: assign
+#ifdef ForTrilinos_HAVE_FINAL_SUBROUTINES
     final :: finalize_ref_counter
+#endif /* ForTrilinos_HAVE_FINAL_SUBROUTINES */
     generic :: assignment(=) => assign
   end type
 contains
