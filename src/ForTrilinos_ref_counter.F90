@@ -36,6 +36,7 @@
 !*********************************************************************
 
 module ForTrilinos_ref_counter
+#include "ForTrilinos_config.h"
   use ForTrilinos_hermetic ,only : hermetic
   use ForTrilinos_assertion_utility ,only : assert,error_message
   use ForTrilinos_error ,only : error

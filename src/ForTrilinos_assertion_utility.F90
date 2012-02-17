@@ -35,19 +35,23 @@
 !                    Damian Rouson (rouson@sandia.gov)
 !*********************************************************************
 
-#include "ForTrilinos_config.h"
 module ForTrilinos_assertion_utility
+#include "ForTrilinos_config.h"
   use iso_fortran_env ,only : error_unit  
   implicit none
   private
   public :: error_message,assert,assert_identical
+
+#ifndef ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS
+  integer ,parameter :: max_string_length=256
+#endif /* ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS */
 
   type error_message
     private
 #ifdef ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS
     character(:) ,allocatable :: string
 #else
-    character(len=256) :: string ! gfortran 4.7.0 workaround
+    character(len=max_string_length) :: string ! gfortran 4.7.0 workaround
 #endif /* ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS */
   contains 
     procedure :: text
@@ -70,13 +74,18 @@ contains
 
   function text(this)
     class(error_message) ,intent(in) :: this
-    character(len=256) ,allocatable :: text
-   !character(:) ,allocatable :: text
-   !if (allocated(this%string)) then
+#ifndef ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS
+    character(len=max_string_length) :: text
+#else
+    character(:) ,allocatable :: text
+    if (allocated(this%string)) then
+#endif
        text = this%string
-   !else
-   !   text = 'No error message provided.'
-   !end if
+#ifdef ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS
+    else
+       text = 'No error message provided.'
+    end if
+#endif /* ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS */
   end function
 
   subroutine scalar_assert(assertion,text)
@@ -84,11 +93,15 @@ contains
     type(error_message) ,intent(in) :: text
     if (.not. assertion) then
       write(error_unit,fmt='(31a)',advance="no") 'Assertion failed with message: '
-     !if (allocated(text%string)) then
+#ifdef ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS
+      if (allocated(text%string)) then
+#endif
         write(error_unit,*) text%string
-     !else
-     !  write(error_unit,*) '(no message provided).'
-     !end if
+#ifdef ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS
+      else
+        write(error_unit,*) '(no message provided).'
+      end if
+#endif
     end if
   end subroutine
 
