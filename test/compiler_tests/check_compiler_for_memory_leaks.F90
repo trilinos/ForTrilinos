@@ -12,6 +12,7 @@ module hermetic_interface
 end module
 
 module ref_counter_implementation
+#include "ForTrilinos_config.h"
   use hermetic_interface ,only : hermetic
   type ref_counter
     integer, pointer :: count => null()
