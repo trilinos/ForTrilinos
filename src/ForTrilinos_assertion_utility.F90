@@ -42,17 +42,17 @@ module ForTrilinos_assertion_utility
   private
   public :: error_message,assert,assert_identical
 
-#ifndef ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS
+#ifdef ForTrilinos_DISABLE_DEFERRED_LENGTH_CHARACTERS
   integer ,parameter :: max_string_length=256
-#endif /* ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS */
+#endif /* ForTrilinos_DISABLE_DEFERRED_LENGTH_CHARACTERS */
 
   type error_message
     private
-#ifdef ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS
-    character(:) ,allocatable :: string
-#else
+#ifdef ForTrilinos_DISABLE_DEFERRED_LENGTH_CHARACTERS
     character(len=max_string_length) :: string ! gfortran 4.7.0 workaround
-#endif /* ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS */
+#else
+    character(:) ,allocatable :: string
+#endif /* ForTrilinos_DISABLE_DEFERRED_LENGTH_CHARACTERS */
   contains 
     procedure :: text
   end type
@@ -74,18 +74,18 @@ contains
 
   function text(this)
     class(error_message) ,intent(in) :: this
-#ifndef ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS
+#ifdef ForTrilinos_DISABLE_DEFERRED_LENGTH_CHARACTERS
     character(len=max_string_length) :: text
 #else
     character(:) ,allocatable :: text
     if (allocated(this%string)) then
-#endif
+#endif /* ForTrilinos_DISABLE_DEFERRED_LENGTH_CHARACTERS */
        text = this%string
-#ifdef ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS
+#ifndef ForTrilinos_DISABLE_DEFERRED_LENGTH_CHARACTERS
     else
        text = 'No error message provided.'
     end if
-#endif /* ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS */
+#endif /* ForTrilinos_DISABLE_DEFERRED_LENGTH_CHARACTERS */
   end function
 
   subroutine scalar_assert(assertion,text)
@@ -93,11 +93,11 @@ contains
     type(error_message) ,intent(in) :: text
     if (.not. assertion) then
       write(error_unit,fmt='(31a)',advance="no") 'Assertion failed with message: '
-#ifdef ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS
+#ifndef ForTrilinos_DISABLE_DEFERRED_LENGTH_CHARACTERS
       if (allocated(text%string)) then
 #endif
         write(error_unit,*) text%string
-#ifdef ForTrilinos_HAVE_DEFERRED_LENGTH_CHARACTERS
+#ifndef ForTrilinos_DISABLE_DEFERRED_LENGTH_CHARACTERS
       else
         write(error_unit,*) '(no message provided).'
       end if
