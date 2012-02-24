@@ -37,16 +37,17 @@
 
 
 module F$Package_$Class
-  use ForTrilinos_enums ,only: FT_$Package_$Class_ID_t,ForTrilinos_Universal_ID_t
+  use ForTrilinos_enums ,only: FT_$Package_$Class_ID_t,FT_$Package_$ParentClass_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man ,only : CT_Alias
   use ForTrilinos_universal ,only : universal
   use ForTrilinos_error ,only : error
+  use F$Package_$ParentClass ,only : $Package_$ParentClass
   use for$Package
   implicit none
   private                   ! Hide everything by default
   public :: $Package_$Class ! Expose type/constructors/methods
 
-  type ,extends(universal)      :: $Package_$Class 
+  type ,extends($Package_$ParentClass)      :: $Package_$Class 
     private
     type(FT_$Package_$Class_ID_t) :: $Class_id 
   contains
@@ -75,6 +76,7 @@ contains
   type($Package_$Class) function from_struct(id)
      type(FT_$Package_$Class_ID_t) ,intent(in) :: id
      from_struct%$Class_id = id
+     from_struct%$Package_$ParentClass=$Package_$ParentClass(from_struct%alias_$Package$ParentClass_ID(from_struct%generalize()))
      call from_struct%register_self()
   end function
  
@@ -136,6 +138,7 @@ contains
  
   subroutine invalidate_$Package$Class_ID(this)
     class($Package_$Class),intent(inout) :: this
+    call this%$Package_$ParentClass%invalidate_id
     this%$Class_id%table = FT_Invalid_ID
     this%$Class_id%index = FT_Invalid_Index 
     this%$Class_id%is_const = FT_FALSE

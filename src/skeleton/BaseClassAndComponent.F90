@@ -41,6 +41,7 @@ module F$Package_$Class
   use ForTrilinos_table_man ,only : CT_Alias
   use ForTrilinos_universal ,only : universal
   use ForTrilinos_error ,only : error
+  use F$Package_$ComponentClass , only: $Package_$ComponentClass
   use for$Package
   implicit none
   private                   ! Hide everything by default
@@ -49,12 +50,14 @@ module F$Package_$Class
   type ,extends(universal)      :: $Package_$Class 
     private
     type(FT_$Package_$Class_ID_t) :: $Class_id 
+    type($Package_$ComponentClass) :: $ComponentClass
   contains
      !User interface -- insert here type-bound procedures intended for use by end applications:
 
      !Developers only -- to be called by developers from other ForTrilinos modules, not by end applications:
      procedure         :: invalidate_id => invalidate_$Package$Class_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_$Package$Class
+     procedure         :: component_finalization => component_finalization_$Package$Class
      procedure         :: get_$Package$Class_ID 
      procedure ,nopass :: alias_$Package$Class_ID
      procedure         :: generalize 
@@ -75,6 +78,7 @@ contains
   type($Package_$Class) function from_struct(id)
      type(FT_$Package_$Class_ID_t) ,intent(in) :: id
      from_struct%$Class_id = id
+     from_struct%$ComponentClass = $Package_$ComponentClass(from_struct%$ComponentClass%alias_$Package$ComponentClass_ID(from_struct%generalize()))
      call from_struct%register_self()
   end function
  
@@ -136,9 +140,15 @@ contains
  
   subroutine invalidate_$Package$Class_ID(this)
     class($Package_$Class),intent(inout) :: this
+    call this%$ComponentClass%invalidate_id
     this%$Class_id%table = FT_Invalid_ID
     this%$Class_id%index = FT_Invalid_Index 
     this%$Class_id%is_const = FT_FALSE
+  end subroutine
+
+  subroutine component_finalization_$Package$Class(this)
+    class($Package_$Class),intent(inout) :: this
+    call this%$Package_$ComponentClass%force_finalize() 
   end subroutine
 
   subroutine ctrilinos_delete_$Package$Class(this)

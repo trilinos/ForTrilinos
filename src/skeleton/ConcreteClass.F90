@@ -37,16 +37,17 @@
 
 
 module F$Package_$Class
-  use ForTrilinos_enums ,only: FT_$Package_$Class_ID_t,ForTrilinos_Universal_ID_t
+  use ForTrilinos_enums ,only: FT_$Package_$Class_ID_t,FT_$Package_$AbstractClass_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man ,only : CT_Alias
   use ForTrilinos_universal ,only : universal
   use ForTrilinos_error ,only : error
+  use F$Package_$AbstractClass , only : $Package_$AbstractClass
   use for$Package
   implicit none
   private                   ! Hide everything by default
   public :: $Package_$Class ! Expose type/constructors/methods
 
-  type ,extends(universal)      :: $Package_$Class 
+  type ,extends($Package_$AbstractClass)      :: $Package_$Class 
     private
     type(FT_$Package_$Class_ID_t) :: $Class_id 
   contains
@@ -75,6 +76,7 @@ contains
   type($Package_$Class) function from_struct(id)
      type(FT_$Package_$Class_ID_t) ,intent(in) :: id
      from_struct%$Class_id = id
+     call from_struct%set_$Package$AbstractClass_ID(from_struct%alias_$Package$AbstractClass_ID(from_struct%generalize()))
      call from_struct%register_self()
   end function
  
@@ -136,6 +138,7 @@ contains
  
   subroutine invalidate_$Package$Class_ID(this)
     class($Package_$Class),intent(inout) :: this
+    call this%invalidate_$Package$AbstractClass_ID
     this%$Class_id%table = FT_Invalid_ID
     this%$Class_id%index = FT_Invalid_Index 
     this%$Class_id%is_const = FT_FALSE
@@ -143,6 +146,7 @@ contains
 
   subroutine ctrilinos_delete_$Package$Class(this)
     class($Package_$Class),intent(inout) :: this
+    call this%ctrilinos_delete_$Package$AbstractClass()
     call $Package_$Class_Destroy( this%$Class_id ) 
   end subroutine
 
