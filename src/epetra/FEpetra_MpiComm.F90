@@ -53,12 +53,9 @@ module FEpetra_MpiComm
     private
     type(FT_Epetra_MpiComm_ID_t) :: MpiComm_id  
   contains
-    !Developers only
-    procedure         :: invalidate_id => invalidate_EpetraMpiComm_ID
-    procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraMpiComm
-    procedure         :: get_EpetraMpiComm_ID
-    procedure ,nopass :: alias_EpetraMpiComm_ID
-    procedure         :: generalize
+    ! Constructors
+    procedure ,private :: from_scratch_,duplicate_
+    generic :: Epetra_MpiComm => from_scratch_,duplicate_
     !Barrier Method
     procedure         :: barrier
     !Broadcast Method
@@ -88,23 +85,36 @@ module FEpetra_MpiComm
     !Attribute Accessor Methods
     procedure         :: MyPID
     procedure         :: NumProc
-    !Gather/catter and Directory Constructors
-    !I/O methods
-    !Memory Management 
+    !The following procedures are for ForTrilinos developers only (not for users):
+    procedure         :: invalidate_id => invalidate_EpetraMpiComm_ID
+    procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraMpiComm
+    procedure         :: get_EpetraMpiComm_ID
+    procedure ,nopass :: alias_EpetraMpiComm_ID
+    procedure         :: generalize
   end type
   
  interface Epetra_MpiComm ! constructors
-   procedure from_scratch,duplicate,from_struct,from_comm
+   module procedure from_scratch,duplicate
+   ! The following procedures are for ForTrilinos developers only (not for users):
+   module procedure from_struct,from_comm
  end interface
   
 contains
 
- type(Epetra_MpiComm) function from_struct(id)
+  type(Epetra_MpiComm) function from_struct(id)
    type(FT_Epetra_MpiComm_ID_t) ,intent(in) :: id
    from_struct%MpiComm_id = id
    call from_struct%set_EpetraComm_ID(from_struct%alias_EpetraComm_ID(from_struct%generalize()))
    call from_struct%register_self
   end function
+ 
+  subroutine from_struct_(this,id)
+    type(Epetra_MpiComm) ,intent(out) :: this
+    type(FT_Epetra_MpiComm_ID_t) ,intent(in) :: id
+    this%MpiComm_id = id
+    call this%set_EpetraComm_ID(this%alias_EpetraComm_ID(this%generalize()))
+    call this%register_self
+  end subroutine
  
  type(Epetra_MpiComm) function from_comm(id)
    type(FT_Epetra_Comm_ID_t) ,intent(in) :: id
@@ -120,10 +130,14 @@ contains
 
   type(Epetra_MpiComm) function from_scratch(comm)
    integer(c_int) ,intent(in) :: comm
-   type(FT_Epetra_MpiComm_ID_t) :: from_scratch_id
-   from_scratch_id = Epetra_MpiComm_Fortran_Create(comm)
-   from_scratch=from_struct(from_scratch_id)
+   from_scratch=from_struct(Epetra_MpiComm_Fortran_Create(comm))
   end function
+
+  subroutine from_scratch_(this,comm)
+   class(Epetra_MpiComm) ,intent(out) :: this
+   integer(c_int) ,intent(in) :: comm
+   call from_struct_(this,Epetra_MpiComm_Fortran_Create(comm))
+  end subroutine
 
   ! Original C++ prototype:
   ! Epetra_MpiComm(const Epetra_MpiComm & Comm);
@@ -131,15 +145,19 @@ contains
   ! CT_Epetra_MpiComm_ID_t Epetra_MpiComm_Duplicate ( CT_Epetra_MpiComm_ID_t CommID );
 
   type(Epetra_MpiComm) function duplicate(this)
-   type(Epetra_MpiComm) ,intent(in) :: this
-    type(FT_Epetra_MpiComm_ID_t) :: duplicate_id
-    duplicate_id = Epetra_MpiComm_Duplicate(this%MpiComm_id)
-    duplicate = from_struct(duplicate_id)
+    type(Epetra_MpiComm) ,intent(in) :: this
+    duplicate = from_struct(Epetra_MpiComm_Duplicate(this%MpiComm_id))
   end function
 
- type(FT_Epetra_MpiComm_ID_t) function get_EpetraMpiComm_ID(this)
-   class(Epetra_MpiComm) ,intent(in) :: this
-   get_EpetraMpiComm_ID=this%MpiComm_id
+  subroutine duplicate_(this,original)
+    class(Epetra_MpiComm) ,intent(out) :: this
+    type(Epetra_MpiComm) ,intent(in) :: original
+    call from_struct_(this,Epetra_MpiComm_Duplicate(this%MpiComm_id))
+  end subroutine
+
+  type(FT_Epetra_MpiComm_ID_t) function get_EpetraMpiComm_ID(this)
+    class(Epetra_MpiComm) ,intent(in) :: this
+    get_EpetraMpiComm_ID=this%MpiComm_id
   end function
  
   type(FT_Epetra_MpiComm_ID_t) function alias_EpetraMpiComm_ID(generic_id)
