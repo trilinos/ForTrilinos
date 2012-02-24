@@ -81,7 +81,7 @@ program main
 
       u = 100
       open(unit=u, iostat=ierr, status='old', file=fname)
-      if (ierr .NE. 0) call handle_err("Error opening test list file "//which_test, __LINE__)
+      if (ierr .NE. 0) call handle_err("Error opening test list file "//fname, __LINE__)
       test_cnt = 0
       do test_num = 1,100
         read(u, '(a100)', iostat=ierr) which_test
