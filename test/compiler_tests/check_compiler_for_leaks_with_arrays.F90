@@ -23,7 +23,9 @@ module ref_counter_implementation
     procedure, non_overridable :: grab
     procedure, non_overridable :: release
     procedure :: assign
+#ifndef ForTrilinos_DISABLE_FINAL_SUBROUTINES
     final :: finalize_ref_counter
+#endif 
     generic :: assignment(=) => assign
   end type
   interface ref_counter
