@@ -153,12 +153,13 @@ contains
    call from_struct_(this,Epetra_MpiComm_Fortran_Create(comm))
   end subroutine
 
-  type(Epetra_MpiComm) function from_scratch(comm)
+  function from_scratch(comm) result(new_Epetra_MpiComm)
+    type(Epetra_MpiComm) :: new_Epetra_MpiComm
     integer(c_int) ,intent(in) :: comm
 #ifdef ForTrilinos_DISABLE_TYPE_BOUND_CONSTRUCTORS
-    call Epetra_MpiComm_(from_scratch,comm) 
+    call Epetra_MpiComm_(new_Epetra_MpiComm,comm) 
 #else
-    call from_scratch%Epetra_MpiComm(comm) 
+    call new_Epetra_MpiComm%Epetra_MpiComm(comm) 
 #endif 
   end function
 
