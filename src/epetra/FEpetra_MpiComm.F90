@@ -54,10 +54,8 @@ module FEpetra_MpiComm
     type(FT_Epetra_MpiComm_ID_t) :: MpiComm_id  
   contains
    ! Constructors
-#ifndef ForTrilinos_DISABLE_TYPE_BOUND_CONSTRUCTORS
     procedure ,private :: from_scratch_,duplicate_
     generic :: Epetra_MpiComm => from_scratch_,duplicate_
-#endif
     !Barrier Method
     procedure         :: barrier
     !Broadcast Method
@@ -101,12 +99,6 @@ module FEpetra_MpiComm
     module procedure from_struct,from_comm
   end interface
 
-#ifdef ForTrilinos_DISABLE_TYPE_BOUND_CONSTRUCTORS
-  interface Epetra_MpiComm_ ! constructor subroutines for use with GCC (workaround for bug in gfortran 4.7.0)
-    module procedure from_scratch_,duplicate_
-  end interface
-#endif
-  
 contains
 
   ! Every constructor comes in two flavors: a function and a subroutine.  Each function is a simple pass-through wrapper
@@ -144,11 +136,7 @@ contains
   ! CT_Epetra_MpiComm_ID_t Epetra_MpiComm_Create ( MPI_Comm comm );
 
   subroutine from_scratch_(this,comm)
-#ifdef ForTrilinos_DISABLE_TYPE_BOUND_CONSTRUCTORS
-   type(Epetra_MpiComm) ,intent(out) :: this
-#else
    class(Epetra_MpiComm) ,intent(out) :: this
-#endif
    integer(c_int) ,intent(in) :: comm
    call from_struct_(this,Epetra_MpiComm_Fortran_Create(comm))
   end subroutine
@@ -156,11 +144,7 @@ contains
   function from_scratch(comm) result(new_Epetra_MpiComm)
     type(Epetra_MpiComm) :: new_Epetra_MpiComm
     integer(c_int) ,intent(in) :: comm
-#ifdef ForTrilinos_DISABLE_TYPE_BOUND_CONSTRUCTORS
-    call Epetra_MpiComm_(new_Epetra_MpiComm,comm) 
-#else
     call new_Epetra_MpiComm%Epetra_MpiComm(comm) 
-#endif 
   end function
 
   ! Original C++ prototype:
@@ -169,22 +153,14 @@ contains
   ! CT_Epetra_MpiComm_ID_t Epetra_MpiComm_Duplicate ( CT_Epetra_MpiComm_ID_t CommID );
 
   subroutine duplicate_(this,copy)
-#ifdef ForTrilinos_DISABLE_TYPE_BOUND_CONSTRUCTORS
-    type(Epetra_MpiComm) ,intent(in) :: this
-#else
     class(Epetra_MpiComm) ,intent(in) :: this
-#endif
     type(Epetra_MpiComm) ,intent(out) :: copy
     call from_struct_(copy,Epetra_MpiComm_Duplicate(this%MpiComm_id))
   end subroutine
 
   type(Epetra_MpiComm) function duplicate(original)
     type(Epetra_MpiComm) ,intent(in) :: original
-#ifdef ForTrilinos_DISABLE_TYPE_BOUND_CONSTRUCTORS
-    call Epetra_MpiComm_(original,duplicate) 
-#else
     call original%Epetra_MpiComm(duplicate) 
-#endif
   end function
 
   type(FT_Epetra_MpiComm_ID_t) function get_EpetraMpiComm_ID(this)

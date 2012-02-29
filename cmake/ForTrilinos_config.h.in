@@ -98,10 +98,6 @@
 #define ForTrilinos_DISABLE_DEFERRED_LENGTH_CHARACTERS
 #endif
 
-#if @ForTrilinos_config_ForTrilinos_DISABLE_TYPE_BOUND_CONSTRUCTORS@
-#define ForTrilinos_DISABLE_TYPE_BOUND_CONSTRUCTORS
-#endif
-
 #if 0
 /* If OO-Fortran features should be built */
 #endif
