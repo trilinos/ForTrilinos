@@ -57,8 +57,9 @@ module FEpetra_Map
      procedure ,private :: create_linear_
      procedure ,private :: duplicate_
      procedure ,private :: create_arbitrary_
-     generic :: Epetra_Map => create_,create_linear_,duplicate_,create_arbitrary_
+     generic :: Epetra_Map => create_,create_linear_,duplicate_,create_arbitrary_,from_struct_
      !Developers only  -- to be called by developers from other ForTrilinos modules, not by end applications:
+     procedure ,private :: from_struct_
      procedure         :: invalidate_id => invalidate_EpetraMap_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraMap
      procedure         :: get_EpetraMap_ID 
@@ -79,16 +80,17 @@ contains
   ! from_struct_ and from_struct should be called by developers only from other ForTrilinos modules, never by end applications:
 
   subroutine from_struct_(this,id)
-    type(Epetra_Map) ,intent(out) :: this
+    class(Epetra_Map) ,intent(out) :: this
     type(FT_Epetra_Map_ID_t),intent(in) :: id
     this%map_id = id
     this%Epetra_BlockMap=Epetra_BlockMap(this%alias_EpetraBlockMap_ID(this%generalize()))
     call this%register_self()
   end subroutine
 
-  type(Epetra_Map) function from_struct(id)
+  function from_struct(id) result(new_Epetra_Map)
+    type(Epetra_Map) :: new_Epetra_Map
     type(FT_Epetra_Map_ID_t),intent(in) :: id
-    call from_struct_(from_struct,id)
+    call new_Epetra_Map%Epetra_Map(id)
   end function
 
   ! All additional constructors should take two steps: (1) obtain a struct ID by invoking a procedural binding and then (2) pass
@@ -98,7 +100,7 @@ contains
     class(Epetra_Map) ,intent(out) :: this
     integer(c_int) ,intent(in) :: Num_GlobalElements,IndexBase
     class(Epetra_Comm)         :: comm
-    call from_struct_(this,Epetra_Map_Create(Num_GlobalElements,IndexBase,comm%get_EpetraComm_ID()))
+    call this%Epetra_Map(Epetra_Map_Create(Num_GlobalElements,IndexBase,comm%get_EpetraComm_ID()))
   end subroutine
 
   type(Epetra_Map) function create(Num_GlobalElements,IndexBase,comm)
@@ -111,7 +113,7 @@ contains
     class(Epetra_Map) ,intent(out) :: this
     integer(c_int) ,intent(in) :: Num_GlobalElements,Num_MyElements,IndexBase
     class(Epetra_Comm)         :: comm
-    call from_struct_(this,Epetra_Map_Create_Linear(Num_GlobalElements,Num_MyElements,IndexBase,comm%get_EpetraComm_ID()))
+    call this%Epetra_Map(Epetra_Map_Create_Linear(Num_GlobalElements,Num_MyElements,IndexBase,comm%get_EpetraComm_ID()))
   end subroutine
   
   type(Epetra_Map) function create_linear(Num_GlobalElements,Num_MyElements,IndexBase,comm)
@@ -125,8 +127,8 @@ contains
     integer(c_int) ,intent(in)              :: Num_GlobalElements,Num_MyElements,IndexBase
     integer(c_int) ,intent(in) ,dimension(:),allocatable:: My_GlobalElements
     class(Epetra_Comm)                      :: comm
-    call from_struct_ & 
-    (this,Epetra_Map_Create_Arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm%get_EpetraComm_ID()))
+    call this% & 
+    Epetra_Map(Epetra_Map_Create_Arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm%get_EpetraComm_ID()))
   end subroutine
  
   type(Epetra_Map) function create_arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm)
@@ -139,7 +141,7 @@ contains
   subroutine duplicate_(this,copy)
     class(Epetra_Map) ,intent(in) :: this
     type(Epetra_Map) ,intent(out) :: copy
-    call from_struct_(copy,Epetra_Map_Duplicate(this%map_id))
+    call copy%Epetra_Map(Epetra_Map_Duplicate(this%map_id))
   end subroutine
 
   type(Epetra_Map) function duplicate(original)

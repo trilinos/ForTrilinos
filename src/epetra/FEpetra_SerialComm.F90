@@ -51,12 +51,10 @@ module FEpetra_SerialComm
     private
     type(FT_Epetra_SerialComm_ID_t) :: SerialComm_id 
   contains
-     !Developers only  -- to be called by developers from other ForTrilinos modules, not by end applications:
-     procedure         :: invalidate_id => invalidate_EpetraSerialComm_ID 
-     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraSerialComm
-     procedure         :: get_EpetraSerialComm_ID 
-     procedure ,nopass :: alias_EpetraSerialComm_ID
-     procedure         :: generalize 
+     !Constructors
+     procedure ,private :: duplicate_
+     procedure ,private :: create_
+     generic :: Epetra_SerialComm => create_,from_comm_,from_struct_,duplicate_
      !Barrier Methods
      procedure         :: barrier
      !Broadcast Methods
@@ -86,8 +84,14 @@ module FEpetra_SerialComm
      !Attribute Accessor Methods
      procedure :: MyPID
      procedure :: NumProc
-     !Gather/catter and Directory Constructors
-     !I/O methods
+     !Developers only  -- to be called by developers from other ForTrilinos modules, not by end applications:
+     procedure ,private :: from_comm_ 
+     procedure ,private :: from_struct_
+     procedure          :: invalidate_id => invalidate_EpetraSerialComm_ID 
+     procedure          :: ctrilinos_delete => ctrilinos_delete_EpetraSerialComm
+     procedure          :: get_EpetraSerialComm_ID 
+     procedure ,nopass  :: alias_EpetraSerialComm_ID
+     procedure          :: generalize 
   end type
 
    interface Epetra_SerialComm ! constructors
@@ -102,31 +106,54 @@ contains
   ! The function from_struct must construct a struct id for the extended parent class
   ! The function from_struct should be called by developers only from other ForTrilinos modules, never by end applications:
 
-  type(Epetra_SerialComm) function from_struct(id)
+  subroutine from_struct_(this,id)
+    class(Epetra_SerialComm) ,intent(out) :: this
     type(FT_Epetra_SerialComm_ID_t) ,intent(in) :: id
-    from_struct%SerialComm_id = id
-    call from_struct%set_EpetraComm_ID(from_struct%alias_EpetraComm_ID(from_struct%generalize()))
-    call from_struct%register_self
+    this%SerialComm_id = id
+    call this%set_EpetraComm_ID(this%alias_EpetraComm_ID(this%generalize()))
+    call this%register_self
+  end subroutine
+
+  function from_struct(id) result(new_Epetra_SerialComm)
+    type(FT_Epetra_SerialComm_ID_t) ,intent(in) :: id
+    type(Epetra_SerialComm) :: new_Epetra_SerialComm
+    call new_Epetra_SerialComm%Epetra_SerialComm(id)
   end function
 
-  type(Epetra_SerialComm) function from_comm(id)
-   type(FT_Epetra_Comm_ID_t) ,intent(in) :: id
-   call from_comm%set_EpetraComm_ID(id)
-   from_comm%SerialComm_id = from_comm%alias_EpetraSerialComm_ID(from_comm%generalize_EpetraComm())
-   call from_comm%register_self
+  subroutine from_comm_(this,id)
+    class(Epetra_SerialComm) ,intent(out) :: this 
+    type(FT_Epetra_Comm_ID_t) ,intent(in) :: id
+    call this%set_EpetraComm_ID(id)
+    this%SerialComm_id = this%alias_EpetraSerialComm_ID(this%generalize_EpetraComm())
+    call this%register_self
+  end subroutine
+
+  function from_comm(id) result(new_Epetra_SerialComm)
+    type(Epetra_SerialComm) :: new_Epetra_SerialComm
+    type(FT_Epetra_Comm_ID_t) ,intent(in) :: id
+    call new_Epetra_SerialComm%Epetra_SerialComm(id)
   end function
 
-  type(Epetra_SerialComm) function create()
-    type(FT_Epetra_SerialComm_ID_t) :: create_id
-    create_id = Epetra_SerialComm_Create()
-    create=from_struct(create_id)
+  subroutine create_(this)
+    class(Epetra_SerialComm) ,intent(out) :: this 
+    call this%Epetra_SerialComm(Epetra_SerialComm_Create())
+  end subroutine
+
+  function create() result(new_Epetra_SerialComm)
+    type(Epetra_SerialComm) :: new_Epetra_SerialComm
+    call new_Epetra_SerialComm%Epetra_SerialComm()
   end function
 
-  type(Epetra_SerialComm) function duplicate(this)
-    type(Epetra_SerialComm) ,intent(in) :: this 
-    type(FT_Epetra_SerialComm_ID_t) :: duplicate_id
-    duplicate_id = Epetra_SerialComm_Duplicate(this%SerialComm_id)
-    duplicate = from_struct(duplicate_id)
+  subroutine duplicate_(this,copy)
+    class(Epetra_SerialComm) ,intent(in) :: this
+    type(Epetra_SerialComm) ,intent(out) :: copy
+    call copy%Epetra_SerialComm(Epetra_SerialComm_Duplicate(this%SerialComm_id))
+  end subroutine
+
+  function duplicate(original) result (new_Epetra_SerialComm)
+    type(Epetra_SerialComm) ,intent(in) :: original
+    type(Epetra_SerialComm) :: new_Epetra_SerialComm
+    call original%Epetra_SerialComm(new_Epetra_SerialComm)
   end function
 
   !----------------- Struct access ---------------------------------------------

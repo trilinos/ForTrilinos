@@ -54,8 +54,10 @@ module FEpetra_MpiComm
     type(FT_Epetra_MpiComm_ID_t) :: MpiComm_id  
   contains
    ! Constructors
-    procedure ,private :: from_scratch_,duplicate_
-    generic :: Epetra_MpiComm => from_scratch_,duplicate_
+    procedure ,private :: from_scratch_
+    procedure ,private :: duplicate_
+    procedure ,private :: from_struct_
+    generic :: Epetra_MpiComm => from_scratch_,duplicate_,from_struct_
     !Barrier Method
     procedure         :: barrier
     !Broadcast Method
@@ -111,16 +113,17 @@ contains
   ! or by passing the object to a procedure that invokes register_self on the object.
 
   subroutine from_struct_(this,id)
-    type(Epetra_MpiComm) ,intent(out) :: this
+    class(Epetra_MpiComm) ,intent(out) :: this
     type(FT_Epetra_MpiComm_ID_t) ,intent(in) :: id
     this%MpiComm_id = id
     call this%set_EpetraComm_ID(this%alias_EpetraComm_ID(this%generalize()))
     call this%register_self
   end subroutine
 
-  type(Epetra_MpiComm) function from_struct(id)
-   type(FT_Epetra_MpiComm_ID_t) ,intent(in) :: id
-   call from_struct_(from_struct,id)
+  function from_struct(id) result(new_Epetra_MpiComm)
+    type(Epetra_MpiComm) :: new_Epetra_MpiComm 
+    type(FT_Epetra_MpiComm_ID_t) ,intent(in) :: id
+    call new_Epetra_MpiComm%Epetra_MpiComm(id)
   end function
  
  type(Epetra_MpiComm) function from_comm(id)
@@ -138,7 +141,7 @@ contains
   subroutine from_scratch_(this,comm)
    class(Epetra_MpiComm) ,intent(out) :: this
    integer(c_int) ,intent(in) :: comm
-   call from_struct_(this,Epetra_MpiComm_Fortran_Create(comm))
+   call this%Epetra_MpiComm(Epetra_MpiComm_Fortran_Create(comm))
   end subroutine
 
   function from_scratch(comm) result(new_Epetra_MpiComm)
@@ -155,7 +158,7 @@ contains
   subroutine duplicate_(this,copy)
     class(Epetra_MpiComm) ,intent(in) :: this
     type(Epetra_MpiComm) ,intent(out) :: copy
-    call from_struct_(copy,Epetra_MpiComm_Duplicate(this%MpiComm_id))
+    call copy%Epetra_MpiComm(Epetra_MpiComm_Duplicate(this%MpiComm_id))
   end subroutine
 
   type(Epetra_MpiComm) function duplicate(original)
