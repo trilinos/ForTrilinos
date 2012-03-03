@@ -92,8 +92,6 @@ module FEpetra_Comm
     !Attribute Accessor Methods
     procedure(MyPID_interface)           ,deferred::MyPID
     procedure(NumProc_interface)         ,deferred::NumProc
-    !Gather/catter and Directory Constructors
-    !I/O methods
   end type
   
   abstract interface
