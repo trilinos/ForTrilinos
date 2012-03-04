@@ -53,12 +53,9 @@ module FEpetra_BlockMap
     private
     type(FT_Epetra_BlockMap_ID_t) :: BlockMap_id 
   contains
-     !Developers only  -- to be called by developers from other ForTrilinos modules, not by end applications:
-     procedure         :: invalidate_id => invalidate_EpetraBlockMap_ID
-     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraBlockMap
-     procedure         :: get_EpetraBlockMap_ID 
-     procedure ,nopass :: alias_EpetraBlockMap_ID
-     procedure         :: generalize 
+     !Constructors
+     procedure ,private :: create_
+     generic :: Epetra_BlockMap_ => from_struct_,create_
      !Local/Global ID accessor methods
      !Size and dimension acccessor functions
      procedure         :: NumGlobalElements
@@ -76,6 +73,13 @@ module FEpetra_BlockMap
      !Array accessor functions
      !Miscellaneous
      procedure         :: Comm
+     !Developers only  -- to be called by developers from other ForTrilinos modules, not by end applications:
+     procedure ,private :: from_struct_
+     procedure         :: invalidate_id => invalidate_EpetraBlockMap_ID
+     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraBlockMap
+     procedure         :: get_EpetraBlockMap_ID 
+     procedure ,nopass :: alias_EpetraBlockMap_ID
+     procedure         :: generalize 
   end type
 
    interface Epetra_BlockMap ! constructors
@@ -89,23 +93,34 @@ contains
   ! Common type-bound procedures begin here: all ForTrilinos parent classes of the API have procedures analogous to these.
   ! The function from_struct should be called by developers only from other ForTrilinos modules, never by end applications:
 
-  type(Epetra_BlockMap) function from_struct(id)
-     type(FT_Epetra_BlockMap_ID_t) ,intent(in) :: id
-     from_struct%BlockMap_id = id
-     call from_struct%register_self()
+  subroutine from_struct_(this,id)
+    class(Epetra_BlockMap) ,intent(out) :: this
+    type(FT_Epetra_BlockMap_ID_t) ,intent(in) :: id
+    this%BlockMap_id = id
+    call this%register_self()
+  end subroutine
+
+  function from_struct(id) result(new_Epetra_BlockMap)
+    type(Epetra_BlockMap) :: new_Epetra_BlockMap
+    type(FT_Epetra_BlockMap_ID_t) ,intent(in) :: id
+    call new_Epetra_BlockMap%Epetra_BlockMap_(id)
   end function
 
   ! All additional constructors should take two steps: (1) obtain a struct ID by invoking a procedural binding and then (2) pass
   ! this ID to from_struct to initialize the constructed object's ID component and register the object for reference counting.
 
-  type(Epetra_BlockMap) function create(Num_GlobalElements,Element_Size,IndexBase,comm)
-    integer(c_int) ,intent(in) :: Num_GlobalElements
-    integer(c_int) ,intent(in) :: Element_Size
-    integer(c_int) ,intent(in) :: IndexBase
+  subroutine create_(this,Num_GlobalElements,Element_Size,IndexBase,comm)
+    class(Epetra_BlockMap) ,intent(out) :: this 
+    integer(c_int) ,intent(in) :: Num_GlobalElements,Element_Size,IndexBase
     class(Epetra_Comm)         :: comm
-    type(FT_Epetra_BlockMap_ID_t) :: create_id
-    create_id = Epetra_BlockMap_Create(Num_GlobalElements,Element_Size,IndexBase,comm%get_EpetraComm_ID())
-    create = from_struct(create_id)
+    call this%Epetra_BlockMap_(Epetra_BlockMap_Create(Num_GlobalElements,Element_Size,IndexBase,comm%get_EpetraComm_ID()))
+  end subroutine
+
+  function create(Num_GlobalElements,Element_Size,IndexBase,comm) result(new_Epetra_BlockMap)
+    type(Epetra_BlockMap) :: new_Epetra_BlockMap
+    integer(c_int) ,intent(in) :: Num_GlobalElements,Element_Size,IndexBase
+    class(Epetra_Comm)         :: comm
+    call new_Epetra_BlockMap%Epetra_BlockMap_(Num_GlobalElements,Element_Size,IndexBase,comm)
   end function
 
   type(Epetra_BlockMap) function create_linear(Num_GlobalElements,Num_MyElements,Element_Size,IndexBase,comm)

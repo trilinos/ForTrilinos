@@ -53,13 +53,13 @@ module FEpetra_Map
     type(FT_Epetra_Map_ID_t) :: map_id
   contains
      !Constructors
-     procedure ,private :: create_
-     procedure ,private :: create_linear_
-     procedure ,private :: duplicate_
-     procedure ,private :: create_arbitrary_
-     generic :: Epetra_Map => create_,create_linear_,duplicate_,create_arbitrary_,from_struct_
+     procedure ,private :: create__
+     procedure ,private :: create_linear__
+     procedure ,private :: duplicate__
+     procedure ,private :: create_arbitrary__
+     generic :: Epetra_Map_ => create__,from_struct__,create_linear__,duplicate__,create_arbitrary__
      !Developers only  -- to be called by developers from other ForTrilinos modules, not by end applications:
-     procedure ,private :: from_struct_
+     procedure ,private :: from_struct__
      procedure         :: invalidate_id => invalidate_EpetraMap_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraMap
      procedure         :: get_EpetraMap_ID 
@@ -79,7 +79,7 @@ contains
   ! The subroutine from_struct_ must construct a struct id for the extended parent class.  The procedures 
   ! from_struct_ and from_struct should be called by developers only from other ForTrilinos modules, never by end applications:
 
-  subroutine from_struct_(this,id)
+  subroutine from_struct__(this,id)
     class(Epetra_Map) ,intent(out) :: this
     type(FT_Epetra_Map_ID_t),intent(in) :: id
     this%map_id = id
@@ -90,63 +90,66 @@ contains
   function from_struct(id) result(new_Epetra_Map)
     type(Epetra_Map) :: new_Epetra_Map
     type(FT_Epetra_Map_ID_t),intent(in) :: id
-    call new_Epetra_Map%Epetra_Map(id)
+    call new_Epetra_Map%Epetra_Map_(id)
   end function
 
   ! All additional constructors should take two steps: (1) obtain a struct ID by invoking a procedural binding and then (2) pass
   ! this ID to from_struct to initialize the constructed object's ID component and register the object for reference counting.
 
-  subroutine create_(this,Num_GlobalElements,IndexBase,comm)
+  subroutine create__(this,Num_GlobalElements,IndexBase,comm)
     class(Epetra_Map) ,intent(out) :: this
     integer(c_int) ,intent(in) :: Num_GlobalElements,IndexBase
-    class(Epetra_Comm)         :: comm
-    call this%Epetra_Map(Epetra_Map_Create(Num_GlobalElements,IndexBase,comm%get_EpetraComm_ID()))
+    class(Epetra_Comm) ,intent(in) :: comm
+    call this%Epetra_Map_(Epetra_Map_Create(Num_GlobalElements,IndexBase,comm%get_EpetraComm_ID()))
   end subroutine
 
-  type(Epetra_Map) function create(Num_GlobalElements,IndexBase,comm)
+  function create(Num_GlobalElements,IndexBase,comm) result(new_Epetra_Map)
+    type(Epetra_Map) :: new_Epetra_Map
     integer(c_int) ,intent(in) :: Num_GlobalElements,IndexBase
-    class(Epetra_Comm)         :: comm
-    call create%Epetra_Map(Num_GlobalElements,IndexBase,comm)
+    class(Epetra_Comm) ,intent(in) :: comm
+    call new_Epetra_Map%Epetra_Map_(Num_GlobalElements,IndexBase,comm)
   end function
 
-  subroutine create_linear_(this,Num_GlobalElements,Num_MyElements,IndexBase,comm)
+  subroutine create_linear__(this,Num_GlobalElements,Num_MyElements,IndexBase,comm)
     class(Epetra_Map) ,intent(out) :: this
     integer(c_int) ,intent(in) :: Num_GlobalElements,Num_MyElements,IndexBase
-    class(Epetra_Comm)         :: comm
-    call this%Epetra_Map(Epetra_Map_Create_Linear(Num_GlobalElements,Num_MyElements,IndexBase,comm%get_EpetraComm_ID()))
+    class(Epetra_Comm) ,intent(in) :: comm
+    call this%Epetra_Map_(Epetra_Map_Create_Linear(Num_GlobalElements,Num_MyElements,IndexBase,comm%get_EpetraComm_ID()))
   end subroutine
   
-  type(Epetra_Map) function create_linear(Num_GlobalElements,Num_MyElements,IndexBase,comm)
+  function create_linear(Num_GlobalElements,Num_MyElements,IndexBase,comm) result(new_Epetra_Map)
+    type(Epetra_Map) :: new_Epetra_Map
     integer(c_int) ,intent(in) :: Num_GlobalElements,Num_MyElements,IndexBase
-    class(Epetra_Comm)         :: comm
-    call create_linear%Epetra_Map(Num_GlobalElements,Num_MyElements,IndexBase,comm)
+    class(Epetra_Comm) ,intent(in) :: comm
+    call new_Epetra_Map%Epetra_Map_(Num_GlobalElements,Num_MyElements,IndexBase,comm)
   end function
   
-  subroutine create_arbitrary_(this,Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm)
+  subroutine create_arbitrary__(this,Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm)
     class(Epetra_Map) ,intent(out) :: this
     integer(c_int) ,intent(in)              :: Num_GlobalElements,Num_MyElements,IndexBase
     integer(c_int) ,intent(in) ,dimension(:),allocatable:: My_GlobalElements
-    class(Epetra_Comm)                      :: comm
+    class(Epetra_Comm) ,intent(in) :: comm
     call this% & 
-    Epetra_Map(Epetra_Map_Create_Arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm%get_EpetraComm_ID()))
+    Epetra_Map_(Epetra_Map_Create_Arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm%get_EpetraComm_ID()))
   end subroutine
  
-  type(Epetra_Map) function create_arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm)
+  function create_arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm) result(new_Epetra_Map)
+    type(Epetra_Map) :: new_Epetra_Map
     integer(c_int) ,intent(in)              :: Num_GlobalElements,Num_MyElements,IndexBase
     integer(c_int) ,intent(in) ,dimension(:),allocatable:: My_GlobalElements
-    class(Epetra_Comm)                      :: comm
-    call create_arbitrary%Epetra_Map(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm)
+    class(Epetra_Comm) ,intent(in) :: comm
+    call new_Epetra_Map%Epetra_Map_(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm)
   end function
  
-  subroutine duplicate_(this,copy)
+  subroutine duplicate__(this,copy)
     class(Epetra_Map) ,intent(in) :: this
     type(Epetra_Map) ,intent(out) :: copy
-    call copy%Epetra_Map(Epetra_Map_Duplicate(this%map_id))
+    call copy%Epetra_Map_(Epetra_Map_Duplicate(this%map_id))
   end subroutine
 
   type(Epetra_Map) function duplicate(original)
     type(Epetra_Map) ,intent(in) :: original
-    call original%Epetra_Map(duplicate)
+    call original%Epetra_Map_(duplicate)
   end function
 
   !----------------- Struct access ---------------------------------------------

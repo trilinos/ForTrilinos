@@ -57,7 +57,7 @@ module FEpetra_MpiComm
     procedure ,private :: from_scratch_
     procedure ,private :: duplicate_
     procedure ,private :: from_struct_
-    generic :: Epetra_MpiComm => from_scratch_,duplicate_,from_struct_
+    generic :: Epetra_MpiComm_ => from_scratch_,duplicate_,from_struct_
     !Barrier Method
     procedure         :: barrier
     !Broadcast Method
@@ -123,7 +123,7 @@ contains
   function from_struct(id) result(new_Epetra_MpiComm)
     type(Epetra_MpiComm) :: new_Epetra_MpiComm 
     type(FT_Epetra_MpiComm_ID_t) ,intent(in) :: id
-    call new_Epetra_MpiComm%Epetra_MpiComm(id)
+    call new_Epetra_MpiComm%Epetra_MpiComm_(id)
   end function
  
  type(Epetra_MpiComm) function from_comm(id)
@@ -141,13 +141,13 @@ contains
   subroutine from_scratch_(this,comm)
    class(Epetra_MpiComm) ,intent(out) :: this
    integer(c_int) ,intent(in) :: comm
-   call this%Epetra_MpiComm(Epetra_MpiComm_Fortran_Create(comm))
+   call this%Epetra_MpiComm_(Epetra_MpiComm_Fortran_Create(comm))
   end subroutine
 
   function from_scratch(comm) result(new_Epetra_MpiComm)
     type(Epetra_MpiComm) :: new_Epetra_MpiComm
     integer(c_int) ,intent(in) :: comm
-    call new_Epetra_MpiComm%Epetra_MpiComm(comm) 
+    call new_Epetra_MpiComm%Epetra_MpiComm_(comm) 
   end function
 
   ! Original C++ prototype:
@@ -158,12 +158,12 @@ contains
   subroutine duplicate_(this,copy)
     class(Epetra_MpiComm) ,intent(in) :: this
     type(Epetra_MpiComm) ,intent(out) :: copy
-    call copy%Epetra_MpiComm(Epetra_MpiComm_Duplicate(this%MpiComm_id))
+    call copy%Epetra_MpiComm_(Epetra_MpiComm_Duplicate(this%MpiComm_id))
   end subroutine
 
   type(Epetra_MpiComm) function duplicate(original)
     type(Epetra_MpiComm) ,intent(in) :: original
-    call original%Epetra_MpiComm(duplicate) 
+    call original%Epetra_MpiComm_(duplicate) 
   end function
 
   type(FT_Epetra_MpiComm_ID_t) function get_EpetraMpiComm_ID(this)

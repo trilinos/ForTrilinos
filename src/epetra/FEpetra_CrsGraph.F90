@@ -43,16 +43,23 @@ module FEpetra_CrsGraph
   use ForTrilinos_universal,only:universal
   use ForTrilinos_error
   use FEpetra_BlockMap  ,only: Epetra_BlockMap 
-  use iso_c_binding     ,only: c_int,c_double,c_char
+  use iso_c_binding     ,only: c_int
   use forepetra
   implicit none
-  private                      ! Hide everything by default
+  private                   ! Hide everything by default
   public :: Epetra_CrsGraph ! Expose type/constructors/methods
 
   type ,extends(universal)                    :: Epetra_CrsGraph !"shell"
     private
     type(FT_Epetra_CrsGraph_ID_t) :: CrsGraph_id 
   contains
+     !Constructors
+     procedure ,private :: from_struct_
+     procedure ,private :: duplicate_
+     procedure ,private :: Create_ 
+     procedure ,private :: Create_VarPerRow_
+     generic :: Epetra_CrsGraph_ => from_struct_,duplicate_,Create_,Create_VarPerRow_
+     !ForTrilinos Developers only -- not to be called in end-user application code.
      procedure         :: invalidate_id => invalidate_EpetraCrsGraph_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraCrsGraph
      procedure         :: get_EpetraCrsGraph_ID 
@@ -61,61 +68,94 @@ module FEpetra_CrsGraph
   end type
 
    interface Epetra_CrsGraph ! constructors
-     module procedure duplicate,from_struct, Create, Create_VarPerRow!, Create_VarPerRow_WithColMap, Create_WithColMap 
+     module procedure duplicate,from_struct, Create, Create_VarPerRow
    end interface
 
 contains
-  type(Epetra_CrsGraph) function from_struct(id)
+  subroutine from_struct_(this,id)
+    class(Epetra_CrsGraph) ,intent(out) :: this
+    type(FT_Epetra_CrsGraph_ID_t) ,intent(in) :: id
+    this%CrsGraph_id = id
+    call this%register_self
+  end subroutine
+
+  type(Epetra_CrsGraph) function from_struct(id) result(new_Epetra_CrsGraph)
      type(FT_Epetra_CrsGraph_ID_t) ,intent(in) :: id
-     from_struct%CrsGraph_id = id
-     call from_struct%register_self
+     call new_Epetra_CrsGraph%Epetra_CrsGraph_(id)
   end function
 
-  type(Epetra_CrsGraph) function Create(CV,RowMap,NumIndicesPerRow,StaticProfile)
-   use ForTrilinos_enums ,only: FT_boolean_t,FT_TRUE,FT_FALSE
-   use iso_c_binding     ,only: c_int
-   integer(FT_Epetra_DataAccess_E_t), intent(in) :: CV
-   class(Epetra_BlockMap) ,intent(in) :: RowMap
-   integer(c_int)         ,intent(in) :: NumIndicesPerRow
-   logical,        optional                   :: StaticProfile        
-   integer(FT_boolean_t)                      :: StaticProfile_in
-   type(FT_Epetra_CrsGraph_ID_t)              :: Create_id
-   if (.not.present(StaticProfile)) then
-     StaticProfile_in=FT_FALSE
-   elseif (StaticProfile) then
-     StaticProfile_in=FT_TRUE
-   else
-     StaticProfile_in=FT_FALSE
-   endif
-   Create_id = Epetra_CrsGraph_Create(CV,RowMap%get_EpetraBlockMap_ID(),NumIndicesPerRow,StaticProfile_in)
-   Create = from_struct(Create_id)
+  subroutine Create_(this,CV,RowMap,NumIndicesPerRow,StaticProfile)
+    use ForTrilinos_enums ,only: FT_boolean_t,FT_TRUE,FT_FALSE
+    use iso_c_binding     ,only: c_int
+    class(Epetra_CrsGraph) ,intent(out) :: this
+    integer(FT_Epetra_DataAccess_E_t), intent(in) :: CV
+    class(Epetra_BlockMap) ,intent(in) :: RowMap
+    integer(c_int)         ,intent(in) :: NumIndicesPerRow
+    logical,        optional                   :: StaticProfile        
+    integer(FT_boolean_t)                      :: StaticProfile_in
+    if (.not.present(StaticProfile)) then
+      StaticProfile_in=FT_FALSE
+    elseif (StaticProfile) then
+      StaticProfile_in=FT_TRUE
+    else
+      StaticProfile_in=FT_FALSE
+    endif
+    call this%Epetra_CrsGraph_(Epetra_CrsGraph_Create(CV,RowMap%get_EpetraBlockMap_ID(),NumIndicesPerRow,StaticProfile_in))
+  end subroutine
+
+  function Create(CV,RowMap,NumIndicesPerRow,StaticProfile) result(new_Epetra_CrsGraph)
+    use iso_c_binding     ,only: c_int
+    type(Epetra_CrsGraph) :: new_Epetra_CrsGraph
+    integer(FT_Epetra_DataAccess_E_t), intent(in) :: CV
+    class(Epetra_BlockMap) ,intent(in) :: RowMap
+    integer(c_int)         ,intent(in) :: NumIndicesPerRow
+    logical,        optional                   :: StaticProfile        
+    call new_Epetra_CrsGraph%Epetra_CrsGraph_(CV,RowMap,NumIndicesPerRow,StaticProfile)
   end function
 
-  type(Epetra_CrsGraph) function Create_VarPerRow(CV,RowMap,NumIndicesPerRow,StaticProfile)
-   use ForTrilinos_enums ,only: FT_boolean_t,FT_TRUE,FT_FALSE
-   use iso_c_binding     ,only: c_int
-   integer(FT_Epetra_DataAccess_E_t), intent(in) :: CV
-   class(Epetra_BlockMap) ,intent(in) :: RowMap
-   integer(c_int),dimension(:) ,intent(in) :: NumIndicesPerRow
-   logical,        optional                   :: StaticProfile        
-   integer(FT_boolean_t)                      :: StaticProfile_in
-   type(FT_Epetra_CrsGraph_ID_t)              :: Create_VarPerRow_id
-   if (.not.present(StaticProfile)) then
-     StaticProfile_in=FT_FALSE
-   elseif (StaticProfile) then
-     StaticProfile_in=FT_TRUE
-   else
-     StaticProfile_in=FT_FALSE
-   endif
-   Create_VarPerRow_id = Epetra_CrsGraph_Create_VarPerRow(CV,RowMap%get_EpetraBlockMap_ID(),NumIndicesPerRow,StaticProfile_in)
-   Create_VarPerRow = from_struct(Create_VarPerRow_id)
+  subroutine Create_VarPerRow_(this,CV,RowMap,NumIndicesPerRow,StaticProfile)
+    use ForTrilinos_enums ,only: FT_boolean_t,FT_TRUE,FT_FALSE
+    use iso_c_binding     ,only: c_int
+    class(Epetra_CrsGraph) ,intent(out) :: this
+    integer(FT_Epetra_DataAccess_E_t), intent(in) :: CV
+    class(Epetra_BlockMap) ,intent(in) :: RowMap
+    integer(c_int),dimension(:) ,intent(in) :: NumIndicesPerRow
+    logical,        optional                   :: StaticProfile        
+    integer(FT_boolean_t)                      :: StaticProfile_in
+    type(FT_Epetra_CrsGraph_ID_t)              :: Create_VarPerRow_id
+    if (.not.present(StaticProfile)) then
+      StaticProfile_in=FT_FALSE
+    elseif (StaticProfile) then
+      StaticProfile_in=FT_TRUE
+    else
+      StaticProfile_in=FT_FALSE
+    endif
+    call this% &
+    Epetra_CrsGraph_(Epetra_CrsGraph_Create_VarPerRow(CV,RowMap%get_EpetraBlockMap_ID(),NumIndicesPerRow,StaticProfile_in))
+  end subroutine
+
+  function Create_VarPerRow(CV,RowMap,NumIndicesPerRow,StaticProfile) result(new_Epetra_CrsGraph)
+    type(Epetra_CrsGraph) :: new_Epetra_CrsGraph
+    integer(FT_Epetra_DataAccess_E_t), intent(in) :: CV
+    class(Epetra_BlockMap) ,intent(in) :: RowMap
+    integer(c_int),dimension(:) ,intent(in) :: NumIndicesPerRow
+    logical,        optional                   :: StaticProfile        
+    if (present(StaticProfile)) then
+      call new_Epetra_CrsGraph%Epetra_CrsGraph_(CV,RowMap,NumIndicesPerRow,StaticProfile)
+    else
+      call new_Epetra_CrsGraph%Epetra_CrsGraph_(CV,RowMap,NumIndicesPerRow)
+    end if
   end function
 
-  type(Epetra_CrsGraph) function duplicate(this)
-    type(Epetra_CrsGraph) ,intent(in) :: this
-    type(FT_Epetra_CrsGraph_ID_t) :: duplicate_id
-    duplicate_id = Epetra_CrsGraph_Duplicate(this%CrsGraph_id)
-    duplicate = from_struct(duplicate_id)
+  subroutine duplicate_(this,copy)
+    class(Epetra_CrsGraph) ,intent(in) :: this
+    type(Epetra_CrsGraph) ,intent(out) :: copy
+    call copy%Epetra_CrsGraph_(Epetra_CrsGraph_Duplicate(this%CrsGraph_id))
+  end subroutine
+
+  type(Epetra_CrsGraph) function duplicate(original)
+    type(Epetra_CrsGraph) ,intent(in) :: original
+    call original%Epetra_CrsGraph_(duplicate)
   end function
 
   type(FT_Epetra_CrsGraph_ID_t) function get_EpetraCrsGraph_ID(this)

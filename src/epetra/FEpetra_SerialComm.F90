@@ -54,7 +54,7 @@ module FEpetra_SerialComm
      !Constructors
      procedure ,private :: duplicate_
      procedure ,private :: create_
-     generic :: Epetra_SerialComm => create_,from_comm_,from_struct_,duplicate_
+     generic :: Epetra_SerialComm_ => create_,from_comm_,from_struct_,duplicate_
      !Barrier Methods
      procedure         :: barrier
      !Broadcast Methods
@@ -117,7 +117,7 @@ contains
   function from_struct(id) result(new_Epetra_SerialComm)
     type(FT_Epetra_SerialComm_ID_t) ,intent(in) :: id
     type(Epetra_SerialComm) :: new_Epetra_SerialComm
-    call new_Epetra_SerialComm%Epetra_SerialComm(id)
+    call new_Epetra_SerialComm%Epetra_SerialComm_(id)
   end function
 
   subroutine from_comm_(this,id)
@@ -131,29 +131,29 @@ contains
   function from_comm(id) result(new_Epetra_SerialComm)
     type(Epetra_SerialComm) :: new_Epetra_SerialComm
     type(FT_Epetra_Comm_ID_t) ,intent(in) :: id
-    call new_Epetra_SerialComm%Epetra_SerialComm(id)
+    call new_Epetra_SerialComm%Epetra_SerialComm_(id)
   end function
 
   subroutine create_(this)
     class(Epetra_SerialComm) ,intent(out) :: this 
-    call this%Epetra_SerialComm(Epetra_SerialComm_Create())
+    call this%Epetra_SerialComm_(Epetra_SerialComm_Create())
   end subroutine
 
   function create() result(new_Epetra_SerialComm)
     type(Epetra_SerialComm) :: new_Epetra_SerialComm
-    call new_Epetra_SerialComm%Epetra_SerialComm()
+    call new_Epetra_SerialComm%Epetra_SerialComm_()
   end function
 
   subroutine duplicate_(this,copy)
     class(Epetra_SerialComm) ,intent(in) :: this
     type(Epetra_SerialComm) ,intent(out) :: copy
-    call copy%Epetra_SerialComm(Epetra_SerialComm_Duplicate(this%SerialComm_id))
+    call copy%Epetra_SerialComm_(Epetra_SerialComm_Duplicate(this%SerialComm_id))
   end subroutine
 
   function duplicate(original) result (new_Epetra_SerialComm)
     type(Epetra_SerialComm) ,intent(in) :: original
     type(Epetra_SerialComm) :: new_Epetra_SerialComm
-    call original%Epetra_SerialComm(new_Epetra_SerialComm)
+    call original%Epetra_SerialComm_(new_Epetra_SerialComm)
   end function
 
   !----------------- Struct access ---------------------------------------------
