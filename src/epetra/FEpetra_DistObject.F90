@@ -52,16 +52,12 @@ module FEpetra_DistObject
   private                     ! Hide everything by default
   public :: Epetra_DistObject ! Expose type/constructors/methods
 
-  type ,extends(Epetra_SrcDistObject)        :: Epetra_DistObject !"shell"
+  type ,extends(Epetra_SrcDistObject)        :: Epetra_DistObject 
     private
     type(FT_Epetra_DistObject_ID_t) :: DistObject_id 
   contains
-     !Developers only
-     procedure         :: invalidate_id => invalidate_EpetraDistObject_ID 
-     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraDistObject
-     procedure         :: get_EpetraDistObject_ID 
-     procedure ,nopass :: alias_EpetraDistObject_ID
-     procedure         :: generalize 
+     !Constructor
+     generic :: Epetra_DistObject_ => from_struct__
      !Import/Export methods
      procedure, private:: DistObject_Export
      procedure, private:: DistObject_Export_UsingImporter
@@ -69,6 +65,13 @@ module FEpetra_DistObject
      procedure, private:: DistObject_Import
      procedure, private:: DistObject_Import_UsingExporter
      generic :: import => DistObject_Import_UsingExporter, DistObject_Import
+     !Developers only
+     procedure ,private :: from_struct__
+     procedure         :: invalidate_id => invalidate_EpetraDistObject_ID 
+     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraDistObject
+     procedure         :: get_EpetraDistObject_ID 
+     procedure ,nopass :: alias_EpetraDistObject_ID
+     procedure         :: generalize 
   end type
 
    interface Epetra_DistObject ! constructors
@@ -77,11 +80,18 @@ module FEpetra_DistObject
 
 contains
 
-  type(Epetra_DistObject) function from_struct(id)
-   type(FT_Epetra_DistObject_ID_t) ,intent(in) :: id
-   from_struct%DistObject_id = id
-   call from_struct%set_EpetraSrcDistObject_ID(from_struct%alias_EpetraSrcDistObject_ID(from_struct%generalize()))
-   call from_struct%register_self
+  subroutine from_struct__(this,id)
+    class(Epetra_DistObject) ,intent(out) :: this
+    type(FT_Epetra_DistObject_ID_t) ,intent(in) :: id
+    this%DistObject_id = id
+    call this%set_EpetraSrcDistObject_ID(this%alias_EpetraSrcDistObject_ID(this%generalize()))
+    call this%register_self
+  end subroutine
+
+  function from_struct(id) result(new_Epetra_DistObject)
+    type(Epetra_DistObject) :: new_Epetra_DistObject
+    type(FT_Epetra_DistObject_ID_t) ,intent(in) :: id
+    call new_Epetra_DistObject%Epetra_DistObject_(id)
   end function
 
   type(FT_Epetra_DistObject_ID_t) function get_EpetraDistObject_ID(this)

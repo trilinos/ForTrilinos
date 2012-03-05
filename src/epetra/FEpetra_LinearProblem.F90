@@ -54,12 +54,11 @@ module FEpetra_LinearProblem
     private
     type(FT_Epetra_LinearProblem_ID_t) :: LinearProblem_id
   contains
-     !Developers only
-     procedure         :: invalidate_id => invalidate_EpetraLinearProblem_ID
-     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraLinearProblem
-     procedure         :: get_EpetraLinearProblem_ID 
-     procedure ,nopass :: alias_EpetraLinearProblem_ID
-     procedure         :: generalize 
+     !Constructors
+     procedure ,private :: create_
+     procedure ,private :: duplicate_
+     procedure ,private :: create_matrix_
+     generic :: Epetra_LinearProblem_ => from_struct_,create_,duplicate_,create_matrix_
      !Integrity check method
      procedure         :: CheckInput
      !Computational methods
@@ -80,6 +79,13 @@ module FEpetra_LinearProblem
      generic    :: SetOperator=>SetOperator_Matrix!,SetOperator_Operator
      procedure         :: SetLHS
      procedure         :: SetRHS
+     !Developers only
+     procedure ,private :: from_struct_
+     procedure         :: invalidate_id => invalidate_EpetraLinearProblem_ID
+     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraLinearProblem
+     procedure         :: get_EpetraLinearProblem_ID 
+     procedure ,nopass :: alias_EpetraLinearProblem_ID
+     procedure         :: generalize 
   end type
 
    interface Epetra_LinearProblem ! constructors
@@ -88,10 +94,18 @@ module FEpetra_LinearProblem
  
 contains
 
-  type(Epetra_LinearProblem) function from_struct(id)
+  subroutine from_struct_(this,id)
+    class(Epetra_LinearProblem) ,intent(out) :: this
     type(FT_Epetra_LinearProblem_ID_t),intent(in) :: id
-    from_struct%LinearProblem_id = id
-    call from_struct%register_self
+    this%LinearProblem_id = id
+    call this%register_self
+  end subroutine
+
+  function from_struct(id) result(new_Epetra_LinearProblem)
+    type(Epetra_LinearProblem) :: new_Epetra_LinearProblem
+    type(FT_Epetra_LinearProblem_ID_t),intent(in) :: id
+    new_Epetra_LinearProblem%LinearProblem_id = id
+    call new_Epetra_LinearProblem%register_self
   end function
 
 !> <BR> Original C++ prototype:
@@ -99,10 +113,14 @@ contains
 !> <BR> <BR> CTrilinos prototype:
 !! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Create (  );
 
-  type(Epetra_LinearProblem) function create()
-    type(FT_Epetra_LinearProblem_ID_t) :: create_id
-    create_id = Epetra_LinearProblem_Create()
-    create = from_struct(create_id)
+  subroutine create_(this) 
+    class(Epetra_LinearProblem) ,intent(out) :: this
+    call this%Epetra_LinearProblem_(Epetra_LinearProblem_Create())
+  end subroutine
+
+  function create() result(new_Epetra_LinearProblem)
+    type(Epetra_LinearProblem) :: new_Epetra_LinearProblem
+    call new_Epetra_LinearProblem%Epetra_LinearProblem_(Epetra_LinearProblem_Create())
   end function
 
 !> <BR> Original C++ prototype:
@@ -112,13 +130,21 @@ contains
 !  CT_Epetra_MultiVector_ID_t XID, 
 !CT_Epetra_MultiVector_ID_t BID );
 
-  type(Epetra_LinearProblem) function create_matrix(A,X,B)
+  subroutine create_matrix_(this,A,X,B)
+    class(Epetra_LinearProblem) ,intent(out) :: this
     class(Epetra_RowMatrix), intent(in) :: A
     class(Epetra_MultiVector), intent(in) :: X, B 
     type(FT_Epetra_LinearProblem_ID_t) :: create_matrix_id
     create_matrix_id = Epetra_LinearProblem_Create_FromMatrix(A%get_EpetraRowMatrix_ID(),&
       X%get_EpetraMultiVector_ID(),B%get_EpetraMultiVector_ID())
-    create_matrix = from_struct(create_matrix_id)
+    call this%from_struct_(create_matrix_id)
+  end subroutine
+
+  function create_matrix(A,X,B) result(new_Epetra_LinearProblem)
+    type(Epetra_LinearProblem) :: new_Epetra_LinearProblem
+    class(Epetra_RowMatrix), intent(in) :: A
+    class(Epetra_MultiVector), intent(in) :: X, B 
+    call new_Epetra_LinearProblem%Epetra_LinearProblem_(A,X,B)
   end function
 
 !> <BR> Original C++ prototype:
@@ -143,11 +169,15 @@ contains
  !> <BR> <BR> CTrilinos prototype:
  !! CT_Epetra_LinearProblem_ID_t Epetra_LinearProblem_Duplicate ( CT_Epetra_LinearProblem_ID_t ProblemID );
 
-  type(Epetra_LinearProblem) function duplicate(this)
-    type(Epetra_LinearProblem) ,intent(in) :: this
-    type(FT_Epetra_LinearProblem_ID_t) :: duplicate_id
-    duplicate_id = Epetra_LinearProblem_Duplicate(this%LinearProblem_id)
-    duplicate = from_struct(duplicate_id)
+  subroutine duplicate_(this,copy)
+    class(Epetra_LinearProblem) ,intent(in) :: this
+    type(Epetra_LinearProblem) ,intent(out) :: copy
+    call copy%Epetra_LinearProblem_(Epetra_LinearProblem_Duplicate(this%LinearProblem_id))
+  end subroutine
+
+  type(Epetra_LinearProblem) function duplicate(original)
+    type(Epetra_LinearProblem) ,intent(in) :: original
+    call original%Epetra_LinearProblem_(duplicate)
   end function
 
   integer(c_int) function CheckInput(this)

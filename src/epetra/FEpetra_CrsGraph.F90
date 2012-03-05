@@ -49,17 +49,17 @@ module FEpetra_CrsGraph
   private                   ! Hide everything by default
   public :: Epetra_CrsGraph ! Expose type/constructors/methods
 
-  type ,extends(universal)                    :: Epetra_CrsGraph !"shell"
+  type ,extends(universal)                    :: Epetra_CrsGraph 
     private
     type(FT_Epetra_CrsGraph_ID_t) :: CrsGraph_id 
   contains
      !Constructors
-     procedure ,private :: from_struct_
      procedure ,private :: duplicate_
      procedure ,private :: Create_ 
      procedure ,private :: Create_VarPerRow_
      generic :: Epetra_CrsGraph_ => from_struct_,duplicate_,Create_,Create_VarPerRow_
      !ForTrilinos Developers only -- not to be called in end-user application code.
+     procedure ,private :: from_struct_
      procedure         :: invalidate_id => invalidate_EpetraCrsGraph_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraCrsGraph
      procedure         :: get_EpetraCrsGraph_ID 

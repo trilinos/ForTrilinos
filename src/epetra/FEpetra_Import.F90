@@ -49,16 +49,14 @@ module FEpetra_Import
   private                   ! Hide everything by default
   public :: Epetra_Import ! Expose type/constructors/methods
 
-  type ,extends(universal)                 :: Epetra_Import !"shell"
+  type ,extends(universal) :: Epetra_Import 
     private
     type(FT_Epetra_Import_ID_t) :: Import_id 
   contains
-     !Developers only
-     procedure         :: invalidate_id => invalidate_EpetraImport_ID
-     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraImport
-     procedure         :: get_EpetraImport_ID 
-     procedure ,nopass :: alias_EpetraImport_ID
-     procedure         :: generalize 
+     ! Constructors
+     procedure ,private :: create_
+     procedure ,private :: duplicate_
+     generic :: Epetra_Import_ => create_,duplicate_,from_struct_
      ! Public member functions
      procedure        :: NumSameIDs
      procedure        :: NumPermuteIDs
@@ -70,6 +68,13 @@ module FEpetra_Import
      procedure        :: NumRecv
      procedure        :: SourceMap
      procedure        :: TargetMap
+     !Developers only
+     procedure ,private :: from_struct_
+     procedure         :: invalidate_id => invalidate_EpetraImport_ID
+     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraImport
+     procedure         :: get_EpetraImport_ID 
+     procedure ,nopass :: alias_EpetraImport_ID
+     procedure         :: generalize 
   end type
 
    interface Epetra_Import ! constructors
@@ -78,10 +83,17 @@ module FEpetra_Import
  
 contains
 
-  type(Epetra_Import) function from_struct(id)
+  subroutine from_struct_(this,id)
+    class(Epetra_Import) ,intent(out) :: this
     type(FT_Epetra_Import_ID_t) ,intent(in) :: id
-    from_struct%Import_id = id
-    call from_struct%register_self 
+    this%Import_id = id
+    call this%register_self 
+  end subroutine
+ 
+  function from_struct(id) result(new_Epetra_Import)
+    type(Epetra_Import) :: new_Epetra_Import
+    type(FT_Epetra_Import_ID_t) ,intent(in) :: id
+    call new_Epetra_Import%Epetra_Import_(id)
   end function
  
   ! Original C++ prototype:
@@ -90,14 +102,16 @@ contains
   ! CT_Epetra_Import_ID_t Epetra_Import_Create ( CT_Epetra_BlockMap_ID_t TargetMapID,
   ! CT_Epetra_BlockMap_ID_t SourceMapID );
 
+  subroutine create_(this,TargetMap,SourceMap)
+    class(Epetra_Import) ,intent(out) :: this
+    class(Epetra_BlockMap), intent(in) :: TargetMap,SourceMap
+    call this%Epetra_Import_(Epetra_Import_Create(TargetMap%get_EpetraBlockMap_ID(),SourceMap%get_EpetraBlockMap_ID()))
+  end subroutine
 
-  type(Epetra_Import) function create(TargetMap,SourceMap)
-   !use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_BlockMap_ID_t
-    class(Epetra_BlockMap), intent(in) :: TargetMap
-    class(Epetra_BlockMap), intent(in) :: SourceMap
-    type(FT_Epetra_Import_ID_t) :: create_id
-    create_id = Epetra_Import_Create(TargetMap%get_EpetraBlockMap_ID(),SourceMap%get_EpetraBlockMap_ID())
-    create = from_struct(create_id)
+  function create(TargetMap,SourceMap) result(new_Epetra_Import)
+    type(Epetra_Import) :: new_Epetra_Import
+    class(Epetra_BlockMap), intent(in) :: TargetMap,SourceMap
+    call new_Epetra_Import%Epetra_Import_(TargetMap,SourceMap)
   end function
 
   ! Original C++ prototype:
@@ -105,12 +119,17 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_Import_ID_t Epetra_Import_Duplicate ( CT_Epetra_Import_ID_t ImporterID );
 
-  type(Epetra_Import) function duplicate(this)
-    type(Epetra_Import) ,intent(in) :: this 
-    type(FT_Epetra_Import_ID_t) :: duplicate_id
-    duplicate_id = Epetra_Import_Duplicate(this%Import_id)
-    duplicate = from_struct(duplicate_id)
+  subroutine duplicate_(this,copy)
+    class(Epetra_Import) ,intent(in) :: this
+    type(Epetra_Import) ,intent(out) :: copy
+    call copy%Epetra_Import_(Epetra_Import_Duplicate(this%import_id))
+  end subroutine
+
+  type(Epetra_Import) function duplicate(original)
+    type(Epetra_Import) ,intent(in) :: original
+    call original%Epetra_Import_(duplicate)
   end function
+
 
   type(FT_Epetra_Import_ID_t) function get_EpetraImport_ID(this)
     class(Epetra_Import) ,intent(in) :: this 

@@ -49,17 +49,15 @@ module FEpetra_MultiVector
   private                      ! Hide everything by default
   public :: Epetra_MultiVector ! Expose type/constructors/methods
 
-  type ,extends(universal)                    :: Epetra_MultiVector !"shell"
+  type ,extends(universal)                    :: Epetra_MultiVector 
     private
     type(FT_Epetra_MultiVector_ID_t) :: MultiVector_id 
     type(Epetra_DistObject) :: DistObject
   contains
-     procedure         :: invalidate_id => invalidate_EpetraMultiVector_ID
-     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraMultiVector
-     procedure         :: component_finalization => component_finalization_EpetraMultiVector
-     procedure         :: get_EpetraMultiVector_ID 
-     procedure ,nopass :: alias_EpetraMultiVector_ID
-     procedure         :: generalize 
+     ! Constructors
+     procedure ,private :: duplicate_
+     procedure ,private :: create_
+     generic :: Epetra_MultiVector_ => from_struct_,duplicate_,create_
      ! Post-construction modification procedure 
      procedure ,private:: ReplaceGlobalValue_NoOffset
      procedure ,private:: ReplaceGlobalValue_BlockPos
@@ -113,6 +111,14 @@ module FEpetra_MultiVector
      procedure,private :: Import_UsingImporter
      procedure,private :: Import_UsingExporter
      generic           :: import=>Import_UsingImporter,Import_UsingExporter
+     !ForTrilinos Developers only -- not to be invoked by end-user applications:
+     procedure ,private :: from_struct_
+     procedure         :: invalidate_id => invalidate_EpetraMultiVector_ID
+     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraMultiVector
+     procedure         :: component_finalization => component_finalization_EpetraMultiVector
+     procedure         :: get_EpetraMultiVector_ID 
+     procedure ,nopass :: alias_EpetraMultiVector_ID
+     procedure         :: generalize 
   end type
 
    interface Epetra_MultiVector ! constructors
@@ -120,11 +126,19 @@ module FEpetra_MultiVector
    end interface
 
 contains
-  type(Epetra_MultiVector) function from_struct(id)
+
+  subroutine from_struct_(this,id)
+     class(Epetra_MultiVector) ,intent(out) :: this
      type(FT_Epetra_MultiVector_ID_t) ,intent(in) :: id
-     from_struct%MultiVector_id = id  
-     from_struct%DistObject = Epetra_DistObject(from_struct%DistObject%alias_EpetraDistObject_ID(from_struct%generalize()))
-     call from_struct%register_self
+     this%MultiVector_id = id  
+     this%DistObject = Epetra_DistObject(this%DistObject%alias_EpetraDistObject_ID(this%generalize()))
+     call this%register_self
+  end subroutine
+
+  function from_struct(id) result(new_Epetra_MultiVector)
+    type(Epetra_MultiVector) :: new_Epetra_MultiVector
+    type(FT_Epetra_MultiVector_ID_t) ,intent(in) :: id
+    call new_Epetra_MultiVector%Epetra_MultiVector_(id)
   end function
 
   ! Original C++ prototype:
@@ -132,18 +146,29 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Create ( CT_Epetra_BlockMap_ID_t MapID, int NumVectors, boolean zeroOut ); 
 
-  type(Epetra_MultiVector) function create(BlockMap,Num_Vectors,zero)
-   use ForTrilinos_enums ,only: FT_boolean_t,FT_TRUE,FT_FALSE
-   use iso_c_binding     ,only: c_int
-   class(Epetra_BlockMap) ,intent(in) :: BlockMap
-   integer(c_int)         ,intent(in) :: Num_Vectors
-   logical  ,intent(in) :: zero 
-   integer(FT_boolean_t) :: zero_in 
-   type(FT_Epetra_MultiVector_ID_t) :: create_id
-   if (zero) zero_in=FT_TRUE
-   if (.not.zero) zero_in=FT_FALSE
-   create_id = Epetra_MultiVector_Create(BlockMap%get_EpetraBlockMap_ID(),Num_Vectors,zero_in)
-   create = from_struct(create_id)
+  subroutine create_(this,BlockMap,Num_Vectors,zero)
+    use ForTrilinos_enums ,only: FT_boolean_t,FT_TRUE,FT_FALSE
+    use iso_c_binding     ,only: c_int
+    class(Epetra_MultiVector) ,intent(out) :: this
+    class(Epetra_BlockMap) ,intent(in) :: BlockMap
+    integer(c_int)         ,intent(in) :: Num_Vectors
+    logical  ,intent(in) :: zero 
+    integer(FT_boolean_t) :: zero_in 
+    if (zero) then
+      zero_in=FT_TRUE
+    else 
+      zero_in=FT_FALSE
+    end if
+    call this%Epetra_MultiVector_(Epetra_MultiVector_Create(BlockMap%get_EpetraBlockMap_ID(),Num_Vectors,zero_in))
+  end subroutine
+
+  function create(BlockMap,Num_Vectors,zero) result(new_Epetra_MultiVector)
+    use iso_c_binding     ,only: c_int
+    type(Epetra_MultiVector) :: new_Epetra_MultiVector
+    class(Epetra_BlockMap) ,intent(in) :: BlockMap
+    integer(c_int)         ,intent(in) :: Num_Vectors
+    logical  ,intent(in) :: zero 
+    call new_Epetra_MultiVector%Epetra_MultiVector_(BlockMap,Num_Vectors,zero)
   end function
 
   ! Original C++ prototype:
@@ -151,11 +176,15 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_MultiVector_ID_t Epetra_MultiVector_Duplicate ( CT_Epetra_MultiVector_ID_t SourceID );
 
-  type(Epetra_MultiVector) function duplicate(this)
-    type(Epetra_MultiVector) ,intent(in) :: this
-    type(FT_Epetra_MultiVector_ID_t) :: duplicate_id
-    duplicate_id = Epetra_MultiVector_Duplicate(this%MultiVector_id)
-    duplicate = from_struct(duplicate_id)
+  subroutine duplicate_(this,copy)
+    class(Epetra_MultiVector) ,intent(in) :: this
+    type(Epetra_MultiVector) ,intent(out) :: copy
+    call copy%Epetra_MultiVector_(Epetra_MultiVector_Duplicate(this%MultiVector_id))
+  end subroutine
+
+  type(Epetra_MultiVector) function duplicate(original)
+    type(Epetra_MultiVector) ,intent(in) :: original
+    call original%Epetra_MultiVector_(duplicate)
   end function
 
   type(FT_Epetra_MultiVector_ID_t) function get_EpetraMultiVector_ID(this)
@@ -618,10 +647,11 @@ contains
     Stride=Epetra_MultiVector_Stride(this%MultiVector_id)
   end function 
 
-  integer(FT_boolean_t) function ConstantStride(this)
-    use ForTrilinos_enums ,only:FT_Epetra_MultiVector_ID_t,FT_boolean_t
+  function ConstantStride(this) result(is_constant)
+    use ForTrilinos_enums ,only: FT_boolean_t
+    integer(FT_boolean_t) :: is_constant
     class(Epetra_MultiVector) ,intent(in) :: this
-    ConstantStride=Epetra_MultiVector_ConstantStride(this%MultiVector_id)
+    is_constant=Epetra_MultiVector_ConstantStride(this%MultiVector_id)
   end function 
 
  subroutine Export_UsingExporter(this,A,exporter,CombineMode,indexor,err)

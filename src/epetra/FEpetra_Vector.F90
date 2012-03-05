@@ -49,16 +49,14 @@ module FEpetra_Vector
   private                                    ! Hide everything by default
   public :: Epetra_Vector !,Epetra_MultiVector ! Expose type/constructors/methods
 
-  type ,extends(Epetra_MultiVector)      :: Epetra_Vector !"shell"
+  type ,extends(Epetra_MultiVector)      :: Epetra_Vector 
     private
     type(FT_Epetra_Vector_ID_t)  :: vector_id 
   contains
-     !Developers only
-     procedure         :: invalidate_id => invalidate_EpetraVector_ID
-     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraVector
-     procedure         :: get_EpetraVector_ID 
-     procedure ,nopass :: alias_EpetraVector_ID
-     procedure         :: generalize 
+     procedure ,private :: create__
+     procedure ,private :: create_FromArray__
+     procedure ,private :: duplicate__
+     generic :: Epetra_Vector_ =>  from_struct__,create__,create_FromArray__,duplicate__
      !Post-construction modfication routines
      procedure ,private:: ReplaceGlobalValues_NoOffset
      procedure ,private:: ReplaceGlobalValues_BlockPos
@@ -79,6 +77,13 @@ module FEpetra_Vector
      !overloaded operators
      procedure         :: get_element_EpetraVector
      generic :: get_Element => get_element_EpetraVector 
+     !ForTrilinos developers only -- not for invocation in end-user applications:
+     procedure ,private :: from_struct__
+     procedure         :: invalidate_id => invalidate_EpetraVector_ID
+     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraVector
+     procedure         :: get_EpetraVector_ID 
+     procedure ,nopass :: alias_EpetraVector_ID
+     procedure         :: generalize 
   end type
 
    interface Epetra_Vector ! constructors
@@ -87,11 +92,18 @@ module FEpetra_Vector
  
 contains
 
-  type(Epetra_Vector) function from_struct(id)
+  subroutine from_struct__(this,id)
+    class(Epetra_Vector) ,intent(out) :: this
     type(FT_Epetra_Vector_ID_t) ,intent(in) :: id
-    from_struct%vector_id = id
-    from_struct%Epetra_MultiVector=Epetra_MultiVector(from_struct%alias_EpetraMultiVector_ID(from_struct%generalize()))
-    call from_struct%register_self()
+    this%vector_id = id
+    this%Epetra_MultiVector=Epetra_MultiVector(this%alias_EpetraMultiVector_ID(this%generalize()))
+    call this%register_self()
+  end subroutine
+
+  function from_struct(id) result(new_Epetra_Vector)
+    type(Epetra_Vector) :: new_Epetra_Vector
+    type(FT_Epetra_Vector_ID_t) ,intent(in) :: id
+    call new_Epetra_Vector%Epetra_Vector_(id)
   end function
 
   ! Original C++ prototype:
@@ -99,13 +111,13 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_Vector_ID_t Epetra_Vector_Create ( CT_Epetra_BlockMap_ID_t MapID, boolean zeroOut );
 
-  type(Epetra_Vector) function create(BlockMap,zero_initial)
-    use ForTrilinos_enums ,only: FT_boolean_t,FT_FALSE,FT_TRUE,FT_Epetra_BlockMap_ID_t
+  subroutine create__(this,BlockMap,zero_initial)
+    use ForTrilinos_enums ,only: FT_boolean_t,FT_FALSE,FT_TRUE
     use FEpetra_BlockMap  ,only: Epetra_BlockMap
+    class(Epetra_Vector) ,intent(out) :: this
     class(Epetra_BlockMap) ,intent(in) :: BlockMap
     logical ,optional      ,intent(in) :: zero_initial
     integer(FT_boolean_t)              :: zero_out
-    type(FT_Epetra_Vector_ID_t) :: create_id
     if (.not.present(zero_initial)) then
      zero_out=FT_FALSE
     elseif (zero_initial) then
@@ -113,19 +125,39 @@ contains
     else
      zero_out=FT_FALSE
     endif
-    create_id = Epetra_Vector_Create(BlockMap%get_EpetraBlockMap_ID(),zero_out)
-    create = from_struct(create_id)
+    call this%Epetra_Vector_(Epetra_Vector_Create(BlockMap%get_EpetraBlockMap_ID(),zero_out))
+  end subroutine
+  
+  function create(BlockMap,zero_initial) result(new_Epetra_Vector)
+    use FEpetra_BlockMap  ,only: Epetra_BlockMap
+    type(Epetra_Vector) :: new_Epetra_Vector
+    class(Epetra_BlockMap) ,intent(in) :: BlockMap
+    logical ,optional      ,intent(in) :: zero_initial
+    if (present(zero_initial)) then
+      call new_Epetra_Vector%Epetra_Vector_(BlockMap,zero_initial)
+    else
+      call new_Epetra_Vector%Epetra_Vector_(BlockMap)
+    endif
   end function
   
-  type(Epetra_Vector) function create_FromArray(CV,BlockMap,V)
-    use ForTrilinos_enum_wrappers
+  subroutine create_FromArray__(this,CV,BlockMap,V)
+    use ForTrilinos_enum_wrappers ,only : FT_Epetra_DataAccess_E_t
     use FEpetra_BlockMap  ,only: Epetra_BlockMap
+    class(Epetra_Vector) ,intent(out) :: this
     class(Epetra_BlockMap) ,intent(in) :: BlockMap
     integer(FT_Epetra_DataAccess_E_t), intent(in) :: CV
     real(c_double),dimension(:) :: V
-    type(FT_Epetra_Vector_ID_t) :: create_FromArray_id
-    create_FromArray_id = Epetra_Vector_Create_FromArray(CV,BlockMap%get_EpetraBlockMap_ID(),V)
-    create_FromArray = from_struct(create_FromArray_id) 
+    call this%Epetra_Vector_(Epetra_Vector_Create_FromArray(CV,BlockMap%get_EpetraBlockMap_ID(),V)) 
+  end subroutine
+
+  function create_FromArray(CV,BlockMap,V) result(new_Epetra_Vector)
+    use ForTrilinos_enum_wrappers ,only : FT_Epetra_DataAccess_E_t
+    use FEpetra_BlockMap  ,only: Epetra_BlockMap
+    type(Epetra_Vector) :: new_Epetra_Vector
+    class(Epetra_BlockMap) ,intent(in) :: BlockMap
+    integer(FT_Epetra_DataAccess_E_t), intent(in) :: CV
+    real(c_double),dimension(:) :: V
+    call new_Epetra_Vector%Epetra_Vector_(CV,BlockMap,V)
   end function
 
   ! Original C++ prototype:
@@ -133,11 +165,15 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_Vector_ID_t Epetra_Vector_Duplicate ( CT_Epetra_Vector_ID_t SourceID );
 
-  type(Epetra_Vector) function duplicate(this)
-    type(Epetra_Vector) ,intent(in) :: this 
-    type(FT_Epetra_Vector_ID_t) :: duplicate_id
-    duplicate_id = Epetra_Vector_Duplicate(this%vector_id)
-    duplicate = from_struct(duplicate_id)
+  subroutine duplicate__(this,copy)
+    class(Epetra_Vector) ,intent(in) :: this
+    type(Epetra_Vector) ,intent(out) :: copy
+    call copy%Epetra_Vector_(Epetra_Vector_Duplicate(this%vector_id))
+  end subroutine
+
+  type(Epetra_Vector) function duplicate(original)
+    type(Epetra_Vector) ,intent(in) :: original
+    call original%Epetra_Vector_(duplicate)
   end function
 
   type(FT_Epetra_Vector_ID_t) function get_EpetraVector_ID(this)

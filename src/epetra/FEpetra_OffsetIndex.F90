@@ -50,10 +50,16 @@ module FEpetra_OffsetIndex
   private                      ! Hide everything by default
   public :: Epetra_OffsetIndex ! Expose type/constructors/methods
 
-  type ,extends(universal)                    :: Epetra_OffsetIndex !"shell"
+  type ,extends(universal)                    :: Epetra_OffsetIndex 
     private
     type(FT_Epetra_OffsetIndex_ID_t) :: OffsetIndex_id 
   contains
+     procedure ,private :: duplicate_
+     procedure ,private :: create_FromExporter_
+     procedure ,private :: create_FromImporter_
+     generic :: Epetra_OffsetIndex_ => duplicate_,from_struct_,create_FromExporter_,create_FromImporter_
+     ! ForTrilinos developers only -- not for use in end-user application:
+     procedure ,private :: from_struct_
      procedure         :: invalidate_id => invalidate_EpetraOffsetIndex_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraOffsetIndex
      procedure         :: get_EpetraOffsetIndex_ID 
@@ -66,37 +72,63 @@ module FEpetra_OffsetIndex
    end interface
 
 contains
-  type(Epetra_OffsetIndex) function from_struct(id)
-     type(FT_Epetra_OffsetIndex_ID_t) ,intent(in) :: id
-     from_struct%OffsetIndex_id = id
-     call from_struct%register_self
+
+  subroutine from_struct_(this,id)
+    class(Epetra_OffsetIndex) ,intent(out) :: this
+    type(FT_Epetra_OffsetIndex_ID_t) ,intent(in) :: id
+    this%OffsetIndex_id = id
+    call this%register_self
+  end subroutine 
+
+  function from_struct(id) result(new_Epetra_OffsetIndex)
+    type(Epetra_OffsetIndex) :: new_Epetra_OffsetIndex
+    type(FT_Epetra_OffsetIndex_ID_t) ,intent(in) :: id
+    call new_Epetra_OffsetIndex%Epetra_OffsetIndex_(id)
   end function
 
-  type(Epetra_OffsetIndex) function create_FromExporter(SourceGraph,TargetGraph,exporter)
-   class(Epetra_CrsGraph),intent(in) :: SourceGraph
-   class(Epetra_CrsGraph),intent(in) :: TargetGraph
-   type(Epetra_Export), intent(in) :: exporter
-   type(FT_Epetra_OffsetIndex_ID_t) :: create_FromExporter_id
-   create_FromExporter_id = Epetra_OffsetIndex_Create_FromExporter(SourceGraph%get_EpetraCrsGraph_ID(),&
-         TargetGraph%get_EpetraCrsGraph_ID(),exporter%get_EpetraExport_ID())
-   create_FromExporter = from_struct(create_FromExporter_id)
+  subroutine create_FromExporter_(this,SourceGraph,TargetGraph,exporter)
+    class(Epetra_OffsetIndex) ,intent(out) :: this
+    class(Epetra_CrsGraph),intent(in) :: SourceGraph,TargetGraph
+    type(Epetra_Export), intent(in) :: exporter
+    type(FT_Epetra_OffsetIndex_ID_t) :: create_FromExporter_id
+    create_FromExporter_id = Epetra_OffsetIndex_Create_FromExporter(SourceGraph%get_EpetraCrsGraph_ID(),&
+          TargetGraph%get_EpetraCrsGraph_ID(),exporter%get_EpetraExport_ID())
+    call this%Epetra_OffsetIndex_(create_FromExporter_id)
+  end subroutine
+
+  function create_FromExporter(SourceGraph,TargetGraph,exporter) result(new_Epetra_OffsetIndex)
+    type(Epetra_OffsetIndex) :: new_Epetra_OffsetIndex
+    class(Epetra_CrsGraph),intent(in) :: SourceGraph,TargetGraph
+    type(Epetra_Export), intent(in) :: exporter
+    call new_Epetra_OffsetIndex%Epetra_OffsetIndex_(SourceGraph,TargetGraph,exporter)
   end function
 
-  type(Epetra_OffsetIndex) function create_FromImporter(SourceGraph,TargetGraph,importer)
-   class(Epetra_CrsGraph),intent(in) :: SourceGraph
-   class(Epetra_CrsGraph),intent(in) :: TargetGraph
-   type(Epetra_Import), intent(in) :: importer
-   type(FT_Epetra_OffsetIndex_ID_t) :: create_FromImporter_id
-   create_FromImporter_id = Epetra_OffsetIndex_Create_FromImporter(SourceGraph%get_EpetraCrsGraph_ID(),&
-        TargetGraph%get_EpetraCrsGraph_ID(),importer%get_EpetraImport_ID())
-   create_FromImporter = from_struct(create_FromImporter_id)
+  subroutine create_FromImporter_(this,SourceGraph,TargetGraph,importer)
+    class(Epetra_OffsetIndex) ,intent(out) :: this
+    class(Epetra_CrsGraph),intent(in) :: SourceGraph,TargetGraph
+    type(Epetra_Import), intent(in) :: importer
+    type(FT_Epetra_OffsetIndex_ID_t) :: create_FromImporter_id
+    create_FromImporter_id = Epetra_OffsetIndex_Create_FromImporter(SourceGraph%get_EpetraCrsGraph_ID(),&
+         TargetGraph%get_EpetraCrsGraph_ID(),importer%get_EpetraImport_ID())
+    call this%Epetra_OffsetIndex_(create_FromImporter_id)
+  end subroutine 
+
+  function create_FromImporter(SourceGraph,TargetGraph,importer) result(new_Epetra_OffsetIndex)
+    type(Epetra_OffsetIndex) :: new_Epetra_OffsetIndex
+    class(Epetra_CrsGraph),intent(in) :: SourceGraph,TargetGraph
+    type(Epetra_Import), intent(in) :: importer
+    call new_Epetra_OffsetIndex%Epetra_OffsetIndex_(SourceGraph,TargetGraph,importer)
   end function
 
-  type(Epetra_OffsetIndex) function duplicate(this)
-    type(Epetra_OffsetIndex) ,intent(in) :: this
-    type(FT_Epetra_OffsetIndex_ID_t) :: duplicate_id
-    duplicate_id = Epetra_OffsetIndex_Duplicate(this%OffsetIndex_id)
-    duplicate = from_struct(duplicate_id)
+  subroutine duplicate_(this,copy)
+    class(Epetra_OffsetIndex) ,intent(in) :: this
+    type(Epetra_OffsetIndex) ,intent(out) :: copy
+    call copy%Epetra_OffsetIndex_(Epetra_OffsetIndex_Duplicate(this%OffsetIndex_id))
+  end subroutine
+
+  type(Epetra_OffsetIndex) function duplicate(original)
+    type(Epetra_OffsetIndex) ,intent(in) :: original
+    call original%Epetra_OffsetIndex_(duplicate)
   end function
 
   type(FT_Epetra_OffsetIndex_ID_t) function get_EpetraOffsetIndex_ID(this)

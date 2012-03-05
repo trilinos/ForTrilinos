@@ -36,28 +36,25 @@
 !*********************************************************************
 
 module FEpetra_Export
-  use ForTrilinos_enums ,only: FT_Epetra_Comm_ID_t,FT_Epetra_Export_ID_t,FT_Epetra_BlockMap_ID_t,ForTrilinos_Universal_ID_t
+  use ForTrilinos_enums ,only: FT_Epetra_Export_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
   use ForTrilinos_universal,only:universal
   use ForTrilinos_error
-  use FEpetra_Comm  ,only: Epetra_Comm
   use FEpetra_BlockMap ,only: Epetra_BlockMap
   use iso_c_binding ,only: c_int
   use forepetra
   implicit none
-  private                   ! Hide everything by default
+  private                 ! Hide everything by default
   public :: Epetra_Export ! Expose type/constructors/methods
 
-  type ,extends(universal)                 :: Epetra_Export !"shell"
+  type ,extends(universal)                 :: Epetra_Export
     private
     type(FT_Epetra_Export_ID_t)  :: Export_id 
   contains
-     !Developers only
-     procedure         :: invalidate_id => invalidate_EpetraExport_ID
-     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraExport
-     procedure         :: get_EpetraExport_ID 
-     procedure ,nopass :: alias_EpetraExport_ID
-     procedure         :: generalize 
+     ! Constructors
+     procedure ,private :: create_
+     procedure ,private :: duplicate_
+     generic :: Epetra_Export_ => duplicate_,create_,from_struct_
      ! Public member functions
      procedure        :: NumSameIDs
      procedure        :: NumPermuteIDs
@@ -67,6 +64,13 @@ module FEpetra_Export
      procedure        :: NumRecv
      procedure        :: SourceMap
      procedure        :: TargetMap
+     !Developers only
+     procedure ,private :: from_struct_
+     procedure         :: invalidate_id => invalidate_EpetraExport_ID
+     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraExport
+     procedure         :: get_EpetraExport_ID 
+     procedure ,nopass :: alias_EpetraExport_ID
+     procedure         :: generalize 
   end type
 
    interface Epetra_Export ! constructors
@@ -74,10 +78,18 @@ module FEpetra_Export
    end interface
  
 contains
-  type(Epetra_Export) function from_struct(id)
-     type(FT_Epetra_Export_ID_t) ,intent(in) :: id
-     from_struct%Export_id = id
-     call from_struct%register_self
+
+  subroutine from_struct_(this,id)
+    class(Epetra_Export) ,intent(out) :: this
+    type(FT_Epetra_Export_ID_t) ,intent(in) :: id
+    this%Export_id = id
+    call this%register_self
+  end subroutine
+ 
+  function from_struct(id) result(new_Epetra_Export)
+    type(Epetra_Export) :: new_Epetra_Export
+    type(FT_Epetra_Export_ID_t) ,intent(in) :: id
+    call new_Epetra_Export%Epetra_Export_(id)
   end function
  
   ! Original C++ prototype:
@@ -85,13 +97,16 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_Export_ID_t Epetra_Export_Create ( CT_Epetra_BlockMap_ID_t SourceMapID, CT_Epetra_BlockMap_ID_t TargetMapID );
 
-  type(Epetra_Export) function create(Source_Map,Target_Map)
-   !use ForTrilinos_enums ,only : FT_Epetra_Comm_ID_t,FT_Epetra_BlockMap_ID_t
-    class(Epetra_BlockMap), intent(in) :: Source_Map
-    class(Epetra_BlockMap), intent(in) :: Target_Map
-    type(FT_Epetra_Export_ID_t) :: create_id
-    create_id = Epetra_Export_Create(Source_Map%get_EpetraBlockMap_ID(),Target_Map%get_EpetraBlockMap_ID())
-    create = from_struct(create_id)
+  subroutine create_(this,Source_Map,Target_Map)
+    class(Epetra_Export) ,intent(out) :: this
+    class(Epetra_BlockMap), intent(in) :: Source_Map,Target_Map
+    call this%Epetra_Export_(Epetra_Export_Create(Source_Map%get_EpetraBlockMap_ID(),Target_Map%get_EpetraBlockMap_ID()))
+  end subroutine
+
+  function create(Source_Map,Target_Map) result(new_Epetra_Export)
+    type(Epetra_Export) :: new_Epetra_Export
+    class(Epetra_BlockMap), intent(in) :: Source_Map,Target_Map
+    call new_Epetra_Export%Epetra_Export_(Source_Map,Target_Map)
   end function
 
   ! Original C++ prototype:
@@ -99,11 +114,15 @@ contains
   ! CTrilinos prototype:
   ! CT_Epetra_Export_ID_t Epetra_Export_Duplicate ( CT_Epetra_Export_ID_t ExporterID );
 
-  type(Epetra_Export) function duplicate(this)
-    type(Epetra_Export) ,intent(in) :: this
-    type(FT_Epetra_Export_ID_t) :: duplicate_id
-    duplicate_id = Epetra_Export_Duplicate(this%Export_id)
-    duplicate = from_struct(duplicate_id)
+  subroutine duplicate_(this,copy)
+    class(Epetra_Export) ,intent(in) :: this
+    type(Epetra_Export) ,intent(out) :: copy
+    call copy%Epetra_Export_(Epetra_Export_Duplicate(this%export_id))
+  end subroutine
+
+  type(Epetra_Export) function duplicate(original)
+    type(Epetra_Export) ,intent(in) :: original
+    call original%Epetra_Export_(duplicate)
   end function
 
   type(FT_Epetra_Export_ID_t) function get_EpetraExport_ID(this)
