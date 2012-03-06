@@ -51,6 +51,10 @@ module FAmesos
     private
     type(FT_Amesos_ID_t) :: Amesos_id 
   contains
+     ! Constructors
+     procedure ,private :: from_struct_
+     procedure ,private :: create_
+     generic :: Amesos_ => from_struct_,create_
      ! Developers only
      procedure         :: invalidate_id => invalidate_Amesos_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_Amesos
@@ -64,17 +68,31 @@ module FAmesos
    end interface
 
 contains
-  type(Amesos) function from_struct(id)
-     type(FT_Amesos_ID_t) ,intent(in) :: id
-     from_struct%Amesos_id = id
-     call from_struct%register_self
-   print *,'Inside Amesos constructor'
+
+  subroutine from_struct_(this,id)
+    class(Amesos) ,intent(out) :: this
+    type(FT_Amesos_ID_t) ,intent(in) :: id
+    this%Amesos_id = id
+    call this%register_self
+    print *,'Inside Amesos constructor'
+  end subroutine
+  
+  function from_struct(id) result(new_Amesos)
+    type(Amesos) :: new_Amesos
+    type(FT_Amesos_ID_t) ,intent(in) :: id
+    new_Amesos%Amesos_id = id
+    call new_Amesos%register_self
+    print *,'Inside Amesos constructor'
   end function
   
-  type(Amesos) function create()
-   type(FT_Amesos_ID_t) :: create_id
-   create_id = Amesos_Create()
-   create = from_struct(create_id)
+  subroutine create_(this)
+    class(Amesos) ,intent(out) :: this
+    call this%Amesos_(Amesos_Create())
+  end subroutine
+
+  function create() result(new_Amesos)
+    type(Amesos) :: new_Amesos
+    call new_Amesos%Amesos_()
   end function
 
   type(FT_Amesos_ID_t) function get_Amesos_ID(this)

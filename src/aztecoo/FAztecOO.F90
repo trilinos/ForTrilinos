@@ -53,6 +53,10 @@ module FAztecOO
     private
     type(FT_AztecOO_ID_t) :: AztecOO_id 
   contains
+     ! Constructor subroutines
+     procedure ,private :: duplicate_
+     procedure ,private :: from_RowMatrix_
+     generic :: AztecOO_ => duplicate_,from_RowMatrix_,from_struct_
      ! Standard AztecOO solve methods
      procedure         :: SetAztecOption
      procedure         :: iterate_current
@@ -60,6 +64,7 @@ module FAztecOO
      procedure         :: RecursiveIterate
      generic :: iterate => iterate_current, iterate_RowMatrix
      ! Developers only
+     procedure ,private :: from_struct_
      procedure         :: invalidate_id => invalidate_AztecOO_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_AztecOO
      procedure         :: get_AztecOO_ID 
@@ -72,10 +77,18 @@ module FAztecOO
    end interface
 
 contains
-  type(AztecOO) function from_struct(id)
-     type(FT_AztecOO_ID_t) ,intent(in) :: id
-     from_struct%AztecOO_id = id
-     call from_struct%register_self
+
+  subroutine from_struct_(this,id)
+    class(AztecOO) ,intent(out) :: this
+    type(FT_AztecOO_ID_t) ,intent(in) :: id
+    this%AztecOO_id = id
+    call this%register_self
+  end subroutine
+  
+  function from_struct(id) result(new_AztecOO)
+    type(AztecOO) :: new_AztecOO
+    type(FT_AztecOO_ID_t) ,intent(in) :: id
+    call new_AztecOO%AztecOO_(id)
   end function
   
   !> <BR> Original C++ prototype:
@@ -86,20 +99,30 @@ contains
   !> <BR> <BR> ForTrilinos prototype:
   !! AztecOO (Epetra_RowMatrix A, Epetra_MultiVector x, Epetra_MultiVector b);
 
-  type(AztecOO) function from_RowMatrix(A,x,b)
+  subroutine from_RowMatrix_(this,A,x,b)
+    class(AztecOO) ,intent(out) :: this
+    class(Epetra_RowMatrix) ,intent(in) :: A 
+    class(Epetra_MultiVector) ,intent(in) :: x,b 
+    call this% &
+    AztecOO_(AztecOO_Create_FromRowMatrix(A%get_EpetraRowMatrix_ID(),x%get_EpetraMultiVector_ID(),b%get_EpetraMultiVector_ID()))
+  end subroutine
+
+  function from_RowMatrix(A,x,b) result(new_AztecOO)
+   type(AztecOO) :: new_AztecOO
    class(Epetra_RowMatrix) ,intent(in) :: A 
    class(Epetra_MultiVector) ,intent(in) :: x,b 
-   type(FT_AztecOO_ID_t) :: from_RowMatrix_id
-   from_RowMatrix_id = AztecOO_Create_FromRowMatrix(A%get_EpetraRowMatrix_ID(),&
-       x%get_EpetraMultiVector_ID(),b%get_EpetraMultiVector_ID())
-   from_RowMatrix = from_struct(from_RowMatrix_id)
+   call new_AztecOO%AztecOO_(A,x,b) 
   end function
 
-  type(AztecOO) function duplicate(this)
-    type(AztecOO) ,intent(in) :: this
-    type(FT_AztecOO_ID_t) :: duplicate_id
-    duplicate_id = AztecOO_Duplicate(this%AztecOO_id)
-    duplicate = from_struct(duplicate_id)
+  subroutine duplicate_(this,copy)
+    class(AztecOO) ,intent(in) :: this
+    type(AztecOO) ,intent(out) :: copy
+    call copy%AztecOO_(AztecOO_Duplicate(this%AztecOO_id))
+  end subroutine
+
+  type(AztecOO) function duplicate(original)
+    type(AztecOO) ,intent(in) :: original
+    call original%AztecOO_(duplicate)
   end function
 
   type(FT_AztecOO_ID_t) function get_AztecOO_ID(this)

@@ -51,6 +51,10 @@ module FPliris
     private
     type(FT_Pliris_ID_t) :: FT_Pliris_id 
   contains
+     ! Constructor subroutines
+     procedure ,private :: create_
+     procedure ,private :: create_default_
+     generic :: Pliris_ => create_,create_default_,from_struct_
      !User interface -- type-bound procedures intended for use by end applications:
      procedure         :: SetLHS
      procedure         :: SetRHS
@@ -63,6 +67,7 @@ module FPliris
      procedure         :: Solve
 
      !Developers only -- to be called by developers from other ForTrilinos modules, not by end applications:
+     procedure ,private :: from_struct_
      procedure         :: invalidate_id => invalidate_PlirisID
      procedure         :: ctrilinos_delete => ctrilinos_delete_Pliris
      procedure         :: get_PlirisID 
@@ -72,7 +77,7 @@ module FPliris
 
    interface Pliris ! Constructors
      !User interface -- constructors for use by end applications:
-     module procedure Create_Default,Create
+     module procedure create_Default,create
      !Developers only -- to be called by developers from other ForTrilinos modules, not by end applications:
      module procedure from_struct
    end interface
@@ -81,22 +86,45 @@ contains
 
   ! -------------------- User-defined constructors ------------------ 
    
-  type(Pliris) function from_struct(id)
-     type(FT_Pliris_ID_t) ,intent(in) :: id
-     from_struct%FT_Pliris_id = id
-     call from_struct%register_self
+  subroutine from_struct_(this,id)
+    class(Pliris) ,intent(out) :: this
+    type(FT_Pliris_ID_t) ,intent(in) :: id
+    this%FT_Pliris_id = id
+    call this%register_self
+  end subroutine
+
+  function from_struct(id) result(new_Pliris)
+    type(Pliris) :: new_Pliris
+    type(FT_Pliris_ID_t) ,intent(in) :: id
+    call new_Pliris%Pliris_(id)
   end function
 
-  type(Pliris) function Create_Default()
-    Create_Default = from_struct(Pliris_Create_Default())
+  subroutine create_default_(this)
+    class(Pliris) ,intent(out) :: this
+    call this%Pliris_(Pliris_Create_Default())
+  end subroutine
+
+  function create_default() result(new_Pliris)
+    type(Pliris) :: new_Pliris
+    call new_Pliris%Pliris_()
   end function
 
-  type(Pliris) function Create(A,x,b)
+  subroutine create_(this,A,x,b)
     use FEpetra_Vector ,only : Epetra_Vector
     use FEpetra_MultiVector ,only : Epetra_MultiVector
+    class(Pliris) ,intent(out) :: this
     type(Epetra_Vector) ,intent(in) :: A
     class(Epetra_MultiVector) ,intent(in) :: x,b
-    Create = from_struct(Pliris_Create(A%get_EpetraVector_ID(),x%get_EpetraMultiVector_ID(),b%get_EpetraMultiVector_ID()))
+    call this%Pliris_(Pliris_Create(A%get_EpetraVector_ID(),x%get_EpetraMultiVector_ID(),b%get_EpetraMultiVector_ID()))
+  end subroutine
+
+  function create(A,x,b) result(new_Pliris)
+    use FEpetra_Vector ,only : Epetra_Vector
+    use FEpetra_MultiVector ,only : Epetra_MultiVector
+    type(Pliris) :: new_Pliris
+    type(Epetra_Vector) ,intent(in) :: A
+    class(Epetra_MultiVector) ,intent(in) :: x,b
+    call new_Pliris%Pliris_(A,x,b)
   end function
 
   !----------------- Destructor ---------------------------------------
