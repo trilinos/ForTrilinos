@@ -30,6 +30,7 @@ module field_module
     procedure(derivative) ,deferred :: x  ! 1st derivative
     procedure(derivative) ,deferred :: xx ! 2nd derivative
     procedure(output_interface) ,deferred  :: output
+    procedure(finalize) ,deferred  :: force_finalize
     generic :: operator(+)   => add 
     generic :: operator(-)   => subtract
     generic :: operator(*)   => multiply_real,multiply_field
@@ -72,6 +73,10 @@ module field_module
       import :: field,Epetra_Comm
       class(field) ,intent(in) :: this
       class(Epetra_Comm), intent(in) :: comm
+    end subroutine
+    subroutine finalize(this)
+      import :: field
+      class(field) ,intent(inout) :: this
     end subroutine
   end interface
 end module
@@ -462,7 +467,7 @@ program main
 #endif
   use ForTrilinos_utils, only : valid_kind_parameters
   use iso_c_binding, only : c_int,c_double
-  use field_module, only:initial_field
+  use field_module, only: field,initial_field
   use periodic_2nd_order_module, only : periodic_2nd_order
   use initializer ,only : u_initial,zero
   implicit none
@@ -471,7 +476,7 @@ program main
 #else
   type(Epetra_SerialComm) :: comm
 #endif
-  type(periodic_2nd_order)          :: u,half_uu,u_half
+  class(field) ,allocatable :: u,half_uu,u_half
   procedure(initial_field) ,pointer :: initial 
   real(c_double) :: dt,half=0.5,t=0.,t_final=0.4,nu=1.
   real(c_double) :: t_start,t_end
@@ -481,7 +486,6 @@ program main
   logical             :: verbose
   integer :: rc,ierr 
  
-  if (.not. valid_kind_parameters()) stop 'C interoperability not supported on this platform.'
 #ifdef HAVE_MPI
   call MPI_INIT(ierr) 
   t_start=MPI_Wtime()
@@ -490,6 +494,9 @@ program main
   call cpu_time(t_start) 
   comm = Epetra_SerialComm()
 #endif
+  allocate(periodic_2nd_order :: u)
+  allocate(periodic_2nd_order :: half_uu)
+  allocate(periodic_2nd_order :: u_half)
   initial => u_initial
   u = periodic_2nd_order(initial,grid_resolution,comm)
   initial => zero
