@@ -70,6 +70,6 @@ contains
 
   subroutine check_success(this)
     class(error), intent(in) :: this
-    call assert( [this%code==0], [this%error_message] )
+    call assert( this%code==0, this%error_message )
   end subroutine
 end module ForTrilinos_error 
