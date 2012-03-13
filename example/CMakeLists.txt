@@ -15,7 +15,8 @@ IF(${PACKAGE_NAME}_ENABLE_OBJECT_ORIENTED)
   ENDIF()
 
   ADD_SUBDIRECTORIES(
-   Burgers_Solver_Central_Difference
+   Abstract_Burgers_Central_Difference
+   Concrete_Burgers_Central_Difference
    verySimpleObjectOriented
    FEpetra_power_method
     )
