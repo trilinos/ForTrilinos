@@ -1,6 +1,12 @@
 module initializer
-  use iso_c_binding, only: c_int, c_double
+  use iso_c_binding, only: c_double
   implicit none
+  abstract interface
+    real(c_double) pure function initial_field(x)
+      import :: c_double
+      real(c_double) ,intent(in) :: x
+    end function
+  end interface
 contains
   real(c_double) pure function u_initial(x)
     real(c_double) ,intent(in) :: x
@@ -11,19 +17,6 @@ contains
     zero = 0.
   end function
 end module 
-
-module field_module
-  use iso_c_binding, only: c_double
-  implicit none
-  private
-  public :: initial_field
-  abstract interface
-    real(c_double) pure function initial_field(x)
-      import :: c_double
-      real(c_double) ,intent(in) :: x
-    end function
-  end interface
-end module
 module periodic_2nd_order_module
   use FEpetra_Comm, only:Epetra_Comm
   use FEpetra_Map!, only: Epetra_Map
@@ -31,7 +24,7 @@ module periodic_2nd_order_module
   use FEpetra_CrsMatrix, only:Epetra_CrsMatrix
   use ForTrilinos_enum_wrappers
   use ForTrilinos_error 
-  use field_module ,only : initial_field
+  use initializer ,only : initial_field
   use iso_c_binding ,only : c_double,c_int
   use ForTrilinos_assertion_utility ,only: error_message,assert,assert_identical
   implicit none
@@ -359,9 +352,8 @@ program main
   use FEpetra_SerialComm,only:Epetra_SerialComm
 #endif
   use iso_c_binding, only : c_int,c_double
-  use field_module, only: initial_field
   use periodic_2nd_order_module, only : periodic_2nd_order
-  use initializer ,only : u_initial,zero
+  use initializer ,only : u_initial,zero,initial_field
   implicit none
 #ifdef HAVE_MPI
   type(Epetra_MpiComm) :: comm
