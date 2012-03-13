@@ -57,9 +57,9 @@ module FEpetra_OffsetIndex
      procedure ,private :: duplicate_
      procedure ,private :: create_FromExporter_
      procedure ,private :: create_FromImporter_
+     procedure ,private :: from_struct_
      generic :: Epetra_OffsetIndex_ => duplicate_,from_struct_,create_FromExporter_,create_FromImporter_
      ! ForTrilinos developers only -- not for use in end-user application:
-     procedure ,private :: from_struct_
      procedure         :: invalidate_id => invalidate_EpetraOffsetIndex_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraOffsetIndex
      procedure         :: get_EpetraOffsetIndex_ID 

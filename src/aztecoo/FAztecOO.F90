@@ -56,6 +56,7 @@ module FAztecOO
      ! Constructor subroutines
      procedure ,private :: duplicate_
      procedure ,private :: from_RowMatrix_
+     procedure ,private :: from_struct_
      generic :: AztecOO_ => duplicate_,from_RowMatrix_,from_struct_
      ! Standard AztecOO solve methods
      procedure         :: SetAztecOption
@@ -64,7 +65,6 @@ module FAztecOO
      procedure         :: RecursiveIterate
      generic :: iterate => iterate_current, iterate_RowMatrix
      ! Developers only
-     procedure ,private :: from_struct_
      procedure         :: invalidate_id => invalidate_AztecOO_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_AztecOO
      procedure         :: get_AztecOO_ID 

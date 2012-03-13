@@ -57,6 +57,7 @@ module FEpetra_MultiVector
      ! Constructors
      procedure ,private :: duplicate_
      procedure ,private :: create_
+     procedure ,private :: from_struct_
      generic :: Epetra_MultiVector_ => from_struct_,duplicate_,create_
      ! Post-construction modification procedure 
      procedure ,private:: ReplaceGlobalValue_NoOffset
@@ -112,7 +113,6 @@ module FEpetra_MultiVector
      procedure,private :: Import_UsingExporter
      generic           :: import=>Import_UsingImporter,Import_UsingExporter
      !ForTrilinos Developers only -- not to be invoked by end-user applications:
-     procedure ,private :: from_struct_
      procedure         :: invalidate_id => invalidate_EpetraMultiVector_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraMultiVector
      procedure         :: component_finalization => component_finalization_EpetraMultiVector

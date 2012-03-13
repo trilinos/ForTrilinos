@@ -37,7 +37,7 @@
 
 
 module F$Package_$Class
-  use ForTrilinos_enums ,only: FT_$Package_$Class_ID_t,ForTrilinos_Universal_ID_t
+  use ForTrilinos_enums ,only: FT_$Package_ID_t,FT_$Package_$Class_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man ,only : CT_Alias
   use ForTrilinos_universal ,only : universal
   use ForTrilinos_error ,only : error
@@ -62,7 +62,7 @@ module F$Package_$Class
 
    interface $Package_$Class 
      !User interface -- constructors for use by end applications:
-     module procedure create,duplicate
+     module procedure from_scratch,duplicate
      !Developers only -- to be called by developers from other ForTrilinos modules, not by end applications:
      module procedure from_struct
    end interface
@@ -81,11 +81,11 @@ contains
   ! All additional constructors should take two steps: (1) obtain a struct ID by invoking a procedural binding and then (2) pass
   ! this ID to from_struct to initialize the constructed object's ID component and register the object for reference counting.
  
-  type($Package_$Class) function create($args)
+  type($Package_$Class) function from_scratch($args)
     ! Declare args
-    type(FT_$Package_$Class_ID_t) :: create_id
-    create_id = $Package_$Class_Create($args)
-    create = from_struct(create_id)
+    type(FT_$Package_$Class_ID_t) :: from_scratch_id
+    from_scratch_id = $Package_$Class_Create($args)
+    from_scratch = from_struct(from_scratch_id)
   end function
 
   type($Package_$Class) function duplicate(this)

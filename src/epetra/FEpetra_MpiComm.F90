@@ -56,6 +56,7 @@ module FEpetra_MpiComm
    ! Constructors
     procedure ,private :: from_scratch_
     procedure ,private :: duplicate_
+    procedure ,private :: from_struct_
     generic :: Epetra_MpiComm_ => from_scratch_,duplicate_,from_struct_
     !Barrier Method
     procedure         :: barrier
@@ -87,7 +88,6 @@ module FEpetra_MpiComm
     procedure         :: MyPID
     procedure         :: NumProc
     !The following procedures are for ForTrilinos developers only (not for users):
-    procedure ,private :: from_struct_
     procedure         :: invalidate_id => invalidate_EpetraMpiComm_ID
     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraMpiComm
     procedure         :: get_EpetraMpiComm_ID

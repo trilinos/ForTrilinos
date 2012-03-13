@@ -58,6 +58,7 @@ module FEpetra_LinearProblem
      procedure ,private :: create_
      procedure ,private :: duplicate_
      procedure ,private :: create_matrix_
+     procedure ,private :: from_struct_
      generic :: Epetra_LinearProblem_ => from_struct_,create_,duplicate_,create_matrix_
      !Integrity check method
      procedure         :: CheckInput
@@ -80,7 +81,6 @@ module FEpetra_LinearProblem
      procedure         :: SetLHS
      procedure         :: SetRHS
      !Developers only
-     procedure ,private :: from_struct_
      procedure         :: invalidate_id => invalidate_EpetraLinearProblem_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraLinearProblem
      procedure         :: get_EpetraLinearProblem_ID 

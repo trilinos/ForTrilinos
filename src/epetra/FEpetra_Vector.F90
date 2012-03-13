@@ -56,6 +56,7 @@ module FEpetra_Vector
      procedure ,private :: create__
      procedure ,private :: create_FromArray__
      procedure ,private :: duplicate__
+     procedure ,private :: from_struct__
      generic :: Epetra_Vector_ =>  from_struct__,create__,create_FromArray__,duplicate__
      !Post-construction modfication routines
      procedure ,private:: ReplaceGlobalValues_NoOffset
@@ -78,7 +79,6 @@ module FEpetra_Vector
      procedure         :: get_element_EpetraVector
      generic :: get_Element => get_element_EpetraVector 
      !ForTrilinos developers only -- not for invocation in end-user applications:
-     procedure ,private :: from_struct__
      procedure         :: invalidate_id => invalidate_EpetraVector_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraVector
      procedure         :: get_EpetraVector_ID 

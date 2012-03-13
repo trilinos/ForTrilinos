@@ -57,9 +57,9 @@ module FEpetra_Map
      procedure ,private :: create_linear__
      procedure ,private :: duplicate__
      procedure ,private :: create_arbitrary__
-     generic :: Epetra_Map_ => create__,from_struct__,create_linear__,duplicate__,create_arbitrary__
      !Developers only  -- to be called by developers from other ForTrilinos modules, not by end applications:
      procedure ,private :: from_struct__
+     generic :: Epetra_Map_ => create__,from_struct__,create_linear__,duplicate__,create_arbitrary__
      procedure         :: invalidate_id => invalidate_EpetraMap_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraMap
      procedure         :: get_EpetraMap_ID 

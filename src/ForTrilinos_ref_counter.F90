@@ -66,6 +66,7 @@ contains
   subroutine grab(this)
     class(ref_counter), intent(inout) :: this
     call assert( associated(this%count), error_message('Ref_counter%grab: count not associated.') )
+!!$    call assert( [associated(this%count)], [error_message('Ref_counter%grab: count not associated.')] )
     this%count = this%count + 1
   end subroutine
 
@@ -74,7 +75,9 @@ contains
     integer  :: status
     type(error) :: ierr
     call assert( associated(this%count), error_message('Ref_counter%release: count not associated.') )
-    call assert( this%count>=1, error_message('Ref_counter%release: non-positive count.') )
+    call assert( (this%count>=1), error_message('Ref_counter%release: non-positive count.') )
+!!$    call assert( [associated(this%count)], [error_message('Ref_counter%release: count not associated.')] )
+!!$    call assert( [this%count>=1], [error_message('Ref_counter%release: non-positive count.')] )
     this%count = this%count - 1
     if (this%count == 0) then
       call this%obj%ctrilinos_delete

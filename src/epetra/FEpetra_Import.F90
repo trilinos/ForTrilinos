@@ -56,6 +56,7 @@ module FEpetra_Import
      ! Constructors
      procedure ,private :: create_
      procedure ,private :: duplicate_
+     procedure ,private :: from_struct_
      generic :: Epetra_Import_ => create_,duplicate_,from_struct_
      ! Public member functions
      procedure        :: NumSameIDs
@@ -69,7 +70,6 @@ module FEpetra_Import
      procedure        :: SourceMap
      procedure        :: TargetMap
      !Developers only
-     procedure ,private :: from_struct_
      procedure         :: invalidate_id => invalidate_EpetraImport_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraImport
      procedure         :: get_EpetraImport_ID 

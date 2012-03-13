@@ -60,8 +60,10 @@ module FEpetra_CrsMatrix
     procedure ,private :: Create_VarPerRow_WithColMap__
     procedure ,private :: Create_WithColMap__
     procedure ,private :: duplicate__
-    generic :: Epetra_CrsMatrix_=> from_struct__,Create_VarPerRow__,Create__,Create_VarPerRow_WithColMap__,&
-                                   Create_WithColMap__,duplicate__
+    procedure ,private :: from_struct__
+    generic :: Epetra_CrsMatrix_=> from_struct__,Create_VarPerRow__,&
+         & Create__,Create_VarPerRow_WithColMap__,&
+         & Create_WithColMap__,duplicate__
     !Insertion/Replace/SumInto methods
     procedure         :: PutScalar
     procedure         :: InsertGlobalValues
@@ -85,7 +87,6 @@ module FEpetra_CrsMatrix
     !Local/Global ID method
     procedure         :: MyGlobalRow
     !Developers only
-    procedure ,private :: from_struct__
     procedure         :: invalidate_id => invalidate_EpetraCrsMatrix_ID
     procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraCrsMatrix
     procedure         :: get_EpetraCrsMatrix_ID 

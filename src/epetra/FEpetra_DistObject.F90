@@ -57,7 +57,6 @@ module FEpetra_DistObject
     type(FT_Epetra_DistObject_ID_t) :: DistObject_id 
   contains
      !Constructor
-     generic :: Epetra_DistObject_ => from_struct__
      !Import/Export methods
      procedure, private:: DistObject_Export
      procedure, private:: DistObject_Export_UsingImporter
@@ -67,6 +66,7 @@ module FEpetra_DistObject
      generic :: import => DistObject_Import_UsingExporter, DistObject_Import
      !Developers only
      procedure ,private :: from_struct__
+     generic :: Epetra_DistObject_ => from_struct__
      procedure         :: invalidate_id => invalidate_EpetraDistObject_ID 
      procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraDistObject
      procedure         :: get_EpetraDistObject_ID 

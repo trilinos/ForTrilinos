@@ -54,6 +54,8 @@ module FEpetra_SerialComm
      !Constructors
      procedure ,private :: duplicate_
      procedure ,private :: create_
+     procedure ,private :: from_comm_ 
+     procedure ,private :: from_struct_
      generic :: Epetra_SerialComm_ => create_,from_comm_,from_struct_,duplicate_
      !Barrier Methods
      procedure         :: barrier
@@ -85,8 +87,6 @@ module FEpetra_SerialComm
      procedure :: MyPID
      procedure :: NumProc
      !Developers only  -- to be called by developers from other ForTrilinos modules, not by end applications:
-     procedure ,private :: from_comm_ 
-     procedure ,private :: from_struct_
      procedure          :: invalidate_id => invalidate_EpetraSerialComm_ID 
      procedure          :: ctrilinos_delete => ctrilinos_delete_EpetraSerialComm
      procedure          :: get_EpetraSerialComm_ID 

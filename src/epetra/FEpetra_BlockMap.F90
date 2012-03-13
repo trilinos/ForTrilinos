@@ -55,6 +55,7 @@ module FEpetra_BlockMap
   contains
      !Constructors
      procedure ,private :: create_
+     procedure ,private :: from_struct_
      generic :: Epetra_BlockMap_ => from_struct_,create_
      !Local/Global ID accessor methods
      !Size and dimension acccessor functions
@@ -74,7 +75,6 @@ module FEpetra_BlockMap
      !Miscellaneous
      procedure         :: Comm
      !Developers only  -- to be called by developers from other ForTrilinos modules, not by end applications:
-     procedure ,private :: from_struct_
      procedure         :: invalidate_id => invalidate_EpetraBlockMap_ID
      procedure         :: ctrilinos_delete => ctrilinos_delete_EpetraBlockMap
      procedure         :: get_EpetraBlockMap_ID 

@@ -54,6 +54,7 @@ module FPliris
      ! Constructor subroutines
      procedure ,private :: create_
      procedure ,private :: create_default_
+     procedure ,private :: from_struct_
      generic :: Pliris_ => create_,create_default_,from_struct_
      !User interface -- type-bound procedures intended for use by end applications:
      procedure         :: SetLHS
@@ -67,7 +68,6 @@ module FPliris
      procedure         :: Solve
 
      !Developers only -- to be called by developers from other ForTrilinos modules, not by end applications:
-     procedure ,private :: from_struct_
      procedure         :: invalidate_id => invalidate_PlirisID
      procedure         :: ctrilinos_delete => ctrilinos_delete_Pliris
      procedure         :: get_PlirisID 
