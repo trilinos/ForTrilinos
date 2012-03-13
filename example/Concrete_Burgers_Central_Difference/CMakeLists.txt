@@ -2,7 +2,7 @@
 INCLUDE(TribitsAddExecutableAndTest)
 
 TRIBITS_ADD_EXECUTABLE_AND_TEST(
-  simple_burgers_solver 
+  concrete_burgers_solver 
   SOURCES main.F90
   COMM serial mpi
   NUM_MPI_PROCS 4
