@@ -58,7 +58,7 @@ module periodic_2nd_order_module
 
 contains
   function constructor(initial,grid_resolution,comm) result(this)
-    type(periodic_2nd_order) ,pointer  :: this
+    type(periodic_2nd_order) ,allocatable :: this
     procedure(initial_field) ,pointer :: initial
     integer(c_int) ,intent(in) :: grid_resolution
     integer(c_int) :: i
