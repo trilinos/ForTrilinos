@@ -360,7 +360,7 @@ program main
 #else
   type(Epetra_SerialComm) :: comm
 #endif
-  type(periodic_2nd_order) :: u,half_uu,u_half
+  type(periodic_2nd_order), allocatable :: u,half_uu,u_half
   procedure(initial_field) ,pointer :: initial 
   real(c_double) :: dt,half=0.5,t=0.,t_final=0.4,nu=1.
   real(c_double) :: t_start,t_end
