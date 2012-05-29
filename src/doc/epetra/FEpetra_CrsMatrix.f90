@@ -63,6 +63,7 @@ module FEpetra_CrsMatrix
   contains
     !Insertion/Replace/SumInto methods
      !procedure         :: PutScalar
+     !procedure         :: Scale
      !procedure         :: InsertGlobalValues
      !procedure         :: ReplaceGlobalValues
     !Transformation methods
@@ -213,6 +214,18 @@ contains
    !< (Out) Integer error code, set to 0 if successful.
   end subroutine
   
+  !> @name Insertion/Replace/SumInto methods
+  !> @{
+
+  !> @brief Multiply all values in the matrix by a constant value (in place: A <- ScalarConstant * A).
+  subroutine Scale(this,ScalarConstant,err)
+   class(Epetra_CrsMatrix), intent(in) :: this
+   real(c_double)           ,intent(in):: ScalarConstant &
+   !< (In) Value to use.
+   type(error), optional, intent(out) :: err &
+   !< (Out) Integer error code, set to 0 if successful.
+  end subroutine
+
   !> @name Insertion/Replace/SumInto methods
   !> @{
 

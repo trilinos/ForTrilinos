@@ -66,6 +66,7 @@ module FEpetra_CrsMatrix
          & Create_WithColMap__,duplicate__
     !Insertion/Replace/SumInto methods
     procedure         :: PutScalar
+    procedure         :: Scale
     procedure         :: InsertGlobalValues
     procedure         :: ReplaceGlobalValues
     !Transformation methods
@@ -344,7 +345,16 @@ contains
    error_out=Epetra_CrsMatrix_PutScalar(this%CrsMatrix_id,scalar)
    if (present(err)) err=error(error_out,'Epetra_CrsMatrix%PutScalar: failed.')
   end subroutine
-  
+ 
+  subroutine Scale(this,ScalarConstant,err)
+   class(Epetra_CrsMatrix), intent(in) :: this
+   real(c_double)           ,intent(in):: ScalarConstant
+   type(error), optional  ,intent(out) :: err
+   integer(c_int)                      :: error_out
+   error_out=Epetra_CrsMatrix_Scale(this%CrsMatrix_id,ScalarConstant)
+   if (present(err)) err=error(error_out,'Epetra_CrsMatrix%Scale: failed.')
+  end subroutine
+
   subroutine InsertGlobalValues(this,GlobalRow,NumEntries,values,indices,err)
    class(Epetra_CrsMatrix), intent(in) :: this
    integer(c_int),          intent(in) :: GlobalRow

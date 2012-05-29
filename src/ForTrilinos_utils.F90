@@ -146,7 +146,18 @@ contains
       case default
         if (verbose_output) write(output_unit,fmt='(2a)') 'c_long: ',interoperable
     end select
-  
+
+    select case(c_int)
+      case(-1)
+        write(error_unit ,fmt='(2a)') 'c_int error: ',no_fortran_kind
+        valid_kind_parameters = .false.
+      case(-2)
+        write(error_unit ,fmt='(2a)') 'c_int error: ',no_c_type
+        valid_kind_parameters = .false.
+      case default
+        if (verbose_output) write(output_unit,fmt='(2a)') 'c_int: ',interoperable
+    end select
+ 
     select case(c_double)
       case(-1)
         write(error_unit ,fmt='(2a)') 'c_double error: ',imprecise
@@ -163,7 +174,7 @@ contains
       case default
         if (verbose_output) write(output_unit,fmt='(2a)') 'c_double: ',interoperable
     end select
-  
+ 
     select case(c_bool)
       case(-1)
         write(error_unit ,fmt='(a)') 'c_bool error: invalid value for a logical kind parameter on the processor.'
