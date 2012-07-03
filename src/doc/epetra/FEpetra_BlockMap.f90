@@ -98,12 +98,10 @@ contains
   !> <BR> Epetra_BlockMap constructor for a user-defined arbitrary distribution of constant size elements.
   !> @brief Creates a map that puts NumMyElements on the calling processor. The indices of the elements are determined from the list MyGlobalElements. If NumGlobalElements=-1, the number of global elements will be the computed sum of NumMyElements across all processors in the Epetra_Comm communicator.
   !!The elements are defined to have a constant fixed size specified by ElementSize.
-  type(Epetra_BlockMap) function Epetra_BlockMap(Num_GlobalElements,Num_MyElements,&
+  type(Epetra_BlockMap) function Epetra_BlockMap(Num_GlobalElements,&
                                                         My_GlobalElements,Element_Size,IndexBase,comm)
     integer(c_int) ,intent(in) :: Num_GlobalElements &
      !< Number of elements to distribute. Must be either -1 or equal to the computed sum of NumMyElements across all processors in the Epetra_Comm communicator.
-    integer(c_int) ,intent(in) :: Num_MyElements &
-     !< Number of elements owned by the calling processor.
     integer(c_int) ,intent(in) ,dimension(:) :: My_GlobalElements &
      !< Integer array of length NumMyElements. The ith entry contains the global index value of the ith element on this processor. Index values are not required to be contiguous on a processor, or to be within the range of 1 to NumGlobalElements. As long as the index values are consistently defined and used, any set of NumGlobalElements distinct integer values is acceptable.
     integer(c_int) ,intent(in) :: Element_Size &
@@ -121,12 +119,10 @@ contains
   !> <BR> Epetra_BlockMap constructor for a user-defined arbitrary distribution of variable size elements.
   !> @brief Creates a map that puts NumMyElements on the calling processor. If NumGlobalElements=-1, the number of global elements will be the computed sum of NumMyElements across all processors in the Epetra_Comm communicator. 
   !! The elements are defined to have a variable size defined by ElementSizeList.
-  type(Epetra_BlockMap) function Epetra_BlockMap(Num_GlobalElements,Num_MyElements,&
+  type(Epetra_BlockMap) function Epetra_BlockMap(Num_GlobalElements,&
                                                        My_GlobalElements,Element_SizeList,IndexBase,comm) 
     integer(c_int) ,intent(in) :: Num_GlobalElements &
      !< Number of elements to distribute. Must be either -1 or equal to the computed sum of NumMyElements across all processors in the Epetra_Comm communicator.
-    integer(c_int) ,intent(in) :: Num_MyElements &
-     !< Number of elements owned by the calling processor.
     integer(c_int) ,intent(in) ,dimension(:) :: My_GlobalElements &
      !< Integer array of length NumMyElements. The ith entry contains the global index value of the ith element on this processor. Index values are not required to be contiguous on a processor, or to be within the range of 1 to NumGlobalElements. As long as the index values are consistently defined and used, any set of NumGlobalElements distinct integer values is acceptable.
     integer(c_int) ,intent(in) ,dimension(:) :: Element_SizeList & 

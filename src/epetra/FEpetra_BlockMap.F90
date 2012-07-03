@@ -135,31 +135,29 @@ contains
     create_linear = from_struct(create_linear_id)
   end function
 
-  type(Epetra_BlockMap) function create_arbitrary(Num_GlobalElements,Num_MyElements,&
+  type(Epetra_BlockMap) function create_arbitrary(Num_GlobalElements,&
                                                         My_GlobalElements,Element_Size,IndexBase,comm)
     integer(c_int) ,intent(in) :: Num_GlobalElements
-    integer(c_int) ,intent(in) :: Num_MyElements
     integer(c_int) ,intent(in) ,dimension(:) :: My_GlobalElements  
     integer(c_int) ,intent(in) :: Element_Size
     integer(c_int) ,intent(in) :: IndexBase
     class(Epetra_Comm)         :: comm
     type(FT_Epetra_BlockMap_ID_t) :: create_arbitrary_id
-    create_arbitrary_id = Epetra_BlockMap_Create_Arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,Element_Size,&
-                                                                 IndexBase,comm%get_EpetraComm_ID())
+    create_arbitrary_id = Epetra_BlockMap_Create_Arbitrary(Num_GlobalElements,size(My_GlobalElements),&
+                 My_GlobalElements,Element_Size,IndexBase,comm%get_EpetraComm_ID())
     create_arbitrary = from_struct(create_arbitrary_id)
   end function
 
-  type(Epetra_BlockMap) function create_variable(Num_GlobalElements,Num_MyElements,&
+  type(Epetra_BlockMap) function create_variable(Num_GlobalElements,&
                                                        My_GlobalElements,Element_SizeList,IndexBase,comm)
     integer(c_int) ,intent(in) :: Num_GlobalElements
-    integer(c_int) ,intent(in) :: Num_MyElements
     integer(c_int) ,intent(in) ,dimension(:) :: My_GlobalElements  
     integer(c_int) ,intent(in) ,dimension(:) :: Element_SizeList    
     integer(c_int) ,intent(in) :: IndexBase
     class(Epetra_Comm)         :: comm
     type(FT_Epetra_BlockMap_ID_t) :: create_variable_id
-    create_variable_id = Epetra_BlockMap_Create_Variable(Num_GlobalElements,Num_MyElements,My_GlobalElements,&
-                                                               Element_SizeList,IndexBase,comm%get_EpetraComm_ID())
+    create_variable_id = Epetra_BlockMap_Create_Variable(Num_GlobalElements,size(My_GlobalElements),&
+                My_GlobalElements,Element_SizeList,IndexBase,comm%get_EpetraComm_ID())
     create_variable = from_struct(create_variable_id)
   end function
 
