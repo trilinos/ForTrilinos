@@ -68,10 +68,10 @@ program main
       indices(2) = MyGlobalElements(i)+1
       NumEntries = 2
     end if
-     call A%InsertGlobalValues(MyGlobalElements(i),NumEntries,values,indices)
+     call A%InsertGlobalValues(MyGlobalElements(i),values,indices)
   !Put in the diaogonal entry
      MyGlobalElements_diagonal=MyGlobalElements(i)
-     call A%InsertGlobalValues(MyGlobalElements(i),diagonal,[three],MyGlobalElements_diagonal)
+     call A%InsertGlobalValues(MyGlobalElements(i),[three],MyGlobalElements_diagonal)
   end do
   !Finish up
   call A%FillComplete(.true.)

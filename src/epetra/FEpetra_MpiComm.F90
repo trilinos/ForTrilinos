@@ -42,6 +42,7 @@ module FEpetra_MpiComm
   use ForTrilinos_table_man
   use ForTrilinos_error ,only :error
   use ForTrilinos_external_utils
+  use ForTrilinos_assertion_utility
   use FEpetra_Comm      ,only: Epetra_Comm
   use iso_c_binding     ,only: c_int,c_double,c_long,c_char
   use forepetra
@@ -266,7 +267,8 @@ contains
     real(c_double),dimension(:),intent(inout) :: AllVals
     type(error) ,optional      ,intent(inout) :: err
     integer(c_int)     :: error_out
-    if (size(AllVals) .ne. this%NumProc()*size(MyVals)) stop 'GatherAll: AllVals must be of size NumProc*size(MyVals)'
+    call assert(size(AllVals)==this%NumProc()*size(MyVals)&
+        ,error_message('GatherAll: AllVals must be of size NumProc*size(MyVals)'))
     error_out = Epetra_MpiComm_GatherAll_Double(this%MpiComm_id,MyVals,AllVals,size(MyVals))
     if (present(err)) err=error(error_out,'Epetra_MpiComm%gather_double: failed.')
   end subroutine
@@ -277,7 +279,8 @@ contains
     integer(c_int), dimension(:) ,intent(inout) :: AllVals
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    if (size(AllVals) .ne. this%NumProc()*size(MyVals)) stop 'GatherAll: AllVals must be of size NumProc*size(MyVals)'
+    call assert(size(AllVals)==this%NumProc()*size(MyVals) &
+       ,error_message('GatherAll: AllVals must be of size NumProc*size(MyVals)'))
     error_out = Epetra_MpiComm_GatherAll_Int(this%MpiComm_id,MyVals,AllVals,size(MyVals))
     if (present(err)) err=error(error_out,'Epetra_MpiComm%gather_int: failed.')
   end subroutine
@@ -288,7 +291,8 @@ contains
     integer(c_long), dimension(:) ,intent(inout):: AllVals
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    if (size(AllVals) .ne. this%NumProc()*size(MyVals)) stop 'gather_long: AllVals must be of size NumProc*size(MyVals)'
+    call assert(size(AllVals)==this%NumProc()*size(MyVals)&
+       ,error_message('gather_long: AllVals must be of size NumProc*size(MyVals)'))
     error_out = Epetra_MpiComm_GatherAll_Long(this%MpiComm_id,MyVals,AllVals,size(MyVals))
     if (present(err)) err=error(error_out,'Epetra_MpiComm%gather_long: failed.')
   end subroutine

@@ -108,13 +108,12 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     type(AztecOO) :: Solver
     type(error) :: err
     integer(c_int),parameter::IndexBase=1
-    integer(c_int) :: NumGlobalElements = 8, NumMyElements, NumEntries, MaximumIter=100
+    integer(c_int) :: NumGlobalElements = 8, NumMyElements, MaximumIter=100
     integer(c_int),dimension(:),allocatable :: MyGlobalElements, NumNonZero
     real(c_double),dimension(:),allocatable:: c
     real(c_double) :: values(2)
     real(c_double), parameter :: tolerance = 1.0E-4,three=3.0
     integer(c_int) :: MyGlobalElements_diagonal(1),i,indices(2)
-    integer(c_int),parameter :: diagonal=1
     success = .TRUE.
     ECHO(comm = UnitTest_EpetraComm_Create())
     ECHO(map = Epetra_Map(NumGlobalElements,IndexBase,comm))
@@ -133,20 +132,17 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     if (MyGlobalElements(i)==1) then
       indices(1) = NumGlobalElements 
       indices(2) = 2
-      NumEntries = 2
     else if(MyGlobalElements(i)==NumGlobalElements) then
       indices(1) = NumGlobalElements-1
       indices(2) = 1
-      NumEntries = 2
     else
       indices(1) = MyGlobalElements(i)-1
       indices(2) = MyGlobalElements(i)+1
-      NumEntries = 2
     end if
-     call A%InsertGlobalValues(MyGlobalElements(i),NumEntries,values,indices)
+     call A%InsertGlobalValues(MyGlobalElements(i),values,indices)
   !Put in the diaogonal entry
      MyGlobalElements_diagonal=MyGlobalElements(i)
-     call A%InsertGlobalValues(MyGlobalElements(i),diagonal,[three],MyGlobalElements_diagonal)
+     call A%InsertGlobalValues(MyGlobalElements(i),[three],MyGlobalElements_diagonal)
   end do
   !Finish up
     call A%FillComplete(.true.)
@@ -186,7 +182,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     type(AztecOO) :: Solver
     type(error) :: err
     integer(c_int),parameter::IndexBase=1
-    integer(c_int) :: NumGlobalElements = 8, NumMyElements, NumEntries, MaximumIter=100
+    integer(c_int) :: NumGlobalElements = 8, NumMyElements, MaximumIter=100
     integer(c_int),dimension(:),allocatable :: MyGlobalElements, NumNonZero
     real(c_double),dimension(:),allocatable:: c,b_values
     ! vector holds the answer for vector of with NumGlobalElements=8
@@ -194,7 +190,6 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     real(c_double) :: values(2)
     real(c_double), parameter :: tolerance = 1.0E-4,three=3.0
     integer(c_int) :: MyGlobalElements_diagonal(1),i,indices(2)
-    integer(c_int),parameter :: diagonal=1
     success = .TRUE.
     ECHO(comm = UnitTest_EpetraComm_Create())
     ECHO(map = Epetra_Map(NumGlobalElements,IndexBase,comm))
@@ -213,20 +208,17 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     if (MyGlobalElements(i)==1) then
       indices(1) = NumGlobalElements 
       indices(2) = 2
-      NumEntries = 2
     else if(MyGlobalElements(i)==NumGlobalElements) then
       indices(1) = NumGlobalElements-1
       indices(2) = 1
-      NumEntries = 2
     else
       indices(1) = MyGlobalElements(i)-1
       indices(2) = MyGlobalElements(i)+1
-      NumEntries = 2
     end if
-     call A%InsertGlobalValues(MyGlobalElements(i),NumEntries,values,indices)
+     call A%InsertGlobalValues(MyGlobalElements(i),values,indices)
   !Put in the diaogonal entry
      MyGlobalElements_diagonal=MyGlobalElements(i)
-     call A%InsertGlobalValues(MyGlobalElements(i),diagonal,[three],MyGlobalElements_diagonal)
+     call A%InsertGlobalValues(MyGlobalElements(i),[three],MyGlobalElements_diagonal)
   end do
   !Finish up
     call A%FillComplete(.true.)

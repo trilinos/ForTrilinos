@@ -231,12 +231,10 @@ contains
 
   !> @brief Insert a list of elements in a given global row of the matrix.
   !! This method is used to construct a matrix for the first time.  It cannot be used if the matrix structure has already been fixed (via a call to FillComplete()).
-  subroutine InsertGlobalValues(this,GlobalRow,NumEntries,values,indices,err)
+  subroutine InsertGlobalValues(this,GlobalRow,values,indices,err)
    class(Epetra_CrsMatrix), intent(in) :: this
    integer(c_int),          intent(in) :: GlobalRow &
    !< (In) Row number (in global coordinates) to put elements.
-   integer(c_int),          intent(in) :: NumEntries &
-   !< (In) Number of entries.
    real(c_double),dimension(:),intent(in):: values  &
    !< Values to enter.
    integer(c_int),dimension(:),intent(in):: indices  &
@@ -249,12 +247,10 @@ contains
   !> @{
 
   !> @brief Replace specified existing values with this list of entries for a given global row of the matrix.
-  subroutine ReplaceGlobalValues(this,GlobalRow,NumEntries,values,indices,err)
+  subroutine ReplaceGlobalValues(this,GlobalRow,values,indices,err)
    class(Epetra_CrsMatrix), intent(in) :: this
    integer(c_int),          intent(in) :: GlobalRow &
    !< (In) Row number (in global coordinates) to put elements.
-   integer(c_int),          intent(in) :: NumEntries &
-   !< (In) Number of entries.
    real(c_double), dimension(:)        :: values  &
    !< (In) Values to enter.
    integer(c_int),    dimension(:)        :: indices  &

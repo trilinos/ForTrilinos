@@ -391,7 +391,7 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     real(c_double), allocatable, dimension(:)  :: values
     integer(c_int), dimension(2)  :: col
     integer(c_int), allocatable, dimension(:)  :: indices
-    integer(c_int) :: global_row, length, num_entries
+    integer(c_int) :: global_row, length
     NumIndicesPerRow=3
     success = .TRUE.
     ECHO(comm = UnitTest_EpetraComm_Create())
@@ -401,19 +401,17 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     scalar(2) = 1.0
     col(1)=2
     col(2)=3
-    num_entries=2
     NumMyElements=map%NumMyElements()
     Allocate (MyGlobalElements(NumMyElements))
     MyGlobalElements=map%MyGlobalElements()
     do i=1,NumMyElements
-      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col,err))
+      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),scalar, col,err))
       TEST_EQUALITY(err%error_code(),0)
     end do
     ECHO(call A%FillComplete(.true.,err))
     TEST_EQUALITY(err%error_code(),0)
     global_row=4
     length=2
-    num_entries=2
     do i=1, NumMyElements
       if (MyGlobalElements(i)==global_row) then
         ECHO(call A%ExtractGlobalRowCopy(global_row,values,indices,err))
@@ -468,7 +466,7 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     do i=1,NumMyElements
       num_entries=NumIndicesPerRow(MyGlobalElements(i))
       if (NumIndicesPerRow(MyGlobalElements(i)) > max_NumIndices) max_NumIndices=NumIndicesPerRow(MyGlobalElements(i))
-      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col, err))
+      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),scalar(1:num_entries), col(1:num_entries), err))
       TEST_EQUALITY(err%error_code(),0)
     end do
     ECHO(call A%FillComplete(.true.,err))
@@ -518,7 +516,7 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     MyGlobalElements=map%MyGlobalElements()
     do i=1,NumMyElements
       num_entries=NumIndicesPerRow(MyGlobalElements(i))
-      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col, err))
+      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),scalar(1:num_entries), col(1:num_entries), err))
       TEST_EQUALITY(err%error_code(),0)
     end do
     ECHO(call A%FillComplete(.true.,err))
@@ -570,7 +568,7 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     MyGlobalElements=map%MyGlobalElements()
     do i=1,NumMyElements
       num_entries=NumIndicesPerRow(MyGlobalElements(i))
-      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col, err))
+      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),scalar(1:num_entries), col(1:num_entries), err))
       TEST_EQUALITY(err%error_code(),0)
     end do
     ECHO(call A%FillComplete(.true.,err))
@@ -604,7 +602,7 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     real(c_double), allocatable, dimension(:)  :: values
     integer(c_int), dimension(2)  :: col
     integer(c_int), allocatable, dimension(:)  :: indices
-    integer(c_int) :: global_row, length, num_entries
+    integer(c_int) :: global_row, length
     NumIndicesPerRow=3
     success = .TRUE.
     ECHO(comm = UnitTest_EpetraComm_Create())
@@ -614,12 +612,11 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     scalar(2) = 1.0
     col(1)=2
     col(2)=3
-    num_entries=2
     NumMyElements=map%NumMyElements()
     Allocate (MyGlobalElements(NumMyElements))
     MyGlobalElements=map%MyGlobalElements()
     do i=1,NumMyElements
-      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col,err))
+      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),scalar, col,err))
       TEST_EQUALITY(err%error_code(),0)
     end do
     ECHO(call A%FillComplete(.true.,err))
@@ -628,18 +625,16 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     scalar(2)=-4.0
     col(1)=2
     col(2)=3
-    num_entries=2.0
     global_row=3
     do i=1, NumMyElements
       if (MyGlobalElements(i)==global_row) then
-        ECHO(call A%ReplaceGlobalValues(global_row,num_entries,scalar,col,err)) 
+        ECHO(call A%ReplaceGlobalValues(global_row,scalar,col,err)) 
         TEST_EQUALITY(err%error_code(),0)
       end if
     end do
     ECHO(call A%FillComplete(.true.,err))
     TEST_EQUALITY(err%error_code(),0)
     length=2
-    num_entries=2
     do i=1, NumMyElements 
       if (MyGlobalElements(i)==global_row) then
         ECHO(call A%ExtractGlobalRowCopy(global_row,values,indices,err))
@@ -678,7 +673,7 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     real(c_double), allocatable, dimension(:)  :: values
     integer(c_int), dimension(2)  :: col
     integer(c_int), allocatable, dimension(:)  :: indices 
-    integer(c_int) :: global_row, length, num_entries
+    integer(c_int) :: global_row, length
     NumIndicesPerRow=2
     success = .TRUE.
     ECHO(comm = UnitTest_EpetraComm_Create())
@@ -687,12 +682,11 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     scalar=2.0
     col(1)=1
     col(2)=3 
-    num_entries=2
     NumMyElements=map%NumMyElements()
     Allocate (MyGlobalElements(NumMyElements))
     MyGlobalElements=map%MyGlobalElements()
     do i=1,NumMyElements
-     ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col,err))
+     ECHO(call A%InsertGlobalValues(MyGlobalElements(i),scalar, col,err))
      TEST_EQUALITY(err%error_code(),0)
     end do
     ECHO(call A%PutScalar(1.0_c_double,err))
@@ -701,7 +695,6 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     TEST_EQUALITY(err%error_code(),0)
     global_row=4
     length=2
-    num_entries=2
     do i=1, NumMyElements
       if (MyGlobalElements(i)== global_row) then
         ECHO(call A%ExtractGlobalRowCopy(global_row,values,indices,err))
@@ -755,7 +748,7 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     MyGlobalElements=map%MyGlobalElements()
     do i=1,NumMyElements
       num_entries=NumIndicesPerRow(MyGlobalElements(i))
-      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col, err))
+      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),scalar(1:num_entries), col(1:num_entries), err))
       TEST_EQUALITY(err%error_code(),0)
     end do
     ECHO(call A%FillComplete(.true.,err))
@@ -820,7 +813,7 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     MyGlobalElements=map%MyGlobalElements()
     do i=1,NumMyElements
       num_entries=NumIndicesPerRow(MyGlobalElements(i))
-      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col, err))
+      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),scalar(1:num_entries), col(1:num_entries), err))
       TEST_EQUALITY(err%error_code(),0)
     end do
     ECHO(call A%FillComplete(.true.,err))
@@ -875,7 +868,7 @@ FORTRILINOS_UNITTEST_SWITCH_BEGIN(CLASS_BEING_TESTED)
     MyGlobalElements=map%MyGlobalElements()
     do i=1,NumMyElements
       num_entries=NumIndicesPerRow(MyGlobalElements(i))
-      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),num_entries,scalar, col, err))
+      ECHO(call A%InsertGlobalValues(MyGlobalElements(i),scalar(1:num_entries), col(1:num_entries), err))
       TEST_EQUALITY(err%error_code(),0)
     end do
     ECHO(call A%FillComplete(.true.,err))

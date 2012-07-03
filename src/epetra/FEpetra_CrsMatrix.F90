@@ -355,27 +355,29 @@ contains
    if (present(err)) err=error(error_out,'Epetra_CrsMatrix%Scale: failed.')
   end subroutine
 
-  subroutine InsertGlobalValues(this,GlobalRow,NumEntries,values,indices,err)
+  subroutine InsertGlobalValues(this,GlobalRow,values,indices,err)
    class(Epetra_CrsMatrix), intent(in) :: this
    integer(c_int),          intent(in) :: GlobalRow
-   integer(c_int),          intent(in) :: NumEntries
    real(c_double),dimension(:),intent(in):: values 
    integer(c_int),dimension(:),intent(in):: indices 
    type(error), optional, intent(out) :: err
    integer(c_int)                          :: error_out
-   error_out=Epetra_CrsMatrix_InsertGlobalValues(this%CrsMatrix_id,GlobalRow,NumEntries,values,indices)
+   call assert(size(values)==size(indices) &
+        ,error_message('InsertGlobalValues: values and indices should have the same size'))
+   error_out=Epetra_CrsMatrix_InsertGlobalValues(this%CrsMatrix_id,GlobalRow,size(values),values,indices)
    if (present(err)) err=error(error_out,'Epetra_CrsMatrix%InsertGlobalValues')
   end subroutine
 
-  subroutine ReplaceGlobalValues(this,GlobalRow,NumEntries,values,indices,err)
+  subroutine ReplaceGlobalValues(this,GlobalRow,values,indices,err)
    class(Epetra_CrsMatrix), intent(in) :: this
    integer(c_int),          intent(in) :: GlobalRow
-   integer(c_int),          intent(in) :: NumEntries
    real(c_double), dimension(:)        :: values 
    integer(c_int),    dimension(:)        :: indices 
    type(error), optional, intent(out) :: err
    integer(c_int)                          :: error_out
-   error_out=Epetra_CrsMatrix_ReplaceGlobalValues(this%CrsMatrix_id,GlobalRow,NumEntries,values,indices)
+   call assert(size(values)==size(indices) &
+        ,error_message('ReplaceGlobalValues: values and indices should have the same size'))
+   error_out=Epetra_CrsMatrix_ReplaceGlobalValues(this%CrsMatrix_id,GlobalRow,size(values),values,indices)
    if (present(err)) err=error(error_out,'Epetra_CrsMatrix%ReplaceGlobalValues: failed.')
   end subroutine
   

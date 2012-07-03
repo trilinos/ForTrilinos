@@ -79,7 +79,7 @@ program main
   integer(c_int)      :: Index_Base=1
   integer(c_int)      :: MyPID, NumProc
   logical             :: verbose
-  integer(c_int)      :: indices(2), NumEntries
+  integer(c_int)      :: indices(2)
   real(c_double)      :: two = 2.0,values(2)
   integer             :: rc, ierr,ierr_pm 
   real(c_double)      :: lambda(1),tolerance=1.0E-2
@@ -146,21 +146,20 @@ program main
   values(2) = -1.0
   do i=1,NumMyElements
     if (MyGlobalElements(i)==1) then
-      indices(1) = 1
-      NumEntries = 1
+      indices(1) = 2
+      call A%InsertGlobalValues(MyGlobalElements(i),[values(1)],[indices(1)],err)
     else if(MyGlobalElements(i)==NumGlobalElements) then
       indices(1) = NumGlobalElements-1
-      NumEntries = 1
+      call A%InsertGlobalValues(MyGlobalElements(i),[values(1)],[indices(1)],err)
     else
       indices(1) = MyGlobalElements(i)-1
       indices(2) = MyGlobalElements(i)+1
-      NumEntries = 2
+      call A%InsertGlobalValues(MyGlobalElements(i),values,indices,err)
     end if
-     call A%InsertGlobalValues(MyGlobalElements(i),NumEntries,values,indices,err)
      if (err%error_code()/=0) stop 'A%InsertGlobalValues: failed'
   !Put in the diaogonal entry
      index_diagonal = MyGlobalElements(i)
-     call A%InsertGlobalValues(MyGlobalElements(i),1,[two],[index_diagonal],err)
+     call A%InsertGlobalValues(MyGlobalElements(i),[two],[index_diagonal],err)
      if (err%error_code()/=0) stop 'A%InsertGlobalValues: failed'
   end do
  
@@ -183,7 +182,7 @@ program main
   do i=1,numvals
    if (Rowinds(i)==1) Rowvals(i)=10.0*Rowvals(i)
   enddo  
-   call A%ReplaceGlobalValues(1_c_int,numvals,Rowvals,Rowinds)
+   call A%ReplaceGlobalValues(1_c_int,Rowvals,Rowinds)
   endif
 
   !Iterate again

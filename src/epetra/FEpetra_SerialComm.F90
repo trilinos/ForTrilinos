@@ -40,6 +40,7 @@ module FEpetra_SerialComm
   use ForTrilinos_enums ,only : FT_Epetra_Comm_ID,FT_Epetra_SerialComm_ID_t,ForTrilinos_Universal_ID_t
   use ForTrilinos_table_man
   use ForTrilinos_error ,only : error
+  use ForTrilinos_assertion_utility
   use FEpetra_Comm      ,only : Epetra_Comm
   use iso_c_binding     ,only : c_int,c_long,c_double,c_char
   use forepetra
@@ -247,7 +248,8 @@ contains
    real(c_double), dimension(:) ,intent(inout) :: AllVals
    type(error) ,optional, intent(inout) :: err
    integer(c_int)     :: error_out
-   if (size(AllVals) .ne. this%NumProc()*size(MyVals)) stop 'GatherAll: AllVals must be of size NumProc*size(MyVals)' 
+   call assert(size(AllVals)==this%NumProc()*size(MyVals)&
+     ,error_message('GatherAll: AllVals must be of size NumProc*size(MyVals)' ))
    error_out = Epetra_SerialComm_GatherAll_Double(this%SerialComm_id,MyVals,AllVals,size(MyVals))
    if (present(err)) err=error(error_out,'Epetra_SerialComm%gather_double: failed.')
   end subroutine
@@ -258,7 +260,8 @@ contains
     integer(c_int), dimension(:) ,intent(inout) :: AllVals
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    if (size(AllVals) .ne. this%NumProc()*size(MyVals)) stop 'GatherAll: AllVals must be of size NumProc*size(MyVals)' 
+    call assert(size(AllVals)==this%NumProc()*size(MyVals)&
+      ,error_message('GatherAll: AllVals must be of size NumProc*size(MyVals)'))
     error_out = Epetra_SerialComm_GatherAll_Int(this%SerialComm_id,MyVals,AllVals,size(MyVals))
     if (present(err)) err=error(error_out,'Epetra_SerialComm%gather_int: failed.')
   end subroutine
@@ -269,7 +272,8 @@ contains
     integer(c_long), dimension(:) ,intent(inout) :: AllVals
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    if (size(AllVals) .ne. this%NumProc()*size(MyVals)) stop 'gather_long: AllVals must be of size NumProc*size(MyVals)' 
+    call assert(size(AllVals)==this%NumProc()*size(MyVals)&
+      ,error_message('gather_long: AllVals must be of size NumProc*size(MyVals)' ))
     error_out = Epetra_SerialComm_GatherAll_Long(this%SerialComm_id,MyVals,AllVals,size(MyVals))
     if (present(err)) err=error(error_out,'Epetra_SerialComm%gather_long: failed.')
   end subroutine
