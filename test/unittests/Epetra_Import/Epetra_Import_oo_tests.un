@@ -87,7 +87,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     if (comm%MyPID()==0) MyGlobalElements=(/1,2,3,4/)
     if (comm%MyPID()==1) MyGlobalElements=(/3,4,5,6,7/)
     if (comm%MyPID()==comm%NumProc()-1) MyGlobalElements=(/6,7,8,9/)
-    ECHO(map = Epetra_Map(-1_c_int,NumMyElements,MyGlobalElements,IndexBase,comm))
+    ECHO(map = Epetra_Map(-1_c_int,MyGlobalElements,IndexBase,comm))
     TEST_EQUALITY(map%NumMyElements(),NumMyElements)
     TEST_EQUALITY(map_source%NumMyElements(),3)
     ECHO(importer = Epetra_Import(map,map_source))
@@ -134,7 +134,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     do i=1,map_source%NumMyElements()
      x_values(i)=1.0*MyGlobalElements_source(i)
     enddo
-    ECHO(call x%ReplaceGlobalValues(NumMyElements_source,x_values,MyGlobalElements_source,err))
+    ECHO(call x%ReplaceGlobalValues(x_values,MyGlobalElements_source,err))
     TEST_EQUALITY(err%error_code(),0)
     
     TEST_EQUALITY(size(MyGlobalElements_source),map_source%NumMyElements())
@@ -165,7 +165,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     endif
     ECHO(MyGlobalElements(3:NumMyElements-2)=MyGlobalElements_source(1:NumMyElements_source))
     ! Creating source map
-    ECHO(map = Epetra_Map(-1_c_int,NumMyElements,MyGlobalElements,IndexBase,comm))
+    ECHO(map = Epetra_Map(-1_c_int,MyGlobalElements,IndexBase,comm))
 
     ECHO(importer = Epetra_Import(map,map_source))
     ECHO(graph = Epetra_CrsGraph(CV,map,NumMyElements,.false.))

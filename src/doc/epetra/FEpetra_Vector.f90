@@ -124,9 +124,8 @@ contains
   !! @{
 
   !> <BR> Replaces entries with a list of indexed values, indices in global space
-  subroutine ReplaceGlobalValues(this,NumEntries,values,indices,err)
+  subroutine ReplaceGlobalValues(this,values,indices,err)
     type(Epetra_Vector), intent(in) :: this
-    integer(c_int),       intent(in) :: NumEntries
     real(c_double),dimension(:),intent(in) :: values
     integer(c_int),dimension(:),intent(in) :: indices 
     type(error),optional,intent(out) :: err
@@ -136,9 +135,8 @@ contains
   !! @{
 
   !> <BR> Replaces entries with a list of indexed values, indices in global space
-  subroutine ReplaceGlobalValues(this,NumEntries,BlockOffset,values,indices,err)
+  subroutine ReplaceGlobalValues(this,BlockOffset,values,indices,err)
     type(Epetra_Vector), intent(in) :: this
-    integer(c_int),       intent(in) :: NumEntries
     integer(c_int)       ,intent(in) :: BlockOffset
     real(c_double),dimension(:),intent(in) :: values
     integer(c_int),dimension(:),intent(in) :: indices 
@@ -149,9 +147,8 @@ contains
   !! @{
 
   !> <BR> Replaces entries with a list of indexed values, indices in local space
-  subroutine ReplaceMyValues(this,NumEntries,values,indices,err)
+  subroutine ReplaceMyValues(this,values,indices,err)
     type(Epetra_Vector), intent(in) :: this
-    integer(c_int),       intent(in) :: NumEntries
     real(c_double),dimension(:),intent(in) :: values
     integer(c_int),dimension(:),intent(in) :: indices 
     integer(c_int),dimension(size(indices)):: indices_c
@@ -162,9 +159,8 @@ contains
   !! @{
 
   !> <BR> Replaces entries with a list of indexed values, indices in local space
-  subroutine ReplaceMyValues(this,NumEntries,BlockOffset,values,indices,err)
+  subroutine ReplaceMyValues(this,BlockOffset,values,indices,err)
     type(Epetra_Vector), intent(in) :: this
-    integer(c_int),       intent(in) :: NumEntries
     integer(c_int)       ,intent(in) :: BlockOffset
     real(c_double),dimension(:),intent(in) :: values
     integer(c_int),dimension(:),intent(in) :: indices 
@@ -176,9 +172,8 @@ contains
   !! @{
 
   !> <BR> Adds entries with list of indexed values, indices in global space
-  subroutine SumIntoGlobalValues(this,NumEntries,values,indices,err)
+  subroutine SumIntoGlobalValues(this,values,indices,err)
     type(Epetra_Vector), intent(in) :: this
-    integer(c_int),       intent(in) :: NumEntries
     real(c_double),dimension(:),intent(in) :: values
     integer(c_int),dimension(:),intent(in) :: indices 
     type(error),optional,intent(out) :: err
@@ -189,9 +184,8 @@ contains
   !! @{
 
   !> <BR> Adds entries with list of indexed values, indices in global space
-  subroutine SumIntoGlobalValues(this,NumEntries,BlockOffset,values,indices,err)
+  subroutine SumIntoGlobalValues(this,BlockOffset,values,indices,err)
     type(Epetra_Vector), intent(in) :: this
-    integer(c_int),       intent(in) :: NumEntries
     integer(c_int)       ,intent(in) :: BlockOffset
     real(c_double),dimension(:),intent(in) :: values
     integer(c_int),dimension(:),intent(in) :: indices 
@@ -202,9 +196,8 @@ contains
   !! @{
 
   !> <BR> Adds entries with list of indexed values, indices in local space
-  subroutine SumIntoMyValues(this,NumEntries,values,indices,err)
+  subroutine SumIntoMyValues(this,values,indices,err)
     type(Epetra_Vector), intent(in) :: this
-    integer(c_int),       intent(in) :: NumEntries
     real(c_double),dimension(:),intent(in) :: values
     integer(c_int),dimension(:),intent(in) :: indices 
     integer(c_int),dimension(size(indices)):: indices_c   
@@ -215,9 +208,8 @@ contains
   !! @{
 
   !> <BR> Adds entries with list of indexed values, indices in local space
-  subroutine SumIntoMyValues(this,NumEntries,BlockOffset,values,indices,err)
+  subroutine SumIntoMyValues(this,BlockOffset,values,indices,err)
     type(Epetra_Vector), intent(in) :: this
-    integer(c_int),       intent(in) :: NumEntries
     integer(c_int)       ,intent(in) :: BlockOffset
     real(c_double),dimension(:),intent(in) :: values
     integer(c_int),dimension(:),intent(in) :: indices 

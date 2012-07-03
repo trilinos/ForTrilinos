@@ -124,21 +124,22 @@ contains
     call new_Epetra_Map%Epetra_Map_(Num_GlobalElements,Num_MyElements,IndexBase,comm)
   end function
   
-  subroutine create_arbitrary__(this,Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm)
+  subroutine create_arbitrary__(this,Num_GlobalElements,My_GlobalElements,IndexBase,comm)
     class(Epetra_Map) ,intent(out) :: this
-    integer(c_int) ,intent(in)              :: Num_GlobalElements,Num_MyElements,IndexBase
+    integer(c_int) ,intent(in)              :: Num_GlobalElements,IndexBase
     integer(c_int) ,intent(in) ,dimension(:),allocatable:: My_GlobalElements
     class(Epetra_Comm) ,intent(in) :: comm
     call this% & 
-    Epetra_Map_(Epetra_Map_Create_Arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm%get_EpetraComm_ID()))
+    Epetra_Map_(Epetra_Map_Create_Arbitrary(Num_GlobalElements,size(My_GlobalElements),&
+               My_GlobalElements,IndexBase,comm%get_EpetraComm_ID()))
   end subroutine
  
-  function create_arbitrary(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm) result(new_Epetra_Map)
+  function create_arbitrary(Num_GlobalElements,My_GlobalElements,IndexBase,comm) result(new_Epetra_Map)
     type(Epetra_Map) :: new_Epetra_Map
-    integer(c_int) ,intent(in)              :: Num_GlobalElements,Num_MyElements,IndexBase
+    integer(c_int) ,intent(in)              :: Num_GlobalElements,IndexBase
     integer(c_int) ,intent(in) ,dimension(:),allocatable:: My_GlobalElements
     class(Epetra_Comm) ,intent(in) :: comm
-    call new_Epetra_Map%Epetra_Map_(Num_GlobalElements,Num_MyElements,My_GlobalElements,IndexBase,comm)
+    call new_Epetra_Map%Epetra_Map_(Num_GlobalElements,My_GlobalElements,IndexBase,comm)
   end function
  
   subroutine duplicate__(this,copy)

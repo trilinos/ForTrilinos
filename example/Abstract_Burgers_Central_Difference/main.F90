@@ -147,7 +147,7 @@ contains
     allocate(f_v(NumMyElements))
     forall(i=1:NumMyElements) f_v(i)=initial(x_node(MyGlobalElements(i))) 
     this%f=Epetra_Vector(map,zero_initial=.true.)
-    call this%f%ReplaceGlobalValues(NumMyElements,f_v,MyGlobalElements)
+    call this%f%ReplaceGlobalValues(f_v,MyGlobalElements)
   contains
     pure function grid()
       integer(c_int) :: i
@@ -320,7 +320,7 @@ contains
  !create vector of df_dx
     allocate(periodic_2nd_order::df_dx_local)
     df_dx_local%f=Epetra_Vector(map,zero_initial=.true.)
-    call df_dx_local%f%ReplaceGlobalValues(NumMyElements,c,MyGlobalElements)
+    call df_dx_local%f%ReplaceGlobalValues(c,MyGlobalElements)
     call move_alloc(df_dx_local, df_dx)
   end function
   
@@ -406,7 +406,7 @@ contains
   !create vector of df_dx
     allocate(periodic_2nd_order::d2f_dx2_local)
     d2f_dx2_local%f=Epetra_Vector(map,zero_initial=.true.)
-    call d2f_dx2_local%f%ReplaceGlobalValues(NumMyElements,c,MyGlobalElements)
+    call d2f_dx2_local%f%ReplaceGlobalValues(c,MyGlobalElements)
     call move_alloc(d2f_dx2_local, d2f_dx2)
   end function
 

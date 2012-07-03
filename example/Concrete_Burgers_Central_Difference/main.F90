@@ -85,7 +85,7 @@ contains
     allocate(f_v(NumMyElements))
     forall(i=1:NumMyElements) f_v(i)=initial(x_node(MyGlobalElements(i))) 
     this%f=Epetra_Vector(map,zero_initial=.true.)
-    call this%f%ReplaceGlobalValues(NumMyElements,f_v,MyGlobalElements)
+    call this%f%ReplaceGlobalValues(f_v,MyGlobalElements)
   contains
     pure function grid()
       integer(c_int) :: i

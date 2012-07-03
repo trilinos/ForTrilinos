@@ -134,7 +134,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     do i=1,map_target%NumMyElements()
      x_values(i)=1.0*MyGlobalElements_target(i)
     enddo
-    ECHO(call x%ReplaceGlobalValues(NumMyElements_target,x_values,MyGlobalElements_target,err))
+    ECHO(call x%ReplaceGlobalValues(x_values,MyGlobalElements_target,err))
     TEST_EQUALITY(err%error_code(),0)
     
     TEST_EQUALITY(size(MyGlobalElements_target),map_target%NumMyElements())

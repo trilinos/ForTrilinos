@@ -89,7 +89,7 @@
        indices(i) = i
        lEV(i)     = 2*i
     end do  
-    ECHO(call EV%ReplaceGlobalValues(numElems,lEV,indices))
+    ECHO(call EV%ReplaceGlobalValues(lEV,indices))
     ECHO(vres = EV%MinValue())
     TEST_EQUALITY(vres(1),2)	
     ECHO(vres = EV%MaxValue())
@@ -148,7 +148,7 @@
        indices(i) = i
        lEV(i)     = 2*i
     end do  
-    ECHO(call EV%ReplaceMyValues(NumMyElements,lEV,indices))
+    ECHO(call EV%ReplaceMyValues(lEV,indices))
     do i=1,NumMyElements
      TEST_EQUALITY(EV%get_element(i),lEV(i))
     enddo
