@@ -127,7 +127,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ECHO(root = comm%MyPID())
     ECHO(count = 6)
     ECHO(MyVals = (/4.6,2.6,3.1,7.7,-0.5,1.0/))
-    ECHO(call comm%broadcast(MyVals,count,root,ierror))
+    ECHO(call comm%broadcast(MyVals,root,ierror))
     TEST_EQUALITY(ierror%error_code(),0) 
     call comm%force_finalize()
   FORTRILINOS_UNITTEST_END
@@ -146,7 +146,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ECHO(root = comm%MyPID())
     ECHO(count = 6)
     ECHO(MyVals = (/4,2,3,7,-5,1/))
-    ECHO(call comm%broadcast(MyVals,count,root,ierror))
+    ECHO(call comm%broadcast(MyVals,root,ierror))
     TEST_EQUALITY(ierror%error_code(),0) 
     call comm%force_finalize()
   FORTRILINOS_UNITTEST_END
@@ -163,7 +163,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ECHO(root = comm%MyPID())
     ECHO(count = 6)
     ECHO(MyVals = (/46,26,31,77,-50,10/))
-    ECHO(call comm%broadcast_long(MyVals,count,root,ierror))
+    ECHO(call comm%broadcast_long(MyVals,root,ierror))
     TEST_EQUALITY(ierror%error_code(),0) 
     call comm%force_finalize()
   FORTRILINOS_UNITTEST_END
@@ -180,7 +180,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ECHO(root = comm%MyPID())
     ECHO(count = 6)
     ECHO(MyVals = (/'a','b','c','d','o','i'/))
-    ECHO(call comm%broadcast(MyVals,count,root,ierror))
+    ECHO(call comm%broadcast(MyVals,root,ierror))
     TEST_EQUALITY(ierror%error_code(),0) 
     call comm%force_finalize()
   FORTRILINOS_UNITTEST_END
@@ -198,7 +198,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ECHO(count = 6)
     ECHO(MyVals = (/4.6,2.6,3.1,7.7,-0.5,1.0/))
     ECHO(allocate(AllVals(size(MyVals))))
-    ECHO(call comm%GatherAll(MyVals,AllVals,count,ierror))
+    ECHO(call comm%GatherAll(MyVals,AllVals,ierror))
     TEST_EQUALITY(ierror%error_code(),0) 
     do i=1,count
       if (MyVals(i) /= AllVals(i)) success=.false.
@@ -219,7 +219,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ECHO(count = 6)
     ECHO(MyVals = (/4,2,3,7,-5,1/))
     ECHO(allocate(AllVals(size(MyVals))))
-    ECHO(call comm%GatherAll(MyVals,AllVals,count,ierror))
+    ECHO(call comm%GatherAll(MyVals,AllVals,ierror))
     TEST_EQUALITY(ierror%error_code(),0)
     do i=1,count
       if (MyVals(i) /= AllVals(i)) success=.false.
@@ -240,7 +240,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ECHO(count = 6)
     ECHO(MyVals = (/49,22,37,73,-57,18/))
     ECHO(allocate(AllVals(size(MyVals))))
-    ECHO(call comm%gather_long(MyVals,AllVals,count,ierror))
+    ECHO(call comm%gather_long(MyVals,AllVals,ierror))
     TEST_EQUALITY(ierror%error_code(),0)
     do i=1,count
       if (MyVals(i) /= AllVals(i)) success=.false.
@@ -261,7 +261,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ECHO(count = 6)
     ECHO(PartialSums = (/4.9,2.2,3.7,7.3,-5.7,1.8/))
     ECHO(allocate(GlobalSums(size(PartialSums))))
-    ECHO(call comm%SumAll(PartialSums,GlobalSums,count,ierror))
+    ECHO(call comm%SumAll(PartialSums,GlobalSums,ierror))
     TEST_EQUALITY(ierror%error_code(),0)
     do i=1,count
       if (PartialSums(i) /= GlobalSums(i)) success=.false.
@@ -282,7 +282,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ECHO(count = 6)
     ECHO(PartialSums = (/4,2,3,7,-5,1/))
     ECHO(allocate(GlobalSums(size(PartialSums))))
-    ECHO(call comm%SumAll(PartialSums,GlobalSums,count,ierror))
+    ECHO(call comm%SumAll(PartialSums,GlobalSums,ierror))
     TEST_EQUALITY(ierror%error_code(),0)
     do i=1,count
       if (PartialSums(i) /= GlobalSums(i)) success=.false.
@@ -303,7 +303,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ECHO(count = 6)
     ECHO(PartialSums = (/49,22,37,73,-57,18/))
     ECHO(allocate(GlobalSums(size(PartialSums))))
-    ECHO(call comm%sum_long(PartialSums,GlobalSums,count,ierror))
+    ECHO(call comm%sum_long(PartialSums,GlobalSums,ierror))
     TEST_EQUALITY(ierror%error_code(),0)
     do i=1,count
       if (PartialSums(i) /= GlobalSums(i)) success=.false.
@@ -324,7 +324,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ECHO(count = 6)
     ECHO(PartialMaxs = (/4.9,2.2,3.7,7.3,-5.7,1.8/))
     ECHO(allocate(GlobalMaxs(size(PartialMaxs))))
-    ECHO(call comm%MaxAll(PartialMaxs,GlobalMaxs,count,ierror))
+    ECHO(call comm%MaxAll(PartialMaxs,GlobalMaxs,ierror))
     TEST_EQUALITY(ierror%error_code(),0)
     do i=1,count
       if (PartialMaxs(i) /= GlobalMaxs(i)) success=.false.
@@ -345,7 +345,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ECHO(count = 6)
     ECHO(PartialMaxs = (/4,2,3,7,-5,1/))
     ECHO(allocate(GlobalMaxs(size(PartialMaxs))))
-    ECHO(call comm%MaxAll(PartialMaxs,GlobalMaxs,count,ierror))
+    ECHO(call comm%MaxAll(PartialMaxs,GlobalMaxs,ierror))
     TEST_EQUALITY(ierror%error_code(),0)
     do i=1,count
       if (PartialMaxs(i) /= GlobalMaxs(i)) success=.false.
@@ -366,7 +366,7 @@ FORTRILINOS_UNITTEST_MODULE_BEGIN(CLASS_BEING_TESTED)
     ECHO(count = 6)
     ECHO(PartialMaxs = (/49,22,37,73,-57,18/))
     ECHO(allocate(GlobalMaxs(size(PartialMaxs))))
-    ECHO(call comm%max_long(PartialMaxs,GlobalMaxs,count,ierror))
+    ECHO(call comm%max_long(PartialMaxs,GlobalMaxs,ierror))
     TEST_EQUALITY(ierror%error_code(),0)
     do i=1,count
       if (PartialMaxs(i) /= GlobalMaxs(i)) success=.false.
@@ -387,7 +387,7 @@ FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MinAll_Double)
     ECHO(count = 6)
     ECHO(PartialMins = (/4.9,2.2,3.7,7.3,-5.7,1.8/))
     ECHO(allocate(GlobalMins(size(PartialMins))))
-    ECHO(call comm%MinAll(PartialMins,GlobalMins,count,ierror))
+    ECHO(call comm%MinAll(PartialMins,GlobalMins,ierror))
     TEST_EQUALITY(ierror%error_code(),0)
     do i=1,count
       if (PartialMins(i) /= GlobalMins(i)) success=.false.
@@ -408,7 +408,7 @@ FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MinAll_Double)
     ECHO(count = 6)
     ECHO(PartialMins = (/4,2,3,7,-5,1/))
     ECHO(allocate(GlobalMins(size(PartialMins))))
-    ECHO(call comm%MinAll(PartialMins,GlobalMins,count,ierror))
+    ECHO(call comm%MinAll(PartialMins,GlobalMins,ierror))
     TEST_EQUALITY(ierror%error_code(),0)
     do i=1,count
       if (PartialMins(i) /= GlobalMins(i)) success=.false.
@@ -429,7 +429,7 @@ FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MinAll_Double)
     ECHO(count = 6)
     ECHO(PartialMins = (/49,22,37,73,-57,18/))
     ECHO(allocate(GlobalMins(size(PartialMins))))
-    ECHO(call comm%max_long(PartialMins,GlobalMins,count,ierror))
+    ECHO(call comm%max_long(PartialMins,GlobalMins,ierror))
     TEST_EQUALITY(ierror%error_code(),0)
     do i=1,count
       if (PartialMins(i) /= GlobalMins(i)) success=.false.
@@ -450,7 +450,7 @@ FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MinAll_Double)
     ECHO(count = 6)
     ECHO(MyVals = (/4.9,2.2,3.7,7.3,-5.7,1.8/))
     ECHO(allocate(scan_sums(size(MyVals))))
-    ECHO(call comm%ScanSum(MyVals,scan_sums,count,ierror))
+    ECHO(call comm%ScanSum(MyVals,scan_sums,ierror))
     TEST_EQUALITY(ierror%error_code(),0)
     do i=1,count
       if (MyVals(i) /= scan_sums(i)) success=.false.
@@ -471,7 +471,7 @@ FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MinAll_Double)
     ECHO(count = 6)
     ECHO(MyVals = (/9,2,3,7,-5,1/))
     ECHO(allocate(scan_sums(size(MyVals))))
-    ECHO(call comm%ScanSum(MyVals,scan_sums,count,ierror))
+    ECHO(call comm%ScanSum(MyVals,scan_sums,ierror))
     TEST_EQUALITY(ierror%error_code(),0)
     do i=1,count
       if (MyVals(i) /= scan_sums(i)) success=.false.
@@ -492,7 +492,7 @@ FORTRILINOS_UNITTEST_DEF(CLASS_BEING_TESTED,MinAll_Double)
     ECHO(count = 6)
     ECHO(MyVals = (/49,22,37,73,-57,18/))
     ECHO(allocate(scan_sums(size(MyVals))))
-    ECHO(call comm%ScanSum_long(MyVals,scan_sums,count,ierror))
+    ECHO(call comm%ScanSum_long(MyVals,scan_sums,ierror))
     TEST_EQUALITY(ierror%error_code(),0)
     do i=1,count
       if (MyVals(i) /= scan_sums(i)) success=.false.

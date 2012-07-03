@@ -220,208 +220,196 @@ contains
    call Epetra_MpiComm_Barrier(this%MpiComm_id)
   end subroutine
 
-  subroutine broadcast_double(this,MyVals,count,root,err)
+  subroutine broadcast_double(this,MyVals,root,err)
     class(Epetra_MpiComm)       ,intent(in)    :: this
     real(c_double) ,dimension(:),intent(inout) :: MyVals
-    integer(c_int)              ,intent(in)    :: count,root
+    integer(c_int)              ,intent(in)    :: root
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out=Epetra_MpiComm_Broadcast_Double(this%MpiComm_id,MyVals,count,root)
+    error_out=Epetra_MpiComm_Broadcast_Double(this%MpiComm_id,MyVals,size(MyVals),root)
     if (present(err)) err=error(error_out,'Epetra_MpiComm%broadcast_double: failed.')
   end subroutine
 
-  subroutine broadcast_int(this,MyVals,count,root,err)
+  subroutine broadcast_int(this,MyVals,root,err)
     class(Epetra_MpiComm)       ,intent(in)    :: this
     integer(c_int) ,dimension(:),intent(inout) :: MyVals
-    integer(c_int)              ,intent(in)    :: count,root
+    integer(c_int)              ,intent(in)    :: root
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out=Epetra_MpiComm_Broadcast_Int(this%MpiComm_id,MyVals,count,root)
+    error_out=Epetra_MpiComm_Broadcast_Int(this%MpiComm_id,MyVals,size(MyVals),root)
     if (present(err)) err=error(error_out,'Epetra_MpiComm%broadcast_int: failed.')
   end subroutine
 
-  subroutine broadcast_long(this,MyVals,count,root,err)
+  subroutine broadcast_long(this,MyVals,root,err)
     class(Epetra_MpiComm)       ,intent(in)    :: this
     integer(c_long),dimension(:),intent(inout) :: MyVals
-    integer(c_int)              ,intent(in)    :: count,root
+    integer(c_int)              ,intent(in)    :: root
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out=Epetra_MpiComm_Broadcast_Long(this%MpiComm_id,MyVals,count,root)
+    error_out=Epetra_MpiComm_Broadcast_Long(this%MpiComm_id,MyVals,size(MyVals),root)
     if (present(err)) err=error(error_out,'Epetra_MpiComm%broadcast_long: failed.')
   end subroutine
 
-  subroutine broadcast_char(this,MyVals,count,root,err)
+  subroutine broadcast_char(this,MyVals,root,err)
     class(Epetra_MpiComm)              ,intent(in)    :: this
     character(kind=c_char),dimension(:),intent(inout) :: MyVals
-    integer(c_int)                     ,intent(in)    :: count,root
+    integer(c_int)                     ,intent(in)    :: root
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out=Epetra_MpiComm_Broadcast_Char(this%MpiComm_id,MyVals,count,root)
+    error_out=Epetra_MpiComm_Broadcast_Char(this%MpiComm_id,MyVals,size(MyVals),root)
     if (present(err)) err=error(error_out,'Epetra_MpiComm%broadcast_char: failed.')
   end subroutine
 
-  subroutine gather_double(this,MyVals,AllVals,count,err)
+  subroutine gather_double(this,MyVals,AllVals,err)
     class(Epetra_MpiComm)      ,intent(in)    :: this
     real(c_double),dimension(:),intent(in)    :: MyVals
     real(c_double),dimension(:),intent(inout) :: AllVals
-    integer(c_int)             ,intent(in)    :: count
     type(error) ,optional      ,intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out = Epetra_MpiComm_GatherAll_Double(this%MpiComm_id,MyVals(:),AllVals(:),count)
+    if (size(AllVals) .ne. this%NumProc()*size(MyVals)) stop 'GatherAll: AllVals must be of size NumProc*size(MyVals)'
+    error_out = Epetra_MpiComm_GatherAll_Double(this%MpiComm_id,MyVals,AllVals,size(MyVals))
     if (present(err)) err=error(error_out,'Epetra_MpiComm%gather_double: failed.')
   end subroutine
 
-  subroutine gather_int(this,MyVals,AllVals,count,err)
+  subroutine gather_int(this,MyVals,AllVals,err)
     class(Epetra_MpiComm)        ,intent(in)    :: this
     integer(c_int), dimension(:) ,intent(in)    :: MyVals
     integer(c_int), dimension(:) ,intent(inout) :: AllVals
-    integer(c_int)               ,intent(in)    :: count
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out = Epetra_MpiComm_GatherAll_Int(this%MpiComm_id,MyVals,AllVals,count)
+    if (size(AllVals) .ne. this%NumProc()*size(MyVals)) stop 'GatherAll: AllVals must be of size NumProc*size(MyVals)'
+    error_out = Epetra_MpiComm_GatherAll_Int(this%MpiComm_id,MyVals,AllVals,size(MyVals))
     if (present(err)) err=error(error_out,'Epetra_MpiComm%gather_int: failed.')
   end subroutine
  
-  subroutine gather_long(this,MyVals,AllVals,count,err)
+  subroutine gather_long(this,MyVals,AllVals,err)
     class(Epetra_MpiComm)         ,intent(in)   :: this
     integer(c_long), dimension(:) ,intent(in)   :: MyVals
     integer(c_long), dimension(:) ,intent(inout):: AllVals
-    integer(c_int)                ,intent(in)    :: count
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out = Epetra_MpiComm_GatherAll_Long(this%MpiComm_id,MyVals,AllVals,count)
+    if (size(AllVals) .ne. this%NumProc()*size(MyVals)) stop 'gather_long: AllVals must be of size NumProc*size(MyVals)'
+    error_out = Epetra_MpiComm_GatherAll_Long(this%MpiComm_id,MyVals,AllVals,size(MyVals))
     if (present(err)) err=error(error_out,'Epetra_MpiComm%gather_long: failed.')
   end subroutine
 
-  subroutine sum_double(this,PartialSums,GlobalSums,count,err)
+  subroutine sum_double(this,PartialSums,GlobalSums,err)
     class(Epetra_MpiComm)        ,intent(in)    :: this
     real(c_double), dimension(:) ,intent(in)    :: PartialSums 
     real(c_double), dimension(:) ,intent(inout) :: GlobalSums
-    integer(c_int)               ,intent(in)    :: count
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out = Epetra_MpiComm_SumAll_Double(this%MpiComm_id,PartialSums,GlobalSums,count)
+    error_out = Epetra_MpiComm_SumAll_Double(this%MpiComm_id,PartialSums,GlobalSums,size(PartialSums))
     if (present(err)) err=error(error_out,'Epetra_MpiComm%sum_double: failed.')
   end subroutine
   
-  subroutine sum_int(this,PartialSums,GlobalSums,count,err)
+  subroutine sum_int(this,PartialSums,GlobalSums,err)
     class(Epetra_MpiComm)        ,intent(in)    :: this
     integer(c_int), dimension(:) ,intent(in)    :: PartialSums 
     integer(c_int), dimension(:) ,intent(inout) :: GlobalSums
-    integer(c_int)               ,intent(in)    :: count
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out = Epetra_MpiComm_SumAll_Int(this%MpiComm_id,PartialSums,GlobalSums,count)
+    error_out = Epetra_MpiComm_SumAll_Int(this%MpiComm_id,PartialSums,GlobalSums,size(PartialSums))
     if (present(err)) err=error(error_out,'Epetra_MpiComm%sum_int: failed.')
   end subroutine
 
-  subroutine sum_long(this,PartialSums,GlobalSums,count,err)
+  subroutine sum_long(this,PartialSums,GlobalSums,err)
     class(Epetra_MpiComm)        ,intent(in)    :: this
     integer(c_long), dimension(:),intent(in)    :: PartialSums 
     integer(c_long), dimension(:),intent(inout) :: GlobalSums
-    integer(c_int)               ,intent(in)    :: count
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out = Epetra_MpiComm_SumAll_Long(this%MpiComm_id,PartialSums,GlobalSums,count)
+    error_out = Epetra_MpiComm_SumAll_Long(this%MpiComm_id,PartialSums,GlobalSums,size(PartialSums))
     if (present(err)) err=error(error_out,'Epetra_MpiComm%sum_long: failed.')
   end subroutine
 
-  subroutine max_double(this,PartialMaxs,GlobalMaxs,count,err)
+  subroutine max_double(this,PartialMaxs,GlobalMaxs,err)
     class(Epetra_MpiComm)        ,intent(in)    :: this
     real(c_double), dimension(:) ,intent(in)    :: PartialMaxs 
     real(c_double), dimension(:) ,intent(inout) :: GlobalMaxs
-    integer(c_int)               ,intent(in)    :: count
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out = Epetra_MpiComm_MaxAll_Double(this%MpiComm_id,PartialMaxs,GlobalMaxs,count)
+    error_out = Epetra_MpiComm_MaxAll_Double(this%MpiComm_id,PartialMaxs,GlobalMaxs,size(PartialMaxs))
     if (present(err)) err=error(error_out,'Epetra_MpiComm%max_double: failed.')
   end subroutine
 
-  subroutine max_int(this,PartialMaxs,GlobalMaxs,count,err)
+  subroutine max_int(this,PartialMaxs,GlobalMaxs,err)
     class(Epetra_MpiComm)        ,intent(in)    :: this
     integer(c_int), dimension(:) ,intent(in)    :: PartialMaxs 
     integer(c_int), dimension(:) ,intent(inout) :: GlobalMaxs
-    integer(c_int)               ,intent(in)    :: count
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out = Epetra_MpiComm_MaxAll_Int(this%MpiComm_id,PartialMaxs,GlobalMaxs,count)
+    error_out = Epetra_MpiComm_MaxAll_Int(this%MpiComm_id,PartialMaxs,GlobalMaxs,size(PartialMaxs))
     if (present(err)) err=error(error_out,'Epetra_MpiComm%max_int: failed.')
   end subroutine
 
-  subroutine max_long(this,PartialMaxs,GlobalMaxs,count,err)
+  subroutine max_long(this,PartialMaxs,GlobalMaxs,err)
     class(Epetra_MpiComm)        ,intent(in)    :: this
     integer(c_long), dimension(:),intent(in)    :: PartialMaxs 
     integer(c_long), dimension(:),intent(inout) :: GlobalMaxs
-    integer(c_int)               ,intent(in)    :: count
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out = Epetra_MpiComm_MaxAll_Long(this%MpiComm_id,PartialMaxs,GlobalMaxs,count)
+    error_out = Epetra_MpiComm_MaxAll_Long(this%MpiComm_id,PartialMaxs,GlobalMaxs,size(PartialMaxs))
     if (present(err)) err=error(error_out,'Epetra_MpiComm%max_long: failed.')
   end subroutine
   
-  subroutine min_double(this,PartialMins,GlobalMins,count,err)
+  subroutine min_double(this,PartialMins,GlobalMins,err)
     class(Epetra_MpiComm)        ,intent(in)    :: this
     real(c_double), dimension(:) ,intent(in)    :: PartialMins 
     real(c_double), dimension(:) ,intent(inout) :: GlobalMins
-    integer(c_int)               ,intent(in)    :: count
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out = Epetra_MpiComm_MinAll_Double(this%MpiComm_id,PartialMins,GlobalMins,count)
+    error_out = Epetra_MpiComm_MinAll_Double(this%MpiComm_id,PartialMins,GlobalMins,size(PartialMins))
     if (present(err)) err=error(error_out,'Epetra_MpiComm%min_double: failed.')
   end subroutine
 
-  subroutine min_int(this,PartialMins,GlobalMins,count,err)
+  subroutine min_int(this,PartialMins,GlobalMins,err)
     class(Epetra_MpiComm)        ,intent(in)    :: this
     integer(c_int), dimension(:) ,intent(in)    :: PartialMins 
     integer(c_int), dimension(:) ,intent(inout) :: GlobalMins
-    integer(c_int)               ,intent(in)    :: count
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out = Epetra_MpiComm_MinAll_Int(this%MpiComm_id,PartialMins,GlobalMins,count)
+    error_out = Epetra_MpiComm_MinAll_Int(this%MpiComm_id,PartialMins,GlobalMins,size(PartialMins))
     if (present(err)) err=error(error_out,'Epetra_MpiComm%min_int: failed.')
   end subroutine
 
-  subroutine min_long(this,PartialMins,GlobalMins,count,err)
+  subroutine min_long(this,PartialMins,GlobalMins,err)
     class(Epetra_MpiComm)         ,intent(in)    :: this
     integer(c_long), dimension(:) ,intent(in)    :: PartialMins 
     integer(c_long), dimension(:) ,intent(inout) :: GlobalMins
-    integer(c_int)                ,intent(in)    :: count
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out = Epetra_MpiComm_MinAll_Long(this%MpiComm_id,PartialMins,GlobalMins,count)
+    error_out = Epetra_MpiComm_MinAll_Long(this%MpiComm_id,PartialMins,GlobalMins,size(PartialMins))
     if (present(err)) err=error(error_out,'Epetra_MpiComm%min_long: failed.')
   end subroutine
  
-  subroutine ScanSum_double(this,MyVals,scan_sums,count,err)
+  subroutine ScanSum_double(this,MyVals,scan_sums,err)
     class(Epetra_MpiComm)        ,intent(in)    :: this
     real(c_double), dimension(:) ,intent(in)    :: MyVals
     real(c_double), dimension(:) ,intent(inout) :: scan_sums
-    integer(c_int)               ,intent(in)    :: count
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out = Epetra_MpiComm_ScanSum_Double(this%MpiComm_id,MyVals,scan_sums,count)
+    error_out = Epetra_MpiComm_ScanSum_Double(this%MpiComm_id,MyVals,scan_sums,size(MyVals))
     if (present(err)) err=error(error_out,'Epetra_MpiComm%ScanSum_Double: failed.')
   end subroutine
 
-  subroutine ScanSum_int(this,MyVals,scan_sums,count,err)
+  subroutine ScanSum_int(this,MyVals,scan_sums,err)
     class(Epetra_MpiComm)        ,intent(in)    :: this
     integer(c_int), dimension(:) ,intent(in)    :: MyVals
     integer(c_int), dimension(:) ,intent(inout) :: scan_sums
-    integer(c_int)               ,intent(in)    :: count
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out = Epetra_MpiComm_ScanSum_Int(this%MpiComm_id,MyVals,scan_sums,count)
+    error_out = Epetra_MpiComm_ScanSum_Int(this%MpiComm_id,MyVals,scan_sums,size(MyVals))
     if (present(err)) err=error(error_out,'Epetra_MpiComm%ScanSum_int: failed.')
   end subroutine
 
-  subroutine ScanSum_long(this,MyVals,scan_sums,count,err)
+  subroutine ScanSum_long(this,MyVals,scan_sums,err)
     class(Epetra_MpiComm)        ,intent(in)    :: this
     integer(c_long), dimension(:),intent(in)    :: MyVals
     integer(c_long), dimension(:),intent(inout) :: scan_sums
-    integer(c_int)               ,intent(in)    :: count
     type(error) ,optional, intent(inout) :: err
     integer(c_int)     :: error_out
-    error_out = Epetra_MpiComm_ScanSum_Long(this%MpiComm_id,MyVals,scan_sums,count)
+    error_out = Epetra_MpiComm_ScanSum_Long(this%MpiComm_id,MyVals,scan_sums,size(MyVals))
     if (present(err)) err=error(error_out,'Epetra_MpiComm%ScanSum_long: failed.')
   end subroutine
 

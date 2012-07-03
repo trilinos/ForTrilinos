@@ -116,12 +116,10 @@ contains
   !> <BR> Epetra_MpiComm Broadcast function. 
   !> @brief Takes list of input values from the root processor and sends to all other processors.
   !!  Implements Epetra_Comm.
-  subroutine broadcast(this,MyVals,count,root,err)
+  subroutine broadcast(this,MyVals,root,err)
     class(Epetra_MpiComm)     ,intent(in)    :: this
     real(c_double), dimension(:) ,intent(inout) :: MyVals &
      !< InOut On entry, the root processor contains the list of values. On exit, all processors will have the same list of values. Note that values must be allocated on all processor before the broadcast.
-    integer(c_int)               ,intent(in)    :: count &
-     !< In On entry, contains the length of the list of MyVals. 
     integer(c_int)               ,intent(in)    :: root &
      !< In On entry, contains the processor from which all processors will receive a copy of MyVals.
     type(error) ,optional, intent(inout) :: err &
@@ -134,12 +132,10 @@ contains
   !> <BR> Epetra_MpiComm Broadcast function. 
   !> @brief Takes list of input values from the root processor and sends to all other processors.
   !!  Implements Epetra_Comm.
-  subroutine broadcast(this,MyVals,count,root,err)
+  subroutine broadcast(this,MyVals,root,err)
     class(Epetra_MpiComm)     ,intent(in)    :: this
     integer(c_int), dimension(:) ,intent(inout) :: MyVals &
      !< InOut On entry, the root processor contains the list of values. On exit, all processors will have the same list of values. Note that values must be allocated on all processor before the broadcast.
-    integer(c_int)               ,intent(in)    :: count &
-     !< In On entry, contains the length of the list of MyVals.
     integer(c_int)               ,intent(in)    :: root &
      !< In On entry, contains the processor from which all processors will receive a copy of MyVals.
     type(error) ,optional, intent(inout) :: err &
@@ -152,12 +148,10 @@ contains
   !> <BR> Epetra_MpiComm Broadcast function. 
   !> @brief Takes list of input values from the root processor and sends to all other processors.
   !!  Implements Epetra_Comm.
-  subroutine broadcast_long(this,MyVals,count,root,err)
+  subroutine broadcast_long(this,MyVals,root,err)
     class(Epetra_MpiComm)     ,intent(in)    :: this
     integer(c_long),dimension(:) ,intent(inout) :: MyVals &
      !< InOut On entry, the root processor contains the list of values. On exit, all processors will have the same list of values. Note that values must be allocated on all processor before the broadcast.
-    integer(c_int)               ,intent(in)    :: count &
-     !< In On entry, contains the length of the list of MyVals.
     integer(c_int)               ,intent(in)    :: root &
      !< In On entry, contains the processor from which all processors will receive a copy of MyVals.
     type(error) ,optional, intent(inout) :: err &
@@ -170,12 +164,10 @@ contains
   !> <BR> Epetra_MpiComm Broadcast function. 
   !> @brief Takes list of input values from the root processor and sends to all other processors.
   !!  Implements Epetra_Comm.
-  subroutine broadcast(this,MyVals,count,root,err)
+  subroutine broadcast(this,MyVals,root,err)
     class(Epetra_MpiComm)           ,intent(in)    :: this
     character(kind=c_char),dimension(:),intent(inout) :: MyVals &
      !< InOut On entry, the root processor contains the list of values. On exit, all processors will have the same list of values. Note that values must be allocated on all processor before the broadcast.
-    integer(c_int)                     ,intent(in)    :: count &
-     !< In On entry, contains the length of the list of MyVals.
     integer(c_int)                     ,intent(in)    :: root &
      !< In On entry, contains the processor from which all processors will receive a copy of MyVals.
     type(error) ,optional, intent(inout) :: err &
@@ -188,14 +180,12 @@ contains
   !> <BR> Epetra_MpiComm All Gather function. 
   !> @brief Take list of input values from all processors in the communicator and creates an ordered contiguous list of those values on each processor.
   !!  Implements Epetra_Comm.
- subroutine GatherAll(this,MyVals,AllVals,count,err)
+ subroutine GatherAll(this,MyVals,AllVals,err)
    class(Epetra_MpiComm)     ,intent(in)    :: this
    real(c_double), dimension(:) ,intent(in)    :: MyVals &
    !< On entry, contains the list of values, to be sent to all processors.
    real(c_double), dimension(:) ,intent(inout) :: AllVals &
-   !< On exit, contains the list of values from all processors. Must be of size NumProc*Count.
-   integer(c_int)               ,intent(in)    :: count &
-   !< On entry, contains the length of the list of MyVals.
+   !< On exit, contains the list of values from all processors. Must be of size NumProc*size(MyVals).
    type(error) ,optional, intent(inout) :: err &
    !< Return any error information.
   end subroutine
@@ -206,14 +196,12 @@ contains
   !> <BR> Epetra_MpiComm All Gather function. 
   !> @brief Take list of input values from all processors in the communicator and creates an ordered contiguous list of tho    se values on each processor.
   !!  Implements Epetra_Comm.
-  subroutine GatherAll(this,MyVals,AllVals,count,err)
+  subroutine GatherAll(this,MyVals,AllVals,err)
     class(Epetra_MpiComm)     ,intent(in)    :: this
     integer(c_int), dimension(:) ,intent(in)    :: MyVals &
     !< On entry, contains the list of values, to be sent to all processors.
     integer(c_int), dimension(:) ,intent(inout) :: AllVals &
-    !< On exit, contains the list of values from all processors. Must be of size NumProc*Count.
-    integer(c_int)               ,intent(in)    :: count &
-    !< On entry, contains the length of the list of MyVals.
+    !< On exit, contains the list of values from all processors. Must be of size NumProc*size(MyVals).
     type(error) ,optional, intent(inout) :: err &
     !< Return any error information.
   end subroutine
@@ -224,14 +212,12 @@ contains
   !> <BR> Epetra_MpiComm All Gather function. 
   !> @brief Take list of input values from all processors in the communicator and creates an ordered contiguous list of tho    se values on each processor.
   !!  Implements Epetra_Comm.
-  subroutine gather_long(this,MyVals,AllVals,count,err)
+  subroutine gather_long(this,MyVals,AllVals,err)
     class(Epetra_MpiComm)      ,intent(in)    :: this
     integer(c_long), dimension(:) ,intent(in)    :: MyVals &
     !< On entry, contains the list of values, to be sent to all processors.
     integer(c_long), dimension(:) ,intent(inout) :: AllVals &
-    !< On exit, contains the list of values from all processors. Must be of size NumProc*Count.
-    integer(c_int)                ,intent(in)    :: count &
-    !< On entry, contains the length of the list of MyVals.
+    !< On exit, contains the list of values from all processors. Must be of size NumProc*size(MyVals).
     type(error) ,optional, intent(inout) :: err &
     !< Return any error information.
   end subroutine
@@ -242,14 +228,12 @@ contains
   !> <BR> Epetra_MpiComm Global Summ function. 
   !> @brief Take list of input values from all processors in the communicator, computes the sum and returns the sum to all processors.
   !!  Implements Epetra_Comm.
-  subroutine SumAll(this,PartialSums,GlobalSums,count,err)
+  subroutine SumAll(this,PartialSums,GlobalSums,err)
     class(Epetra_MpiComm)     ,intent(in)    :: this
     real(c_double), dimension(:) ,intent(in)    :: PartialSums &
     !<  On entry, contains the list of values, usually partial sums computed locally, to be summed across all processors.
     real(c_double), dimension(:) ,intent(inout) :: GlobalSums &
     !<   On exit, contains the list of values summed across all processors.
-    integer(c_int)               ,intent(in)    :: count &
-    !< On entry, contains the length of the list of values.
     type(error) ,optional, intent(inout) :: err &
     !< Return any error information.   
   end subroutine
@@ -260,14 +244,12 @@ contains
   !> <BR> Epetra_MpiComm Global Summ function. 
   !> @brief Take list of input values from all processors in the communicator, computes the sum and returns the sum to all     processors.
   !!  Implements Epetra_Comm.
-  subroutine SumAll(this,PartialSums,GlobalSums,count,err)
+  subroutine SumAll(this,PartialSums,GlobalSums,err)
     class(Epetra_MpiComm)     ,intent(in)    :: this
     integer(c_int), dimension(:) ,intent(in)    :: PartialSums &
     !<  On entry, contains the list of values, usually partial sums computed locally, to be summed across all processors.
     integer(c_int), dimension(:) ,intent(inout) :: GlobalSums &
     !<   On exit, contains the list of values summed across all processors.
-    integer(c_int)               ,intent(in)    :: count &
-    !< On entry, contains the length of the list of values.
     type(error) ,optional, intent(inout) :: err &
      !< Return any error information.
   end subroutine
@@ -278,14 +260,12 @@ contains
   !> <BR> Epetra_MpiComm Global Summ function. 
   !> @brief Take list of input values from all processors in the communicator, computes the sum and returns the sum to all     processors.
   !!  Implements Epetra_Comm.
-  subroutine sum_long(this,PartialSums,GlobalSums,count,err)
+  subroutine sum_long(this,PartialSums,GlobalSums,err)
     class(Epetra_MpiComm)     ,intent(in)    :: this
     integer(c_long), dimension(:),intent(in)    :: PartialSums &
     !<  On entry, contains the list of values, usually partial sums computed locally, to be summed across all processors.
     integer(c_long), dimension(:),intent(inout) :: GlobalSums &
     !<   On exit, contains the list of values summed across all processors.
-    integer(c_int)               ,intent(in)    :: count &
-    !< On entry, contains the length of the list of values.
     type(error) ,optional, intent(inout) :: err &
     !< Return any error information.
   end subroutine
@@ -296,14 +276,12 @@ contains
   !> <BR> Epetra_MpiComm Global Max function. 
   !> @brief Take list of input values from all processors in the communicator, computes the max and returns the max to all processors.
   !!  Implements Epetra_Comm. 
-  subroutine MaxAll(this,PartialMaxs,GlobalMaxs,count,err)
+  subroutine MaxAll(this,PartialMaxs,GlobalMaxs,err)
     class(Epetra_MpiComm)     ,intent(in)    :: this
     real(c_double), dimension(:) ,intent(in)    :: PartialMaxs &
     !<  On entry, contains the list of values, usually partial maxs computed locally, using these Partial Maxs, the max across all processors will be computed.
     real(c_double), dimension(:) ,intent(inout) :: GlobalMaxs &
     !<  On exit, contains the list of maxs computed across all processors.
-    integer(c_int)               ,intent(in)    :: count &
-    !< On entry, contains the length of the list of values.
     type(error) ,optional, intent(inout) :: err &
     !< Return any error information.
   end subroutine
@@ -314,14 +292,12 @@ contains
   !> <BR> Epetra_MpiComm Global Max function. 
   !> @brief Take list of input values from all processors in the communicator, computes the max and returns the max to all     processors.
   !!  Implements Epetra_Comm. 
-  subroutine MaxAll(this,PartialMaxs,GlobalMaxs,count,err)
+  subroutine MaxAll(this,PartialMaxs,GlobalMaxs,err)
     class(Epetra_MpiComm)     ,intent(in)    :: this
     integer(c_int), dimension(:) ,intent(in)    :: PartialMaxs &
     !<  On entry, contains the list of values, usually partial maxs computed locally, using these Partial Maxs, the max across all processors will be computed.
     integer(c_int), dimension(:) ,intent(inout) :: GlobalMaxs &
     !< On exit, contains the list of maxs computed across all processors.
-    integer(c_int)               ,intent(in)    :: count &
-    !< On entry, contains the length of the list of values.
     type(error) ,optional, intent(inout) :: err &
     !< Return any error information.
   end subroutine
@@ -332,14 +308,12 @@ contains
   !> <BR> Epetra_MpiComm Global Max function. 
   !> @brief Take list of input values from all processors in the communicator, computes the max and returns the max to all     processors.
   !!  Implements Epetra_Comm. 
-  subroutine max_long(this,PartialMaxs,GlobalMaxs,count,err)
+  subroutine max_long(this,PartialMaxs,GlobalMaxs,err)
     class(Epetra_MpiComm)     ,intent(in)    :: this
     integer(c_long), dimension(:),intent(in)    :: PartialMaxs &
     !<  On entry, contains the list of values, usually partial maxs computed locally, using these Partial Maxs, the max across all processors will be computed.
     integer(c_long), dimension(:),intent(inout) :: GlobalMaxs &
     !< On exit, contains the list of maxs computed across all processors.
-    integer(c_int)               ,intent(in)    :: count &
-    !< On entry, contains the length of the list of values.
     type(error) ,optional, intent(inout) :: err &
     !< Return any error information.
   end subroutine
@@ -350,14 +324,12 @@ contains
   !> <BR> Epetra_MpiComm Global Min function. 
   !> @brief  Take list of input values from all processors in the communicator, computes the min and returns the min to all processors.
   !!  Implements Epetra_Comm. 
-  subroutine MinAll(this,PartialMins,GlobalMins,count,err)
+  subroutine MinAll(this,PartialMins,GlobalMins,err)
     class(Epetra_MpiComm)     ,intent(in)    :: this
     real(c_double), dimension(:) ,intent(in)    :: PartialMins &
     !<  On entry, contains the list of values, usually partial mins computed locally; using these Partial Mins, the min across all processors will be computed.
     real(c_double), dimension(:) ,intent(inout) :: GlobalMins &
     !< On exit, contains the list of mins computed across all processors.
-    integer(c_int)               ,intent(in)    :: count &
-    !< On entry, contains the length of the list of values.
     type(error) ,optional, intent(inout) :: err &
     !< Return any error information.
   end subroutine
@@ -368,14 +340,12 @@ contains
   !> <BR> Epetra_MpiComm Global Min function. 
   !> @brief  Take list of input values from all processors in the communicator, computes the min and returns the min to all     processors.  
   !!  Implements Epetra_Comm. 
-  subroutine MinAll(this,PartialMins,GlobalMins,count,err)
+  subroutine MinAll(this,PartialMins,GlobalMins,err)
     class(Epetra_MpiComm)     ,intent(in)    :: this
     integer(c_int), dimension(:) ,intent(in)    :: PartialMins &
     !<  On entry, contains the list of values, usually partial mins computed locally; using these Partial Mins, the min across all processors will be computed.
     integer(c_int), dimension(:) ,intent(inout) :: GlobalMins &
     !< On exit, contains the list of mins computed across all processors.
-    integer(c_int)               ,intent(in)    :: count &
-    !< On entry, contains the length of the list of values.
     type(error) ,optional, intent(inout) :: err &
      !< Return any error information.
   end subroutine
@@ -386,14 +356,12 @@ contains
   !> <BR> Epetra_MpiComm Global Min function. 
   !> @brief  Take list of input values from all processors in the communicator, computes the min and returns the min to all     processors.
   !!  Implements Epetra_Comm.
-  subroutine min_long(this,PartialMins,GlobalMins,count,err)
+  subroutine min_long(this,PartialMins,GlobalMins,err)
     class(Epetra_MpiComm)     ,intent(in)    :: this
     integer(c_long), dimension(:),intent(in)    :: PartialMins &
     !<  On entry, contains the list of values, usually partial mins computed locally; using these Partial Mins, the min across all processors will be computed.
     integer(c_long), dimension(:),intent(inout) :: GlobalMins &
     !< On exit, contains the list of mins computed across all processors.
-    integer(c_int)               ,intent(in)    :: count &
-    !< On entry, contains the length of the list of values.
     type(error) ,optional, intent(inout) :: err &
      !< Return any error information.
   end subroutine
@@ -404,14 +372,12 @@ contains
   !> <BR> Epetra_MpiComm Scan Sum function. 
   !> @brief Take list of input values from all processors in the communicator, computes the scan sum and returns it to all processors such that processor i contains the sum of values from processor 0 up to and including processor i.
   !!  Implements Epetra_Comm.
-  subroutine ScanSum(this,MyVals,scan_sums,count,err)
+  subroutine ScanSum(this,MyVals,scan_sums,err)
     class(Epetra_MpiComm)     ,intent(in)    :: this
     real(c_double), dimension(:) ,intent(in)    :: MyVals  &
     !< On entry, contains the list of values to be summed across all processors.
     real(c_double), dimension(:) ,intent(inout) :: scan_sums &
     !< On exit, contains the list of values summed across processors 0 through i.
-    integer(c_int)               ,intent(in)    :: count &
-    !< On entry, contains the length of the list of values.
     type(error) ,optional, intent(inout) :: err &
     !< Return any error information.
   end subroutine
@@ -422,14 +388,12 @@ contains
   !> <BR> Epetra_MpiComm Scan Sum function. 
   !> @brief Take list of input values from all processors in the communicator, computes the scan sum and returns it to all     processors such that processor i contains the sum of values from processor 0 up to and including processor i.
   !!  Implements Epetra_Comm.
-  subroutine ScanSum(this,MyVals,scan_sums,count,err)
+  subroutine ScanSum(this,MyVals,scan_sums,err)
     class(Epetra_MpiComm)     ,intent(in)    :: this
     integer(c_int), dimension(:) ,intent(in)    :: MyVals  &
     !< On entry, contains the list of values to be summed across all processors.
     integer(c_int), dimension(:) ,intent(inout) :: scan_sums &
     !< On exit, contains the list of values summed across processors 0 through i.
-    integer(c_int)               ,intent(in)    :: count &
-    !< On entry, contains the length of the list of values.
     type(error) ,optional, intent(inout) :: err &
      !< Return any error information.
   end subroutine
@@ -440,14 +404,12 @@ contains
   !> <BR> Epetra_MpiComm Scan Sum function.  
   !> @brief Take list of input values from all processors in the communicator, computes the scan sum and returns it to all     processors such that processor i contains the sum of values from processor 0 up to and including processor i.
   !!  Implements Epetra_Comm.
-  subroutine ScanSum_long(this,MyVals,scan_sums,count,err)
+  subroutine ScanSum_long(this,MyVals,scan_sums,err)
     class(Epetra_MpiComm)     ,intent(in)    :: this
     integer(c_long), dimension(:),intent(in)    :: MyVals &
     !< On entry, contains the list of values to be summed across all processors.
     integer(c_long), dimension(:),intent(inout) :: scan_sums &
     !< On exit, contains the list of values summed across processors 0 through i.
-    integer(c_int)               ,intent(in)    :: count &
-    !< On entry, contains the length of the list of values.
     type(error) ,optional, intent(inout) :: err &
     !< Return any error information.
   end subroutine

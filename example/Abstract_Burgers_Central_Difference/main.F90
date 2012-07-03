@@ -424,7 +424,7 @@ contains
     allocate(f_v(NumMyElements))
     f_v=this%f%ExtractCopy()
     allocate(f(NumGlobalElements))
-    call comm%GatherAll(f_v,f,NumMyElements)
+    call comm%GatherAll(f_v,f)
     do i=1,NumGlobalElements
      if (comm%MyPID()==0) write(20,'(2(E20.12,1x))') x_node(i),f(i)
     enddo

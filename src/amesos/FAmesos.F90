@@ -74,7 +74,6 @@ contains
     type(FT_Amesos_ID_t) ,intent(in) :: id
     this%Amesos_id = id
     call this%register_self
-    print *,'Inside Amesos constructor'
   end subroutine
   
   function from_struct(id) result(new_Amesos)
@@ -82,7 +81,6 @@ contains
     type(FT_Amesos_ID_t) ,intent(in) :: id
     new_Amesos%Amesos_id = id
     call new_Amesos%register_self
-    print *,'Inside Amesos constructor'
   end function
   
   subroutine create_(this)

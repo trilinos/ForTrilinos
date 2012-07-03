@@ -100,175 +100,156 @@ module FEpetra_Comm
       import:: Epetra_Comm
       class(Epetra_Comm) ,intent(in)  :: this
     end subroutine
-    subroutine broadcast_double_interface(this,MyVals,count,root,err) 
+    subroutine broadcast_double_interface(this,MyVals,root,err) 
       use iso_c_binding ,only: c_int,c_double
       import:: Epetra_Comm, error
       class(Epetra_Comm)           ,intent(in)    :: this
       real(c_double) ,dimension(:) ,intent(inout) :: MyVals
-      integer(c_int)               ,intent(in)    :: count
       integer(c_int)               ,intent(in)    :: root
       type(error)   ,optional      ,intent(inout) :: err
     end subroutine
-    subroutine broadcast_int_interface(this,MyVals,count,root,err) 
+    subroutine broadcast_int_interface(this,MyVals,root,err) 
       use iso_c_binding ,only: c_int
       import:: Epetra_Comm,error
       class(Epetra_Comm)           ,intent(in)    :: this
       integer(c_int) ,dimension(:) ,intent(inout) :: MyVals
-      integer(c_int)               ,intent(in)    :: count
       integer(c_int)               ,intent(in)    :: root
       type(error)   ,optional      ,intent(inout) :: err
     end subroutine
-    subroutine broadcast_long_interface(this,MyVals,count,root,err) 
+    subroutine broadcast_long_interface(this,MyVals,root,err) 
       use iso_c_binding ,only: c_int,c_long
       import:: Epetra_Comm,error
       class(Epetra_Comm)           ,intent(in)    :: this
       integer(c_long),dimension(:) ,intent(inout) :: MyVals
-      integer(c_int)               ,intent(in)    :: count
       integer(c_int)               ,intent(in)    :: root
       type(error)   ,optional      ,intent(inout) :: err
     end subroutine
-    subroutine broadcast_char_interface(this,MyVals,count,root,err) 
+    subroutine broadcast_char_interface(this,MyVals,root,err) 
       use iso_c_binding ,only: c_int,c_char
       import:: Epetra_Comm, error
       class(Epetra_Comm)                 ,intent(in)    :: this
       character(kind=c_char),dimension(:),intent(inout) :: MyVals
-      integer(c_int)                     ,intent(in)    :: count
       integer(c_int)                     ,intent(in)    :: root
       type(error)   ,optional            ,intent(inout) :: err
     end subroutine
-    subroutine gather_double_interface(this,MyVals,AllVals,count,err) 
+    subroutine gather_double_interface(this,MyVals,AllVals,err) 
       use iso_c_binding ,only: c_int,c_double
       import:: Epetra_Comm, error
       class(Epetra_Comm)         ,intent(in)    :: this
       real(c_double),dimension(:),intent(in)    :: MyVals
       real(c_double),dimension(:),intent(inout) :: AllVals
-      integer(c_int)             ,intent(in)    :: count
       type(error)   ,optional    ,intent(inout) :: err
     end subroutine
-    subroutine gather_int_interface(this,MyVals,AllVals,count,err) 
+    subroutine gather_int_interface(this,MyVals,AllVals,err) 
       use iso_c_binding ,only: c_int
       import:: Epetra_Comm, error
       class(Epetra_Comm)         ,intent(in)   :: this
       integer(c_int),dimension(:),intent(in)   :: MyVals
       integer(c_int),dimension(:),intent(inout):: AllVals
-      integer(c_int)             ,intent(in)    :: count
       type(error)   ,optional    ,intent(inout) :: err
     end subroutine
-    subroutine gather_long_interface(this,MyVals,AllVals,count,err) 
+    subroutine gather_long_interface(this,MyVals,AllVals,err) 
       use iso_c_binding ,only: c_int,c_long
       import:: Epetra_Comm, error
       class(Epetra_Comm)           ,intent(in)    :: this
       integer(c_long),dimension(:) ,intent(in)    :: MyVals
       integer(c_long),dimension(:) ,intent(inout):: AllVals
-      integer(c_int)               ,intent(in)    :: count
       type(error)   ,optional      ,intent(inout) :: err
     end subroutine
-    subroutine sum_double_interface(this,PartialSums,GlobalSums,count,err) 
+    subroutine sum_double_interface(this,PartialSums,GlobalSums,err) 
       use iso_c_binding ,only: c_int,c_double
       import:: Epetra_Comm, error
       class(Epetra_Comm)           ,intent(in)    :: this
       real(c_double),dimension(:)  ,intent(in)    :: PartialSums
       real(c_double),dimension(:)  ,intent(inout) :: GlobalSums
-      integer(c_int)               ,intent(in)    :: count
       type(error)   ,optional      ,intent(inout) :: err
     end subroutine
-    subroutine sum_int_interface(this,PartialSums,GlobalSums,count,err) 
+    subroutine sum_int_interface(this,PartialSums,GlobalSums,err) 
       use iso_c_binding ,only: c_int
       import:: Epetra_Comm, error
       class(Epetra_Comm)           ,intent(in)    :: this
       integer(c_int), dimension(:) ,intent(in)    :: PartialSums
       integer(c_int), dimension(:) ,intent(inout) :: GlobalSums
-      integer(c_int)               ,intent(in)    :: count
       type(error)   ,optional      ,intent(inout) :: err
     end subroutine
-    subroutine sum_long_interface(this,PartialSums,GlobalSums,count,err) 
+    subroutine sum_long_interface(this,PartialSums,GlobalSums,err) 
       use iso_c_binding ,only: c_int,c_long
       import:: Epetra_Comm, error
       class(Epetra_Comm)           ,intent(in)    :: this
       integer(c_long), dimension(:),intent(in)    :: PartialSums
       integer(c_long), dimension(:),intent(inout) :: GlobalSums
-      integer(c_int)               ,intent(in)    :: count
       type(error)   ,optional      ,intent(inout) :: err
     end subroutine
-    subroutine max_double_interface(this,PartialMaxs,GlobalMaxs,count,err) 
+    subroutine max_double_interface(this,PartialMaxs,GlobalMaxs,err) 
       use iso_c_binding ,only: c_int,c_double
       import:: Epetra_Comm, error
       class(Epetra_Comm)           ,intent(in)    :: this
       real(c_double), dimension(:) ,intent(in)    :: PartialMaxs
       real(c_double), dimension(:) ,intent(inout) :: GlobalMaxs
-      integer(c_int)               ,intent(in)    :: count
       type(error)   ,optional      ,intent(inout) :: err
     end subroutine
-    subroutine max_int_interface(this,PartialMaxs,GlobalMaxs,count,err) 
+    subroutine max_int_interface(this,PartialMaxs,GlobalMaxs,err) 
       use iso_c_binding ,only: c_int,c_int
       import:: Epetra_Comm, error
       class(Epetra_Comm)           ,intent(in)    :: this
       integer(c_int), dimension(:) ,intent(in)    :: PartialMaxs
       integer(c_int), dimension(:) ,intent(inout) :: GlobalMaxs
-      integer(c_int)               ,intent(in)    :: count
       type(error)   ,optional      ,intent(inout) :: err
     end subroutine
-    subroutine max_long_interface(this,PartialMaxs,GlobalMaxs,count,err) 
+    subroutine max_long_interface(this,PartialMaxs,GlobalMaxs,err) 
       use iso_c_binding ,only: c_int,c_long
       import:: Epetra_Comm, error
       class(Epetra_Comm)           ,intent(in)    :: this
       integer(c_long), dimension(:),intent(in)    :: PartialMaxs
       integer(c_long), dimension(:),intent(inout) :: GlobalMaxs
-      integer(c_int)               ,intent(in)    :: count
       type(error)   ,optional      ,intent(inout) :: err
     end subroutine
-    subroutine min_double_interface(this,PartialMins,GlobalMins,count,err) 
+    subroutine min_double_interface(this,PartialMins,GlobalMins,err) 
       use iso_c_binding ,only: c_int,c_double
       import:: Epetra_Comm, error
       class(Epetra_Comm)           ,intent(in)    :: this
       real(c_double), dimension(:) ,intent(in)    :: PartialMins
       real(c_double), dimension(:) ,intent(inout) :: GlobalMins
-      integer(c_int)               ,intent(in)    :: count
       type(error)   ,optional      ,intent(inout) :: err
     end subroutine
-    subroutine min_int_interface(this,PartialMins,GlobalMins,count,err) 
+    subroutine min_int_interface(this,PartialMins,GlobalMins,err) 
       use iso_c_binding ,only: c_int,c_int
       import:: Epetra_Comm, error
       class(Epetra_Comm)           ,intent(in)    :: this
       integer(c_int), dimension(:) ,intent(in)    :: PartialMins
       integer(c_int), dimension(:) ,intent(inout) :: GlobalMins
-      integer(c_int)               ,intent(in)    :: count
       type(error)   ,optional      ,intent(inout) :: err
     end subroutine
-    subroutine min_long_interface(this,PartialMins,GlobalMins,count,err) 
+    subroutine min_long_interface(this,PartialMins,GlobalMins,err) 
       use iso_c_binding ,only: c_int,c_long
       import:: Epetra_Comm, error
       class(Epetra_Comm)           ,intent(in)    :: this
       integer(c_long), dimension(:),intent(in)    :: PartialMins
       integer(c_long), dimension(:),intent(inout) :: GlobalMins
-      integer(c_int)               ,intent(in)    :: count
       type(error)   ,optional      ,intent(inout) :: err
     end subroutine
-    subroutine ScanSum_double_interface(this,MyVals,scan_sums,count,err) 
+    subroutine ScanSum_double_interface(this,MyVals,scan_sums,err) 
       use iso_c_binding ,only: c_int,c_double
       import:: Epetra_Comm, error
       class(Epetra_Comm)           ,intent(in)    :: this
       real(c_double), dimension(:) ,intent(in)    :: MyVals
       real(c_double), dimension(:) ,intent(inout) :: scan_sums 
-      integer(c_int)               ,intent(in)    :: count
       type(error)   ,optional      ,intent(inout) :: err
     end subroutine
-    subroutine ScanSum_int_interface(this,MyVals,scan_sums,count,err) 
+    subroutine ScanSum_int_interface(this,MyVals,scan_sums,err) 
       use iso_c_binding ,only: c_int
       import:: Epetra_Comm, error
       class(Epetra_Comm)           ,intent(in)    :: this
       integer(c_int), dimension(:) ,intent(in)    :: MyVals
       integer(c_int), dimension(:) ,intent(inout) :: scan_sums 
-      integer(c_int)               ,intent(in)    :: count
       type(error)   ,optional      ,intent(inout) :: err
     end subroutine
-    subroutine ScanSum_long_interface(this,MyVals,scan_sums,count,err) 
+    subroutine ScanSum_long_interface(this,MyVals,scan_sums,err) 
       use iso_c_binding ,only: c_int,c_long
       import:: Epetra_Comm, error
       class(Epetra_Comm)           ,intent(in)    :: this
       integer(c_long), dimension(:),intent(in)    :: MyVals
       integer(c_long), dimension(:),intent(inout) :: scan_sums 
-      integer(c_int)               ,intent(in)    :: count
       type(error)   ,optional      ,intent(inout) :: err
     end subroutine
     function MyPID_interface(this)
