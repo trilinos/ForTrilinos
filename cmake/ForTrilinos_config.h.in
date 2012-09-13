@@ -106,15 +106,6 @@
 #define ForTrilinos_ENABLE_OBJECT_ORIENTED
 #endif
 
-#if 0
-/* If OO-Fortran features should be built */
-/* Deprecated configure flag use ForTrilinos_ENABLE_OBJECT_ORIENTED */
-#endif
-
-#if @ForTrilinos_config_ForTrilinos_ENABLE_EXTENDED@
-#define ForTrilinos_ENABLE_EXTENDED
-#endif
-
 
 #if 0
 /* If Amesos is built */
