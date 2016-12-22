@@ -1,0 +1,35 @@
+#!/bin/bash
+rm -f  CMakeCache.txt
+rm -rf CMakeFiles/
+EXTRA_ARGS=$@
+ARGS=(
+    -D CMAKE_BUILD_TYPE=Debug
+    -D BUILD_SHARED_LIBS=ON
+    ### COMPILERS AND FLAGS ###
+    -D Trilinos_ENABLE_FORTRAN=ON
+    -D CMAKE_CXX_FLAGS="-Wall -Wpedantic"
+    ### TPLs ###
+    -D TPL_ENABLE_MPI=ON
+    -D TPL_ENABLE_BLAS=ON
+    -D TPL_ENABLE_LAPACK=ON
+    ### ETI ###
+    -D Trilinos_ENABLE_EXPLICIT_INSTANTIATION=ON
+    ### PACKAGES CONFIGURATION ###
+    -D Trilinos_ENABLE_ALL_PACKAGES=OFF
+    -D Trilinos_ENABLE_ALL_OPTIONAL_PACKAGES=OFF
+    -D Trilinos_ENABLE_TESTS=OFF
+    -D Trilinos_ENABLE_EXAMPLES=OFF
+    -D Trilinos_ENABLE_Amesos=ON
+    -D Trilinos_ENABLE_AztecOO=ON
+    -D Trilinos_ENABLE_Epetra=ON
+    -D Trilinos_ENABLE_EpetraExt=ON
+    -D Trilinos_ENABLE_Ifpack=ON
+    -D Trilinos_ENABLE_Stratimikos=ON
+    -D Trilinos_ENABLE_Tpetra=ON
+    ### FORTRILINOS ###
+    -D Trilinos_ENABLE_CTrilinos=ON
+    -D Trilinos_ENABLE_ForTrilinos=ON
+        -D ForTrilinos_ENABLE_EXAMPLES=ON
+        -D ForTrilinos_ENABLE_TESTS=ON
+    )
+cmake "${ARGS[@]}" $EXTRA_ARGS $TRILINOS_DIR
