@@ -1,0 +1,71 @@
+FROM ubuntu:16.04
+
+ARG NPROC=4
+
+RUN apt-get update && apt-get install -y \
+        build-essential \
+        gfortran \
+        libopenmpi-dev \
+        curl \
+        cmake \
+        git \
+        wget \
+        vim \
+        autoconf \
+        lcov \
+        valgrind \
+        libssl-dev \
+        libpng-dev \
+        libfreetype6-dev \
+        libxft-dev \
+        libsqlite3-dev \
+        libbz2-dev \
+        libatlas-base-dev \
+        zlib1g-dev \
+        python2.7-dev \
+        && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set up time zone
+RUN echo "America/New_York" > /etc/timezone && \
+    dpkg-reconfigure --frontend noninteractive tzdata
+
+ENV PREFIX=/scratch
+RUN mkdir -p ${PREFIX} && \
+    cd ${PREFIX} && \
+    mkdir archive && \
+    mkdir source && \
+    mkdir build && \
+    mkdir install
+
+# download Trilinos
+RUN export TRILINOS_VERSION=12.10.1 && \
+    export TRILINOS_URL="https://github.com/trilinos/Trilinos/archive/trilinos-release-12-10-1.tar.gz" && \
+    export TRILINOS_ARCHIVE="${PREFIX}/archive/trilinos-${TRILINOS_VERSION}.tar.xz" && \
+    export TRILINOS_SOURCE_DIR="${PREFIX}/source/trilinos/${TRILINOS_VERSION}" && \
+    export TRILINOS_BUILD_DIR="${PREFIX}/build/trilinos/${TRILINOS_VERSION}" && \
+    wget --quiet ${TRILINOS_URL} --output-document=${TRILINOS_ARCHIVE} && \
+    mkdir -p ${TRILINOS_SOURCE_DIR} && \
+    tar -xf ${TRILINOS_ARCHIVE} -C ${TRILINOS_SOURCE_DIR} --strip-components=1 && \
+    ln -s ${TRILINOS_SOURCE_DIR} ${PREFIX}/source/trilinos/release && \
+    mkdir -p ${TRILINOS_BUILD_DIR} && \
+    rm -rf ${TRILINOS_ARCHIVE}
+
+ENV TRILINOS_DIR=/scratch/source/trilinos/release
+
+# download CTrilinos
+RUN export CTRILINOS_VERSION=12.10.1 && \
+    export CTRILINOS_URL="https://github.com/trilinos/CTrilinos/archive/trilinos-release-12-10-1.tar.gz" && \
+    export CTRILINOS_ARCHIVE="${PREFIX}/archive/ctrilinos-${TRILINOS_VERSION}.tar.xz" && \
+    export CTRILINOS_SOURCE_DIR="${PREFIX}/source/ctrilinos/${TRILINOS_VERSION}" && \
+    wget --quiet ${CTRILINOS_URL} --output-document=${CTRILINOS_ARCHIVE} && \
+    mkdir -p ${CTRILINOS_SOURCE_DIR} && \
+    tar -xf ${CTRILINOS_ARCHIVE} -C ${CTRILINOS_SOURCE_DIR} --strip-components=1 && \
+    ln -s ${CTRILINOS_SOURCE_DIR} ${TRILINOS_DIR}/packages/CTrilinos && \
+    rm -rf ${CTRILINOS_ARCHIVE}
+
+# append the option flag --allow-run-as-root to mpiexec
+RUN echo '#!/usr/bin/env bash' > /usr/local/bin/mpiexec && \
+    echo '/usr/bin/mpiexec --allow-run-as-root "$@"' >> /usr/local/bin/mpiexec && \
+    chmod +x /usr/local/bin/mpiexec
