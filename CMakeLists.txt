@@ -3,7 +3,7 @@
 # A) Define the package
 #
 
-TRIBITS_PACKAGE(ForTrilinos Fortran)
+TRIBITS_PACKAGE(ForTrilinos CXX Fortran)
 
 #
 # B) Set up package-specific options
@@ -14,7 +14,10 @@ TRIBITS_ADD_SHOW_DEPRECATED_WARNINGS_OPTION()
 #
 # C) Add the libraries, tests, and examples
 #
-INCLUDE(UseSWIG)
+
+# SWIG setup
+FIND_PACKAGE(SWIG REQUIRED)
+INCLUDE(SwigModules)
 
 ADD_SUBDIRECTORY(src)
 
