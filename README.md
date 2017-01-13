@@ -28,3 +28,4 @@ We encourage you to contribute to ForTrilinos! Please check out the
 
 License
 -------
+ForTrilinos is licensed under a BSD license.
