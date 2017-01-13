@@ -5,9 +5,7 @@ ForTrilinos
 
 ForTrilinos provides object-oriented Fortran interfaces to [Trilinos](http://github.com/Trilinos/Trilinos) C++ packages.
 
-**This code contains the new implementation of the ForTrilinos interfaces using SWIG code generation. At the moment, it is not ready for public consumption as the code and interfaces may change rapidly and backwards compatibility is not guaranteed.**
-
-**The stable version of the original ForTrilinos code developed prior to 2012 is available in [`v1`](https://github.com/trilinos/ForTrilinos/tree/v1) branch. It is no longer developed or maintained.**
+**This code contains the original implementation of the ForTrilinos interfaces developed prior to 2012. This code is no longer developed or maintained. The new ForTrilinos implementation using SWIG code generation procedures will be released later. The active development is currently done in the `develop` branch of the [repository](https://github.com/Trilinos/ForTrilinos).**
 
 Documentation
 -------------
