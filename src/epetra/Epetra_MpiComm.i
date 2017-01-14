@@ -1,4 +1,4 @@
-%module Epetra1
+%module Epetra
 
 %{
 #include "Epetra_DLLExportMacro.h"
@@ -13,12 +13,12 @@
 %ignore Epetra_Comm::MaxAll(long *, long *, int) const;
 %ignore Epetra_Comm::MinAll(long *, long *, int) const;
 %ignore Epetra_Comm::ScanSum(long *, long *, int) const;
-
-// POSTPONE
 %ignore Epetra_Comm::Clone;
-%ignore Epetra_Comm::CreateDirectory;
-%ignore Epetra_Comm::CreateDistributor;
-%ignore Epetra_Comm::PrintInfo;
+
+// Don't need these for now
+%ignore PrintInfo;
+%ignore CreateDistributor;
+%ignore CreateDirectory;
 
 %include "Epetra_DLLExportMacro.h"
 %include "Epetra_Comm.h"
