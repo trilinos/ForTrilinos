@@ -1,4 +1,4 @@
-%module Epetra1
+%module Epetra_Comm
 
 %{
 #include "Epetra_DLLExportMacro.h"
