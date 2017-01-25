@@ -11,6 +11,9 @@ TRIBITS_PACKAGE(ForTrilinos CXX Fortran)
 TRIBITS_ADD_DEBUG_OPTION()
 TRIBITS_ADD_SHOW_DEPRECATED_WARNINGS_OPTION()
 
+
+SET(CMAKE_Fortran_FLAGS "-ffree-line-length-none ${CMAKE_Fortran_FLAGS}")
+
 #
 # C) Add the libraries, tests, and examples
 #
