@@ -5,8 +5,8 @@
 #include "Epetra_SerialComm.h"
 %}
 
+%include "Epetra_Object.i"
 %include "Epetra_Comm.i"
-/* %include "Epetra_Object.i" */
 
 // Fortran's INTEGER(C_LONG) is the same as either INTEGER(C_INT) or INTEGER(C_LONG_LONG)
 // This breaks generic interfaces due to ambiguity
