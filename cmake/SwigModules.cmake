@@ -128,7 +128,7 @@ function(MAKE_SWIG)
   set(SWIG_MODULE_${PARSE_MODULE}_EXTRA_DEPS ${DEPENDENCIES} )
 
   if (PARSE_LANGUAGE STREQUAL "FORTRAN")
-    LIST(APPEND PARSE_EXTRASRC "${CMAKE_CURRENT_BINARY_DIR}/${PARSE_MODULE}.f90")
+    LIST(APPEND PARSE_EXTRASRC "${CMAKE_CURRENT_SOURCE_DIR}/${PARSE_MODULE}.f90")
     # Usually SWIG wrapper libraries need to be built as shared libraries that
     # are never linked into the CMake dependencies themselves (the "MODULE"
     # type); not the case with fortran. This relies on the patched UseSWIG.

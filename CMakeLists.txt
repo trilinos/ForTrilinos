@@ -17,10 +17,11 @@ SET(CMAKE_Fortran_FLAGS "-ffree-line-length-none ${CMAKE_Fortran_FLAGS}")
 #
 # C) Add the libraries, tests, and examples
 #
-
-# SWIG setup
-FIND_PACKAGE(SWIG REQUIRED)
-INCLUDE(SwigModules)
+IF (${PACKAGE_NAME}_ENABLE_DeveloperMode)
+    # SWIG setup
+    FIND_PACKAGE(SWIG REQUIRED)
+    INCLUDE(SwigModules)
+ENDIF()
 
 ADD_SUBDIRECTORY(src)
 
