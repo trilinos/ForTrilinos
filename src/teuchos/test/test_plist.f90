@@ -24,7 +24,6 @@ subroutine test_plist()
 
     type(ParameterList) :: plist, sublist
     integer :: val
-    logical :: bool_result
     integer, dimension(6) :: test_int = (/ -1, 1, 3, 3, 5, 7 /)
     real(C_DOUBLE), dimension(4) :: test_dbl = (/ 0.1d0, 1.9d0, -2.0d0, 4.0d0 /)
 
