@@ -1,0 +1,20 @@
+#ifndef FORTEUCHOS_CONFIG_HPP
+#define FORTEUCHOS_CONFIG_HPP
+
+/* Options */
+
+#cmakedefine HAVE_MPI
+
+/* Optional Dependencies */
+
+/* Optional TPL */
+
+
+/*
+ If deprecated warnings are on, and the compiler supports them, then
+ define FORTEUCHOS_DEPRECATED to emit deprecated warnings.  Otherwise,
+ give it an empty definition.
+*/
+@FORTRILINOS_DEPRECATED_DECLARATIONS@
+
+#endif /* FORTEUCHOS_CONFIG_HPP */

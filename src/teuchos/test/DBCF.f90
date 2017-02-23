@@ -18,11 +18,11 @@ module DBCF_M
        character (len = *), intent(in) :: file; ! file path
        integer, intent(in) :: line; !line number
        flush(error_unit)
-       flush(output_unit)       
-       write(error_unit, '(A,A,A,A,A,I5,A)') "Assertion: ", c, ", failed in ", file, ", line: ", line, "." 
-       write(output_unit, '(A,A,A,A,A,I5,A)') "Assertion: ", c, ", failed in ", file, ", line: ", line, "." 
+       flush(output_unit)
+       write(error_unit, '(A,A,A,A,A,I5,A)') "Assertion: ", c, ", failed in ", file, ", line: ", line, "."
+       write(output_unit, '(A,A,A,A,A,I5,A)') "Assertion: ", c, ", failed in ", file, ", line: ", line, "."
        flush(error_unit)
-       flush(output_unit)       
+       flush(output_unit)
        stop DBC_ASSERT_FAIL;
      end subroutine
 
@@ -33,9 +33,9 @@ module DBCF_M
          character (len = *), intent(in) :: file; ! file path
          integer, intent(in) :: line; !line numberi
          write(error_unit, '(A,A,A)') "The following message was provided: '", m, "' "
-         write(error_unit, '(A,A,A,A,A,I5,A)') "Insist: ", c, ", failed in ", file, ", line: ", line, "." 
+         write(error_unit, '(A,A,A,A,A,I5,A)') "Insist: ", c, ", failed in ", file, ", line: ", line, "."
          write(output_unit, '(A,A,A)') "The following message was provided: '", m, "' "
-         write(output_unit, '(A,A,A,A,A,I5,A)') "Insist: ", c, ", failed in ", file, ", line: ", line, "." 
+         write(output_unit, '(A,A,A,A,A,I5,A)') "Insist: ", c, ", failed in ", file, ", line: ", line, "."
          flush(error_unit)
          flush(output_unit)
          stop DBC_INSIST_FAIL;

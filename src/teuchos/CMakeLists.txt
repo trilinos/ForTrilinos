@@ -6,37 +6,26 @@
 ## Copyright (c) 2017 Oak Ridge National Laboratory, UT-Battelle, LLC.
 ##---------------------------------------------------------------------------##
 
-# Include the build directory so downstream Fortran code (including the unit
-# tests) can use the generated modules
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
-# Include the source dir to allow access to headers
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
+##---------------------------------------------------------------------------##
+## Define the package
+##---------------------------------------------------------------------------##
 
-SET(EXTRA_SOURCE
-  DBCF.f90)
+TRIBITS_SUBPACKAGE(Teuchos)
 
-IF (${PACKAGE_NAME}_ENABLE_DeveloperMode)
-  # Generate wrapper and proxy files
-  SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}")
+##---------------------------------------------------------------------------##
+## Add library, test, and examples.
+##---------------------------------------------------------------------------##
 
-  MAKE_SWIG(MODULE forteuchos
-    SOURCE forteuchos.i
-    EXTRASRC ${EXTRA_SOURCE}
-    )
+TRIBITS_CONFIGURE_FILE(${PACKAGE_NAME}_config.hpp)
 
-ELSE()
-  # Use pre-generated files
-  SET(GEN_SOURCE
-    forteuchos.f90
-    forteuchosFORTRAN_wrap.cxx)
-
-  TRIBITS_ADD_LIBRARY(
-    forteuchos
-    SOURCES ${GEN_SOURCE} ${EXTRA_SOURCE})
-ENDIF()
+ADD_SUBDIRECTORY(src)
 
 TRIBITS_ADD_TEST_DIRECTORIES(test)
 
+#TRIBITS_ADD_EXAMPLE_DIRECTORIES(example)
+
 ##---------------------------------------------------------------------------##
-## end of teuchos/CMakeLists.txt
+## D) Do standard postprocessing
 ##---------------------------------------------------------------------------##
+
+TRIBITS_SUBPACKAGE_POSTPROCESS()

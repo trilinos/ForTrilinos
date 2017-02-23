@@ -46,7 +46,7 @@ subroutine test_plist()
     call plist%set("deleteme", 123)
     EXPECT_TRUE(plist%is_parameter('deleteme'))
     call plist%remove("deleteme")
-    EXPECT_FALSE(plist%is_parameter("deleteme"))
+    EXPECT_FALSE(plist%is_parameter('deleteme'))
 
     call sublist%create("sublist")
     call sublist%set("anotherval", 4.0d0)

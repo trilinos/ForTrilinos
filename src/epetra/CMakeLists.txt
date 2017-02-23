@@ -1,20 +1,23 @@
-INCLUDE_DIRECTORIES(${${PACKAGE_NAME}_INCLUDE_DIRS})
+##---------------------------------------------------------------------------##
+## Define the package
+##---------------------------------------------------------------------------##
 
-IF (${PACKAGE_NAME}_ENABLE_DeveloperMode)
-    # Generate wrapper and proxy files
-    SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}")
+TRIBITS_SUBPACKAGE(Epetra)
 
-    MAKE_SWIG(MODULE forepetra
-        SOURCE forepetra.i
-        DEPLIBS ${Trilinos_LIBRARIES}
-    )
-ELSE()
-    APPEND_GLOB(SOURCES *.f90)
-    APPEND_GLOB(SOURCES *.cxx)
+##---------------------------------------------------------------------------##
+## Add library, test, and examples.
+##---------------------------------------------------------------------------##
 
-    TRIBITS_ADD_LIBRARY(
-      ForEpetra.so
-      SOURCES ${SOURCES}
-      )
-ENDIF()
+TRIBITS_CONFIGURE_FILE(${PACKAGE_NAME}_config.hpp)
 
+ADD_SUBDIRECTORY(src)
+
+#TRIBITS_ADD_TEST_DIRECTORIES(test)
+
+#TRIBITS_ADD_EXAMPLE_DIRECTORIES(example)
+
+##---------------------------------------------------------------------------##
+## D) Do standard postprocessing
+##---------------------------------------------------------------------------##
+
+TRIBITS_SUBPACKAGE_POSTPROCESS()
