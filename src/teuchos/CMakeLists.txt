@@ -6,25 +6,28 @@
 ## Copyright (c) 2017 Oak Ridge National Laboratory, UT-Battelle, LLC.
 ##---------------------------------------------------------------------------##
 
+# Include the build directory so downstream Fortran code (including the unit
+# tests) can use the generated modules
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+
+
 IF (${PACKAGE_NAME}_ENABLE_DeveloperMode)
   # Generate wrapper and proxy files
   SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-  MAKE_SWIG(MODULE Teuchos
-    SOURCE Teuchos.i
-    DEPLIBS ${Trilinos_LIBRARIES}
+  MAKE_SWIG(MODULE forteuchos
+    SOURCE forteuchos.i
     )
+
 ELSE()
   # Use pre-generated files
   SET(SOURCES
-    teuchos.f90
-    teuchosFORTRAN_wrap.cxx)
+    forteuchos.f90
+    forteuchosFORTRAN_wrap.cxx)
 
   TRIBITS_ADD_LIBRARY(
-    Teuchos.so
-    SOURCES ${SOURCES}
-    DEPLIBS ${Trilinos_LIBRARIES}
-    )
+    ForTeuchos.so
+    SOURCES ${SOURCES})
 ENDIF()
 
 ##---------------------------------------------------------------------------##

@@ -3,7 +3,7 @@
 !
 ! Do not make changes to this file unless you know what you are doing--modify
 ! the SWIG interface file instead.
-module teuchos
+module forteuchos
  use, intrinsic :: ISO_C_BINDING
  implicit none
 
@@ -474,4 +474,4 @@ contains
    character(len=*) :: STRING
    call swigc_save_to_xml(plist%ptr, STRING, len(STRING))
   end subroutine
-end module teuchos
+end module forteuchos

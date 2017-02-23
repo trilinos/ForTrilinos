@@ -3,7 +3,7 @@
 !
 ! Do not make changes to this file unless you know what you are doing--modify
 ! the SWIG interface file instead.
-module Epetra
+module forepetra
  use, intrinsic :: ISO_C_BINDING
  implicit none
 
@@ -58,7 +58,7 @@ module Epetra
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
-   character(C_CHAR), dimension(*), intent(in) :: farg1
+   character(C_CHAR) :: farg1
    integer(C_INT), intent(in) :: farg2
   end function
   function swigc_new_Epetra_Object__SWIG_4(farg1) &
@@ -66,7 +66,7 @@ module Epetra
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
-   character(C_CHAR), dimension(*), intent(in) :: farg1
+   character(C_CHAR) :: farg1
   end function
   function swigc_new_Epetra_Object__SWIG_5(farg1) &
      bind(C, name="swigc_new_Epetra_Object__SWIG_5") &
@@ -84,7 +84,7 @@ module Epetra
      bind(C, name="swigc_Epetra_Object_SetLabel")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
-   character(C_CHAR), dimension(*), intent(in) :: farg2
+   character(C_CHAR) :: farg2
   end subroutine
   subroutine swigc_Epetra_Object_SetTracebackMode(farg1) &
      bind(C, name="swigc_Epetra_Object_SetTracebackMode")
@@ -139,7 +139,7 @@ contains
   subroutine swigf_new_Epetra_Object__SWIG_3(self, Label, TracebackModeIn)
    use, intrinsic :: ISO_C_BINDING
    class(Epetra_Object) :: self
-   character(len=*), intent(in) :: Label
+   character(len=*) :: Label
    integer(C_INT), intent(in) :: TracebackModeIn
    if (c_associated(self%ptr)) call self%release()
    self%ptr = swigc_new_Epetra_Object__SWIG_3(Label, TracebackModeIn)
@@ -148,7 +148,7 @@ contains
   subroutine swigf_new_Epetra_Object__SWIG_4(self, Label)
    use, intrinsic :: ISO_C_BINDING
    class(Epetra_Object) :: self
-   character(len=*), intent(in) :: Label
+   character(len=*) :: Label
    if (c_associated(self%ptr)) call self%release()
    self%ptr = swigc_new_Epetra_Object__SWIG_4(Label)
    self%own = .true.
@@ -173,7 +173,7 @@ contains
   subroutine swigf_Epetra_Object_SetLabel(self, Label)
    use, intrinsic :: ISO_C_BINDING
    class(Epetra_Object) :: self
-   character(len=*), intent(in) :: Label
+   character(len=*) :: Label
    call swigc_Epetra_Object_SetLabel(self%ptr, Label)
   end subroutine
   subroutine swigf_Epetra_Object_SetTracebackMode(TracebackModeValue)
@@ -198,4 +198,4 @@ contains
    integer(C_INT) :: fresult
    fresult = swigc_get_Epetra_Object_TracebackMode()
   end function
-end module Epetra
+end module forepetra

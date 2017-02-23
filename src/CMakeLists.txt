@@ -24,5 +24,5 @@ SET(SOURCES "")
 # Define the targets for package's library(s)
 #
 
-#ADD_SUBDIRECTORY(teuchos)
+ADD_SUBDIRECTORY(teuchos)
 ADD_SUBDIRECTORY(epetra)

@@ -1,13 +1,13 @@
 //---------------------------------*-SWIG-*----------------------------------//
 /*!
- * \file   parameterlist/teuchos.i
+ * \file   parameterlist/forteuchos.i
  * \author Seth R Johnson
  * \date   Tue Dec 06 17:54:39 2016
  * \note   Copyright (c) 2016 Oak Ridge National Laboratory, UT-Battelle, LLC.
  */
 //---------------------------------------------------------------------------//
 
-%module teuchos
+%module forteuchos
 
 %include "Teuchos_RCP.i"
 %include "Teuchos_ParameterList.i"

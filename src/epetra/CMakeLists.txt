@@ -1,12 +1,11 @@
-INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/packages/epetra/src)
-INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR}/packages/epetra/src)
+INCLUDE_DIRECTORIES(${${PACKAGE_NAME}_INCLUDE_DIRS})
 
 IF (${PACKAGE_NAME}_ENABLE_DeveloperMode)
     # Generate wrapper and proxy files
     SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-    MAKE_SWIG(MODULE Epetra
-        SOURCE Epetra.i
+    MAKE_SWIG(MODULE forepetra
+        SOURCE forepetra.i
         DEPLIBS ${Trilinos_LIBRARIES}
     )
 ELSE()
@@ -14,9 +13,8 @@ ELSE()
     APPEND_GLOB(SOURCES *.cxx)
 
     TRIBITS_ADD_LIBRARY(
-      Epetra.so
+      ForEpetra.so
       SOURCES ${SOURCES}
-      DEPLIBS ${Trilinos_LIBRARIES}
       )
 ENDIF()
 
