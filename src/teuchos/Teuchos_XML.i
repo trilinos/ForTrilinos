@@ -14,7 +14,8 @@
 void load_from_xml(const Teuchos::RCP<Teuchos::ParameterList>& plist,
                    const char* STRING, int SIZE)
 {
-    Teuchos::updateParametersFromXmlFile(std::string(STRING, SIZE), plist);
+    Teuchos::updateParametersFromXmlFile(std::string(STRING, SIZE),
+                                         Teuchos::inOutArg(*plist));
 }
 
 void save_to_xml(const Teuchos::ParameterList& plist,
