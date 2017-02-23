@@ -82,14 +82,14 @@ namespace ForTrilinos {
 
     // Build Stratimikos solver
     Stratimikos::DefaultLinearSolverBuilder linearSolverBuilder;
-#ifdef HAVE_FORTRILINOS_IFPACK2
+#ifdef HAVE_FORTRILINOSSIMPLEINTERFACE_IFPACK2
     {
       typedef Thyra::PreconditionerFactoryBase<SC>          Base;
       typedef Thyra::Ifpack2PreconditionerFactory<Matrix>   Impl;
       linearSolverBuilder.setPreconditioningStrategyFactory(Teuchos::abstractFactoryStd<Base, Impl>(), "Ifpack2");
     }
 #endif
-#ifdef HAVE_FORTRILINOS_MUELU
+#ifdef HAVE_FORTRILINOSSIMPLEINTERFACE_MUELU
     Stratimikos::enableMueLu<LO,GO,NO>(linearSolverBuilder);
 #endif
 

@@ -2,6 +2,7 @@ program main
   use ISO_FORTRAN_ENV
   use, intrinsic :: ISO_C_BINDING
   use simpleinterface
+  use forteuchos
   use mpi
   implicit none
 
@@ -13,6 +14,8 @@ program main
   real(c_double), dimension(:), allocatable :: lhs, rhs, values
 
   integer(c_int) :: cur_pos, offset
+
+  type(ParameterList) :: plist
 
   integer :: ierr
 
@@ -29,8 +32,8 @@ program main
   call MPI_COMM_SIZE(MPI_COMM_WORLD, num_procs, ierr)
 
   ! Read in the parameterList
-  ! ParameterList paramList;
-  ! Teuchos::updateParametersFromXmlFileAndBroadcast("stratimikos.xml", Teuchos::Ptr<ParameterList>(&paramList), *comm);
+  call plist%create("Stratimikos")
+  call load_from_xml(plist, "stratimikos.xml")
 
   ! Step 0: Construct tri-diagonal matrix, and rhs
   allocate(row_inds(n))
@@ -75,7 +78,7 @@ program main
   call setup_matrix(n, row_inds, row_ptrs, nnz, col_inds, values)
 
   ! // Step 3: setup the solver
-  ! si.setup_solver(Teuchos::rcpFromRef(paramList));
+  call setup_solver(plist)
 
   ! // Step 4: solve the system
   call solve(n, rhs, lhs)

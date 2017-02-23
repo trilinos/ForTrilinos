@@ -7,5 +7,5 @@ APPEND_GLOB(HEADERS *.hpp)
 
 TRIBITS_ADD_LIBRARY(
   simple_interface
-  SOURCES simple_interface.cpp simple_interface_wrap.cxx simple_interface.f90
+  SOURCES simple_interface.cpp simple_interface_wrap.cxx simple_interface.f90 forteuchos.f90
   )

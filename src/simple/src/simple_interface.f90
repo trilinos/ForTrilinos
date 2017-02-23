@@ -5,11 +5,12 @@
 ! the SWIG interface file instead.
 module SimpleInterface
  use, intrinsic :: ISO_C_BINDING
+ use forteuchos
  implicit none
 
  ! PUBLIC METHODS AND TYPES
  public :: setup_matrix
- ! public :: setup_solver
+ public :: setup_solver
  public :: solve
  public :: finalize
  public :: init
@@ -41,11 +42,11 @@ module SimpleInterface
    integer(C_INT), dimension(*), intent(in) :: farg5
    real(C_DOUBLE), dimension(*), intent(in) :: farg6
   end subroutine
-  ! subroutine swigc_setup_solver(farg1) &
-     ! bind(C, name="swigc_setup_solver")
-   ! use, intrinsic :: ISO_C_BINDING
-   ! type(C_PTR), value :: farg1
-  ! end subroutine
+  subroutine swigc_setup_solver(farg1) &
+     bind(C, name="swigc_setup_solver")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+  end subroutine
   subroutine swigc_solve(farg1, farg2, farg3) &
      bind(C, name="swigc_solve")
    use, intrinsic :: ISO_C_BINDING
@@ -80,11 +81,11 @@ contains
    real(C_DOUBLE), dimension(:), intent(in) :: values
    call swigc_setup_matrix(numRows, rowInds, rowPtrs, numNnz, colInds, values)
   end subroutine
-  ! subroutine setup_solver(paramList)
-   ! use, intrinsic :: ISO_C_BINDING
-   ! class(SWIGTYPE_p_Teuchos__RCPT_Teuchos__ParameterList_t) :: paramList
-   ! call swigc_setup_solver(paramList%ptr)
-  ! end subroutine
+  subroutine setup_solver(paramList)
+   use, intrinsic :: ISO_C_BINDING
+   class(ParameterList) :: paramList
+   call swigc_setup_solver(paramList%ptr)
+  end subroutine
   subroutine solve(size, rhs, lhs)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT), intent(in) :: size

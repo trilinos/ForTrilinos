@@ -48,14 +48,14 @@ void swigc_setup_matrix(int* farg1, int* farg2, int* farg3, int* farg4, int* far
 }
 
 
-// void swigc_setup_solver(void* farg1) {
-  // ForTrilinos::SimpleInterface& si = ForTrilinos::SimpleInterface::getInstance();
-//
-  // Teuchos::RCP< Teuchos::ParameterList > *arg1 = 0 ;
-//
-  // arg1 = (Teuchos::RCP< Teuchos::ParameterList > *)(farg1);
-  // si.setup_solver((Teuchos::RCP< Teuchos::ParameterList > const &)*arg1);
-// }
+void swigc_setup_solver(void* farg1) {
+  ForTrilinos::SimpleInterface& si = ForTrilinos::SimpleInterface::getInstance();
+
+  Teuchos::RCP< Teuchos::ParameterList > *arg1 = 0 ;
+
+  arg1 = (Teuchos::RCP< Teuchos::ParameterList > *)(farg1);
+  si.setup_solver((Teuchos::RCP< Teuchos::ParameterList > const &)*arg1);
+}
 
 
 void swigc_solve(int* farg1, double* farg2, double* farg3) {
