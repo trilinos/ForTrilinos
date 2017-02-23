@@ -127,30 +127,35 @@ function(MAKE_SWIG)
 
   set(SWIG_MODULE_${PARSE_MODULE}_EXTRA_DEPS ${DEPENDENCIES} )
 
+  # Set up compiler flags
+  set(_ORIG_CMAKE_SWIG_FLAGS ${CMAKE_SWIG_FLAGS})
+  list(APPEND CMAKE_SWIG_FLAGS "${CMAKE_SWIG_${PARSE_LANGUAGE}_FLAGS}")
+
   if (PARSE_LANGUAGE STREQUAL "FORTRAN")
-    LIST(APPEND PARSE_EXTRASRC "${CMAKE_CURRENT_SOURCE_DIR}/${PARSE_MODULE}.f90")
-    # Usually SWIG wrapper libraries need to be built as shared libraries that
-    # are never linked into the CMake dependencies themselves (the "MODULE"
-    # type); not the case with fortran. This relies on the patched UseSWIG.
-    if(BUILD_SHARED_LIBS)
-      SET(SWIG_LIBRARY_TYPE SHARED)
-    else()
-      SET(SWIG_LIBRARY_TYPE STATIC)
-    endif()
+    set(swig_fortran_generated_src
+      "${CMAKE_CURRENT_SOURCE_DIR}/${PARSE_MODULE}.f90")
+
+    # Create the SWIG module
+    SWIG_MODULE_INITIALIZE(${PARSE_MODULE} ${PARSE_LANGUAGE})
+    SWIG_ADD_SOURCE_TO_MODULE(${PARSE_MODULE} swig_wrapper_src ${SRC_FILE})
+    get_directory_property(swig_extra_clean_files ADDITIONAL_MAKE_CLEAN_FILES)
+    list(APPEND swig_extra_clean_files "${swig_wrapper_src}"
+      "${swig_fortran_generated_src}")
+    set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES
+                "${swig_extra_clean_files}")
+
+    TRIBITS_ADD_LIBRARY(${PARSE_MODULE}
+      SOURCES ${PARSE_EXTRASRC}
+              ${swig_wrapper_src}
+              ${swig_fortran_generated_src})
   else()
-    SET(SWIG_LIBRARY_TYPE MODULE)
+    # Use the standard SWIG calls
+    SWIG_ADD_MODULE(${PARSE_MODULE} ${PARSE_LANGUAGE}
+      ${SRC_FILE} ${PARSE_EXTRASRC})
   endif()
 
-  # Set up compiler flags
-  SET(_ORIG_CMAKE_SWIG_FLAGS ${CMAKE_SWIG_FLAGS})
-  LIST(APPEND CMAKE_SWIG_FLAGS "${CMAKE_SWIG_${PARSE_LANGUAGE}_FLAGS}")
-
-  # Create the SWIG module
-  swig_add_module(${PARSE_MODULE} ${PARSE_LANGUAGE}
-    ${SRC_FILE} ${PARSE_EXTRASRC})
-
   # Restore original SWIG flags
-  SET(CMAKE_SWIG_FLAGS _ORIG_CMAKE_SWIG_FLAGS)
+  set(CMAKE_SWIG_FLAGS _ORIG_CMAKE_SWIG_FLAGS)
 
   # Mangled name of the SWIG target (export to parent)
   set(BUILT_LIBRARY ${SWIG_MODULE_${PARSE_MODULE}_REAL_NAME})
