@@ -31,7 +31,7 @@ ELSE()
     forteuchosFORTRAN_wrap.cxx)
 
   TRIBITS_ADD_LIBRARY(
-    ForTeuchos.so
+    forteuchos
     SOURCES ${GEN_SOURCE} ${EXTRA_SOURCE})
 ENDIF()
 
