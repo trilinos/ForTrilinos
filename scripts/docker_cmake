@@ -30,6 +30,7 @@ ARGS=(
 
     -D Trilinos_ENABLE_Amesos=ON
     -D Trilinos_ENABLE_AztecOO=ON
+    -D Trilinos_ENABLE_Belos=ON
     -D Trilinos_ENABLE_Epetra=ON
     -D Trilinos_ENABLE_EpetraExt=ON
     -D Trilinos_ENABLE_Ifpack=ON
