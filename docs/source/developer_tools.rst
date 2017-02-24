@@ -1,0 +1,45 @@
+Developer Tools
+===============
+
+Run ForTrilinos development environment in a Docker container
+-------------------------------------------------------------
+
+To start a container from the ForTrilinos pre-built Docker image that is used in the
+automated build on Jenkins, run:
+
+.. code:: bash
+
+    [host]$ cd docker
+    [host]$ docker-compose pull # pull the most up-to-date version of the ForTrilinos base image
+    [host]$ docker-compose -p $USER up -d
+
+This will mount the local ForTrilinos source directory into the container at
+``$TRILINOS_DIR/packages/ForTrilinos``. The environment variable ``TRILINOS_DIR``
+is already defined and contains the path to a release version of Trilinos that
+has been downloaded into the ForTrilinos base image. The ``-p`` command line option
+will let you run multiple isolated environments on a single host. Here the
+service name will be prefixed by your username which will prevent interferences
+with other developers on the same system.
+
+Then to launch an interactive Bash session inside that container, do:
+
+.. code:: bash
+
+    [host]$ docker exec -it ForTrilinos_dev bash
+
+Configure, build, and test as you would usually do:
+
+.. code::
+
+    [container]$ cd $TRILINOS_DIR/packages/ForTrilinos
+    [container]$ mkdir build && cd build
+    [container]$ ../scripts/docker_cmake
+    [container]$ make -j<N>
+    [container]$ ctest -j<N>
+
+Do not forget to cleanup after yourself:
+
+.. code:: bash
+
+    [container]$ exit
+    [host]$ docker-compose stop && docker-compose rm
