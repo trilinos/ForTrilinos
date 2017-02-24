@@ -1,4 +1,7 @@
 program main
+
+#include "FortranTestMacros.h"
+
   use ISO_FORTRAN_ENV
   use, intrinsic :: ISO_C_BINDING
   use simpleinterface
@@ -27,9 +30,11 @@ program main
 
   ! Initialize MPI subsystem
   call MPI_INIT(ierr)
+  EXPECT_EQ(ierr, 0)
 
   call MPI_COMM_RANK(MPI_COMM_WORLD, my_rank,   ierr)
   call MPI_COMM_SIZE(MPI_COMM_WORLD, num_procs, ierr)
+  EXPECT_EQ(ierr, 0)
 
   ! Read in the parameterList
   call plist%create("Stratimikos")
@@ -71,21 +76,27 @@ program main
   end do
 
   ! Step 1: initialize a handle
-  call init()
+  call init(ierr)
   ! call init(mpi_comm)
+  EXPECT_EQ(ierr, 0)
 
   ! Step 2: setup the problem
-  call setup_matrix(n, row_inds, row_ptrs, nnz, col_inds, values)
+  call setup_matrix(n, row_inds, row_ptrs, nnz, col_inds, values, ierr)
+  EXPECT_EQ(ierr, 0)
 
   ! // Step 3: setup the solver
-  call setup_solver(plist)
+  call setup_solver(plist, ierr)
+  EXPECT_EQ(ierr, 0)
 
   ! // Step 4: solve the system
-  call solve(n, rhs, lhs)
+  call solve(n, rhs, lhs, ierr)
+  EXPECT_EQ(ierr, 0)
 
   ! Step 5: clean up
-  call finalize()
+  call finalize(ierr)
+  EXPECT_EQ(ierr, 0)
 
   call MPI_FINALIZE(ierr)
+  EXPECT_EQ(ierr, 0)
 
 end program

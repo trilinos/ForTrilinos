@@ -17,7 +17,7 @@ TRIBITS_ADD_EXECUTABLE_AND_TEST(
 
 TRIBITS_ADD_EXECUTABLE_AND_TEST(
   simple_interface_test_fortran
-  SOURCES simple_interface_test.f90
+  SOURCES simple_interface_test.f90 DBCF.f90
   COMM serial mpi
   DEPLIBS simple_interface
   COMM serial mpi
