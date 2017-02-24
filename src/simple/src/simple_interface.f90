@@ -28,11 +28,12 @@ module SimpleInterface
    ! use, intrinsic :: ISO_C_BINDING
    ! type(C_PTR), value :: farg1
   ! end subroutine
-  subroutine swigc_init__SWIG_1() &
+  subroutine swigc_init__SWIG_1(farg1) &
      bind(C, name="swigc_init__SWIG_1")
    use, intrinsic :: ISO_C_BINDING
+   integer(C_INT), intent(out) :: farg1
   end subroutine
-  subroutine swigc_setup_matrix(farg1, farg2, farg3, farg4, farg5, farg6) &
+  subroutine swigc_setup_matrix(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
      bind(C, name="swigc_setup_matrix")
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT), intent(in) :: farg1
@@ -41,22 +42,26 @@ module SimpleInterface
    integer(C_INT), intent(in) :: farg4
    integer(C_INT), dimension(*), intent(in) :: farg5
    real(C_DOUBLE), dimension(*), intent(in) :: farg6
+   integer(C_INT), intent(out) :: farg7
   end subroutine
-  subroutine swigc_setup_solver(farg1) &
+  subroutine swigc_setup_solver(farg1, farg2) &
      bind(C, name="swigc_setup_solver")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
+   integer(C_INT), intent(out) :: farg2
   end subroutine
-  subroutine swigc_solve(farg1, farg2, farg3) &
+  subroutine swigc_solve(farg1, farg2, farg3, farg4) &
      bind(C, name="swigc_solve")
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT), intent(in) :: farg1
    real(C_DOUBLE), dimension(*), intent(in) :: farg2
    real(C_DOUBLE), dimension(*), intent(inout) :: farg3
+   integer(C_INT), intent(out) :: farg4
   end subroutine
-  subroutine swigc_finalize() &
+  subroutine swigc_finalize(farg1) &
      bind(C, name="swigc_finalize")
    use, intrinsic :: ISO_C_BINDING
+   integer(C_INT), intent(out) :: farg1
   end subroutine
  end interface
 
@@ -67,11 +72,12 @@ contains
    ! type(SWIGTYPE_MPI_Comm) :: comm
    ! call swigc_init__SWIG_0(comm%ptr)
   ! end subroutine
-  subroutine init__SWIG_1()
+  subroutine init__SWIG_1(ierr)
    use, intrinsic :: ISO_C_BINDING
-   call swigc_init__SWIG_1()
+   integer(C_INT), intent(out) :: ierr
+   call swigc_init__SWIG_1(ierr)
   end subroutine
-  subroutine setup_matrix(numRows, rowInds, rowPtrs, numNnz, colInds, values)
+  subroutine setup_matrix(numRows, rowInds, rowPtrs, numNnz, colInds, values, ierr)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT), intent(in) :: numRows
    integer(C_INT), dimension(:), intent(in) :: rowInds
@@ -79,22 +85,26 @@ contains
    integer(C_INT), intent(in) :: numNnz
    integer(C_INT), dimension(:), intent(in) :: colInds
    real(C_DOUBLE), dimension(:), intent(in) :: values
-   call swigc_setup_matrix(numRows, rowInds, rowPtrs, numNnz, colInds, values)
+   integer(C_INT), intent(out) :: ierr
+   call swigc_setup_matrix(numRows, rowInds, rowPtrs, numNnz, colInds, values, ierr)
   end subroutine
-  subroutine setup_solver(paramList)
+  subroutine setup_solver(paramList, ierr)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: paramList
-   call swigc_setup_solver(paramList%ptr)
+   integer(C_INT), intent(out) :: ierr
+   call swigc_setup_solver(paramList%ptr, ierr)
   end subroutine
-  subroutine solve(size, rhs, lhs)
+  subroutine solve(size, rhs, lhs, ierr)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT), intent(in) :: size
    real(C_DOUBLE), dimension(:), intent(in) :: rhs
    real(C_DOUBLE), dimension(:), intent(inout) :: lhs
-   call swigc_solve(size, rhs, lhs)
+   integer(C_INT), intent(out) :: ierr
+   call swigc_solve(size, rhs, lhs, ierr)
   end subroutine
-  subroutine finalize()
+  subroutine finalize(ierr)
    use, intrinsic :: ISO_C_BINDING
-   call swigc_finalize()
+   integer(C_INT), intent(out) :: ierr
+   call swigc_finalize(ierr)
   end subroutine
 end module SimpleInterface
