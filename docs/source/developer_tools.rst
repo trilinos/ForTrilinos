@@ -43,3 +43,17 @@ Do not forget to cleanup after yourself:
 
     [container]$ exit
     [host]$ docker-compose stop && docker-compose rm
+
+Auto-generating source files using SWIG
+---------------------------------------
+
+ForTrilinos carries generated `.f90` and `_wrap.cxx` files with its source. Thus, introducing new `.i` files requires a
+developer to generate the corresponding wrapper and proxy files. To do this automatically, the CMake configuration of
+the build must includ
+
+.. code-block:: bash
+
+    -D ForTrilinos_ENABLE_DeveloperMode=ON
+
+It also requires a SWIG installation in the `$PATH` with Fortran generator enabled. It is available at
+`sethrj/swig <https://github.com/sethrj/swig>`_ in the `fortran` branch.

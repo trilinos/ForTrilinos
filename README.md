@@ -2,6 +2,7 @@ ForTrilinos
 ===========
 
 [![Stories in Ready](https://badge.waffle.io/Trilinos/ForTrilinos.svg?label=ready&title=Ready)](http://waffle.io/Trilinos/ForTrilinos)
+[![Documentation Status](http://readthedocs.org/projects/fortrilinos/badge/?version=latest)](http://fortrilinos.readthedocs.io/en/latest/?badge=latest)
 
 ForTrilinos provides object-oriented Fortran interfaces to [Trilinos](http://github.com/Trilinos/Trilinos) C++ packages.
 
@@ -13,6 +14,8 @@ Documentation
 -------------
 
 * [Website](http://trilinos.org/packages/fortrilinos)
+
+* [Documentation](http://datatransferkit.readthedocs.org)
 
 Questions, Bug Reporting, and Issue Tracking
 --------------------------------------------
