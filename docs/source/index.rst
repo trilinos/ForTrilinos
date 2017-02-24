@@ -11,6 +11,10 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   overview
+   install
+   developer_tools
+
 
 
 Indices and tables
