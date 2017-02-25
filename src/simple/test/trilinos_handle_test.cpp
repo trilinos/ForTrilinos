@@ -63,9 +63,10 @@ int main(int argc, char *argv[]) {
     colInds.resize(nnz);
     values. resize(nnz);
 
+    // The solution lhs[i] = i
     std::vector<double> lhs(n), rhs(n);
-    for (int i = 0; i < n; i++)
-      rhs[i] = 1.0;
+    rhs[0]   = (myRank == 0          ?       -1.0 : 0.0);
+    rhs[n-1] = (myRank == numProcs-1 ? offset + n : 0.0);
 
     // Step 1: initialize a handle
     ForTrilinos::TrilinosHandle si;
@@ -79,6 +80,17 @@ int main(int argc, char *argv[]) {
 
     // Step 4: solve the system
     si.solve(n, rhs.data(), lhs.data());
+
+    // Check the solution
+    double norm = 0.0;
+    for (int i = 0; i < n; i++)
+      norm += (lhs[i] - (offset+i))*(lhs[i] - (offset+i));
+    norm = sqrt(norm);
+
+    std::cout << "norm = " << norm << std::endl;
+
+    // TODO: Get the tolerance out of the parameter list
+    TEUCHOS_ASSERT(norm < 1e-6);
 
     // Step 5: clean up
     si.finalize();

@@ -17,6 +17,7 @@ program main
   real(c_double), dimension(:), allocatable :: lhs, rhs, values
 
   integer(c_int) :: cur_pos, offset
+  real(c_double) :: norm
 
   type(ParameterList) :: plist
   type(TrilinosHandle) :: tri_handle
@@ -71,9 +72,24 @@ program main
   nnz = cur_pos-1
 
   allocate(lhs(n))
-  allocate(rhs(n))
   do i = 1, n
-    rhs(i) = 1.0
+    lhs(i) = 0.0
+  end do
+
+  ! The solution lhs(i) = i-1
+  allocate(rhs(n))
+  if (my_rank > 0) then
+    rhs(1) = 0.0
+  else
+    rhs(1) = -1.0
+  end if
+  if (my_rank .ne. num_procs-1) then
+    rhs(n) = 0.0
+  else
+    rhs(n) = offset+n
+  end if
+  do i = 2, n-1
+    rhs(i) = 0.0
   end do
 
   ! Step 0: crate a handle
@@ -95,6 +111,19 @@ program main
   ! // Step 4: solve the system
   call tri_handle%solve(n, rhs, lhs, ierr)
   EXPECT_EQ(ierr, 0)
+
+  ! Check the solution
+  norm = 0.0
+  do i = 1, n
+    norm = norm + (lhs(i) - (offset+i-1))*(lhs(i) - (offset+i-1));
+  end do
+  norm = sqrt(norm);
+
+  write(0,*) "norm = ", norm
+
+  ! TODO: Get the tolerance out of the parameter list
+  EXPECT_TRUE(norm < 1e-6)
+
 
   ! Step 5: clean up
   call tri_handle%finalize(ierr)
