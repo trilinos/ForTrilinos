@@ -99,4 +99,6 @@ program main
   call MPI_FINALIZE(ierr)
   EXPECT_EQ(ierr, 0)
 
+  call plist%release()
+
 end program
