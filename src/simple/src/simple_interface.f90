@@ -15,19 +15,19 @@ module SimpleInterface
  public :: finalize
  public :: init
  interface init
-  ! module procedure :: init__SWIG_0, init__SWIG_1
-  module procedure :: init__SWIG_1
+  module procedure :: init__SWIG_0, init__SWIG_1
  end interface
  ! TYPES
 
  ! WRAPPER DECLARATIONS
  private
  interface
-  ! subroutine swigc_init__SWIG_0(farg1) &
-     ! bind(C, name="swigc_init__SWIG_0")
-   ! use, intrinsic :: ISO_C_BINDING
-   ! type(C_PTR), value :: farg1
-  ! end subroutine
+  subroutine swigc_init__SWIG_0(farg1, farg2) &
+     bind(C, name="swigc_init__SWIG_0")
+   use, intrinsic :: ISO_C_BINDING
+   integer :: farg1
+   integer(C_INT), intent(out) :: farg2
+  end subroutine
   subroutine swigc_init__SWIG_1(farg1) &
      bind(C, name="swigc_init__SWIG_1")
    use, intrinsic :: ISO_C_BINDING
@@ -67,11 +67,12 @@ module SimpleInterface
 
 contains
   ! FORTRAN PROXY CODE
-  ! subroutine init__SWIG_0(comm)
-   ! use, intrinsic :: ISO_C_BINDING
-   ! type(SWIGTYPE_MPI_Comm) :: comm
-   ! call swigc_init__SWIG_0(comm%ptr)
-  ! end subroutine
+  subroutine init__SWIG_0(comm, ierr)
+   use, intrinsic :: ISO_C_BINDING
+   integer :: comm
+   integer(C_INT), intent(out) :: ierr
+   call swigc_init__SWIG_0(comm, ierr)
+  end subroutine
   subroutine init__SWIG_1(ierr)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT), intent(out) :: ierr

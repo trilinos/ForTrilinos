@@ -3,14 +3,21 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-// void swigc_init__SWIG_0(void* farg1, int* farg2) {
-  // ForTrilinos::SimpleInterface& si = ForTrilinos::SimpleInterface::getInstance();
-//
-  // MPI_Comm arg1 ;
-//
-  // arg1 = *(MPI_Comm *)(farg1);
-  // si.init(arg1);
-// }
+void swigc_init__SWIG_0(void* farg1, int* farg2) {
+  *farg2 = 0;
+
+  try {
+    ForTrilinos::SimpleInterface& si = ForTrilinos::SimpleInterface::getInstance();
+
+    MPI_Comm arg1 ;
+
+    arg1 = MPI_Comm_f2c(*(MPI_Fint *)(farg1));
+    si.init(arg1);
+
+  } catch(...) {
+    *farg2 = 1;
+  }
+}
 
 
 void swigc_init__SWIG_1(int* farg1) {

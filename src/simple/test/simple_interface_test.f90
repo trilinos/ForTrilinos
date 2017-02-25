@@ -76,8 +76,8 @@ program main
   end do
 
   ! Step 1: initialize a handle
-  call init(ierr)
-  ! call init(mpi_comm)
+  ! call init(ierr)
+  call init(MPI_COMM_WORLD, ierr)
   EXPECT_EQ(ierr, 0)
 
   ! Step 2: setup the problem
