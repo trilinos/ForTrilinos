@@ -13,7 +13,7 @@
 
 namespace ForTrilinos {
 
-  class SimpleInterface {
+  class TrilinosHandle {
   private:
     typedef double                                  SC;
     typedef int                                     LO;
@@ -27,19 +27,13 @@ namespace ForTrilinos {
     typedef Teuchos::ParameterList                  ParameterList;
     typedef Thyra::LinearOpWithSolveBase<SC>        LOWS;
 
-  private:
-    // Constructors
-    SimpleInterface() : status_(NOT_INITIALIZED) { }
-
   public:
 
-    static SimpleInterface& getInstance() {
-      static SimpleInterface instance;
-      return instance;
-    }
+    // Constructors
+    TrilinosHandle() : status_(NOT_INITIALIZED) { }
 
-    SimpleInterface(const SimpleInterface&) = delete;
-    void operator=(const SimpleInterface&)  = delete;
+    TrilinosHandle(const TrilinosHandle&) = delete;
+    void operator=(const TrilinosHandle&) = delete;
 
     // Initialize
     void init(MPI_Comm comm = MPI_COMM_WORLD);

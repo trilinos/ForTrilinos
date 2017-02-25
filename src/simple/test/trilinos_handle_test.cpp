@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-#include "simple_interface.hpp"
+#include "trilinos_handle.hpp"
 
 int main(int argc, char *argv[]) {
   bool success = false;
@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
       rhs[i] = 1.0;
 
     // Step 1: initialize a handle
-    ForTrilinos::SimpleInterface& si = ForTrilinos::SimpleInterface::getInstance();
+    ForTrilinos::TrilinosHandle si;
     si.init(*rawMpiComm);
 
     // Step 2: setup the problem

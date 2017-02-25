@@ -1,4 +1,4 @@
-#include "simple_interface.hpp"
+#include "trilinos_handle.hpp"
 
 #include <Stratimikos_DefaultLinearSolverBuilder.hpp>
 
@@ -16,7 +16,7 @@
 
 namespace ForTrilinos {
 
-  void SimpleInterface::init(MPI_Comm comm) {
+  void TrilinosHandle::init(MPI_Comm comm) {
     using Teuchos::rcp;
 
     TEUCHOS_ASSERT(status_ == NOT_INITIALIZED);
@@ -33,7 +33,7 @@ namespace ForTrilinos {
     status_ = INITIALIZED;
   }
 
-  void SimpleInterface::setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) {
+  void TrilinosHandle::setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) {
     using Teuchos::ArrayRCP;
     using Teuchos::RCP;
     using Teuchos::rcp;
@@ -64,7 +64,7 @@ namespace ForTrilinos {
     status_ = MATRIX_SETUP;
   }
 
-  void SimpleInterface::setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList) {
+  void TrilinosHandle::setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList) {
     using Teuchos::RCP;
     using Teuchos::rcp;
     using Teuchos::rcp_implicit_cast;
@@ -105,7 +105,7 @@ namespace ForTrilinos {
     status_ = SOLVER_SETUP;
   }
 
-  void SimpleInterface::solve(int size, const double* rhs, double* lhs) const {
+  void TrilinosHandle::solve(int size, const double* rhs, double* lhs) const {
     using Teuchos::RCP;
     using Teuchos::ArrayRCP;
 
@@ -137,7 +137,7 @@ namespace ForTrilinos {
       std::cout << status << std::endl;
   }
 
-  void SimpleInterface::finalize() {
+  void TrilinosHandle::finalize() {
     // No need to check the status_, we can finalize() at any moment.
     comm_          = Teuchos::null;
     A_             = Teuchos::null;

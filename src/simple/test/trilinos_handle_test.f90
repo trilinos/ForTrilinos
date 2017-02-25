@@ -19,6 +19,7 @@ program main
   integer(c_int) :: cur_pos, offset
 
   type(ParameterList) :: plist
+  type(TrilinosHandle) :: tri_handle
 
   integer :: ierr
 
@@ -75,30 +76,34 @@ program main
     rhs(i) = 1.0
   end do
 
+  ! Step 0: crate a handle
+  call tri_handle%create()
+
   ! Step 1: initialize a handle
   ! call init(ierr)
-  call init(MPI_COMM_WORLD, ierr)
+  call tri_handle%init(MPI_COMM_WORLD, ierr)
   EXPECT_EQ(ierr, 0)
 
   ! Step 2: setup the problem
-  call setup_matrix(n, row_inds, row_ptrs, nnz, col_inds, values, ierr)
+  call tri_handle%setup_matrix(n, row_inds, row_ptrs, nnz, col_inds, values, ierr)
   EXPECT_EQ(ierr, 0)
 
   ! // Step 3: setup the solver
-  call setup_solver(plist, ierr)
+  call tri_handle%setup_solver(plist, ierr)
   EXPECT_EQ(ierr, 0)
 
   ! // Step 4: solve the system
-  call solve(n, rhs, lhs, ierr)
+  call tri_handle%solve(n, rhs, lhs, ierr)
   EXPECT_EQ(ierr, 0)
 
   ! Step 5: clean up
-  call finalize(ierr)
+  call tri_handle%finalize(ierr)
   EXPECT_EQ(ierr, 0)
 
   call MPI_FINALIZE(ierr)
   EXPECT_EQ(ierr, 0)
 
   call plist%release()
+  call tri_handle%release()
 
 end program
