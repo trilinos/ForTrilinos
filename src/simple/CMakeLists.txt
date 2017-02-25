@@ -5,6 +5,12 @@
 TRIBITS_SUBPACKAGE(SimpleInterface)
 
 ##---------------------------------------------------------------------------##
+## Generate config file and add it to the list
+##---------------------------------------------------------------------------##
+TRIBITS_CONFIGURE_FILE(${PACKAGE_NAME}_config.hpp)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+
+##---------------------------------------------------------------------------##
 ## Add library, test, and examples.
 ##---------------------------------------------------------------------------##
 

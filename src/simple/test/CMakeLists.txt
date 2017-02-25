@@ -1,5 +1,3 @@
-TRIBITS_CONFIGURE_FILE(${PACKAGE_NAME}_config.hpp)
-
 TRIBITS_COPY_FILES_TO_BINARY_DIR(Simple_cp
   SOURCE_FILES stratimikos.xml
  )
