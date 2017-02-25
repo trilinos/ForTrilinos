@@ -135,6 +135,10 @@ namespace ForTrilinos {
 
     if (!map->getComm()->getRank())
       std::cout << status << std::endl;
+
+    // FIXME: fix data copying
+    for (int i = 0; i < size; i++)
+      lhs[i] = Xdata[i];
   }
 
   void TrilinosHandle::finalize() {
