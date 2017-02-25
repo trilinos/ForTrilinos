@@ -1,4 +1,9 @@
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR}/..)  # For ForTrilinosSimpleInterface_config.hpp
+TRIBITS_CONFIGURE_FILE(${PACKAGE_NAME}_config.hpp)
+
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR}/../../teuchos/src) # for .mod files
+
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 APPEND_GLOB(SOURCES *.cpp)
 APPEND_GLOB(SOURCES *.cxx)
@@ -6,6 +11,6 @@ APPEND_GLOB(SOURCES *.f90)
 APPEND_GLOB(HEADERS *.hpp)
 
 TRIBITS_ADD_LIBRARY(
-  simple_interface
-  SOURCES simple_interface.cpp simple_interface_wrap.cxx simple_interface.f90 forteuchos.f90
-  )
+  forsimple_interface
+  SOURCES ${SOURCES}
+)
