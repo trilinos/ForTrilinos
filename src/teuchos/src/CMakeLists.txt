@@ -6,7 +6,7 @@
 ## Copyright (c) 2017 Oak Ridge National Laboratory, UT-Battelle, LLC.
 ##---------------------------------------------------------------------------##
 
-INCLUDE_DIRECTORIES(${${PACKAGE_NAME}_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 IF (ForTrilinos_ENABLE_DeveloperMode)
   # Generate wrapper and proxy files
