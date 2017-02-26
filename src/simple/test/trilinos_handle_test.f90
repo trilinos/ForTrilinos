@@ -1,3 +1,23 @@
+module x
+  use iso_c_binding
+  implicit none
+contains
+  subroutine matvec(n, x, y) BIND(C)
+    use, intrinsic :: ISO_C_BINDING
+    integer(c_int), intent(in), value :: n
+    real(c_double), dimension(:), intent(in) :: x(*)
+    real(c_double), dimension(:), intent(out) :: y(*)
+
+    integer(c_int) :: i
+
+    ! dummy operator
+    do i = 1, n
+      y(i) = x(i)
+    end do
+
+  end subroutine
+end module x
+
 program main
 
 #include "FortranTestMacros.h"
@@ -5,6 +25,7 @@ program main
   use ISO_FORTRAN_ENV
   use, intrinsic :: ISO_C_BINDING
   use simpleinterface
+  use x
   use forteuchos
   use mpi
   implicit none
@@ -42,6 +63,7 @@ program main
   call plist%create("Stratimikos")
   call load_from_xml(plist, "stratimikos.xml")
 
+  ! ------------------------------------------------------------------
   ! Step 0: Construct tri-diagonal matrix, and rhs
   allocate(row_inds(n))
   allocate(row_ptrs(n+1))
@@ -92,9 +114,12 @@ program main
     rhs(i) = 0.0
   end do
 
-  ! Step 0: crate a handle
+  ! Step 0.5: crate a handle
   call tri_handle%create()
 
+  ! ------------------------------------------------------------------
+  ! Explicit setup and solve
+  ! ------------------------------------------------------------------
   ! Step 1: initialize a handle
   ! call init(ierr)
   call tri_handle%init(MPI_COMM_WORLD, ierr)
@@ -102,13 +127,14 @@ program main
 
   ! Step 2: setup the problem
   call tri_handle%setup_matrix(n, row_inds, row_ptrs, nnz, col_inds, values, ierr)
+
   EXPECT_EQ(ierr, 0)
 
-  ! // Step 3: setup the solver
+  ! Step 3: setup the solver
   call tri_handle%setup_solver(plist, ierr)
   EXPECT_EQ(ierr, 0)
 
-  ! // Step 4: solve the system
+  ! Step 4: solve the system
   call tri_handle%solve(n, rhs, lhs, ierr)
   EXPECT_EQ(ierr, 0)
 
@@ -119,8 +145,6 @@ program main
   end do
   norm = sqrt(norm);
 
-  write(0,*) "norm = ", norm
-
   ! TODO: Get the tolerance out of the parameter list
   EXPECT_TRUE(norm < 1e-6)
 
@@ -128,6 +152,39 @@ program main
   ! Step 5: clean up
   call tri_handle%finalize(ierr)
   EXPECT_EQ(ierr, 0)
+
+  ! ------------------------------------------------------------------
+  ! Implicit (inversion-of-control) setup [ no solve ]
+  ! ------------------------------------------------------------------
+  ! Step 1: initialize a handle
+  ! call init(ierr)
+  call tri_handle%init(MPI_COMM_WORLD, ierr)
+  EXPECT_EQ(ierr, 0)
+
+  ! Step 2: setup the problem
+  ! Implicit (inversion-of-control) setup
+  call tri_handle%setup_operator(n, row_inds, C_FUNLOC(matvec), ierr)
+
+  EXPECT_EQ(ierr, 0)
+
+  ! Step 3: setup the solver
+  ! We cannot use most preconditioners without a matrix, so
+  ! we remove any from the parameter list
+  call plist%remove("Preconditioner Type")
+  call tri_handle%setup_solver(plist, ierr)
+  EXPECT_EQ(ierr, 0)
+
+  ! Step 4: solve the system
+  ! We only check that it runs, but do not check the result as
+  ! we are using a dummy operator
+  call tri_handle%solve(n, rhs, lhs, ierr)
+  EXPECT_EQ(ierr, 0)
+
+  ! Step 5: clean up
+  call tri_handle%finalize(ierr)
+  EXPECT_EQ(ierr, 0)
+
+  ! ------------------------------------------------------------------
 
   call MPI_FINALIZE(ierr)
   EXPECT_EQ(ierr, 0)

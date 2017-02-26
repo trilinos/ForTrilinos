@@ -19,6 +19,7 @@ module simpleinterface
   procedure, private :: init__SWIG_0 => swigf_TrilinosHandle_init__SWIG_0
   procedure, private :: init__SWIG_1 => swigf_TrilinosHandle_init__SWIG_1
   procedure :: setup_matrix => swigf_TrilinosHandle_setup_matrix
+  procedure :: setup_operator => swigf_TrilinosHandle_setup_operator
   procedure :: setup_solver => swigf_TrilinosHandle_setup_solver
   procedure :: solve => swigf_TrilinosHandle_solve
   procedure :: finalize => swigf_TrilinosHandle_finalize
@@ -59,6 +60,15 @@ module simpleinterface
    integer(C_INT), dimension(*), intent(in) :: farg6
    real(C_DOUBLE), dimension(*), intent(in) :: farg7
    integer(C_INT), intent(out) :: farg8
+  end subroutine
+  subroutine swigc_TrilinosHandle_setup_operator(farg1, farg2, farg3, farg4, farg5) &
+     bind(C, name="swigc_TrilinosHandle_setup_operator")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+   integer(C_INT), dimension(*), intent(in) :: farg3
+   type(C_FUNPTR), intent(in), value :: farg4
+   integer(C_INT), intent(out) :: farg5
   end subroutine
   subroutine swigc_TrilinosHandle_setup_solver(farg1, farg2, farg3) &
      bind(C, name="swigc_TrilinosHandle_setup_solver")
@@ -122,6 +132,15 @@ contains
    real(C_DOUBLE), dimension(:), intent(in) :: values
    integer(C_INT), intent(out) :: ierr
    call swigc_TrilinosHandle_setup_matrix(self%ptr, numRows, rowInds, rowPtrs, numNnz, colInds, values, ierr)
+  end subroutine
+  subroutine swigf_TrilinosHandle_setup_operator(self, numRows, rowInds, funcptr, ierr)
+   use, intrinsic :: ISO_C_BINDING
+   class(TrilinosHandle) :: self
+   integer(C_INT), intent(in) :: numRows
+   integer(C_INT), dimension(:), intent(in) :: rowInds
+   type(C_FUNPTR), intent(in), value :: funcptr
+   integer(C_INT), intent(out) :: ierr
+   call swigc_TrilinosHandle_setup_operator(self%ptr, numRows, rowInds, funcptr, ierr)
   end subroutine
   subroutine swigf_TrilinosHandle_setup_solver(self, paramList, ierr)
    use, intrinsic :: ISO_C_BINDING

@@ -230,6 +230,25 @@ SWIGEXPORT void swigc_TrilinosHandle_setup_matrix(void* farg1, int* farg2, int* 
 }
 
 
+SWIGEXPORT void swigc_TrilinosHandle_setup_operator(void* farg1, int* farg2, int* farg3, void (*funcptr)(int n, const double* x, double* y), int* farg5) {
+  *farg5 = 0;
+
+  try {
+    ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
+    int arg2 ;
+    int *arg3 = (int *) 0 ;
+
+    arg1 = (ForTrilinos::TrilinosHandle *)(farg1);
+    arg2 = *farg2;
+    arg3 = farg3;
+    (arg1)->setup_operator(arg2,(int const *)arg3, funcptr);
+
+  } catch(...) {
+    *farg5 = 1;
+  }
+}
+
+
 SWIGEXPORT void swigc_TrilinosHandle_setup_solver(void* farg1, void* farg2, int* farg3) {
   *farg3 = 0;
 

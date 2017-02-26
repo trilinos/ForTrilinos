@@ -1,3 +1,6 @@
+#ifndef FORTRILINOS_TRILINOS_HANDLE_HPP
+#define FORTRILINOS_TRILINOS_HANDLE_HPP
+
 #include <mpi.h>
 
 #include <Teuchos_Comm.hpp>
@@ -11,6 +14,8 @@
 
 #include "ForTrilinosSimpleInterface_config.hpp"
 
+#include "fortran_operator.hpp"
+
 namespace ForTrilinos {
 
   class TrilinosHandle {
@@ -22,6 +27,7 @@ namespace ForTrilinos {
     typedef size_t                                  global_size_t;
 
     typedef Tpetra::Map<LO,GO,NO>                   Map;
+    typedef Tpetra::Operator<SC,LO,GO,NO>           Operator;
     typedef Tpetra::CrsMatrix<SC,LO,GO,NO>          Matrix;
     typedef Tpetra::Vector<SC,LO,GO,NO>             Vector;
     typedef Teuchos::ParameterList                  ParameterList;
@@ -41,6 +47,9 @@ namespace ForTrilinos {
     // Setup matrix
     void setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values);
 
+    // Setup operator
+    void setup_operator(int numRows, const int* rowInds, void (*funcnptr)(int n, const double* x, double* y));
+
     // Setup solver based on the parameter list
     void setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList);
 
@@ -52,7 +61,7 @@ namespace ForTrilinos {
 
   private:
     Teuchos::RCP<Teuchos::Comm<int>> comm_;
-    Teuchos::RCP<Matrix>             A_;
+    Teuchos::RCP<Operator>           A_;
     Teuchos::RCP<ParameterList>      paramList_;
     Teuchos::RCP<LOWS>               thyraInverseA_;
 
@@ -65,3 +74,4 @@ namespace ForTrilinos {
   };
 
 }
+#endif // FORTRILINOS_TRILINOS_HANDLE_HPP

@@ -1,3 +1,4 @@
+#include "fortran_operator.hpp"
 #include "trilinos_handle.hpp"
 
 #include <Stratimikos_DefaultLinearSolverBuilder.hpp>
@@ -49,17 +50,39 @@ namespace ForTrilinos {
     ArrayView<const GO> rows(rowInds, numRows);
     RCP<const Map> rowMap = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm_);
 
-    A_ = rcp(new Matrix(rowMap, 1));
+    RCP<Matrix> A = rcp(new Matrix(rowMap, 1));
 
     // TODO: Can we use setAllValues?
     for (int i = 0; i < numRows; i++) {
       ArrayView<const GO> cols(colInds + rowPtrs[i], rowPtrs[i+1] - rowPtrs[i]);
       ArrayView<const SC> vals(values  + rowPtrs[i], rowPtrs[i+1] - rowPtrs[i]);
 
-      A_->insertGlobalValues(rowInds[i], cols, vals);
+      A->insertGlobalValues(rowInds[i], cols, vals);
     }
 
-    A_->fillComplete();
+    A->fillComplete();
+
+    A_ = A;
+
+    status_ = MATRIX_SETUP;
+  }
+
+  void TrilinosHandle::setup_operator(int numRows, const int* rowInds, void (*funcptr)(int n, const double* x, double* y)) {
+    using Teuchos::RCP;
+    using Teuchos::rcp;
+    using Teuchos::ArrayView;
+
+    TEUCHOS_ASSERT(status_ == INITIALIZED);
+
+    TEUCHOS_ASSERT(numRows >= 0);
+    TEUCHOS_ASSERT(rowInds != NULL || numRows == 0);
+
+    // NOTE: we make a major assumption on the maps:
+    //      rowMap == domainMap == rangeMap
+    ArrayView<const GO> rows(rowInds, numRows);
+    RCP<const Map> map = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm_);
+
+    A_ = rcp(new FortranOperator(funcptr, map, map));
 
     status_ = MATRIX_SETUP;
   }
@@ -111,11 +134,14 @@ namespace ForTrilinos {
 
     TEUCHOS_ASSERT(status_ == SOLVER_SETUP);
 
-    RCP<const Map> map = A_->getMap();
+    RCP<const Map> map = A_->getDomainMap();
 
     TEUCHOS_ASSERT(size >= 0);
     TEUCHOS_ASSERT((rhs != NULL && lhs != NULL) || size == 0);
     TEUCHOS_ASSERT(map->getNodeNumElements() == size_t(size));
+
+    // NOTE: This is a major simplification
+    TEUCHOS_ASSERT(map->isSameAs(*(A_->getRangeMap())));
 
     RCP<Vector> X = rcp(new Vector(map));
     RCP<Vector> B = rcp(new Vector(map));
