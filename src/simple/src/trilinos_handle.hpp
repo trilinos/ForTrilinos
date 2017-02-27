@@ -34,6 +34,8 @@ namespace ForTrilinos {
     typedef Tpetra::Vector<SC,LO,GO,NO>             Vector;
     typedef Teuchos::ParameterList                  ParameterList;
     typedef Thyra::LinearOpWithSolveBase<SC>        LOWS;
+  public:
+    typedef void (*OperatorCallback)(int n, const double* x, double* y);
 
   public:
 
@@ -53,7 +55,7 @@ namespace ForTrilinos {
     void setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values);
 
     // Setup operator
-    void setup_operator(int numRows, const int* rowInds, void (*funcnptr)(int n, const double* x, double* y));
+    void setup_operator(int numRows, const int* rowInds, OperatorCallback callback);
 
     // Setup solver based on the parameter list
     void setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList);

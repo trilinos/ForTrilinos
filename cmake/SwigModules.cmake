@@ -135,7 +135,23 @@ function(MAKE_SWIG)
     set(swig_fortran_generated_src
       "${CMAKE_CURRENT_SOURCE_DIR}/${PARSE_MODULE}.f90")
 
-    # Create the SWIG module
+    # XXX hack to set up link/include directories BEFORE the call to
+    # TRIBITS_ADD_LIBRARY
+    TRIBITS_SORT_AND_APPEND_PACKAGE_INCLUDE_AND_LINK_DIRS_AND_LIBS(
+      ${PACKAGE_NAME}  LIB  LINK_LIBS)
+
+    TRIBITS_SORT_AND_APPEND_TPL_INCLUDE_AND_LINK_DIRS_AND_LIBS(
+      ${PACKAGE_NAME}  LIB  LINK_LIBS)
+
+    PRINT_VAR(${PACKAGE_NAME}_INCLUDE_DIRS)
+    #     # Add TriBITS include directories to the SWIG commands (because the
+    #     # add_library call comes after the SWIG creation, the "include_directories"
+    #     # command hasn't been called at this point.)
+    #     FOREACH(dir ${${PACKAGE_NAME}_INCLUDE_DIRS})
+    #       LIST(APPEND CMAKE_SWIG_FLAGS "-I${dir}")
+    #     ENDFOREACH()
+
+    # Generate the SWIG commands and targets
     SWIG_MODULE_INITIALIZE(${PARSE_MODULE} ${PARSE_LANGUAGE})
     SWIG_ADD_SOURCE_TO_MODULE(${PARSE_MODULE} swig_wrapper_src ${SRC_FILE})
     get_directory_property(swig_extra_clean_files ADDITIONAL_MAKE_CLEAN_FILES)
@@ -144,6 +160,7 @@ function(MAKE_SWIG)
     set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES
                 "${swig_extra_clean_files}")
 
+    # Add as a TriBITS library
     TRIBITS_ADD_LIBRARY(${PARSE_MODULE}
       SOURCES ${PARSE_EXTRASRC}
               ${swig_wrapper_src}
@@ -201,13 +218,13 @@ function(MAKE_SWIG)
   set_target_properties(${BUILT_LIBRARY} PROPERTIES
     INCLUDE_DIRECTORIES "${INCL_DIR}"
     COMPILE_FLAGS "${SWIG_CXX_FLAGS}")
-  if (PARSE_LANGUAGE STREQUAL "FORTRAN")
-    set_target_properties(${BUILT_LIBRARY} PROPERTIES
-      TYPE "SHARED_LIBRARY")
-  endif()
+  #  if (PARSE_LANGUAGE STREQUAL "FORTRAN")
+  #    set_target_properties(${BUILT_LIBRARY} PROPERTIES
+  #      TYPE "SHARED_LIBRARY")
+  #  endif()
 
 
-  message(STATUS "Include directories on target ${PARSE_MODULE}: ${INCL_DIR}")
+  #message(STATUS "Include directories on target ${PARSE_MODULE}: ${INCL_DIR}")
 
   # define the install targets
   if (PARSE_LANGUAGE STREQUAL "PYTHON")

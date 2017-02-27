@@ -63,7 +63,7 @@ namespace ForTrilinos {
     TEUCHOS_ASSERT((colInds != NULL && values != NULL) || numNnz == 0);
 
     ArrayView<const GO> rows(rowInds, numRows);
-    RCP<const Map> rowMap = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm_);
+    RCP<const Map> rowMap = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm_, {});
 
     RCP<Matrix> A = rcp(new Matrix(rowMap, 1));
 
@@ -82,7 +82,7 @@ namespace ForTrilinos {
     status_ = MATRIX_SETUP;
   }
 
-  void TrilinosHandle::setup_operator(int numRows, const int* rowInds, void (*funcptr)(int n, const double* x, double* y)) {
+  void TrilinosHandle::setup_operator(int numRows, const int* rowInds, OperatorCallback funcptr) {
     using Teuchos::RCP;
     using Teuchos::rcp;
     using Teuchos::ArrayView;
@@ -95,7 +95,7 @@ namespace ForTrilinos {
     // NOTE: we make a major assumption on the maps:
     //      rowMap == domainMap == rangeMap
     ArrayView<const GO> rows(rowInds, numRows);
-    RCP<const Map> map = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm_);
+    RCP<const Map> map = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm_, {});
 
     A_ = rcp(new FortranOperator(funcptr, map, map));
 

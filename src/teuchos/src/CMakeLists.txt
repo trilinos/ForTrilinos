@@ -6,6 +6,7 @@
 ## Copyright (c) 2017 Oak Ridge National Laboratory, UT-Battelle, LLC.
 ##---------------------------------------------------------------------------##
 
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 IF (ForTrilinos_ENABLE_DeveloperMode)

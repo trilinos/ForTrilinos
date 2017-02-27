@@ -156,6 +156,24 @@ template <typename T> T SwigValueInit() {
 #endif
 
 
+#include <string>
+#include <algorithm>
+#include <stdexcept>
+
+
+
+// Fill a Fortran string from a std::string; with whitespace after
+void std_string_copyout(const std::string& str, char* s, size_t count)
+{
+    if (str.size() > count)
+        throw std::range_error("string size too small");
+
+    s = std::copy(str.begin(), str.end(), s);
+    std::fill_n(s, count - str.size(), ' ');
+}
+
+
+
 #include "trilinos_handle.hpp"
 
 #ifdef __cplusplus
@@ -164,149 +182,104 @@ extern "C" {
 SWIGEXPORT void* swigc_new_TrilinosHandle() {
   void* fresult = 0 ;
   ForTrilinos::TrilinosHandle *result = 0 ;
-
+  
   result = (ForTrilinos::TrilinosHandle *)new ForTrilinos::TrilinosHandle();
-  fresult = result;
+  fresult = result; 
   return fresult;
 }
 
-#ifdef HAVE_MPI
-SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_0(void* farg1, void* farg2, int* farg3) {
-  *farg3 = 0;
 
-  try {
-    ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
-    MPI_Comm arg2 ;
-
-    arg1 = (ForTrilinos::TrilinosHandle *)(farg1);
-    arg2 = MPI_Comm_f2c(*(MPI_Fint *)(farg2));
-    (arg1)->init(arg2);
-
-  } catch(...) {
-    *farg3 = 1;
-  }
-}
-#endif
-
-
-SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_1(void* farg1, int* farg2) {
-  *farg2 = 0;
-
-  try {
-    ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
-
-    arg1 = (ForTrilinos::TrilinosHandle *)(farg1);
-    (arg1)->init();
-
-  } catch(...) {
-    *farg2 = 1;
-  }
+SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_0(void* farg1, int* farg2) {
+  ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
+  MPI_Comm arg2 ;
+  
+  arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
+  
+  arg2 = (MPI_Comm)(MPI_Comm_f2c(*(MPI_Fint *)(farg2)));
+  
+  (arg1)->init(arg2);
 }
 
 
-SWIGEXPORT void swigc_TrilinosHandle_setup_matrix(void* farg1, int* farg2, int* farg3, int* farg4, int* farg5, int* farg6, double* farg7, int* farg8) {
-  *farg8 = 0;
-
-  try {
-    ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
-    int arg2 ;
-    int *arg3 = (int *) 0 ;
-    int *arg4 = (int *) 0 ;
-    int arg5 ;
-    int *arg6 = (int *) 0 ;
-    double *arg7 = (double *) 0 ;
-
-    arg1 = (ForTrilinos::TrilinosHandle *)(farg1);
-    arg2 = *farg2;
-    arg3 = farg3;
-    arg4 = farg4;
-    arg5 = *farg5;
-    arg6 = farg6;
-    arg7 = farg7;
-    (arg1)->setup_matrix(arg2,(int const *)arg3,(int const *)arg4,arg5,(int const *)arg6,(double const *)arg7);
-
-  } catch(...) {
-    *farg8 = 1;
-  }
+SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_1(void* farg1) {
+  ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
+  
+  arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
+  (arg1)->init();
 }
 
 
-SWIGEXPORT void swigc_TrilinosHandle_setup_operator(void* farg1, int* farg2, int* farg3, void (*funcptr)(int n, const double* x, double* y), int* farg5) {
-  *farg5 = 0;
-
-  try {
-    ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
-    int arg2 ;
-    int *arg3 = (int *) 0 ;
-
-    arg1 = (ForTrilinos::TrilinosHandle *)(farg1);
-    arg2 = *farg2;
-    arg3 = farg3;
-    (arg1)->setup_operator(arg2,(int const *)arg3, funcptr);
-
-  } catch(...) {
-    *farg5 = 1;
-  }
+SWIGEXPORT void swigc_TrilinosHandle_setup_matrix(void* farg1, int* farg2, int* farg3, int* farg4, int* farg5, int* farg6, double* farg7) {
+  ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
+  int arg2 ;
+  int *arg3 = (int *) 0 ;
+  int *arg4 = (int *) 0 ;
+  int arg5 ;
+  int *arg6 = (int *) 0 ;
+  double *arg7 = (double *) 0 ;
+  
+  arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
+  arg2 = *farg2;
+  arg3 = farg3;
+  arg4 = farg4;
+  arg5 = *farg5;
+  arg6 = farg6;
+  arg7 = farg7;
+  (arg1)->setup_matrix(arg2,(int const *)arg3,(int const *)arg4,arg5,(int const *)arg6,(double const *)arg7);
 }
 
 
-SWIGEXPORT void swigc_TrilinosHandle_setup_solver(void* farg1, void* farg2, int* farg3) {
-  *farg3 = 0;
-
-  try {
-    ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
-    Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
-
-    arg1 = (ForTrilinos::TrilinosHandle *)(farg1);
-    arg2 = (Teuchos::RCP< Teuchos::ParameterList > *)(farg2);
-    (arg1)->setup_solver((Teuchos::RCP< Teuchos::ParameterList > const &)*arg2);
-
-  } catch(...) {
-    *farg3 = 1;
-  }
+SWIGEXPORT void swigc_TrilinosHandle_setup_operator(void* farg1, int* farg2, int* farg3, void* farg4) {
+  ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
+  int arg2 ;
+  int *arg3 = (int *) 0 ;
+  ForTrilinos::TrilinosHandle::OperatorCallback arg4 = (ForTrilinos::TrilinosHandle::OperatorCallback) 0 ;
+  
+  arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
+  arg2 = *farg2;
+  arg3 = farg3;
+  arg4 = (ForTrilinos::TrilinosHandle::OperatorCallback)(farg4); 
+  (arg1)->setup_operator(arg2,(int const *)arg3,arg4);
 }
 
 
-SWIGEXPORT void swigc_TrilinosHandle_solve(void* farg1, int* farg2, double* farg3, double* farg4, int* farg5) {
-  *farg5 = 0;
-
-  try {
-    ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
-    int arg2 ;
-    double *arg3 = (double *) 0 ;
-    double *arg4 = (double *) 0 ;
-
-    arg1 = (ForTrilinos::TrilinosHandle *)(farg1);
-    arg2 = *farg2;
-    arg3 = farg3;
-    arg4 = farg4;
-    ((ForTrilinos::TrilinosHandle const *)arg1)->solve(arg2,(double const *)arg3,arg4);
-
-  } catch(...) {
-    *farg5 = 1;
-  }
+SWIGEXPORT void swigc_TrilinosHandle_setup_solver(void* farg1, void * farg2) {
+  ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull2 ;
+  
+  arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg2 : &tempnull2;
+  (arg1)->setup_solver((Teuchos::RCP< Teuchos::ParameterList > const &)*arg2);
 }
 
 
-SWIGEXPORT void swigc_TrilinosHandle_finalize(void* farg1, int* farg2) {
-  *farg2 = 0;
+SWIGEXPORT void swigc_TrilinosHandle_solve(void* farg1, int* farg2, double* farg3, double* farg4) {
+  ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
+  int arg2 ;
+  double *arg3 = (double *) 0 ;
+  double *arg4 = (double *) 0 ;
+  
+  arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
+  arg2 = *farg2;
+  arg3 = farg3;
+  arg4 = farg4;
+  ((ForTrilinos::TrilinosHandle const *)arg1)->solve(arg2,(double const *)arg3,arg4);
+}
 
-  try {
-    ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
 
-    arg1 = (ForTrilinos::TrilinosHandle *)(farg1);
-    (arg1)->finalize();
-
-  } catch(...) {
-    *farg2 = 1;
-  }
+SWIGEXPORT void swigc_TrilinosHandle_finalize(void* farg1) {
+  ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
+  
+  arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
+  (arg1)->finalize();
 }
 
 
 SWIGEXPORT void swigc_delete_TrilinosHandle(void* farg1) {
   ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
-
-  arg1 = (ForTrilinos::TrilinosHandle *)(farg1);
+  
+  arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
   delete arg1;
 }
 

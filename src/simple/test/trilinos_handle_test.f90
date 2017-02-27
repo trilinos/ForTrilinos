@@ -26,7 +26,7 @@ program main
 
   use ISO_FORTRAN_ENV
   use, intrinsic :: ISO_C_BINDING
-  use simpleinterface
+  use fortrilinos
   use x
   use forteuchos
 #ifdef HAVE_MPI
@@ -60,7 +60,7 @@ program main
   call MPI_INIT(ierr)
   EXPECT_EQ(ierr, 0)
 
-  call MPI_COMM_RANK(MPI_COMM_WORLD, my_rank,   ierr)
+  call MPI_COMM_RANK(MPI_COMM_WORLD, my_rank, ierr)
   call MPI_COMM_SIZE(MPI_COMM_WORLD, num_procs, ierr)
   EXPECT_EQ(ierr, 0)
 #endif
@@ -128,23 +128,23 @@ program main
   ! ------------------------------------------------------------------
   ! Step 1: initialize a handle
 #ifdef HAVE_MPI
-  call tri_handle%init(MPI_COMM_WORLD, ierr)
+  call tri_handle%init(MPI_COMM_WORLD)
 #else
-  call tri_handle%init(ierr)
+  call tri_handle%init()
 #endif
   EXPECT_EQ(ierr, 0)
 
   ! Step 2: setup the problem
-  call tri_handle%setup_matrix(n, row_inds, row_ptrs, nnz, col_inds, values, ierr)
+  call tri_handle%setup_matrix(n, row_inds, row_ptrs, nnz, col_inds, values)
 
   EXPECT_EQ(ierr, 0)
 
   ! Step 3: setup the solver
-  call tri_handle%setup_solver(plist, ierr)
+  call tri_handle%setup_solver(plist)
   EXPECT_EQ(ierr, 0)
 
   ! Step 4: solve the system
-  call tri_handle%solve(n, rhs, lhs, ierr)
+  call tri_handle%solve(n, rhs, lhs)
   EXPECT_EQ(ierr, 0)
 
   ! Check the solution
@@ -159,7 +159,7 @@ program main
 
 
   ! Step 5: clean up
-  call tri_handle%finalize(ierr)
+  call tri_handle%finalize()
   EXPECT_EQ(ierr, 0)
 
   ! ------------------------------------------------------------------
@@ -167,15 +167,15 @@ program main
   ! ------------------------------------------------------------------
   ! Step 1: initialize a handle
 #ifdef HAVE_MPI
-  call tri_handle%init(MPI_COMM_WORLD, ierr)
+  call tri_handle%init(MPI_COMM_WORLD)
 #else
-  call tri_handle%init(ierr)
+  call tri_handle%init()
 #endif
   EXPECT_EQ(ierr, 0)
 
   ! Step 2: setup the problem
   ! Implicit (inversion-of-control) setup
-  call tri_handle%setup_operator(n, row_inds, C_FUNLOC(matvec), ierr)
+  call tri_handle%setup_operator(n, row_inds, C_FUNLOC(matvec))
 
   EXPECT_EQ(ierr, 0)
 
@@ -183,17 +183,17 @@ program main
   ! We cannot use most preconditioners without a matrix, so
   ! we remove any from the parameter list
   call plist%set("Preconditioner Type", "None")
-  call tri_handle%setup_solver(plist, ierr)
+  call tri_handle%setup_solver(plist)
   EXPECT_EQ(ierr, 0)
 
   ! Step 4: solve the system
   ! We only check that it runs, but do not check the result as
   ! we are using a dummy operator
-  call tri_handle%solve(n, rhs, lhs, ierr)
+  call tri_handle%solve(n, rhs, lhs)
   EXPECT_EQ(ierr, 0)
 
   ! Step 5: clean up
-  call tri_handle%finalize(ierr)
+  call tri_handle%finalize()
   EXPECT_EQ(ierr, 0)
 
   ! ------------------------------------------------------------------

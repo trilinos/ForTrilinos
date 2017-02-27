@@ -11,7 +11,7 @@ module forepetra
  public :: Epetra_Object
  ! TYPES
  type :: Epetra_Object
-  type(C_PTR), private :: ptr = C_NULL_PTR
+  type(C_PTR), public :: ptr = C_NULL_PTR
   logical, private :: own = .false.
  contains
   procedure, private :: create__SWIG_0 => swigf_new_Epetra_Object__SWIG_0
@@ -22,10 +22,6 @@ module forepetra
   procedure, private :: create__SWIG_5 => swigf_new_Epetra_Object__SWIG_5
   procedure :: release => swigf_delete_Epetra_Object
   procedure :: SetLabel => swigf_Epetra_Object_SetLabel
-  procedure, nopass :: SetTracebackMode => swigf_Epetra_Object_SetTracebackMode
-  procedure, nopass :: GetTracebackMode => swigf_Epetra_Object_GetTracebackMode
-  procedure, nopass :: set_TracebackMode => swigf_set_Epetra_Object_TracebackMode
-  procedure, nopass :: get_TracebackMode => swigf_get_Epetra_Object_TracebackMode
   generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2, create__SWIG_3, create__SWIG_4, create__SWIG_5
  end type
 
@@ -187,10 +183,10 @@ contains
    integer(C_INT) :: fresult
    fresult = swigc_Epetra_Object_GetTracebackMode()
   end function
-  subroutine swigf_set_Epetra_Object_TracebackMode(TracebackMode)
+  subroutine swigf_set_Epetra_Object_TracebackMode(Epetra_Object::TracebackMode)
    use, intrinsic :: ISO_C_BINDING
-   integer(C_INT), intent(in) :: TracebackMode
-   call swigc_set_Epetra_Object_TracebackMode(TracebackMode)
+   integer(C_INT), intent(in) :: Epetra_Object::TracebackMode
+   call swigc_set_Epetra_Object_TracebackMode(Epetra_Object::TracebackMode)
   end subroutine
   function swigf_get_Epetra_Object_TracebackMode() &
      result(fresult)
