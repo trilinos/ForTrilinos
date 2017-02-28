@@ -15,7 +15,7 @@ Documentation
 
 * [Website](http://trilinos.org/packages/fortrilinos)
 
-* [Documentation](http://datatransferkit.readthedocs.org)
+* [Documentation](http://fortrilinos.readthedocs.org)
 
 Questions, Bug Reporting, and Issue Tracking
 --------------------------------------------
