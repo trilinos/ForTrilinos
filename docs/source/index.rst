@@ -14,13 +14,3 @@ Contents:
    overview
    install
    developer_tools
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
