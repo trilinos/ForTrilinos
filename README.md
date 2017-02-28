@@ -3,6 +3,7 @@ ForTrilinos
 
 [![Stories in Ready](https://badge.waffle.io/Trilinos/ForTrilinos.svg?label=ready&title=Ready)](http://waffle.io/Trilinos/ForTrilinos)
 [![Documentation Status](http://readthedocs.org/projects/fortrilinos/badge/?version=latest)](http://fortrilinos.readthedocs.io/en/latest/?badge=latest)
+[![codecov](https://codecov.io/gh/trilinos/ForTrilinos/branch/develop/graph/badge.svg)](https://codecov.io/gh/trilinos/ForTrilinos)
 
 ForTrilinos provides object-oriented Fortran interfaces to [Trilinos](http://github.com/Trilinos/Trilinos) C++ packages.
 
