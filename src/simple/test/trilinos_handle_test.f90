@@ -170,7 +170,7 @@ program main
   ! Step 3: setup the solver
   ! We cannot use most preconditioners without a matrix, so
   ! we remove any from the parameter list
-  call plist%remove("Preconditioner Type")
+  call plist%set("Preconditioner Type", "None")
   call tri_handle%setup_solver(plist, ierr)
   EXPECT_EQ(ierr, 0)
 
