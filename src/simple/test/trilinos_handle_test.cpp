@@ -22,9 +22,11 @@ int main(int argc, char *argv[]) {
     int myRank   = comm->getRank();
     int numProcs = comm->getSize();
 
+#ifdef HAVE_MPI
     RCP<const Teuchos::MpiComm<int> > tmpic = rcp_dynamic_cast<const Teuchos::MpiComm<int> >(comm);
     TEUCHOS_TEST_FOR_EXCEPTION(tmpic.is_null(), std::runtime_error, "Cannot cast base Teuchos::Comm to Teuchos::MpiComm object.");
     RCP<const Teuchos::OpaqueWrapper<MPI_Comm> > rawMpiComm = tmpic->getRawMpiComm();
+#endif
 
     // Read in the parameter list
     ParameterList paramList;
@@ -70,7 +72,12 @@ int main(int argc, char *argv[]) {
 
     // Step 1: initialize a handle
     ForTrilinos::TrilinosHandle si;
+#ifdef HAVE_MPI
     si.init(*rawMpiComm);
+#else
+    si.init();
+#endif
+
 
     // Step 2: setup the problem
     si.setup_matrix(n, rowInds.data(), rowPtrs.data(), nnz, colInds.data(), values.data());

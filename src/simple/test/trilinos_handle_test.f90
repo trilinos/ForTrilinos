@@ -21,13 +21,17 @@ end module x
 program main
 
 #include "FortranTestMacros.h"
+#include "ForTrilinosSimpleInterface_config.hpp"
+
 
   use ISO_FORTRAN_ENV
   use, intrinsic :: ISO_C_BINDING
   use simpleinterface
   use x
   use forteuchos
+#ifdef HAVE_MPI
   use mpi
+#endif
   implicit none
 
   integer(c_int) :: i
@@ -51,6 +55,7 @@ program main
   my_rank = 0
   num_procs = 1
 
+#ifdef HAVE_MPI
   ! Initialize MPI subsystem
   call MPI_INIT(ierr)
   EXPECT_EQ(ierr, 0)
@@ -58,6 +63,7 @@ program main
   call MPI_COMM_RANK(MPI_COMM_WORLD, my_rank,   ierr)
   call MPI_COMM_SIZE(MPI_COMM_WORLD, num_procs, ierr)
   EXPECT_EQ(ierr, 0)
+#endif
 
   ! Read in the parameterList
   call plist%create("Stratimikos")
@@ -121,8 +127,11 @@ program main
   ! Explicit setup and solve
   ! ------------------------------------------------------------------
   ! Step 1: initialize a handle
-  ! call init(ierr)
+#ifdef HAVE_MPI
   call tri_handle%init(MPI_COMM_WORLD, ierr)
+#else
+  call tri_handle%init(ierr)
+#endif
   EXPECT_EQ(ierr, 0)
 
   ! Step 2: setup the problem
@@ -157,8 +166,11 @@ program main
   ! Implicit (inversion-of-control) setup [ no solve ]
   ! ------------------------------------------------------------------
   ! Step 1: initialize a handle
-  ! call init(ierr)
+#ifdef HAVE_MPI
   call tri_handle%init(MPI_COMM_WORLD, ierr)
+#else
+  call tri_handle%init(ierr)
+#endif
   EXPECT_EQ(ierr, 0)
 
   ! Step 2: setup the problem
@@ -186,8 +198,10 @@ program main
 
   ! ------------------------------------------------------------------
 
+#ifdef HAVE_MPI
   call MPI_FINALIZE(ierr)
   EXPECT_EQ(ierr, 0)
+#endif
 
   call plist%release()
   call tri_handle%release()

@@ -4,6 +4,8 @@
 ! Do not make changes to this file unless you know what you are doing--modify
 ! the SWIG interface file instead.
 module simpleinterface
+#include "ForTrilinosSimpleInterface_config.hpp"
+
  use, intrinsic :: ISO_C_BINDING
  use forteuchos
  implicit none
@@ -16,7 +18,9 @@ module simpleinterface
   logical, private :: own = .false.
  contains
   procedure :: create => swigf_new_TrilinosHandle
+#ifdef HAVE_MPI
   procedure, private :: init__SWIG_0 => swigf_TrilinosHandle_init__SWIG_0
+#endif
   procedure, private :: init__SWIG_1 => swigf_TrilinosHandle_init__SWIG_1
   procedure :: setup_matrix => swigf_TrilinosHandle_setup_matrix
   procedure :: setup_operator => swigf_TrilinosHandle_setup_operator
@@ -24,7 +28,11 @@ module simpleinterface
   procedure :: solve => swigf_TrilinosHandle_solve
   procedure :: finalize => swigf_TrilinosHandle_finalize
   procedure :: release => swigf_delete_TrilinosHandle
+#ifdef HAVE_MPI
   generic :: init => init__SWIG_0, init__SWIG_1
+#else
+  generic :: init => init__SWIG_1
+#endif
  end type
 
  ! WRAPPER DECLARATIONS
@@ -36,6 +44,7 @@ module simpleinterface
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
   end function
+#ifdef HAVE_MPI
   subroutine swigc_TrilinosHandle_init__SWIG_0(farg1, farg2, farg3) &
      bind(C, name="swigc_TrilinosHandle_init__SWIG_0")
    use, intrinsic :: ISO_C_BINDING
@@ -43,6 +52,7 @@ module simpleinterface
    integer :: farg2
    integer(C_INT), intent(out) :: farg3
   end subroutine
+#endif
   subroutine swigc_TrilinosHandle_init__SWIG_1(farg1, farg2) &
      bind(C, name="swigc_TrilinosHandle_init__SWIG_1")
    use, intrinsic :: ISO_C_BINDING
@@ -108,6 +118,7 @@ contains
    self%ptr = swigc_new_TrilinosHandle()
    self%own = .true.
   end subroutine
+#ifdef HAVE_MPI
   subroutine swigf_TrilinosHandle_init__SWIG_0(self, comm, ierr)
    use, intrinsic :: ISO_C_BINDING
    class(TrilinosHandle) :: self
@@ -115,6 +126,7 @@ contains
    integer(C_INT), intent(out) :: ierr
    call swigc_TrilinosHandle_init__SWIG_0(self%ptr, comm, ierr)
   end subroutine
+#endif
   subroutine swigf_TrilinosHandle_init__SWIG_1(self, ierr)
    use, intrinsic :: ISO_C_BINDING
    class(TrilinosHandle) :: self

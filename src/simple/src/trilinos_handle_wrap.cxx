@@ -170,7 +170,7 @@ SWIGEXPORT void* swigc_new_TrilinosHandle() {
   return fresult;
 }
 
-
+#ifdef HAVE_MPI
 SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_0(void* farg1, void* farg2, int* farg3) {
   *farg3 = 0;
 
@@ -186,6 +186,7 @@ SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_0(void* farg1, void* farg2, int*
     *farg3 = 1;
   }
 }
+#endif
 
 
 SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_1(void* farg1, int* farg2) {

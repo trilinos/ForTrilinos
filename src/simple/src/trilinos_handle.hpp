@@ -1,7 +1,11 @@
 #ifndef FORTRILINOS_TRILINOS_HANDLE_HPP
 #define FORTRILINOS_TRILINOS_HANDLE_HPP
 
+#include "ForTrilinosSimpleInterface_config.hpp"
+
+#ifdef HAVE_MPI
 #include <mpi.h>
+#endif
 
 #include <Teuchos_Comm.hpp>
 #include <Teuchos_ParameterList.hpp>
@@ -11,8 +15,6 @@
 
 #include <Tpetra_CrsMatrix.hpp>
 #include <Tpetra_MultiVector.hpp>
-
-#include "ForTrilinosSimpleInterface_config.hpp"
 
 #include "fortran_operator.hpp"
 
@@ -42,7 +44,10 @@ namespace ForTrilinos {
     void operator=(const TrilinosHandle&) = delete;
 
     // Initialize
-    void init(MPI_Comm comm = MPI_COMM_WORLD);
+    void init();
+#ifdef HAVE_MPI
+    void init(MPI_Comm comm);
+#endif
 
     // Setup matrix
     void setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values);

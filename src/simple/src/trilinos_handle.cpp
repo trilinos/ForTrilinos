@@ -12,11 +12,25 @@
 #  include <Stratimikos_MueLuHelpers.hpp>
 #endif
 
+#include <Teuchos_DefaultMpiComm.hpp>
+#include <Teuchos_DefaultSerialComm.hpp>
+
 #include <Thyra_TpetraLinearOp.hpp>
 
 
 namespace ForTrilinos {
 
+  void TrilinosHandle::init() {
+    using Teuchos::rcp;
+
+    TEUCHOS_ASSERT(status_ == NOT_INITIALIZED);
+
+    comm_ = rcp(new Teuchos::SerialComm<int>());
+
+    status_ = INITIALIZED;
+  }
+
+#ifdef HAVE_MPI
   void TrilinosHandle::init(MPI_Comm comm) {
     using Teuchos::rcp;
 
@@ -33,6 +47,7 @@ namespace ForTrilinos {
 
     status_ = INITIALIZED;
   }
+#endif
 
   void TrilinosHandle::setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) {
     using Teuchos::ArrayRCP;
