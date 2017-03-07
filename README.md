@@ -4,7 +4,7 @@ ForTrilinos
 [![Build Status](https://cloud.cees.ornl.gov/jenkins-ci/buildStatus/icon?job=ForTrilinos-continuous)](https://cloud.cees.ornl.gov/jenkins-ci/job/ForTrilinos-continuous)
 [![Stories in Ready](https://badge.waffle.io/Trilinos/ForTrilinos.svg?label=ready&title=Ready)](http://waffle.io/Trilinos/ForTrilinos)
 [![Documentation Status](http://readthedocs.org/projects/fortrilinos/badge/?version=latest)](http://fortrilinos.readthedocs.io/en/latest/?badge=latest)
-[![codecov](https://codecov.io/gh/trilinos/ForTrilinos/branch/develop/graph/badge.svg)](https://codecov.io/gh/trilinos/ForTrilinos)
+[![codecov](https://codecov.io/gh/trilinos/ForTrilinos/branch/develop/graph/badge.svg)](https://codecov.io/gh/trilinos/ForTrilinos/branch/develop)
 
 ForTrilinos provides object-oriented Fortran interfaces to [Trilinos](http://github.com/Trilinos/Trilinos) C++ packages.
 
