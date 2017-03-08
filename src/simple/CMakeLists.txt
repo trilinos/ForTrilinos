@@ -1,16 +1,14 @@
 ##---------------------------------------------------------------------------##
-## File  : teuchos/CMakeLists.txt
-## Author: Seth R Johnson
-## Date  : Tue Feb 21 14:30:37 2017
-## Brief : TriBITS package file for teuchos/
-## Copyright (c) 2017 Oak Ridge National Laboratory, UT-Battelle, LLC.
-##---------------------------------------------------------------------------##
-
-##---------------------------------------------------------------------------##
 ## Define the package
 ##---------------------------------------------------------------------------##
 
-TRIBITS_SUBPACKAGE(Teuchos)
+TRIBITS_SUBPACKAGE(SimpleInterface)
+
+##---------------------------------------------------------------------------##
+## Generate config file and add it to the list
+##---------------------------------------------------------------------------##
+TRIBITS_CONFIGURE_FILE(${PACKAGE_NAME}_config.hpp)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 ##---------------------------------------------------------------------------##
 ## Add library, test, and examples.

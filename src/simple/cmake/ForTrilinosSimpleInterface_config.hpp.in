@@ -1,0 +1,24 @@
+#ifndef FORTRILINOSSIMPLEINTERFACE_CONFIG_HPP
+#define FORTRILINOSSIMPLEINTERFACE_CONFIG_HPP
+
+/* Options */
+
+#cmakedefine HAVE_MPI
+
+/* Optional Dependencies */
+
+#cmakedefine HAVE_FORTRILINOSSIMPLEINTERFACE_IFPACK2
+
+#cmakedefine HAVE_FORTRILINOSSIMPLEINTERFACE_MUELU
+
+/* Optional TPL */
+
+
+/*
+ If deprecated warnings are on, and the compiler supports them, then
+ define FORTRILINOSSIMPLEINTERFACE_DEPRECATED to emit deprecated warnings.  Otherwise,
+ give it an empty definition.
+*/
+@FORTRILINOSSIMPLEINTERFACE_DEPRECATED_DECLARATIONS@
+
+#endif /* FORTRILINOSSIMPLEINTERFACE_CONFIG_HPP */

@@ -29,7 +29,7 @@ module forteuchos
   generic :: create => create__SWIG_0, create__SWIG_1
  end type
  type :: ParameterList
-  type(C_PTR), private :: ptr = C_NULL_PTR
+  type(C_PTR) :: ptr = C_NULL_PTR
  contains
   procedure :: print => swigf_ParameterList_print
   procedure :: create => swigf_new_ParameterList

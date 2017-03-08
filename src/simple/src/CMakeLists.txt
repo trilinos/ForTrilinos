@@ -1,0 +1,16 @@
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+
+IF (ForTrilinos_ENABLE_DeveloperMode)
+  # The files here were edited by hand, so no auto-generation for now
+ENDIF()
+
+APPEND_GLOB(SOURCES *.cpp)
+APPEND_GLOB(SOURCES *.cxx)
+APPEND_GLOB(SOURCES *.f90)
+APPEND_GLOB(HEADERS *.hpp)
+
+TRIBITS_ADD_LIBRARY(
+  forsimple_interface
+  SOURCES ${SOURCES}
+)

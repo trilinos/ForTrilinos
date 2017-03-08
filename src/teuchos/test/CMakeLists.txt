@@ -10,8 +10,6 @@
 ## TESTS
 ##---------------------------------------------------------------------------##
 
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR}/../src)
-
 SET(TESTS
   test_plist.f90
   )

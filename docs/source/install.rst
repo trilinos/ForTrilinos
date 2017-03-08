@@ -11,14 +11,15 @@ The following third party libraries (TPLs) are used by ForTrilinos:
 +------------------------+------------+---------+
 | Packages               | Dependency | Version |
 +========================+============+=========+
-+------------------------+------------+---------+
 | BLAS/LAPACK            | Required   | N/A     |
++------------------------+------------+---------+
+| MPI                    | Required   | N/A     |
 +------------------------+------------+---------+
 
 Building ForTrilinos
 --------------------
 
-ForTrilinos is configured and built using `TriBITS <https://tribits.org>`_.  ForTrilinos builds
+ForTrilinos is configured and built using `TriBITS <https://tribits.org>`_. ForTrilinos builds
 within Trilinos effectively as an internal package. First, link ForTrilinos into the
 Trilinos main directory:
 
