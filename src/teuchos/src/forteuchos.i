@@ -9,6 +9,7 @@
 
 %module forteuchos
 
+//%include "ForTrilinosTeuchos_config.hpp"
 %include "Teuchos_RCP.i"
 %include "Teuchos_ParameterList.i"
 %include "Teuchos_XML.i"
