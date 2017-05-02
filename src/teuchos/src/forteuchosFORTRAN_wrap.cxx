@@ -155,20 +155,84 @@ template <typename T> T SwigValueInit() {
 # pragma warning disable 592
 #endif
 
+/*  Errors in SWIG */
+#define  SWIG_UnknownError    	   -1
+#define  SWIG_IOError        	   -2
+#define  SWIG_RuntimeError   	   -3
+#define  SWIG_IndexError     	   -4
+#define  SWIG_TypeError      	   -5
+#define  SWIG_DivisionByZero 	   -6
+#define  SWIG_OverflowError  	   -7
+#define  SWIG_SyntaxError    	   -8
+#define  SWIG_ValueError     	   -9
+#define  SWIG_SystemError    	   -10
+#define  SWIG_AttributeError 	   -11
+#define  SWIG_MemoryError    	   -12
+#define  SWIG_NullReferenceError   -13
 
-#include "Teuchos_RCP.hpp"
 
-
-#include "Teuchos_ParameterList.hpp"
-
-
-#include <algorithm>
 
 
 #include <stdexcept>
 
 
+#include <algorithm>
+
+
 #include <string>
+
+
+// External fortran-owned data that we save to
+
+extern "C" {
+
+extern int ierr;
+
+};
+
+
+namespace swig
+{
+// Message thrown by last unhandled exception
+std::string fortran_exception_str;
+
+// Call this function before any new action
+void fortran_check_unhandled_exception()
+{
+    if (::ierr != 0)
+        throw std::runtime_error("An unhandled exception occurred: "
+                                 + fortran_exception_str);
+}
+
+void fortran_store_exception(int code, const char *msg)
+{
+    ::ierr = code;
+    fortran_exception_str = msg;
+}
+} // end namespace swig
+
+
+
+void get_error_string(char* STRING, int SIZE)
+{
+    int minsize = std::min<int>(SIZE, swig::fortran_exception_str.size());
+
+    char* dst = STRING;
+    dst = std::copy(swig::fortran_exception_str.begin(),
+                    swig::fortran_exception_str.begin() + minsize,
+                    dst);
+    std::fill(dst, STRING + SIZE, ' ');
+}
+
+
+
+#include "Teuchos_Exceptions.hpp"
+
+
+#include "Teuchos_RCP.hpp"
+
+
+#include "Teuchos_ParameterList.hpp"
 
 
 
@@ -306,11 +370,42 @@ void save_to_xml(const Teuchos::ParameterList& plist,
 #ifdef __cplusplus
 extern "C" {
 #endif
+SWIGEXPORT void swigc_get_error_string( char*  farg1, int* farg2) {
+  char *arg1 = (char *) 0 ;
+  int arg2 ;
+  
+  arg1 = (char *)farg1; 
+  arg2 = *farg2;
+  get_error_string(arg1,arg2);
+}
+
+
 SWIGEXPORT void* swigc_new_string__SWIG_0() {
   void* fresult = 0 ;
   std::string *result = 0 ;
   
-  result = (std::string *)new std::string();
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (std::string *)new std::string();
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      };
+    }
+  }
   fresult = result; 
   return fresult;
 }
@@ -324,7 +419,28 @@ SWIGEXPORT void* swigc_new_string__SWIG_1( const char*  farg1, int* farg2) {
   
   arg1 = (std::string::const_pointer)farg1; 
   arg2 = *farg2;
-  result = (std::string *)new std::string(arg1,arg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (std::string *)new std::string(arg1,arg2);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      };
+    }
+  }
   fresult = result; 
   return fresult;
 }
@@ -336,7 +452,28 @@ SWIGEXPORT void swigc_string_resize(void* farg1, int* farg2) {
   
   arg1 = (std::string *)(farg1); 
   arg2 = *farg2;
-  (arg1)->resize(arg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->resize(arg2);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -344,7 +481,28 @@ SWIGEXPORT void swigc_string_clear(void* farg1) {
   std::string *arg1 = (std::string *) 0 ;
   
   arg1 = (std::string *)(farg1); 
-  (arg1)->clear();
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->clear();
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -354,7 +512,28 @@ SWIGEXPORT int swigc_string_size(void* farg1) {
   std::string::size_type result;
   
   arg1 = (std::string *)(farg1); 
-  result = (std::string::size_type)((std::string const *)arg1)->size();
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (std::string::size_type)((std::string const *)arg1)->size();
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      };
+    }
+  }
   fresult = result;
   return fresult;
 }
@@ -366,7 +545,28 @@ SWIGEXPORT int swigc_string_length(void* farg1) {
   std::string::size_type result;
   
   arg1 = (std::string *)(farg1); 
-  result = (std::string::size_type)((std::string const *)arg1)->length();
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (std::string::size_type)((std::string const *)arg1)->length();
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      };
+    }
+  }
   fresult = result;
   return fresult;
 }
@@ -380,7 +580,28 @@ SWIGEXPORT void swigc_string_set(void* farg1, int* farg2,  char  farg3) {
   arg1 = (std::string *)(farg1); 
   arg2 = *farg2;
   arg3 = farg3; 
-  std_string_set(arg1,arg2,arg3);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      std_string_set(arg1,arg2,arg3);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -392,7 +613,28 @@ SWIGEXPORT  char  swigc_string_get(void* farg1, int* farg2) {
   
   arg1 = (std::string *)(farg1); 
   arg2 = *farg2;
-  result = (std::string::value_type)std_string_get(arg1,arg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (std::string::value_type)std_string_get(arg1,arg2);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      };
+    }
+  }
   fresult = result; 
   return fresult;
 }
@@ -406,7 +648,28 @@ SWIGEXPORT void swigc_string_assign_from(void* farg1,  const char*  farg2, int* 
   arg1 = (std::string *)(farg1); 
   arg2 = (std::string::const_pointer)farg2; 
   arg3 = *farg3;
-  std_string_assign_from(arg1,(char const *)arg2,arg3);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      std_string_assign_from(arg1,(char const *)arg2,arg3);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -418,7 +681,28 @@ SWIGEXPORT void swigc_string_copy_to(void* farg1,  char*  farg2, int* farg3) {
   arg1 = (std::string *)(farg1); 
   arg2 = (std::string::pointer)farg2; 
   arg3 = *farg3;
-  std_string_copy_to(arg1,arg2,arg3);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      std_string_copy_to(arg1,arg2,arg3);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -426,7 +710,28 @@ SWIGEXPORT void swigc_delete_string(void* farg1) {
   std::string *arg1 = (std::string *) 0 ;
   
   arg1 = (std::string *)(farg1); 
-  delete arg1;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      delete arg1;
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -436,7 +741,28 @@ SWIGEXPORT void swigc_ParameterList_print(void* farg1) {
   
   smartarg1 = (Teuchos::RCP<const Teuchos::ParameterList > *)farg1;
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  ((Teuchos::ParameterList const *)arg1)->print();
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      ((Teuchos::ParameterList const *)arg1)->print();
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -448,7 +774,28 @@ SWIGEXPORT void* swigc_new_ParameterList( const char*  farg1, int* farg2) {
   
   arg1 = (char *)farg1; 
   arg2 = *farg2;
-  result = (Teuchos::ParameterList *)new_Teuchos_ParameterList((char const *)arg1,arg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::ParameterList *)new_Teuchos_ParameterList((char const *)arg1,arg2);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      };
+    }
+  }
   fresult = result ? new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
@@ -466,7 +813,28 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_0(void* farg1,  const char*  farg2
   arg2 = (char *)farg2; 
   arg3 = *farg3;
   arg4 = farg4;
-  Teuchos_ParameterList_get_scalar_Sl_double_Sg___SWIG_0(arg1,(char const *)arg2,arg3,*arg4);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Teuchos_ParameterList_get_scalar_Sl_double_Sg___SWIG_0(arg1,(char const *)arg2,arg3,*arg4);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -482,7 +850,28 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_0(void* farg1,  const char*  farg2
   arg2 = (char *)farg2; 
   arg3 = *farg3;
   arg4 = farg4;
-  Teuchos_ParameterList_set_scalar_Sl_double_Sg___SWIG_0(arg1,(char const *)arg2,arg3,(double const &)*arg4);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Teuchos_ParameterList_set_scalar_Sl_double_Sg___SWIG_0(arg1,(char const *)arg2,arg3,(double const &)*arg4);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -498,7 +887,28 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_1(void* farg1,  const char*  farg2
   arg2 = (char *)farg2; 
   arg3 = *farg3;
   arg4 = farg4;
-  Teuchos_ParameterList_get_scalar_Sl_int_Sg___SWIG_1(arg1,(char const *)arg2,arg3,*arg4);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Teuchos_ParameterList_get_scalar_Sl_int_Sg___SWIG_1(arg1,(char const *)arg2,arg3,*arg4);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -514,7 +924,28 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_1(void* farg1,  const char*  farg2
   arg2 = (char *)farg2; 
   arg3 = *farg3;
   arg4 = farg4;
-  Teuchos_ParameterList_set_scalar_Sl_int_Sg___SWIG_1(arg1,(char const *)arg2,arg3,(int const &)*arg4);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Teuchos_ParameterList_set_scalar_Sl_int_Sg___SWIG_1(arg1,(char const *)arg2,arg3,(int const &)*arg4);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -537,7 +968,28 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_2(void* farg1,  const char*  farg2
     throw std::logic_error("Attempt to dereference null Teuchos::ParameterList &");
     return ;
   }
-  Teuchos_ParameterList_get_scalar_Sl_Teuchos_ParameterList_Sg___SWIG_2(arg1,(char const *)arg2,arg3,*arg4);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Teuchos_ParameterList_get_scalar_Sl_Teuchos_ParameterList_Sg___SWIG_2(arg1,(char const *)arg2,arg3,*arg4);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -560,7 +1012,28 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_2(void* farg1,  const char*  farg2
     throw std::logic_error("Attempt to dereference null Teuchos::ParameterList const &");
     return ;
   }
-  Teuchos_ParameterList_set_scalar_Sl_Teuchos_ParameterList_Sg___SWIG_2(arg1,(char const *)arg2,arg3,(Teuchos::ParameterList const &)*arg4);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Teuchos_ParameterList_set_scalar_Sl_Teuchos_ParameterList_Sg___SWIG_2(arg1,(char const *)arg2,arg3,(Teuchos::ParameterList const &)*arg4);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -578,7 +1051,28 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_3(void* farg1,  const char*  farg2
   arg3 = *farg3;
   arg4 = (char *)farg4; 
   arg5 = *farg5;
-  Teuchos_ParameterList_set__SWIG_3(arg1,(char const *)arg2,arg3,(char const *)arg4,arg5);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Teuchos_ParameterList_set__SWIG_3(arg1,(char const *)arg2,arg3,(char const *)arg4,arg5);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -596,7 +1090,28 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_3(void* farg1,  const char*  farg2
   arg3 = *farg3;
   arg4 = (char *)farg4; 
   arg5 = *farg5;
-  Teuchos_ParameterList_get__SWIG_3(arg1,(char const *)arg2,arg3,arg4,arg5);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Teuchos_ParameterList_get__SWIG_3(arg1,(char const *)arg2,arg3,arg4,arg5);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -614,7 +1129,28 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_4(void* farg1,  const char*  farg2
   arg3 = *farg3;
   arg4 = farg4;
   arg5 = *farg5;
-  Teuchos_ParameterList_set_array_Sl_double_Sg___SWIG_4(arg1,(char const *)arg2,arg3,(double const *)arg4,arg5);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Teuchos_ParameterList_set_array_Sl_double_Sg___SWIG_4(arg1,(char const *)arg2,arg3,(double const *)arg4,arg5);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -632,7 +1168,28 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_4(void* farg1,  const char*  farg2
   arg3 = *farg3;
   arg4 = farg4;
   arg5 = *farg5;
-  Teuchos_ParameterList_get_array_Sl_double_Sg___SWIG_4(arg1,(char const *)arg2,arg3,arg4,arg5);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Teuchos_ParameterList_get_array_Sl_double_Sg___SWIG_4(arg1,(char const *)arg2,arg3,arg4,arg5);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -650,7 +1207,28 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_5(void* farg1,  const char*  farg2
   arg3 = *farg3;
   arg4 = farg4;
   arg5 = *farg5;
-  Teuchos_ParameterList_set_array_Sl_int_Sg___SWIG_5(arg1,(char const *)arg2,arg3,(int const *)arg4,arg5);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Teuchos_ParameterList_set_array_Sl_int_Sg___SWIG_5(arg1,(char const *)arg2,arg3,(int const *)arg4,arg5);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -668,7 +1246,28 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_5(void* farg1,  const char*  farg2
   arg3 = *farg3;
   arg4 = farg4;
   arg5 = *farg5;
-  Teuchos_ParameterList_get_array_Sl_int_Sg___SWIG_5(arg1,(char const *)arg2,arg3,arg4,arg5);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Teuchos_ParameterList_get_array_Sl_int_Sg___SWIG_5(arg1,(char const *)arg2,arg3,arg4,arg5);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -684,7 +1283,28 @@ SWIGEXPORT int swigc_ParameterList_get_length(void* farg1,  const char*  farg2, 
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = (char *)farg2; 
   arg3 = *farg3;
-  result = (int)Teuchos_ParameterList_get_length(arg1,(char const *)arg2,arg3);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (int)Teuchos_ParameterList_get_length(arg1,(char const *)arg2,arg3);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      };
+    }
+  }
   fresult = result;
   return fresult;
 }
@@ -700,7 +1320,28 @@ SWIGEXPORT void swigc_ParameterList_remove(void* farg1,  const char*  farg2, int
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = (char *)farg2; 
   arg3 = *farg3;
-  Teuchos_ParameterList_remove(arg1,(char const *)arg2,arg3);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Teuchos_ParameterList_remove(arg1,(char const *)arg2,arg3);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -716,7 +1357,28 @@ SWIGEXPORT bool swigc_ParameterList_is_parameter(void* farg1,  const char*  farg
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = (char *)farg2; 
   arg3 = *farg3;
-  result = (bool)Teuchos_ParameterList_is_parameter((Teuchos::ParameterList const *)arg1,(char const *)arg2,arg3);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (bool)Teuchos_ParameterList_is_parameter((Teuchos::ParameterList const *)arg1,(char const *)arg2,arg3);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      };
+    }
+  }
   fresult = result;
   return fresult;
 }
@@ -728,7 +1390,28 @@ SWIGEXPORT void swigc_delete_ParameterList(void* farg1) {
   
   smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (void)arg1; delete smartarg1;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (void)arg1; delete smartarg1;
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -741,7 +1424,28 @@ SWIGEXPORT void swigc_load_from_xml(void * farg1,  const char*  farg2, int* farg
   arg1 = farg1 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg1 : &tempnull1;
   arg2 = (char *)farg2; 
   arg3 = *farg3;
-  load_from_xml((Teuchos::RCP< Teuchos::ParameterList > const &)*arg1,(char const *)arg2,arg3);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      load_from_xml((Teuchos::RCP< Teuchos::ParameterList > const &)*arg1,(char const *)arg2,arg3);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -760,7 +1464,28 @@ SWIGEXPORT void swigc_save_to_xml(void* farg1,  const char*  farg2, int* farg3) 
   }
   arg2 = (char *)farg2; 
   arg3 = *farg3;
-  save_to_xml((Teuchos::ParameterList const &)*arg1,(char const *)arg2,arg3);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      save_to_xml((Teuchos::ParameterList const &)*arg1,(char const *)arg2,arg3);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 

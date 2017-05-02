@@ -43,11 +43,10 @@ program main
 
   integer(c_int) :: cur_pos, offset
   real(c_double) :: norm
+  character(len=1024) :: errmsg
 
   type(ParameterList) :: plist
   type(TrilinosHandle) :: tri_handle
-
-  integer :: ierr
 
   n = 50
   nnz = 3*n
@@ -68,6 +67,13 @@ program main
   ! Read in the parameterList
   call plist%create("Stratimikos")
   call load_from_xml(plist, "stratimikos.xml")
+
+  if (ierr /= 0) then
+    call get_error_string(errmsg)
+    write(*,*) "Got error ", ierr, ":", errmsg
+    stop 1
+  endif
+
 
   ! ------------------------------------------------------------------
   ! Step 0: Construct tri-diagonal matrix, and rhs

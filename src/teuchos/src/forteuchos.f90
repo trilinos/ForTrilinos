@@ -8,6 +8,10 @@ module forteuchos
  implicit none
 
  ! PUBLIC METHODS AND TYPES
+
+ public :: ierr
+ integer(C_INT), bind(C) :: ierr = 0
+ public :: get_error_string
  public :: string
  public :: ParameterList
  public :: load_from_xml
@@ -58,6 +62,12 @@ module forteuchos
  ! WRAPPER DECLARATIONS
  private
  interface
+  subroutine swigc_get_error_string(farg1, farg2) &
+     bind(C, name="swigc_get_error_string")
+   use, intrinsic :: ISO_C_BINDING
+   character(C_CHAR) :: farg1
+   integer(C_INT), intent(in) :: farg2
+  end subroutine
   function swigc_new_string__SWIG_0() &
      bind(C, name="swigc_new_string__SWIG_0") &
      result(fresult)
@@ -108,7 +118,7 @@ module forteuchos
      bind(C, name="swigc_string_get") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   character :: fresult
+   character(C_CHAR) :: fresult
    type(C_PTR), value :: farg1
    integer(C_INT), intent(in) :: farg2
   end function
@@ -294,6 +304,11 @@ module forteuchos
 
 contains
   ! FORTRAN PROXY CODE
+  subroutine get_error_string(STRING)
+   use, intrinsic :: ISO_C_BINDING
+   character(len=*) :: STRING
+   call swigc_get_error_string(STRING, len(STRING))
+  end subroutine
   subroutine swigf_new_string__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
@@ -344,7 +359,7 @@ contains
   function swigf_string_get(self, pos) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
-   character :: fresult
+   character(C_CHAR) :: fresult
    class(string) :: self
    integer(C_INT), intent(in) :: pos
    fresult = swigc_string_get(self%ptr, pos)

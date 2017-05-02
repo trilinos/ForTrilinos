@@ -29,7 +29,12 @@ subroutine test_plist()
 
     write(0, *) "Constructing..."
     call plist%create("myname")
-    ! call load_from_xml(plist, "input_params.xml")
+    EXPECT_EQ(0, ierr)
+
+    ! Test a function that raises an exception
+    call load_from_xml(plist, "nonexistent_path.xml")
+    EXPECT_EQ(-3, ierr)
+    ierr = 0
 
     ! Get and set a vlaue
     call plist%set("myint", 4)

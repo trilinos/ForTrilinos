@@ -9,6 +9,7 @@
 
 // Load Teuchos definitions
 %import "forteuchos.i"
+
 %include "ForTrilinosSimpleInterface_config.hpp"
 
 // MPI SUPPORT

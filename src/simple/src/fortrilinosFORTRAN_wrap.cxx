@@ -155,16 +155,42 @@ template <typename T> T SwigValueInit() {
 # pragma warning disable 592
 #endif
 
+/*  Errors in SWIG */
+#define  SWIG_UnknownError    	   -1
+#define  SWIG_IOError        	   -2
+#define  SWIG_RuntimeError   	   -3
+#define  SWIG_IndexError     	   -4
+#define  SWIG_TypeError      	   -5
+#define  SWIG_DivisionByZero 	   -6
+#define  SWIG_OverflowError  	   -7
+#define  SWIG_SyntaxError    	   -8
+#define  SWIG_ValueError     	   -9
+#define  SWIG_SystemError    	   -10
+#define  SWIG_AttributeError 	   -11
+#define  SWIG_MemoryError    	   -12
+#define  SWIG_NullReferenceError   -13
+
+
+
 
 #include <string>
 #include <algorithm>
 #include <stdexcept>
 
 
-#include <algorithm>
-
-
 #include <stdexcept>
+
+
+namespace swig
+{
+// Functions are defined in an imported module
+void fortran_check_unhandled_exception();
+void fortran_store_exception(int code, const char *msg);
+} // end namespace swig
+
+
+
+#include <algorithm>
 
 
 #include <string>
@@ -192,7 +218,28 @@ SWIGEXPORT void* swigc_new_TrilinosHandle() {
   void* fresult = 0 ;
   ForTrilinos::TrilinosHandle *result = 0 ;
   
-  result = (ForTrilinos::TrilinosHandle *)new ForTrilinos::TrilinosHandle();
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (ForTrilinos::TrilinosHandle *)new ForTrilinos::TrilinosHandle();
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      };
+    }
+  }
   fresult = result; 
   return fresult;
 }
@@ -202,7 +249,28 @@ SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_0(void* farg1) {
   ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
   
   arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
-  (arg1)->init();
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->init();
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -214,7 +282,28 @@ SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_1(void* farg1, int* farg2) {
   
   arg2 = (MPI_Comm)(MPI_Comm_f2c(*(MPI_Fint *)(farg2)));
   
-  (arg1)->init(arg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->init(arg2);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -234,7 +323,28 @@ SWIGEXPORT void swigc_TrilinosHandle_setup_matrix(void* farg1, int* farg2, int* 
   arg5 = *farg5;
   arg6 = farg6;
   arg7 = farg7;
-  (arg1)->setup_matrix(arg2,(int const *)arg3,(int const *)arg4,arg5,(int const *)arg6,(double const *)arg7);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->setup_matrix(arg2,(int const *)arg3,(int const *)arg4,arg5,(int const *)arg6,(double const *)arg7);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -248,7 +358,28 @@ SWIGEXPORT void swigc_TrilinosHandle_setup_operator(void* farg1, int* farg2, int
   arg2 = *farg2;
   arg3 = farg3;
   arg4 = (ForTrilinos::TrilinosHandle::OperatorCallback)(farg4); 
-  (arg1)->setup_operator(arg2,(int const *)arg3,arg4);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->setup_operator(arg2,(int const *)arg3,arg4);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -259,7 +390,28 @@ SWIGEXPORT void swigc_TrilinosHandle_setup_solver(void* farg1, void * farg2) {
   
   arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
   arg2 = farg2 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg2 : &tempnull2;
-  (arg1)->setup_solver((Teuchos::RCP< Teuchos::ParameterList > const &)*arg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->setup_solver((Teuchos::RCP< Teuchos::ParameterList > const &)*arg2);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -273,7 +425,28 @@ SWIGEXPORT void swigc_TrilinosHandle_solve(void* farg1, int* farg2, double* farg
   arg2 = *farg2;
   arg3 = farg3;
   arg4 = farg4;
-  ((ForTrilinos::TrilinosHandle const *)arg1)->solve(arg2,(double const *)arg3,arg4);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      ((ForTrilinos::TrilinosHandle const *)arg1)->solve(arg2,(double const *)arg3,arg4);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -281,7 +454,28 @@ SWIGEXPORT void swigc_TrilinosHandle_finalize(void* farg1) {
   ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
   
   arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
-  (arg1)->finalize();
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->finalize();
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
@@ -289,7 +483,28 @@ SWIGEXPORT void swigc_delete_TrilinosHandle(void* farg1) {
   ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
   
   arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
-  delete arg1;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      delete arg1;
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      };
+    }
+    catch (...)
+    {
+      {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      };
+    }
+  }
 }
 
 
