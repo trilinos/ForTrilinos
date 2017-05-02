@@ -43,7 +43,6 @@ program main
 
   integer(c_int) :: cur_pos, offset
   real(c_double) :: norm
-  character(len=1024) :: errmsg
 
   type(ParameterList) :: plist
   type(TrilinosHandle) :: tri_handle
@@ -57,23 +56,26 @@ program main
 #ifdef HAVE_MPI
   ! Initialize MPI subsystem
   call MPI_INIT(ierr)
-  EXPECT_EQ(ierr, 0)
+  if (ierr /= 0) then
+    write(*,*) "MPI failed to init"
+    stop 1
+  endif
 
   call MPI_COMM_RANK(MPI_COMM_WORLD, my_rank, ierr)
   call MPI_COMM_SIZE(MPI_COMM_WORLD, num_procs, ierr)
-  EXPECT_EQ(ierr, 0)
+  EXPECT_EQ(0, ierr)
 #endif
+
+  write(*,*) "Processor ", my_rank, " of ", num_procs
 
   ! Read in the parameterList
   call plist%create("Stratimikos")
   call load_from_xml(plist, "stratimikos.xml")
 
   if (ierr /= 0) then
-    call get_error_string(errmsg)
-    write(*,*) "Got error ", ierr, ":", errmsg
+    write(*,*) "Got error ", ierr, ":", trim(serr)
     stop 1
   endif
-
 
   ! ------------------------------------------------------------------
   ! Step 0: Construct tri-diagonal matrix, and rhs
@@ -138,20 +140,22 @@ program main
 #else
   call tri_handle%init()
 #endif
-  EXPECT_EQ(ierr, 0)
+  EXPECT_EQ(0, ierr)
 
   ! Step 2: setup the problem
   call tri_handle%setup_matrix(n, row_inds, row_ptrs, nnz, col_inds, values)
 
-  EXPECT_EQ(ierr, 0)
+  EXPECT_EQ(0, ierr)
 
   ! Step 3: setup the solver
   call tri_handle%setup_solver(plist)
-  EXPECT_EQ(ierr, 0)
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ": ", trim(serr)
+    stop 1
+  endif
 
   ! Step 4: solve the system
   call tri_handle%solve(n, rhs, lhs)
-  EXPECT_EQ(ierr, 0)
 
   ! Check the solution
   norm = 0.0
@@ -166,7 +170,6 @@ program main
 
   ! Step 5: clean up
   call tri_handle%finalize()
-  EXPECT_EQ(ierr, 0)
 
   ! ------------------------------------------------------------------
   ! Implicit (inversion-of-control) setup [ no solve ]
@@ -177,36 +180,35 @@ program main
 #else
   call tri_handle%init()
 #endif
-  EXPECT_EQ(ierr, 0)
 
   ! Step 2: setup the problem
   ! Implicit (inversion-of-control) setup
   call tri_handle%setup_operator(n, row_inds, C_FUNLOC(matvec))
 
-  EXPECT_EQ(ierr, 0)
 
   ! Step 3: setup the solver
   ! We cannot use most preconditioners without a matrix, so
   ! we remove any from the parameter list
   call plist%set("Preconditioner Type", "None")
   call tri_handle%setup_solver(plist)
-  EXPECT_EQ(ierr, 0)
 
   ! Step 4: solve the system
   ! We only check that it runs, but do not check the result as
   ! we are using a dummy operator
   call tri_handle%solve(n, rhs, lhs)
-  EXPECT_EQ(ierr, 0)
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ":", trim(serr)
+    stop 1
+  endif
 
   ! Step 5: clean up
   call tri_handle%finalize()
-  EXPECT_EQ(ierr, 0)
 
   ! ------------------------------------------------------------------
 
 #ifdef HAVE_MPI
   call MPI_FINALIZE(ierr)
-  EXPECT_EQ(ierr, 0)
+  EXPECT_EQ(0, ierr)
 #endif
 
   call plist%release()

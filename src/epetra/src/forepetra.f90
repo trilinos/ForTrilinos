@@ -139,7 +139,7 @@ contains
   subroutine swigf_new_Epetra_Object__SWIG_3(self, Label, TracebackModeIn)
    use, intrinsic :: ISO_C_BINDING
    class(Epetra_Object) :: self
-   character(len=*) :: Label
+   character(kind=C_CHAR, len=*) :: Label
    integer(C_INT), intent(in) :: TracebackModeIn
    if (c_associated(self%ptr)) call self%release()
    self%ptr = swigc_new_Epetra_Object__SWIG_3(Label, TracebackModeIn)
@@ -148,7 +148,7 @@ contains
   subroutine swigf_new_Epetra_Object__SWIG_4(self, Label)
    use, intrinsic :: ISO_C_BINDING
    class(Epetra_Object) :: self
-   character(len=*) :: Label
+   character(kind=C_CHAR, len=*) :: Label
    if (c_associated(self%ptr)) call self%release()
    self%ptr = swigc_new_Epetra_Object__SWIG_4(Label)
    self%own = .true.
@@ -173,7 +173,7 @@ contains
   subroutine swigf_Epetra_Object_SetLabel(self, Label)
    use, intrinsic :: ISO_C_BINDING
    class(Epetra_Object) :: self
-   character(len=*) :: Label
+   character(kind=C_CHAR, len=*) :: Label
    call swigc_Epetra_Object_SetLabel(self%ptr, Label)
   end subroutine
   subroutine swigf_Epetra_Object_SetTracebackMode(TracebackModeValue)

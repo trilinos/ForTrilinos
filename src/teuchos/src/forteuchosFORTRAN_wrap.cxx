@@ -176,10 +176,10 @@ template <typename T> T SwigValueInit() {
 #include <stdexcept>
 
 
-#include <algorithm>
-
-
 #include <string>
+
+
+#include <algorithm>
 
 
 // External fortran-owned data that we save to
@@ -187,42 +187,47 @@ template <typename T> T SwigValueInit() {
 extern "C" {
 
 extern int ierr;
+extern char serr[1024];
 
 };
 
 
 namespace swig
 {
-// Message thrown by last unhandled exception
-std::string fortran_exception_str;
+// Stored exception message (XXX: is this safe if main() is fortran?)
+std::string fortran_last_exception_msg;
 
 // Call this function before any new action
 void fortran_check_unhandled_exception()
 {
     if (::ierr != 0)
-        throw std::runtime_error("An unhandled exception occurred: "
-                                 + fortran_exception_str);
+    {
+        throw std::runtime_error(
+                "An unhandled exception occurred: "
+                + fortran_last_exception_msg);
+    }
 }
 
+// Save an exception to the fortran error code and string
 void fortran_store_exception(int code, const char *msg)
 {
     ::ierr = code;
-    fortran_exception_str = msg;
+
+    // Save the message to a std::string first
+    fortran_last_exception_msg = msg;
+
+    std::size_t msg_size = std::min<std::size_t>(
+            fortran_last_exception_msg.size(),
+            1024);
+
+    // Copy to space-padded Fortran string
+    char* dst = serr;
+    dst = std::copy(fortran_last_exception_msg.begin(),
+                    fortran_last_exception_msg.begin() + msg_size,
+                    dst);
+    std::fill(dst, serr + 1024, ' ');
 }
 } // end namespace swig
-
-
-
-void get_error_string(char* STRING, int SIZE)
-{
-    int minsize = std::min<int>(SIZE, swig::fortran_exception_str.size());
-
-    char* dst = STRING;
-    dst = std::copy(swig::fortran_exception_str.begin(),
-                    swig::fortran_exception_str.begin() + minsize,
-                    dst);
-    std::fill(dst, STRING + SIZE, ' ');
-}
 
 
 
@@ -370,16 +375,6 @@ void save_to_xml(const Teuchos::ParameterList& plist,
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_get_error_string( char*  farg1, int* farg2) {
-  char *arg1 = (char *) 0 ;
-  int arg2 ;
-  
-  arg1 = (char *)farg1; 
-  arg2 = *farg2;
-  get_error_string(arg1,arg2);
-}
-
-
 SWIGEXPORT void* swigc_new_string__SWIG_0() {
   void* fresult = 0 ;
   std::string *result = 0 ;

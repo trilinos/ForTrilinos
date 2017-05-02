@@ -10,8 +10,9 @@ module forteuchos
  ! PUBLIC METHODS AND TYPES
 
  public :: ierr
+ public :: serr
  integer(C_INT), bind(C) :: ierr = 0
- public :: get_error_string
+ character(kind=C_CHAR, len=1024), bind(C) :: serr = ""
  public :: string
  public :: ParameterList
  public :: load_from_xml
@@ -62,12 +63,6 @@ module forteuchos
  ! WRAPPER DECLARATIONS
  private
  interface
-  subroutine swigc_get_error_string(farg1, farg2) &
-     bind(C, name="swigc_get_error_string")
-   use, intrinsic :: ISO_C_BINDING
-   character(C_CHAR) :: farg1
-   integer(C_INT), intent(in) :: farg2
-  end subroutine
   function swigc_new_string__SWIG_0() &
      bind(C, name="swigc_new_string__SWIG_0") &
      result(fresult)
@@ -304,11 +299,6 @@ module forteuchos
 
 contains
   ! FORTRAN PROXY CODE
-  subroutine get_error_string(STRING)
-   use, intrinsic :: ISO_C_BINDING
-   character(len=*) :: STRING
-   call swigc_get_error_string(STRING, len(STRING))
-  end subroutine
   subroutine swigf_new_string__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
@@ -319,7 +309,7 @@ contains
   subroutine swigf_new_string__SWIG_1(self, s)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
-   character(len=*) :: s
+   character(kind=C_CHAR, len=*) :: s
    if (c_associated(self%ptr)) call self%release()
    self%ptr = swigc_new_string__SWIG_1(s, len(s))
    self%own = .true.
@@ -367,13 +357,13 @@ contains
   subroutine swigf_string_assign_from(self, s)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
-   character(len=*) :: s
+   character(kind=C_CHAR, len=*) :: s
    call swigc_string_assign_from(self%ptr, s, len(s))
   end subroutine
   subroutine swigf_string_copy_to(self, s)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
-   character(len=*) :: s
+   character(kind=C_CHAR, len=*) :: s
    call swigc_string_copy_to(self%ptr, s, len(s))
   end subroutine
   subroutine swigf_delete_string(self)
@@ -393,91 +383,91 @@ contains
   subroutine swigf_new_ParameterList(self, STRING)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
-   character(len=*) :: STRING
+   character(kind=C_CHAR, len=*) :: STRING
    if (c_associated(self%ptr)) call self%release()
    self%ptr = swigc_new_ParameterList(STRING, len(STRING))
   end subroutine
   subroutine swigf_ParameterList_get__SWIG_0(self, STRING, value)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
-   character(len=*) :: STRING
+   character(kind=C_CHAR, len=*) :: STRING
    real(C_DOUBLE), intent(inout) :: value
    call swigc_ParameterList_get__SWIG_0(self%ptr, STRING, len(STRING), value)
   end subroutine
   subroutine swigf_ParameterList_set__SWIG_0(self, STRING, value)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
-   character(len=*) :: STRING
+   character(kind=C_CHAR, len=*) :: STRING
    real(C_DOUBLE), intent(in) :: value
    call swigc_ParameterList_set__SWIG_0(self%ptr, STRING, len(STRING), value)
   end subroutine
   subroutine swigf_ParameterList_get__SWIG_1(self, STRING, value)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
-   character(len=*) :: STRING
+   character(kind=C_CHAR, len=*) :: STRING
    integer(C_INT), intent(inout) :: value
    call swigc_ParameterList_get__SWIG_1(self%ptr, STRING, len(STRING), value)
   end subroutine
   subroutine swigf_ParameterList_set__SWIG_1(self, STRING, value)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
-   character(len=*) :: STRING
+   character(kind=C_CHAR, len=*) :: STRING
    integer(C_INT), intent(in) :: value
    call swigc_ParameterList_set__SWIG_1(self%ptr, STRING, len(STRING), value)
   end subroutine
   subroutine swigf_ParameterList_get__SWIG_2(self, STRING, value)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
-   character(len=*) :: STRING
+   character(kind=C_CHAR, len=*) :: STRING
    class(ParameterList) :: value
    call swigc_ParameterList_get__SWIG_2(self%ptr, STRING, len(STRING), value%ptr)
   end subroutine
   subroutine swigf_ParameterList_set__SWIG_2(self, STRING, value)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
-   character(len=*) :: STRING
+   character(kind=C_CHAR, len=*) :: STRING
    class(ParameterList) :: value
    call swigc_ParameterList_set__SWIG_2(self%ptr, STRING, len(STRING), value%ptr)
   end subroutine
   subroutine swigf_ParameterList_set__SWIG_3(self, STRING, VALSTRING)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
-   character(len=*) :: STRING
-   character(len=*) :: VALSTRING
+   character(kind=C_CHAR, len=*) :: STRING
+   character(kind=C_CHAR, len=*) :: VALSTRING
    call swigc_ParameterList_set__SWIG_3(self%ptr, STRING, len(STRING), VALSTRING, len(VALSTRING))
   end subroutine
   subroutine swigf_ParameterList_get__SWIG_3(self, STRING, VALSTRING)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
-   character(len=*) :: STRING
-   character(len=*) :: VALSTRING
+   character(kind=C_CHAR, len=*) :: STRING
+   character(kind=C_CHAR, len=*) :: VALSTRING
    call swigc_ParameterList_get__SWIG_3(self%ptr, STRING, len(STRING), VALSTRING, len(VALSTRING))
   end subroutine
   subroutine swigf_ParameterList_set__SWIG_4(self, STRING, ARRAY)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
-   character(len=*) :: STRING
+   character(kind=C_CHAR, len=*) :: STRING
    real(C_DOUBLE), dimension(:), intent(in) :: ARRAY
    call swigc_ParameterList_set__SWIG_4(self%ptr, STRING, len(STRING), ARRAY, size(ARRAY))
   end subroutine
   subroutine swigf_ParameterList_get__SWIG_4(self, STRING, ARRAY)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
-   character(len=*) :: STRING
+   character(kind=C_CHAR, len=*) :: STRING
    real(C_DOUBLE), dimension(:), intent(inout) :: ARRAY
    call swigc_ParameterList_get__SWIG_4(self%ptr, STRING, len(STRING), ARRAY, size(ARRAY))
   end subroutine
   subroutine swigf_ParameterList_set__SWIG_5(self, STRING, ARRAY)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
-   character(len=*) :: STRING
+   character(kind=C_CHAR, len=*) :: STRING
    integer(C_INT), dimension(:), intent(in) :: ARRAY
    call swigc_ParameterList_set__SWIG_5(self%ptr, STRING, len(STRING), ARRAY, size(ARRAY))
   end subroutine
   subroutine swigf_ParameterList_get__SWIG_5(self, STRING, ARRAY)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
-   character(len=*) :: STRING
+   character(kind=C_CHAR, len=*) :: STRING
    integer(C_INT), dimension(:), intent(inout) :: ARRAY
    call swigc_ParameterList_get__SWIG_5(self%ptr, STRING, len(STRING), ARRAY, size(ARRAY))
   end subroutine
@@ -486,13 +476,13 @@ contains
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT) :: fresult
    class(ParameterList) :: self
-   character(len=*) :: STRING
+   character(kind=C_CHAR, len=*) :: STRING
    fresult = swigc_ParameterList_get_length(self%ptr, STRING, len(STRING))
   end function
   subroutine swigf_ParameterList_remove(self, STRING)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
-   character(len=*) :: STRING
+   character(kind=C_CHAR, len=*) :: STRING
    call swigc_ParameterList_remove(self%ptr, STRING, len(STRING))
   end subroutine
   function swigf_ParameterList_is_parameter(self, STRING) &
@@ -500,7 +490,7 @@ contains
    use, intrinsic :: ISO_C_BINDING
    logical(C_BOOL) :: fresult
    class(ParameterList) :: self
-   character(len=*) :: STRING
+   character(kind=C_CHAR, len=*) :: STRING
    fresult = swigc_ParameterList_is_parameter(self%ptr, STRING, len(STRING))
   end function
   subroutine swigf_delete_ParameterList(self)
@@ -512,13 +502,13 @@ contains
   subroutine load_from_xml(plist, STRING)
    use, intrinsic :: ISO_C_BINDING
    type(ParameterList) :: plist
-   character(len=*) :: STRING
+   character(kind=C_CHAR, len=*) :: STRING
    call swigc_load_from_xml(plist%ptr, STRING, len(STRING))
   end subroutine
   subroutine save_to_xml(plist, STRING)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: plist
-   character(len=*) :: STRING
+   character(kind=C_CHAR, len=*) :: STRING
    call swigc_save_to_xml(plist%ptr, STRING, len(STRING))
   end subroutine
 end module forteuchos
