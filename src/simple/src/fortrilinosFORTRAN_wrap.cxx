@@ -173,11 +173,6 @@ template <typename T> T SwigValueInit() {
 
 
 
-#include <string>
-#include <algorithm>
-#include <stdexcept>
-
-
 #include <stdexcept>
 
 
@@ -187,7 +182,6 @@ namespace swig
 void fortran_check_unhandled_exception();
 void fortran_store_exception(int code, const char *msg);
 } // end namespace swig
-
 
 
 #include <algorithm>
@@ -245,7 +239,7 @@ SWIGEXPORT void* swigc_new_TrilinosHandle() {
 }
 
 
-SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_0(void* farg1) {
+SWIGEXPORT void swigc_TrilinosHandle_init(void* farg1) {
   ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
   
   arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
@@ -256,39 +250,6 @@ SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_0(void* farg1) {
     {
       // Attempt the wrapped function call
       (arg1)->init();
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
-    }
-    catch (...)
-    {
-      {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
-    }
-  }
-}
-
-
-SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_1(void* farg1, int* farg2) {
-  ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
-  MPI_Comm arg2 ;
-  
-  arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
-  
-  arg2 = (MPI_Comm)(MPI_Comm_f2c(*(MPI_Fint *)(farg2)));
-  
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
-    try
-    {
-      // Attempt the wrapped function call
-      (arg1)->init(arg2);
     }
     catch (const std::exception& e)
     {
@@ -348,7 +309,7 @@ SWIGEXPORT void swigc_TrilinosHandle_setup_matrix(void* farg1, int* farg2, int* 
 }
 
 
-SWIGEXPORT void swigc_TrilinosHandle_setup_operator(void* farg1, int* farg2, int* farg3, void* farg4) {
+SWIGEXPORT void swigc_TrilinosHandle_setup_operator(void* farg1, int* farg2, int* farg3,  ForTrilinos::TrilinosHandle::OperatorCallback  farg4) {
   ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
   int arg2 ;
   int *arg3 = (int *) 0 ;
@@ -357,7 +318,7 @@ SWIGEXPORT void swigc_TrilinosHandle_setup_operator(void* farg1, int* farg2, int
   arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
   arg2 = *farg2;
   arg3 = farg3;
-  arg4 = (ForTrilinos::TrilinosHandle::OperatorCallback)(farg4); 
+  arg4 = farg4; 
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();

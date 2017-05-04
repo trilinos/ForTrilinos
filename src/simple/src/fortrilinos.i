@@ -1,12 +1,5 @@
 %module fortrilinos
 
-// Needed to support support std::string
-%{
-#include <string>
-#include <algorithm>
-#include <stdexcept>
-%}
-
 // Load Teuchos definitions
 %import "forteuchos.i"
 
