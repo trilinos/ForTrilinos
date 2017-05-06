@@ -26,6 +26,11 @@ class ExceptionBase : public std::logic_error { /* * */ };
         // Attempt the wrapped function call
         $action
     }
+    catch (const std::range_error& e)
+    {
+        // Store a C++ exception
+        SWIG_exception(SWIG_IndexError, e.what());
+    }
     catch (const std::exception& e)
     {
         // Store a C++ exception

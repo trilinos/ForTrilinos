@@ -230,7 +230,6 @@ void fortran_store_exception(int code, const char *msg)
 } // end namespace swig
 
 
-
 #include "Teuchos_Exceptions.hpp"
 
 
@@ -240,15 +239,28 @@ void fortran_store_exception(int code, const char *msg)
 #include "Teuchos_ParameterList.hpp"
 
 
+#include <sstream>
 
-// Fill a Fortran string from a std::string; with whitespace after
-void std_string_copyout(const std::string& str, char* s, size_t count)
+
+namespace swig
 {
-    if (str.size() > count)
-        throw std::range_error("string size too small");
+void string_size_check(size_t src, size_t dst)
+{
+    if (dst < src)
+    {
+        std::ostringstream os;
+        os << "String size too small: " << dst << " < " << src;
+        throw std::range_error(os.str());
+    }
+}
+
+void string_copyout(const std::string& str, char* s, size_t count)
+{
+    string_size_check(str.size(), count);
 
     s = std::copy(str.begin(), str.end(), s);
     std::fill_n(s, count - str.size(), ' ');
+}
 }
 
 
@@ -264,8 +276,23 @@ SWIGINTERN void std_string_assign_from(std::string *self,std::string::const_poin
         self->assign(s, s + count);
     }
 SWIGINTERN void std_string_copy_to(std::string *self,std::string::pointer s,std::string::size_type count){
-        std_string_copyout(*self, s, count);
+        swig::string_copyout(*self, s, count);
     }
+
+namespace swig
+{
+void array_size_check(size_t src, size_t dst)
+{
+    if (dst < src)
+    {
+        std::ostringstream os;
+        os << "Array size mismatch: " << src << " != " << dst;
+        throw std::range_error(os.str());
+    }
+}
+}
+
+
 SWIGINTERN Teuchos::ParameterList *new_Teuchos_ParameterList(char const *STRING,int SIZE){
     return new Teuchos::ParameterList(std::string(STRING, SIZE));
 }
@@ -304,7 +331,7 @@ SWIGINTERN void Teuchos_ParameterList_set__SWIG_3(Teuchos::ParameterList *self,c
 SWIGINTERN void Teuchos_ParameterList_get__SWIG_3(Teuchos::ParameterList *self,char const *STRING,int SIZE,char *VALSTRING,int VALSIZE){
     const std::string& value
         = self->get<std::string>(std::string(STRING, SIZE));
-    std_string_copyout(value, VALSTRING, VALSIZE);
+    swig::string_copyout(value, VALSTRING, VALSIZE);
 }
 SWIGINTERN void Teuchos_ParameterList_set_array_Sl_double_Sg___SWIG_4(Teuchos::ParameterList *self,char const *STRING,int SIZE,double const *ARRAY,int ARRAYSIZE){
     typedef Teuchos::Array<double> ArrayT;
@@ -316,9 +343,7 @@ SWIGINTERN void Teuchos_ParameterList_get_array_Sl_double_Sg___SWIG_4(Teuchos::P
     const ArrayT& arr
         = self->get<ArrayT>(std::string(STRING, SIZE));
 
-    if (arr.size() != ARRAYSIZE)
-        throw std::range_error("arr/vector size mismatch");
-
+    swig::array_size_check(arr.size(), ARRAYSIZE);
     std::copy(arr.begin(), arr.end(), ARRAY);
 }
 SWIGINTERN void Teuchos_ParameterList_set_array_Sl_int_Sg___SWIG_5(Teuchos::ParameterList *self,char const *STRING,int SIZE,int const *ARRAY,int ARRAYSIZE){
@@ -331,9 +356,7 @@ SWIGINTERN void Teuchos_ParameterList_get_array_Sl_int_Sg___SWIG_5(Teuchos::Para
     const ArrayT& arr
         = self->get<ArrayT>(std::string(STRING, SIZE));
 
-    if (arr.size() != ARRAYSIZE)
-        throw std::range_error("arr/vector size mismatch");
-
+    swig::array_size_check(arr.size(), ARRAYSIZE);
     std::copy(arr.begin(), arr.end(), ARRAY);
 }
 SWIGINTERN int Teuchos_ParameterList_get_length(Teuchos::ParameterList *self,char const *STRING,int SIZE){
@@ -387,6 +410,13 @@ SWIGEXPORT void* swigc_new_string__SWIG_0() {
       // Attempt the wrapped function call
       result = (std::string *)new std::string();
     }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      };
+    }
     catch (const std::exception& e)
     {
       // Store a C++ exception
@@ -422,6 +452,13 @@ SWIGEXPORT void* swigc_new_string__SWIG_1( const char*  farg1, int* farg2) {
       // Attempt the wrapped function call
       result = (std::string *)new std::string(arg1,arg2);
     }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      };
+    }
     catch (const std::exception& e)
     {
       // Store a C++ exception
@@ -455,6 +492,13 @@ SWIGEXPORT void swigc_string_resize(void* farg1, int* farg2) {
       // Attempt the wrapped function call
       (arg1)->resize(arg2);
     }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
+    }
     catch (const std::exception& e)
     {
       // Store a C++ exception
@@ -483,6 +527,13 @@ SWIGEXPORT void swigc_string_clear(void* farg1) {
     {
       // Attempt the wrapped function call
       (arg1)->clear();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
     }
     catch (const std::exception& e)
     {
@@ -514,6 +565,13 @@ SWIGEXPORT int swigc_string_size(void* farg1) {
     {
       // Attempt the wrapped function call
       result = (std::string::size_type)((std::string const *)arg1)->size();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      };
     }
     catch (const std::exception& e)
     {
@@ -547,6 +605,13 @@ SWIGEXPORT int swigc_string_length(void* farg1) {
     {
       // Attempt the wrapped function call
       result = (std::string::size_type)((std::string const *)arg1)->length();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      };
     }
     catch (const std::exception& e)
     {
@@ -583,6 +648,13 @@ SWIGEXPORT void swigc_string_set(void* farg1, int* farg2,  char  farg3) {
       // Attempt the wrapped function call
       std_string_set(arg1,arg2,arg3);
     }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
+    }
     catch (const std::exception& e)
     {
       // Store a C++ exception
@@ -615,6 +687,13 @@ SWIGEXPORT  char  swigc_string_get(void* farg1, int* farg2) {
     {
       // Attempt the wrapped function call
       result = (std::string::value_type)std_string_get(arg1,arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      };
     }
     catch (const std::exception& e)
     {
@@ -651,6 +730,13 @@ SWIGEXPORT void swigc_string_assign_from(void* farg1,  const char*  farg2, int* 
       // Attempt the wrapped function call
       std_string_assign_from(arg1,(char const *)arg2,arg3);
     }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
+    }
     catch (const std::exception& e)
     {
       // Store a C++ exception
@@ -684,6 +770,13 @@ SWIGEXPORT void swigc_string_copy_to(void* farg1,  char*  farg2, int* farg3) {
       // Attempt the wrapped function call
       std_string_copy_to(arg1,arg2,arg3);
     }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
+    }
     catch (const std::exception& e)
     {
       // Store a C++ exception
@@ -712,6 +805,13 @@ SWIGEXPORT void swigc_delete_string(void* farg1) {
     {
       // Attempt the wrapped function call
       delete arg1;
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
     }
     catch (const std::exception& e)
     {
@@ -743,6 +843,13 @@ SWIGEXPORT void swigc_ParameterList_print(void* farg1) {
     {
       // Attempt the wrapped function call
       ((Teuchos::ParameterList const *)arg1)->print();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
     }
     catch (const std::exception& e)
     {
@@ -776,6 +883,13 @@ SWIGEXPORT void* swigc_new_ParameterList( const char*  farg1, int* farg2) {
     {
       // Attempt the wrapped function call
       result = (Teuchos::ParameterList *)new_Teuchos_ParameterList((char const *)arg1,arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      };
     }
     catch (const std::exception& e)
     {
@@ -816,6 +930,13 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_0(void* farg1,  const char*  farg2
       // Attempt the wrapped function call
       Teuchos_ParameterList_get_scalar_Sl_double_Sg___SWIG_0(arg1,(char const *)arg2,arg3,*arg4);
     }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
+    }
     catch (const std::exception& e)
     {
       // Store a C++ exception
@@ -852,6 +973,13 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_0(void* farg1,  const char*  farg2
     {
       // Attempt the wrapped function call
       Teuchos_ParameterList_set_scalar_Sl_double_Sg___SWIG_0(arg1,(char const *)arg2,arg3,(double const &)*arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
     }
     catch (const std::exception& e)
     {
@@ -890,6 +1018,13 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_1(void* farg1,  const char*  farg2
       // Attempt the wrapped function call
       Teuchos_ParameterList_get_scalar_Sl_int_Sg___SWIG_1(arg1,(char const *)arg2,arg3,*arg4);
     }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
+    }
     catch (const std::exception& e)
     {
       // Store a C++ exception
@@ -926,6 +1061,13 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_1(void* farg1,  const char*  farg2
     {
       // Attempt the wrapped function call
       Teuchos_ParameterList_set_scalar_Sl_int_Sg___SWIG_1(arg1,(char const *)arg2,arg3,(int const &)*arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
     }
     catch (const std::exception& e)
     {
@@ -971,6 +1113,13 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_2(void* farg1,  const char*  farg2
       // Attempt the wrapped function call
       Teuchos_ParameterList_get_scalar_Sl_Teuchos_ParameterList_Sg___SWIG_2(arg1,(char const *)arg2,arg3,*arg4);
     }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
+    }
     catch (const std::exception& e)
     {
       // Store a C++ exception
@@ -1015,6 +1164,13 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_2(void* farg1,  const char*  farg2
       // Attempt the wrapped function call
       Teuchos_ParameterList_set_scalar_Sl_Teuchos_ParameterList_Sg___SWIG_2(arg1,(char const *)arg2,arg3,(Teuchos::ParameterList const &)*arg4);
     }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
+    }
     catch (const std::exception& e)
     {
       // Store a C++ exception
@@ -1053,6 +1209,13 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_3(void* farg1,  const char*  farg2
     {
       // Attempt the wrapped function call
       Teuchos_ParameterList_set__SWIG_3(arg1,(char const *)arg2,arg3,(char const *)arg4,arg5);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
     }
     catch (const std::exception& e)
     {
@@ -1093,6 +1256,13 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_3(void* farg1,  const char*  farg2
       // Attempt the wrapped function call
       Teuchos_ParameterList_get__SWIG_3(arg1,(char const *)arg2,arg3,arg4,arg5);
     }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
+    }
     catch (const std::exception& e)
     {
       // Store a C++ exception
@@ -1131,6 +1301,13 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_4(void* farg1,  const char*  farg2
     {
       // Attempt the wrapped function call
       Teuchos_ParameterList_set_array_Sl_double_Sg___SWIG_4(arg1,(char const *)arg2,arg3,(double const *)arg4,arg5);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
     }
     catch (const std::exception& e)
     {
@@ -1171,6 +1348,13 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_4(void* farg1,  const char*  farg2
       // Attempt the wrapped function call
       Teuchos_ParameterList_get_array_Sl_double_Sg___SWIG_4(arg1,(char const *)arg2,arg3,arg4,arg5);
     }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
+    }
     catch (const std::exception& e)
     {
       // Store a C++ exception
@@ -1209,6 +1393,13 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_5(void* farg1,  const char*  farg2
     {
       // Attempt the wrapped function call
       Teuchos_ParameterList_set_array_Sl_int_Sg___SWIG_5(arg1,(char const *)arg2,arg3,(int const *)arg4,arg5);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
     }
     catch (const std::exception& e)
     {
@@ -1249,6 +1440,13 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_5(void* farg1,  const char*  farg2
       // Attempt the wrapped function call
       Teuchos_ParameterList_get_array_Sl_int_Sg___SWIG_5(arg1,(char const *)arg2,arg3,arg4,arg5);
     }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
+    }
     catch (const std::exception& e)
     {
       // Store a C++ exception
@@ -1285,6 +1483,13 @@ SWIGEXPORT int swigc_ParameterList_get_length(void* farg1,  const char*  farg2, 
     {
       // Attempt the wrapped function call
       result = (int)Teuchos_ParameterList_get_length(arg1,(char const *)arg2,arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      };
     }
     catch (const std::exception& e)
     {
@@ -1323,6 +1528,13 @@ SWIGEXPORT void swigc_ParameterList_remove(void* farg1,  const char*  farg2, int
       // Attempt the wrapped function call
       Teuchos_ParameterList_remove(arg1,(char const *)arg2,arg3);
     }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
+    }
     catch (const std::exception& e)
     {
       // Store a C++ exception
@@ -1360,6 +1572,13 @@ SWIGEXPORT bool swigc_ParameterList_is_parameter(void* farg1,  const char*  farg
       // Attempt the wrapped function call
       result = (bool)Teuchos_ParameterList_is_parameter((Teuchos::ParameterList const *)arg1,(char const *)arg2,arg3);
     }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      };
+    }
     catch (const std::exception& e)
     {
       // Store a C++ exception
@@ -1392,6 +1611,13 @@ SWIGEXPORT void swigc_delete_ParameterList(void* farg1) {
     {
       // Attempt the wrapped function call
       (void)arg1; delete smartarg1;
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
     }
     catch (const std::exception& e)
     {
@@ -1426,6 +1652,13 @@ SWIGEXPORT void swigc_load_from_xml(void * farg1,  const char*  farg2, int* farg
     {
       // Attempt the wrapped function call
       load_from_xml((Teuchos::RCP< Teuchos::ParameterList > const &)*arg1,(char const *)arg2,arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
     }
     catch (const std::exception& e)
     {
@@ -1466,6 +1699,13 @@ SWIGEXPORT void swigc_save_to_xml(void* farg1,  const char*  farg2, int* farg3) 
     {
       // Attempt the wrapped function call
       save_to_xml((Teuchos::ParameterList const &)*arg1,(char const *)arg2,arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      };
     }
     catch (const std::exception& e)
     {

@@ -12,9 +12,17 @@
 
 %include <std_string.i>
 
-%fragment("StdStringCopyout");
+// Use string copying and size checking
+%fragment("StringCopyout");
+%fragment("ArraySizeCheck");
 
+// Hide warnings about overloading intrinsics
+%warnfilter(314) Teuchos::ParameterList::print;
+%warnfilter(314) Teuchos::ParameterList::size;
+
+// Make the Plist an RCP
 %teuchos_rcp(Teuchos::ParameterList)
+
 
 namespace Teuchos
 {
@@ -77,7 +85,7 @@ void get(const char* STRING, int SIZE,
 {
     const std::string& value
         = $self->get<std::string>(std::string(STRING, SIZE));
-    std_string_copyout(value, VALSTRING, VALSIZE);
+    swig::string_copyout(value, VALSTRING, VALSIZE);
 }
 
 // Use fortran array typemap for value as well as key
@@ -106,9 +114,7 @@ void get_array(const char* STRING, int SIZE,
     const ArrayT& arr
         = $self->get<ArrayT>(std::string(STRING, SIZE));
 
-    if (arr.size() != ARRAYSIZE)
-        throw std::range_error("arr/vector size mismatch");
-
+    swig::array_size_check(arr.size(), ARRAYSIZE);
     std::copy(arr.begin(), arr.end(), ARRAY);
 }
 
