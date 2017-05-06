@@ -16,13 +16,15 @@ module fortrilinos
   logical, private :: own = .false.
  contains
   procedure :: create => swigf_new_TrilinosHandle
-  procedure :: init => swigf_TrilinosHandle_init
+  procedure, private :: init__SWIG_0 => swigf_TrilinosHandle_init__SWIG_0
+  procedure, private :: init__SWIG_1 => swigf_TrilinosHandle_init__SWIG_1
   procedure :: setup_matrix => swigf_TrilinosHandle_setup_matrix
   procedure :: setup_operator => swigf_TrilinosHandle_setup_operator
   procedure :: setup_solver => swigf_TrilinosHandle_setup_solver
   procedure :: solve => swigf_TrilinosHandle_solve
   procedure :: finalize => swigf_TrilinosHandle_finalize
   procedure :: release => swigf_delete_TrilinosHandle
+  generic :: init => init__SWIG_0, init__SWIG_1
  end type
 
  ! WRAPPER DECLARATIONS
@@ -34,10 +36,16 @@ module fortrilinos
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
   end function
-  subroutine swigc_TrilinosHandle_init(farg1) &
-     bind(C, name="swigc_TrilinosHandle_init")
+  subroutine swigc_TrilinosHandle_init__SWIG_0(farg1) &
+     bind(C, name="swigc_TrilinosHandle_init__SWIG_0")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
+  end subroutine
+  subroutine swigc_TrilinosHandle_init__SWIG_1(farg1, farg2) &
+     bind(C, name="swigc_TrilinosHandle_init__SWIG_1")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
   end subroutine
   subroutine swigc_TrilinosHandle_setup_matrix(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
      bind(C, name="swigc_TrilinosHandle_setup_matrix")
@@ -93,10 +101,16 @@ contains
    self%ptr = swigc_new_TrilinosHandle()
    self%own = .true.
   end subroutine
-  subroutine swigf_TrilinosHandle_init(self)
+  subroutine swigf_TrilinosHandle_init__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
    class(TrilinosHandle) :: self
-   call swigc_TrilinosHandle_init(self%ptr)
+   call swigc_TrilinosHandle_init__SWIG_0(self%ptr)
+  end subroutine
+  subroutine swigf_TrilinosHandle_init__SWIG_1(self, comm)
+   use, intrinsic :: ISO_C_BINDING
+   class(TrilinosHandle) :: self
+   integer(C_INT), intent(in) :: comm
+   call swigc_TrilinosHandle_init__SWIG_1(self%ptr, comm)
   end subroutine
   subroutine swigf_TrilinosHandle_setup_matrix(self, numRows, rowInds, rowPtrs, numNnz, colInds, values)
    use, intrinsic :: ISO_C_BINDING

@@ -5,6 +5,8 @@
 
 #ifdef HAVE_MPI
 #include <mpi.h>
+#else
+typedef int MPI_Comm;
 #endif
 
 #include <Teuchos_Comm.hpp>
@@ -47,9 +49,7 @@ namespace ForTrilinos {
 
     // Initialize
     void init();
-#ifdef HAVE_MPI
     void init(MPI_Comm comm);
-#endif
 
     // Setup matrix
     void setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values);

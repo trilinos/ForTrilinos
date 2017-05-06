@@ -2,6 +2,7 @@
 #include "trilinos_handle.hpp"
 
 #include <Stratimikos_DefaultLinearSolverBuilder.hpp>
+#include <stdexcept>
 
 #ifdef HAVE_FORTRILINOSSIMPLEINTERFACE_IFPACK2
 #  include <Teuchos_AbstractFactoryStd.hpp>
@@ -30,8 +31,8 @@ namespace ForTrilinos {
     status_ = INITIALIZED;
   }
 
-#ifdef HAVE_MPI
   void TrilinosHandle::init(MPI_Comm comm) {
+#ifdef HAVE_MPI
     using Teuchos::rcp;
 
     TEUCHOS_ASSERT(status_ == NOT_INITIALIZED);
@@ -46,8 +47,10 @@ namespace ForTrilinos {
     comm_ = rcp(new Teuchos::MpiComm<int>(comm));
 
     status_ = INITIALIZED;
-  }
+#else
+    throw std::runtime_error("MPI is not enabled");
 #endif
+  }
 
   void TrilinosHandle::setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) {
     using Teuchos::ArrayRCP;
