@@ -29,16 +29,16 @@ class ExceptionBase : public std::logic_error { /* * */ };
     catch (const std::range_error& e)
     {
         // Store a C++ exception
-        SWIG_exception(SWIG_IndexError, e.what());
+        SWIG_exception(SWIG_IndexError, e.what())
     }
     catch (const std::exception& e)
     {
         // Store a C++ exception
-        SWIG_exception(SWIG_RuntimeError, e.what());
+        SWIG_exception(SWIG_RuntimeError, e.what())
     }
     catch (...)
     {
-        SWIG_exception(SWIG_UnknownError, "An unknown exception occurred");
+        SWIG_exception(SWIG_UnknownError, "An unknown exception occurred")
     }
 }
 
