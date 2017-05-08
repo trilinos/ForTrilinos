@@ -130,6 +130,10 @@ program main
 
   ! Step 0.5: crate a handle
   call tri_handle%create()
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ": ", trim(serr)
+    stop 1
+  endif
 
   ! ------------------------------------------------------------------
   ! Explicit setup and solve
@@ -140,12 +144,17 @@ program main
 #else
   call tri_handle%init()
 #endif
-  EXPECT_EQ(0, ierr)
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ": ", trim(serr)
+    stop 1
+  endif
 
   ! Step 2: setup the problem
   call tri_handle%setup_matrix(n, row_inds, row_ptrs, nnz, col_inds, values)
-
-  EXPECT_EQ(0, ierr)
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ": ", trim(serr)
+    stop 1
+  endif
 
   ! Step 3: setup the solver
   call tri_handle%setup_solver(plist)
@@ -156,6 +165,10 @@ program main
 
   ! Step 4: solve the system
   call tri_handle%solve(n, rhs, lhs)
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ": ", trim(serr)
+    stop 1
+  endif
 
   ! Check the solution
   norm = 0.0
@@ -170,6 +183,10 @@ program main
 
   ! Step 5: clean up
   call tri_handle%finalize()
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ": ", trim(serr)
+    stop 1
+  endif
 
   ! ------------------------------------------------------------------
   ! Implicit (inversion-of-control) setup [ no solve ]
@@ -180,17 +197,28 @@ program main
 #else
   call tri_handle%init()
 #endif
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ": ", trim(serr)
+    stop 1
+  endif
 
   ! Step 2: setup the problem
   ! Implicit (inversion-of-control) setup
   call tri_handle%setup_operator(n, row_inds, C_FUNLOC(matvec))
-
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ": ", trim(serr)
+    stop 1
+  endif
 
   ! Step 3: setup the solver
   ! We cannot use most preconditioners without a matrix, so
   ! we remove any from the parameter list
   call plist%set("Preconditioner Type", "None")
   call tri_handle%setup_solver(plist)
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ": ", trim(serr)
+    stop 1
+  endif
 
   ! Step 4: solve the system
   ! We only check that it runs, but do not check the result as
@@ -203,15 +231,25 @@ program main
 
   ! Step 5: clean up
   call tri_handle%finalize()
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ":", trim(serr)
+    stop 1
+  endif
 
   ! ------------------------------------------------------------------
 
+  call plist%release()
+  call tri_handle%release()
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ":", trim(serr)
+    stop 1
+  endif
+
 #ifdef HAVE_MPI
+  ! Finalize MPI must be called after releasing all handles
   call MPI_FINALIZE(ierr)
   EXPECT_EQ(0, ierr)
 #endif
 
-  call plist%release()
-  call tri_handle%release()
 
 end program
