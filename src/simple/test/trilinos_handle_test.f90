@@ -26,7 +26,7 @@ program main
 
   use ISO_FORTRAN_ENV
   use, intrinsic :: ISO_C_BINDING
-  use simpleinterface
+  use fortrilinos
   use x
   use forteuchos
 #ifdef HAVE_MPI
@@ -47,8 +47,6 @@ program main
   type(ParameterList) :: plist
   type(TrilinosHandle) :: tri_handle
 
-  integer :: ierr
-
   n = 50
   nnz = 3*n
 
@@ -58,16 +56,26 @@ program main
 #ifdef HAVE_MPI
   ! Initialize MPI subsystem
   call MPI_INIT(ierr)
-  EXPECT_EQ(ierr, 0)
+  if (ierr /= 0) then
+    write(*,*) "MPI failed to init"
+    stop 1
+  endif
 
-  call MPI_COMM_RANK(MPI_COMM_WORLD, my_rank,   ierr)
+  call MPI_COMM_RANK(MPI_COMM_WORLD, my_rank, ierr)
   call MPI_COMM_SIZE(MPI_COMM_WORLD, num_procs, ierr)
-  EXPECT_EQ(ierr, 0)
+  EXPECT_EQ(0, ierr)
 #endif
+
+  write(*,*) "Processor ", my_rank, " of ", num_procs
 
   ! Read in the parameterList
   call plist%create("Stratimikos")
   call load_from_xml(plist, "stratimikos.xml")
+
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ":", trim(serr)
+    stop 1
+  endif
 
   ! ------------------------------------------------------------------
   ! Step 0: Construct tri-diagonal matrix, and rhs
@@ -122,30 +130,45 @@ program main
 
   ! Step 0.5: crate a handle
   call tri_handle%create()
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ": ", trim(serr)
+    stop 1
+  endif
 
   ! ------------------------------------------------------------------
   ! Explicit setup and solve
   ! ------------------------------------------------------------------
   ! Step 1: initialize a handle
 #ifdef HAVE_MPI
-  call tri_handle%init(MPI_COMM_WORLD, ierr)
+  call tri_handle%init(MPI_COMM_WORLD)
 #else
-  call tri_handle%init(ierr)
+  call tri_handle%init()
 #endif
-  EXPECT_EQ(ierr, 0)
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ": ", trim(serr)
+    stop 1
+  endif
 
   ! Step 2: setup the problem
-  call tri_handle%setup_matrix(n, row_inds, row_ptrs, nnz, col_inds, values, ierr)
-
-  EXPECT_EQ(ierr, 0)
+  call tri_handle%setup_matrix(n, row_inds, row_ptrs, nnz, col_inds, values)
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ": ", trim(serr)
+    stop 1
+  endif
 
   ! Step 3: setup the solver
-  call tri_handle%setup_solver(plist, ierr)
-  EXPECT_EQ(ierr, 0)
+  call tri_handle%setup_solver(plist)
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ": ", trim(serr)
+    stop 1
+  endif
 
   ! Step 4: solve the system
-  call tri_handle%solve(n, rhs, lhs, ierr)
-  EXPECT_EQ(ierr, 0)
+  call tri_handle%solve(n, rhs, lhs)
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ": ", trim(serr)
+    stop 1
+  endif
 
   ! Check the solution
   norm = 0.0
@@ -159,51 +182,74 @@ program main
 
 
   ! Step 5: clean up
-  call tri_handle%finalize(ierr)
-  EXPECT_EQ(ierr, 0)
+  call tri_handle%finalize()
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ": ", trim(serr)
+    stop 1
+  endif
 
   ! ------------------------------------------------------------------
   ! Implicit (inversion-of-control) setup [ no solve ]
   ! ------------------------------------------------------------------
   ! Step 1: initialize a handle
 #ifdef HAVE_MPI
-  call tri_handle%init(MPI_COMM_WORLD, ierr)
+  call tri_handle%init(MPI_COMM_WORLD)
 #else
-  call tri_handle%init(ierr)
+  call tri_handle%init()
 #endif
-  EXPECT_EQ(ierr, 0)
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ": ", trim(serr)
+    stop 1
+  endif
 
   ! Step 2: setup the problem
   ! Implicit (inversion-of-control) setup
-  call tri_handle%setup_operator(n, row_inds, C_FUNLOC(matvec), ierr)
-
-  EXPECT_EQ(ierr, 0)
+  call tri_handle%setup_operator(n, row_inds, C_FUNLOC(matvec))
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ": ", trim(serr)
+    stop 1
+  endif
 
   ! Step 3: setup the solver
   ! We cannot use most preconditioners without a matrix, so
   ! we remove any from the parameter list
   call plist%set("Preconditioner Type", "None")
-  call tri_handle%setup_solver(plist, ierr)
-  EXPECT_EQ(ierr, 0)
+  call tri_handle%setup_solver(plist)
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ": ", trim(serr)
+    stop 1
+  endif
 
   ! Step 4: solve the system
   ! We only check that it runs, but do not check the result as
   ! we are using a dummy operator
-  call tri_handle%solve(n, rhs, lhs, ierr)
-  EXPECT_EQ(ierr, 0)
+  call tri_handle%solve(n, rhs, lhs)
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ":", trim(serr)
+    stop 1
+  endif
 
   ! Step 5: clean up
-  call tri_handle%finalize(ierr)
-  EXPECT_EQ(ierr, 0)
+  call tri_handle%finalize()
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ":", trim(serr)
+    stop 1
+  endif
 
   ! ------------------------------------------------------------------
 
-#ifdef HAVE_MPI
-  call MPI_FINALIZE(ierr)
-  EXPECT_EQ(ierr, 0)
-#endif
-
   call plist%release()
   call tri_handle%release()
+  if (ierr /= 0) then
+    write(*,*) "Got error ", ierr, ":", trim(serr)
+    stop 1
+  endif
+
+#ifdef HAVE_MPI
+  ! Finalize MPI must be called after releasing all handles
+  call MPI_FINALIZE(ierr)
+  EXPECT_EQ(0, ierr)
+#endif
+
 
 end program

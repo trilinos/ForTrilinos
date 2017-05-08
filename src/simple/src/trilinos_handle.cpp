@@ -2,6 +2,7 @@
 #include "trilinos_handle.hpp"
 
 #include <Stratimikos_DefaultLinearSolverBuilder.hpp>
+#include <stdexcept>
 
 #ifdef HAVE_FORTRILINOSSIMPLEINTERFACE_IFPACK2
 #  include <Teuchos_AbstractFactoryStd.hpp>
@@ -30,8 +31,8 @@ namespace ForTrilinos {
     status_ = INITIALIZED;
   }
 
-#ifdef HAVE_MPI
   void TrilinosHandle::init(MPI_Comm comm) {
+#ifdef HAVE_MPI
     using Teuchos::rcp;
 
     TEUCHOS_ASSERT(status_ == NOT_INITIALIZED);
@@ -46,8 +47,10 @@ namespace ForTrilinos {
     comm_ = rcp(new Teuchos::MpiComm<int>(comm));
 
     status_ = INITIALIZED;
-  }
+#else
+    throw std::runtime_error("MPI is not enabled");
 #endif
+  }
 
   void TrilinosHandle::setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) {
     using Teuchos::ArrayRCP;
@@ -63,7 +66,7 @@ namespace ForTrilinos {
     TEUCHOS_ASSERT((colInds != NULL && values != NULL) || numNnz == 0);
 
     ArrayView<const GO> rows(rowInds, numRows);
-    RCP<const Map> rowMap = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm_);
+    RCP<const Map> rowMap = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm_, {});
 
     RCP<Matrix> A = rcp(new Matrix(rowMap, 1));
 
@@ -82,7 +85,7 @@ namespace ForTrilinos {
     status_ = MATRIX_SETUP;
   }
 
-  void TrilinosHandle::setup_operator(int numRows, const int* rowInds, void (*funcptr)(int n, const double* x, double* y)) {
+  void TrilinosHandle::setup_operator(int numRows, const int* rowInds, OperatorCallback funcptr) {
     using Teuchos::RCP;
     using Teuchos::rcp;
     using Teuchos::ArrayView;
@@ -95,7 +98,7 @@ namespace ForTrilinos {
     // NOTE: we make a major assumption on the maps:
     //      rowMap == domainMap == rangeMap
     ArrayView<const GO> rows(rowInds, numRows);
-    RCP<const Map> map = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm_);
+    RCP<const Map> map = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm_, {});
 
     A_ = rcp(new FortranOperator(funcptr, map, map));
 
