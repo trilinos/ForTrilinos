@@ -57,3 +57,17 @@ configuration of the build must include
 
 It also requires a SWIG installation in the ``$PATH`` with Fortran generator enabled. It is available at
 `sethrj/swig <https://github.com/sethrj/swig>`_ in the ``fortran`` branch.
+
+If one does simultaneous development in both SWIG and ForTrilinos, it is convenient to skip the ``make install`` step.
+This can be done by adding the following configuration options to the script (assuming you build swig in-source):
+
+.. code-block:: bash
+
+    -D SWIG_EXECUTABLE="$SWIG_DIR/swig"
+    -D SWIG_DIR="$SWIG_DIR/Lib"
+
+.. warning::
+
+    ForTrilinos does not automatically pick up the changes in the files in the SWIG library, such as
+    ``fortypemaps.swg``. Therefore, to regenerate all wrapper files after changes in SWIG one must touch all ``.i``
+    files in ForTrilinos.
