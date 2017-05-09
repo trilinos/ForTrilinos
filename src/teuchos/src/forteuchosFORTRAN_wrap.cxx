@@ -173,6 +173,11 @@ template <typename T> T SwigValueInit() {
 
 
 
+/* Contract support */
+#define SWIG_contract_assert(nullreturn, expr, msg) if (!(expr)) { \
+swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
+
+
 #include <stdexcept>
 
 
@@ -189,7 +194,7 @@ extern "C" {
 extern int ierr;
 extern char serr[1024];
 
-};
+}
 
 
 namespace swig
@@ -413,22 +418,22 @@ SWIGEXPORT void* swigc_new_string__SWIG_0() {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      };
+      } while(0);
     }
   }
   fresult = result; 
@@ -455,22 +460,22 @@ SWIGEXPORT void* swigc_new_string__SWIG_1( const char*  farg1, int* farg2) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      };
+      } while(0);
     }
   }
   fresult = result; 
@@ -495,22 +500,22 @@ SWIGEXPORT void swigc_string_resize(void* farg1, int* farg2) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -531,22 +536,22 @@ SWIGEXPORT void swigc_string_clear(void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -569,22 +574,22 @@ SWIGEXPORT int swigc_string_size(void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      };
+      } while(0);
     }
   }
   fresult = result;
@@ -609,22 +614,22 @@ SWIGEXPORT int swigc_string_length(void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      };
+      } while(0);
     }
   }
   fresult = result;
@@ -651,22 +656,22 @@ SWIGEXPORT void swigc_string_set(void* farg1, int* farg2,  char  farg3) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -691,22 +696,22 @@ SWIGEXPORT  char  swigc_string_get(void* farg1, int* farg2) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      };
+      } while(0);
     }
   }
   fresult = result; 
@@ -733,22 +738,22 @@ SWIGEXPORT void swigc_string_assign_from(void* farg1,  const char*  farg2, int* 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -773,22 +778,22 @@ SWIGEXPORT void swigc_string_copy_to(void* farg1,  char*  farg2, int* farg3) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -809,22 +814,22 @@ SWIGEXPORT void swigc_delete_string(void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -847,22 +852,22 @@ SWIGEXPORT void swigc_ParameterList_print(void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -887,22 +892,22 @@ SWIGEXPORT void* swigc_new_ParameterList( const char*  farg1, int* farg2) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      };
+      } while(0);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -933,22 +938,22 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_0(void* farg1,  const char*  farg2
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -977,22 +982,22 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_0(void* farg1,  const char*  farg2
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -1021,22 +1026,22 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_1(void* farg1,  const char*  farg2
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -1065,22 +1070,22 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_1(void* farg1,  const char*  farg2
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -1116,22 +1121,22 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_2(void* farg1,  const char*  farg2
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -1167,22 +1172,22 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_2(void* farg1,  const char*  farg2
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -1213,22 +1218,22 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_3(void* farg1,  const char*  farg2
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -1259,22 +1264,22 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_3(void* farg1,  const char*  farg2
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -1305,22 +1310,22 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_4(void* farg1,  const char*  farg2
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -1351,22 +1356,22 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_4(void* farg1,  const char*  farg2
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -1397,22 +1402,22 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_5(void* farg1,  const char*  farg2
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -1443,22 +1448,22 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_5(void* farg1,  const char*  farg2
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -1487,22 +1492,22 @@ SWIGEXPORT int swigc_ParameterList_get_length(void* farg1,  const char*  farg2, 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      };
+      } while(0);
     }
   }
   fresult = result;
@@ -1531,22 +1536,22 @@ SWIGEXPORT void swigc_ParameterList_remove(void* farg1,  const char*  farg2, int
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -1575,22 +1580,22 @@ SWIGEXPORT bool swigc_ParameterList_is_parameter(void* farg1,  const char*  farg
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      };
+      } while(0);
     }
   }
   fresult = result;
@@ -1615,22 +1620,22 @@ SWIGEXPORT void swigc_delete_ParameterList(void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -1656,22 +1661,22 @@ SWIGEXPORT void swigc_load_from_xml(void * farg1,  const char*  farg2, int* farg
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }
@@ -1703,22 +1708,22 @@ SWIGEXPORT void swigc_save_to_xml(void* farg1,  const char*  farg2, int* farg3) 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      {
+      do {
         swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      };
+      } while(0);
     }
     catch (...)
     {
-      {
+      do {
         swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      };
+      } while(0);
     }
   }
 }

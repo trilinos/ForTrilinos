@@ -11,6 +11,7 @@
 %}
 
 %include <std_string.i>
+%include <typemaps.i>
 
 // Use string copying and size checking
 %fragment("StringCopyout");
