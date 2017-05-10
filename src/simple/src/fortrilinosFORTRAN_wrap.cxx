@@ -315,7 +315,7 @@ SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_0(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_1(void* farg1, int* farg2) {
+SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_1(void* farg1, void* farg2) {
   ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
   MPI_Comm arg2 ;
   
