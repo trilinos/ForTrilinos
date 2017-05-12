@@ -12,8 +12,9 @@ module fortrilinos
  public :: TrilinosHandle
  ! TYPES
  type :: TrilinosHandle
+  ! These should be treated as PROTECTED data
   type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, private :: own = .false.
+  logical, public :: own = .false.
  contains
   procedure :: create => swigf_new_TrilinosHandle
   procedure, private :: init__SWIG_0 => swigf_TrilinosHandle_init__SWIG_0

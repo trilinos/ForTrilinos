@@ -274,7 +274,7 @@ SWIGEXPORT void* swigc_new_TrilinosHandle() {
       } while(0);
     }
   }
-  fresult = result; 
+  fresult = result;
   return fresult;
 }
 
@@ -282,7 +282,7 @@ SWIGEXPORT void* swigc_new_TrilinosHandle() {
 SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_0(void* farg1) {
   ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
   
-  arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
+  arg1 = (ForTrilinos::TrilinosHandle *)(farg1);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -315,11 +315,11 @@ SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_0(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_1(void* farg1, int* farg2) {
+SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_1(void* farg1, const int* farg2) {
   ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
   MPI_Comm arg2 ;
   
-  arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
+  arg1 = (ForTrilinos::TrilinosHandle *)(farg1);
   
 #ifdef HAVE_MPI
   arg2 = (MPI_Comm)(MPI_Comm_f2c(*(MPI_Fint *)(farg2)));
@@ -359,7 +359,7 @@ SWIGEXPORT void swigc_TrilinosHandle_init__SWIG_1(void* farg1, int* farg2) {
 }
 
 
-SWIGEXPORT void swigc_TrilinosHandle_setup_matrix(void* farg1, int* farg2, int* farg3, int* farg4, int* farg5, int* farg6, double* farg7) {
+SWIGEXPORT void swigc_TrilinosHandle_setup_matrix(void* farg1, const int* farg2, int * farg3, int * farg4, const int* farg5, int * farg6, double * farg7) {
   ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
   int arg2 ;
   int *arg3 = (int *) 0 ;
@@ -368,7 +368,7 @@ SWIGEXPORT void swigc_TrilinosHandle_setup_matrix(void* farg1, int* farg2, int* 
   int *arg6 = (int *) 0 ;
   double *arg7 = (double *) 0 ;
   
-  arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
+  arg1 = (ForTrilinos::TrilinosHandle *)(farg1);
   arg2 = *farg2;
   arg3 = farg3;
   arg4 = farg4;
@@ -407,16 +407,16 @@ SWIGEXPORT void swigc_TrilinosHandle_setup_matrix(void* farg1, int* farg2, int* 
 }
 
 
-SWIGEXPORT void swigc_TrilinosHandle_setup_operator(void* farg1, int* farg2, int* farg3,  ForTrilinos::TrilinosHandle::OperatorCallback  farg4) {
+SWIGEXPORT void swigc_TrilinosHandle_setup_operator(void* farg1, const int* farg2, int * farg3, ForTrilinos::TrilinosHandle::OperatorCallback farg4) {
   ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
   int arg2 ;
   int *arg3 = (int *) 0 ;
   ForTrilinos::TrilinosHandle::OperatorCallback arg4 = (ForTrilinos::TrilinosHandle::OperatorCallback) 0 ;
   
-  arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
+  arg1 = (ForTrilinos::TrilinosHandle *)(farg1);
   arg2 = *farg2;
   arg3 = farg3;
-  arg4 = farg4; 
+  arg4 = farg4;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -454,7 +454,7 @@ SWIGEXPORT void swigc_TrilinosHandle_setup_solver(void* farg1, void * farg2) {
   Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull2 ;
   
-  arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
+  arg1 = (ForTrilinos::TrilinosHandle *)(farg1);
   arg2 = farg2 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg2 : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -488,13 +488,13 @@ SWIGEXPORT void swigc_TrilinosHandle_setup_solver(void* farg1, void * farg2) {
 }
 
 
-SWIGEXPORT void swigc_TrilinosHandle_solve(void* farg1, int* farg2, double* farg3, double* farg4) {
+SWIGEXPORT void swigc_TrilinosHandle_solve(const void* farg1, const int* farg2, double * farg3, double * farg4) {
   ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
   int arg2 ;
   double *arg3 = (double *) 0 ;
   double *arg4 = (double *) 0 ;
   
-  arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
+  arg1 = (ForTrilinos::TrilinosHandle *)(farg1);
   arg2 = *farg2;
   arg3 = farg3;
   arg4 = farg4;
@@ -533,7 +533,7 @@ SWIGEXPORT void swigc_TrilinosHandle_solve(void* farg1, int* farg2, double* farg
 SWIGEXPORT void swigc_TrilinosHandle_finalize(void* farg1) {
   ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
   
-  arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
+  arg1 = (ForTrilinos::TrilinosHandle *)(farg1);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -569,7 +569,7 @@ SWIGEXPORT void swigc_TrilinosHandle_finalize(void* farg1) {
 SWIGEXPORT void swigc_delete_TrilinosHandle(void* farg1) {
   ForTrilinos::TrilinosHandle *arg1 = (ForTrilinos::TrilinosHandle *) 0 ;
   
-  arg1 = (ForTrilinos::TrilinosHandle *)(farg1); 
+  arg1 = (ForTrilinos::TrilinosHandle *)(farg1);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
