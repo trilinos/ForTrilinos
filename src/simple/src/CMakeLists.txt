@@ -2,7 +2,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 SET(EXTRA_SOURCE
-  trilinos_handle.cpp
+  solver_handle.cpp
   fortran_operator.cpp
   )
 

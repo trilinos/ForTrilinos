@@ -1,5 +1,5 @@
-#ifndef FORTRILINOS_TRILINOS_HANDLE_HPP
-#define FORTRILINOS_TRILINOS_HANDLE_HPP
+#ifndef FORTRILINOS_SOLVER_HANDLE_HPP
+#define FORTRILINOS_SOLVER_HANDLE_HPP
 
 #include "ForTrilinosSimpleInterface_config.hpp"
 
@@ -22,7 +22,7 @@ typedef int MPI_Comm;
 
 namespace ForTrilinos {
 
-  class TrilinosHandle {
+  class SolverHandle {
   private:
     typedef double                                  SC;
     typedef int                                     LO;
@@ -42,10 +42,10 @@ namespace ForTrilinos {
   public:
 
     // Constructors
-    TrilinosHandle() : status_(NOT_INITIALIZED) { }
+    SolverHandle() : status_(NOT_INITIALIZED) { }
 
-    TrilinosHandle(const TrilinosHandle&) = delete;
-    void operator=(const TrilinosHandle&) = delete;
+    SolverHandle(const SolverHandle&) = delete;
+    void operator=(const SolverHandle&) = delete;
 
     // Initialize
     void init();
@@ -81,4 +81,4 @@ namespace ForTrilinos {
   };
 
 }
-#endif // FORTRILINOS_TRILINOS_HANDLE_HPP
+#endif // FORTRILINOS_SOLVER_HANDLE_HPP

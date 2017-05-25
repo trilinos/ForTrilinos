@@ -9,47 +9,47 @@ module fortrilinos
  implicit none
 
  ! PUBLIC METHODS AND TYPES
- public :: TrilinosHandle
+ public :: SolverHandle
  ! TYPES
- type :: TrilinosHandle
+ type :: SolverHandle
   ! These should be treated as PROTECTED data
   type(C_PTR), public :: ptr = C_NULL_PTR
   logical, public :: own = .false.
  contains
-  procedure :: create => swigf_new_TrilinosHandle
-  procedure, private :: init__SWIG_0 => swigf_TrilinosHandle_init__SWIG_0
-  procedure, private :: init__SWIG_1 => swigf_TrilinosHandle_init__SWIG_1
-  procedure :: setup_matrix => swigf_TrilinosHandle_setup_matrix
-  procedure :: setup_operator => swigf_TrilinosHandle_setup_operator
-  procedure :: setup_solver => swigf_TrilinosHandle_setup_solver
-  procedure :: solve => swigf_TrilinosHandle_solve
-  procedure :: finalize => swigf_TrilinosHandle_finalize
-  procedure :: release => swigf_delete_TrilinosHandle
+  procedure :: create => swigf_new_SolverHandle
+  procedure, private :: init__SWIG_0 => swigf_SolverHandle_init__SWIG_0
+  procedure, private :: init__SWIG_1 => swigf_SolverHandle_init__SWIG_1
+  procedure :: setup_matrix => swigf_SolverHandle_setup_matrix
+  procedure :: setup_operator => swigf_SolverHandle_setup_operator
+  procedure :: setup_solver => swigf_SolverHandle_setup_solver
+  procedure :: solve => swigf_SolverHandle_solve
+  procedure :: finalize => swigf_SolverHandle_finalize
+  procedure :: release => swigf_delete_SolverHandle
   generic :: init => init__SWIG_0, init__SWIG_1
  end type
 
  ! WRAPPER DECLARATIONS
  private
  interface
-  function swigc_new_TrilinosHandle() &
-     bind(C, name="swigc_new_TrilinosHandle") &
+  function swigc_new_SolverHandle() &
+     bind(C, name="swigc_new_SolverHandle") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
   end function
-  subroutine swigc_TrilinosHandle_init__SWIG_0(farg1) &
-     bind(C, name="swigc_TrilinosHandle_init__SWIG_0")
+  subroutine swigc_SolverHandle_init__SWIG_0(farg1) &
+     bind(C, name="swigc_SolverHandle_init__SWIG_0")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
   end subroutine
-  subroutine swigc_TrilinosHandle_init__SWIG_1(farg1, farg2) &
-     bind(C, name="swigc_TrilinosHandle_init__SWIG_1")
+  subroutine swigc_SolverHandle_init__SWIG_1(farg1, farg2) &
+     bind(C, name="swigc_SolverHandle_init__SWIG_1")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    integer(C_INT), intent(in) :: farg2
   end subroutine
-  subroutine swigc_TrilinosHandle_setup_matrix(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
-     bind(C, name="swigc_TrilinosHandle_setup_matrix")
+  subroutine swigc_SolverHandle_setup_matrix(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
+     bind(C, name="swigc_SolverHandle_setup_matrix")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    integer(C_INT), intent(in) :: farg2
@@ -59,35 +59,35 @@ module fortrilinos
    integer(C_INT), dimension(*), intent(in) :: farg6
    real(C_DOUBLE), dimension(*), intent(in) :: farg7
   end subroutine
-  subroutine swigc_TrilinosHandle_setup_operator(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TrilinosHandle_setup_operator")
+  subroutine swigc_SolverHandle_setup_operator(farg1, farg2, farg3, farg4) &
+     bind(C, name="swigc_SolverHandle_setup_operator")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    integer(C_INT), intent(in) :: farg2
    integer(C_INT), dimension(*), intent(in) :: farg3
    type(C_FUNPTR), intent(in), value :: farg4
   end subroutine
-  subroutine swigc_TrilinosHandle_setup_solver(farg1, farg2) &
-     bind(C, name="swigc_TrilinosHandle_setup_solver")
+  subroutine swigc_SolverHandle_setup_solver(farg1, farg2) &
+     bind(C, name="swigc_SolverHandle_setup_solver")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    type(C_PTR), value :: farg2
   end subroutine
-  subroutine swigc_TrilinosHandle_solve(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TrilinosHandle_solve")
+  subroutine swigc_SolverHandle_solve(farg1, farg2, farg3, farg4) &
+     bind(C, name="swigc_SolverHandle_solve")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    integer(C_INT), intent(in) :: farg2
    real(C_DOUBLE), dimension(*), intent(in) :: farg3
    real(C_DOUBLE), dimension(*), intent(inout) :: farg4
   end subroutine
-  subroutine swigc_TrilinosHandle_finalize(farg1) &
-     bind(C, name="swigc_TrilinosHandle_finalize")
+  subroutine swigc_SolverHandle_finalize(farg1) &
+     bind(C, name="swigc_SolverHandle_finalize")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
   end subroutine
-  subroutine swigc_delete_TrilinosHandle(farg1) &
-     bind(C, name="swigc_delete_TrilinosHandle")
+  subroutine swigc_delete_SolverHandle(farg1) &
+     bind(C, name="swigc_delete_SolverHandle")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
   end subroutine
@@ -95,67 +95,67 @@ module fortrilinos
 
 contains
   ! FORTRAN PROXY CODE
-  subroutine swigf_new_TrilinosHandle(self)
+  subroutine swigf_new_SolverHandle(self)
    use, intrinsic :: ISO_C_BINDING
-   class(TrilinosHandle) :: self
+   class(SolverHandle) :: self
    if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_TrilinosHandle()
+   self%ptr = swigc_new_SolverHandle()
    self%own = .true.
   end subroutine
-  subroutine swigf_TrilinosHandle_init__SWIG_0(self)
+  subroutine swigf_SolverHandle_init__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
-   class(TrilinosHandle) :: self
-   call swigc_TrilinosHandle_init__SWIG_0(self%ptr)
+   class(SolverHandle) :: self
+   call swigc_SolverHandle_init__SWIG_0(self%ptr)
   end subroutine
-  subroutine swigf_TrilinosHandle_init__SWIG_1(self, comm)
+  subroutine swigf_SolverHandle_init__SWIG_1(self, comm)
    use, intrinsic :: ISO_C_BINDING
-   class(TrilinosHandle) :: self
+   class(SolverHandle) :: self
    integer(C_INT), intent(in) :: comm
-   call swigc_TrilinosHandle_init__SWIG_1(self%ptr, comm)
+   call swigc_SolverHandle_init__SWIG_1(self%ptr, comm)
   end subroutine
-  subroutine swigf_TrilinosHandle_setup_matrix(self, numRows, rowInds, rowPtrs, numNnz, colInds, values)
+  subroutine swigf_SolverHandle_setup_matrix(self, numRows, rowInds, rowPtrs, numNnz, colInds, values)
    use, intrinsic :: ISO_C_BINDING
-   class(TrilinosHandle) :: self
+   class(SolverHandle) :: self
    integer(C_INT), intent(in) :: numRows
    integer(C_INT), dimension(:), intent(in) :: rowInds
    integer(C_INT), dimension(:), intent(in) :: rowPtrs
    integer(C_INT), intent(in) :: numNnz
    integer(C_INT), dimension(:), intent(in) :: colInds
    real(C_DOUBLE), dimension(:), intent(in) :: values
-   call swigc_TrilinosHandle_setup_matrix(self%ptr, numRows, rowInds, rowPtrs, numNnz, colInds, values)
+   call swigc_SolverHandle_setup_matrix(self%ptr, numRows, rowInds, rowPtrs, numNnz, colInds, values)
   end subroutine
-  subroutine swigf_TrilinosHandle_setup_operator(self, numRows, rowInds, callback)
+  subroutine swigf_SolverHandle_setup_operator(self, numRows, rowInds, callback)
    use, intrinsic :: ISO_C_BINDING
-   class(TrilinosHandle) :: self
+   class(SolverHandle) :: self
    integer(C_INT), intent(in) :: numRows
    integer(C_INT), dimension(:), intent(in) :: rowInds
    type(C_FUNPTR), intent(in), value :: callback
-   call swigc_TrilinosHandle_setup_operator(self%ptr, numRows, rowInds, callback)
+   call swigc_SolverHandle_setup_operator(self%ptr, numRows, rowInds, callback)
   end subroutine
-  subroutine swigf_TrilinosHandle_setup_solver(self, paramList)
+  subroutine swigf_SolverHandle_setup_solver(self, paramList)
    use, intrinsic :: ISO_C_BINDING
-   class(TrilinosHandle) :: self
+   class(SolverHandle) :: self
    type(ParameterList) :: paramList
-   call swigc_TrilinosHandle_setup_solver(self%ptr, paramList%ptr)
+   call swigc_SolverHandle_setup_solver(self%ptr, paramList%ptr)
   end subroutine
-  subroutine swigf_TrilinosHandle_solve(self, size, rhs, lhs)
+  subroutine swigf_SolverHandle_solve(self, size, rhs, lhs)
    use, intrinsic :: ISO_C_BINDING
-   class(TrilinosHandle) :: self
+   class(SolverHandle) :: self
    integer(C_INT), intent(in) :: size
    real(C_DOUBLE), dimension(:), intent(in) :: rhs
    real(C_DOUBLE), dimension(:), intent(inout) :: lhs
-   call swigc_TrilinosHandle_solve(self%ptr, size, rhs, lhs)
+   call swigc_SolverHandle_solve(self%ptr, size, rhs, lhs)
   end subroutine
-  subroutine swigf_TrilinosHandle_finalize(self)
+  subroutine swigf_SolverHandle_finalize(self)
    use, intrinsic :: ISO_C_BINDING
-   class(TrilinosHandle) :: self
-   call swigc_TrilinosHandle_finalize(self%ptr)
+   class(SolverHandle) :: self
+   call swigc_SolverHandle_finalize(self%ptr)
   end subroutine
-  subroutine swigf_delete_TrilinosHandle(self)
+  subroutine swigf_delete_SolverHandle(self)
    use, intrinsic :: ISO_C_BINDING
-   class(TrilinosHandle) :: self
+   class(SolverHandle) :: self
    if (self%own) then
-    call swigc_delete_TrilinosHandle(self%ptr)
+    call swigc_delete_SolverHandle(self%ptr)
     self%own = .false.
    end if
    self%ptr = C_NULL_PTR

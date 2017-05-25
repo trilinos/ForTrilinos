@@ -45,7 +45,7 @@ program main
   real(c_double) :: norm
 
   type(ParameterList) :: plist
-  type(TrilinosHandle) :: tri_handle
+  type(SolverHandle) :: tri_handle
 
   n = 50
   nnz = 3*n

@@ -1,5 +1,5 @@
 #include "fortran_operator.hpp"
-#include "trilinos_handle.hpp"
+#include "solver_handle.hpp"
 
 #include <Stratimikos_DefaultLinearSolverBuilder.hpp>
 #include <stdexcept>
@@ -21,7 +21,7 @@
 
 namespace ForTrilinos {
 
-  void TrilinosHandle::init() {
+  void SolverHandle::init() {
     using Teuchos::rcp;
 
     TEUCHOS_ASSERT(status_ == NOT_INITIALIZED);
@@ -31,7 +31,7 @@ namespace ForTrilinos {
     status_ = INITIALIZED;
   }
 
-  void TrilinosHandle::init(MPI_Comm comm) {
+  void SolverHandle::init(MPI_Comm comm) {
 #ifdef HAVE_MPI
     using Teuchos::rcp;
 
@@ -52,7 +52,7 @@ namespace ForTrilinos {
 #endif
   }
 
-  void TrilinosHandle::setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) {
+  void SolverHandle::setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) {
     using Teuchos::ArrayRCP;
     using Teuchos::RCP;
     using Teuchos::rcp;
@@ -66,9 +66,9 @@ namespace ForTrilinos {
     TEUCHOS_ASSERT((colInds != NULL && values != NULL) || numNnz == 0);
 
     ArrayView<const GO> rows(rowInds, numRows);
-    RCP<const Map> rowMap = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm_, {});
+    auto rowMap = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm_, {});
 
-    RCP<Matrix> A = rcp(new Matrix(rowMap, 1));
+    auto A = rcp(new Matrix(rowMap, 1));
 
     // TODO: Can we use setAllValues?
     for (int i = 0; i < numRows; i++) {
@@ -85,7 +85,7 @@ namespace ForTrilinos {
     status_ = MATRIX_SETUP;
   }
 
-  void TrilinosHandle::setup_operator(int numRows, const int* rowInds, OperatorCallback funcptr) {
+  void SolverHandle::setup_operator(int numRows, const int* rowInds, OperatorCallback funcptr) {
     using Teuchos::RCP;
     using Teuchos::rcp;
     using Teuchos::ArrayView;
@@ -98,14 +98,14 @@ namespace ForTrilinos {
     // NOTE: we make a major assumption on the maps:
     //      rowMap == domainMap == rangeMap
     ArrayView<const GO> rows(rowInds, numRows);
-    RCP<const Map> map = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm_, {});
+    auto map = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm_, {});
 
     A_ = rcp(new FortranOperator(funcptr, map, map));
 
     status_ = MATRIX_SETUP;
   }
 
-  void TrilinosHandle::setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList) {
+  void SolverHandle::setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList) {
     using Teuchos::RCP;
     using Teuchos::rcp;
     using Teuchos::rcp_implicit_cast;
@@ -137,8 +137,7 @@ namespace ForTrilinos {
     linearSolverBuilder.setParameterList(paramList);
 
     // Build a new "solver factory" according to the previously specified parameter list
-    RCP<Thyra::LinearOpWithSolveFactoryBase<SC> > solverFactory =
-      Thyra::createLinearSolveStrategy(linearSolverBuilder);
+    auto solverFactory = Thyra::createLinearSolveStrategy(linearSolverBuilder);
 
     // Build a Thyra operator corresponding to A^{-1} computed using the Stratimikos solver
     thyraInverseA_ = Thyra::linearOpWithSolve(*solverFactory, A);
@@ -146,13 +145,13 @@ namespace ForTrilinos {
     status_ = SOLVER_SETUP;
   }
 
-  void TrilinosHandle::solve(int size, const double* rhs, double* lhs) const {
+  void SolverHandle::solve(int size, const double* rhs, double* lhs) const {
     using Teuchos::RCP;
     using Teuchos::ArrayRCP;
 
     TEUCHOS_ASSERT(status_ == SOLVER_SETUP);
 
-    RCP<const Map> map = A_->getDomainMap();
+    auto map = A_->getDomainMap();
 
     TEUCHOS_ASSERT(size >= 0);
     TEUCHOS_ASSERT((rhs != NULL && lhs != NULL) || size == 0);
@@ -165,15 +164,17 @@ namespace ForTrilinos {
     RCP<Vector> B = rcp(new Vector(map));
 
     // FIXME: data copying
-    ArrayRCP<SC> Xdata = X->getDataNonConst();
-    ArrayRCP<SC> Bdata = B->getDataNonConst();
+    auto Xdata = X->getDataNonConst();
+    auto Bdata = B->getDataNonConst();
     for (int i = 0; i < size; i++) {
       Xdata[i] = lhs[i];
       Bdata[i] = rhs[i];
     }
 
-    RCP<      Thyra::VectorBase<SC> >thyraX = Thyra::tpetraVector<SC,LO,GO,NO>(Thyra::tpetraVectorSpace<SC,LO,GO,NO>(map), X);
-    RCP<const Thyra::VectorBase<SC> >thyraB = Thyra::tpetraVector<SC,LO,GO,NO>(Thyra::tpetraVectorSpace<SC,LO,GO,NO>(map), B);
+    auto thyraX =
+        Thyra::tpetraVector<SC,LO,GO,NO>(Thyra::tpetraVectorSpace<SC,LO,GO,NO>(map), X);
+    auto thyraB =
+        Thyra::tpetraVector<SC,LO,GO,NO>(Thyra::tpetraVectorSpace<SC,LO,GO,NO>(map), B);
 
     Thyra::SolveStatus<SC> status = Thyra::solve<SC>(*thyraInverseA_, Thyra::NOTRANS, *thyraB, thyraX.ptr());
 
@@ -185,7 +186,7 @@ namespace ForTrilinos {
       lhs[i] = Xdata[i];
   }
 
-  void TrilinosHandle::finalize() {
+  void SolverHandle::finalize() {
     // No need to check the status_, we can finalize() at any moment.
     comm_          = Teuchos::null;
     A_             = Teuchos::null;

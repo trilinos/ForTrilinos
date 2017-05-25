@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-#include "trilinos_handle.hpp"
+#include "solver_handle.hpp"
 
 int main(int argc, char *argv[]) {
   bool success = false;
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
     rhs[n-1] = (myRank == numProcs-1 ? offset + n : 0.0);
 
     // Step 1: initialize a handle
-    ForTrilinos::TrilinosHandle si;
+    ForTrilinos::SolverHandle si;
 #ifdef HAVE_MPI
     si.init(*rawMpiComm);
 #else
