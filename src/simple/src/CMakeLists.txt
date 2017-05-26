@@ -6,6 +6,10 @@ SET(EXTRA_SOURCE
   fortran_operator.cpp
   )
 
+IF (${PACKAGE_NAME}_ENABLE_Anasazi)
+  LIST(APPEND EXTRA_SOURCE eigen_handle.cpp)
+ENDIF()
+
 IF (ForTrilinos_ENABLE_DeveloperMode)
   # Generate wrapper and proxy files
   SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}")

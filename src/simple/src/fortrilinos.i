@@ -17,4 +17,4 @@ typedef int MPI_Comm;
 
 // Generate wrappers
 %include "solver_handle.i"
-
+%include "eigen_handle.i"
