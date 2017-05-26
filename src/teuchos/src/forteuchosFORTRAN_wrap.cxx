@@ -436,18 +436,18 @@ SWIGEXPORT void* swigc_new_string__SWIG_0() {
       } while(0);
     }
   }
-  fresult = result; 
+  fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_string__SWIG_1( const char*  farg1, int* farg2) {
+SWIGEXPORT void* swigc_new_string__SWIG_1(const char* farg1, const int* farg2) {
   void* fresult = 0 ;
   std::string::const_pointer arg1 = (std::string::const_pointer) 0 ;
   std::string::size_type arg2 ;
   std::string *result = 0 ;
   
-  arg1 = (std::string::const_pointer)farg1; 
+  arg1 = (std::string::const_pointer)farg1;
   arg2 = *farg2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -478,16 +478,16 @@ SWIGEXPORT void* swigc_new_string__SWIG_1( const char*  farg1, int* farg2) {
       } while(0);
     }
   }
-  fresult = result; 
+  fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_string_resize(void* farg1, int* farg2) {
+SWIGEXPORT void swigc_string_resize(void* farg1, const int* farg2) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
   
-  arg1 = (std::string *)(farg1); 
+  arg1 = (std::string *)(farg1);
   arg2 = *farg2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -524,7 +524,7 @@ SWIGEXPORT void swigc_string_resize(void* farg1, int* farg2) {
 SWIGEXPORT void swigc_string_clear(void* farg1) {
   std::string *arg1 = (std::string *) 0 ;
   
-  arg1 = (std::string *)(farg1); 
+  arg1 = (std::string *)(farg1);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -557,12 +557,12 @@ SWIGEXPORT void swigc_string_clear(void* farg1) {
 }
 
 
-SWIGEXPORT int swigc_string_size(void* farg1) {
+SWIGEXPORT int swigc_string_size(const void* farg1) {
   int fresult = 0 ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type result;
   
-  arg1 = (std::string *)(farg1); 
+  arg1 = (std::string *)(farg1);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -597,12 +597,12 @@ SWIGEXPORT int swigc_string_size(void* farg1) {
 }
 
 
-SWIGEXPORT int swigc_string_length(void* farg1) {
+SWIGEXPORT int swigc_string_length(const void* farg1) {
   int fresult = 0 ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type result;
   
-  arg1 = (std::string *)(farg1); 
+  arg1 = (std::string *)(farg1);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -637,14 +637,14 @@ SWIGEXPORT int swigc_string_length(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_string_set(void* farg1, int* farg2,  char  farg3) {
+SWIGEXPORT void swigc_string_set(void* farg1, const int* farg2, const char* farg3) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
   std::string::value_type arg3 ;
   
-  arg1 = (std::string *)(farg1); 
+  arg1 = (std::string *)(farg1);
   arg2 = *farg2;
-  arg3 = farg3; 
+  arg3 = *farg3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -677,13 +677,13 @@ SWIGEXPORT void swigc_string_set(void* farg1, int* farg2,  char  farg3) {
 }
 
 
-SWIGEXPORT  char  swigc_string_get(void* farg1, int* farg2) {
-  char  fresult = 0 ;
+SWIGEXPORT char swigc_string_get(void* farg1, const int* farg2) {
+  char fresult = 0 ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
   std::string::value_type result;
   
-  arg1 = (std::string *)(farg1); 
+  arg1 = (std::string *)(farg1);
   arg2 = *farg2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -714,18 +714,18 @@ SWIGEXPORT  char  swigc_string_get(void* farg1, int* farg2) {
       } while(0);
     }
   }
-  fresult = result; 
+  fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_string_assign_from(void* farg1,  const char*  farg2, int* farg3) {
+SWIGEXPORT void swigc_string_assign_from(void* farg1, const char* farg2, const int* farg3) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::const_pointer arg2 = (std::string::const_pointer) 0 ;
   std::string::size_type arg3 ;
   
-  arg1 = (std::string *)(farg1); 
-  arg2 = (std::string::const_pointer)farg2; 
+  arg1 = (std::string *)(farg1);
+  arg2 = (std::string::const_pointer)farg2;
   arg3 = *farg3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -759,13 +759,13 @@ SWIGEXPORT void swigc_string_assign_from(void* farg1,  const char*  farg2, int* 
 }
 
 
-SWIGEXPORT void swigc_string_copy_to(void* farg1,  char*  farg2, int* farg3) {
+SWIGEXPORT void swigc_string_copy_to(void* farg1, char* farg2, const int* farg3) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::pointer arg2 = (std::string::pointer) 0 ;
   std::string::size_type arg3 ;
   
-  arg1 = (std::string *)(farg1); 
-  arg2 = (std::string::pointer)farg2; 
+  arg1 = (std::string *)(farg1);
+  arg2 = (std::string::pointer)farg2;
   arg3 = *farg3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -802,7 +802,7 @@ SWIGEXPORT void swigc_string_copy_to(void* farg1,  char*  farg2, int* farg3) {
 SWIGEXPORT void swigc_delete_string(void* farg1) {
   std::string *arg1 = (std::string *) 0 ;
   
-  arg1 = (std::string *)(farg1); 
+  arg1 = (std::string *)(farg1);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -835,7 +835,7 @@ SWIGEXPORT void swigc_delete_string(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_ParameterList_print(void* farg1) {
+SWIGEXPORT void swigc_ParameterList_print(const void* farg1) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList const > *smartarg1 = 0 ;
   
@@ -873,13 +873,13 @@ SWIGEXPORT void swigc_ParameterList_print(void* farg1) {
 }
 
 
-SWIGEXPORT void* swigc_new_ParameterList( const char*  farg1, int* farg2) {
+SWIGEXPORT void* swigc_new_ParameterList(const char* farg1, const int* farg2) {
   void* fresult = 0 ;
   char *arg1 = (char *) 0 ;
   int arg2 ;
   Teuchos::ParameterList *result = 0 ;
   
-  arg1 = (char *)farg1; 
+  arg1 = (char *)farg1;
   arg2 = *farg2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -915,7 +915,7 @@ SWIGEXPORT void* swigc_new_ParameterList( const char*  farg1, int* farg2) {
 }
 
 
-SWIGEXPORT void swigc_ParameterList_get__SWIG_0(void* farg1,  const char*  farg2, int* farg3, double* farg4) {
+SWIGEXPORT void swigc_ParameterList_get__SWIG_0(void* farg1, const char* farg2, const int* farg3, double* farg4) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
@@ -924,7 +924,7 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_0(void* farg1,  const char*  farg2
   
   smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (char *)farg2; 
+  arg2 = (char *)farg2;
   arg3 = *farg3;
   arg4 = farg4;
   {
@@ -959,7 +959,7 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_0(void* farg1,  const char*  farg2
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_0(void* farg1,  const char*  farg2, int* farg3, double* farg4) {
+SWIGEXPORT void swigc_ParameterList_set__SWIG_0(void* farg1, const char* farg2, const int* farg3, const double* farg4) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
@@ -968,9 +968,9 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_0(void* farg1,  const char*  farg2
   
   smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (char *)farg2; 
+  arg2 = (char *)farg2;
   arg3 = *farg3;
-  arg4 = farg4;
+  arg4 = (double *)(farg4);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -1003,7 +1003,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_0(void* farg1,  const char*  farg2
 }
 
 
-SWIGEXPORT void swigc_ParameterList_get__SWIG_1(void* farg1,  const char*  farg2, int* farg3, int* farg4) {
+SWIGEXPORT void swigc_ParameterList_get__SWIG_1(void* farg1, const char* farg2, const int* farg3, int* farg4) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
@@ -1012,7 +1012,7 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_1(void* farg1,  const char*  farg2
   
   smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (char *)farg2; 
+  arg2 = (char *)farg2;
   arg3 = *farg3;
   arg4 = farg4;
   {
@@ -1047,7 +1047,7 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_1(void* farg1,  const char*  farg2
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_1(void* farg1,  const char*  farg2, int* farg3, int* farg4) {
+SWIGEXPORT void swigc_ParameterList_set__SWIG_1(void* farg1, const char* farg2, const int* farg3, const int* farg4) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
@@ -1056,9 +1056,9 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_1(void* farg1,  const char*  farg2
   
   smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (char *)farg2; 
+  arg2 = (char *)farg2;
   arg3 = *farg3;
-  arg4 = farg4;
+  arg4 = (int *)(farg4);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -1091,7 +1091,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_1(void* farg1,  const char*  farg2
 }
 
 
-SWIGEXPORT void swigc_ParameterList_get__SWIG_2(void* farg1,  const char*  farg2, int* farg3, void* farg4) {
+SWIGEXPORT void swigc_ParameterList_get__SWIG_2(void* farg1, const char* farg2, const int* farg3, void* farg4) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
@@ -1100,7 +1100,7 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_2(void* farg1,  const char*  farg2
   
   smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (char *)farg2; 
+  arg2 = (char *)farg2;
   arg3 = *farg3;
   arg4 = (Teuchos::ParameterList *)(((Teuchos::RCP< Teuchos::ParameterList > *)farg4)
     ? ((Teuchos::RCP< Teuchos::ParameterList > *)farg4)->get()
@@ -1142,7 +1142,7 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_2(void* farg1,  const char*  farg2
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_2(void* farg1,  const char*  farg2, int* farg3, void* farg4) {
+SWIGEXPORT void swigc_ParameterList_set__SWIG_2(void* farg1, const char* farg2, const int* farg3, const void* farg4) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
@@ -1151,7 +1151,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_2(void* farg1,  const char*  farg2
   
   smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (char *)farg2; 
+  arg2 = (char *)farg2;
   arg3 = *farg3;
   arg4 = (Teuchos::ParameterList *)(((Teuchos::RCP<const Teuchos::ParameterList > *)farg4)
     ? ((Teuchos::RCP<const Teuchos::ParameterList > *)farg4)->get()
@@ -1193,7 +1193,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_2(void* farg1,  const char*  farg2
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_3(void* farg1,  const char*  farg2, int* farg3,  const char*  farg4, int* farg5) {
+SWIGEXPORT void swigc_ParameterList_set__SWIG_3(void* farg1, const char* farg2, const int* farg3, const char* farg4, const int* farg5) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
@@ -1203,9 +1203,9 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_3(void* farg1,  const char*  farg2
   
   smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (char *)farg2; 
+  arg2 = (char *)farg2;
   arg3 = *farg3;
-  arg4 = (char *)farg4; 
+  arg4 = (char *)farg4;
   arg5 = *farg5;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -1239,7 +1239,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_3(void* farg1,  const char*  farg2
 }
 
 
-SWIGEXPORT void swigc_ParameterList_get__SWIG_3(void* farg1,  const char*  farg2, int* farg3,  char*  farg4, int* farg5) {
+SWIGEXPORT void swigc_ParameterList_get__SWIG_3(void* farg1, const char* farg2, const int* farg3, char* farg4, const int* farg5) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
@@ -1249,9 +1249,9 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_3(void* farg1,  const char*  farg2
   
   smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (char *)farg2; 
+  arg2 = (char *)farg2;
   arg3 = *farg3;
-  arg4 = (char *)farg4; 
+  arg4 = (char *)farg4;
   arg5 = *farg5;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -1285,7 +1285,7 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_3(void* farg1,  const char*  farg2
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_4(void* farg1,  const char*  farg2, int* farg3, double* farg4, int* farg5) {
+SWIGEXPORT void swigc_ParameterList_set__SWIG_4(void* farg1, const char* farg2, const int* farg3, double * farg4, const int* farg5) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
@@ -1295,7 +1295,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_4(void* farg1,  const char*  farg2
   
   smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (char *)farg2; 
+  arg2 = (char *)farg2;
   arg3 = *farg3;
   arg4 = farg4;
   arg5 = *farg5;
@@ -1331,7 +1331,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_4(void* farg1,  const char*  farg2
 }
 
 
-SWIGEXPORT void swigc_ParameterList_get__SWIG_4(void* farg1,  const char*  farg2, int* farg3, double* farg4, int* farg5) {
+SWIGEXPORT void swigc_ParameterList_get__SWIG_4(void* farg1, const char* farg2, const int* farg3, double * farg4, const int* farg5) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
@@ -1341,7 +1341,7 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_4(void* farg1,  const char*  farg2
   
   smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (char *)farg2; 
+  arg2 = (char *)farg2;
   arg3 = *farg3;
   arg4 = farg4;
   arg5 = *farg5;
@@ -1377,7 +1377,7 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_4(void* farg1,  const char*  farg2
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_5(void* farg1,  const char*  farg2, int* farg3, int* farg4, int* farg5) {
+SWIGEXPORT void swigc_ParameterList_set__SWIG_5(void* farg1, const char* farg2, const int* farg3, int * farg4, const int* farg5) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
@@ -1387,7 +1387,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_5(void* farg1,  const char*  farg2
   
   smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (char *)farg2; 
+  arg2 = (char *)farg2;
   arg3 = *farg3;
   arg4 = farg4;
   arg5 = *farg5;
@@ -1423,7 +1423,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_5(void* farg1,  const char*  farg2
 }
 
 
-SWIGEXPORT void swigc_ParameterList_get__SWIG_5(void* farg1,  const char*  farg2, int* farg3, int* farg4, int* farg5) {
+SWIGEXPORT void swigc_ParameterList_get__SWIG_5(void* farg1, const char* farg2, const int* farg3, int * farg4, const int* farg5) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
@@ -1433,7 +1433,7 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_5(void* farg1,  const char*  farg2
   
   smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (char *)farg2; 
+  arg2 = (char *)farg2;
   arg3 = *farg3;
   arg4 = farg4;
   arg5 = *farg5;
@@ -1469,7 +1469,7 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_5(void* farg1,  const char*  farg2
 }
 
 
-SWIGEXPORT int swigc_ParameterList_get_length(void* farg1,  const char*  farg2, int* farg3) {
+SWIGEXPORT int swigc_ParameterList_get_length(void* farg1, const char* farg2, const int* farg3) {
   int fresult = 0 ;
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -1479,7 +1479,7 @@ SWIGEXPORT int swigc_ParameterList_get_length(void* farg1,  const char*  farg2, 
   
   smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (char *)farg2; 
+  arg2 = (char *)farg2;
   arg3 = *farg3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -1515,7 +1515,7 @@ SWIGEXPORT int swigc_ParameterList_get_length(void* farg1,  const char*  farg2, 
 }
 
 
-SWIGEXPORT void swigc_ParameterList_remove(void* farg1,  const char*  farg2, int* farg3) {
+SWIGEXPORT void swigc_ParameterList_remove(void* farg1, const char* farg2, const int* farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
@@ -1523,7 +1523,7 @@ SWIGEXPORT void swigc_ParameterList_remove(void* farg1,  const char*  farg2, int
   
   smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (char *)farg2; 
+  arg2 = (char *)farg2;
   arg3 = *farg3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -1557,7 +1557,7 @@ SWIGEXPORT void swigc_ParameterList_remove(void* farg1,  const char*  farg2, int
 }
 
 
-SWIGEXPORT bool swigc_ParameterList_is_parameter(void* farg1,  const char*  farg2, int* farg3) {
+SWIGEXPORT bool swigc_ParameterList_is_parameter(const void* farg1, const char* farg2, const int* farg3) {
   bool fresult = 0 ;
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -1567,7 +1567,7 @@ SWIGEXPORT bool swigc_ParameterList_is_parameter(void* farg1,  const char*  farg
   
   smartarg1 = (Teuchos::RCP<const Teuchos::ParameterList > *)farg1;
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (char *)farg2; 
+  arg2 = (char *)farg2;
   arg3 = *farg3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -1641,14 +1641,14 @@ SWIGEXPORT void swigc_delete_ParameterList(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_load_from_xml(void * farg1,  const char*  farg2, int* farg3) {
+SWIGEXPORT void swigc_load_from_xml(void * farg1, const char* farg2, const int* farg3) {
   Teuchos::RCP< Teuchos::ParameterList > *arg1 = 0 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull1 ;
   
   arg1 = farg1 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg1 : &tempnull1;
-  arg2 = (char *)farg2; 
+  arg2 = (char *)farg2;
   arg3 = *farg3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -1682,7 +1682,7 @@ SWIGEXPORT void swigc_load_from_xml(void * farg1,  const char*  farg2, int* farg
 }
 
 
-SWIGEXPORT void swigc_save_to_xml(void* farg1,  const char*  farg2, int* farg3) {
+SWIGEXPORT void swigc_save_to_xml(const void* farg1, const char* farg2, const int* farg3) {
   Teuchos::ParameterList *arg1 = 0 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
@@ -1695,7 +1695,7 @@ SWIGEXPORT void swigc_save_to_xml(void* farg1,  const char*  farg2, int* farg3) 
     throw std::logic_error("Attempt to dereference null Teuchos::ParameterList const &");
     return ;
   }
-  arg2 = (char *)farg2; 
+  arg2 = (char *)farg2;
   arg3 = *farg3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
