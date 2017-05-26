@@ -41,8 +41,8 @@ RUN mkdir -p ${PREFIX} && \
     mkdir install
 
 # download Trilinos
-RUN export TRILINOS_VERSION=12.10.1 && \
-    export TRILINOS_URL="https://github.com/trilinos/Trilinos/archive/trilinos-release-12-10-1.tar.gz" && \
+RUN export TRILINOS_VERSION=12.12 && \
+    export TRILINOS_URL="https://github.com/trilinos/Trilinos/archive/root-of-trilinos-release-12-12-branch.tar.gz" && \
     export TRILINOS_ARCHIVE="${PREFIX}/archive/trilinos-${TRILINOS_VERSION}.tar.xz" && \
     export TRILINOS_SOURCE_DIR="${PREFIX}/source/trilinos/${TRILINOS_VERSION}" && \
     export TRILINOS_BUILD_DIR="${PREFIX}/build/trilinos/${TRILINOS_VERSION}" && \
@@ -56,8 +56,8 @@ RUN export TRILINOS_VERSION=12.10.1 && \
 ENV TRILINOS_DIR=/scratch/source/trilinos/release
 
 # download CTrilinos
-RUN export CTRILINOS_VERSION=12.10.1 && \
-    export CTRILINOS_URL="https://github.com/trilinos/CTrilinos/archive/trilinos-release-12-10-1.tar.gz" && \
+RUN export CTRILINOS_VERSION=12.12 && \
+    export CTRILINOS_URL="https://github.com/trilinos/CTrilinos/archive/root-of-trilinos-release-12-12-branch.tar.gz" && \
     export CTRILINOS_ARCHIVE="${PREFIX}/archive/ctrilinos-${TRILINOS_VERSION}.tar.xz" && \
     export CTRILINOS_SOURCE_DIR="${PREFIX}/source/ctrilinos/${TRILINOS_VERSION}" && \
     wget --quiet ${CTRILINOS_URL} --output-document=${CTRILINOS_ARCHIVE} && \
