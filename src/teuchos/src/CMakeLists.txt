@@ -29,6 +29,8 @@ ELSE()
     SOURCES ${GEN_SOURCE} ${EXTRA_SOURCE})
 ENDIF()
 
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/forteuchos.mod DESTINATION include)
+
 ##---------------------------------------------------------------------------##
 ## end of teuchos/CMakeLists.txt
 ##---------------------------------------------------------------------------##
