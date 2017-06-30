@@ -25,3 +25,5 @@ ELSE()
     fortrilinos
     SOURCES ${GEN_SOURCE} ${EXTRA_SOURCE})
 ENDIF()
+
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/fortrilinos.mod DESTINATION include)

@@ -7,13 +7,17 @@ IF (ForTrilinos_ENABLE_DeveloperMode)
     MAKE_SWIG(MODULE forepetra
         SOURCE forepetra.i
         DEPLIBS ${Trilinos_LIBRARIES}
+        EXTRASRC ${EXTRA_SOURCE}
     )
 ELSE()
-    APPEND_GLOB(SOURCES *.f90)
-    APPEND_GLOB(SOURCES *.cxx)
+    # Use pre-generated files
+    SET(GEN_SOURCE
+      forepetra.f90
+      forepetraFORTRAN_wrap.cxx)
 
     TRIBITS_ADD_LIBRARY(
       forepetra
-      SOURCES ${SOURCES}
-      )
+      SOURCES ${GEN_SOURCE} ${EXTRA_SOURCE})
 ENDIF()
+
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/forepetra.mod DESTINATION include)
