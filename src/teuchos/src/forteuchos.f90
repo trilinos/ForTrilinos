@@ -19,8 +19,9 @@ module forteuchos
  public :: save_to_xml
  ! TYPES
  type :: string
+  ! These should be treated as PROTECTED data
   type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, private :: own = .false.
+  logical, public :: own = .false.
  contains
   procedure, private :: create__SWIG_0 => swigf_new_string__SWIG_0
   procedure, private :: create__SWIG_1 => swigf_new_string__SWIG_1
@@ -107,7 +108,7 @@ module forteuchos
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    integer(C_INT), intent(in) :: farg2
-   character(C_CHAR), value :: farg3
+   character(C_CHAR), intent(in) :: farg3
   end subroutine
   function swigc_string_get(farg1, farg2) &
      bind(C, name="swigc_string_get") &
@@ -155,7 +156,7 @@ module forteuchos
    type(C_PTR), value :: farg1
    character(C_CHAR) :: farg2
    integer(C_INT), intent(in) :: farg3
-   real(C_DOUBLE), intent(in) :: farg4
+   real(C_DOUBLE), intent(inout) :: farg4
   end subroutine
   subroutine swigc_ParameterList_set__SWIG_0(farg1, farg2, farg3, farg4) &
      bind(C, name="swigc_ParameterList_set__SWIG_0")
@@ -171,7 +172,7 @@ module forteuchos
    type(C_PTR), value :: farg1
    character(C_CHAR) :: farg2
    integer(C_INT), intent(in) :: farg3
-   integer(C_INT), intent(in) :: farg4
+   integer(C_INT), intent(inout) :: farg4
   end subroutine
   subroutine swigc_ParameterList_set__SWIG_1(farg1, farg2, farg3, farg4) &
      bind(C, name="swigc_ParameterList_set__SWIG_1")
@@ -343,7 +344,7 @@ contains
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
    integer(C_INT), intent(in) :: pos
-   character(C_CHAR), value, intent(in) :: v
+   character(C_CHAR), intent(in) :: v
    call swigc_string_set(self%ptr, pos, v)
   end subroutine
   function swigf_string_get(self, pos) &

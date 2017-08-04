@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-#include "trilinos_handle.hpp"
+#include "eigen_handle.hpp"
 
 int main(int argc, char *argv[]) {
   bool success = false;
@@ -30,19 +30,20 @@ int main(int argc, char *argv[]) {
 
     // Read in the parameter list
     ParameterList paramList;
-    Teuchos::updateParametersFromXmlFileAndBroadcast("stratimikos.xml", Teuchos::Ptr<ParameterList>(&paramList), *comm);
+    Teuchos::updateParametersFromXmlFileAndBroadcast("davidson.xml", Teuchos::Ptr<ParameterList>(&paramList), *comm);
 
     // Set parameters
     const int n   = 50;
     int       nnz = 3*n;
 
-    // Step 0: Construct tri-diagonal matrix, and rhs
+    // Step 0: Construct tri-diagonal matrix
     std::vector<int> rowPtrs(n+1), rowInds(n), colInds(nnz);
     std::vector<double> values(nnz);
 
     rowPtrs[0] = 0;
     int curPos = 0, offset = n * myRank;
     for (int i = 0; i < n; i++) {
+#if 1
       if (i || myRank) {
         colInds[curPos] = offset + i-1;
         values [curPos] = -1;
@@ -59,25 +60,28 @@ int main(int argc, char *argv[]) {
       rowPtrs[i+1] = curPos;
 
       rowInds[i] = offset + i;
+#else
+      colInds[curPos] = offset + i;
+      values [curPos] = 1.0;
+      curPos++;
+#endif
     }
     nnz = curPos;
 
     colInds.resize(nnz);
     values. resize(nnz);
 
-    // The solution lhs[i] = i
-    std::vector<double> lhs(n), rhs(n);
-    rhs[0]   = (myRank == 0          ?       -1.0 : 0.0);
-    rhs[n-1] = (myRank == numProcs-1 ? offset + n : 0.0);
+    // The eigen solution
+    std::vector<double> evectors(n);
+    std::vector<double> evalues(1);
 
     // Step 1: initialize a handle
-    ForTrilinos::TrilinosHandle si;
+    ForTrilinos::EigenHandle si;
 #ifdef HAVE_MPI
     si.init(*rawMpiComm);
 #else
     si.init();
 #endif
-
 
     // Step 2: setup the problem
     si.setup_matrix(n, rowInds.data(), rowPtrs.data(), nnz, colInds.data(), values.data());
@@ -86,18 +90,9 @@ int main(int argc, char *argv[]) {
     si.setup_solver(Teuchos::rcpFromRef(paramList));
 
     // Step 4: solve the system
-    si.solve(n, rhs.data(), lhs.data());
+    si.solve(1, evalues.data(), n, evectors.data());
 
-    // Check the solution
-    double norm = 0.0;
-    for (int i = 0; i < n; i++)
-      norm += (lhs[i] - (offset+i))*(lhs[i] - (offset+i));
-    norm = sqrt(norm);
-
-    std::cout << "norm = " << norm << std::endl;
-
-    // TODO: Get the tolerance out of the parameter list
-    TEUCHOS_ASSERT(norm < 1e-6);
+    // TODO: Check the solution
 
     // Step 5: clean up
     si.finalize();

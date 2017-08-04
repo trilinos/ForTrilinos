@@ -184,7 +184,7 @@ swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void* swigc_new_Epetra_Object__SWIG_0(int* farg1, bool* farg2) {
+SWIGEXPORT void* swigc_new_Epetra_Object__SWIG_0(const int* farg1, const bool* farg2) {
   void* fresult = 0 ;
   int arg1 ;
   bool arg2 ;
@@ -193,19 +193,19 @@ SWIGEXPORT void* swigc_new_Epetra_Object__SWIG_0(int* farg1, bool* farg2) {
   arg1 = *farg1;
   arg2 = *farg2;
   result = (Epetra_Object *)new Epetra_Object(arg1,arg2);
-  fresult = result; 
+  fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_Epetra_Object__SWIG_1(int* farg1) {
+SWIGEXPORT void* swigc_new_Epetra_Object__SWIG_1(const int* farg1) {
   void* fresult = 0 ;
   int arg1 ;
   Epetra_Object *result = 0 ;
   
   arg1 = *farg1;
   result = (Epetra_Object *)new Epetra_Object(arg1);
-  fresult = result; 
+  fresult = result;
   return fresult;
 }
 
@@ -215,45 +215,45 @@ SWIGEXPORT void* swigc_new_Epetra_Object__SWIG_2() {
   Epetra_Object *result = 0 ;
   
   result = (Epetra_Object *)new Epetra_Object();
-  fresult = result; 
+  fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_Epetra_Object__SWIG_3( char*  farg1, int* farg2) {
+SWIGEXPORT void* swigc_new_Epetra_Object__SWIG_3(char* farg1, const int* farg2) {
   void* fresult = 0 ;
   char *arg1 = (char *) (char *)0 ;
   int arg2 ;
   Epetra_Object *result = 0 ;
   
-  arg1 = (char *)farg1; 
+  arg1 = (char *)farg1;
   arg2 = *farg2;
   result = (Epetra_Object *)new Epetra_Object((char const *)arg1,arg2);
-  fresult = result; 
+  fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_Epetra_Object__SWIG_4( char*  farg1) {
+SWIGEXPORT void* swigc_new_Epetra_Object__SWIG_4(char* farg1) {
   void* fresult = 0 ;
   char *arg1 = (char *) (char *)0 ;
   Epetra_Object *result = 0 ;
   
-  arg1 = (char *)farg1; 
+  arg1 = (char *)farg1;
   result = (Epetra_Object *)new Epetra_Object((char const *)arg1);
-  fresult = result; 
+  fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_Epetra_Object__SWIG_5(void* farg1) {
+SWIGEXPORT void* swigc_new_Epetra_Object__SWIG_5(const void* farg1) {
   void* fresult = 0 ;
   Epetra_Object *arg1 = 0 ;
   Epetra_Object *result = 0 ;
   
-  arg1 = (Epetra_Object *)(farg1); 
+  arg1 = (Epetra_Object *)(farg1);
   result = (Epetra_Object *)new Epetra_Object((Epetra_Object const &)*arg1);
-  fresult = result; 
+  fresult = result;
   return fresult;
 }
 
@@ -261,22 +261,22 @@ SWIGEXPORT void* swigc_new_Epetra_Object__SWIG_5(void* farg1) {
 SWIGEXPORT void swigc_delete_Epetra_Object(void* farg1) {
   Epetra_Object *arg1 = (Epetra_Object *) 0 ;
   
-  arg1 = (Epetra_Object *)(farg1); 
+  arg1 = (Epetra_Object *)(farg1);
   delete arg1;
 }
 
 
-SWIGEXPORT void swigc_Epetra_Object_SetLabel(void* farg1,  char*  farg2) {
+SWIGEXPORT void swigc_Epetra_Object_SetLabel(void* farg1, char* farg2) {
   Epetra_Object *arg1 = (Epetra_Object *) 0 ;
   char *arg2 = (char *) (char *)0 ;
   
-  arg1 = (Epetra_Object *)(farg1); 
-  arg2 = (char *)farg2; 
+  arg1 = (Epetra_Object *)(farg1);
+  arg2 = (char *)farg2;
   (arg1)->SetLabel((char const *)arg2);
 }
 
 
-SWIGEXPORT void swigc_Epetra_Object_SetTracebackMode(int* farg1) {
+SWIGEXPORT void swigc_Epetra_Object_SetTracebackMode(const int* farg1) {
   int arg1 ;
   
   arg1 = *farg1;
@@ -294,7 +294,7 @@ SWIGEXPORT int swigc_Epetra_Object_GetTracebackMode() {
 }
 
 
-SWIGEXPORT void swigc_set_Epetra_Object_TracebackMode(int* farg1) {
+SWIGEXPORT void swigc_set_Epetra_Object_TracebackMode(const int* farg1) {
   int arg1 ;
   
   arg1 = *farg1;

@@ -1,17 +1,20 @@
 //---------------------------------*-SWIG-*----------------------------------//
 /*!
- * \file   simple/trilinos_handle.i
+ * \file   simple/eigen_handle.i
  * \author Seth R Johnson
  * \date   Mon Feb 27 10:43:39 2017
  * \note   Copyright (c) 2017 Oak Ridge National Laboratory, UT-Battelle, LLC.
  */
 //---------------------------------------------------------------------------//
 %{
-#include "trilinos_handle.hpp"
+#include "eigen_handle.hpp"
 %}
 
-%include "trilinos_handle.hpp"
+%ignore setup_matrix(Teuchos::RCP<Matrix>);
+%ignore setup_matrix_rhs(Teuchos::RCP<Matrix>);
+
+%include "eigen_handle.hpp"
 
 //---------------------------------------------------------------------------//
-// end of simple/trilinos_handle.i
+// end of simple/eigen_handle.i
 //---------------------------------------------------------------------------//

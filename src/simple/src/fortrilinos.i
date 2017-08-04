@@ -16,5 +16,5 @@ typedef int MPI_Comm;
 %}
 
 // Generate wrappers
-%include "trilinos_handle.i"
-
+%include "solver_handle.i"
+%include "eigen_handle.i"
