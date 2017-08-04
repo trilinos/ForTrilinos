@@ -1,5 +1,6 @@
 #include "fortran_operator.hpp"
 #include "solver_handle.hpp"
+#include "handle_helpers.hpp"
 
 #include <Stratimikos_DefaultLinearSolverBuilder.hpp>
 #include <stdexcept>
@@ -53,54 +54,17 @@ namespace ForTrilinos {
   }
 
   void SolverHandle::setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) {
-    using Teuchos::ArrayRCP;
-    using Teuchos::RCP;
-    using Teuchos::rcp;
-    using Teuchos::ArrayView;
-
     TEUCHOS_ASSERT(status_ == INITIALIZED);
 
-    TEUCHOS_ASSERT(numRows >= 0);
-    TEUCHOS_ASSERT((rowInds != NULL && rowPtrs != NULL) || numRows == 0);
-    TEUCHOS_ASSERT(numNnz >= 0);
-    TEUCHOS_ASSERT((colInds != NULL && values != NULL) || numNnz == 0);
-
-    ArrayView<const GO> rows(rowInds, numRows);
-    auto rowMap = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm_, {});
-
-    auto A = rcp(new Matrix(rowMap, 1));
-
-    // TODO: Can we use setAllValues?
-    for (int i = 0; i < numRows; i++) {
-      ArrayView<const GO> cols(colInds + rowPtrs[i], rowPtrs[i+1] - rowPtrs[i]);
-      ArrayView<const SC> vals(values  + rowPtrs[i], rowPtrs[i+1] - rowPtrs[i]);
-
-      A->insertGlobalValues(rowInds[i], cols, vals);
-    }
-
-    A->fillComplete();
-
-    A_ = A;
+    A_ = HandleHelpers::setup_matrix_gen(comm_, numRows, rowInds, rowPtrs, numNnz, colInds, values);
 
     status_ = MATRIX_SETUP;
   }
 
   void SolverHandle::setup_operator(int numRows, const int* rowInds, OperatorCallback funcptr) {
-    using Teuchos::RCP;
-    using Teuchos::rcp;
-    using Teuchos::ArrayView;
-
     TEUCHOS_ASSERT(status_ == INITIALIZED);
 
-    TEUCHOS_ASSERT(numRows >= 0);
-    TEUCHOS_ASSERT(rowInds != NULL || numRows == 0);
-
-    // NOTE: we make a major assumption on the maps:
-    //      rowMap == domainMap == rangeMap
-    ArrayView<const GO> rows(rowInds, numRows);
-    auto map = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm_, {});
-
-    A_ = rcp(new FortranOperator(funcptr, map, map));
+    A_ = HandleHelpers::setup_operator_gen(comm_, numRows, rowInds, funcptr);
 
     status_ = MATRIX_SETUP;
   }

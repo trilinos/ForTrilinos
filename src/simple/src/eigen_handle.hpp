@@ -75,13 +75,6 @@ namespace ForTrilinos {
     void finalize();
 
   private:
-    // Setup matrix
-    Teuchos::RCP<Operator> setup_matrix_gen(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values);
-
-    // Setup operator
-    Teuchos::RCP<Operator> setup_operator_gen(int numRows, const int* rowInds, OperatorCallback callback);
-
-  private:
 
     Teuchos::RCP<Teuchos::Comm<int>> comm_;
     Teuchos::RCP<Operator>           A_, M_;

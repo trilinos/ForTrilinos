@@ -1,4 +1,5 @@
 #include "eigen_handle.hpp"
+#include "handle_helpers.hpp"
 
 #include <Stratimikos_DefaultLinearSolverBuilder.hpp>
 
@@ -55,67 +56,26 @@ namespace ForTrilinos {
   void EigenHandle::setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) {
     TEUCHOS_ASSERT(status_ == INITIALIZED);
 
-    A_ = setup_matrix_gen(numRows, rowInds, rowPtrs, numNnz, colInds, values);
+    A_ = HandleHelpers::setup_matrix_gen(comm_, numRows, rowInds, rowPtrs, numNnz, colInds, values);
 
     status_ = MATRIX_SETUP;
   }
   void EigenHandle::setup_matrix_rhs(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) {
     TEUCHOS_ASSERT(status_ == INITIALIZED || status_ == MATRIX_SETUP);
 
-    M_ = setup_matrix_gen(numRows, rowInds, rowPtrs, numNnz, colInds, values);
+    M_ = HandleHelpers::setup_matrix_gen(comm_, numRows, rowInds, rowPtrs, numNnz, colInds, values);
   }
-  auto EigenHandle::setup_matrix_gen(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) -> Teuchos::RCP<Operator>{
-    using Teuchos::ArrayRCP;
-    using Teuchos::RCP;
-    using Teuchos::rcp;
-    using Teuchos::ArrayView;
-
-    TEUCHOS_ASSERT(numRows >= 0);
-    TEUCHOS_ASSERT((rowInds != NULL && rowPtrs != NULL) || numRows == 0);
-    TEUCHOS_ASSERT(numNnz >= 0);
-    TEUCHOS_ASSERT((colInds != NULL && values != NULL) || numNnz == 0);
-
-    ArrayView<const GO> rows(rowInds, numRows);
-    auto rowMap = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm_);
-
-    auto A = rcp(new Matrix(rowMap, 1));
-
-    // TODO: Can we use setAllValues?
-    for (int i = 0; i < numRows; i++) {
-      ArrayView<const GO> cols(colInds + rowPtrs[i], rowPtrs[i+1] - rowPtrs[i]);
-      ArrayView<const SC> vals(values  + rowPtrs[i], rowPtrs[i+1] - rowPtrs[i]);
-
-      A->insertGlobalValues(rowInds[i], cols, vals);
-    }
-
-    A->fillComplete();
-
-    return A;
-  }
-
   void EigenHandle::setup_operator(int numRows, const int* rowInds, void (*funcptr)(int n, const double* x, double* y)) {
     TEUCHOS_ASSERT(status_ == INITIALIZED);
 
-    A_ = setup_operator_gen(numRows, rowInds, funcptr);
+    A_ = HandleHelpers::setup_operator_gen(comm_, numRows, rowInds, funcptr);
 
     status_ = MATRIX_SETUP;
   }
   void EigenHandle::setup_operator_rhs(int numRows, const int* rowInds, void (*funcptr)(int n, const double* x, double* y)) {
     TEUCHOS_ASSERT(status_ == INITIALIZED || status_ == MATRIX_SETUP);
 
-    M_ = setup_operator_gen(numRows, rowInds, funcptr);
-  }
-
-  auto EigenHandle::setup_operator_gen(int numRows, const int* rowInds, void (*funcptr)(int n, const double* x, double* y)) -> Teuchos::RCP<Operator> {
-    TEUCHOS_ASSERT(numRows >= 0);
-    TEUCHOS_ASSERT(rowInds != NULL || numRows == 0);
-
-    // NOTE: we make a major assumption on the maps:
-    //      rowMap == domainMap == rangeMap
-    Teuchos::ArrayView<const GO> rows(rowInds, numRows);
-    auto map = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm_);
-
-    return Teuchos::rcp(new FortranOperator(funcptr, map, map));
+    M_ = HandleHelpers::setup_operator_gen(comm_, numRows, rowInds, funcptr);
   }
 
   void EigenHandle::setup_matrix(Teuchos::RCP<Matrix> A) {
