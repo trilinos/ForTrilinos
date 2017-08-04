@@ -7,11 +7,13 @@ TRIBITS_PACKAGE_DEFINE_DEPENDENCIES(
     Tpetra
     ForTrilinosTeuchos
   LIB_OPTIONAL_PACKAGES
+    Anasazi
     Ifpack2
     MueLu
   TEST_REQUIRED_PACKAGES # Needed to pass, not to build
+  TEST_OPTIONAL_PACKAGES
+    Anasazi
     Belos
     Ifpack2
-  TEST_OPTIONAL_PACKAGES
     MueLu
 )
