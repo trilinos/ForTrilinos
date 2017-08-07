@@ -31,11 +31,16 @@ namespace Teuchos
 class ParameterList
 {
   public:
-
     // Print the plist
     void print() const;
 
     %extend {
+
+// Construct without a name
+ParameterList()
+{
+    return new Teuchos::ParameterList();
+}
 
 // Constructor
 ParameterList(const char* STRING, int SIZE)
@@ -43,11 +48,8 @@ ParameterList(const char* STRING, int SIZE)
     return new Teuchos::ParameterList(std::string(STRING, SIZE));
 }
 
-// >>> TYPED QUERIES
+// >>> SCALAR SET/GET
 
-// Use fortran string typemap for string value as well as key
-
-//! String set/get
 template<typename T>
 void set_scalar(const char* STRING, int SIZE, const T& value)
 {
@@ -65,15 +67,14 @@ void get_scalar(const char* STRING, int SIZE, T& value)
 %template(set) set_scalar<double>;
 %template(get) get_scalar<int>;
 %template(set) set_scalar<int>;
-%template(get) get_scalar<Teuchos::ParameterList>;
-%template(set) set_scalar<Teuchos::ParameterList>;
+
+// >>> STRING SET/GET
 
 %apply (char* STRING, int SIZE)
 { (char* VALSTRING, int VALSIZE) };
 %apply (const char* STRING, int SIZE)
 { (const char* VALSTRING, int VALSIZE) };
 
-// String get/set
 void set(const char* STRING, int SIZE,
          const char* VALSTRING, int VALSIZE)
 {
@@ -89,6 +90,8 @@ void get(const char* STRING, int SIZE,
     swig::string_copyout(value, VALSTRING, VALSIZE);
 }
 
+// >>> ARRAY SET/GET
+
 // Use fortran array typemap for value as well as key
 %apply (SWIGTYPE* ARRAY, int SIZE)
 { (int* ARRAY, int ARRAYSIZE),
@@ -96,7 +99,6 @@ void get(const char* STRING, int SIZE,
   (const int* ARRAY, int ARRAYSIZE),
   (const double* ARRAY, int ARRAYSIZE) };
 
-//! Array set
 template<typename T>
 void set_array(const char* STRING, int SIZE,
                const T* ARRAY,     int ARRAYSIZE)
@@ -106,7 +108,6 @@ void set_array(const char* STRING, int SIZE,
                ArrayT(ARRAY, ARRAY + ARRAYSIZE));
 }
 
-//! Array get
 template<typename T>
 void get_array(const char* STRING, int SIZE,
                T* ARRAY,           int ARRAYSIZE)
@@ -123,6 +124,32 @@ void get_array(const char* STRING, int SIZE,
 %template(get) get_array<double>;
 %template(set) set_array<int>;
 %template(get) get_array<int>;
+
+// >>> PLIST SET/GET
+
+void set(const char* STRING, int SIZE,
+         Teuchos::RCP<Teuchos::ParameterList> plist)
+{
+    $self->set(std::string(STRING, SIZE), *plist);
+}
+
+void get(const char* STRING, int SIZE,
+         Teuchos::RCP<Teuchos::ParameterList>& plist)
+{
+    plist = Teuchos::sublist(
+            Teuchos::rcpFromRef(*$self),
+            std::string(STRING, SIZE),
+            true); // must exist
+}
+
+Teuchos::RCP<Teuchos::ParameterList> sublist(const char* STRING, int SIZE)
+{
+    return Teuchos::sublist(
+            Teuchos::rcpFromRef(*$self),
+            std::string(STRING, SIZE));
+}
+
+// >>> TYPE-FREE QUERIES
 
 //! Get the length of a string or array
 int get_length(const char* STRING, int SIZE)
@@ -151,7 +178,6 @@ bool is_parameter(const char* STRING, int SIZE) const
 {
     return $self->isParameter(std::string(STRING, SIZE));
 }
-
 
 } // End %extend
 }; // end class

@@ -20,8 +20,8 @@ module forteuchos
  ! TYPES
  type :: string
   ! These should be treated as PROTECTED data
-  type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, public :: own = .false.
+  type(C_PTR), public :: swigptr = C_NULL_PTR
+  logical, public :: swigown = .false.
  contains
   procedure, private :: create__SWIG_0 => swigf_new_string__SWIG_0
   procedure, private :: create__SWIG_1 => swigf_new_string__SWIG_1
@@ -37,26 +37,29 @@ module forteuchos
   generic :: create => create__SWIG_0, create__SWIG_1
  end type
  type :: ParameterList
-  type(C_PTR), public :: ptr = C_NULL_PTR
+  type(C_PTR), public :: swigptr = C_NULL_PTR
  contains
   procedure :: print => swigf_ParameterList_print
-  procedure :: create => swigf_new_ParameterList
+  procedure, private :: create__SWIG_0 => swigf_new_ParameterList__SWIG_0
+  procedure, private :: create__SWIG_1 => swigf_new_ParameterList__SWIG_1
   procedure, private :: get__SWIG_0 => swigf_ParameterList_get__SWIG_0
   procedure, private :: set__SWIG_0 => swigf_ParameterList_set__SWIG_0
   procedure, private :: get__SWIG_1 => swigf_ParameterList_get__SWIG_1
   procedure, private :: set__SWIG_1 => swigf_ParameterList_set__SWIG_1
-  procedure, private :: get__SWIG_2 => swigf_ParameterList_get__SWIG_2
   procedure, private :: set__SWIG_2 => swigf_ParameterList_set__SWIG_2
+  procedure, private :: get__SWIG_2 => swigf_ParameterList_get__SWIG_2
   procedure, private :: set__SWIG_3 => swigf_ParameterList_set__SWIG_3
   procedure, private :: get__SWIG_3 => swigf_ParameterList_get__SWIG_3
   procedure, private :: set__SWIG_4 => swigf_ParameterList_set__SWIG_4
   procedure, private :: get__SWIG_4 => swigf_ParameterList_get__SWIG_4
   procedure, private :: set__SWIG_5 => swigf_ParameterList_set__SWIG_5
   procedure, private :: get__SWIG_5 => swigf_ParameterList_get__SWIG_5
+  procedure :: sublist => swigf_ParameterList_sublist
   procedure :: get_length => swigf_ParameterList_get_length
   procedure :: remove => swigf_ParameterList_remove
   procedure :: is_parameter => swigf_ParameterList_is_parameter
   procedure :: release => swigf_delete_ParameterList
+  generic :: create => create__SWIG_0, create__SWIG_1
   generic :: set => set__SWIG_0, set__SWIG_1, set__SWIG_2, set__SWIG_3, set__SWIG_4, set__SWIG_5
   generic :: get => get__SWIG_0, get__SWIG_1, get__SWIG_2, get__SWIG_3, get__SWIG_4, get__SWIG_5
  end type
@@ -142,8 +145,14 @@ module forteuchos
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
   end subroutine
-  function swigc_new_ParameterList(farg1, farg2) &
-     bind(C, name="swigc_new_ParameterList") &
+  function swigc_new_ParameterList__SWIG_0() &
+     bind(C, name="swigc_new_ParameterList__SWIG_0") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+  end function
+  function swigc_new_ParameterList__SWIG_1(farg1, farg2) &
+     bind(C, name="swigc_new_ParameterList__SWIG_1") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
@@ -182,21 +191,23 @@ module forteuchos
    integer(C_INT), intent(in) :: farg3
    integer(C_INT), intent(in) :: farg4
   end subroutine
-  subroutine swigc_ParameterList_get__SWIG_2(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_ParameterList_get__SWIG_2")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   character(C_CHAR) :: farg2
-   integer(C_INT), intent(in) :: farg3
-   type(C_PTR), value :: farg4
-  end subroutine
-  subroutine swigc_ParameterList_set__SWIG_2(farg1, farg2, farg3, farg4) &
+  subroutine swigc_ParameterList_set__SWIG_2(farg1, farg2, farg3, farg4, farg5) &
      bind(C, name="swigc_ParameterList_set__SWIG_2")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    character(C_CHAR) :: farg2
    integer(C_INT), intent(in) :: farg3
-   type(C_PTR), value :: farg4
+   character(C_CHAR) :: farg4
+   integer(C_INT), intent(in) :: farg5
+  end subroutine
+  subroutine swigc_ParameterList_get__SWIG_2(farg1, farg2, farg3, farg4, farg5) &
+     bind(C, name="swigc_ParameterList_get__SWIG_2")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   character(C_CHAR) :: farg2
+   integer(C_INT), intent(in) :: farg3
+   character(C_CHAR) :: farg4
+   integer(C_INT), intent(in) :: farg5
   end subroutine
   subroutine swigc_ParameterList_set__SWIG_3(farg1, farg2, farg3, farg4, farg5) &
      bind(C, name="swigc_ParameterList_set__SWIG_3")
@@ -204,7 +215,7 @@ module forteuchos
    type(C_PTR), value :: farg1
    character(C_CHAR) :: farg2
    integer(C_INT), intent(in) :: farg3
-   character(C_CHAR) :: farg4
+   real(C_DOUBLE), dimension(*), intent(in) :: farg4
    integer(C_INT), intent(in) :: farg5
   end subroutine
   subroutine swigc_ParameterList_get__SWIG_3(farg1, farg2, farg3, farg4, farg5) &
@@ -213,7 +224,7 @@ module forteuchos
    type(C_PTR), value :: farg1
    character(C_CHAR) :: farg2
    integer(C_INT), intent(in) :: farg3
-   character(C_CHAR) :: farg4
+   real(C_DOUBLE), dimension(*), intent(inout) :: farg4
    integer(C_INT), intent(in) :: farg5
   end subroutine
   subroutine swigc_ParameterList_set__SWIG_4(farg1, farg2, farg3, farg4, farg5) &
@@ -222,7 +233,7 @@ module forteuchos
    type(C_PTR), value :: farg1
    character(C_CHAR) :: farg2
    integer(C_INT), intent(in) :: farg3
-   real(C_DOUBLE), dimension(*), intent(in) :: farg4
+   integer(C_INT), dimension(*), intent(in) :: farg4
    integer(C_INT), intent(in) :: farg5
   end subroutine
   subroutine swigc_ParameterList_get__SWIG_4(farg1, farg2, farg3, farg4, farg5) &
@@ -231,27 +242,34 @@ module forteuchos
    type(C_PTR), value :: farg1
    character(C_CHAR) :: farg2
    integer(C_INT), intent(in) :: farg3
-   real(C_DOUBLE), dimension(*), intent(inout) :: farg4
+   integer(C_INT), dimension(*), intent(inout) :: farg4
    integer(C_INT), intent(in) :: farg5
   end subroutine
-  subroutine swigc_ParameterList_set__SWIG_5(farg1, farg2, farg3, farg4, farg5) &
+  subroutine swigc_ParameterList_set__SWIG_5(farg1, farg2, farg3, farg4) &
      bind(C, name="swigc_ParameterList_set__SWIG_5")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    character(C_CHAR) :: farg2
    integer(C_INT), intent(in) :: farg3
-   integer(C_INT), dimension(*), intent(in) :: farg4
-   integer(C_INT), intent(in) :: farg5
+   type(C_PTR), value :: farg4
   end subroutine
-  subroutine swigc_ParameterList_get__SWIG_5(farg1, farg2, farg3, farg4, farg5) &
+  subroutine swigc_ParameterList_get__SWIG_5(farg1, farg2, farg3, farg4) &
      bind(C, name="swigc_ParameterList_get__SWIG_5")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    character(C_CHAR) :: farg2
    integer(C_INT), intent(in) :: farg3
-   integer(C_INT), dimension(*), intent(inout) :: farg4
-   integer(C_INT), intent(in) :: farg5
+   type(C_PTR), value :: farg4
   end subroutine
+  function swigc_ParameterList_sublist(farg1, farg2, farg3) &
+     bind(C, name="swigc_ParameterList_sublist") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+   character(C_CHAR) :: farg2
+   integer(C_INT), intent(in) :: farg3
+  end function
   function swigc_ParameterList_get_length(farg1, farg2, farg3) &
      bind(C, name="swigc_ParameterList_get_length") &
      result(fresult)
@@ -303,49 +321,49 @@ contains
   subroutine swigf_new_string__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_string__SWIG_0()
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_string__SWIG_0()
+   self%swigown = .true.
   end subroutine
   subroutine swigf_new_string__SWIG_1(self, s)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
    character(kind=C_CHAR, len=*) :: s
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_string__SWIG_1(s, len(s))
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_string__SWIG_1(s, len(s))
+   self%swigown = .true.
   end subroutine
   subroutine swigf_string_resize(self, count)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
    integer(C_INT), intent(in) :: count
-   call swigc_string_resize(self%ptr, count)
+   call swigc_string_resize(self%swigptr, count)
   end subroutine
   subroutine swigf_string_clear(self)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
-   call swigc_string_clear(self%ptr)
+   call swigc_string_clear(self%swigptr)
   end subroutine
   function swigf_string_size(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT) :: fresult
    class(string) :: self
-   fresult = swigc_string_size(self%ptr)
+   fresult = swigc_string_size(self%swigptr)
   end function
   function swigf_string_length(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT) :: fresult
    class(string) :: self
-   fresult = swigc_string_length(self%ptr)
+   fresult = swigc_string_length(self%swigptr)
   end function
   subroutine swigf_string_set(self, pos, v)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
    integer(C_INT), intent(in) :: pos
    character(C_CHAR), intent(in) :: v
-   call swigc_string_set(self%ptr, pos, v)
+   call swigc_string_set(self%swigptr, pos, v)
   end subroutine
   function swigf_string_get(self, pos) &
      result(fresult)
@@ -353,138 +371,152 @@ contains
    character(C_CHAR) :: fresult
    class(string) :: self
    integer(C_INT), intent(in) :: pos
-   fresult = swigc_string_get(self%ptr, pos)
+   fresult = swigc_string_get(self%swigptr, pos)
   end function
   subroutine swigf_string_assign_from(self, s)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
    character(kind=C_CHAR, len=*) :: s
-   call swigc_string_assign_from(self%ptr, s, len(s))
+   call swigc_string_assign_from(self%swigptr, s, len(s))
   end subroutine
   subroutine swigf_string_copy_to(self, s)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
    character(kind=C_CHAR, len=*) :: s
-   call swigc_string_copy_to(self%ptr, s, len(s))
+   call swigc_string_copy_to(self%swigptr, s, len(s))
   end subroutine
   subroutine swigf_delete_string(self)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self
-   if (self%own) then
-    call swigc_delete_string(self%ptr)
-    self%own = .false.
+   if (self%swigown) then
+    call swigc_delete_string(self%swigptr)
+    self%swigown = .false.
    end if
-   self%ptr = C_NULL_PTR
+   self%swigptr = C_NULL_PTR
   end subroutine
   subroutine swigf_ParameterList_print(self)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
-   call swigc_ParameterList_print(self%ptr)
+   call swigc_ParameterList_print(self%swigptr)
   end subroutine
-  subroutine swigf_new_ParameterList(self, STRING)
+  subroutine swigf_new_ParameterList__SWIG_0(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(ParameterList) :: self
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_ParameterList__SWIG_0()
+  end subroutine
+  subroutine swigf_new_ParameterList__SWIG_1(self, STRING)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
    character(kind=C_CHAR, len=*) :: STRING
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_ParameterList(STRING, len(STRING))
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_ParameterList__SWIG_1(STRING, len(STRING))
   end subroutine
   subroutine swigf_ParameterList_get__SWIG_0(self, STRING, value)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
    character(kind=C_CHAR, len=*) :: STRING
    real(C_DOUBLE), intent(inout) :: value
-   call swigc_ParameterList_get__SWIG_0(self%ptr, STRING, len(STRING), value)
+   call swigc_ParameterList_get__SWIG_0(self%swigptr, STRING, len(STRING), value)
   end subroutine
   subroutine swigf_ParameterList_set__SWIG_0(self, STRING, value)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
    character(kind=C_CHAR, len=*) :: STRING
    real(C_DOUBLE), intent(in) :: value
-   call swigc_ParameterList_set__SWIG_0(self%ptr, STRING, len(STRING), value)
+   call swigc_ParameterList_set__SWIG_0(self%swigptr, STRING, len(STRING), value)
   end subroutine
   subroutine swigf_ParameterList_get__SWIG_1(self, STRING, value)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
    character(kind=C_CHAR, len=*) :: STRING
    integer(C_INT), intent(inout) :: value
-   call swigc_ParameterList_get__SWIG_1(self%ptr, STRING, len(STRING), value)
+   call swigc_ParameterList_get__SWIG_1(self%swigptr, STRING, len(STRING), value)
   end subroutine
   subroutine swigf_ParameterList_set__SWIG_1(self, STRING, value)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
    character(kind=C_CHAR, len=*) :: STRING
    integer(C_INT), intent(in) :: value
-   call swigc_ParameterList_set__SWIG_1(self%ptr, STRING, len(STRING), value)
+   call swigc_ParameterList_set__SWIG_1(self%swigptr, STRING, len(STRING), value)
   end subroutine
-  subroutine swigf_ParameterList_get__SWIG_2(self, STRING, value)
-   use, intrinsic :: ISO_C_BINDING
-   class(ParameterList) :: self
-   character(kind=C_CHAR, len=*) :: STRING
-   class(ParameterList) :: value
-   call swigc_ParameterList_get__SWIG_2(self%ptr, STRING, len(STRING), value%ptr)
-  end subroutine
-  subroutine swigf_ParameterList_set__SWIG_2(self, STRING, value)
-   use, intrinsic :: ISO_C_BINDING
-   class(ParameterList) :: self
-   character(kind=C_CHAR, len=*) :: STRING
-   class(ParameterList) :: value
-   call swigc_ParameterList_set__SWIG_2(self%ptr, STRING, len(STRING), value%ptr)
-  end subroutine
-  subroutine swigf_ParameterList_set__SWIG_3(self, STRING, VALSTRING)
+  subroutine swigf_ParameterList_set__SWIG_2(self, STRING, VALSTRING)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
    character(kind=C_CHAR, len=*) :: STRING
    character(kind=C_CHAR, len=*) :: VALSTRING
-   call swigc_ParameterList_set__SWIG_3(self%ptr, STRING, len(STRING), VALSTRING, len(VALSTRING))
+   call swigc_ParameterList_set__SWIG_2(self%swigptr, STRING, len(STRING), VALSTRING, len(VALSTRING))
   end subroutine
-  subroutine swigf_ParameterList_get__SWIG_3(self, STRING, VALSTRING)
+  subroutine swigf_ParameterList_get__SWIG_2(self, STRING, VALSTRING)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
    character(kind=C_CHAR, len=*) :: STRING
    character(kind=C_CHAR, len=*) :: VALSTRING
-   call swigc_ParameterList_get__SWIG_3(self%ptr, STRING, len(STRING), VALSTRING, len(VALSTRING))
+   call swigc_ParameterList_get__SWIG_2(self%swigptr, STRING, len(STRING), VALSTRING, len(VALSTRING))
+  end subroutine
+  subroutine swigf_ParameterList_set__SWIG_3(self, STRING, ARRAY)
+   use, intrinsic :: ISO_C_BINDING
+   class(ParameterList) :: self
+   character(kind=C_CHAR, len=*) :: STRING
+   real(C_DOUBLE), dimension(:), intent(in) :: ARRAY
+   call swigc_ParameterList_set__SWIG_3(self%swigptr, STRING, len(STRING), ARRAY, size(ARRAY))
+  end subroutine
+  subroutine swigf_ParameterList_get__SWIG_3(self, STRING, ARRAY)
+   use, intrinsic :: ISO_C_BINDING
+   class(ParameterList) :: self
+   character(kind=C_CHAR, len=*) :: STRING
+   real(C_DOUBLE), dimension(:), intent(inout) :: ARRAY
+   call swigc_ParameterList_get__SWIG_3(self%swigptr, STRING, len(STRING), ARRAY, size(ARRAY))
   end subroutine
   subroutine swigf_ParameterList_set__SWIG_4(self, STRING, ARRAY)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
    character(kind=C_CHAR, len=*) :: STRING
-   real(C_DOUBLE), dimension(:), intent(in) :: ARRAY
-   call swigc_ParameterList_set__SWIG_4(self%ptr, STRING, len(STRING), ARRAY, size(ARRAY))
+   integer(C_INT), dimension(:), intent(in) :: ARRAY
+   call swigc_ParameterList_set__SWIG_4(self%swigptr, STRING, len(STRING), ARRAY, size(ARRAY))
   end subroutine
   subroutine swigf_ParameterList_get__SWIG_4(self, STRING, ARRAY)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
    character(kind=C_CHAR, len=*) :: STRING
-   real(C_DOUBLE), dimension(:), intent(inout) :: ARRAY
-   call swigc_ParameterList_get__SWIG_4(self%ptr, STRING, len(STRING), ARRAY, size(ARRAY))
-  end subroutine
-  subroutine swigf_ParameterList_set__SWIG_5(self, STRING, ARRAY)
-   use, intrinsic :: ISO_C_BINDING
-   class(ParameterList) :: self
-   character(kind=C_CHAR, len=*) :: STRING
-   integer(C_INT), dimension(:), intent(in) :: ARRAY
-   call swigc_ParameterList_set__SWIG_5(self%ptr, STRING, len(STRING), ARRAY, size(ARRAY))
-  end subroutine
-  subroutine swigf_ParameterList_get__SWIG_5(self, STRING, ARRAY)
-   use, intrinsic :: ISO_C_BINDING
-   class(ParameterList) :: self
-   character(kind=C_CHAR, len=*) :: STRING
    integer(C_INT), dimension(:), intent(inout) :: ARRAY
-   call swigc_ParameterList_get__SWIG_5(self%ptr, STRING, len(STRING), ARRAY, size(ARRAY))
+   call swigc_ParameterList_get__SWIG_4(self%swigptr, STRING, len(STRING), ARRAY, size(ARRAY))
   end subroutine
+  subroutine swigf_ParameterList_set__SWIG_5(self, STRING, plist)
+   use, intrinsic :: ISO_C_BINDING
+   class(ParameterList) :: self
+   character(kind=C_CHAR, len=*) :: STRING
+   type(ParameterList) :: plist
+   call swigc_ParameterList_set__SWIG_5(self%swigptr, STRING, len(STRING), plist%swigptr)
+  end subroutine
+  subroutine swigf_ParameterList_get__SWIG_5(self, STRING, plist)
+   use, intrinsic :: ISO_C_BINDING
+   class(ParameterList) :: self
+   character(kind=C_CHAR, len=*) :: STRING
+   type(ParameterList) :: plist
+   call swigc_ParameterList_get__SWIG_5(self%swigptr, STRING, len(STRING), plist%swigptr)
+  end subroutine
+  function swigf_ParameterList_sublist(self, STRING) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(ParameterList) :: fresult
+   class(ParameterList) :: self
+   character(kind=C_CHAR, len=*) :: STRING
+   fresult%swigptr = swigc_ParameterList_sublist(self%swigptr, STRING, len(STRING))
+  end function
   function swigf_ParameterList_get_length(self, STRING) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT) :: fresult
    class(ParameterList) :: self
    character(kind=C_CHAR, len=*) :: STRING
-   fresult = swigc_ParameterList_get_length(self%ptr, STRING, len(STRING))
+   fresult = swigc_ParameterList_get_length(self%swigptr, STRING, len(STRING))
   end function
   subroutine swigf_ParameterList_remove(self, STRING)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
    character(kind=C_CHAR, len=*) :: STRING
-   call swigc_ParameterList_remove(self%ptr, STRING, len(STRING))
+   call swigc_ParameterList_remove(self%swigptr, STRING, len(STRING))
   end subroutine
   function swigf_ParameterList_is_parameter(self, STRING) &
      result(fresult)
@@ -492,24 +524,24 @@ contains
    logical(C_BOOL) :: fresult
    class(ParameterList) :: self
    character(kind=C_CHAR, len=*) :: STRING
-   fresult = swigc_ParameterList_is_parameter(self%ptr, STRING, len(STRING))
+   fresult = swigc_ParameterList_is_parameter(self%swigptr, STRING, len(STRING))
   end function
   subroutine swigf_delete_ParameterList(self)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: self
-   call swigc_delete_ParameterList(self%ptr)
-   self%ptr = C_NULL_PTR
+   call swigc_delete_ParameterList(self%swigptr)
+   self%swigptr = C_NULL_PTR
   end subroutine
   subroutine load_from_xml(plist, STRING)
    use, intrinsic :: ISO_C_BINDING
    type(ParameterList) :: plist
    character(kind=C_CHAR, len=*) :: STRING
-   call swigc_load_from_xml(plist%ptr, STRING, len(STRING))
+   call swigc_load_from_xml(plist%swigptr, STRING, len(STRING))
   end subroutine
   subroutine save_to_xml(plist, STRING)
    use, intrinsic :: ISO_C_BINDING
    class(ParameterList) :: plist
    character(kind=C_CHAR, len=*) :: STRING
-   call swigc_save_to_xml(plist%ptr, STRING, len(STRING))
+   call swigc_save_to_xml(plist%swigptr, STRING, len(STRING))
   end subroutine
 end module forteuchos

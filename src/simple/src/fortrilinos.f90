@@ -14,8 +14,8 @@ module fortrilinos
  ! TYPES
  type :: SolverHandle
   ! These should be treated as PROTECTED data
-  type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, public :: own = .false.
+  type(C_PTR), public :: swigptr = C_NULL_PTR
+  logical, public :: swigown = .false.
  contains
   procedure :: create => swigf_new_SolverHandle
   procedure, private :: init__SWIG_0 => swigf_SolverHandle_init__SWIG_0
@@ -30,8 +30,8 @@ module fortrilinos
  end type
  type :: EigenHandle
   ! These should be treated as PROTECTED data
-  type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, public :: own = .false.
+  type(C_PTR), public :: swigptr = C_NULL_PTR
+  logical, public :: swigown = .false.
  contains
   procedure :: create => swigf_new_EigenHandle
   procedure, private :: init__SWIG_0 => swigf_EigenHandle_init__SWIG_0
@@ -197,20 +197,20 @@ contains
   subroutine swigf_new_SolverHandle(self)
    use, intrinsic :: ISO_C_BINDING
    class(SolverHandle) :: self
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_SolverHandle()
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_SolverHandle()
+   self%swigown = .true.
   end subroutine
   subroutine swigf_SolverHandle_init__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
    class(SolverHandle) :: self
-   call swigc_SolverHandle_init__SWIG_0(self%ptr)
+   call swigc_SolverHandle_init__SWIG_0(self%swigptr)
   end subroutine
   subroutine swigf_SolverHandle_init__SWIG_1(self, comm)
    use, intrinsic :: ISO_C_BINDING
    class(SolverHandle) :: self
    integer(C_INT), intent(in) :: comm
-   call swigc_SolverHandle_init__SWIG_1(self%ptr, comm)
+   call swigc_SolverHandle_init__SWIG_1(self%swigptr, comm)
   end subroutine
   subroutine swigf_SolverHandle_setup_matrix(self, numRows, rowInds, rowPtrs, numNnz, colInds, values)
    use, intrinsic :: ISO_C_BINDING
@@ -221,7 +221,7 @@ contains
    integer(C_INT), intent(in) :: numNnz
    integer(C_INT), dimension(:), intent(in) :: colInds
    real(C_DOUBLE), dimension(:), intent(in) :: values
-   call swigc_SolverHandle_setup_matrix(self%ptr, numRows, rowInds, rowPtrs, numNnz, colInds, values)
+   call swigc_SolverHandle_setup_matrix(self%swigptr, numRows, rowInds, rowPtrs, numNnz, colInds, values)
   end subroutine
   subroutine swigf_SolverHandle_setup_operator(self, numRows, rowInds, callback)
    use, intrinsic :: ISO_C_BINDING
@@ -229,13 +229,13 @@ contains
    integer(C_INT), intent(in) :: numRows
    integer(C_INT), dimension(:), intent(in) :: rowInds
    type(C_FUNPTR), intent(in), value :: callback
-   call swigc_SolverHandle_setup_operator(self%ptr, numRows, rowInds, callback)
+   call swigc_SolverHandle_setup_operator(self%swigptr, numRows, rowInds, callback)
   end subroutine
   subroutine swigf_SolverHandle_setup_solver(self, paramList)
    use, intrinsic :: ISO_C_BINDING
    class(SolverHandle) :: self
    type(ParameterList) :: paramList
-   call swigc_SolverHandle_setup_solver(self%ptr, paramList%ptr)
+   call swigc_SolverHandle_setup_solver(self%swigptr, paramList%swigptr)
   end subroutine
   subroutine swigf_SolverHandle_solve(self, size, rhs, lhs)
    use, intrinsic :: ISO_C_BINDING
@@ -243,39 +243,39 @@ contains
    integer(C_INT), intent(in) :: size
    real(C_DOUBLE), dimension(:), intent(in) :: rhs
    real(C_DOUBLE), dimension(:), intent(inout) :: lhs
-   call swigc_SolverHandle_solve(self%ptr, size, rhs, lhs)
+   call swigc_SolverHandle_solve(self%swigptr, size, rhs, lhs)
   end subroutine
   subroutine swigf_SolverHandle_finalize(self)
    use, intrinsic :: ISO_C_BINDING
    class(SolverHandle) :: self
-   call swigc_SolverHandle_finalize(self%ptr)
+   call swigc_SolverHandle_finalize(self%swigptr)
   end subroutine
   subroutine swigf_delete_SolverHandle(self)
    use, intrinsic :: ISO_C_BINDING
    class(SolverHandle) :: self
-   if (self%own) then
-    call swigc_delete_SolverHandle(self%ptr)
-    self%own = .false.
+   if (self%swigown) then
+    call swigc_delete_SolverHandle(self%swigptr)
+    self%swigown = .false.
    end if
-   self%ptr = C_NULL_PTR
+   self%swigptr = C_NULL_PTR
   end subroutine
   subroutine swigf_new_EigenHandle(self)
    use, intrinsic :: ISO_C_BINDING
    class(EigenHandle) :: self
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_EigenHandle()
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_EigenHandle()
+   self%swigown = .true.
   end subroutine
   subroutine swigf_EigenHandle_init__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
    class(EigenHandle) :: self
-   call swigc_EigenHandle_init__SWIG_0(self%ptr)
+   call swigc_EigenHandle_init__SWIG_0(self%swigptr)
   end subroutine
   subroutine swigf_EigenHandle_init__SWIG_1(self, comm)
    use, intrinsic :: ISO_C_BINDING
    class(EigenHandle) :: self
    integer(C_INT), intent(in) :: comm
-   call swigc_EigenHandle_init__SWIG_1(self%ptr, comm)
+   call swigc_EigenHandle_init__SWIG_1(self%swigptr, comm)
   end subroutine
   subroutine swigf_EigenHandle_setup_matrix(self, numRows, rowInds, rowPtrs, numNnz, colInds, values)
    use, intrinsic :: ISO_C_BINDING
@@ -286,7 +286,7 @@ contains
    integer(C_INT), intent(in) :: numNnz
    integer(C_INT), dimension(:), intent(in) :: colInds
    real(C_DOUBLE), dimension(:), intent(in) :: values
-   call swigc_EigenHandle_setup_matrix(self%ptr, numRows, rowInds, rowPtrs, numNnz, colInds, values)
+   call swigc_EigenHandle_setup_matrix(self%swigptr, numRows, rowInds, rowPtrs, numNnz, colInds, values)
   end subroutine
   subroutine swigf_EigenHandle_setup_matrix_rhs(self, numRows, rowInds, rowPtrs, numNnz, colInds, values)
    use, intrinsic :: ISO_C_BINDING
@@ -297,7 +297,7 @@ contains
    integer(C_INT), intent(in) :: numNnz
    integer(C_INT), dimension(:), intent(in) :: colInds
    real(C_DOUBLE), dimension(:), intent(in) :: values
-   call swigc_EigenHandle_setup_matrix_rhs(self%ptr, numRows, rowInds, rowPtrs, numNnz, colInds, values)
+   call swigc_EigenHandle_setup_matrix_rhs(self%swigptr, numRows, rowInds, rowPtrs, numNnz, colInds, values)
   end subroutine
   subroutine swigf_EigenHandle_setup_operator(self, numRows, rowInds, callback)
    use, intrinsic :: ISO_C_BINDING
@@ -305,7 +305,7 @@ contains
    integer(C_INT), intent(in) :: numRows
    integer(C_INT), dimension(:), intent(in) :: rowInds
    type(C_FUNPTR), intent(in), value :: callback
-   call swigc_EigenHandle_setup_operator(self%ptr, numRows, rowInds, callback)
+   call swigc_EigenHandle_setup_operator(self%swigptr, numRows, rowInds, callback)
   end subroutine
   subroutine swigf_EigenHandle_setup_operator_rhs(self, numRows, rowInds, callback)
    use, intrinsic :: ISO_C_BINDING
@@ -313,13 +313,13 @@ contains
    integer(C_INT), intent(in) :: numRows
    integer(C_INT), dimension(:), intent(in) :: rowInds
    type(C_FUNPTR), intent(in), value :: callback
-   call swigc_EigenHandle_setup_operator_rhs(self%ptr, numRows, rowInds, callback)
+   call swigc_EigenHandle_setup_operator_rhs(self%swigptr, numRows, rowInds, callback)
   end subroutine
   subroutine swigf_EigenHandle_setup_solver(self, paramList)
    use, intrinsic :: ISO_C_BINDING
    class(EigenHandle) :: self
    type(ParameterList) :: paramList
-   call swigc_EigenHandle_setup_solver(self%ptr, paramList%ptr)
+   call swigc_EigenHandle_setup_solver(self%swigptr, paramList%swigptr)
   end subroutine
   subroutine swigf_EigenHandle_solve(self, numEigs, eigenValues, size, eigenVectors)
    use, intrinsic :: ISO_C_BINDING
@@ -328,20 +328,20 @@ contains
    real(C_DOUBLE), dimension(:), intent(inout) :: eigenValues
    integer(C_INT), intent(in) :: size
    real(C_DOUBLE), dimension(:), intent(inout) :: eigenVectors
-   call swigc_EigenHandle_solve(self%ptr, numEigs, eigenValues, size, eigenVectors)
+   call swigc_EigenHandle_solve(self%swigptr, numEigs, eigenValues, size, eigenVectors)
   end subroutine
   subroutine swigf_EigenHandle_finalize(self)
    use, intrinsic :: ISO_C_BINDING
    class(EigenHandle) :: self
-   call swigc_EigenHandle_finalize(self%ptr)
+   call swigc_EigenHandle_finalize(self%swigptr)
   end subroutine
   subroutine swigf_delete_EigenHandle(self)
    use, intrinsic :: ISO_C_BINDING
    class(EigenHandle) :: self
-   if (self%own) then
-    call swigc_delete_EigenHandle(self%ptr)
-    self%own = .false.
+   if (self%swigown) then
+    call swigc_delete_EigenHandle(self%swigptr)
+    self%swigown = .false.
    end if
-   self%ptr = C_NULL_PTR
+   self%swigptr = C_NULL_PTR
   end subroutine
 end module fortrilinos

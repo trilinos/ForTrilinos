@@ -12,8 +12,8 @@ module forepetra
  ! TYPES
  type :: Epetra_Object
   ! These should be treated as PROTECTED data
-  type(C_PTR), public :: ptr = C_NULL_PTR
-  logical, public :: own = .false.
+  type(C_PTR), public :: swigptr = C_NULL_PTR
+  logical, public :: swigown = .false.
  contains
   procedure, private :: create__SWIG_0 => swigf_new_Epetra_Object__SWIG_0
   procedure, private :: create__SWIG_1 => swigf_new_Epetra_Object__SWIG_1
@@ -118,64 +118,64 @@ contains
    class(Epetra_Object) :: self
    integer(C_INT), intent(in) :: TracebackModeIn
    logical(C_BOOL), intent(in) :: set_label
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_Epetra_Object__SWIG_0(TracebackModeIn, set_label)
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_Epetra_Object__SWIG_0(TracebackModeIn, set_label)
+   self%swigown = .true.
   end subroutine
   subroutine swigf_new_Epetra_Object__SWIG_1(self, TracebackModeIn)
    use, intrinsic :: ISO_C_BINDING
    class(Epetra_Object) :: self
    integer(C_INT), intent(in) :: TracebackModeIn
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_Epetra_Object__SWIG_1(TracebackModeIn)
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_Epetra_Object__SWIG_1(TracebackModeIn)
+   self%swigown = .true.
   end subroutine
   subroutine swigf_new_Epetra_Object__SWIG_2(self)
    use, intrinsic :: ISO_C_BINDING
    class(Epetra_Object) :: self
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_Epetra_Object__SWIG_2()
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_Epetra_Object__SWIG_2()
+   self%swigown = .true.
   end subroutine
   subroutine swigf_new_Epetra_Object__SWIG_3(self, Label, TracebackModeIn)
    use, intrinsic :: ISO_C_BINDING
    class(Epetra_Object) :: self
    character(kind=C_CHAR, len=*) :: Label
    integer(C_INT), intent(in) :: TracebackModeIn
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_Epetra_Object__SWIG_3(Label, TracebackModeIn)
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_Epetra_Object__SWIG_3(Label, TracebackModeIn)
+   self%swigown = .true.
   end subroutine
   subroutine swigf_new_Epetra_Object__SWIG_4(self, Label)
    use, intrinsic :: ISO_C_BINDING
    class(Epetra_Object) :: self
    character(kind=C_CHAR, len=*) :: Label
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_Epetra_Object__SWIG_4(Label)
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_Epetra_Object__SWIG_4(Label)
+   self%swigown = .true.
   end subroutine
   subroutine swigf_new_Epetra_Object__SWIG_5(self, Object)
    use, intrinsic :: ISO_C_BINDING
    class(Epetra_Object) :: self
    class(Epetra_Object) :: Object
-   if (c_associated(self%ptr)) call self%release()
-   self%ptr = swigc_new_Epetra_Object__SWIG_5(Object%ptr)
-   self%own = .true.
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_Epetra_Object__SWIG_5(Object%swigptr)
+   self%swigown = .true.
   end subroutine
   subroutine swigf_delete_Epetra_Object(self)
    use, intrinsic :: ISO_C_BINDING
    class(Epetra_Object) :: self
-   if (self%own) then
-    call swigc_delete_Epetra_Object(self%ptr)
-    self%own = .false.
+   if (self%swigown) then
+    call swigc_delete_Epetra_Object(self%swigptr)
+    self%swigown = .false.
    end if
-   self%ptr = C_NULL_PTR
+   self%swigptr = C_NULL_PTR
   end subroutine
   subroutine swigf_Epetra_Object_SetLabel(self, Label)
    use, intrinsic :: ISO_C_BINDING
    class(Epetra_Object) :: self
    character(kind=C_CHAR, len=*) :: Label
-   call swigc_Epetra_Object_SetLabel(self%ptr, Label)
+   call swigc_Epetra_Object_SetLabel(self%swigptr, Label)
   end subroutine
   subroutine swigf_Epetra_Object_SetTracebackMode(TracebackModeValue)
    use, intrinsic :: ISO_C_BINDING

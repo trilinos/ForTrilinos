@@ -22,7 +22,7 @@ subroutine test_plist()
     use forteuchos
     implicit none
 
-    type(ParameterList) :: plist, sublist, sublistcpy
+    type(ParameterList) :: plist, sublist, sublistref
     integer, dimension(6) :: test_int = (/ -1, 1, 3, 3, 5, 7 /)
     real(C_DOUBLE), dimension(4) :: test_dbl = (/ 0.1d0, 1.9d0, -2.0d0, 4.0d0 /)
 
@@ -33,10 +33,12 @@ subroutine test_plist()
     write(0, *) "Constructing..."
     call plist%create("myname")
     EXPECT_EQ(0, ierr)
+    EXPECT_TRUE(c_associated(plist%swigptr))
 
     ! Test a function that raises an exception
     call load_from_xml(plist, "nonexistent_path.xml")
     EXPECT_EQ(-3, ierr)
+    EXPECT_TRUE(c_associated(plist%swigptr))
     ierr = 0
 
     ! Get and set a vlaue
@@ -68,7 +70,9 @@ subroutine test_plist()
     call plist%remove("deleteme")
     EXPECT_FALSE(plist%is_parameter('deleteme'))
 
-    call sublist%create("sublist")
+    EXPECT_FALSE(c_associated(sublist%swigptr))
+    sublist = plist%sublist("sublist")
+    EXPECT_TRUE(c_associated(sublist%swigptr))
     call sublist%set("anotherval", 4.0d0)
     call sublist%set("stringval", "some string!")
     EXPECT_EQ(12, sublist%get_length('stringval'))
@@ -82,14 +86,23 @@ subroutine test_plist()
     EXPECT_EQ(-4, ierr)
     ierr = 0
 
-    call plist%set("sublist", sublist)
+    call plist%set("sublist2", sublist)
+
+    ! Add a sub-sublist
+    sublist = sublist%sublist("subsublist")
+
+    ! Add another parameter on the original sublist
+    call sublist%set("late_arrival", 1.0d0)
     call sublist%release()
 
-    ! XXX: make this interface cleaner
-    call sublistcpy%create("will_be_deleted")
-    call plist%get("sublist", sublistcpy)
-    call sublistcpy%print()
-    call sublistcpy%release()
+    ! XXX: make this interface cleaner. Currently getting a reference to a
+    ! sublist requires that another parameterlist is allocated first
+    call sublistref%create()
+    call plist%get("sublist", sublistref)
+    call sublistref%set("added_to_copy", 1.0d0)
+    write(0, *) "Printing copy of sublist..."
+    call sublistref%print()
+    call sublistref%release()
 
     write(0, *) "Printing..."
     call plist%print()
