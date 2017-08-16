@@ -2,10 +2,12 @@
 layout: fortrilinos
 ---
 
-ForTrilinos is an open-source software library providing object-oriented Fortran interfaces to Trilinos C++ packages.
+# [](#header-1)Published documents
 
-# [](#header-1)Install ForTrilinos
+- [Existing Fortran interfaces to Trilinos in preparation for exascale ForTrilinos development](https://www.osti.gov/scitech/biblio/1356940)
+- ForTrilinos design document (awaiting publication)
 
+# [](#header-1)ForTrilinos installation
 
 The following third party libraries (TPLs) are used by ForTrilinos:
 
