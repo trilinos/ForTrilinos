@@ -1,123 +1,82 @@
 ---
-layout: default
+layout: fortrilinos
 ---
 
-Text can be **bold**, _italic_, or ~~strikethrough~~.
+ForTrilinos is an open-source software library providing object-oriented Fortran interfaces to Trilinos C++ packages.
 
-[Link to another page](another-page).
+# [](#header-1)Install ForTrilinos
 
-There should be whitespace between paragraphs.
 
-There should be whitespace between paragraphs. We recommend including a README, or a file with information about your project.
+The following third party libraries (TPLs) are used by ForTrilinos:
 
-# [](#header-1)Header 1
+| Packages               | Dependency |
+|:---------------------- |:---------- |
+| BLAS/LAPACK            | Required   |
+| MPI                    | Required   |
 
-This is a normal paragraph following a header. GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
+ForTrilinos is configured and built using [TriBITS](https://tribits.org). ForTrilinos builds
+within Trilinos effectively as an internal package. First, link ForTrilinos into the
+Trilinos main directory:
 
-## [](#header-2)Header 2
-
-> This is a blockquote following a header.
->
-> When something is important enough, you do it even if the odds are not in your favor.
-
-### [](#header-3)Header 3
-
-```js
-// Javascript code with syntax highlighting.
-var fun = function lang(l) {
-  dateformat.i18n = require('./lang/' + l)
-  return true;
-}
+```bash
+$ cd $TRILINOS_DIR/packages
+$ ln -s $ForTrilinos_DIR
 ```
 
-```ruby
-# Ruby code with syntax highlighting
-GitHubPages::Dependencies.gems.each do |gem, version|
-  s.add_dependency(gem, "= #{version}")
-end
+Create a `do-configure` script such as:
+
+```bash
+#!/usr/bin/env/bash
+
+EXTRA_ARGS=$@
+
+ARGS=(
+    -D CMAKE_BUILD_TYPE=Debug
+
+    -D BUILD_SHARED_LIBS=ON
+
+    ### COMPILERS AND FLAGS ###
+    -D Trilinos_ENABLE_Fortran=ON
+    -D CMAKE_CXX_FLAGS="-Wall -Wpedantic"
+
+    ### TPLs ###
+    -D TPL_ENABLE_MPI=ON
+    -D TPL_ENABLE_BLAS=ON
+    -D TPL_ENABLE_LAPACK=ON
+
+    ### ETI ###
+    -D Trilinos_ENABLE_EXPLICIT_INSTANTIATION=ON
+
+    ### PACKAGES CONFIGURATION ###
+    -D Trilinos_ENABLE_ALL_PACKAGES=OFF
+    -D Trilinos_ENABLE_ALL_OPTIONAL_PACKAGES=OFF
+
+    -D Trilinos_ENABLE_TESTS=OFF
+    -D Trilinos_ENABLE_EXAMPLES=OFF
+
+    -D Trilinos_ENABLE_Amesos=ON
+    -D Trilinos_ENABLE_AztecOO=ON
+    -D Trilinos_ENABLE_Belos=ON
+    -D Trilinos_ENABLE_Epetra=ON
+    -D Trilinos_ENABLE_EpetraExt=ON
+    -D Trilinos_ENABLE_Ifpack=ON
+    -D Trilinos_ENABLE_Ifpack2=ON
+    -D Trilinos_ENABLE_Stratimikos=ON
+    -D Trilinos_ENABLE_Tpetra=ON
+    -D Trilinos_ENABLE_Thyra=ON
+
+    ### FORTRILINOS ###
+    -D Trilinos_ENABLE_CTrilinos=ON
+    -D Trilinos_ENABLE_ForTrilinos=ON
+        -D ForTrilinos_ENABLE_EXAMPLES=ON
+        -D ForTrilinos_ENABLE_TESTS=ON
+    )
+cmake "${ARGS[@]}" $EXTRA_ARGS $TRILINOS_DIR
 ```
 
-#### [](#header-4)Header 4
+and run it from your build directory:
 
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-
-##### [](#header-5)Header 5
-
-1.  This is an ordered list following a header.
-2.  This is an ordered list following a header.
-3.  This is an ordered list following a header.
-
-###### [](#header-6)Header 6
-
-| head1        | head two          | three |
-|:-------------|:------------------|:------|
-| ok           | good swedish fish | nice  |
-| out of stock | good and plenty   | nice  |
-| ok           | good `oreos`      | hmm   |
-| ok           | good `zoute` drop | yumm  |
-
-### There's a horizontal rule below this.
-
-* * *
-
-### Here is an unordered list:
-
-*   Item foo
-*   Item bar
-*   Item baz
-*   Item zip
-
-### And an ordered list:
-
-1.  Item one
-1.  Item two
-1.  Item three
-1.  Item four
-
-### And a nested list:
-
-- level 1 item
-  - level 2 item
-  - level 2 item
-    - level 3 item
-    - level 3 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-
-### Small image
-
-![](https://assets-cdn.github.com/images/icons/emoji/octocat.png)
-
-### Large image
-
-![](https://guides.github.com/activities/hello-world/branching.png)
-
-
-### Definition lists can be used with HTML syntax.
-
-<dl>
-<dt>Name</dt>
-<dd>Godzilla</dd>
-<dt>Born</dt>
-<dd>1952</dd>
-<dt>Birthplace</dt>
-<dd>Japan</dd>
-<dt>Color</dt>
-<dd>Green</dd>
-</dl>
-
-```
-Long, single-line code blocks should not wrap. They should horizontally scroll if they are too long. This line should be long enough to demonstrate this.
-```
-
-```
-The final element.
+```bash
+    $ mkdir build && cd build
+    $ ../do-configure
 ```

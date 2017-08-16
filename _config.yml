@@ -1,5 +1,6 @@
-title: ForTrilinos
-description: ForTrilinos provides portable object-oriented Fortran interfaces to Trilinos C++ packages.
+title:
+description:
 show_downloads:
 google_analytics:
 theme: jekyll-theme-cayman
+repository: trilinos/ForTrilinos
