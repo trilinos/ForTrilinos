@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
 
+set -e
+
 # number of processes with default value
 : ${NPROC:=8}
+# bind mount ForTrilinos source dir into Trilinos base dir
+mkdir ${TRILINOS_DIR}/packages/ForTrilinos
+mount --bind ${FORTRILINOS_DIR} ${TRILINOS_DIR}/packages/ForTrilinos
 # cleanup workspace
 cd ${TRILINOS_DIR}/packages/ForTrilinos
 [ -d build ] && rm -rf build
 mkdir build && cd build
+# NOTE: relative paths are invalid after configuration when ForTrilinos source dir is
+# not directly mounted into Trilinos base source dir. We build elsewhere and
+# move the build directory afterwards...
 # configure trilinos with fortrilinos
 ../scripts/docker_cmake -D Trilinos_ENABLE_COVERAGE_TESTING=ON
 # build

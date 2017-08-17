@@ -1,4 +1,4 @@
-module x
+module x_eigen_handle
   use iso_c_binding
   implicit none
 contains
@@ -16,7 +16,7 @@ contains
     end do
 
   end subroutine
-end module x
+end module x_eigen_handle
 
 program main
 
@@ -27,7 +27,7 @@ program main
   use ISO_FORTRAN_ENV
   use, intrinsic :: ISO_C_BINDING
   use fortrilinos
-  use x
+  use x_eigen_handle
   use forteuchos
 #ifdef HAVE_MPI
   use mpi
