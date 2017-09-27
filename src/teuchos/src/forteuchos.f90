@@ -8,6 +8,7 @@ module forteuchos
  implicit none
 
  ! PUBLIC METHODS AND TYPES
+ public :: TeuchosComm
 
  public :: ierr
  public :: serr
@@ -18,6 +19,17 @@ module forteuchos
  public :: load_from_xml
  public :: save_to_xml
  ! TYPES
+ type :: TeuchosComm
+  type(C_PTR), public :: swigptr = C_NULL_PTR
+ contains
+  procedure, private :: create__SWIG_0 => swigf_new_TeuchosComm__SWIG_0
+  procedure, private :: create__SWIG_1 => swigf_new_TeuchosComm__SWIG_1
+  procedure :: getRank => swigf_TeuchosComm_getRank
+  procedure :: getSize => swigf_TeuchosComm_getSize
+  procedure :: barrier => swigf_TeuchosComm_barrier
+  procedure :: release => swigf_delete_TeuchosComm
+  generic :: create => create__SWIG_0, create__SWIG_1
+ end type
  type :: string
   ! These should be treated as PROTECTED data
   type(C_PTR), public :: swigptr = C_NULL_PTR
@@ -67,6 +79,43 @@ module forteuchos
  ! WRAPPER DECLARATIONS
  private
  interface
+  function swigc_new_TeuchosComm__SWIG_0(farg1) &
+     bind(C, name="swigc_new_TeuchosComm__SWIG_0") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   integer(C_INT), intent(in) :: farg1
+  end function
+  function swigc_new_TeuchosComm__SWIG_1() &
+     bind(C, name="swigc_new_TeuchosComm__SWIG_1") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+  end function
+  function swigc_TeuchosComm_getRank(farg1) &
+     bind(C, name="swigc_TeuchosComm_getRank") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_TeuchosComm_getSize(farg1) &
+     bind(C, name="swigc_TeuchosComm_getSize") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  subroutine swigc_TeuchosComm_barrier(farg1) &
+     bind(C, name="swigc_TeuchosComm_barrier")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+  end subroutine
+  subroutine swigc_delete_TeuchosComm(farg1) &
+     bind(C, name="swigc_delete_TeuchosComm")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+  end subroutine
   function swigc_new_string__SWIG_0() &
      bind(C, name="swigc_new_string__SWIG_0") &
      result(fresult)
@@ -318,6 +367,44 @@ module forteuchos
 
 contains
   ! FORTRAN PROXY CODE
+  subroutine swigf_new_TeuchosComm__SWIG_0(self, rawMpiComm)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosComm) :: self
+   integer(C_INT), intent(in) :: rawMpiComm
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_TeuchosComm__SWIG_0(rawMpiComm)
+  end subroutine
+  subroutine swigf_new_TeuchosComm__SWIG_1(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosComm) :: self
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_TeuchosComm__SWIG_1()
+  end subroutine
+  function swigf_TeuchosComm_getRank(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   class(TeuchosComm) :: self
+   fresult = swigc_TeuchosComm_getRank(self%swigptr)
+  end function
+  function swigf_TeuchosComm_getSize(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   class(TeuchosComm) :: self
+   fresult = swigc_TeuchosComm_getSize(self%swigptr)
+  end function
+  subroutine swigf_TeuchosComm_barrier(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosComm) :: self
+   call swigc_TeuchosComm_barrier(self%swigptr)
+  end subroutine
+  subroutine swigf_delete_TeuchosComm(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosComm) :: self
+   call swigc_delete_TeuchosComm(self%swigptr)
+   self%swigptr = C_NULL_PTR
+  end subroutine
   subroutine swigf_new_string__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
    class(string) :: self

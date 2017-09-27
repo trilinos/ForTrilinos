@@ -178,6 +178,34 @@ template <typename T> T SwigValueInit() {
 swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
 
 
+#include "Teuchos_Comm.hpp"
+#ifdef HAVE_MPI
+#include "Teuchos_DefaultMpiComm.hpp"
+#endif
+#include "Teuchos_DefaultSerialComm.hpp"
+
+
+#include "Teuchos_RCP.hpp"
+
+SWIGINTERN Teuchos::Comm< int > *new_Teuchos_Comm_Sl_int_Sg___SWIG_0(MPI_Comm rawMpiComm=MPI_COMM_WORLD){
+      return static_cast<Teuchos::Comm<int>*>(new Teuchos::MpiComm<int>(rawMpiComm));
+    }
+
+#define SWIG_NO_NULL_DELETER_0 , Teuchos::RCP_WEAK_NO_DEALLOC
+#define SWIG_NO_NULL_DELETER_1
+#define SWIG_NO_NULL_DELETER_SWIG_POINTER_NEW
+#define SWIG_NO_NULL_DELETER_SWIG_POINTER_OWN
+
+SWIGINTERN int Teuchos_Comm_Sl_int_Sg__getRank(Teuchos::Comm< int > const *self){
+      return self->getRank();
+    }
+SWIGINTERN int Teuchos_Comm_Sl_int_Sg__getSize(Teuchos::Comm< int > const *self){
+      return self->getSize();
+    }
+SWIGINTERN void Teuchos_Comm_Sl_int_Sg__barrier(Teuchos::Comm< int > const *self){
+      self->barrier();
+    }
+
 #include <stdexcept>
 
 
@@ -236,9 +264,6 @@ void fortran_store_exception(int code, const char *msg)
 
 
 #include "Teuchos_Exceptions.hpp"
-
-
-#include "Teuchos_RCP.hpp"
 
 
 #include "Teuchos_ParameterList.hpp"
@@ -301,12 +326,6 @@ void array_size_check(size_t src, size_t dst)
 SWIGINTERN Teuchos::ParameterList *new_Teuchos_ParameterList__SWIG_0(){
     return new Teuchos::ParameterList();
 }
-
-#define SWIG_NO_NULL_DELETER_0 , Teuchos::RCP_WEAK_NO_DEALLOC
-#define SWIG_NO_NULL_DELETER_1
-#define SWIG_NO_NULL_DELETER_SWIG_POINTER_NEW
-#define SWIG_NO_NULL_DELETER_SWIG_POINTER_OWN
-
 SWIGINTERN Teuchos::ParameterList *new_Teuchos_ParameterList__SWIG_1(char const *STRING,int SIZE){
     return new Teuchos::ParameterList(std::string(STRING, SIZE));
 }
@@ -410,6 +429,110 @@ void save_to_xml(const Teuchos::ParameterList& plist,
 #ifdef __cplusplus
 extern "C" {
 #endif
+SWIGEXPORT void* swigc_new_TeuchosComm__SWIG_0(const int* farg1) {
+  void* fresult = 0 ;
+  MPI_Comm arg1 ;
+  Teuchos::Comm< int > *result = 0 ;
+  
+  
+#ifdef HAVE_MPI
+  arg1 = (MPI_Comm)(MPI_Comm_f2c(*(MPI_Fint *)(farg1)));
+#else
+  arg1 = *farg1;
+#endif
+  
+  result = (Teuchos::Comm< int > *)new_Teuchos_Comm_Sl_int_Sg___SWIG_0(arg1);
+  fresult = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_TeuchosComm__SWIG_1() {
+  void* fresult = 0 ;
+  Teuchos::Comm< int > *result = 0 ;
+  
+  result = (Teuchos::Comm< int > *)new_Teuchos_Comm_Sl_int_Sg___SWIG_0();
+  fresult = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_TeuchosComm_getRank(const void* farg1) {
+  int fresult = 0 ;
+  Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 = 0 ;
+  int result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::Comm<int> > *)farg1;
+  arg1 = (Teuchos::Comm<int> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (int)Teuchos_Comm_Sl_int_Sg__getRank((Teuchos::Comm< int > const *)arg1);
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_TeuchosComm_getSize(const void* farg1) {
+  int fresult = 0 ;
+  Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 = 0 ;
+  int result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::Comm<int> > *)farg1;
+  arg1 = (Teuchos::Comm<int> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (int)Teuchos_Comm_Sl_int_Sg__getSize((Teuchos::Comm< int > const *)arg1);
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_TeuchosComm_barrier(const void* farg1) {
+  Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::Comm<int> > *)farg1;
+  arg1 = (Teuchos::Comm<int> *)(smartarg1 ? smartarg1->get() : 0);
+  Teuchos_Comm_Sl_int_Sg__barrier((Teuchos::Comm< int > const *)arg1);
+}
+
+
+SWIGEXPORT void swigc_delete_TeuchosComm(void* farg1) {
+  Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Teuchos::Comm<int> > *)farg1;
+  arg1 = (Teuchos::Comm<int> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (void)arg1; delete smartarg1;
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
 SWIGEXPORT void* swigc_new_string__SWIG_0() {
   void* fresult = 0 ;
   std::string *result = 0 ;
@@ -883,7 +1006,7 @@ SWIGEXPORT void swigc_ParameterList_print(const void* farg1) {
 SWIGEXPORT void* swigc_new_ParameterList__SWIG_0() {
   void* fresult = 0 ;
   Teuchos::ParameterList *result = 0 ;
-
+  
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -896,20 +1019,20 @@ SWIGEXPORT void* swigc_new_ParameterList__SWIG_0() {
     {
       // Store a C++ exception
       do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0;
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
       } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
       do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0;
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
       } while(0);
     }
     catch (...)
     {
       do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0;
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
       } while(0);
     }
   }
@@ -1508,7 +1631,7 @@ SWIGEXPORT void * swigc_ParameterList_sublist(void* farg1, const char* farg2, co
   int arg3 ;
   Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > result;
-
+  
   smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
   arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = (char *)farg2;
@@ -1525,20 +1648,20 @@ SWIGEXPORT void * swigc_ParameterList_sublist(void* farg1, const char* farg2, co
     {
       // Store a C++ exception
       do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0;
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
       } while(0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
       do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0;
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
       } while(0);
     }
     catch (...)
     {
       do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0;
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
       } while(0);
     }
   }
