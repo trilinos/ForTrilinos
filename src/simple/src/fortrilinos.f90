@@ -65,7 +65,7 @@ module fortrilinos
      bind(C, name="swigc_SolverHandle_init__SWIG_1")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
+   type(C_PTR), value :: farg2
   end subroutine
   subroutine swigc_SolverHandle_setup_matrix(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
      bind(C, name="swigc_SolverHandle_setup_matrix")
@@ -125,7 +125,7 @@ module fortrilinos
      bind(C, name="swigc_EigenHandle_init__SWIG_1")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
+   type(C_PTR), value :: farg2
   end subroutine
   subroutine swigc_EigenHandle_setup_matrix(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
      bind(C, name="swigc_EigenHandle_setup_matrix")
@@ -209,8 +209,8 @@ contains
   subroutine swigf_SolverHandle_init__SWIG_1(self, comm)
    use, intrinsic :: ISO_C_BINDING
    class(SolverHandle) :: self
-   integer(C_INT), intent(in) :: comm
-   call swigc_SolverHandle_init__SWIG_1(self%swigptr, comm)
+   type(TeuchosComm) :: comm
+   call swigc_SolverHandle_init__SWIG_1(self%swigptr, comm%swigptr)
   end subroutine
   subroutine swigf_SolverHandle_setup_matrix(self, numRows, rowInds, rowPtrs, numNnz, colInds, values)
    use, intrinsic :: ISO_C_BINDING
@@ -274,8 +274,8 @@ contains
   subroutine swigf_EigenHandle_init__SWIG_1(self, comm)
    use, intrinsic :: ISO_C_BINDING
    class(EigenHandle) :: self
-   integer(C_INT), intent(in) :: comm
-   call swigc_EigenHandle_init__SWIG_1(self%swigptr, comm)
+   type(TeuchosComm) :: comm
+   call swigc_EigenHandle_init__SWIG_1(self%swigptr, comm%swigptr)
   end subroutine
   subroutine swigf_EigenHandle_setup_matrix(self, numRows, rowInds, rowPtrs, numNnz, colInds, values)
    use, intrinsic :: ISO_C_BINDING

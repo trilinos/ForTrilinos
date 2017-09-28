@@ -3,7 +3,7 @@
 #include "handle_helpers.hpp"
 
 #include <Stratimikos_DefaultLinearSolverBuilder.hpp>
-#include <stdexcept>
+#include <Teuchos_DefaultComm.hpp>
 
 #ifdef HAVE_FORTRILINOSSIMPLEINTERFACE_IFPACK2
 #  include <Teuchos_AbstractFactoryStd.hpp>
@@ -14,43 +14,22 @@
 #  include <Stratimikos_MueLuHelpers.hpp>
 #endif
 
-#include <Teuchos_DefaultMpiComm.hpp>
-#include <Teuchos_DefaultSerialComm.hpp>
-
 #include <Thyra_TpetraLinearOp.hpp>
 
+#include <stdexcept>
 
 namespace ForTrilinos {
 
   void SolverHandle::init() {
-    using Teuchos::rcp;
-
     TEUCHOS_ASSERT(status_ == NOT_INITIALIZED);
-
-    comm_ = rcp(new Teuchos::SerialComm<int>());
-
+    comm_ = Teuchos::DefaultComm<int>::getComm();
     status_ = INITIALIZED;
   }
 
-  void SolverHandle::init(MPI_Comm comm) {
-#ifdef HAVE_MPI
-    using Teuchos::rcp;
-
+  void SolverHandle::init(const Teuchos::RCP<const Teuchos::Comm<int>>& comm) {
     TEUCHOS_ASSERT(status_ == NOT_INITIALIZED);
-
-    {
-      // Test if the communicator is valid
-      int rank;
-      int r = MPI_Comm_rank(comm, &rank);
-      TEUCHOS_ASSERT(r == 0);
-    }
-
-    comm_ = rcp(new Teuchos::MpiComm<int>(comm));
-
+    comm_ = comm;
     status_ = INITIALIZED;
-#else
-    throw std::runtime_error("MPI is not enabled");
-#endif
   }
 
   void SolverHandle::setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) {

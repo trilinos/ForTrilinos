@@ -13,6 +13,7 @@
 %ignore setup_matrix(Teuchos::RCP<Matrix>);
 %ignore setup_matrix_rhs(Teuchos::RCP<Matrix>);
 
+%include "Teuchos_Comm.i"
 %include "eigen_handle.hpp"
 
 //---------------------------------------------------------------------------//

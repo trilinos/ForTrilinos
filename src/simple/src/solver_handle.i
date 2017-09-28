@@ -10,6 +10,7 @@
 #include "solver_handle.hpp"
 %}
 
+%include "Teuchos_Comm.i"
 %include "solver_handle.hpp"
 
 //---------------------------------------------------------------------------//

@@ -11,6 +11,7 @@
 ##---------------------------------------------------------------------------##
 
 SET(TESTS
+  test_comm.f90
   test_plist.f90
   )
 
@@ -20,6 +21,7 @@ FOREACH(test ${TESTS})
         ${name}
         SOURCES ${test} DBCF.f90
         LINKER_LANGUAGE Fortran
-        COMM serial mpi NUM_MPI_PROCS 1
+        COMM serial mpi
+        NUM_MPI_PROCS 4
     )
 ENDFOREACH()

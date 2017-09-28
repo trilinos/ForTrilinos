@@ -21,12 +21,6 @@ int main(int argc, char *argv[]) {
     Teuchos::GlobalMPISession mpiSession(&argc, &argv, NULL);
     RCP<const Teuchos::Comm<int> > comm = Teuchos::DefaultComm<int>::getComm();
 
-#ifdef HAVE_MPI
-    RCP<const Teuchos::MpiComm<int> > tmpic = rcp_dynamic_cast<const Teuchos::MpiComm<int> >(comm);
-    TEUCHOS_TEST_FOR_EXCEPTION(tmpic.is_null(), std::runtime_error, "Cannot cast base Teuchos::Comm to Teuchos::MpiComm object.");
-    RCP<const Teuchos::OpaqueWrapper<MPI_Comm> > rawMpiComm = tmpic->getRawMpiComm();
-#endif
-
     // Read in the parameter list
     Teuchos::RCP<ParameterList> paramList(new ParameterList());
     Teuchos::updateParametersFromXmlFileAndBroadcast("davidson.xml", Teuchos::Ptr<ParameterList>(paramList.get()), *comm);
@@ -46,11 +40,7 @@ int main(int argc, char *argv[]) {
 
     // Step 1: initialize a handle
     ForTrilinos::EigenHandle si;
-#ifdef HAVE_MPI
-    si.init(*rawMpiComm);
-#else
-    si.init();
-#endif
+    si.init(comm);
 
     // Step 2: setup the problem
     si.setup_matrix(A);

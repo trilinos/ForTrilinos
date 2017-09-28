@@ -318,25 +318,20 @@ SWIGEXPORT void swigc_SolverHandle_init__SWIG_0(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_SolverHandle_init__SWIG_1(void* farg1, const int* farg2) {
+SWIGEXPORT void swigc_SolverHandle_init__SWIG_1(void* farg1, void * farg2) {
   ForTrilinos::SolverHandle *arg1 = (ForTrilinos::SolverHandle *) 0 ;
-  MPI_Comm arg2 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
   
   arg1 = (ForTrilinos::SolverHandle *)(farg1);
-  
-#ifdef HAVE_MPI
-  arg2 = (MPI_Comm)(MPI_Comm_f2c(*(MPI_Fint *)(farg2)));
-#else
-  arg2 = *farg2;
-#endif
-  
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg2 : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      (arg1)->init(arg2);
+      (arg1)->init((Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2);
     }
     catch (const std::range_error& e)
     {
@@ -679,25 +674,20 @@ SWIGEXPORT void swigc_EigenHandle_init__SWIG_0(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_EigenHandle_init__SWIG_1(void* farg1, const int* farg2) {
+SWIGEXPORT void swigc_EigenHandle_init__SWIG_1(void* farg1, void * farg2) {
   ForTrilinos::EigenHandle *arg1 = (ForTrilinos::EigenHandle *) 0 ;
-  MPI_Comm arg2 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
   
   arg1 = (ForTrilinos::EigenHandle *)(farg1);
-  
-#ifdef HAVE_MPI
-  arg2 = (MPI_Comm)(MPI_Comm_f2c(*(MPI_Fint *)(farg2)));
-#else
-  arg2 = *farg2;
-#endif
-  
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg2 : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      (arg1)->init(arg2);
+      (arg1)->init((Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2);
     }
     catch (const std::range_error& e)
     {
