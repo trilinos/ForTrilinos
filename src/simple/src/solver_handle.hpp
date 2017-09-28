@@ -3,12 +3,6 @@
 
 #include "ForTrilinosSimpleInterface_config.hpp"
 
-#ifdef HAVE_MPI
-#include <mpi.h>
-#else
-typedef int MPI_Comm;
-#endif
-
 #include <Teuchos_Comm.hpp>
 #include <Teuchos_ParameterList.hpp>
 #include <Teuchos_RCP.hpp>
@@ -49,7 +43,7 @@ namespace ForTrilinos {
 
     // Initialize
     void init();
-    void init(MPI_Comm comm);
+    void init(const Teuchos::RCP<const Teuchos::Comm<int>>& comm);
 
     // Setup matrix
     void setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values);
@@ -67,7 +61,7 @@ namespace ForTrilinos {
     void finalize();
 
   private:
-    Teuchos::RCP<Teuchos::Comm<int>> comm_;
+    Teuchos::RCP<const Teuchos::Comm<int>> comm_;
     Teuchos::RCP<Operator>           A_;
     Teuchos::RCP<ParameterList>      paramList_;
     Teuchos::RCP<LOWS>               thyraInverseA_;

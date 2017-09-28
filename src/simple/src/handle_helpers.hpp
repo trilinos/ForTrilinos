@@ -24,11 +24,11 @@ namespace ForTrilinos {
 
     // Setup matrix
     static Teuchos::RCP<Operator>
-    setup_matrix_gen(const Teuchos::RCP<Teuchos::Comm<int>>& comm, int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values);
+    setup_matrix_gen(const Teuchos::RCP<const Teuchos::Comm<int>>& comm, int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values);
 
     // Setup operator
     static Teuchos::RCP<Operator>
-    setup_operator_gen(const Teuchos::RCP<Teuchos::Comm<int>>& comm, int numRows, const int* rowInds, OperatorCallback callback);
+    setup_operator_gen(const Teuchos::RCP<const Teuchos::Comm<int>>& comm, int numRows, const int* rowInds, OperatorCallback callback);
   };
 
 }

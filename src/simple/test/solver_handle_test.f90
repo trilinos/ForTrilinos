@@ -23,7 +23,6 @@ program main
 #include "FortranTestMacros.h"
 #include "ForTrilinosSimpleInterface_config.hpp"
 
-
   use ISO_FORTRAN_ENV
   use, intrinsic :: ISO_C_BINDING
   use fortrilinos
@@ -46,6 +45,7 @@ program main
 
   type(ParameterList) :: plist
   type(SolverHandle) :: tri_handle
+  type(TeuchosComm) :: comm
 
   n = 50
   nnz = 3*n
@@ -61,10 +61,13 @@ program main
     stop 1
   endif
 
-  call MPI_COMM_RANK(MPI_COMM_WORLD, my_rank, ierr)
-  call MPI_COMM_SIZE(MPI_COMM_WORLD, num_procs, ierr)
-  EXPECT_EQ(0, ierr)
+  call comm%create(MPI_COMM_WORLD)
+#else
+  call comm%create()
 #endif
+
+  my_rank = comm%getRank()
+  num_procs = comm%getSize()
 
   write(*,*) "Processor ", my_rank, " of ", num_procs
 
@@ -139,11 +142,7 @@ program main
   ! Explicit setup and solve
   ! ------------------------------------------------------------------
   ! Step 1: initialize a handle
-#ifdef HAVE_MPI
-  call tri_handle%init(MPI_COMM_WORLD)
-#else
-  call tri_handle%init()
-#endif
+  call tri_handle%init(comm)
   if (ierr /= 0) then
     write(*,*) "Got error ", ierr, ": ", trim(serr)
     stop 1
@@ -192,11 +191,7 @@ program main
   ! Implicit (inversion-of-control) setup [ no solve ]
   ! ------------------------------------------------------------------
   ! Step 1: initialize a handle
-#ifdef HAVE_MPI
-  call tri_handle%init(MPI_COMM_WORLD)
-#else
-  call tri_handle%init()
-#endif
+  call tri_handle%init(comm)
   if (ierr /= 0) then
     write(*,*) "Got error ", ierr, ": ", trim(serr)
     stop 1
@@ -244,6 +239,8 @@ program main
     write(*,*) "Got error ", ierr, ":", trim(serr)
     stop 1
   endif
+
+  call comm%release()
 
 #ifdef HAVE_MPI
   ! Finalize MPI must be called after releasing all handles
