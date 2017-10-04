@@ -178,17 +178,51 @@ template <typename T> T SwigValueInit() {
 swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
 
 
-#include "Teuchos_Comm.hpp"
-#ifdef HAVE_MPI
-#include "Teuchos_DefaultMpiComm.hpp"
-#endif
-#include "Teuchos_DefaultSerialComm.hpp"
+#include <vector>
+
+
+#include <algorithm>
+
+
+#include <stdexcept>
+
+
+#include <sstream>
+
+
+namespace swig
+{
+void array_size_check(size_t src, size_t dst)
+{
+    if (dst < src)
+    {
+        std::ostringstream os;
+        os << "Array size mismatch: " << src << " != " << dst;
+        throw std::range_error(os.str());
+    }
+}
+}
+
 
 
 #include "Teuchos_RCP.hpp"
 
-SWIGINTERN Teuchos::Comm< int > *new_Teuchos_Comm_Sl_int_Sg___SWIG_0(MPI_Comm rawMpiComm=MPI_COMM_WORLD){
-      return static_cast<Teuchos::Comm<int>*>(new Teuchos::MpiComm<int>(rawMpiComm));
+
+#include "Teuchos_Array.hpp"
+
+SWIGINTERN void std_vector_Sl_int_Sg__set(std::vector< int > *self,std::vector< int >::size_type index,std::vector< int >::const_reference v){
+        // TODO: check range
+        (*self)[index] = v;
+    }
+SWIGINTERN std::vector< int >::value_type std_vector_Sl_int_Sg__get(std::vector< int > *self,std::vector< int >::size_type index){
+        return (*self)[index];
+    }
+SWIGINTERN void std_vector_Sl_int_Sg__assign_from(std::vector< int > *self,std::vector< int >::const_pointer arr,std::vector< int >::size_type arrsize){
+        self->assign(arr, arr + arrsize);
+    }
+SWIGINTERN void std_vector_Sl_int_Sg__copy_to(std::vector< int > *self,std::vector< int >::pointer arr,std::vector< int >::size_type arrsize){
+        swig::array_size_check(self->size(), arrsize);
+        std::copy(self->begin(), self->end(), arr);
     }
 
 #define SWIG_NO_NULL_DELETER_0 , Teuchos::RCP_WEAK_NO_DEALLOC
@@ -196,6 +230,16 @@ SWIGINTERN Teuchos::Comm< int > *new_Teuchos_Comm_Sl_int_Sg___SWIG_0(MPI_Comm ra
 #define SWIG_NO_NULL_DELETER_SWIG_POINTER_NEW
 #define SWIG_NO_NULL_DELETER_SWIG_POINTER_OWN
 
+
+#include "Teuchos_Comm.hpp"
+#ifdef HAVE_MPI
+#include "Teuchos_DefaultMpiComm.hpp"
+#endif
+#include "Teuchos_DefaultSerialComm.hpp"
+
+SWIGINTERN Teuchos::Comm< int > *new_Teuchos_Comm_Sl_int_Sg___SWIG_0(MPI_Comm rawMpiComm=MPI_COMM_WORLD){
+      return static_cast<Teuchos::Comm<int>*>(new Teuchos::MpiComm<int>(rawMpiComm));
+    }
 SWIGINTERN int Teuchos_Comm_Sl_int_Sg__getRank(Teuchos::Comm< int > const *self){
       return self->getRank();
     }
@@ -206,13 +250,7 @@ SWIGINTERN void Teuchos_Comm_Sl_int_Sg__barrier(Teuchos::Comm< int > const *self
       self->barrier();
     }
 
-#include <stdexcept>
-
-
 #include <string>
-
-
-#include <algorithm>
 
 
 // External fortran-owned data that we save to
@@ -269,9 +307,6 @@ void fortran_store_exception(int code, const char *msg)
 #include "Teuchos_ParameterList.hpp"
 
 
-#include <sstream>
-
-
 namespace swig
 {
 void string_size_check(size_t src, size_t dst)
@@ -308,21 +343,6 @@ SWIGINTERN void std_string_assign_from(std::string *self,std::string::const_poin
 SWIGINTERN void std_string_copy_to(std::string *self,std::string::pointer s,std::string::size_type count){
         swig::string_copyout(*self, s, count);
     }
-
-namespace swig
-{
-void array_size_check(size_t src, size_t dst)
-{
-    if (dst < src)
-    {
-        std::ostringstream os;
-        os << "Array size mismatch: " << src << " != " << dst;
-        throw std::range_error(os.str());
-    }
-}
-}
-
-
 SWIGINTERN Teuchos::ParameterList *new_Teuchos_ParameterList__SWIG_0(){
     return new Teuchos::ParameterList();
 }
@@ -429,6 +449,474 @@ void save_to_xml(const Teuchos::ParameterList& plist,
 #ifdef __cplusplus
 extern "C" {
 #endif
+SWIGEXPORT void* swigc_new_VectorInt__SWIG_0() {
+  void* fresult = 0 ;
+  std::vector< int > *result = 0 ;
+  
+  result = (std::vector< int > *)new std::vector< int >();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_VectorInt__SWIG_1(const int* farg1) {
+  void* fresult = 0 ;
+  std::vector< int >::size_type arg1 ;
+  std::vector< int > *result = 0 ;
+  
+  arg1 = *farg1;
+  result = (std::vector< int > *)new std::vector< int >(arg1);
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_VectorInt__SWIG_2(const int* farg1, const int* farg2) {
+  void* fresult = 0 ;
+  std::vector< int >::size_type arg1 ;
+  std::vector< int >::value_type *arg2 = 0 ;
+  std::vector< int > *result = 0 ;
+  
+  arg1 = *farg1;
+  arg2 = (std::vector< int >::value_type *)(farg2);
+  result = (std::vector< int > *)new std::vector< int >(arg1,(std::vector< int >::value_type const &)*arg2);
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_VectorInt_size(const void* farg1) {
+  int fresult = 0 ;
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::size_type result;
+  
+  arg1 = (std::vector< int > *)(farg1);
+  result = (std::vector< int >::size_type)((std::vector< int > const *)arg1)->size();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_VectorInt_capacity(const void* farg1) {
+  int fresult = 0 ;
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::size_type result;
+  
+  arg1 = (std::vector< int > *)(farg1);
+  result = (std::vector< int >::size_type)((std::vector< int > const *)arg1)->capacity();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT bool swigc_VectorInt_empty(const void* farg1) {
+  bool fresult = 0 ;
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  bool result;
+  
+  arg1 = (std::vector< int > *)(farg1);
+  result = (bool)((std::vector< int > const *)arg1)->empty();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_VectorInt_clear(void* farg1) {
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  
+  arg1 = (std::vector< int > *)(farg1);
+  (arg1)->clear();
+}
+
+
+SWIGEXPORT void swigc_VectorInt_reserve(void* farg1, const int* farg2) {
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::size_type arg2 ;
+  
+  arg1 = (std::vector< int > *)(farg1);
+  arg2 = *farg2;
+  (arg1)->reserve(arg2);
+}
+
+
+SWIGEXPORT void swigc_VectorInt_resize__SWIG_0(void* farg1, const int* farg2) {
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::size_type arg2 ;
+  
+  arg1 = (std::vector< int > *)(farg1);
+  arg2 = *farg2;
+  (arg1)->resize(arg2);
+}
+
+
+SWIGEXPORT void swigc_VectorInt_resize__SWIG_1(void* farg1, const int* farg2, const int* farg3) {
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::size_type arg2 ;
+  std::vector< int >::value_type *arg3 = 0 ;
+  
+  arg1 = (std::vector< int > *)(farg1);
+  arg2 = *farg2;
+  arg3 = (std::vector< int >::value_type *)(farg3);
+  (arg1)->resize(arg2,(std::vector< int >::value_type const &)*arg3);
+}
+
+
+SWIGEXPORT void swigc_VectorInt_push_back(void* farg1, const int* farg2) {
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::value_type *arg2 = 0 ;
+  
+  arg1 = (std::vector< int > *)(farg1);
+  arg2 = (std::vector< int >::value_type *)(farg2);
+  (arg1)->push_back((std::vector< int >::value_type const &)*arg2);
+}
+
+
+SWIGEXPORT int swigc_VectorInt_front(const void* farg1) {
+  int fresult = 0 ;
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  int *result = 0 ;
+  
+  arg1 = (std::vector< int > *)(farg1);
+  result = (int *) &((std::vector< int > const *)arg1)->front();
+  fresult = *result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_VectorInt_back(const void* farg1) {
+  int fresult = 0 ;
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  int *result = 0 ;
+  
+  arg1 = (std::vector< int > *)(farg1);
+  result = (int *) &((std::vector< int > const *)arg1)->back();
+  fresult = *result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_VectorInt_set(void* farg1, const int* farg2, const int* farg3) {
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::size_type arg2 ;
+  int *arg3 = 0 ;
+  
+  arg1 = (std::vector< int > *)(farg1);
+  arg2 = *farg2;
+  arg3 = (int *)(farg3);
+  std_vector_Sl_int_Sg__set(arg1,arg2,(int const &)*arg3);
+}
+
+
+SWIGEXPORT int swigc_VectorInt_get(void* farg1, const int* farg2) {
+  int fresult = 0 ;
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::size_type arg2 ;
+  std::vector< int >::value_type result;
+  
+  arg1 = (std::vector< int > *)(farg1);
+  arg2 = *farg2;
+  result = (std::vector< int >::value_type)std_vector_Sl_int_Sg__get(arg1,arg2);
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_VectorInt_assign_from(void* farg1, std::vector< int >::const_pointer farg2, const int* farg3) {
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::const_pointer arg2 = (std::vector< int >::const_pointer) 0 ;
+  std::vector< int >::size_type arg3 ;
+  
+  arg1 = (std::vector< int > *)(farg1);
+  arg2 = farg2;
+  arg3 = *farg3;
+  std_vector_Sl_int_Sg__assign_from(arg1,(int const *)arg2,arg3);
+}
+
+
+SWIGEXPORT void swigc_VectorInt_copy_to(void* farg1, std::vector< int >::pointer farg2, const int* farg3) {
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::pointer arg2 = (std::vector< int >::pointer) 0 ;
+  std::vector< int >::size_type arg3 ;
+  
+  arg1 = (std::vector< int > *)(farg1);
+  arg2 = farg2;
+  arg3 = *farg3;
+  std_vector_Sl_int_Sg__copy_to(arg1,arg2,arg3);
+}
+
+
+SWIGEXPORT void swigc_delete_VectorInt(void* farg1) {
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  
+  arg1 = (std::vector< int > *)(farg1);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      delete arg1;
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void* swigc_new_TeuchosArrayInt__SWIG_0() {
+  void* fresult = 0 ;
+  Teuchos::Array< int > *result = 0 ;
+  
+  result = (Teuchos::Array< int > *)new Teuchos::Array< int >();
+  fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_TeuchosArrayInt__SWIG_1(const int* farg1, const int* farg2) {
+  void* fresult = 0 ;
+  Teuchos::Array< int >::size_type arg1 ;
+  Teuchos::Array< int >::value_type *arg2 = 0 ;
+  Teuchos::Array< int > *result = 0 ;
+  
+  arg1 = *farg1;
+  arg2 = (Teuchos::Array< int >::value_type *)(farg2);
+  result = (Teuchos::Array< int > *)new Teuchos::Array< int >(arg1,(Teuchos::Array< int >::value_type const &)*arg2);
+  fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_TeuchosArrayInt__SWIG_2(const int* farg1) {
+  void* fresult = 0 ;
+  Teuchos::Array< int >::size_type arg1 ;
+  Teuchos::Array< int > *result = 0 ;
+  
+  arg1 = *farg1;
+  result = (Teuchos::Array< int > *)new Teuchos::Array< int >(arg1);
+  fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_TeuchosArrayInt__SWIG_3(const void* farg1) {
+  void* fresult = 0 ;
+  Teuchos::Array< int > *arg1 = 0 ;
+  Teuchos::Array< int > *result = 0 ;
+  
+  arg1 = (Teuchos::Array< int > *)(((Teuchos::RCP<const Teuchos::Array<int> > *)farg1)
+    ? ((Teuchos::RCP<const Teuchos::Array<int> > *)farg1)->get()
+    :0);
+  if (!arg1)
+  {
+    throw std::logic_error("Attempt to dereference null Teuchos::Array< int > const &");
+    return 0;
+  }
+  result = (Teuchos::Array< int > *)new Teuchos::Array< int >((Teuchos::Array< int > const &)*arg1);
+  fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_TeuchosArrayInt(void* farg1) {
+  Teuchos::Array< int > *arg1 = (Teuchos::Array< int > *) 0 ;
+  Teuchos::RCP< Teuchos::Array< int > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Teuchos::Array<int> > *)farg1;
+  arg1 = (Teuchos::Array<int> *)(smartarg1 ? smartarg1->get() : 0);
+  (void)arg1; delete smartarg1;
+}
+
+
+SWIGEXPORT int swigc_TeuchosArrayInt_size(const void* farg1) {
+  int fresult = 0 ;
+  Teuchos::Array< int > *arg1 = (Teuchos::Array< int > *) 0 ;
+  Teuchos::RCP< Teuchos::Array< int > const > *smartarg1 = 0 ;
+  Teuchos::Array< int >::size_type result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::Array<int> > *)farg1;
+  arg1 = (Teuchos::Array<int> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (Teuchos::Array< int >::size_type)((Teuchos::Array< int > const *)arg1)->size();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_TeuchosArrayInt_max_size(const void* farg1) {
+  int fresult = 0 ;
+  Teuchos::Array< int > *arg1 = (Teuchos::Array< int > *) 0 ;
+  Teuchos::RCP< Teuchos::Array< int > const > *smartarg1 = 0 ;
+  Teuchos::Array< int >::size_type result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::Array<int> > *)farg1;
+  arg1 = (Teuchos::Array<int> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (Teuchos::Array< int >::size_type)((Teuchos::Array< int > const *)arg1)->max_size();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_TeuchosArrayInt_resize__SWIG_0(void* farg1, const int* farg2, const int* farg3) {
+  Teuchos::Array< int > *arg1 = (Teuchos::Array< int > *) 0 ;
+  Teuchos::Array< int >::size_type arg2 ;
+  Teuchos::Array< int >::value_type *arg3 = 0 ;
+  Teuchos::RCP< Teuchos::Array< int > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Teuchos::Array<int> > *)farg1;
+  arg1 = (Teuchos::Array<int> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  arg3 = (Teuchos::Array< int >::value_type *)(farg3);
+  (arg1)->resize(arg2,(Teuchos::Array< int >::value_type const &)*arg3);
+}
+
+
+SWIGEXPORT void swigc_TeuchosArrayInt_resize__SWIG_1(void* farg1, const int* farg2) {
+  Teuchos::Array< int > *arg1 = (Teuchos::Array< int > *) 0 ;
+  Teuchos::Array< int >::size_type arg2 ;
+  Teuchos::RCP< Teuchos::Array< int > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Teuchos::Array<int> > *)farg1;
+  arg1 = (Teuchos::Array<int> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  (arg1)->resize(arg2);
+}
+
+
+SWIGEXPORT int swigc_TeuchosArrayInt_capacity(const void* farg1) {
+  int fresult = 0 ;
+  Teuchos::Array< int > *arg1 = (Teuchos::Array< int > *) 0 ;
+  Teuchos::RCP< Teuchos::Array< int > const > *smartarg1 = 0 ;
+  Teuchos::Array< int >::size_type result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::Array<int> > *)farg1;
+  arg1 = (Teuchos::Array<int> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (Teuchos::Array< int >::size_type)((Teuchos::Array< int > const *)arg1)->capacity();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT bool swigc_TeuchosArrayInt_empty(const void* farg1) {
+  bool fresult = 0 ;
+  Teuchos::Array< int > *arg1 = (Teuchos::Array< int > *) 0 ;
+  Teuchos::RCP< Teuchos::Array< int > const > *smartarg1 = 0 ;
+  bool result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::Array<int> > *)farg1;
+  arg1 = (Teuchos::Array<int> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (bool)((Teuchos::Array< int > const *)arg1)->empty();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_TeuchosArrayInt_reserve(void* farg1, const int* farg2) {
+  Teuchos::Array< int > *arg1 = (Teuchos::Array< int > *) 0 ;
+  Teuchos::Array< int >::size_type arg2 ;
+  Teuchos::RCP< Teuchos::Array< int > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Teuchos::Array<int> > *)farg1;
+  arg1 = (Teuchos::Array<int> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  (arg1)->reserve(arg2);
+}
+
+
+SWIGEXPORT void swigc_TeuchosArrayInt_push_back(void* farg1, const int* farg2) {
+  Teuchos::Array< int > *arg1 = (Teuchos::Array< int > *) 0 ;
+  Teuchos::Array< int >::value_type *arg2 = 0 ;
+  Teuchos::RCP< Teuchos::Array< int > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Teuchos::Array<int> > *)farg1;
+  arg1 = (Teuchos::Array<int> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = (Teuchos::Array< int >::value_type *)(farg2);
+  (arg1)->push_back((Teuchos::Array< int >::value_type const &)*arg2);
+}
+
+
+SWIGEXPORT void swigc_TeuchosArrayInt_pop_back(void* farg1) {
+  Teuchos::Array< int > *arg1 = (Teuchos::Array< int > *) 0 ;
+  Teuchos::RCP< Teuchos::Array< int > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Teuchos::Array<int> > *)farg1;
+  arg1 = (Teuchos::Array<int> *)(smartarg1 ? smartarg1->get() : 0);
+  (arg1)->pop_back();
+}
+
+
+SWIGEXPORT void swigc_TeuchosArrayInt_swap(void* farg1, void* farg2) {
+  Teuchos::Array< int > *arg1 = (Teuchos::Array< int > *) 0 ;
+  Teuchos::Array< int > *arg2 = 0 ;
+  Teuchos::RCP< Teuchos::Array< int > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Teuchos::Array<int> > *)farg1;
+  arg1 = (Teuchos::Array<int> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = (Teuchos::Array< int > *)(((Teuchos::RCP< Teuchos::Array<int> > *)farg2)
+    ? ((Teuchos::RCP< Teuchos::Array<int> > *)farg2)->get()
+    :0);
+  if (!arg2)
+  {
+    throw std::logic_error("Attempt to dereference null Teuchos::Array< int > &");
+    return ;
+  }
+  (arg1)->swap(*arg2);
+}
+
+
+SWIGEXPORT void swigc_TeuchosArrayInt_clear(void* farg1) {
+  Teuchos::Array< int > *arg1 = (Teuchos::Array< int > *) 0 ;
+  Teuchos::RCP< Teuchos::Array< int > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Teuchos::Array<int> > *)farg1;
+  arg1 = (Teuchos::Array<int> *)(smartarg1 ? smartarg1->get() : 0);
+  (arg1)->clear();
+}
+
+
+SWIGEXPORT int swigc_TeuchosArrayInt_length(const void* farg1) {
+  int fresult = 0 ;
+  Teuchos::Array< int > *arg1 = (Teuchos::Array< int > *) 0 ;
+  Teuchos::RCP< Teuchos::Array< int > const > *smartarg1 = 0 ;
+  int result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::Array<int> > *)farg1;
+  arg1 = (Teuchos::Array<int> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (int)((Teuchos::Array< int > const *)arg1)->length();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_TeuchosArrayInt__SWIG_4(const void* farg1) {
+  void* fresult = 0 ;
+  std::vector< int,std::allocator< int > > *arg1 = 0 ;
+  Teuchos::Array< int > *result = 0 ;
+  
+  arg1 = (std::vector< int,std::allocator< int > > *)(farg1);
+  result = (Teuchos::Array< int > *)new Teuchos::Array< int >((std::vector< int,std::allocator< int > > const &)*arg1);
+  fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
 SWIGEXPORT void* swigc_new_TeuchosComm__SWIG_0(const int* farg1) {
   void* fresult = 0 ;
   MPI_Comm arg1 ;

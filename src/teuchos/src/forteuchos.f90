@@ -8,6 +8,8 @@ module forteuchos
  implicit none
 
  ! PUBLIC METHODS AND TYPES
+ public :: VectorInt
+ public :: TeuchosArrayInt
  public :: TeuchosComm
 
  public :: ierr
@@ -19,6 +21,56 @@ module forteuchos
  public :: load_from_xml
  public :: save_to_xml
  ! TYPES
+ type :: VectorInt
+  ! These should be treated as PROTECTED data
+  type(C_PTR), public :: swigptr = C_NULL_PTR
+  logical, public :: swigown = .false.
+ contains
+  procedure, private :: create__SWIG_0 => swigf_new_VectorInt__SWIG_0
+  procedure, private :: create__SWIG_1 => swigf_new_VectorInt__SWIG_1
+  procedure, private :: create__SWIG_2 => swigf_new_VectorInt__SWIG_2
+  procedure :: size => swigf_VectorInt_size
+  procedure :: capacity => swigf_VectorInt_capacity
+  procedure :: empty => swigf_VectorInt_empty
+  procedure :: clear => swigf_VectorInt_clear
+  procedure :: reserve => swigf_VectorInt_reserve
+  procedure, private :: resize__SWIG_0 => swigf_VectorInt_resize__SWIG_0
+  procedure, private :: resize__SWIG_1 => swigf_VectorInt_resize__SWIG_1
+  procedure :: push_back => swigf_VectorInt_push_back
+  procedure :: front => swigf_VectorInt_front
+  procedure :: back => swigf_VectorInt_back
+  procedure :: set => swigf_VectorInt_set
+  procedure :: get => swigf_VectorInt_get
+  procedure :: assign_from => swigf_VectorInt_assign_from
+  procedure :: copy_to => swigf_VectorInt_copy_to
+  procedure :: release => swigf_delete_VectorInt
+  generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2
+  generic :: resize => resize__SWIG_0, resize__SWIG_1
+ end type
+ type :: TeuchosArrayInt
+  type(C_PTR), public :: swigptr = C_NULL_PTR
+ contains
+  procedure, private :: create__SWIG_0 => swigf_new_TeuchosArrayInt__SWIG_0
+  procedure, private :: create__SWIG_1 => swigf_new_TeuchosArrayInt__SWIG_1
+  procedure, private :: create__SWIG_2 => swigf_new_TeuchosArrayInt__SWIG_2
+  procedure, private :: create__SWIG_3 => swigf_new_TeuchosArrayInt__SWIG_3
+  procedure :: release => swigf_delete_TeuchosArrayInt
+  procedure :: size => swigf_TeuchosArrayInt_size
+  procedure :: max_size => swigf_TeuchosArrayInt_max_size
+  procedure, private :: resize__SWIG_0 => swigf_TeuchosArrayInt_resize__SWIG_0
+  procedure, private :: resize__SWIG_1 => swigf_TeuchosArrayInt_resize__SWIG_1
+  procedure :: capacity => swigf_TeuchosArrayInt_capacity
+  procedure :: empty => swigf_TeuchosArrayInt_empty
+  procedure :: reserve => swigf_TeuchosArrayInt_reserve
+  procedure :: push_back => swigf_TeuchosArrayInt_push_back
+  procedure :: pop_back => swigf_TeuchosArrayInt_pop_back
+  procedure :: swap => swigf_TeuchosArrayInt_swap
+  procedure :: clear => swigf_TeuchosArrayInt_clear
+  procedure :: length => swigf_TeuchosArrayInt_length
+  procedure, private :: create__SWIG_4 => swigf_new_TeuchosArrayInt__SWIG_4
+  generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2, create__SWIG_3, create__SWIG_4
+  generic :: resize => resize__SWIG_0, resize__SWIG_1
+ end type
  type :: TeuchosComm
   type(C_PTR), public :: swigptr = C_NULL_PTR
  contains
@@ -79,6 +131,242 @@ module forteuchos
  ! WRAPPER DECLARATIONS
  private
  interface
+  function swigc_new_VectorInt__SWIG_0() &
+     bind(C, name="swigc_new_VectorInt__SWIG_0") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+  end function
+  function swigc_new_VectorInt__SWIG_1(farg1) &
+     bind(C, name="swigc_new_VectorInt__SWIG_1") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   integer(C_INT), intent(in) :: farg1
+  end function
+  function swigc_new_VectorInt__SWIG_2(farg1, farg2) &
+     bind(C, name="swigc_new_VectorInt__SWIG_2") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   integer(C_INT), intent(in) :: farg1
+   integer(C_INT), intent(in) :: farg2
+  end function
+  function swigc_VectorInt_size(farg1) &
+     bind(C, name="swigc_VectorInt_size") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_VectorInt_capacity(farg1) &
+     bind(C, name="swigc_VectorInt_capacity") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_VectorInt_empty(farg1) &
+     bind(C, name="swigc_VectorInt_empty") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   logical(C_BOOL) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  subroutine swigc_VectorInt_clear(farg1) &
+     bind(C, name="swigc_VectorInt_clear")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+  end subroutine
+  subroutine swigc_VectorInt_reserve(farg1, farg2) &
+     bind(C, name="swigc_VectorInt_reserve")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+  end subroutine
+  subroutine swigc_VectorInt_resize__SWIG_0(farg1, farg2) &
+     bind(C, name="swigc_VectorInt_resize__SWIG_0")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+  end subroutine
+  subroutine swigc_VectorInt_resize__SWIG_1(farg1, farg2, farg3) &
+     bind(C, name="swigc_VectorInt_resize__SWIG_1")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+   integer(C_INT), intent(in) :: farg3
+  end subroutine
+  subroutine swigc_VectorInt_push_back(farg1, farg2) &
+     bind(C, name="swigc_VectorInt_push_back")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+  end subroutine
+  function swigc_VectorInt_front(farg1) &
+     bind(C, name="swigc_VectorInt_front") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_VectorInt_back(farg1) &
+     bind(C, name="swigc_VectorInt_back") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  subroutine swigc_VectorInt_set(farg1, farg2, farg3) &
+     bind(C, name="swigc_VectorInt_set")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+   integer(C_INT), intent(in) :: farg3
+  end subroutine
+  function swigc_VectorInt_get(farg1, farg2) &
+     bind(C, name="swigc_VectorInt_get") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+  end function
+  subroutine swigc_VectorInt_assign_from(farg1, farg2, farg3) &
+     bind(C, name="swigc_VectorInt_assign_from")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), dimension(*), intent(in) :: farg2
+   integer(C_INT), intent(in) :: farg3
+  end subroutine
+  subroutine swigc_VectorInt_copy_to(farg1, farg2, farg3) &
+     bind(C, name="swigc_VectorInt_copy_to")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), dimension(*), intent(inout) :: farg2
+   integer(C_INT), intent(in) :: farg3
+  end subroutine
+  subroutine swigc_delete_VectorInt(farg1) &
+     bind(C, name="swigc_delete_VectorInt")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+  end subroutine
+  function swigc_new_TeuchosArrayInt__SWIG_0() &
+     bind(C, name="swigc_new_TeuchosArrayInt__SWIG_0") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+  end function
+  function swigc_new_TeuchosArrayInt__SWIG_1(farg1, farg2) &
+     bind(C, name="swigc_new_TeuchosArrayInt__SWIG_1") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   integer(C_INT), intent(in) :: farg1
+   integer(C_INT), intent(in) :: farg2
+  end function
+  function swigc_new_TeuchosArrayInt__SWIG_2(farg1) &
+     bind(C, name="swigc_new_TeuchosArrayInt__SWIG_2") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   integer(C_INT), intent(in) :: farg1
+  end function
+  function swigc_new_TeuchosArrayInt__SWIG_3(farg1) &
+     bind(C, name="swigc_new_TeuchosArrayInt__SWIG_3") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  subroutine swigc_delete_TeuchosArrayInt(farg1) &
+     bind(C, name="swigc_delete_TeuchosArrayInt")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+  end subroutine
+  function swigc_TeuchosArrayInt_size(farg1) &
+     bind(C, name="swigc_TeuchosArrayInt_size") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_TeuchosArrayInt_max_size(farg1) &
+     bind(C, name="swigc_TeuchosArrayInt_max_size") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  subroutine swigc_TeuchosArrayInt_resize__SWIG_0(farg1, farg2, farg3) &
+     bind(C, name="swigc_TeuchosArrayInt_resize__SWIG_0")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+   integer(C_INT), intent(in) :: farg3
+  end subroutine
+  subroutine swigc_TeuchosArrayInt_resize__SWIG_1(farg1, farg2) &
+     bind(C, name="swigc_TeuchosArrayInt_resize__SWIG_1")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+  end subroutine
+  function swigc_TeuchosArrayInt_capacity(farg1) &
+     bind(C, name="swigc_TeuchosArrayInt_capacity") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_TeuchosArrayInt_empty(farg1) &
+     bind(C, name="swigc_TeuchosArrayInt_empty") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   logical(C_BOOL) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  subroutine swigc_TeuchosArrayInt_reserve(farg1, farg2) &
+     bind(C, name="swigc_TeuchosArrayInt_reserve")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+  end subroutine
+  subroutine swigc_TeuchosArrayInt_push_back(farg1, farg2) &
+     bind(C, name="swigc_TeuchosArrayInt_push_back")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+  end subroutine
+  subroutine swigc_TeuchosArrayInt_pop_back(farg1) &
+     bind(C, name="swigc_TeuchosArrayInt_pop_back")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+  end subroutine
+  subroutine swigc_TeuchosArrayInt_swap(farg1, farg2) &
+     bind(C, name="swigc_TeuchosArrayInt_swap")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+  end subroutine
+  subroutine swigc_TeuchosArrayInt_clear(farg1) &
+     bind(C, name="swigc_TeuchosArrayInt_clear")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+  end subroutine
+  function swigc_TeuchosArrayInt_length(farg1) &
+     bind(C, name="swigc_TeuchosArrayInt_length") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_new_TeuchosArrayInt__SWIG_4(farg1) &
+     bind(C, name="swigc_new_TeuchosArrayInt__SWIG_4") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
   function swigc_new_TeuchosComm__SWIG_0(farg1) &
      bind(C, name="swigc_new_TeuchosComm__SWIG_0") &
      result(fresult)
@@ -367,6 +655,248 @@ module forteuchos
 
 contains
   ! FORTRAN PROXY CODE
+  subroutine swigf_new_VectorInt__SWIG_0(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(VectorInt) :: self
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_VectorInt__SWIG_0()
+   self%swigown = .true.
+  end subroutine
+  subroutine swigf_new_VectorInt__SWIG_1(self, count)
+   use, intrinsic :: ISO_C_BINDING
+   class(VectorInt) :: self
+   integer(C_INT), intent(in) :: count
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_VectorInt__SWIG_1(count)
+   self%swigown = .true.
+  end subroutine
+  subroutine swigf_new_VectorInt__SWIG_2(self, count, v)
+   use, intrinsic :: ISO_C_BINDING
+   class(VectorInt) :: self
+   integer(C_INT), intent(in) :: count
+   integer(C_INT), intent(in) :: v
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_VectorInt__SWIG_2(count, v)
+   self%swigown = .true.
+  end subroutine
+  function swigf_VectorInt_size(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   class(VectorInt) :: self
+   fresult = swigc_VectorInt_size(self%swigptr)
+  end function
+  function swigf_VectorInt_capacity(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   class(VectorInt) :: self
+   fresult = swigc_VectorInt_capacity(self%swigptr)
+  end function
+  function swigf_VectorInt_empty(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   logical(C_BOOL) :: fresult
+   class(VectorInt) :: self
+   fresult = swigc_VectorInt_empty(self%swigptr)
+  end function
+  subroutine swigf_VectorInt_clear(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(VectorInt) :: self
+   call swigc_VectorInt_clear(self%swigptr)
+  end subroutine
+  subroutine swigf_VectorInt_reserve(self, count)
+   use, intrinsic :: ISO_C_BINDING
+   class(VectorInt) :: self
+   integer(C_INT), intent(in) :: count
+   call swigc_VectorInt_reserve(self%swigptr, count)
+  end subroutine
+  subroutine swigf_VectorInt_resize__SWIG_0(self, count)
+   use, intrinsic :: ISO_C_BINDING
+   class(VectorInt) :: self
+   integer(C_INT), intent(in) :: count
+   call swigc_VectorInt_resize__SWIG_0(self%swigptr, count)
+  end subroutine
+  subroutine swigf_VectorInt_resize__SWIG_1(self, count, v)
+   use, intrinsic :: ISO_C_BINDING
+   class(VectorInt) :: self
+   integer(C_INT), intent(in) :: count
+   integer(C_INT), intent(in) :: v
+   call swigc_VectorInt_resize__SWIG_1(self%swigptr, count, v)
+  end subroutine
+  subroutine swigf_VectorInt_push_back(self, v)
+   use, intrinsic :: ISO_C_BINDING
+   class(VectorInt) :: self
+   integer(C_INT), intent(in) :: v
+   call swigc_VectorInt_push_back(self%swigptr, v)
+  end subroutine
+  function swigf_VectorInt_front(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   class(VectorInt) :: self
+   fresult = swigc_VectorInt_front(self%swigptr)
+  end function
+  function swigf_VectorInt_back(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   class(VectorInt) :: self
+   fresult = swigc_VectorInt_back(self%swigptr)
+  end function
+  subroutine swigf_VectorInt_set(self, index, v)
+   use, intrinsic :: ISO_C_BINDING
+   class(VectorInt) :: self
+   integer(C_INT), intent(in) :: index
+   integer(C_INT), intent(in) :: v
+   call swigc_VectorInt_set(self%swigptr, index, v)
+  end subroutine
+  function swigf_VectorInt_get(self, index) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   class(VectorInt) :: self
+   integer(C_INT), intent(in) :: index
+   fresult = swigc_VectorInt_get(self%swigptr, index)
+  end function
+  subroutine swigf_VectorInt_assign_from(self, arr)
+   use, intrinsic :: ISO_C_BINDING
+   class(VectorInt) :: self
+   integer(C_INT), dimension(:), intent(in) :: arr
+   call swigc_VectorInt_assign_from(self%swigptr, arr, size(arr))
+  end subroutine
+  subroutine swigf_VectorInt_copy_to(self, arr)
+   use, intrinsic :: ISO_C_BINDING
+   class(VectorInt) :: self
+   integer(C_INT), dimension(:), intent(inout) :: arr
+   call swigc_VectorInt_copy_to(self%swigptr, arr, size(arr))
+  end subroutine
+  subroutine swigf_delete_VectorInt(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(VectorInt) :: self
+   if (self%swigown) then
+    call swigc_delete_VectorInt(self%swigptr)
+    self%swigown = .false.
+   end if
+   self%swigptr = C_NULL_PTR
+  end subroutine
+  subroutine swigf_new_TeuchosArrayInt__SWIG_0(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosArrayInt) :: self
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_TeuchosArrayInt__SWIG_0()
+  end subroutine
+  subroutine swigf_new_TeuchosArrayInt__SWIG_1(self, n, value)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosArrayInt) :: self
+   integer(C_INT), intent(in) :: n
+   integer(C_INT), intent(in) :: value
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_TeuchosArrayInt__SWIG_1(n, value)
+  end subroutine
+  subroutine swigf_new_TeuchosArrayInt__SWIG_2(self, n)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosArrayInt) :: self
+   integer(C_INT), intent(in) :: n
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_TeuchosArrayInt__SWIG_2(n)
+  end subroutine
+  subroutine swigf_new_TeuchosArrayInt__SWIG_3(self, x)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosArrayInt) :: self
+   class(TeuchosArrayInt) :: x
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_TeuchosArrayInt__SWIG_3(x%swigptr)
+  end subroutine
+  subroutine swigf_delete_TeuchosArrayInt(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosArrayInt) :: self
+   call swigc_delete_TeuchosArrayInt(self%swigptr)
+   self%swigptr = C_NULL_PTR
+  end subroutine
+  function swigf_TeuchosArrayInt_size(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   class(TeuchosArrayInt) :: self
+   fresult = swigc_TeuchosArrayInt_size(self%swigptr)
+  end function
+  function swigf_TeuchosArrayInt_max_size(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   class(TeuchosArrayInt) :: self
+   fresult = swigc_TeuchosArrayInt_max_size(self%swigptr)
+  end function
+  subroutine swigf_TeuchosArrayInt_resize__SWIG_0(self, new_size, x)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosArrayInt) :: self
+   integer(C_INT), intent(in) :: new_size
+   integer(C_INT), intent(in) :: x
+   call swigc_TeuchosArrayInt_resize__SWIG_0(self%swigptr, new_size, x)
+  end subroutine
+  subroutine swigf_TeuchosArrayInt_resize__SWIG_1(self, new_size)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosArrayInt) :: self
+   integer(C_INT), intent(in) :: new_size
+   call swigc_TeuchosArrayInt_resize__SWIG_1(self%swigptr, new_size)
+  end subroutine
+  function swigf_TeuchosArrayInt_capacity(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   class(TeuchosArrayInt) :: self
+   fresult = swigc_TeuchosArrayInt_capacity(self%swigptr)
+  end function
+  function swigf_TeuchosArrayInt_empty(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   logical(C_BOOL) :: fresult
+   class(TeuchosArrayInt) :: self
+   fresult = swigc_TeuchosArrayInt_empty(self%swigptr)
+  end function
+  subroutine swigf_TeuchosArrayInt_reserve(self, n)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosArrayInt) :: self
+   integer(C_INT), intent(in) :: n
+   call swigc_TeuchosArrayInt_reserve(self%swigptr, n)
+  end subroutine
+  subroutine swigf_TeuchosArrayInt_push_back(self, x)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosArrayInt) :: self
+   integer(C_INT), intent(in) :: x
+   call swigc_TeuchosArrayInt_push_back(self%swigptr, x)
+  end subroutine
+  subroutine swigf_TeuchosArrayInt_pop_back(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosArrayInt) :: self
+   call swigc_TeuchosArrayInt_pop_back(self%swigptr)
+  end subroutine
+  subroutine swigf_TeuchosArrayInt_swap(self, x)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosArrayInt) :: self
+   class(TeuchosArrayInt) :: x
+   call swigc_TeuchosArrayInt_swap(self%swigptr, x%swigptr)
+  end subroutine
+  subroutine swigf_TeuchosArrayInt_clear(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosArrayInt) :: self
+   call swigc_TeuchosArrayInt_clear(self%swigptr)
+  end subroutine
+  function swigf_TeuchosArrayInt_length(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_INT) :: fresult
+   class(TeuchosArrayInt) :: self
+   fresult = swigc_TeuchosArrayInt_length(self%swigptr)
+  end function
+  subroutine swigf_new_TeuchosArrayInt__SWIG_4(self, v)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosArrayInt) :: self
+   class(VectorInt) :: v
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_TeuchosArrayInt__SWIG_4(v%swigptr)
+  end subroutine
   subroutine swigf_new_TeuchosComm__SWIG_0(self, rawMpiComm)
    use, intrinsic :: ISO_C_BINDING
    class(TeuchosComm) :: self
