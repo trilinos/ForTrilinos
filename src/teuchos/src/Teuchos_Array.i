@@ -11,8 +11,8 @@
 // Typedefs
 typedef int Teuchos_Ordinal;
 
-%template(VectorInt) std::vector<int>;
-%template(VectorInt) std::vector<double>;
+%template(VectorInt)    std::vector<int>;
+%template(VectorDouble) std::vector<double>;
 
 // Make RCPs
 %teuchos_rcp(Teuchos::Array<int>)

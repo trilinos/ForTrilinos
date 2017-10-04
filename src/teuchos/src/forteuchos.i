@@ -11,6 +11,7 @@
 
 %include "ForTrilinosTeuchos_config.hpp"
 %include "Teuchos_Array.i"
+%include "Teuchos_ArrayView.i"
 %include "Teuchos_Comm.i"
 %include "Teuchos_Exceptions.i"
 %include "Teuchos_RCP.i"
