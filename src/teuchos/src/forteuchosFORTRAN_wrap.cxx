@@ -178,6 +178,9 @@ template <typename T> T SwigValueInit() {
 swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
 
 
+#include "Teuchos_BLAS_types.hpp"
+
+
 #include <vector>
 
 
@@ -1171,6 +1174,12 @@ SWIGEXPORT void* swigc_new_TeuchosArrayInt__SWIG_4(const void* farg1) {
 }
 
 
+SWIGEXPORT void* swigc_spcopy_TeuchosArrayInt(void* farg1) {
+  Teuchos::RCP< Teuchos::Array<int> >* arg1 = (Teuchos::RCP< Teuchos::Array<int> > *)farg1;
+  return new Teuchos::RCP< Teuchos::Array<int> >(*arg1);
+}
+
+
 SWIGEXPORT void* swigc_new_TeuchosArrayDouble__SWIG_0() {
   void* fresult = 0 ;
   Teuchos::Array< double > *result = 0 ;
@@ -1407,6 +1416,12 @@ SWIGEXPORT void* swigc_new_TeuchosArrayDouble__SWIG_4(const void* farg1) {
 }
 
 
+SWIGEXPORT void* swigc_spcopy_TeuchosArrayDouble(void* farg1) {
+  Teuchos::RCP< Teuchos::Array<double> >* arg1 = (Teuchos::RCP< Teuchos::Array<double> > *)farg1;
+  return new Teuchos::RCP< Teuchos::Array<double> >(*arg1);
+}
+
+
 SWIGEXPORT void* swigc_new_TeuchosArrayViewInt__SWIG_0(int * farg1, const int* farg2) {
   void* fresult = 0 ;
   int *arg1 = (int *) 0 ;
@@ -1498,20 +1513,6 @@ SWIGEXPORT void* swigc_TeuchosArrayViewInt_toString(const void* farg1) {
 }
 
 
-SWIGEXPORT int * swigc_TeuchosArrayViewInt_getRawPtr(const void* farg1) {
-  int * fresult = 0 ;
-  Teuchos::ArrayView< int > *arg1 = (Teuchos::ArrayView< int > *) 0 ;
-  Teuchos::RCP< Teuchos::ArrayView< int > const > *smartarg1 = 0 ;
-  int *result = 0 ;
-  
-  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<int> > *)farg1;
-  arg1 = (Teuchos::ArrayView<int> *)(smartarg1 ? smartarg1->get() : 0);
-  result = (int *)((Teuchos::ArrayView< int > const *)arg1)->getRawPtr();
-  fresult = result;
-  return fresult;
-}
-
-
 SWIGEXPORT int* swigc_TeuchosArrayViewInt_front(const void* farg1) {
   int* fresult = 0 ;
   Teuchos::ArrayView< int > *arg1 = (Teuchos::ArrayView< int > *) 0 ;
@@ -1590,17 +1591,884 @@ SWIGEXPORT const void* swigc_TeuchosArrayViewInt_assert_in_range(const void* far
 }
 
 
-SWIGEXPORT int * swigc_TeuchosArrayViewInt_access_private_ptr(const void* farg1) {
-  int * fresult = 0 ;
-  Teuchos::ArrayView< int > *arg1 = (Teuchos::ArrayView< int > *) 0 ;
-  Teuchos::RCP< Teuchos::ArrayView< int > const > *smartarg1 = 0 ;
-  int *result = 0 ;
+SWIGEXPORT void* swigc_spcopy_TeuchosArrayViewInt(void* farg1) {
+  Teuchos::RCP< Teuchos::ArrayView<int> >* arg1 = (Teuchos::RCP< Teuchos::ArrayView<int> > *)farg1;
+  return new Teuchos::RCP< Teuchos::ArrayView<int> >(*arg1);
+}
+
+
+SWIGEXPORT void* swigc_new_TeuchosArrayViewIntConst__SWIG_0(int * farg1, const int* farg2) {
+  void* fresult = 0 ;
+  int *arg1 = (int *) 0 ;
+  Teuchos::ArrayView< int const >::size_type arg2 ;
+  Teuchos::ArrayView< int const > *result = 0 ;
   
-  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<int> > *)farg1;
-  arg1 = (Teuchos::ArrayView<int> *)(smartarg1 ? smartarg1->get() : 0);
-  result = (int *)((Teuchos::ArrayView< int > const *)arg1)->access_private_ptr();
+  arg1 = farg1;
+  arg2 = *farg2;
+  result = (Teuchos::ArrayView< int const > *)new Teuchos::ArrayView< int const >((int const *)arg1,arg2);
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_TeuchosArrayViewIntConst__SWIG_1(const void* farg1) {
+  void* fresult = 0 ;
+  Teuchos::ArrayView< int const > *arg1 = 0 ;
+  Teuchos::ArrayView< int const > *result = 0 ;
+  
+  arg1 = (Teuchos::ArrayView< int const > *)(((Teuchos::RCP<const Teuchos::ArrayView<const int> > *)farg1)
+    ? ((Teuchos::RCP<const Teuchos::ArrayView<const int> > *)farg1)->get()
+    :0);
+  if (!arg1)
+  {
+    throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< int const > const &");
+    return 0;
+  }
+  result = (Teuchos::ArrayView< int const > *)new Teuchos::ArrayView< int const >((Teuchos::ArrayView< int const > const &)*arg1);
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_TeuchosArrayViewIntConst(void* farg1) {
+  Teuchos::ArrayView< int const > *arg1 = (Teuchos::ArrayView< int const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< int const > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Teuchos::ArrayView<const int> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const int> *)(smartarg1 ? smartarg1->get() : 0);
+  (void)arg1; delete smartarg1;
+}
+
+
+SWIGEXPORT bool swigc_TeuchosArrayViewIntConst_is_null(const void* farg1) {
+  bool fresult = 0 ;
+  Teuchos::ArrayView< int const > *arg1 = (Teuchos::ArrayView< int const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< int const > const > *smartarg1 = 0 ;
+  bool result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const int> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const int> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (bool)((Teuchos::ArrayView< int const > const *)arg1)->is_null();
   fresult = result;
   return fresult;
+}
+
+
+SWIGEXPORT int swigc_TeuchosArrayViewIntConst_size(const void* farg1) {
+  int fresult = 0 ;
+  Teuchos::ArrayView< int const > *arg1 = (Teuchos::ArrayView< int const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< int const > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< int const >::size_type result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const int> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const int> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (Teuchos::ArrayView< int const >::size_type)((Teuchos::ArrayView< int const > const *)arg1)->size();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_TeuchosArrayViewIntConst_toString(const void* farg1) {
+  void* fresult = 0 ;
+  Teuchos::ArrayView< int const > *arg1 = (Teuchos::ArrayView< int const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< int const > const > *smartarg1 = 0 ;
+  std::string result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const int> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const int> *)(smartarg1 ? smartarg1->get() : 0);
+  result = ((Teuchos::ArrayView< int const > const *)arg1)->toString();
+  
+#if __cplusplus >= 201103L
+  fresult = new std::string(std::move(result));
+#else
+  fresult = new std::string(result);
+#endif
+  
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_TeuchosArrayViewIntConst_front(const void* farg1) {
+  int fresult = 0 ;
+  Teuchos::ArrayView< int const > *arg1 = (Teuchos::ArrayView< int const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< int const > const > *smartarg1 = 0 ;
+  int *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const int> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const int> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (int *) &((Teuchos::ArrayView< int const > const *)arg1)->front();
+  fresult = *result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_TeuchosArrayViewIntConst_back(const void* farg1) {
+  int fresult = 0 ;
+  Teuchos::ArrayView< int const > *arg1 = (Teuchos::ArrayView< int const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< int const > const > *smartarg1 = 0 ;
+  int *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const int> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const int> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (int *) &((Teuchos::ArrayView< int const > const *)arg1)->back();
+  fresult = *result;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_TeuchosArrayViewIntConst_view(const void* farg1, const int* farg2, const int* farg3) {
+  void* fresult = 0 ;
+  Teuchos::ArrayView< int const > *arg1 = (Teuchos::ArrayView< int const > *) 0 ;
+  Teuchos::ArrayView< int const >::size_type arg2 ;
+  Teuchos::ArrayView< int const >::size_type arg3 ;
+  Teuchos::RCP< Teuchos::ArrayView< int const > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< int const > result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const int> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const int> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  arg3 = *farg3;
+  result = ((Teuchos::ArrayView< int const > const *)arg1)->view(arg2,arg3);
+  fresult = new Teuchos::RCP< Teuchos::ArrayView<const int> >(new Teuchos::ArrayView< int const >((Teuchos::ArrayView< int const > &)result));
+  return fresult;
+}
+
+
+SWIGEXPORT const void* swigc_TeuchosArrayViewIntConst_assert_not_null(const void* farg1) {
+  const void* fresult = 0 ;
+  Teuchos::ArrayView< int const > *arg1 = (Teuchos::ArrayView< int const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< int const > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< int const > *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const int> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const int> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (Teuchos::ArrayView< int const > *) &((Teuchos::ArrayView< int const > const *)arg1)->assert_not_null();
+  fresult = new Teuchos::RCP<const Teuchos::ArrayView<const int> >(result SWIG_NO_NULL_DELETER_0);
+  return fresult;
+}
+
+
+SWIGEXPORT const void* swigc_TeuchosArrayViewIntConst_assert_in_range(const void* farg1, const int* farg2, const int* farg3) {
+  const void* fresult = 0 ;
+  Teuchos::ArrayView< int const > *arg1 = (Teuchos::ArrayView< int const > *) 0 ;
+  Teuchos::ArrayView< int const >::size_type arg2 ;
+  Teuchos::ArrayView< int const >::size_type arg3 ;
+  Teuchos::RCP< Teuchos::ArrayView< int const > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< int const > *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const int> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const int> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  arg3 = *farg3;
+  result = (Teuchos::ArrayView< int const > *) &((Teuchos::ArrayView< int const > const *)arg1)->assert_in_range(arg2,arg3);
+  fresult = new Teuchos::RCP<const Teuchos::ArrayView<const int> >(result SWIG_NO_NULL_DELETER_0);
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_spcopy_TeuchosArrayViewIntConst(void* farg1) {
+  Teuchos::RCP< Teuchos::ArrayView<const int> >* arg1 = (Teuchos::RCP< Teuchos::ArrayView<const int> > *)farg1;
+  return new Teuchos::RCP< Teuchos::ArrayView<const int> >(*arg1);
+}
+
+
+SWIGEXPORT void* swigc_new_TeuchosArrayViewDouble__SWIG_0(double * farg1, const int* farg2) {
+  void* fresult = 0 ;
+  double *arg1 = (double *) 0 ;
+  Teuchos::ArrayView< double >::size_type arg2 ;
+  Teuchos::ArrayView< double > *result = 0 ;
+  
+  arg1 = farg1;
+  arg2 = *farg2;
+  result = (Teuchos::ArrayView< double > *)new Teuchos::ArrayView< double >(arg1,arg2);
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<double> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_TeuchosArrayViewDouble__SWIG_1(const void* farg1) {
+  void* fresult = 0 ;
+  Teuchos::ArrayView< double > *arg1 = 0 ;
+  Teuchos::ArrayView< double > *result = 0 ;
+  
+  arg1 = (Teuchos::ArrayView< double > *)(((Teuchos::RCP<const Teuchos::ArrayView<double> > *)farg1)
+    ? ((Teuchos::RCP<const Teuchos::ArrayView<double> > *)farg1)->get()
+    :0);
+  if (!arg1)
+  {
+    throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< double > const &");
+    return 0;
+  }
+  result = (Teuchos::ArrayView< double > *)new Teuchos::ArrayView< double >((Teuchos::ArrayView< double > const &)*arg1);
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<double> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_TeuchosArrayViewDouble(void* farg1) {
+  Teuchos::ArrayView< double > *arg1 = (Teuchos::ArrayView< double > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< double > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Teuchos::ArrayView<double> > *)farg1;
+  arg1 = (Teuchos::ArrayView<double> *)(smartarg1 ? smartarg1->get() : 0);
+  (void)arg1; delete smartarg1;
+}
+
+
+SWIGEXPORT bool swigc_TeuchosArrayViewDouble_is_null(const void* farg1) {
+  bool fresult = 0 ;
+  Teuchos::ArrayView< double > *arg1 = (Teuchos::ArrayView< double > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< double > const > *smartarg1 = 0 ;
+  bool result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<double> > *)farg1;
+  arg1 = (Teuchos::ArrayView<double> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (bool)((Teuchos::ArrayView< double > const *)arg1)->is_null();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_TeuchosArrayViewDouble_size(const void* farg1) {
+  int fresult = 0 ;
+  Teuchos::ArrayView< double > *arg1 = (Teuchos::ArrayView< double > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< double > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< double >::size_type result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<double> > *)farg1;
+  arg1 = (Teuchos::ArrayView<double> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (Teuchos::ArrayView< double >::size_type)((Teuchos::ArrayView< double > const *)arg1)->size();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_TeuchosArrayViewDouble_toString(const void* farg1) {
+  void* fresult = 0 ;
+  Teuchos::ArrayView< double > *arg1 = (Teuchos::ArrayView< double > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< double > const > *smartarg1 = 0 ;
+  std::string result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<double> > *)farg1;
+  arg1 = (Teuchos::ArrayView<double> *)(smartarg1 ? smartarg1->get() : 0);
+  result = ((Teuchos::ArrayView< double > const *)arg1)->toString();
+  
+#if __cplusplus >= 201103L
+  fresult = new std::string(std::move(result));
+#else
+  fresult = new std::string(result);
+#endif
+  
+  return fresult;
+}
+
+
+SWIGEXPORT double* swigc_TeuchosArrayViewDouble_front(const void* farg1) {
+  double* fresult = 0 ;
+  Teuchos::ArrayView< double > *arg1 = (Teuchos::ArrayView< double > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< double > const > *smartarg1 = 0 ;
+  double *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<double> > *)farg1;
+  arg1 = (Teuchos::ArrayView<double> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (double *) &((Teuchos::ArrayView< double > const *)arg1)->front();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT double* swigc_TeuchosArrayViewDouble_back(const void* farg1) {
+  double* fresult = 0 ;
+  Teuchos::ArrayView< double > *arg1 = (Teuchos::ArrayView< double > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< double > const > *smartarg1 = 0 ;
+  double *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<double> > *)farg1;
+  arg1 = (Teuchos::ArrayView<double> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (double *) &((Teuchos::ArrayView< double > const *)arg1)->back();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_TeuchosArrayViewDouble_view(const void* farg1, const int* farg2, const int* farg3) {
+  void* fresult = 0 ;
+  Teuchos::ArrayView< double > *arg1 = (Teuchos::ArrayView< double > *) 0 ;
+  Teuchos::ArrayView< double >::size_type arg2 ;
+  Teuchos::ArrayView< double >::size_type arg3 ;
+  Teuchos::RCP< Teuchos::ArrayView< double > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< double > result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<double> > *)farg1;
+  arg1 = (Teuchos::ArrayView<double> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  arg3 = *farg3;
+  result = ((Teuchos::ArrayView< double > const *)arg1)->view(arg2,arg3);
+  fresult = new Teuchos::RCP< Teuchos::ArrayView<double> >(new Teuchos::ArrayView< double >((Teuchos::ArrayView< double > &)result));
+  return fresult;
+}
+
+
+SWIGEXPORT const void* swigc_TeuchosArrayViewDouble_assert_not_null(const void* farg1) {
+  const void* fresult = 0 ;
+  Teuchos::ArrayView< double > *arg1 = (Teuchos::ArrayView< double > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< double > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< double > *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<double> > *)farg1;
+  arg1 = (Teuchos::ArrayView<double> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (Teuchos::ArrayView< double > *) &((Teuchos::ArrayView< double > const *)arg1)->assert_not_null();
+  fresult = new Teuchos::RCP<const Teuchos::ArrayView<double> >(result SWIG_NO_NULL_DELETER_0);
+  return fresult;
+}
+
+
+SWIGEXPORT const void* swigc_TeuchosArrayViewDouble_assert_in_range(const void* farg1, const int* farg2, const int* farg3) {
+  const void* fresult = 0 ;
+  Teuchos::ArrayView< double > *arg1 = (Teuchos::ArrayView< double > *) 0 ;
+  Teuchos::ArrayView< double >::size_type arg2 ;
+  Teuchos::ArrayView< double >::size_type arg3 ;
+  Teuchos::RCP< Teuchos::ArrayView< double > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< double > *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<double> > *)farg1;
+  arg1 = (Teuchos::ArrayView<double> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  arg3 = *farg3;
+  result = (Teuchos::ArrayView< double > *) &((Teuchos::ArrayView< double > const *)arg1)->assert_in_range(arg2,arg3);
+  fresult = new Teuchos::RCP<const Teuchos::ArrayView<double> >(result SWIG_NO_NULL_DELETER_0);
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_spcopy_TeuchosArrayViewDouble(void* farg1) {
+  Teuchos::RCP< Teuchos::ArrayView<double> >* arg1 = (Teuchos::RCP< Teuchos::ArrayView<double> > *)farg1;
+  return new Teuchos::RCP< Teuchos::ArrayView<double> >(*arg1);
+}
+
+
+SWIGEXPORT void* swigc_new_TeuchosArrayViewDoubleConst__SWIG_0(double * farg1, const int* farg2) {
+  void* fresult = 0 ;
+  double *arg1 = (double *) 0 ;
+  Teuchos::ArrayView< double const >::size_type arg2 ;
+  Teuchos::ArrayView< double const > *result = 0 ;
+  
+  arg1 = farg1;
+  arg2 = *farg2;
+  result = (Teuchos::ArrayView< double const > *)new Teuchos::ArrayView< double const >((double const *)arg1,arg2);
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const double> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_TeuchosArrayViewDoubleConst__SWIG_1(const void* farg1) {
+  void* fresult = 0 ;
+  Teuchos::ArrayView< double const > *arg1 = 0 ;
+  Teuchos::ArrayView< double const > *result = 0 ;
+  
+  arg1 = (Teuchos::ArrayView< double const > *)(((Teuchos::RCP<const Teuchos::ArrayView<const double> > *)farg1)
+    ? ((Teuchos::RCP<const Teuchos::ArrayView<const double> > *)farg1)->get()
+    :0);
+  if (!arg1)
+  {
+    throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< double const > const &");
+    return 0;
+  }
+  result = (Teuchos::ArrayView< double const > *)new Teuchos::ArrayView< double const >((Teuchos::ArrayView< double const > const &)*arg1);
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const double> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_TeuchosArrayViewDoubleConst(void* farg1) {
+  Teuchos::ArrayView< double const > *arg1 = (Teuchos::ArrayView< double const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< double const > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Teuchos::ArrayView<const double> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const double> *)(smartarg1 ? smartarg1->get() : 0);
+  (void)arg1; delete smartarg1;
+}
+
+
+SWIGEXPORT bool swigc_TeuchosArrayViewDoubleConst_is_null(const void* farg1) {
+  bool fresult = 0 ;
+  Teuchos::ArrayView< double const > *arg1 = (Teuchos::ArrayView< double const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< double const > const > *smartarg1 = 0 ;
+  bool result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const double> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const double> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (bool)((Teuchos::ArrayView< double const > const *)arg1)->is_null();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_TeuchosArrayViewDoubleConst_size(const void* farg1) {
+  int fresult = 0 ;
+  Teuchos::ArrayView< double const > *arg1 = (Teuchos::ArrayView< double const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< double const > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< double const >::size_type result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const double> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const double> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (Teuchos::ArrayView< double const >::size_type)((Teuchos::ArrayView< double const > const *)arg1)->size();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_TeuchosArrayViewDoubleConst_toString(const void* farg1) {
+  void* fresult = 0 ;
+  Teuchos::ArrayView< double const > *arg1 = (Teuchos::ArrayView< double const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< double const > const > *smartarg1 = 0 ;
+  std::string result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const double> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const double> *)(smartarg1 ? smartarg1->get() : 0);
+  result = ((Teuchos::ArrayView< double const > const *)arg1)->toString();
+  
+#if __cplusplus >= 201103L
+  fresult = new std::string(std::move(result));
+#else
+  fresult = new std::string(result);
+#endif
+  
+  return fresult;
+}
+
+
+SWIGEXPORT double swigc_TeuchosArrayViewDoubleConst_front(const void* farg1) {
+  double fresult = 0 ;
+  Teuchos::ArrayView< double const > *arg1 = (Teuchos::ArrayView< double const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< double const > const > *smartarg1 = 0 ;
+  double *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const double> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const double> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (double *) &((Teuchos::ArrayView< double const > const *)arg1)->front();
+  fresult = *result;
+  return fresult;
+}
+
+
+SWIGEXPORT double swigc_TeuchosArrayViewDoubleConst_back(const void* farg1) {
+  double fresult = 0 ;
+  Teuchos::ArrayView< double const > *arg1 = (Teuchos::ArrayView< double const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< double const > const > *smartarg1 = 0 ;
+  double *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const double> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const double> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (double *) &((Teuchos::ArrayView< double const > const *)arg1)->back();
+  fresult = *result;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_TeuchosArrayViewDoubleConst_view(const void* farg1, const int* farg2, const int* farg3) {
+  void* fresult = 0 ;
+  Teuchos::ArrayView< double const > *arg1 = (Teuchos::ArrayView< double const > *) 0 ;
+  Teuchos::ArrayView< double const >::size_type arg2 ;
+  Teuchos::ArrayView< double const >::size_type arg3 ;
+  Teuchos::RCP< Teuchos::ArrayView< double const > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< double const > result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const double> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const double> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  arg3 = *farg3;
+  result = ((Teuchos::ArrayView< double const > const *)arg1)->view(arg2,arg3);
+  fresult = new Teuchos::RCP< Teuchos::ArrayView<const double> >(new Teuchos::ArrayView< double const >((Teuchos::ArrayView< double const > &)result));
+  return fresult;
+}
+
+
+SWIGEXPORT const void* swigc_TeuchosArrayViewDoubleConst_assert_not_null(const void* farg1) {
+  const void* fresult = 0 ;
+  Teuchos::ArrayView< double const > *arg1 = (Teuchos::ArrayView< double const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< double const > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< double const > *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const double> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const double> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (Teuchos::ArrayView< double const > *) &((Teuchos::ArrayView< double const > const *)arg1)->assert_not_null();
+  fresult = new Teuchos::RCP<const Teuchos::ArrayView<const double> >(result SWIG_NO_NULL_DELETER_0);
+  return fresult;
+}
+
+
+SWIGEXPORT const void* swigc_TeuchosArrayViewDoubleConst_assert_in_range(const void* farg1, const int* farg2, const int* farg3) {
+  const void* fresult = 0 ;
+  Teuchos::ArrayView< double const > *arg1 = (Teuchos::ArrayView< double const > *) 0 ;
+  Teuchos::ArrayView< double const >::size_type arg2 ;
+  Teuchos::ArrayView< double const >::size_type arg3 ;
+  Teuchos::RCP< Teuchos::ArrayView< double const > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< double const > *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const double> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const double> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  arg3 = *farg3;
+  result = (Teuchos::ArrayView< double const > *) &((Teuchos::ArrayView< double const > const *)arg1)->assert_in_range(arg2,arg3);
+  fresult = new Teuchos::RCP<const Teuchos::ArrayView<const double> >(result SWIG_NO_NULL_DELETER_0);
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_spcopy_TeuchosArrayViewDoubleConst(void* farg1) {
+  Teuchos::RCP< Teuchos::ArrayView<const double> >* arg1 = (Teuchos::RCP< Teuchos::ArrayView<const double> > *)farg1;
+  return new Teuchos::RCP< Teuchos::ArrayView<const double> >(*arg1);
+}
+
+
+SWIGEXPORT void* swigc_new_TeuchosArrayViewSizeT__SWIG_0(unsigned long * farg1, const int* farg2) {
+  void* fresult = 0 ;
+  unsigned long *arg1 = (unsigned long *) 0 ;
+  Teuchos::ArrayView< unsigned long >::size_type arg2 ;
+  Teuchos::ArrayView< std::size_t > *result = 0 ;
+  
+  arg1 = farg1;
+  arg2 = *farg2;
+  result = (Teuchos::ArrayView< std::size_t > *)new Teuchos::ArrayView< std::size_t >(arg1,arg2);
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<size_t> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_TeuchosArrayViewSizeT__SWIG_1(const void* farg1) {
+  void* fresult = 0 ;
+  Teuchos::ArrayView< unsigned long > *arg1 = 0 ;
+  Teuchos::ArrayView< std::size_t > *result = 0 ;
+  
+  arg1 = (Teuchos::ArrayView< unsigned long > *)(((Teuchos::RCP<const Teuchos::ArrayView<size_t> > *)farg1)
+    ? ((Teuchos::RCP<const Teuchos::ArrayView<size_t> > *)farg1)->get()
+    :0);
+  if (!arg1)
+  {
+    throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< unsigned long > const &");
+    return 0;
+  }
+  result = (Teuchos::ArrayView< std::size_t > *)new Teuchos::ArrayView< std::size_t >((Teuchos::ArrayView< unsigned long > const &)*arg1);
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<size_t> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_TeuchosArrayViewSizeT(void* farg1) {
+  Teuchos::ArrayView< std::size_t > *arg1 = (Teuchos::ArrayView< std::size_t > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< size_t > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Teuchos::ArrayView<size_t> > *)farg1;
+  arg1 = (Teuchos::ArrayView<size_t> *)(smartarg1 ? smartarg1->get() : 0);
+  (void)arg1; delete smartarg1;
+}
+
+
+SWIGEXPORT bool swigc_TeuchosArrayViewSizeT_is_null(const void* farg1) {
+  bool fresult = 0 ;
+  Teuchos::ArrayView< std::size_t > *arg1 = (Teuchos::ArrayView< std::size_t > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< size_t > const > *smartarg1 = 0 ;
+  bool result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<size_t> > *)farg1;
+  arg1 = (Teuchos::ArrayView<size_t> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (bool)((Teuchos::ArrayView< std::size_t > const *)arg1)->is_null();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_TeuchosArrayViewSizeT_size(const void* farg1) {
+  int fresult = 0 ;
+  Teuchos::ArrayView< std::size_t > *arg1 = (Teuchos::ArrayView< std::size_t > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< size_t > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< unsigned long >::size_type result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<size_t> > *)farg1;
+  arg1 = (Teuchos::ArrayView<size_t> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (Teuchos::ArrayView< unsigned long >::size_type)((Teuchos::ArrayView< std::size_t > const *)arg1)->size();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_TeuchosArrayViewSizeT_toString(const void* farg1) {
+  void* fresult = 0 ;
+  Teuchos::ArrayView< std::size_t > *arg1 = (Teuchos::ArrayView< std::size_t > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< size_t > const > *smartarg1 = 0 ;
+  std::string result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<size_t> > *)farg1;
+  arg1 = (Teuchos::ArrayView<size_t> *)(smartarg1 ? smartarg1->get() : 0);
+  result = ((Teuchos::ArrayView< std::size_t > const *)arg1)->toString();
+  
+#if __cplusplus >= 201103L
+  fresult = new std::string(std::move(result));
+#else
+  fresult = new std::string(result);
+#endif
+  
+  return fresult;
+}
+
+
+SWIGEXPORT unsigned long* swigc_TeuchosArrayViewSizeT_front(const void* farg1) {
+  unsigned long* fresult = 0 ;
+  Teuchos::ArrayView< std::size_t > *arg1 = (Teuchos::ArrayView< std::size_t > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< size_t > const > *smartarg1 = 0 ;
+  unsigned long *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<size_t> > *)farg1;
+  arg1 = (Teuchos::ArrayView<size_t> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (unsigned long *) &((Teuchos::ArrayView< std::size_t > const *)arg1)->front();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT unsigned long* swigc_TeuchosArrayViewSizeT_back(const void* farg1) {
+  unsigned long* fresult = 0 ;
+  Teuchos::ArrayView< std::size_t > *arg1 = (Teuchos::ArrayView< std::size_t > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< size_t > const > *smartarg1 = 0 ;
+  unsigned long *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<size_t> > *)farg1;
+  arg1 = (Teuchos::ArrayView<size_t> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (unsigned long *) &((Teuchos::ArrayView< std::size_t > const *)arg1)->back();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_TeuchosArrayViewSizeT_view(const void* farg1, const int* farg2, const int* farg3) {
+  void* fresult = 0 ;
+  Teuchos::ArrayView< std::size_t > *arg1 = (Teuchos::ArrayView< std::size_t > *) 0 ;
+  Teuchos::ArrayView< unsigned long >::size_type arg2 ;
+  Teuchos::ArrayView< unsigned long >::size_type arg3 ;
+  Teuchos::RCP< Teuchos::ArrayView< size_t > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< unsigned long > result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<size_t> > *)farg1;
+  arg1 = (Teuchos::ArrayView<size_t> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  arg3 = *farg3;
+  result = ((Teuchos::ArrayView< std::size_t > const *)arg1)->view(arg2,arg3);
+  fresult = new Teuchos::RCP< Teuchos::ArrayView<size_t> >(new Teuchos::ArrayView< unsigned long >((Teuchos::ArrayView< unsigned long > &)result));
+  return fresult;
+}
+
+
+SWIGEXPORT const void* swigc_TeuchosArrayViewSizeT_assert_not_null(const void* farg1) {
+  const void* fresult = 0 ;
+  Teuchos::ArrayView< std::size_t > *arg1 = (Teuchos::ArrayView< std::size_t > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< size_t > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< unsigned long > *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<size_t> > *)farg1;
+  arg1 = (Teuchos::ArrayView<size_t> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (Teuchos::ArrayView< unsigned long > *) &((Teuchos::ArrayView< std::size_t > const *)arg1)->assert_not_null();
+  fresult = new Teuchos::RCP<const Teuchos::ArrayView<size_t> >(result SWIG_NO_NULL_DELETER_0);
+  return fresult;
+}
+
+
+SWIGEXPORT const void* swigc_TeuchosArrayViewSizeT_assert_in_range(const void* farg1, const int* farg2, const int* farg3) {
+  const void* fresult = 0 ;
+  Teuchos::ArrayView< std::size_t > *arg1 = (Teuchos::ArrayView< std::size_t > *) 0 ;
+  Teuchos::ArrayView< unsigned long >::size_type arg2 ;
+  Teuchos::ArrayView< unsigned long >::size_type arg3 ;
+  Teuchos::RCP< Teuchos::ArrayView< size_t > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< unsigned long > *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<size_t> > *)farg1;
+  arg1 = (Teuchos::ArrayView<size_t> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  arg3 = *farg3;
+  result = (Teuchos::ArrayView< unsigned long > *) &((Teuchos::ArrayView< std::size_t > const *)arg1)->assert_in_range(arg2,arg3);
+  fresult = new Teuchos::RCP<const Teuchos::ArrayView<size_t> >(result SWIG_NO_NULL_DELETER_0);
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_spcopy_TeuchosArrayViewSizeT(void* farg1) {
+  Teuchos::RCP< Teuchos::ArrayView<size_t> >* arg1 = (Teuchos::RCP< Teuchos::ArrayView<size_t> > *)farg1;
+  return new Teuchos::RCP< Teuchos::ArrayView<size_t> >(*arg1);
+}
+
+
+SWIGEXPORT void* swigc_new_TeuchosArrayViewSizeTConst__SWIG_0(unsigned long * farg1, const int* farg2) {
+  void* fresult = 0 ;
+  unsigned long *arg1 = (unsigned long *) 0 ;
+  Teuchos::ArrayView< unsigned long const >::size_type arg2 ;
+  Teuchos::ArrayView< std::size_t const > *result = 0 ;
+  
+  arg1 = farg1;
+  arg2 = *farg2;
+  result = (Teuchos::ArrayView< std::size_t const > *)new Teuchos::ArrayView< std::size_t const >((unsigned long const *)arg1,arg2);
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const size_t> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_TeuchosArrayViewSizeTConst__SWIG_1(const void* farg1) {
+  void* fresult = 0 ;
+  Teuchos::ArrayView< unsigned long const > *arg1 = 0 ;
+  Teuchos::ArrayView< std::size_t const > *result = 0 ;
+  
+  arg1 = (Teuchos::ArrayView< unsigned long const > *)(((Teuchos::RCP<const Teuchos::ArrayView<const size_t> > *)farg1)
+    ? ((Teuchos::RCP<const Teuchos::ArrayView<const size_t> > *)farg1)->get()
+    :0);
+  if (!arg1)
+  {
+    throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< unsigned long const > const &");
+    return 0;
+  }
+  result = (Teuchos::ArrayView< std::size_t const > *)new Teuchos::ArrayView< std::size_t const >((Teuchos::ArrayView< unsigned long const > const &)*arg1);
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const size_t> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_TeuchosArrayViewSizeTConst(void* farg1) {
+  Teuchos::ArrayView< std::size_t const > *arg1 = (Teuchos::ArrayView< std::size_t const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< size_t const > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Teuchos::ArrayView<const size_t> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const size_t> *)(smartarg1 ? smartarg1->get() : 0);
+  (void)arg1; delete smartarg1;
+}
+
+
+SWIGEXPORT bool swigc_TeuchosArrayViewSizeTConst_is_null(const void* farg1) {
+  bool fresult = 0 ;
+  Teuchos::ArrayView< std::size_t const > *arg1 = (Teuchos::ArrayView< std::size_t const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< size_t const > const > *smartarg1 = 0 ;
+  bool result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const size_t> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const size_t> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (bool)((Teuchos::ArrayView< std::size_t const > const *)arg1)->is_null();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_TeuchosArrayViewSizeTConst_size(const void* farg1) {
+  int fresult = 0 ;
+  Teuchos::ArrayView< std::size_t const > *arg1 = (Teuchos::ArrayView< std::size_t const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< size_t const > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< unsigned long const >::size_type result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const size_t> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const size_t> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (Teuchos::ArrayView< unsigned long const >::size_type)((Teuchos::ArrayView< std::size_t const > const *)arg1)->size();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_TeuchosArrayViewSizeTConst_toString(const void* farg1) {
+  void* fresult = 0 ;
+  Teuchos::ArrayView< std::size_t const > *arg1 = (Teuchos::ArrayView< std::size_t const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< size_t const > const > *smartarg1 = 0 ;
+  std::string result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const size_t> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const size_t> *)(smartarg1 ? smartarg1->get() : 0);
+  result = ((Teuchos::ArrayView< std::size_t const > const *)arg1)->toString();
+  
+#if __cplusplus >= 201103L
+  fresult = new std::string(std::move(result));
+#else
+  fresult = new std::string(result);
+#endif
+  
+  return fresult;
+}
+
+
+SWIGEXPORT unsigned long swigc_TeuchosArrayViewSizeTConst_front(const void* farg1) {
+  unsigned long fresult = 0 ;
+  Teuchos::ArrayView< std::size_t const > *arg1 = (Teuchos::ArrayView< std::size_t const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< size_t const > const > *smartarg1 = 0 ;
+  unsigned long *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const size_t> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const size_t> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (unsigned long *) &((Teuchos::ArrayView< std::size_t const > const *)arg1)->front();
+  fresult = *result;
+  return fresult;
+}
+
+
+SWIGEXPORT unsigned long swigc_TeuchosArrayViewSizeTConst_back(const void* farg1) {
+  unsigned long fresult = 0 ;
+  Teuchos::ArrayView< std::size_t const > *arg1 = (Teuchos::ArrayView< std::size_t const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< size_t const > const > *smartarg1 = 0 ;
+  unsigned long *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const size_t> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const size_t> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (unsigned long *) &((Teuchos::ArrayView< std::size_t const > const *)arg1)->back();
+  fresult = *result;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_TeuchosArrayViewSizeTConst_view(const void* farg1, const int* farg2, const int* farg3) {
+  void* fresult = 0 ;
+  Teuchos::ArrayView< std::size_t const > *arg1 = (Teuchos::ArrayView< std::size_t const > *) 0 ;
+  Teuchos::ArrayView< unsigned long const >::size_type arg2 ;
+  Teuchos::ArrayView< unsigned long const >::size_type arg3 ;
+  Teuchos::RCP< Teuchos::ArrayView< size_t const > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< unsigned long const > result;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const size_t> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const size_t> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  arg3 = *farg3;
+  result = ((Teuchos::ArrayView< std::size_t const > const *)arg1)->view(arg2,arg3);
+  fresult = new Teuchos::RCP< Teuchos::ArrayView<const size_t> >(new Teuchos::ArrayView< unsigned long const >((Teuchos::ArrayView< unsigned long const > &)result));
+  return fresult;
+}
+
+
+SWIGEXPORT const void* swigc_TeuchosArrayViewSizeTConst_assert_not_null(const void* farg1) {
+  const void* fresult = 0 ;
+  Teuchos::ArrayView< std::size_t const > *arg1 = (Teuchos::ArrayView< std::size_t const > *) 0 ;
+  Teuchos::RCP< Teuchos::ArrayView< size_t const > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< unsigned long const > *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const size_t> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const size_t> *)(smartarg1 ? smartarg1->get() : 0);
+  result = (Teuchos::ArrayView< unsigned long const > *) &((Teuchos::ArrayView< std::size_t const > const *)arg1)->assert_not_null();
+  fresult = new Teuchos::RCP<const Teuchos::ArrayView<const size_t> >(result SWIG_NO_NULL_DELETER_0);
+  return fresult;
+}
+
+
+SWIGEXPORT const void* swigc_TeuchosArrayViewSizeTConst_assert_in_range(const void* farg1, const int* farg2, const int* farg3) {
+  const void* fresult = 0 ;
+  Teuchos::ArrayView< std::size_t const > *arg1 = (Teuchos::ArrayView< std::size_t const > *) 0 ;
+  Teuchos::ArrayView< unsigned long const >::size_type arg2 ;
+  Teuchos::ArrayView< unsigned long const >::size_type arg3 ;
+  Teuchos::RCP< Teuchos::ArrayView< size_t const > const > *smartarg1 = 0 ;
+  Teuchos::ArrayView< unsigned long const > *result = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Teuchos::ArrayView<const size_t> > *)farg1;
+  arg1 = (Teuchos::ArrayView<const size_t> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  arg3 = *farg3;
+  result = (Teuchos::ArrayView< unsigned long const > *) &((Teuchos::ArrayView< std::size_t const > const *)arg1)->assert_in_range(arg2,arg3);
+  fresult = new Teuchos::RCP<const Teuchos::ArrayView<const size_t> >(result SWIG_NO_NULL_DELETER_0);
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_spcopy_TeuchosArrayViewSizeTConst(void* farg1) {
+  Teuchos::RCP< Teuchos::ArrayView<const size_t> >* arg1 = (Teuchos::RCP< Teuchos::ArrayView<const size_t> > *)farg1;
+  return new Teuchos::RCP< Teuchos::ArrayView<const size_t> >(*arg1);
 }
 
 
@@ -1705,6 +2573,12 @@ SWIGEXPORT void swigc_delete_TeuchosComm(void* farg1) {
       } while(0);
     }
   }
+}
+
+
+SWIGEXPORT void* swigc_spcopy_TeuchosComm(void* farg1) {
+  Teuchos::RCP< Teuchos::Comm<int> >* arg1 = (Teuchos::RCP< Teuchos::Comm<int> > *)farg1;
+  return new Teuchos::RCP< Teuchos::Comm<int> >(*arg1);
 }
 
 
@@ -3014,6 +3888,12 @@ SWIGEXPORT void swigc_delete_ParameterList(void* farg1) {
       } while(0);
     }
   }
+}
+
+
+SWIGEXPORT void* swigc_spcopy_ParameterList(void* farg1) {
+  Teuchos::RCP< Teuchos::ParameterList >* arg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
+  return new Teuchos::RCP< Teuchos::ParameterList >(*arg1);
 }
 
 
