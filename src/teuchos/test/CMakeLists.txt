@@ -11,6 +11,8 @@
 ##---------------------------------------------------------------------------##
 
 SET(TESTS
+  test_array.f90
+  test_arrayview.f90
   test_comm.f90
   test_plist.f90
   )
