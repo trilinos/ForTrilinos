@@ -3,4 +3,5 @@ TRIBITS_PACKAGE_DEFINE_DEPENDENCIES(
   Epetra            src/epetra      SS OPTIONAL
   Teuchos           src/teuchos     SS OPTIONAL
   SimpleInterface   src/simple      SS OPTIONAL
+  Tpetra            src/tpetra      SS OPTIONAL
 )
