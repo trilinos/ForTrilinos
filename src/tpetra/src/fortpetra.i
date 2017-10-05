@@ -31,3 +31,4 @@ namespace Kokkos {
 
 // Order matters!!!
 %include "Tpetra_Map.i"
+%include "Tpetra_MultiVector.i"
