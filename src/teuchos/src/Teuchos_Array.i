@@ -1,7 +1,6 @@
 %module forteuchos_array
 
 // Dependencies
-%include <std_vector.i>
 %include "Teuchos_RCP.i"
 
 %{
@@ -10,9 +9,6 @@
 
 // Typedefs
 typedef int Teuchos_Ordinal;
-
-%template(VectorInt)    std::vector<int>;
-%template(VectorDouble) std::vector<double>;
 
 // Make RCPs
 %teuchos_rcp(Teuchos::Array<int>)

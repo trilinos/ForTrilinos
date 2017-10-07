@@ -207,12 +207,6 @@ void array_size_check(size_t src, size_t dst)
 }
 
 
-
-#include "Teuchos_RCP.hpp"
-
-
-#include "Teuchos_Array.hpp"
-
 SWIGINTERN void std_vector_Sl_int_Sg__set(std::vector< int > *self,std::vector< int >::size_type index,std::vector< int >::const_reference v){
         // TODO: check range
         (*self)[index] = v;
@@ -241,6 +235,12 @@ SWIGINTERN void std_vector_Sl_double_Sg__copy_to(std::vector< double > *self,std
         swig::array_size_check(self->size(), arrsize);
         std::copy(self->begin(), self->end(), arr);
     }
+
+#include "Teuchos_RCP.hpp"
+
+
+#include "Teuchos_Array.hpp"
+
 
 #define SWIG_NO_NULL_DELETER_0 , Teuchos::RCP_WEAK_NO_DEALLOC
 #define SWIG_NO_NULL_DELETER_1
