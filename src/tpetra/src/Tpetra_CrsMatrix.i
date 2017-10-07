@@ -11,8 +11,7 @@
 
 #define KOKKOS_INLINE_FUNCTION
 
-// ignore Details namespace
-%ignore Details;
+%ignore Tpetra::CrsMatrix::pack_functor;
 
 // POSTPONE
 %ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap, \
@@ -83,11 +82,12 @@
 %ignore Tpetra::CrsMatrix::getLocalValuesView;
 %ignore Tpetra::CrsMatrix::checkSizes;
 %ignore Tpetra::CrsMatrix::getLocalMatrix;
+%ignore Tpetra::CrsMatrix::getLocalRowView;
 
-%teuchos_rcp(Tpetra::CrsMatrix<Scalar,LocalOrdinal,GlobalOrdinal,Node,false>)
+%teuchos_rcp(Tpetra::CrsMatrix<SC,LO,GO,NO,false>)
 
 #define HAVE_TPETRA_INST_INT_INT
 %include "Tpetra_ConfigDefs.hpp"
 %include "Tpetra_CrsMatrix_decl.hpp"
 
-%template(TpetraCrsMatrix) Tpetra::CrsMatrix<Scalar,LocalOrdinal,GlobalOrdinal,Node,false>;
+%template(TpetraCrsMatrix) Tpetra::CrsMatrix<SC,LO,GO,NO,false>;

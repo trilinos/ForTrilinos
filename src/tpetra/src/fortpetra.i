@@ -29,7 +29,10 @@ namespace Kokkos {
 }
 %template() Kokkos::Details::ArithTraits<SC>;
 
+// ignore Details namespace
+%ignore Tpetra::Details;
+
 // Order matters!!!
 %include "Tpetra_Map.i"
 %include "Tpetra_MultiVector.i"
-/* %include "Tpetra_CrsMatrix.i" */
+%include "Tpetra_CrsMatrix.i"

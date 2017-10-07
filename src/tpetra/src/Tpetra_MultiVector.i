@@ -9,8 +9,8 @@
 
 #define TPETRA_DEPRECATED
 
-// ignore Details namespace
-%ignore Details;
+// Ignore
+%ignore Teuchos::TypeNameTraits;
 
 // POSTPONE
 %ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, const Teuchos::ArrayView<const Teuchos::ArrayView<const Scalar> >&ArrayOfPtrs, const size_t NumVectors);
