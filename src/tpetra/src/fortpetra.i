@@ -5,16 +5,16 @@
 %{
 #include "Tpetra_ConfigDefs.hpp"
 
-typedef double Scalar;
-typedef int LocalOrdinal;
-typedef int GlobalOrdinal;
-typedef Kokkos::Compat::KokkosSerialWrapperNode Node;
+typedef double                                  SC;
+typedef int                                     LO;
+typedef int                                     GO;
+typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
 %}
 
-typedef double Scalar;
-typedef int LocalOrdinal;
-typedef int GlobalOrdinal;
-typedef Kokkos::Compat::KokkosSerialWrapperNode Node;
+typedef double                                  SC;
+typedef int                                     LO;
+typedef int                                     GO;
+typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
 
 // Helper
 namespace Kokkos {
@@ -27,9 +27,9 @@ namespace Kokkos {
     };
   }
 }
-%template(ArithTraitsScalar) Kokkos::Details::ArithTraits<Scalar>;
+%template() Kokkos::Details::ArithTraits<SC>;
 
 // Order matters!!!
 %include "Tpetra_Map.i"
 %include "Tpetra_MultiVector.i"
-%include "Tpetra_CrsMatrix.i"
+/* %include "Tpetra_CrsMatrix.i" */

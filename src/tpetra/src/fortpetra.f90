@@ -9,12 +9,6 @@ module fortpetra
  implicit none
 
  ! PUBLIC METHODS AND TYPES
- public :: ESide
- public :: ETransp
- public :: EUplo
- public :: EDiag
- public :: EType
- public :: ArithTraitsScalar
  public :: LocalGlobal, LocallyReplicated, GloballyDistributed
  public :: LookupStatus, AllIDsPresent, IDNotPresent
  public :: ProfileType, StaticProfile, DynamicProfile
@@ -23,30 +17,8 @@ module fortpetra
  public :: EPrivateHostViewConstructor, HOST_VIEW_CONSTRUCTOR
  public :: ESweepDirection, Forward, Backward, Symmetric
  public :: TpetraMap
+ public :: TpetraMultiVector
  ! TYPES
- enum, bind(c)
-  enumerator :: ESide = -1
- end enum
- enum, bind(c)
-  enumerator :: ETransp = -1
- end enum
- enum, bind(c)
-  enumerator :: EUplo = -1
- end enum
- enum, bind(c)
-  enumerator :: EDiag = -1
- end enum
- enum, bind(c)
-  enumerator :: EType = -1
- end enum
- type :: ArithTraitsScalar
-  ! These should be treated as PROTECTED data
-  type(C_PTR), public :: swigptr = C_NULL_PTR
-  logical, public :: swigown = .false.
- contains
-  procedure :: create => swigf_new_ArithTraitsScalar
-  procedure :: release => swigf_delete_ArithTraitsScalar
- end type
  enum, bind(c)
   enumerator :: LocalGlobal = -1
   enumerator :: LocallyReplicated = 0
@@ -121,21 +93,60 @@ module fortpetra
   generic :: assignment(=) => swigf_assign_TpetraMap
   generic :: getRemoteIndexList => getRemoteIndexList__SWIG_0, getRemoteIndexList__SWIG_1
  end type
+ type :: TpetraMultiVector
+  type(C_PTR), public :: swigptr = C_NULL_PTR
+ contains
+  procedure, private :: create__SWIG_0 => swigf_new_TpetraMultiVector__SWIG_0
+  procedure, private :: create__SWIG_1 => swigf_new_TpetraMultiVector__SWIG_1
+  procedure, private :: create__SWIG_2 => swigf_new_TpetraMultiVector__SWIG_2
+  procedure, private :: create__SWIG_3 => swigf_new_TpetraMultiVector__SWIG_3
+  procedure, private :: create__SWIG_4 => swigf_new_TpetraMultiVector__SWIG_4
+  procedure, private :: create__SWIG_6 => swigf_new_TpetraMultiVector__SWIG_6
+  procedure, private :: create__SWIG_7 => swigf_new_TpetraMultiVector__SWIG_7
+  procedure :: release => swigf_delete_TpetraMultiVector
+  procedure :: replaceGlobalValue => swigf_TpetraMultiVector_replaceGlobalValue
+  procedure, private :: sumIntoGlobalValue__SWIG_0 => swigf_TpetraMultiVector_sumIntoGlobalValue__SWIG_0
+  procedure, private :: sumIntoGlobalValue__SWIG_1 => swigf_TpetraMultiVector_sumIntoGlobalValue__SWIG_1
+  procedure :: replaceLocalValue => swigf_TpetraMultiVector_replaceLocalValue
+  procedure, private :: sumIntoLocalValue__SWIG_0 => swigf_TpetraMultiVector_sumIntoLocalValue__SWIG_0
+  procedure, private :: sumIntoLocalValue__SWIG_1 => swigf_TpetraMultiVector_sumIntoLocalValue__SWIG_1
+  procedure :: putScalar => swigf_TpetraMultiVector_putScalar
+  procedure, private :: randomize__SWIG_0 => swigf_TpetraMultiVector_randomize__SWIG_0
+  procedure, private :: randomize__SWIG_1 => swigf_TpetraMultiVector_randomize__SWIG_1
+  procedure :: replaceMap => swigf_TpetraMultiVector_replaceMap
+  procedure :: reduce => swigf_TpetraMultiVector_reduce
+  procedure :: offsetViewNonConst => swigf_TpetraMultiVector_offsetViewNonConst
+  procedure :: abs => swigf_TpetraMultiVector_abs
+  procedure :: reciprocal => swigf_TpetraMultiVector_reciprocal
+  procedure, private :: scale__SWIG_0 => swigf_TpetraMultiVector_scale__SWIG_0
+  procedure, private :: scale__SWIG_1 => swigf_TpetraMultiVector_scale__SWIG_1
+  procedure, private :: scale__SWIG_2 => swigf_TpetraMultiVector_scale__SWIG_2
+  procedure, private :: update__SWIG_0 => swigf_TpetraMultiVector_update__SWIG_0
+  procedure, private :: update__SWIG_1 => swigf_TpetraMultiVector_update__SWIG_1
+  procedure :: normWeighted => swigf_TpetraMultiVector_normWeighted
+  procedure :: meanValue => swigf_TpetraMultiVector_meanValue
+  procedure :: multiply => swigf_TpetraMultiVector_multiply
+  procedure :: getNumVectors => swigf_TpetraMultiVector_getNumVectors
+  procedure :: getLocalLength => swigf_TpetraMultiVector_getLocalLength
+  procedure :: getGlobalLength => swigf_TpetraMultiVector_getGlobalLength
+  procedure :: getStride => swigf_TpetraMultiVector_getStride
+  procedure :: isConstantStride => swigf_TpetraMultiVector_isConstantStride
+  procedure :: description => swigf_TpetraMultiVector_description
+  procedure :: removeEmptyProcessesInPlace => swigf_TpetraMultiVector_removeEmptyProcessesInPlace
+  procedure, private :: swigf_assign_TpetraMultiVector
+  generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2, create__SWIG_3, create__SWIG_4, create__SWIG_6, &
+    create__SWIG_7
+  generic :: assignment(=) => swigf_assign_TpetraMultiVector
+  generic :: randomize => randomize__SWIG_0, randomize__SWIG_1
+  generic :: sumIntoGlobalValue => sumIntoGlobalValue__SWIG_0, sumIntoGlobalValue__SWIG_1
+  generic :: sumIntoLocalValue => sumIntoLocalValue__SWIG_0, sumIntoLocalValue__SWIG_1
+  generic :: scale => scale__SWIG_0, scale__SWIG_1, scale__SWIG_2
+  generic :: update => update__SWIG_0, update__SWIG_1
+ end type
 
  ! WRAPPER DECLARATIONS
  private
  interface
-  function swigc_new_ArithTraitsScalar() &
-     bind(C, name="swigc_new_ArithTraitsScalar") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-  end function
-  subroutine swigc_delete_ArithTraitsScalar(farg1) &
-     bind(C, name="swigc_delete_ArithTraitsScalar")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
   function swigc_new_TpetraMap__SWIG_0(farg1, farg2, farg3, farg4) &
      bind(C, name="swigc_new_TpetraMap__SWIG_0") &
      result(fresult)
@@ -391,26 +402,288 @@ module fortpetra
    type(C_PTR) :: fresult
    type(C_PTR), value :: farg1
   end function
+  function swigc_new_TpetraMultiVector__SWIG_0() &
+     bind(C, name="swigc_new_TpetraMultiVector__SWIG_0") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+  end function
+  function swigc_new_TpetraMultiVector__SWIG_1(farg1, farg2, farg3) &
+     bind(C, name="swigc_new_TpetraMultiVector__SWIG_1") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+   integer(C_SIZE_T), intent(in) :: farg2
+   logical(C_BOOL), intent(in) :: farg3
+  end function
+  function swigc_new_TpetraMultiVector__SWIG_2(farg1, farg2) &
+     bind(C, name="swigc_new_TpetraMultiVector__SWIG_2") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+   integer(C_SIZE_T), intent(in) :: farg2
+  end function
+  function swigc_new_TpetraMultiVector__SWIG_3(farg1) &
+     bind(C, name="swigc_new_TpetraMultiVector__SWIG_3") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_new_TpetraMultiVector__SWIG_4(farg1, farg2, farg3, farg4) &
+     bind(C, name="swigc_new_TpetraMultiVector__SWIG_4") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+   integer(C_SIZE_T), intent(in) :: farg3
+   integer(C_SIZE_T), intent(in) :: farg4
+  end function
+  function swigc_new_TpetraMultiVector__SWIG_6(farg1, farg2, farg3) &
+     bind(C, name="swigc_new_TpetraMultiVector__SWIG_6") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+   integer(C_SIZE_T), intent(in) :: farg3
+  end function
+  function swigc_new_TpetraMultiVector__SWIG_7(farg1, farg2) &
+     bind(C, name="swigc_new_TpetraMultiVector__SWIG_7") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+  end function
+  subroutine swigc_delete_TpetraMultiVector(farg1) &
+     bind(C, name="swigc_delete_TpetraMultiVector")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+  end subroutine
+  subroutine swigc_TpetraMultiVector_replaceGlobalValue(farg1, farg2, farg3, farg4) &
+     bind(C, name="swigc_TpetraMultiVector_replaceGlobalValue")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+   integer(C_SIZE_T), intent(in) :: farg3
+   real(C_DOUBLE), intent(in) :: farg4
+  end subroutine
+  subroutine swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
+     bind(C, name="swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+   integer(C_SIZE_T), intent(in) :: farg3
+   real(C_DOUBLE), intent(in) :: farg4
+   logical(C_BOOL), intent(in) :: farg5
+  end subroutine
+  subroutine swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_1(farg1, farg2, farg3, farg4) &
+     bind(C, name="swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_1")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+   integer(C_SIZE_T), intent(in) :: farg3
+   real(C_DOUBLE), intent(in) :: farg4
+  end subroutine
+  subroutine swigc_TpetraMultiVector_replaceLocalValue(farg1, farg2, farg3, farg4) &
+     bind(C, name="swigc_TpetraMultiVector_replaceLocalValue")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+   integer(C_SIZE_T), intent(in) :: farg3
+   real(C_DOUBLE), intent(in) :: farg4
+  end subroutine
+  subroutine swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
+     bind(C, name="swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+   integer(C_SIZE_T), intent(in) :: farg3
+   real(C_DOUBLE), intent(in) :: farg4
+   logical(C_BOOL), intent(in) :: farg5
+  end subroutine
+  subroutine swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_1(farg1, farg2, farg3, farg4) &
+     bind(C, name="swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_1")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+   integer(C_SIZE_T), intent(in) :: farg3
+   real(C_DOUBLE), intent(in) :: farg4
+  end subroutine
+  subroutine swigc_TpetraMultiVector_putScalar(farg1, farg2) &
+     bind(C, name="swigc_TpetraMultiVector_putScalar")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   real(C_DOUBLE), intent(in) :: farg2
+  end subroutine
+  subroutine swigc_TpetraMultiVector_randomize__SWIG_0(farg1) &
+     bind(C, name="swigc_TpetraMultiVector_randomize__SWIG_0")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+  end subroutine
+  subroutine swigc_TpetraMultiVector_randomize__SWIG_1(farg1, farg2, farg3) &
+     bind(C, name="swigc_TpetraMultiVector_randomize__SWIG_1")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   real(C_DOUBLE), intent(in) :: farg2
+   real(C_DOUBLE), intent(in) :: farg3
+  end subroutine
+  subroutine swigc_TpetraMultiVector_replaceMap(farg1, farg2) &
+     bind(C, name="swigc_TpetraMultiVector_replaceMap")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+  end subroutine
+  subroutine swigc_TpetraMultiVector_reduce(farg1) &
+     bind(C, name="swigc_TpetraMultiVector_reduce")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+  end subroutine
+  function swigc_TpetraMultiVector_offsetViewNonConst(farg1, farg2, farg3) &
+     bind(C, name="swigc_TpetraMultiVector_offsetViewNonConst") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+   integer(C_SIZE_T), intent(in) :: farg3
+  end function
+  subroutine swigc_TpetraMultiVector_abs(farg1, farg2) &
+     bind(C, name="swigc_TpetraMultiVector_abs")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+  end subroutine
+  subroutine swigc_TpetraMultiVector_reciprocal(farg1, farg2) &
+     bind(C, name="swigc_TpetraMultiVector_reciprocal")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+  end subroutine
+  subroutine swigc_TpetraMultiVector_scale__SWIG_0(farg1, farg2) &
+     bind(C, name="swigc_TpetraMultiVector_scale__SWIG_0")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   real(C_DOUBLE), intent(in) :: farg2
+  end subroutine
+  subroutine swigc_TpetraMultiVector_scale__SWIG_1(farg1, farg2) &
+     bind(C, name="swigc_TpetraMultiVector_scale__SWIG_1")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+  end subroutine
+  subroutine swigc_TpetraMultiVector_scale__SWIG_2(farg1, farg2, farg3) &
+     bind(C, name="swigc_TpetraMultiVector_scale__SWIG_2")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   real(C_DOUBLE), intent(in) :: farg2
+   type(C_PTR), value :: farg3
+  end subroutine
+  subroutine swigc_TpetraMultiVector_update__SWIG_0(farg1, farg2, farg3, farg4) &
+     bind(C, name="swigc_TpetraMultiVector_update__SWIG_0")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   real(C_DOUBLE), intent(in) :: farg2
+   type(C_PTR), value :: farg3
+   real(C_DOUBLE), intent(in) :: farg4
+  end subroutine
+  subroutine swigc_TpetraMultiVector_update__SWIG_1(farg1, farg2, farg3, farg4, farg5, farg6) &
+     bind(C, name="swigc_TpetraMultiVector_update__SWIG_1")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   real(C_DOUBLE), intent(in) :: farg2
+   type(C_PTR), value :: farg3
+   real(C_DOUBLE), intent(in) :: farg4
+   type(C_PTR), value :: farg5
+   real(C_DOUBLE), intent(in) :: farg6
+  end subroutine
+  subroutine swigc_TpetraMultiVector_normWeighted(farg1, farg2, farg3) &
+     bind(C, name="swigc_TpetraMultiVector_normWeighted")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+   type(C_PTR), value :: farg3
+  end subroutine
+  subroutine swigc_TpetraMultiVector_meanValue(farg1, farg2) &
+     bind(C, name="swigc_TpetraMultiVector_meanValue")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+  end subroutine
+  subroutine swigc_TpetraMultiVector_multiply(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
+     bind(C, name="swigc_TpetraMultiVector_multiply")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   integer(C_INT), intent(in) :: farg2
+   integer(C_INT), intent(in) :: farg3
+   real(C_DOUBLE), intent(in) :: farg4
+   type(C_PTR), value :: farg5
+   type(C_PTR), value :: farg6
+   real(C_DOUBLE), intent(in) :: farg7
+  end subroutine
+  function swigc_TpetraMultiVector_getNumVectors(farg1) &
+     bind(C, name="swigc_TpetraMultiVector_getNumVectors") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_SIZE_T) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_TpetraMultiVector_getLocalLength(farg1) &
+     bind(C, name="swigc_TpetraMultiVector_getLocalLength") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_SIZE_T) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_TpetraMultiVector_getGlobalLength(farg1) &
+     bind(C, name="swigc_TpetraMultiVector_getGlobalLength") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_LONG) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_TpetraMultiVector_getStride(farg1) &
+     bind(C, name="swigc_TpetraMultiVector_getStride") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_SIZE_T) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_TpetraMultiVector_isConstantStride(farg1) &
+     bind(C, name="swigc_TpetraMultiVector_isConstantStride") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   logical(C_BOOL) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_TpetraMultiVector_description(farg1) &
+     bind(C, name="swigc_TpetraMultiVector_description") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  subroutine swigc_TpetraMultiVector_removeEmptyProcessesInPlace(farg1, farg2) &
+     bind(C, name="swigc_TpetraMultiVector_removeEmptyProcessesInPlace")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+  end subroutine
+  function swigc_spcopy_TpetraMultiVector(farg1) &
+     bind(C, name="swigc_spcopy_TpetraMultiVector") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
  end interface
 
 contains
   ! FORTRAN PROXY CODE
-  subroutine swigf_new_ArithTraitsScalar(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(ArithTraitsScalar) :: self
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_ArithTraitsScalar()
-   self%swigown = .true.
-  end subroutine
-  subroutine swigf_delete_ArithTraitsScalar(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(ArithTraitsScalar) :: self
-   if (self%swigown) then
-    call swigc_delete_ArithTraitsScalar(self%swigptr)
-    self%swigown = .false.
-   end if
-   self%swigptr = C_NULL_PTR
-  end subroutine
   subroutine swigf_new_TpetraMap__SWIG_0(self, numGlobalElements, indexBase, comm, lg)
    use, intrinsic :: ISO_C_BINDING
    class(TpetraMap) :: self
@@ -667,5 +940,285 @@ contains
    type(TpetraMap), intent(in) :: other
    call self%release()
    self%swigptr = swigc_spcopy_TpetraMap(other%swigptr)
+  end subroutine
+  subroutine swigf_new_TpetraMultiVector__SWIG_0(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_TpetraMultiVector__SWIG_0()
+  end subroutine
+  subroutine swigf_new_TpetraMultiVector__SWIG_1(self, map, numVecs, zeroOut)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   type(TpetraMap) :: map
+   integer(C_SIZE_T), intent(in) :: numVecs
+   logical(C_BOOL), intent(in) :: zeroOut
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_TpetraMultiVector__SWIG_1(map%swigptr, numVecs, zeroOut)
+  end subroutine
+  subroutine swigf_new_TpetraMultiVector__SWIG_2(self, map, numVecs)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   type(TpetraMap) :: map
+   integer(C_SIZE_T), intent(in) :: numVecs
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_TpetraMultiVector__SWIG_2(map%swigptr, numVecs)
+  end subroutine
+  subroutine swigf_new_TpetraMultiVector__SWIG_3(self, source)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   class(TpetraMultiVector) :: source
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_TpetraMultiVector__SWIG_3(source%swigptr)
+  end subroutine
+  subroutine swigf_new_TpetraMultiVector__SWIG_4(self, map, A, LDA, NumVectors)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   type(TpetraMap) :: map
+   class(TeuchosArrayViewDoubleConst) :: A
+   integer(C_SIZE_T), intent(in) :: LDA
+   integer(C_SIZE_T), intent(in) :: NumVectors
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_TpetraMultiVector__SWIG_4(map%swigptr, A%swigptr, LDA, NumVectors)
+  end subroutine
+  subroutine swigf_new_TpetraMultiVector__SWIG_6(self, X, subMap, offset)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   class(TpetraMultiVector) :: X
+   class(TpetraMap) :: subMap
+   integer(C_SIZE_T), intent(in) :: offset
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_TpetraMultiVector__SWIG_6(X%swigptr, subMap%swigptr, offset)
+  end subroutine
+  subroutine swigf_new_TpetraMultiVector__SWIG_7(self, X, subMap)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   class(TpetraMultiVector) :: X
+   class(TpetraMap) :: subMap
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_TpetraMultiVector__SWIG_7(X%swigptr, subMap%swigptr)
+  end subroutine
+  subroutine swigf_delete_TpetraMultiVector(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   call swigc_delete_TpetraMultiVector(self%swigptr)
+   self%swigptr = C_NULL_PTR
+  end subroutine
+  subroutine swigf_TpetraMultiVector_replaceGlobalValue(self, gblRow, col, value)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   integer(C_INT), intent(in) :: gblRow
+   integer(C_SIZE_T), intent(in) :: col
+   real(C_DOUBLE), intent(in) :: value
+   call swigc_TpetraMultiVector_replaceGlobalValue(self%swigptr, gblRow, col, value)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(self, gblRow, col, value, atomic)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   integer(C_INT), intent(in) :: gblRow
+   integer(C_SIZE_T), intent(in) :: col
+   real(C_DOUBLE), intent(in) :: value
+   logical(C_BOOL), intent(in) :: atomic
+   call swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(self%swigptr, gblRow, col, value, atomic)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_sumIntoGlobalValue__SWIG_1(self, gblRow, col, value)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   integer(C_INT), intent(in) :: gblRow
+   integer(C_SIZE_T), intent(in) :: col
+   real(C_DOUBLE), intent(in) :: value
+   call swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_1(self%swigptr, gblRow, col, value)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_replaceLocalValue(self, lclRow, col, value)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   integer(C_INT), intent(in) :: lclRow
+   integer(C_SIZE_T), intent(in) :: col
+   real(C_DOUBLE), intent(in) :: value
+   call swigc_TpetraMultiVector_replaceLocalValue(self%swigptr, lclRow, col, value)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_sumIntoLocalValue__SWIG_0(self, lclRow, col, val, atomic)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   integer(C_INT), intent(in) :: lclRow
+   integer(C_SIZE_T), intent(in) :: col
+   real(C_DOUBLE), intent(in) :: val
+   logical(C_BOOL), intent(in) :: atomic
+   call swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0(self%swigptr, lclRow, col, val, atomic)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_sumIntoLocalValue__SWIG_1(self, lclRow, col, val)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   integer(C_INT), intent(in) :: lclRow
+   integer(C_SIZE_T), intent(in) :: col
+   real(C_DOUBLE), intent(in) :: val
+   call swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_1(self%swigptr, lclRow, col, val)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_putScalar(self, value)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   real(C_DOUBLE), intent(in) :: value
+   call swigc_TpetraMultiVector_putScalar(self%swigptr, value)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_randomize__SWIG_0(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   call swigc_TpetraMultiVector_randomize__SWIG_0(self%swigptr)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_randomize__SWIG_1(self, minVal, maxVal)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   real(C_DOUBLE), intent(in) :: minVal
+   real(C_DOUBLE), intent(in) :: maxVal
+   call swigc_TpetraMultiVector_randomize__SWIG_1(self%swigptr, minVal, maxVal)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_replaceMap(self, map)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   type(TpetraMap) :: map
+   call swigc_TpetraMultiVector_replaceMap(self%swigptr, map%swigptr)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_reduce(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   call swigc_TpetraMultiVector_reduce(self%swigptr)
+  end subroutine
+  function swigf_TpetraMultiVector_offsetViewNonConst(self, subMap, offset) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(TpetraMultiVector) :: fresult
+   class(TpetraMultiVector) :: self
+   type(TpetraMap) :: subMap
+   integer(C_SIZE_T), intent(in) :: offset
+   fresult%swigptr = swigc_TpetraMultiVector_offsetViewNonConst(self%swigptr, subMap%swigptr, offset)
+  end function
+  subroutine swigf_TpetraMultiVector_abs(self, A)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   class(TpetraMultiVector) :: A
+   call swigc_TpetraMultiVector_abs(self%swigptr, A%swigptr)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_reciprocal(self, A)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   class(TpetraMultiVector) :: A
+   call swigc_TpetraMultiVector_reciprocal(self%swigptr, A%swigptr)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_scale__SWIG_0(self, alpha)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   real(C_DOUBLE), intent(in) :: alpha
+   call swigc_TpetraMultiVector_scale__SWIG_0(self%swigptr, alpha)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_scale__SWIG_1(self, alpha)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   class(TeuchosArrayViewDoubleConst) :: alpha
+   call swigc_TpetraMultiVector_scale__SWIG_1(self%swigptr, alpha%swigptr)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_scale__SWIG_2(self, alpha, A)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   real(C_DOUBLE), intent(in) :: alpha
+   class(TpetraMultiVector) :: A
+   call swigc_TpetraMultiVector_scale__SWIG_2(self%swigptr, alpha, A%swigptr)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_update__SWIG_0(self, alpha, A, beta)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   real(C_DOUBLE), intent(in) :: alpha
+   class(TpetraMultiVector) :: A
+   real(C_DOUBLE), intent(in) :: beta
+   call swigc_TpetraMultiVector_update__SWIG_0(self%swigptr, alpha, A%swigptr, beta)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_update__SWIG_1(self, alpha, A, beta, B, gamma)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   real(C_DOUBLE), intent(in) :: alpha
+   class(TpetraMultiVector) :: A
+   real(C_DOUBLE), intent(in) :: beta
+   class(TpetraMultiVector) :: B
+   real(C_DOUBLE), intent(in) :: gamma
+   call swigc_TpetraMultiVector_update__SWIG_1(self%swigptr, alpha, A%swigptr, beta, B%swigptr, gamma)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_normWeighted(self, weights, norms)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   class(TpetraMultiVector) :: weights
+   class(TeuchosArrayViewDouble) :: norms
+   call swigc_TpetraMultiVector_normWeighted(self%swigptr, weights%swigptr, norms%swigptr)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_meanValue(self, means)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   class(TeuchosArrayViewDouble) :: means
+   call swigc_TpetraMultiVector_meanValue(self%swigptr, means%swigptr)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_multiply(self, transA, transB, alpha, A, B, beta)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   integer(kind(ETransp)) :: transA
+   integer(kind(ETransp)) :: transB
+   real(C_DOUBLE), intent(in) :: alpha
+   class(TpetraMultiVector) :: A
+   class(TpetraMultiVector) :: B
+   real(C_DOUBLE), intent(in) :: beta
+   call swigc_TpetraMultiVector_multiply(self%swigptr, transA, transB, alpha, A%swigptr, B%swigptr, beta)
+  end subroutine
+  function swigf_TpetraMultiVector_getNumVectors(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_SIZE_T) :: fresult
+   class(TpetraMultiVector) :: self
+   fresult = swigc_TpetraMultiVector_getNumVectors(self%swigptr)
+  end function
+  function swigf_TpetraMultiVector_getLocalLength(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_SIZE_T) :: fresult
+   class(TpetraMultiVector) :: self
+   fresult = swigc_TpetraMultiVector_getLocalLength(self%swigptr)
+  end function
+  function swigf_TpetraMultiVector_getGlobalLength(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_LONG) :: fresult
+   class(TpetraMultiVector) :: self
+   fresult = swigc_TpetraMultiVector_getGlobalLength(self%swigptr)
+  end function
+  function swigf_TpetraMultiVector_getStride(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_SIZE_T) :: fresult
+   class(TpetraMultiVector) :: self
+   fresult = swigc_TpetraMultiVector_getStride(self%swigptr)
+  end function
+  function swigf_TpetraMultiVector_isConstantStride(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   logical(C_BOOL) :: fresult
+   class(TpetraMultiVector) :: self
+   fresult = swigc_TpetraMultiVector_isConstantStride(self%swigptr)
+  end function
+  function swigf_TpetraMultiVector_description(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(string) :: fresult
+   class(TpetraMultiVector) :: self
+   fresult%swigptr = swigc_TpetraMultiVector_description(self%swigptr)
+   fresult%swigown = .true.
+  end function
+  subroutine swigf_TpetraMultiVector_removeEmptyProcessesInPlace(self, newMap)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   type(TpetraMap) :: newMap
+   call swigc_TpetraMultiVector_removeEmptyProcessesInPlace(self%swigptr, newMap%swigptr)
+  end subroutine
+  subroutine swigf_assign_TpetraMultiVector(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector), intent(inout) :: self
+   type(TpetraMultiVector), intent(in) :: other
+   call self%release()
+   self%swigptr = swigc_spcopy_TpetraMultiVector(other%swigptr)
   end subroutine
 end module fortpetra

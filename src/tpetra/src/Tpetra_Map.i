@@ -41,10 +41,10 @@
 %ignore Tpetra::Map::removeEmptyProcesses;
 %ignore Tpetra::Map::replaceCommWithSubset;
 
-%teuchos_rcp(Tpetra::Map<LocalOrdinal,GlobalOrdinal,Node>)
+%teuchos_rcp(Tpetra::Map<LO,GO,NO>)
 
 #define HAVE_TPETRA_INST_INT_INT
 %include "Tpetra_ConfigDefs.hpp"
 %include "Tpetra_Map_decl.hpp"
 
-%template(TpetraMap) Tpetra::Map<LocalOrdinal,GlobalOrdinal,Node>;
+%template(TpetraMap) Tpetra::Map<LO,GO,NO>;
