@@ -10,7 +10,8 @@
 #include "solver_handle.hpp"
 %}
 
-%include "Teuchos_Comm.i"
+%import <forteuchos.i>
+%import <fortpetra.i>
 %include "solver_handle.hpp"
 
 //---------------------------------------------------------------------------//

@@ -1,7 +1,8 @@
 %module fortrilinos
 
 // Load Teuchos definitions
-%import "forteuchos.i"
+%import <forteuchos.i>
+%import <fortpetra.i>
 
 %include "ForTrilinosSimpleInterface_config.hpp"
 

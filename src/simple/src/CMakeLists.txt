@@ -17,6 +17,7 @@ IF (ForTrilinos_ENABLE_DeveloperMode)
 
   MAKE_SWIG(MODULE fortrilinos
     SOURCE fortrilinos.i
+    DEPLIBS ${Trilinos_LIBRARIES}
     EXTRASRC ${EXTRA_SOURCE}
     )
 

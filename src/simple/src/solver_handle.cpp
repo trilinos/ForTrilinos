@@ -33,10 +33,13 @@ namespace ForTrilinos {
   }
 
   void SolverHandle::setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) {
+    auto A = HandleHelpers::setup_matrix_gen(comm_, numRows, rowInds, rowPtrs, numNnz, colInds, values);
+    setup_matrix(A);
+  }
+
+  void SolverHandle::setup_matrix(const Teuchos::RCP<Matrix> A) {
     TEUCHOS_ASSERT(status_ == INITIALIZED);
-
-    A_ = HandleHelpers::setup_matrix_gen(comm_, numRows, rowInds, rowPtrs, numNnz, colInds, values);
-
+    A_ = Teuchos::rcp_dynamic_cast<Operator>(A);
     status_ = MATRIX_SETUP;
   }
 
@@ -48,7 +51,7 @@ namespace ForTrilinos {
     status_ = MATRIX_SETUP;
   }
 
-  void SolverHandle::setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList) {
+  void SolverHandle::setup_solver(const Teuchos::RCP<Teuchos::ParameterList> paramList) {
     using Teuchos::RCP;
     using Teuchos::rcp;
     using Teuchos::rcp_implicit_cast;
@@ -61,7 +64,7 @@ namespace ForTrilinos {
     RCP<const Thyra::LinearOpBase<SC> > A = Thyra::tpetraLinearOp<SC,LO,GO,NO>(
           Thyra::tpetraVectorSpace<SC,LO,GO,NO>(A_->getDomainMap()),
           Thyra::tpetraVectorSpace<SC,LO,GO,NO>(A_->getRangeMap()),
-          rcp_implicit_cast<Tpetra::Operator<SC,LO,GO,NO> >(A_));
+          A_);
 
 
     // Build Stratimikos solver
@@ -89,11 +92,6 @@ namespace ForTrilinos {
   }
 
   void SolverHandle::solve(int size, const double* rhs, double* lhs) const {
-    using Teuchos::RCP;
-    using Teuchos::ArrayRCP;
-
-    TEUCHOS_ASSERT(status_ == SOLVER_SETUP);
-
     auto map = A_->getDomainMap();
 
     TEUCHOS_ASSERT(size >= 0);
@@ -103,30 +101,41 @@ namespace ForTrilinos {
     // NOTE: This is a major simplification
     TEUCHOS_ASSERT(map->isSameAs(*(A_->getRangeMap())));
 
-    RCP<Vector> X = rcp(new Vector(map));
-    RCP<Vector> B = rcp(new Vector(map));
+    auto X = Teuchos::rcp(new MultiVector(map, 1));
+    auto B = Teuchos::rcp(new MultiVector(map, 1));
 
     // FIXME: data copying
-    auto Xdata = X->getDataNonConst();
-    auto Bdata = B->getDataNonConst();
+    auto Xdata = X->getDataNonConst(0);
+    auto Bdata = B->getDataNonConst(0);
     for (int i = 0; i < size; i++) {
       Xdata[i] = lhs[i];
       Bdata[i] = rhs[i];
     }
 
-    auto thyraX =
-        Thyra::tpetraVector<SC,LO,GO,NO>(Thyra::tpetraVectorSpace<SC,LO,GO,NO>(map), X);
-    auto thyraB =
-        Thyra::tpetraVector<SC,LO,GO,NO>(Thyra::tpetraVectorSpace<SC,LO,GO,NO>(map), B);
-
-    Thyra::SolveStatus<SC> status = Thyra::solve<SC>(*thyraInverseA_, Thyra::NOTRANS, *thyraB, thyraX.ptr());
-
-    if (!map->getComm()->getRank())
-      std::cout << status << std::endl;
+    solve(B, X);
 
     // FIXME: fix data copying
     for (int i = 0; i < size; i++)
       lhs[i] = Xdata[i];
+  }
+
+  void SolverHandle::solve(const Teuchos::RCP<const MultiVector> B, Teuchos::RCP<MultiVector> X) const {
+    TEUCHOS_ASSERT(status_ == SOLVER_SETUP);
+
+    TEUCHOS_ASSERT(X->getMap()->isSameAs(*A_->getDomainMap()));
+    TEUCHOS_ASSERT(B->getMap()->isSameAs(*A_->getRangeMap()));
+
+    auto map = A_->getDomainMap();
+
+    auto thyraX = Thyra::createMultiVector(X);
+    auto thyraB = Thyra::createConstMultiVector(B);
+    // auto thyraX = Thyra::tpetraMultiVector<SC,LO,GO,NO>(Thyra::tpetraVectorSpace<SC,LO,GO,NO>(map), X);
+    // auto thyraB = Thyra::tpetraMultiVector<SC,LO,GO,NO>(Thyra::tpetraVectorSpace<SC,LO,GO,NO>(map), B);
+
+    auto status = Thyra::solve<SC>(*thyraInverseA_, Thyra::NOTRANS, *thyraB, thyraX.ptr());
+
+    if (!map->getComm()->getRank())
+      std::cout << status << std::endl;
   }
 
   void SolverHandle::finalize() {

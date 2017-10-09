@@ -178,7 +178,28 @@ template <typename T> T SwigValueInit() {
 swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
 
 
+#include <algorithm>
+
+
 #include <stdexcept>
+
+
+#include <sstream>
+
+
+namespace swig
+{
+void array_size_check(size_t src, size_t dst)
+{
+    if (dst < src)
+    {
+        std::ostringstream os;
+        os << "Array size mismatch: " << src << " != " << dst;
+        throw std::range_error(os.str());
+    }
+}
+}
+
 
 
 namespace swig
@@ -189,13 +210,7 @@ void fortran_store_exception(int code, const char *msg);
 } // end namespace swig
 
 
-#include <algorithm>
-
-
 #include <string>
-
-
-#include <sstream>
 
 
 namespace swig
@@ -216,21 +231,6 @@ void string_copyout(const std::string& str, char* s, size_t count)
 
     s = std::copy(str.begin(), str.end(), s);
     std::fill_n(s, count - str.size(), ' ');
-}
-}
-
-
-
-namespace swig
-{
-void array_size_check(size_t src, size_t dst)
-{
-    if (dst < src)
-    {
-        std::ostringstream os;
-        os << "Array size mismatch: " << src << " != " << dst;
-        throw std::range_error(os.str());
-    }
 }
 }
 
@@ -357,7 +357,7 @@ SWIGEXPORT void swigc_SolverHandle_init__SWIG_1(void* farg1, void * farg2) {
 }
 
 
-SWIGEXPORT void swigc_SolverHandle_setup_matrix(void* farg1, const int* farg2, int * farg3, int * farg4, const int* farg5, int * farg6, double * farg7) {
+SWIGEXPORT void swigc_SolverHandle_setup_matrix__SWIG_0(void* farg1, const int* farg2, int * farg3, int * farg4, const int* farg5, int * farg6, double * farg7) {
   ForTrilinos::SolverHandle *arg1 = (ForTrilinos::SolverHandle *) 0 ;
   int arg2 ;
   int *arg3 = (int *) 0 ;
@@ -380,6 +380,44 @@ SWIGEXPORT void swigc_SolverHandle_setup_matrix(void* farg1, const int* farg2, i
     {
       // Attempt the wrapped function call
       (arg1)->setup_matrix(arg2,(int const *)arg3,(int const *)arg4,arg5,(int const *)arg6,(double const *)arg7);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_SolverHandle_setup_matrix__SWIG_1(void* farg1, void * farg2) {
+  ForTrilinos::SolverHandle *arg1 = (ForTrilinos::SolverHandle *) 0 ;
+  Teuchos::RCP< ForTrilinos::SolverHandle::Matrix > arg2 ;
+  
+  arg1 = (ForTrilinos::SolverHandle *)(farg1);
+  if (farg2) arg2 = *(Teuchos::RCP< ForTrilinos::SolverHandle::Matrix > *)farg2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->setup_matrix(arg2);
     }
     catch (const std::range_error& e)
     {
@@ -449,18 +487,17 @@ SWIGEXPORT void swigc_SolverHandle_setup_operator(void* farg1, const int* farg2,
 
 SWIGEXPORT void swigc_SolverHandle_setup_solver(void* farg1, void * farg2) {
   ForTrilinos::SolverHandle *arg1 = (ForTrilinos::SolverHandle *) 0 ;
-  Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
-  Teuchos::RCP< Teuchos::ParameterList > tempnull2 ;
+  Teuchos::RCP< Teuchos::ParameterList > arg2 ;
   
   arg1 = (ForTrilinos::SolverHandle *)(farg1);
-  arg2 = farg2 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg2 : &tempnull2;
+  if (farg2) arg2 = *(Teuchos::RCP< Teuchos::ParameterList > *)farg2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      (arg1)->setup_solver((Teuchos::RCP< Teuchos::ParameterList > const &)*arg2);
+      (arg1)->setup_solver(arg2);
     }
     catch (const std::range_error& e)
     {
@@ -486,7 +523,7 @@ SWIGEXPORT void swigc_SolverHandle_setup_solver(void* farg1, void * farg2) {
 }
 
 
-SWIGEXPORT void swigc_SolverHandle_solve(const void* farg1, const int* farg2, double * farg3, double * farg4) {
+SWIGEXPORT void swigc_SolverHandle_solve__SWIG_0(const void* farg1, const int* farg2, double * farg3, double * farg4) {
   ForTrilinos::SolverHandle *arg1 = (ForTrilinos::SolverHandle *) 0 ;
   int arg2 ;
   double *arg3 = (double *) 0 ;
@@ -503,6 +540,46 @@ SWIGEXPORT void swigc_SolverHandle_solve(const void* farg1, const int* farg2, do
     {
       // Attempt the wrapped function call
       ((ForTrilinos::SolverHandle const *)arg1)->solve(arg2,(double const *)arg3,arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_SolverHandle_solve__SWIG_1(const void* farg1, void * farg2, void * farg3) {
+  ForTrilinos::SolverHandle *arg1 = (ForTrilinos::SolverHandle *) 0 ;
+  Teuchos::RCP< ForTrilinos::SolverHandle::MultiVector const > arg2 ;
+  Teuchos::RCP< ForTrilinos::SolverHandle::MultiVector > arg3 ;
+  
+  arg1 = (ForTrilinos::SolverHandle *)(farg1);
+  if (farg2) arg2 = *(Teuchos::RCP< ForTrilinos::SolverHandle::MultiVector const > *)farg2;
+  if (farg3) arg3 = *(Teuchos::RCP< ForTrilinos::SolverHandle::MultiVector > *)farg3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      ((ForTrilinos::SolverHandle const *)arg1)->solve(arg2,arg3);
     }
     catch (const std::range_error& e)
     {
