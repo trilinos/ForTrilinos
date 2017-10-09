@@ -309,7 +309,7 @@ SWIGEXPORT void* swigc_new_TpetraMap__SWIG_0(const unsigned long* farg1, const i
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(Teuchos::null);
   return fresult;
 }
 
@@ -354,7 +354,7 @@ SWIGEXPORT void* swigc_new_TpetraMap__SWIG_1(const unsigned long* farg1, const i
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(Teuchos::null);
   return fresult;
 }
 
@@ -401,7 +401,7 @@ SWIGEXPORT void* swigc_new_TpetraMap__SWIG_2(const unsigned long* farg1, const s
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(Teuchos::null);
   return fresult;
 }
 
@@ -450,7 +450,7 @@ SWIGEXPORT void* swigc_new_TpetraMap__SWIG_3(const unsigned long* farg1, int * f
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(Teuchos::null);
   return fresult;
 }
 
@@ -504,7 +504,7 @@ SWIGEXPORT void* swigc_new_TpetraMap__SWIG_4(const unsigned long* farg1, const v
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(Teuchos::null);
   return fresult;
 }
 
@@ -542,7 +542,7 @@ SWIGEXPORT void* swigc_new_TpetraMap__SWIG_5() {
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(Teuchos::null);
   return fresult;
 }
 
@@ -1668,7 +1668,7 @@ SWIGEXPORT void * swigc_TpetraMap_getComm(const void* farg1) {
       } while(0);
     }
   }
-  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Teuchos::Comm< int > const >(result) : 0;
+  fresult = (!Teuchos::is_null((Teuchos::RCP< Teuchos::Comm< int > const >)result)) ? new Teuchos::RCP< Teuchos::Comm< int > const >(result) : new Teuchos::RCP< Teuchos::Comm< int > const >(Teuchos::null);
   return fresult;
 }
 
@@ -1760,7 +1760,7 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_0() {
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(Teuchos::null);
   return fresult;
 }
 
@@ -1805,7 +1805,7 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_1(void * farg1, const size_t*
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(Teuchos::null);
   return fresult;
 }
 
@@ -1848,7 +1848,7 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_2(void * farg1, const size_t*
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(Teuchos::null);
   return fresult;
 }
 
@@ -1895,7 +1895,7 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_3(const void* farg1) {
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(Teuchos::null);
   return fresult;
 }
 
@@ -1949,7 +1949,7 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_4(void * farg1, const void* f
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(Teuchos::null);
   return fresult;
 }
 
@@ -2007,7 +2007,7 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_6(const void* farg1, const vo
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(Teuchos::null);
   return fresult;
 }
 
@@ -2063,7 +2063,7 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_7(const void* farg1, const vo
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(Teuchos::null);
   return fresult;
 }
 
@@ -2615,7 +2615,7 @@ SWIGEXPORT void * swigc_TpetraMultiVector_offsetViewNonConst(void* farg1, void *
       } while(0);
     }
   }
-  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > >(result) : 0;
+  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > >)result)) ? new Teuchos::RCP< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > >(result) : new Teuchos::RCP< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > >(Teuchos::null);
   return fresult;
 }
 
@@ -3478,7 +3478,7 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_0(void * farg1, const size_t* f
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(Teuchos::null);
   return fresult;
 }
 
@@ -3523,7 +3523,7 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_1(void * farg1, const size_t* f
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(Teuchos::null);
   return fresult;
 }
 
@@ -3566,7 +3566,7 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_2(void * farg1, const size_t* f
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(Teuchos::null);
   return fresult;
 }
 
@@ -3617,7 +3617,7 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_3(void * farg1, void * farg2, c
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(Teuchos::null);
   return fresult;
 }
 
@@ -3665,7 +3665,7 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_4(void * farg1, void * farg2, c
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(Teuchos::null);
   return fresult;
 }
 
@@ -3711,7 +3711,7 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_5(void * farg1, void * farg2, c
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(Teuchos::null);
   return fresult;
 }
 
@@ -5128,7 +5128,7 @@ SWIGEXPORT void * swigc_TpetraCrsMatrix_getComm(const void* farg1) {
       } while(0);
     }
   }
-  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Teuchos::Comm< int > const >(result) : 0;
+  fresult = (!Teuchos::is_null((Teuchos::RCP< Teuchos::Comm< int > const >)result)) ? new Teuchos::RCP< Teuchos::Comm< int > const >(result) : new Teuchos::RCP< Teuchos::Comm< int > const >(Teuchos::null);
   return fresult;
 }
 
@@ -5170,7 +5170,7 @@ SWIGEXPORT void * swigc_TpetraCrsMatrix_getRowMap(const void* farg1) {
       } while(0);
     }
   }
-  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : 0;
+  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(Teuchos::null);
   return fresult;
 }
 
@@ -5212,7 +5212,7 @@ SWIGEXPORT void * swigc_TpetraCrsMatrix_getColMap(const void* farg1) {
       } while(0);
     }
   }
-  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : 0;
+  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(Teuchos::null);
   return fresult;
 }
 
@@ -6814,7 +6814,7 @@ SWIGEXPORT void * swigc_TpetraCrsMatrix_getDomainMap(const void* farg1) {
       } while(0);
     }
   }
-  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : 0;
+  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(Teuchos::null);
   return fresult;
 }
 
@@ -6856,7 +6856,7 @@ SWIGEXPORT void * swigc_TpetraCrsMatrix_getRangeMap(const void* farg1) {
       } while(0);
     }
   }
-  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : 0;
+  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(Teuchos::null);
   return fresult;
 }
 
