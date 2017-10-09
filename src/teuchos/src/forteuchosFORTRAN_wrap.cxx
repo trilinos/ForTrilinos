@@ -943,7 +943,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayInt__SWIG_0() {
   Teuchos::Array< int > *result = 0 ;
   
   result = (Teuchos::Array< int > *)new Teuchos::Array< int >();
-  fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::Array<int> >(Teuchos::null);
   return fresult;
 }
 
@@ -957,7 +957,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayInt__SWIG_1(const int* farg1, const int* 
   arg1 = *farg1;
   arg2 = (Teuchos::Array< int >::value_type *)(farg2);
   result = (Teuchos::Array< int > *)new Teuchos::Array< int >(arg1,(Teuchos::Array< int >::value_type const &)*arg2);
-  fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::Array<int> >(Teuchos::null);
   return fresult;
 }
 
@@ -969,7 +969,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayInt__SWIG_2(const int* farg1) {
   
   arg1 = *farg1;
   result = (Teuchos::Array< int > *)new Teuchos::Array< int >(arg1);
-  fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::Array<int> >(Teuchos::null);
   return fresult;
 }
 
@@ -988,7 +988,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayInt__SWIG_3(const void* farg1) {
     return 0;
   }
   result = (Teuchos::Array< int > *)new Teuchos::Array< int >((Teuchos::Array< int > const &)*arg1);
-  fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::Array<int> >(Teuchos::null);
   return fresult;
 }
 
@@ -1169,7 +1169,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayInt__SWIG_4(const void* farg1) {
   
   arg1 = (std::vector< int,std::allocator< int > > *)(farg1);
   result = (Teuchos::Array< int > *)new Teuchos::Array< int >((std::vector< int,std::allocator< int > > const &)*arg1);
-  fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::Array<int> >(Teuchos::null);
   return fresult;
 }
 
@@ -1185,7 +1185,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayDouble__SWIG_0() {
   Teuchos::Array< double > *result = 0 ;
   
   result = (Teuchos::Array< double > *)new Teuchos::Array< double >();
-  fresult = result ? new Teuchos::RCP< Teuchos::Array<double> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::Array<double> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::Array<double> >(Teuchos::null);
   return fresult;
 }
 
@@ -1199,7 +1199,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayDouble__SWIG_1(const int* farg1, const do
   arg1 = *farg1;
   arg2 = (Teuchos::Array< double >::value_type *)(farg2);
   result = (Teuchos::Array< double > *)new Teuchos::Array< double >(arg1,(Teuchos::Array< double >::value_type const &)*arg2);
-  fresult = result ? new Teuchos::RCP< Teuchos::Array<double> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::Array<double> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::Array<double> >(Teuchos::null);
   return fresult;
 }
 
@@ -1211,7 +1211,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayDouble__SWIG_2(const int* farg1) {
   
   arg1 = *farg1;
   result = (Teuchos::Array< double > *)new Teuchos::Array< double >(arg1);
-  fresult = result ? new Teuchos::RCP< Teuchos::Array<double> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::Array<double> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::Array<double> >(Teuchos::null);
   return fresult;
 }
 
@@ -1230,7 +1230,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayDouble__SWIG_3(const void* farg1) {
     return 0;
   }
   result = (Teuchos::Array< double > *)new Teuchos::Array< double >((Teuchos::Array< double > const &)*arg1);
-  fresult = result ? new Teuchos::RCP< Teuchos::Array<double> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::Array<double> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::Array<double> >(Teuchos::null);
   return fresult;
 }
 
@@ -1411,7 +1411,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayDouble__SWIG_4(const void* farg1) {
   
   arg1 = (std::vector< double,std::allocator< double > > *)(farg1);
   result = (Teuchos::Array< double > *)new Teuchos::Array< double >((std::vector< double,std::allocator< double > > const &)*arg1);
-  fresult = result ? new Teuchos::RCP< Teuchos::Array<double> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::Array<double> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::Array<double> >(Teuchos::null);
   return fresult;
 }
 
@@ -1431,7 +1431,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayViewInt__SWIG_0(int * farg1, const int* f
   arg1 = farg1;
   arg2 = *farg2;
   result = (Teuchos::ArrayView< int > *)new Teuchos::ArrayView< int >(arg1,arg2);
-  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<int> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::ArrayView<int> >(Teuchos::null);
   return fresult;
 }
 
@@ -1450,7 +1450,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayViewInt__SWIG_1(const void* farg1) {
     return 0;
   }
   result = (Teuchos::ArrayView< int > *)new Teuchos::ArrayView< int >((Teuchos::ArrayView< int > const &)*arg1);
-  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<int> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::ArrayView<int> >(Teuchos::null);
   return fresult;
 }
 
@@ -1606,7 +1606,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayViewIntConst__SWIG_0(int * farg1, const i
   arg1 = farg1;
   arg2 = *farg2;
   result = (Teuchos::ArrayView< int const > *)new Teuchos::ArrayView< int const >((int const *)arg1,arg2);
-  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const int> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::ArrayView<const int> >(Teuchos::null);
   return fresult;
 }
 
@@ -1625,7 +1625,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayViewIntConst__SWIG_1(const void* farg1) {
     return 0;
   }
   result = (Teuchos::ArrayView< int const > *)new Teuchos::ArrayView< int const >((Teuchos::ArrayView< int const > const &)*arg1);
-  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const int> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::ArrayView<const int> >(Teuchos::null);
   return fresult;
 }
 
@@ -1781,7 +1781,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayViewDouble__SWIG_0(double * farg1, const 
   arg1 = farg1;
   arg2 = *farg2;
   result = (Teuchos::ArrayView< double > *)new Teuchos::ArrayView< double >(arg1,arg2);
-  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<double> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<double> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::ArrayView<double> >(Teuchos::null);
   return fresult;
 }
 
@@ -1800,7 +1800,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayViewDouble__SWIG_1(const void* farg1) {
     return 0;
   }
   result = (Teuchos::ArrayView< double > *)new Teuchos::ArrayView< double >((Teuchos::ArrayView< double > const &)*arg1);
-  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<double> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<double> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::ArrayView<double> >(Teuchos::null);
   return fresult;
 }
 
@@ -1956,7 +1956,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayViewDoubleConst__SWIG_0(double * farg1, c
   arg1 = farg1;
   arg2 = *farg2;
   result = (Teuchos::ArrayView< double const > *)new Teuchos::ArrayView< double const >((double const *)arg1,arg2);
-  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const double> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const double> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::ArrayView<const double> >(Teuchos::null);
   return fresult;
 }
 
@@ -1975,7 +1975,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayViewDoubleConst__SWIG_1(const void* farg1
     return 0;
   }
   result = (Teuchos::ArrayView< double const > *)new Teuchos::ArrayView< double const >((Teuchos::ArrayView< double const > const &)*arg1);
-  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const double> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const double> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::ArrayView<const double> >(Teuchos::null);
   return fresult;
 }
 
@@ -2131,7 +2131,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayViewSizeT__SWIG_0(unsigned long * farg1, 
   arg1 = farg1;
   arg2 = *farg2;
   result = (Teuchos::ArrayView< std::size_t > *)new Teuchos::ArrayView< std::size_t >(arg1,arg2);
-  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<size_t> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<size_t> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::ArrayView<size_t> >(Teuchos::null);
   return fresult;
 }
 
@@ -2150,7 +2150,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayViewSizeT__SWIG_1(const void* farg1) {
     return 0;
   }
   result = (Teuchos::ArrayView< std::size_t > *)new Teuchos::ArrayView< std::size_t >((Teuchos::ArrayView< unsigned long > const &)*arg1);
-  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<size_t> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<size_t> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::ArrayView<size_t> >(Teuchos::null);
   return fresult;
 }
 
@@ -2306,7 +2306,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayViewSizeTConst__SWIG_0(unsigned long * fa
   arg1 = farg1;
   arg2 = *farg2;
   result = (Teuchos::ArrayView< std::size_t const > *)new Teuchos::ArrayView< std::size_t const >((unsigned long const *)arg1,arg2);
-  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const size_t> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const size_t> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::ArrayView<const size_t> >(Teuchos::null);
   return fresult;
 }
 
@@ -2325,7 +2325,7 @@ SWIGEXPORT void* swigc_new_TeuchosArrayViewSizeTConst__SWIG_1(const void* farg1)
     return 0;
   }
   result = (Teuchos::ArrayView< std::size_t const > *)new Teuchos::ArrayView< std::size_t const >((Teuchos::ArrayView< unsigned long const > const &)*arg1);
-  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const size_t> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const size_t> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::ArrayView<const size_t> >(Teuchos::null);
   return fresult;
 }
 
@@ -2485,7 +2485,7 @@ SWIGEXPORT void* swigc_new_TeuchosComm__SWIG_0(const int* farg1) {
 #endif
   
   result = (Teuchos::Comm< int > *)new_Teuchos_Comm_Sl_int_Sg___SWIG_0(arg1);
-  fresult = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::Comm<int> >(Teuchos::null);
   return fresult;
 }
 
@@ -2495,7 +2495,7 @@ SWIGEXPORT void* swigc_new_TeuchosComm__SWIG_1() {
   Teuchos::Comm< int > *result = 0 ;
   
   result = (Teuchos::Comm< int > *)new_Teuchos_Comm_Sl_int_Sg___SWIG_0();
-  fresult = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::Comm<int> >(Teuchos::null);
   return fresult;
 }
 
@@ -3085,7 +3085,7 @@ SWIGEXPORT void* swigc_new_ParameterList__SWIG_0() {
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::ParameterList >(Teuchos::null);
   return fresult;
 }
 
@@ -3127,7 +3127,7 @@ SWIGEXPORT void* swigc_new_ParameterList__SWIG_1(const char* farg1, const int* f
       } while(0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult = result ? new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::ParameterList >(Teuchos::null);
   return fresult;
 }
 
@@ -3714,7 +3714,7 @@ SWIGEXPORT void * swigc_ParameterList_sublist(void* farg1, const char* farg2, co
       } while(0);
     }
   }
-  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Teuchos::ParameterList >(result) : 0;
+  fresult = (!Teuchos::is_null((Teuchos::RCP< Teuchos::ParameterList >)result)) ? new Teuchos::RCP< Teuchos::ParameterList >(result) : new Teuchos::RCP< Teuchos::ParameterList >(Teuchos::null);
   return fresult;
 }
 
