@@ -2963,6 +2963,147 @@ SWIGEXPORT void swigc_TpetraMultiVector_update__SWIG_1(void* farg1, const double
 }
 
 
+SWIGEXPORT void swigc_TpetraMultiVector_norm1(const void* farg1, const void* farg2) {
+  Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
+  Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::mag_type > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::MultiVector<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = (Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::mag_type > *)(((Teuchos::RCP<const Teuchos::ArrayView<double> > *)farg2)
+    ? ((Teuchos::RCP<const Teuchos::ArrayView<double> > *)farg2)->get()
+    :0);
+  if (!arg2)
+  {
+    throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::mag_type > const &");
+    return ;
+  }
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      ((Tpetra::MultiVector< SC,LO,GO,NO,false > const *)arg1)->norm1((Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::mag_type > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraMultiVector_norm2(const void* farg1, const void* farg2) {
+  Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
+  Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::mag_type > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::MultiVector<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = (Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::mag_type > *)(((Teuchos::RCP<const Teuchos::ArrayView<double> > *)farg2)
+    ? ((Teuchos::RCP<const Teuchos::ArrayView<double> > *)farg2)->get()
+    :0);
+  if (!arg2)
+  {
+    throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::mag_type > const &");
+    return ;
+  }
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      ((Tpetra::MultiVector< SC,LO,GO,NO,false > const *)arg1)->norm2((Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::mag_type > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraMultiVector_normInf(const void* farg1, const void* farg2) {
+  Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
+  Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::mag_type > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::MultiVector<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = (Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::mag_type > *)(((Teuchos::RCP<const Teuchos::ArrayView<double> > *)farg2)
+    ? ((Teuchos::RCP<const Teuchos::ArrayView<double> > *)farg2)->get()
+    :0);
+  if (!arg2)
+  {
+    throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::mag_type > const &");
+    return ;
+  }
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      ((Tpetra::MultiVector< SC,LO,GO,NO,false > const *)arg1)->normInf((Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::mag_type > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
 SWIGEXPORT void swigc_TpetraMultiVector_normWeighted(const void* farg1, const void* farg2, const void* farg3) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;

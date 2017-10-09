@@ -36,9 +36,15 @@
 %ignore Tpetra::MultiVector::modify;
 %ignore Tpetra::MultiVector::getLocalView;
 %ignore Tpetra::MultiVector::dot;
-%ignore Tpetra::MultiVector::norm1;
-%ignore Tpetra::MultiVector::norm2;
-%ignore Tpetra::MultiVector::normInf;
+%ignore Tpetra::MultiVector::norm1(const Kokkos::View<T*, device_type>& norms) const;
+%ignore Tpetra::MultiVector::norm1(const Kokkos::View<mag_type*, device_type>& norms) const;
+%ignore Tpetra::MultiVector::norm1(const Teuchos::ArrayView<T>& norms) const;
+%ignore Tpetra::MultiVector::norm2(const Kokkos::View<T*, device_type>& norms) const;
+%ignore Tpetra::MultiVector::norm2(const Kokkos::View<mag_type*, device_type>& norms) const;
+%ignore Tpetra::MultiVector::norm2(const Teuchos::ArrayView<T>& norms) const;
+%ignore Tpetra::MultiVector::normInf(const Kokkos::View<T*, device_type>& norms) const;
+%ignore Tpetra::MultiVector::normInf(const Kokkos::View<mag_type*, device_type>& norms) const;
+%ignore Tpetra::MultiVector::normInf(const Teuchos::ArrayView<T>& norms) const;
 %ignore Tpetra::MultiVector::describe;
 %ignore Tpetra::MultiVector::setCopyOrView;
 %ignore Tpetra::MultiVector::getCopyOrView;
@@ -49,7 +55,7 @@
 %ignore Tpetra::MultiVector::getVector;
 %ignore Tpetra::MultiVector::getVectorNonConst;
 %ignore Tpetra::MultiVector::elementWiseMultiply;
-%ignore Tpetra::MultiVector::scale (const Kokkos::View<const impl_scalar_type*, device_type>& alpha);
+%ignore Tpetra::MultiVector::scale(const Kokkos::View<const impl_scalar_type*, device_type>& alpha);
 
 %teuchos_rcp(Tpetra::MultiVector<SC,LO,GO,NO,false>)
 

@@ -124,6 +124,9 @@ module fortpetra
   procedure, private :: scale__SWIG_2 => swigf_TpetraMultiVector_scale__SWIG_2
   procedure, private :: update__SWIG_0 => swigf_TpetraMultiVector_update__SWIG_0
   procedure, private :: update__SWIG_1 => swigf_TpetraMultiVector_update__SWIG_1
+  procedure :: norm1 => swigf_TpetraMultiVector_norm1
+  procedure :: norm2 => swigf_TpetraMultiVector_norm2
+  procedure :: normInf => swigf_TpetraMultiVector_normInf
   procedure :: normWeighted => swigf_TpetraMultiVector_normWeighted
   procedure :: meanValue => swigf_TpetraMultiVector_meanValue
   procedure :: multiply => swigf_TpetraMultiVector_multiply
@@ -698,6 +701,24 @@ module fortpetra
    real(C_DOUBLE), intent(in) :: farg4
    type(C_PTR), value :: farg5
    real(C_DOUBLE), intent(in) :: farg6
+  end subroutine
+  subroutine swigc_TpetraMultiVector_norm1(farg1, farg2) &
+     bind(C, name="swigc_TpetraMultiVector_norm1")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+  end subroutine
+  subroutine swigc_TpetraMultiVector_norm2(farg1, farg2) &
+     bind(C, name="swigc_TpetraMultiVector_norm2")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+  end subroutine
+  subroutine swigc_TpetraMultiVector_normInf(farg1, farg2) &
+     bind(C, name="swigc_TpetraMultiVector_normInf")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
   end subroutine
   subroutine swigc_TpetraMultiVector_normWeighted(farg1, farg2, farg3) &
      bind(C, name="swigc_TpetraMultiVector_normWeighted")
@@ -1889,6 +1910,24 @@ contains
    class(TpetraMultiVector) :: B
    real(C_DOUBLE), intent(in) :: gamma
    call swigc_TpetraMultiVector_update__SWIG_1(self%swigptr, alpha, A%swigptr, beta, B%swigptr, gamma)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_norm1(self, norms)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   class(TeuchosArrayViewDouble) :: norms
+   call swigc_TpetraMultiVector_norm1(self%swigptr, norms%swigptr)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_norm2(self, norms)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   class(TeuchosArrayViewDouble) :: norms
+   call swigc_TpetraMultiVector_norm2(self%swigptr, norms%swigptr)
+  end subroutine
+  subroutine swigf_TpetraMultiVector_normInf(self, norms)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraMultiVector) :: self
+   class(TeuchosArrayViewDouble) :: norms
+   call swigc_TpetraMultiVector_normInf(self%swigptr, norms%swigptr)
   end subroutine
   subroutine swigf_TpetraMultiVector_normWeighted(self, weights, norms)
    use, intrinsic :: ISO_C_BINDING
