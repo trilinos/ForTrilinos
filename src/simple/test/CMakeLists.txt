@@ -11,8 +11,14 @@ IF (${PACKAGE_NAME}_ENABLE_Belos AND ${PACKAGE_NAME}_ENABLE_Ifpack2)
   )
 
   TRIBITS_ADD_EXECUTABLE_AND_TEST(
-    solver_handle_test_fortran
-    SOURCES solver_handle_test.f90 DBCF.f90
+    solver_handle_raw_test_fortran
+    SOURCES solver_handle_raw_test.f90 DBCF.f90
+    COMM serial mpi
+  )
+
+  TRIBITS_ADD_EXECUTABLE_AND_TEST(
+    solver_handle_tpetra_test_fortran
+    SOURCES solver_handle_tpetra_test.f90 DBCF.f90
     COMM serial mpi
   )
 

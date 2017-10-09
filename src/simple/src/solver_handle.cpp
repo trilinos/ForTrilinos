@@ -64,7 +64,7 @@ namespace ForTrilinos {
     RCP<const Thyra::LinearOpBase<SC> > A = Thyra::tpetraLinearOp<SC,LO,GO,NO>(
           Thyra::tpetraVectorSpace<SC,LO,GO,NO>(A_->getDomainMap()),
           Thyra::tpetraVectorSpace<SC,LO,GO,NO>(A_->getRangeMap()),
-          rcp_implicit_cast<Tpetra::Operator<SC,LO,GO,NO> >(A_));
+          A_);
 
 
     // Build Stratimikos solver
