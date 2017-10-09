@@ -7,6 +7,7 @@ TRIBITS_PACKAGE_DEFINE_DEPENDENCIES(
     ThyraTpetraAdapters
     Tpetra
     ForTrilinosTeuchos
+    ForTrilinosTpetra
   LIB_OPTIONAL_PACKAGES
     Anasazi
     Ifpack2

@@ -23,7 +23,7 @@ namespace ForTrilinos {
   public:
 
     // Setup matrix
-    static Teuchos::RCP<Operator>
+    static Teuchos::RCP<Matrix>
     setup_matrix_gen(const Teuchos::RCP<const Teuchos::Comm<int>>& comm, int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values);
 
     // Setup operator

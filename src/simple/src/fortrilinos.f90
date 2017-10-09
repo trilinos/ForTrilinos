@@ -6,6 +6,7 @@
 module fortrilinos
  use, intrinsic :: ISO_C_BINDING
  use forteuchos
+ use fortpetra
  implicit none
 
  ! PUBLIC METHODS AND TYPES
@@ -20,13 +21,17 @@ module fortrilinos
   procedure :: create => swigf_new_SolverHandle
   procedure, private :: init__SWIG_0 => swigf_SolverHandle_init__SWIG_0
   procedure, private :: init__SWIG_1 => swigf_SolverHandle_init__SWIG_1
-  procedure :: setup_matrix => swigf_SolverHandle_setup_matrix
+  procedure, private :: setup_matrix__SWIG_0 => swigf_SolverHandle_setup_matrix__SWIG_0
+  procedure, private :: setup_matrix__SWIG_1 => swigf_SolverHandle_setup_matrix__SWIG_1
   procedure :: setup_operator => swigf_SolverHandle_setup_operator
   procedure :: setup_solver => swigf_SolverHandle_setup_solver
-  procedure :: solve => swigf_SolverHandle_solve
+  procedure, private :: solve__SWIG_0 => swigf_SolverHandle_solve__SWIG_0
+  procedure, private :: solve__SWIG_1 => swigf_SolverHandle_solve__SWIG_1
   procedure :: finalize => swigf_SolverHandle_finalize
   procedure :: release => swigf_delete_SolverHandle
   generic :: init => init__SWIG_0, init__SWIG_1
+  generic :: solve => solve__SWIG_0, solve__SWIG_1
+  generic :: setup_matrix => setup_matrix__SWIG_0, setup_matrix__SWIG_1
  end type
  type :: EigenHandle
   ! These should be treated as PROTECTED data
@@ -67,8 +72,8 @@ module fortrilinos
    type(C_PTR), value :: farg1
    type(C_PTR), value :: farg2
   end subroutine
-  subroutine swigc_SolverHandle_setup_matrix(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
-     bind(C, name="swigc_SolverHandle_setup_matrix")
+  subroutine swigc_SolverHandle_setup_matrix__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
+     bind(C, name="swigc_SolverHandle_setup_matrix__SWIG_0")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    integer(C_INT), intent(in) :: farg2
@@ -77,6 +82,12 @@ module fortrilinos
    integer(C_INT), intent(in) :: farg5
    integer(C_INT), dimension(*), intent(in) :: farg6
    real(C_DOUBLE), dimension(*), intent(in) :: farg7
+  end subroutine
+  subroutine swigc_SolverHandle_setup_matrix__SWIG_1(farg1, farg2) &
+     bind(C, name="swigc_SolverHandle_setup_matrix__SWIG_1")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
   end subroutine
   subroutine swigc_SolverHandle_setup_operator(farg1, farg2, farg3, farg4) &
      bind(C, name="swigc_SolverHandle_setup_operator")
@@ -92,13 +103,20 @@ module fortrilinos
    type(C_PTR), value :: farg1
    type(C_PTR), value :: farg2
   end subroutine
-  subroutine swigc_SolverHandle_solve(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_SolverHandle_solve")
+  subroutine swigc_SolverHandle_solve__SWIG_0(farg1, farg2, farg3, farg4) &
+     bind(C, name="swigc_SolverHandle_solve__SWIG_0")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    integer(C_INT), intent(in) :: farg2
    real(C_DOUBLE), dimension(*), intent(in) :: farg3
    real(C_DOUBLE), dimension(*), intent(inout) :: farg4
+  end subroutine
+  subroutine swigc_SolverHandle_solve__SWIG_1(farg1, farg2, farg3) &
+     bind(C, name="swigc_SolverHandle_solve__SWIG_1")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+   type(C_PTR), value :: farg3
   end subroutine
   subroutine swigc_SolverHandle_finalize(farg1) &
      bind(C, name="swigc_SolverHandle_finalize")
@@ -212,7 +230,7 @@ contains
    type(TeuchosComm) :: comm
    call swigc_SolverHandle_init__SWIG_1(self%swigptr, comm%swigptr)
   end subroutine
-  subroutine swigf_SolverHandle_setup_matrix(self, numRows, rowInds, rowPtrs, numNnz, colInds, values)
+  subroutine swigf_SolverHandle_setup_matrix__SWIG_0(self, numRows, rowInds, rowPtrs, numNnz, colInds, values)
    use, intrinsic :: ISO_C_BINDING
    class(SolverHandle) :: self
    integer(C_INT), intent(in) :: numRows
@@ -221,7 +239,13 @@ contains
    integer(C_INT), intent(in) :: numNnz
    integer(C_INT), dimension(:), intent(in) :: colInds
    real(C_DOUBLE), dimension(:), intent(in) :: values
-   call swigc_SolverHandle_setup_matrix(self%swigptr, numRows, rowInds, rowPtrs, numNnz, colInds, values)
+   call swigc_SolverHandle_setup_matrix__SWIG_0(self%swigptr, numRows, rowInds, rowPtrs, numNnz, colInds, values)
+  end subroutine
+  subroutine swigf_SolverHandle_setup_matrix__SWIG_1(self, A)
+   use, intrinsic :: ISO_C_BINDING
+   class(SolverHandle) :: self
+   type(TpetraCrsMatrix) :: A
+   call swigc_SolverHandle_setup_matrix__SWIG_1(self%swigptr, A%swigptr)
   end subroutine
   subroutine swigf_SolverHandle_setup_operator(self, numRows, rowInds, callback)
    use, intrinsic :: ISO_C_BINDING
@@ -237,13 +261,20 @@ contains
    type(ParameterList) :: paramList
    call swigc_SolverHandle_setup_solver(self%swigptr, paramList%swigptr)
   end subroutine
-  subroutine swigf_SolverHandle_solve(self, size, rhs, lhs)
+  subroutine swigf_SolverHandle_solve__SWIG_0(self, size, rhs, lhs)
    use, intrinsic :: ISO_C_BINDING
    class(SolverHandle) :: self
    integer(C_INT), intent(in) :: size
    real(C_DOUBLE), dimension(:), intent(in) :: rhs
    real(C_DOUBLE), dimension(:), intent(inout) :: lhs
-   call swigc_SolverHandle_solve(self%swigptr, size, rhs, lhs)
+   call swigc_SolverHandle_solve__SWIG_0(self%swigptr, size, rhs, lhs)
+  end subroutine
+  subroutine swigf_SolverHandle_solve__SWIG_1(self, rhs, lhs)
+   use, intrinsic :: ISO_C_BINDING
+   class(SolverHandle) :: self
+   type(TpetraMultiVector) :: rhs
+   type(TpetraMultiVector) :: lhs
+   call swigc_SolverHandle_solve__SWIG_1(self%swigptr, rhs%swigptr, lhs%swigptr)
   end subroutine
   subroutine swigf_SolverHandle_finalize(self)
    use, intrinsic :: ISO_C_BINDING

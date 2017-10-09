@@ -17,7 +17,7 @@
 namespace ForTrilinos {
 
   class SolverHandle {
-  private:
+  public:
     typedef double                                  SC;
     typedef int                                     LO;
     typedef int                                     GO;
@@ -26,10 +26,12 @@ namespace ForTrilinos {
 
     typedef Tpetra::Map<LO,GO,NO>                   Map;
     typedef Tpetra::Operator<SC,LO,GO,NO>           Operator;
-    typedef Tpetra::CrsMatrix<SC,LO,GO,NO>          Matrix;
-    typedef Tpetra::Vector<SC,LO,GO,NO>             Vector;
+    typedef Tpetra::CrsMatrix<SC,LO,GO,NO,false>    Matrix;
+    typedef Tpetra::Vector<SC,LO,GO,NO,false>       Vector;
+    typedef Tpetra::MultiVector<SC,LO,GO,NO,false>  MultiVector;
     typedef Teuchos::ParameterList                  ParameterList;
     typedef Thyra::LinearOpWithSolveBase<SC>        LOWS;
+
   public:
     typedef void (*OperatorCallback)(int n, const double* x, double* y);
 
@@ -47,24 +49,26 @@ namespace ForTrilinos {
 
     // Setup matrix
     void setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values);
+    void setup_matrix(Teuchos::RCP<Matrix> A);
 
     // Setup operator
     void setup_operator(int numRows, const int* rowInds, OperatorCallback callback);
 
     // Setup solver based on the parameter list
-    void setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList);
+    void setup_solver(const Teuchos::RCP<Teuchos::ParameterList> paramList);
 
     // Solve linear system given rhs
     void solve(int size, const double* rhs, double* lhs) const;
+    void solve(const Teuchos::RCP<const MultiVector> rhs, Teuchos::RCP<MultiVector> lhs) const;
 
     // Free all data
     void finalize();
 
   private:
-    Teuchos::RCP<const Teuchos::Comm<int>> comm_;
-    Teuchos::RCP<Operator>           A_;
-    Teuchos::RCP<ParameterList>      paramList_;
-    Teuchos::RCP<LOWS>               thyraInverseA_;
+    Teuchos::RCP<const Teuchos::Comm<int>>  comm_;
+    Teuchos::RCP<Operator>                  A_;
+    Teuchos::RCP<ParameterList>             paramList_;
+    Teuchos::RCP<LOWS>                      thyraInverseA_;
 
     enum Status {
       NOT_INITIALIZED,

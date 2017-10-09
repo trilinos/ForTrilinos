@@ -8,7 +8,7 @@ namespace ForTrilinos {
   typedef int                                     GO;
   typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
 
-  auto HandleHelpers::setup_matrix_gen(const Teuchos::RCP<const Teuchos::Comm<int>>& comm, int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) -> Teuchos::RCP<Operator> {
+  auto HandleHelpers::setup_matrix_gen(const Teuchos::RCP<const Teuchos::Comm<int>>& comm, int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) -> Teuchos::RCP<Matrix> {
     using Teuchos::ArrayRCP;
     using Teuchos::RCP;
     using Teuchos::rcp;
