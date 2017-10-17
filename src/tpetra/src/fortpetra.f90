@@ -17,6 +17,7 @@ module fortpetra
  public :: EPrivateHostViewConstructor, HOST_VIEW_CONSTRUCTOR
  public :: ESweepDirection, Forward, Backward, Symmetric
  public :: TpetraMap
+ public :: TpetraExport
  public :: TpetraMultiVector
  public :: TpetraCrsMatrix
  ! TYPES
@@ -85,6 +86,25 @@ module fortpetra
   procedure, private :: swigf_assign_TpetraMap
   generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2, create__SWIG_3, create__SWIG_4, create__SWIG_5
   generic :: assignment(=) => swigf_assign_TpetraMap
+ end type
+ type :: TpetraExport
+  type(C_PTR), public :: swigptr = C_NULL_PTR
+ contains
+  procedure, private :: create__SWIG_0 => swigf_new_TpetraExport__SWIG_0
+  procedure, private :: create__SWIG_1 => swigf_new_TpetraExport__SWIG_1
+  procedure, private :: create__SWIG_2 => swigf_new_TpetraExport__SWIG_2
+  procedure :: release => swigf_delete_TpetraExport
+  procedure :: setParameterList => swigf_TpetraExport_setParameterList
+  procedure :: getNumSameIDs => swigf_TpetraExport_getNumSameIDs
+  procedure :: getNumPermuteIDs => swigf_TpetraExport_getNumPermuteIDs
+  procedure :: getNumRemoteIDs => swigf_TpetraExport_getNumRemoteIDs
+  procedure :: getNumExportIDs => swigf_TpetraExport_getNumExportIDs
+  procedure :: getSourceMap => swigf_TpetraExport_getSourceMap
+  procedure :: getTargetMap => swigf_TpetraExport_getTargetMap
+  procedure :: isLocallyComplete => swigf_TpetraExport_isLocallyComplete
+  procedure, private :: swigf_assign_TpetraExport
+  generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2
+  generic :: assignment(=) => swigf_assign_TpetraExport
  end type
  type :: TpetraMultiVector
   type(C_PTR), public :: swigptr = C_NULL_PTR
@@ -210,6 +230,11 @@ module fortpetra
   procedure :: gaussSeidelCopy => swigf_TpetraCrsMatrix_gaussSeidelCopy
   procedure :: reorderedGaussSeidelCopy => swigf_TpetraCrsMatrix_reorderedGaussSeidelCopy
   procedure :: description => swigf_TpetraCrsMatrix_description
+  procedure, private :: exportAndFillComplete__SWIG_0 => swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_0
+  procedure, private :: exportAndFillComplete__SWIG_1 => swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_1
+  procedure, private :: exportAndFillComplete__SWIG_2 => swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_2
+  procedure, private :: exportAndFillComplete__SWIG_3 => swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_3
+  procedure, private :: exportAndFillComplete__SWIG_4 => swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_4
   procedure :: haveGlobalConstants => swigf_TpetraCrsMatrix_haveGlobalConstants
   procedure, private :: swigf_assign_TpetraCrsMatrix
   generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2, create__SWIG_3, create__SWIG_4, create__SWIG_5
@@ -221,6 +246,8 @@ module fortpetra
   generic :: sumIntoGlobalValues => sumIntoGlobalValues__SWIG_0, sumIntoGlobalValues__SWIG_1, sumIntoGlobalValues__SWIG_2, &
     sumIntoGlobalValues__SWIG_3
   generic :: fillComplete => fillComplete__SWIG_0, fillComplete__SWIG_1, fillComplete__SWIG_2, fillComplete__SWIG_3
+  generic :: exportAndFillComplete => exportAndFillComplete__SWIG_0, exportAndFillComplete__SWIG_1, &
+    exportAndFillComplete__SWIG_2, exportAndFillComplete__SWIG_3, exportAndFillComplete__SWIG_4
  end type
 
  ! WRAPPER DECLARATIONS
@@ -419,6 +446,97 @@ module fortpetra
   end function
   function swigc_spcopy_TpetraMap(farg1) &
      bind(C, name="swigc_spcopy_TpetraMap") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_new_TpetraExport__SWIG_0(farg1, farg2) &
+     bind(C, name="swigc_new_TpetraExport__SWIG_0") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+  end function
+  function swigc_new_TpetraExport__SWIG_1(farg1, farg2, farg3) &
+     bind(C, name="swigc_new_TpetraExport__SWIG_1") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+   type(C_PTR), value :: farg3
+  end function
+  function swigc_new_TpetraExport__SWIG_2(farg1) &
+     bind(C, name="swigc_new_TpetraExport__SWIG_2") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  subroutine swigc_delete_TpetraExport(farg1) &
+     bind(C, name="swigc_delete_TpetraExport")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+  end subroutine
+  subroutine swigc_TpetraExport_setParameterList(farg1, farg2) &
+     bind(C, name="swigc_TpetraExport_setParameterList")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+  end subroutine
+  function swigc_TpetraExport_getNumSameIDs(farg1) &
+     bind(C, name="swigc_TpetraExport_getNumSameIDs") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_SIZE_T) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_TpetraExport_getNumPermuteIDs(farg1) &
+     bind(C, name="swigc_TpetraExport_getNumPermuteIDs") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_SIZE_T) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_TpetraExport_getNumRemoteIDs(farg1) &
+     bind(C, name="swigc_TpetraExport_getNumRemoteIDs") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_SIZE_T) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_TpetraExport_getNumExportIDs(farg1) &
+     bind(C, name="swigc_TpetraExport_getNumExportIDs") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_SIZE_T) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_TpetraExport_getSourceMap(farg1) &
+     bind(C, name="swigc_TpetraExport_getSourceMap") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_TpetraExport_getTargetMap(farg1) &
+     bind(C, name="swigc_TpetraExport_getTargetMap") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_TpetraExport_isLocallyComplete(farg1) &
+     bind(C, name="swigc_TpetraExport_isLocallyComplete") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   logical(C_BOOL) :: fresult
+   type(C_PTR), value :: farg1
+  end function
+  function swigc_spcopy_TpetraExport(farg1) &
+     bind(C, name="swigc_spcopy_TpetraExport") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
@@ -1258,6 +1376,51 @@ module fortpetra
    type(C_PTR) :: fresult
    type(C_PTR), value :: farg1
   end function
+  subroutine swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6) &
+     bind(C, name="swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_0")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+   type(C_PTR), value :: farg3
+   type(C_PTR), value :: farg4
+   type(C_PTR), value :: farg5
+   type(C_PTR), value :: farg6
+  end subroutine
+  subroutine swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_1(farg1, farg2, farg3, farg4, farg5) &
+     bind(C, name="swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_1")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+   type(C_PTR), value :: farg3
+   type(C_PTR), value :: farg4
+   type(C_PTR), value :: farg5
+  end subroutine
+  subroutine swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_2(farg1, farg2, farg3, farg4) &
+     bind(C, name="swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_2")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+   type(C_PTR), value :: farg3
+   type(C_PTR), value :: farg4
+  end subroutine
+  subroutine swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_3(farg1, farg2, farg3) &
+     bind(C, name="swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_3")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+   type(C_PTR), value :: farg3
+  end subroutine
+  subroutine swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_4(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
+     bind(C, name="swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_4")
+   use, intrinsic :: ISO_C_BINDING
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+   type(C_PTR), value :: farg3
+   type(C_PTR), value :: farg4
+   type(C_PTR), value :: farg5
+   type(C_PTR), value :: farg6
+   type(C_PTR), value :: farg7
+  end subroutine
   function swigc_TpetraCrsMatrix_haveGlobalConstants(farg1) &
      bind(C, name="swigc_TpetraCrsMatrix_haveGlobalConstants") &
      result(fresult)
@@ -1475,6 +1638,98 @@ contains
    type(TpetraMap), intent(in) :: other
    call self%release()
    self%swigptr = swigc_spcopy_TpetraMap(other%swigptr)
+  end subroutine
+  subroutine swigf_new_TpetraExport__SWIG_0(self, source, target)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraExport) :: self
+   type(TpetraMap) :: source
+   type(TpetraMap) :: target
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_TpetraExport__SWIG_0(source%swigptr, target%swigptr)
+  end subroutine
+  subroutine swigf_new_TpetraExport__SWIG_1(self, source, target, plist)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraExport) :: self
+   type(TpetraMap) :: source
+   type(TpetraMap) :: target
+   type(ParameterList) :: plist
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_TpetraExport__SWIG_1(source%swigptr, target%swigptr, plist%swigptr)
+  end subroutine
+  subroutine swigf_new_TpetraExport__SWIG_2(self, rhs)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraExport) :: self
+   class(TpetraExport) :: rhs
+   if (c_associated(self%swigptr)) call self%release()
+   self%swigptr = swigc_new_TpetraExport__SWIG_2(rhs%swigptr)
+  end subroutine
+  subroutine swigf_delete_TpetraExport(self)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraExport) :: self
+   call swigc_delete_TpetraExport(self%swigptr)
+   self%swigptr = C_NULL_PTR
+  end subroutine
+  subroutine swigf_TpetraExport_setParameterList(self, plist)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraExport) :: self
+   type(ParameterList) :: plist
+   call swigc_TpetraExport_setParameterList(self%swigptr, plist%swigptr)
+  end subroutine
+  function swigf_TpetraExport_getNumSameIDs(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_SIZE_T) :: fresult
+   class(TpetraExport) :: self
+   fresult = swigc_TpetraExport_getNumSameIDs(self%swigptr)
+  end function
+  function swigf_TpetraExport_getNumPermuteIDs(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_SIZE_T) :: fresult
+   class(TpetraExport) :: self
+   fresult = swigc_TpetraExport_getNumPermuteIDs(self%swigptr)
+  end function
+  function swigf_TpetraExport_getNumRemoteIDs(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_SIZE_T) :: fresult
+   class(TpetraExport) :: self
+   fresult = swigc_TpetraExport_getNumRemoteIDs(self%swigptr)
+  end function
+  function swigf_TpetraExport_getNumExportIDs(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   integer(C_SIZE_T) :: fresult
+   class(TpetraExport) :: self
+   fresult = swigc_TpetraExport_getNumExportIDs(self%swigptr)
+  end function
+  function swigf_TpetraExport_getSourceMap(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(TpetraMap) :: fresult
+   class(TpetraExport) :: self
+   fresult%swigptr = swigc_TpetraExport_getSourceMap(self%swigptr)
+  end function
+  function swigf_TpetraExport_getTargetMap(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   type(TpetraMap) :: fresult
+   class(TpetraExport) :: self
+   fresult%swigptr = swigc_TpetraExport_getTargetMap(self%swigptr)
+  end function
+  function swigf_TpetraExport_isLocallyComplete(self) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   logical(C_BOOL) :: fresult
+   class(TpetraExport) :: self
+   fresult = swigc_TpetraExport_isLocallyComplete(self%swigptr)
+  end function
+  subroutine swigf_assign_TpetraExport(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraExport), intent(inout) :: self
+   type(TpetraExport), intent(in) :: other
+   call self%release()
+   self%swigptr = swigc_spcopy_TpetraExport(other%swigptr)
   end subroutine
   subroutine swigf_new_TpetraMultiVector__SWIG_0(self)
    use, intrinsic :: ISO_C_BINDING
@@ -2314,6 +2569,51 @@ contains
    fresult%swigptr = swigc_TpetraCrsMatrix_description(self%swigptr)
    fresult%swigown = .true.
   end function
+  subroutine swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_0(self, destMatrix, exporter, domainMap, rangeMap, params)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraCrsMatrix) :: self
+   type(TpetraCrsMatrix) :: destMatrix
+   class(TpetraExport) :: exporter
+   type(TpetraMap) :: domainMap
+   type(TpetraMap) :: rangeMap
+   type(ParameterList) :: params
+   call swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_0(self%swigptr, destMatrix%swigptr, exporter%swigptr, domainMap%swigptr, rangeMap%swigptr, params%swigptr)
+  end subroutine
+  subroutine swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_1(self, destMatrix, exporter, domainMap, rangeMap)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraCrsMatrix) :: self
+   type(TpetraCrsMatrix) :: destMatrix
+   class(TpetraExport) :: exporter
+   type(TpetraMap) :: domainMap
+   type(TpetraMap) :: rangeMap
+   call swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_1(self%swigptr, destMatrix%swigptr, exporter%swigptr, domainMap%swigptr, rangeMap%swigptr)
+  end subroutine
+  subroutine swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_2(self, destMatrix, exporter, domainMap)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraCrsMatrix) :: self
+   type(TpetraCrsMatrix) :: destMatrix
+   class(TpetraExport) :: exporter
+   type(TpetraMap) :: domainMap
+   call swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_2(self%swigptr, destMatrix%swigptr, exporter%swigptr, domainMap%swigptr)
+  end subroutine
+  subroutine swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_3(self, destMatrix, exporter)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraCrsMatrix) :: self
+   type(TpetraCrsMatrix) :: destMatrix
+   class(TpetraExport) :: exporter
+   call swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_3(self%swigptr, destMatrix%swigptr, exporter%swigptr)
+  end subroutine
+  subroutine swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_4(self, destMatrix, rowExporter, domainExporter, domainMap, rangeMap, params)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraCrsMatrix) :: self
+   type(TpetraCrsMatrix) :: destMatrix
+   class(TpetraExport) :: rowExporter
+   class(TpetraExport) :: domainExporter
+   type(TpetraMap) :: domainMap
+   type(TpetraMap) :: rangeMap
+   type(ParameterList) :: params
+   call swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_4(self%swigptr, destMatrix%swigptr, rowExporter%swigptr, domainExporter%swigptr, domainMap%swigptr, rangeMap%swigptr, params%swigptr)
+  end subroutine
   function swigf_TpetraCrsMatrix_haveGlobalConstants(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING

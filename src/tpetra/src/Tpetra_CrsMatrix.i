@@ -84,8 +84,7 @@
 %ignore Tpetra::CrsMatrix::reindexColumns;                  // needs Tpetra::CrsGraph
 %ignore Tpetra::CrsMatrix::replaceDomainMapAndImporter;     // needs Tpetra::Import
 %ignore Tpetra::CrsMatrix::add;                             // needs Tpetra::RowMatrix
-%ignore Tpetra::CrsMatrix::expertStaticFillComplete;        // needs Tpetra::Import and Tpetra::Export
-%ignore Tpetra::CrsMatrix::exportAndFillComplete;           // needs Tpetra::Export
+%ignore Tpetra::CrsMatrix::expertStaticFillComplete;        // needs Tpetra::Import
 %ignore Tpetra::CrsMatrix::getCrsGraph;                     // needs Tpetra::CrsGraph
 %ignore Tpetra::CrsMatrix::getGraph;                        // needs Tpetra::RowGraph
 %ignore Tpetra::CrsMatrix::getLocalDiagCopy;                // needs Tpetra::Vector
