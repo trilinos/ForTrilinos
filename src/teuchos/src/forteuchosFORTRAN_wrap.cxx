@@ -178,9 +178,6 @@ template <typename T> T SwigValueInit() {
 swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
 
 
-#include "Teuchos_BLAS_types.hpp"
-
-
 #include <vector>
 
 
@@ -235,6 +232,10 @@ SWIGINTERN void std_vector_Sl_double_Sg__copy_to(std::vector< double > *self,std
         swig::array_size_check(self->size(), arrsize);
         std::copy(self->begin(), self->end(), arr);
     }
+
+#include "Teuchos_BLAS_types.hpp"
+#include "Teuchos_DataAccess.hpp"
+
 
 #include "Teuchos_RCP.hpp"
 

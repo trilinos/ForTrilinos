@@ -8,13 +8,14 @@ module forteuchos
  implicit none
 
  ! PUBLIC METHODS AND TYPES
+ public :: VectorInt
+ public :: VectorDouble
  public :: ESide, LEFT_SIDE, RIGHT_SIDE
  public :: ETransp, NO_TRANS, TRANS, CONJ_TRANS
  public :: EUplo, UPPER_TRI, LOWER_TRI, UNDEF_TRI
  public :: EDiag, UNIT_DIAG, NON_UNIT_DIAG
  public :: EType, FULL, LOWER, UPPER, HESSENBERG, SYM_BAND_L, SYM_BAND_U, BAND
- public :: VectorInt
- public :: VectorDouble
+ public :: DataAccess, Copy, View
  public :: TeuchosArrayInt
  public :: TeuchosArrayDouble
  public :: TeuchosArrayViewInt
@@ -34,38 +35,6 @@ module forteuchos
  public :: load_from_xml
  public :: save_to_xml
  ! TYPES
- enum, bind(c)
-  enumerator :: ESide = -1
-  enumerator :: LEFT_SIDE = 0
-  enumerator :: RIGHT_SIDE = LEFT_SIDE + 1
- end enum
- enum, bind(c)
-  enumerator :: ETransp = -1
-  enumerator :: NO_TRANS = 0
-  enumerator :: TRANS = NO_TRANS + 1
-  enumerator :: CONJ_TRANS = TRANS + 1
- end enum
- enum, bind(c)
-  enumerator :: EUplo = -1
-  enumerator :: UPPER_TRI = 0
-  enumerator :: LOWER_TRI = UPPER_TRI + 1
-  enumerator :: UNDEF_TRI = LOWER_TRI + 1
- end enum
- enum, bind(c)
-  enumerator :: EDiag = -1
-  enumerator :: UNIT_DIAG = 0
-  enumerator :: NON_UNIT_DIAG = UNIT_DIAG + 1
- end enum
- enum, bind(c)
-  enumerator :: EType = -1
-  enumerator :: FULL = 0
-  enumerator :: LOWER = FULL + 1
-  enumerator :: UPPER = LOWER + 1
-  enumerator :: HESSENBERG = UPPER + 1
-  enumerator :: SYM_BAND_L = HESSENBERG + 1
-  enumerator :: SYM_BAND_U = SYM_BAND_L + 1
-  enumerator :: BAND = SYM_BAND_U + 1
- end enum
  type :: VectorInt
   ! These should be treated as PROTECTED data
   type(C_PTR), public :: swigptr = C_NULL_PTR
@@ -118,6 +87,43 @@ module forteuchos
   generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2
   generic :: resize => resize__SWIG_0, resize__SWIG_1
  end type
+ enum, bind(c)
+  enumerator :: ESide = -1
+  enumerator :: LEFT_SIDE = 0
+  enumerator :: RIGHT_SIDE = LEFT_SIDE + 1
+ end enum
+ enum, bind(c)
+  enumerator :: ETransp = -1
+  enumerator :: NO_TRANS = 0
+  enumerator :: TRANS = NO_TRANS + 1
+  enumerator :: CONJ_TRANS = TRANS + 1
+ end enum
+ enum, bind(c)
+  enumerator :: EUplo = -1
+  enumerator :: UPPER_TRI = 0
+  enumerator :: LOWER_TRI = UPPER_TRI + 1
+  enumerator :: UNDEF_TRI = LOWER_TRI + 1
+ end enum
+ enum, bind(c)
+  enumerator :: EDiag = -1
+  enumerator :: UNIT_DIAG = 0
+  enumerator :: NON_UNIT_DIAG = UNIT_DIAG + 1
+ end enum
+ enum, bind(c)
+  enumerator :: EType = -1
+  enumerator :: FULL = 0
+  enumerator :: LOWER = FULL + 1
+  enumerator :: UPPER = LOWER + 1
+  enumerator :: HESSENBERG = UPPER + 1
+  enumerator :: SYM_BAND_L = HESSENBERG + 1
+  enumerator :: SYM_BAND_U = SYM_BAND_L + 1
+  enumerator :: BAND = SYM_BAND_U + 1
+ end enum
+ enum, bind(c)
+  enumerator :: DataAccess = -1
+  enumerator :: Copy = 0
+  enumerator :: View = Copy + 1
+ end enum
  type :: TeuchosArrayInt
   type(C_PTR), public :: swigptr = C_NULL_PTR
  contains
