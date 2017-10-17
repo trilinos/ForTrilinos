@@ -82,9 +82,7 @@
 %ignore Tpetra::CrsMatrix::operator();                      // needs operator() treatment
 %ignore Tpetra::CrsMatrix::describe;                        // needs Teuchos::FancyOStream
 %ignore Tpetra::CrsMatrix::reindexColumns;                  // needs Tpetra::CrsGraph
-%ignore Tpetra::CrsMatrix::replaceDomainMapAndImporter;     // needs Tpetra::Import
 %ignore Tpetra::CrsMatrix::add;                             // needs Tpetra::RowMatrix
-%ignore Tpetra::CrsMatrix::expertStaticFillComplete;        // needs Tpetra::Import
 %ignore Tpetra::CrsMatrix::getCrsGraph;                     // needs Tpetra::CrsGraph
 %ignore Tpetra::CrsMatrix::getGraph;                        // needs Tpetra::RowGraph
 %ignore Tpetra::CrsMatrix::getLocalDiagCopy;                // needs Tpetra::Vector
@@ -94,7 +92,6 @@
 %ignore Tpetra::CrsMatrix::getLocalRowView;                 // ±1 issue
 %ignore Tpetra::CrsMatrix::getLocalValuesView;              // needs Kokkos::View
 %ignore Tpetra::CrsMatrix::getNumEntriesInLocalRow;         // ±1 issue
-%ignore Tpetra::CrsMatrix::importAndFillComplete;           // needs Import
 %ignore Tpetra::CrsMatrix::insertLocalValues;               // ±1 issue
 %ignore Tpetra::CrsMatrix::leftScale;                       // needs Tpetra::Vector
 %ignore Tpetra::CrsMatrix::reorderedLocalGaussSeidel;       // ±1 issue

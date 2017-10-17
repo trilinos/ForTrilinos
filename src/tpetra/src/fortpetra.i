@@ -29,6 +29,8 @@ namespace Kokkos {
 }
 %template() Kokkos::Details::ArithTraits<SC>;
 
+%ignore Teuchos::SerializationTraits;
+
 // ignore Details namespace
 %ignore Tpetra::Details;
 
