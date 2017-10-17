@@ -18,6 +18,9 @@ IF (${PACKAGE_NAME}_ENABLE_DeveloperMode)
     # SWIG setup
     FIND_PACKAGE(SWIG REQUIRED)
     INCLUDE(SwigModules)
+    # Ignore some SWIG warnings:
+    #   401: "Nothing known about base class"
+    SET(CMAKE_SWIG_FLAGS "-w401 ${CMAKE_SWIG_FLAGS}")
 ENDIF()
 
 ##---------------------------------------------------------------------------##

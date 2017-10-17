@@ -11,15 +11,11 @@
 
 %include "ForTrilinosTeuchos_config.hpp"
 
-%{
-#include "Teuchos_BLAS_types.hpp"
-%}
-%include "Teuchos_BLAS_types.hpp"
-
 %include <std_vector.i>
 %template(VectorInt)    std::vector<int>;
 %template(VectorDouble) std::vector<double>;
 
+%include "Teuchos_Types.i"
 %include "Teuchos_Array.i"
 %include "Teuchos_ArrayView.i"
 %include "Teuchos_Comm.i"
