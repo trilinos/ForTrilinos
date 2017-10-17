@@ -10,13 +10,18 @@
 // Typedefs
 typedef int Teuchos_Ordinal;
 
+namespace Teuchos {
+  template<typename T>
+  class TypeNameTraits;
+}
+
 // Make RCPs
 %teuchos_rcp(Teuchos::Array<int>)
 %teuchos_rcp(Teuchos::Array<double>)
 
 // Ignore misc classes
-%ignore TypeNameTraits;
-%ignore InvalidArrayStringRepresentation;
+%ignore Teuchos::TypeNameTraits;
+%ignore Teuchos::InvalidArrayStringRepresentation;
 
 // Ignore functions
 %ignore operator>>;
