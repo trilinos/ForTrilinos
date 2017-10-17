@@ -7,10 +7,6 @@
 #include "Tpetra_CrsMatrix.hpp"
 %}
 
-#define TPETRA_DEPRECATED
-
-#define KOKKOS_INLINE_FUNCTION
-
 // =======================================================================
 // Ignore permanently
 // =======================================================================

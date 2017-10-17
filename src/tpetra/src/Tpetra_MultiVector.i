@@ -7,8 +7,6 @@
 #include "Tpetra_MultiVector.hpp"
 %}
 
-#define TPETRA_DEPRECATED
-
 // Ignore
 %ignore Teuchos::TypeNameTraits;
 

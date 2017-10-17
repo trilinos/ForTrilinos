@@ -34,6 +34,10 @@ namespace Kokkos {
 // ignore Details namespace
 %ignore Tpetra::Details;
 
+// ignore these defines
+#define TPETRA_DEPRECATED
+#define KOKKOS_INLINE_FUNCTION
+
 // Order matters!!!
 %include "Tpetra_Map.i"
 %include "Tpetra_Export.i"
