@@ -9,14 +9,12 @@
 #include "Tpetra_Map.hpp"
 %}
 
-// ignore Details namespace
+// =======================================================================
+// Ignore permanently
+// =======================================================================
+// Ignore Details namespace
 %ignore Details;
 %ignore Tpetra::Map::getNode;
-// Ignore constructor that takes in Kokkos::View
-%ignore Tpetra::Map::Map(const global_size_t numGlobalElements,
-         const Kokkos::View<const GlobalOrdinal*, device_type>& indexList,
-         const GlobalOrdinal indexBase,
-         const Teuchos::RCP<const Teuchos::Comm<int> >& comm);
 // Ignore the Node versions
 %ignore Tpetra::Map::Map(global_size_t numGlobalElements,
          GlobalOrdinal indexBase,
@@ -34,12 +32,25 @@
          const Teuchos::RCP<const Teuchos::Comm<int> >& comm,
          const Teuchos::RCP<Node>& node);
 
-// POSTPONE
-%ignore Tpetra::Map::getMyGlobalIndices; // Map does not expose global_indices_array_type externally, requires using `auto`
-%ignore Tpetra::Map::describe;
-%ignore Tpetra::Map::getLocalMap;
-%ignore Tpetra::Map::removeEmptyProcesses;
-%ignore Tpetra::Map::replaceCommWithSubset;
+// =======================================================================
+// Postpone temporarily
+// =======================================================================
+%ignore Tpetra::Map::Map(const global_size_t numGlobalElements,
+         const Kokkos::View<const GlobalOrdinal*, device_type>& indexList,
+         const GlobalOrdinal indexBase,
+         const Teuchos::RCP<const Teuchos::Comm<int> >& comm); // needs Kokkos::View
+%ignore Tpetra::Map::describe;                  // needs Teuchos::FancyOStream
+%ignore Tpetra::Map::getGlobalElement;          // ±1 issue
+%ignore Tpetra::Map::getLocalElement;           // ±1 issue
+%ignore Tpetra::Map::getLocalMap;               // ?
+%ignore Tpetra::Map::getMaxLocalIndex;          // ±1 issue
+%ignore Tpetra::Map::getMinLocalIndex;          // ±1 issue
+%ignore Tpetra::Map::getMyGlobalIndices;        // return type is not exposed externally, requires using `auto`
+%ignore Tpetra::Map::getRemoteIndexList;        // ±1 issue
+%ignore Tpetra::Map::isNodeLocalElement;        // ±1 issue
+%ignore Tpetra::Map::removeEmptyProcesses;      // returns newly created Map
+%ignore Tpetra::Map::replaceCommWithSubset;     // ?
+
 
 %teuchos_rcp(Tpetra::Map<LO,GO,NO>)
 

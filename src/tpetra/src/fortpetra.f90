@@ -68,18 +68,11 @@ module fortpetra
   procedure :: getGlobalNumElements => swigf_TpetraMap_getGlobalNumElements
   procedure :: getNodeNumElements => swigf_TpetraMap_getNodeNumElements
   procedure :: getIndexBase => swigf_TpetraMap_getIndexBase
-  procedure :: getMinLocalIndex => swigf_TpetraMap_getMinLocalIndex
-  procedure :: getMaxLocalIndex => swigf_TpetraMap_getMaxLocalIndex
   procedure :: getMinGlobalIndex => swigf_TpetraMap_getMinGlobalIndex
   procedure :: getMaxGlobalIndex => swigf_TpetraMap_getMaxGlobalIndex
   procedure :: getMinAllGlobalIndex => swigf_TpetraMap_getMinAllGlobalIndex
   procedure :: getMaxAllGlobalIndex => swigf_TpetraMap_getMaxAllGlobalIndex
-  procedure :: getLocalElement => swigf_TpetraMap_getLocalElement
-  procedure :: getGlobalElement => swigf_TpetraMap_getGlobalElement
-  procedure, private :: getRemoteIndexList__SWIG_0 => swigf_TpetraMap_getRemoteIndexList__SWIG_0
-  procedure, private :: getRemoteIndexList__SWIG_1 => swigf_TpetraMap_getRemoteIndexList__SWIG_1
   procedure :: getNodeElementList => swigf_TpetraMap_getNodeElementList
-  procedure :: isNodeLocalElement => swigf_TpetraMap_isNodeLocalElement
   procedure :: isNodeGlobalElement => swigf_TpetraMap_isNodeGlobalElement
   procedure :: isUniform => swigf_TpetraMap_isUniform
   procedure :: isContiguous => swigf_TpetraMap_isContiguous
@@ -92,7 +85,6 @@ module fortpetra
   procedure, private :: swigf_assign_TpetraMap
   generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2, create__SWIG_3, create__SWIG_4, create__SWIG_5
   generic :: assignment(=) => swigf_assign_TpetraMap
-  generic :: getRemoteIndexList => getRemoteIndexList__SWIG_0, getRemoteIndexList__SWIG_1
  end type
  type :: TpetraMultiVector
   type(C_PTR), public :: swigptr = C_NULL_PTR
@@ -159,20 +151,12 @@ module fortpetra
   procedure :: release => swigf_delete_TpetraCrsMatrix
   procedure, private :: insertGlobalValues__SWIG_0 => swigf_TpetraCrsMatrix_insertGlobalValues__SWIG_0
   procedure, private :: insertGlobalValues__SWIG_1 => swigf_TpetraCrsMatrix_insertGlobalValues__SWIG_1
-  procedure, private :: insertLocalValues__SWIG_0 => swigf_TpetraCrsMatrix_insertLocalValues__SWIG_0
-  procedure, private :: insertLocalValues__SWIG_1 => swigf_TpetraCrsMatrix_insertLocalValues__SWIG_1
   procedure, private :: replaceGlobalValues__SWIG_1 => swigf_TpetraCrsMatrix_replaceGlobalValues__SWIG_1
   procedure, private :: replaceGlobalValues__SWIG_2 => swigf_TpetraCrsMatrix_replaceGlobalValues__SWIG_2
-  procedure, private :: replaceLocalValues__SWIG_1 => swigf_TpetraCrsMatrix_replaceLocalValues__SWIG_1
-  procedure, private :: replaceLocalValues__SWIG_2 => swigf_TpetraCrsMatrix_replaceLocalValues__SWIG_2
   procedure, private :: sumIntoGlobalValues__SWIG_0 => swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_0
   procedure, private :: sumIntoGlobalValues__SWIG_1 => swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_1
   procedure, private :: sumIntoGlobalValues__SWIG_2 => swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_2
   procedure, private :: sumIntoGlobalValues__SWIG_3 => swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3
-  procedure, private :: sumIntoLocalValues__SWIG_2 => swigf_TpetraCrsMatrix_sumIntoLocalValues__SWIG_2
-  procedure, private :: sumIntoLocalValues__SWIG_3 => swigf_TpetraCrsMatrix_sumIntoLocalValues__SWIG_3
-  procedure, private :: sumIntoLocalValues__SWIG_4 => swigf_TpetraCrsMatrix_sumIntoLocalValues__SWIG_4
-  procedure, private :: sumIntoLocalValues__SWIG_5 => swigf_TpetraCrsMatrix_sumIntoLocalValues__SWIG_5
   procedure :: setAllToScalar => swigf_TpetraCrsMatrix_setAllToScalar
   procedure :: scale => swigf_TpetraCrsMatrix_scale
   procedure :: globalAssemble => swigf_TpetraCrsMatrix_globalAssemble
@@ -195,7 +179,6 @@ module fortpetra
   procedure :: getGlobalNumEntries => swigf_TpetraCrsMatrix_getGlobalNumEntries
   procedure :: getNodeNumEntries => swigf_TpetraCrsMatrix_getNodeNumEntries
   procedure :: getNumEntriesInGlobalRow => swigf_TpetraCrsMatrix_getNumEntriesInGlobalRow
-  procedure :: getNumEntriesInLocalRow => swigf_TpetraCrsMatrix_getNumEntriesInLocalRow
   procedure :: getGlobalNumDiags => swigf_TpetraCrsMatrix_getGlobalNumDiags
   procedure :: getNodeNumDiags => swigf_TpetraCrsMatrix_getNodeNumDiags
   procedure :: getGlobalMaxNumRowEntries => swigf_TpetraCrsMatrix_getGlobalMaxNumRowEntries
@@ -213,7 +196,6 @@ module fortpetra
   procedure :: getFrobeniusNorm => swigf_TpetraCrsMatrix_getFrobeniusNorm
   procedure :: supportsRowViews => swigf_TpetraCrsMatrix_supportsRowViews
   procedure :: getGlobalRowCopy => swigf_TpetraCrsMatrix_getGlobalRowCopy
-  procedure :: getLocalRowCopy => swigf_TpetraCrsMatrix_getLocalRowCopy
   procedure :: getGlobalRowView => swigf_TpetraCrsMatrix_getGlobalRowView
   procedure :: getLocalRowViewRaw => swigf_TpetraCrsMatrix_getLocalRowViewRaw
   procedure, private :: apply__SWIG_0 => swigf_TpetraCrsMatrix_apply__SWIG_0
@@ -235,13 +217,9 @@ module fortpetra
   generic :: apply => apply__SWIG_0, apply__SWIG_1, apply__SWIG_2, apply__SWIG_3
   generic :: resumeFill => resumeFill__SWIG_0, resumeFill__SWIG_1
   generic :: insertGlobalValues => insertGlobalValues__SWIG_0, insertGlobalValues__SWIG_1
-  generic :: insertLocalValues => insertLocalValues__SWIG_0, insertLocalValues__SWIG_1
   generic :: replaceGlobalValues => replaceGlobalValues__SWIG_1, replaceGlobalValues__SWIG_2
-  generic :: replaceLocalValues => replaceLocalValues__SWIG_1, replaceLocalValues__SWIG_2
   generic :: sumIntoGlobalValues => sumIntoGlobalValues__SWIG_0, sumIntoGlobalValues__SWIG_1, sumIntoGlobalValues__SWIG_2, &
     sumIntoGlobalValues__SWIG_3
-  generic :: sumIntoLocalValues => sumIntoLocalValues__SWIG_2, sumIntoLocalValues__SWIG_3, sumIntoLocalValues__SWIG_4, &
-    sumIntoLocalValues__SWIG_5
   generic :: fillComplete => fillComplete__SWIG_0, fillComplete__SWIG_1, fillComplete__SWIG_2, fillComplete__SWIG_3
  end type
 
@@ -337,20 +315,6 @@ module fortpetra
    integer(C_INT) :: fresult
    type(C_PTR), value :: farg1
   end function
-  function swigc_TpetraMap_getMinLocalIndex(farg1) &
-     bind(C, name="swigc_TpetraMap_getMinLocalIndex") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMap_getMaxLocalIndex(farg1) &
-     bind(C, name="swigc_TpetraMap_getMaxLocalIndex") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-  end function
   function swigc_TpetraMap_getMinGlobalIndex(farg1) &
      bind(C, name="swigc_TpetraMap_getMinGlobalIndex") &
      result(fresult)
@@ -379,55 +343,12 @@ module fortpetra
    integer(C_INT) :: fresult
    type(C_PTR), value :: farg1
   end function
-  function swigc_TpetraMap_getLocalElement(farg1, farg2) &
-     bind(C, name="swigc_TpetraMap_getLocalElement") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-  end function
-  function swigc_TpetraMap_getGlobalElement(farg1, farg2) &
-     bind(C, name="swigc_TpetraMap_getGlobalElement") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-  end function
-  function swigc_TpetraMap_getRemoteIndexList__SWIG_0(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraMap_getRemoteIndexList__SWIG_0") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-  end function
-  function swigc_TpetraMap_getRemoteIndexList__SWIG_1(farg1, farg2, farg3) &
-     bind(C, name="swigc_TpetraMap_getRemoteIndexList__SWIG_1") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-  end function
   function swigc_TpetraMap_getNodeElementList(farg1) &
      bind(C, name="swigc_TpetraMap_getNodeElementList") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
    type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMap_isNodeLocalElement(farg1, farg2) &
-     bind(C, name="swigc_TpetraMap_isNodeLocalElement") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
   end function
   function swigc_TpetraMap_isNodeGlobalElement(farg1, farg2) &
      bind(C, name="swigc_TpetraMap_isNodeGlobalElement") &
@@ -878,23 +799,6 @@ module fortpetra
    real(C_DOUBLE), dimension(*), intent(in) :: farg4
    integer(C_INT), dimension(*), intent(in) :: farg5
   end subroutine
-  subroutine swigc_TpetraCrsMatrix_insertLocalValues__SWIG_0(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraCrsMatrix_insertLocalValues__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_insertLocalValues__SWIG_1(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraCrsMatrix_insertLocalValues__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   integer(C_INT), intent(in) :: farg3
-   real(C_DOUBLE), dimension(*), intent(in) :: farg4
-   integer(C_INT), dimension(*), intent(in) :: farg5
-  end subroutine
   function swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_1(farg1, farg2, farg3, farg4) &
      bind(C, name="swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_1") &
      result(fresult)
@@ -907,27 +811,6 @@ module fortpetra
   end function
   function swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_2(farg1, farg2, farg3, farg4, farg5) &
      bind(C, name="swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_2") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   integer(C_INT), intent(in) :: farg3
-   real(C_DOUBLE), dimension(*), intent(in) :: farg4
-   integer(C_INT), dimension(*), intent(in) :: farg5
-  end function
-  function swigc_TpetraCrsMatrix_replaceLocalValues__SWIG_1(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraCrsMatrix_replaceLocalValues__SWIG_1") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-  end function
-  function swigc_TpetraCrsMatrix_replaceLocalValues__SWIG_2(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraCrsMatrix_replaceLocalValues__SWIG_2") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT) :: fresult
@@ -972,50 +855,6 @@ module fortpetra
   end function
   function swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3(farg1, farg2, farg3, farg4, farg5) &
      bind(C, name="swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   integer(C_INT), intent(in) :: farg3
-   real(C_DOUBLE), dimension(*), intent(in) :: farg4
-   integer(C_INT), dimension(*), intent(in) :: farg5
-  end function
-  function swigc_TpetraCrsMatrix_sumIntoLocalValues__SWIG_2(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraCrsMatrix_sumIntoLocalValues__SWIG_2") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   logical(C_BOOL), intent(in) :: farg5
-  end function
-  function swigc_TpetraCrsMatrix_sumIntoLocalValues__SWIG_3(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraCrsMatrix_sumIntoLocalValues__SWIG_3") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-  end function
-  function swigc_TpetraCrsMatrix_sumIntoLocalValues__SWIG_4(farg1, farg2, farg3, farg4, farg5, farg6) &
-     bind(C, name="swigc_TpetraCrsMatrix_sumIntoLocalValues__SWIG_4") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   integer(C_INT), intent(in) :: farg3
-   real(C_DOUBLE), dimension(*), intent(in) :: farg4
-   integer(C_INT), dimension(*), intent(in) :: farg5
-   logical(C_BOOL), intent(in) :: farg6
-  end function
-  function swigc_TpetraCrsMatrix_sumIntoLocalValues__SWIG_5(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraCrsMatrix_sumIntoLocalValues__SWIG_5") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    integer(C_INT) :: fresult
@@ -1169,14 +1008,6 @@ module fortpetra
    type(C_PTR), value :: farg1
    integer(C_INT), intent(in) :: farg2
   end function
-  function swigc_TpetraCrsMatrix_getNumEntriesInLocalRow(farg1, farg2) &
-     bind(C, name="swigc_TpetraCrsMatrix_getNumEntriesInLocalRow") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-  end function
   function swigc_TpetraCrsMatrix_getGlobalNumDiags(farg1) &
      bind(C, name="swigc_TpetraCrsMatrix_getGlobalNumDiags") &
      result(fresult)
@@ -1291,15 +1122,6 @@ module fortpetra
   end function
   subroutine swigc_TpetraCrsMatrix_getGlobalRowCopy(farg1, farg2, farg3, farg4, farg5) &
      bind(C, name="swigc_TpetraCrsMatrix_getGlobalRowCopy")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   integer(C_SIZE_T), intent(inout) :: farg5
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_getLocalRowCopy(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraCrsMatrix_getLocalRowCopy")
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
    integer(C_INT), intent(in) :: farg2
@@ -1544,20 +1366,6 @@ contains
    class(TpetraMap) :: self
    fresult = swigc_TpetraMap_getIndexBase(self%swigptr)
   end function
-  function swigf_TpetraMap_getMinLocalIndex(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraMap) :: self
-   fresult = swigc_TpetraMap_getMinLocalIndex(self%swigptr)
-  end function
-  function swigf_TpetraMap_getMaxLocalIndex(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraMap) :: self
-   fresult = swigc_TpetraMap_getMaxLocalIndex(self%swigptr)
-  end function
   function swigf_TpetraMap_getMinGlobalIndex(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
@@ -1586,55 +1394,12 @@ contains
    class(TpetraMap) :: self
    fresult = swigc_TpetraMap_getMaxAllGlobalIndex(self%swigptr)
   end function
-  function swigf_TpetraMap_getLocalElement(self, globalIndex) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraMap) :: self
-   integer(C_INT), intent(in) :: globalIndex
-   fresult = swigc_TpetraMap_getLocalElement(self%swigptr, globalIndex)
-  end function
-  function swigf_TpetraMap_getGlobalElement(self, localIndex) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraMap) :: self
-   integer(C_INT), intent(in) :: localIndex
-   fresult = swigc_TpetraMap_getGlobalElement(self%swigptr, localIndex)
-  end function
-  function swigf_TpetraMap_getRemoteIndexList__SWIG_0(self, GIDList, nodeIDList, LIDList) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(kind(LookupStatus)) :: fresult
-   class(TpetraMap) :: self
-   class(TeuchosArrayViewIntConst) :: GIDList
-   class(TeuchosArrayViewInt) :: nodeIDList
-   class(TeuchosArrayViewInt) :: LIDList
-   fresult = swigc_TpetraMap_getRemoteIndexList__SWIG_0(self%swigptr, GIDList%swigptr, nodeIDList%swigptr, LIDList%swigptr)
-  end function
-  function swigf_TpetraMap_getRemoteIndexList__SWIG_1(self, GIDList, nodeIDList) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(kind(LookupStatus)) :: fresult
-   class(TpetraMap) :: self
-   class(TeuchosArrayViewIntConst) :: GIDList
-   class(TeuchosArrayViewInt) :: nodeIDList
-   fresult = swigc_TpetraMap_getRemoteIndexList__SWIG_1(self%swigptr, GIDList%swigptr, nodeIDList%swigptr)
-  end function
   function swigf_TpetraMap_getNodeElementList(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(TeuchosArrayViewIntConst) :: fresult
    class(TpetraMap) :: self
    fresult%swigptr = swigc_TpetraMap_getNodeElementList(self%swigptr)
-  end function
-  function swigf_TpetraMap_isNodeLocalElement(self, localIndex) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraMap) :: self
-   integer(C_INT), intent(in) :: localIndex
-   fresult = swigc_TpetraMap_isNodeLocalElement(self%swigptr, localIndex)
   end function
   function swigf_TpetraMap_isNodeGlobalElement(self, globalIndex) &
      result(fresult)
@@ -2089,23 +1854,6 @@ contains
    integer(C_INT), dimension(:), intent(in) :: inds
    call swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_1(self%swigptr, globalRow, numEnt, vals, inds)
   end subroutine
-  subroutine swigf_TpetraCrsMatrix_insertLocalValues__SWIG_0(self, localRow, cols, vals)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: localRow
-   class(TeuchosArrayViewIntConst) :: cols
-   class(TeuchosArrayViewDoubleConst) :: vals
-   call swigc_TpetraCrsMatrix_insertLocalValues__SWIG_0(self%swigptr, localRow, cols%swigptr, vals%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_insertLocalValues__SWIG_1(self, localRow, numEnt, vals, cols)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: localRow
-   integer(C_INT), intent(in) :: numEnt
-   real(C_DOUBLE), dimension(:), intent(in) :: vals
-   integer(C_INT), dimension(:), intent(in) :: cols
-   call swigc_TpetraCrsMatrix_insertLocalValues__SWIG_1(self%swigptr, localRow, numEnt, vals, cols)
-  end subroutine
   function swigf_TpetraCrsMatrix_replaceGlobalValues__SWIG_1(self, globalRow, cols, vals) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
@@ -2126,27 +1874,6 @@ contains
    real(C_DOUBLE), dimension(:), intent(in) :: vals
    integer(C_INT), dimension(:), intent(in) :: cols
    fresult = swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_2(self%swigptr, globalRow, numEnt, vals, cols)
-  end function
-  function swigf_TpetraCrsMatrix_replaceLocalValues__SWIG_1(self, localRow, cols, vals) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: localRow
-   class(TeuchosArrayViewIntConst) :: cols
-   class(TeuchosArrayViewDoubleConst) :: vals
-   fresult = swigc_TpetraCrsMatrix_replaceLocalValues__SWIG_1(self%swigptr, localRow, cols%swigptr, vals%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_replaceLocalValues__SWIG_2(self, localRow, numEnt, inputVals, inputCols) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: localRow
-   integer(C_INT), intent(in) :: numEnt
-   real(C_DOUBLE), dimension(:), intent(in) :: inputVals
-   integer(C_INT), dimension(:), intent(in) :: inputCols
-   fresult = swigc_TpetraCrsMatrix_replaceLocalValues__SWIG_2(self%swigptr, localRow, numEnt, inputVals, inputCols)
   end function
   function swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_0(self, globalRow, cols, vals, atomic) &
      result(fresult)
@@ -2191,50 +1918,6 @@ contains
    real(C_DOUBLE), dimension(:), intent(in) :: vals
    integer(C_INT), dimension(:), intent(in) :: cols
    fresult = swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3(self%swigptr, globalRow, numEnt, vals, cols)
-  end function
-  function swigf_TpetraCrsMatrix_sumIntoLocalValues__SWIG_2(self, localRow, cols, vals, atomic) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: localRow
-   class(TeuchosArrayViewIntConst) :: cols
-   class(TeuchosArrayViewDoubleConst) :: vals
-   logical(C_BOOL), intent(in) :: atomic
-   fresult = swigc_TpetraCrsMatrix_sumIntoLocalValues__SWIG_2(self%swigptr, localRow, cols%swigptr, vals%swigptr, atomic)
-  end function
-  function swigf_TpetraCrsMatrix_sumIntoLocalValues__SWIG_3(self, localRow, cols, vals) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: localRow
-   class(TeuchosArrayViewIntConst) :: cols
-   class(TeuchosArrayViewDoubleConst) :: vals
-   fresult = swigc_TpetraCrsMatrix_sumIntoLocalValues__SWIG_3(self%swigptr, localRow, cols%swigptr, vals%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_sumIntoLocalValues__SWIG_4(self, localRow, numEnt, vals, cols, atomic) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: localRow
-   integer(C_INT), intent(in) :: numEnt
-   real(C_DOUBLE), dimension(:), intent(in) :: vals
-   integer(C_INT), dimension(:), intent(in) :: cols
-   logical(C_BOOL), intent(in) :: atomic
-   fresult = swigc_TpetraCrsMatrix_sumIntoLocalValues__SWIG_4(self%swigptr, localRow, numEnt, vals, cols, atomic)
-  end function
-  function swigf_TpetraCrsMatrix_sumIntoLocalValues__SWIG_5(self, localRow, numEnt, vals, cols) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: localRow
-   integer(C_INT), intent(in) :: numEnt
-   real(C_DOUBLE), dimension(:), intent(in) :: vals
-   integer(C_INT), dimension(:), intent(in) :: cols
-   fresult = swigc_TpetraCrsMatrix_sumIntoLocalValues__SWIG_5(self%swigptr, localRow, numEnt, vals, cols)
   end function
   subroutine swigf_TpetraCrsMatrix_setAllToScalar(self, alpha)
    use, intrinsic :: ISO_C_BINDING
@@ -2380,14 +2063,6 @@ contains
    integer(C_INT), intent(in) :: globalRow
    fresult = swigc_TpetraCrsMatrix_getNumEntriesInGlobalRow(self%swigptr, globalRow)
   end function
-  function swigf_TpetraCrsMatrix_getNumEntriesInLocalRow(self, localRow) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: localRow
-   fresult = swigc_TpetraCrsMatrix_getNumEntriesInLocalRow(self%swigptr, localRow)
-  end function
   function swigf_TpetraCrsMatrix_getGlobalNumDiags(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
@@ -2508,15 +2183,6 @@ contains
    class(TeuchosArrayViewDouble) :: Values
    integer(C_SIZE_T), intent(inout) :: NumEntries
    call swigc_TpetraCrsMatrix_getGlobalRowCopy(self%swigptr, GlobalRow, Indices%swigptr, Values%swigptr, NumEntries)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_getLocalRowCopy(self, localRow, colInds, vals, numEntries)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: localRow
-   class(TeuchosArrayViewInt) :: colInds
-   class(TeuchosArrayViewDouble) :: vals
-   integer(C_SIZE_T), intent(inout) :: numEntries
-   call swigc_TpetraCrsMatrix_getLocalRowCopy(self%swigptr, localRow, colInds%swigptr, vals%swigptr, numEntries)
   end subroutine
   subroutine swigf_TpetraCrsMatrix_getGlobalRowView(self, GlobalRow, indices, values)
    use, intrinsic :: ISO_C_BINDING
