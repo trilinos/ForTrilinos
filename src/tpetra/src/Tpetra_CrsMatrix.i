@@ -51,8 +51,6 @@
                const Teuchos::ArrayRCP<LocalOrdinal>& columnIndices, \
                const Teuchos::ArrayRCP<Scalar>& values, \
                const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);         // needs Teuchos::ArrayRCP
-%ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const crs_graph_type>& graph, \
-               const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);         // needs Tpetra::CrsGraph
 %ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap, \
                const Teuchos::RCP<const map_type>& colMap, \
                const local_matrix_type& lclMatrix, \
@@ -77,9 +75,7 @@
                Teuchos::ArrayRCP<const Scalar>& values) const;                              // needs Teuchos::ArrayRCP
 %ignore Tpetra::CrsMatrix::operator();                      // needs operator() treatment
 %ignore Tpetra::CrsMatrix::describe;                        // needs Teuchos::FancyOStream
-%ignore Tpetra::CrsMatrix::reindexColumns;                  // needs Tpetra::CrsGraph
 %ignore Tpetra::CrsMatrix::add;                             // needs Tpetra::RowMatrix
-%ignore Tpetra::CrsMatrix::getCrsGraph;                     // needs Tpetra::CrsGraph
 %ignore Tpetra::CrsMatrix::getGraph;                        // needs Tpetra::RowGraph
 %ignore Tpetra::CrsMatrix::getLocalDiagCopy;                // needs Tpetra::Vector
 %ignore Tpetra::CrsMatrix::getLocalDiagOffsets;             // needs Teuchos::ArrayRCP

@@ -44,4 +44,5 @@ namespace Kokkos {
 %include "Tpetra_Import.i"
 %include "Tpetra_MultiVector.i"
 /* %include "Tpetra_Vector.i" */        // needs better support for inheritance
+%include "Tpetra_CrsGraph.i"
 %include "Tpetra_CrsMatrix.i"
