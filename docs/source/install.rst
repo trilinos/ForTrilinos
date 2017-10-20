@@ -71,7 +71,6 @@ Create a ``do-configure`` script such as:
         -D Trilinos_ENABLE_Thyra=ON
 
         ### FORTRILINOS ###
-        -D Trilinos_ENABLE_CTrilinos=ON
         -D Trilinos_ENABLE_ForTrilinos=ON
             -D ForTrilinos_ENABLE_EXAMPLES=ON
             -D ForTrilinos_ENABLE_TESTS=ON
