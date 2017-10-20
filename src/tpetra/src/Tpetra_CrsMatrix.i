@@ -55,11 +55,11 @@
                const Teuchos::RCP<const map_type>& colMap, \
                const local_matrix_type& lclMatrix, \
                const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);         // needs Kokkos containers
-%ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap, \
-               const Teuchos::RCP<const map_type>& colMap, \
-               const Teuchos::RCP<const map_type>& domainMap, \
-               const Teuchos::RCP<const map_type>& rangeMap, \
-               const local_matrix_type& lclMatrix, \
+%ignore Tpetra::CrsMatrix::CrsMatrix (const local_matrix_type& lclMatrix, \
+               const Teuchos::RCP<const map_type>& rowMap, \
+               const Teuchos::RCP<const map_type>& colMap = Teuchos::null, \
+               const Teuchos::RCP<const map_type>& domainMap = Teuchos::null, \
+               const Teuchos::RCP<const map_type>& rangeMap = Teuchos::null, \
                const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);         // needs Kokkos containers
 %ignore Tpetra::CrsMatrix::setAllValues (const Teuchos::ArrayRCP<size_t>& ptr, \
                const Teuchos::ArrayRCP<LocalOrdinal>& ind, \

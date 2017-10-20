@@ -85,6 +85,7 @@ module fortpetra
   procedure :: isCompatible => swigf_TpetraMap_isCompatible
   procedure :: isSameAs => swigf_TpetraMap_isSameAs
   procedure :: locallySameAs => swigf_TpetraMap_locallySameAs
+  procedure :: isLocallyFitted => swigf_TpetraMap_isLocallyFitted
   procedure :: getComm => swigf_TpetraMap_getComm
   procedure :: description => swigf_TpetraMap_description
   procedure, private :: swigf_assign_TpetraMap
@@ -577,6 +578,14 @@ module fortpetra
   end function
   function swigc_TpetraMap_locallySameAs(farg1, farg2) &
      bind(C, name="swigc_TpetraMap_locallySameAs") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   logical(C_BOOL) :: fresult
+   type(C_PTR), value :: farg1
+   type(C_PTR), value :: farg2
+  end function
+  function swigc_TpetraMap_isLocallyFitted(farg1, farg2) &
+     bind(C, name="swigc_TpetraMap_isLocallyFitted") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    logical(C_BOOL) :: fresult
@@ -2587,6 +2596,14 @@ contains
    class(TpetraMap) :: self
    class(TpetraMap) :: map
    fresult = swigc_TpetraMap_locallySameAs(self%swigptr, map%swigptr)
+  end function
+  function swigf_TpetraMap_isLocallyFitted(self, map) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   logical(C_BOOL) :: fresult
+   class(TpetraMap) :: self
+   class(TpetraMap) :: map
+   fresult = swigc_TpetraMap_isLocallyFitted(self%swigptr, map%swigptr)
   end function
   function swigf_TpetraMap_getComm(self) &
      result(fresult)
