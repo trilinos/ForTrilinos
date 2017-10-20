@@ -1295,57 +1295,6 @@ SWIGEXPORT bool swigc_TpetraMap_locallySameAs(const void* farg1, const void* far
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isLocallyFitted(const void* farg1, const void* farg2) {
-  bool fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg2 = 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
-  bool result;
-  
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *)(((Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg2)
-    ? ((Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg2)->get()
-    :0);
-  if (!arg2)
-  {
-    throw std::logic_error("Attempt to dereference null Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const &");
-    return 0;
-  }
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
-    try
-    {
-      // Attempt the wrapped function call
-      result = (bool)((Tpetra::Map< LO,GO,NO > const *)arg1)->isLocallyFitted((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
-    }
-    catch (...)
-    {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
-    }
-  }
-  fresult = result;
-  return fresult;
-}
-
-
 SWIGEXPORT void * swigc_TpetraMap_getComm(const void* farg1) {
   void * fresult = 0 ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
@@ -3030,7 +2979,7 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_5(void * farg1, const void* f
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_7(const void* farg1, const void* farg2, const size_t* farg3) {
+SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_6(const void* farg1, const void* farg2, const size_t* farg3) {
   void* fresult = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg1 = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type *arg2 = 0 ;
@@ -3088,7 +3037,7 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_7(const void* farg1, const vo
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_8(const void* farg1, const void* farg2) {
+SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_7(const void* farg1, const void* farg2) {
   void* fresult = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg1 = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type *arg2 = 0 ;

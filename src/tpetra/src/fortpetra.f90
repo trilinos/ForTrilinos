@@ -85,7 +85,6 @@ module fortpetra
   procedure :: isCompatible => swigf_TpetraMap_isCompatible
   procedure :: isSameAs => swigf_TpetraMap_isSameAs
   procedure :: locallySameAs => swigf_TpetraMap_locallySameAs
-  procedure :: isLocallyFitted => swigf_TpetraMap_isLocallyFitted
   procedure :: getComm => swigf_TpetraMap_getComm
   procedure :: description => swigf_TpetraMap_description
   procedure, private :: swigf_assign_TpetraMap
@@ -146,8 +145,8 @@ module fortpetra
   procedure, private :: create__SWIG_3 => swigf_new_TpetraMultiVector__SWIG_3
   procedure, private :: create__SWIG_4 => swigf_new_TpetraMultiVector__SWIG_4
   procedure, private :: create__SWIG_5 => swigf_new_TpetraMultiVector__SWIG_5
+  procedure, private :: create__SWIG_6 => swigf_new_TpetraMultiVector__SWIG_6
   procedure, private :: create__SWIG_7 => swigf_new_TpetraMultiVector__SWIG_7
-  procedure, private :: create__SWIG_8 => swigf_new_TpetraMultiVector__SWIG_8
   procedure :: release => swigf_delete_TpetraMultiVector
   procedure :: replaceGlobalValue => swigf_TpetraMultiVector_replaceGlobalValue
   procedure, private :: sumIntoGlobalValue__SWIG_0 => swigf_TpetraMultiVector_sumIntoGlobalValue__SWIG_0
@@ -186,7 +185,7 @@ module fortpetra
   procedure :: getCopyOrView => swigf_TpetraMultiVector_getCopyOrView
   procedure, private :: swigf_assign_TpetraMultiVector
   generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2, create__SWIG_3, create__SWIG_4, create__SWIG_5, &
-    create__SWIG_7, create__SWIG_8
+    create__SWIG_6, create__SWIG_7
   generic :: assignment(=) => swigf_assign_TpetraMultiVector
   generic :: randomize => randomize__SWIG_0, randomize__SWIG_1
   generic :: sumIntoGlobalValue => sumIntoGlobalValue__SWIG_0, sumIntoGlobalValue__SWIG_1
@@ -584,14 +583,6 @@ module fortpetra
    type(C_PTR), value :: farg1
    type(C_PTR), value :: farg2
   end function
-  function swigc_TpetraMap_isLocallyFitted(farg1, farg2) &
-     bind(C, name="swigc_TpetraMap_isLocallyFitted") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end function
   function swigc_TpetraMap_getComm(farg1) &
      bind(C, name="swigc_TpetraMap_getComm") &
      result(fresult)
@@ -889,8 +880,8 @@ module fortpetra
    integer(C_SIZE_T), intent(in) :: farg3
    integer(C_SIZE_T), intent(in) :: farg4
   end function
-  function swigc_new_TpetraMultiVector__SWIG_7(farg1, farg2, farg3) &
-     bind(C, name="swigc_new_TpetraMultiVector__SWIG_7") &
+  function swigc_new_TpetraMultiVector__SWIG_6(farg1, farg2, farg3) &
+     bind(C, name="swigc_new_TpetraMultiVector__SWIG_6") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
@@ -898,8 +889,8 @@ module fortpetra
    type(C_PTR), value :: farg2
    integer(C_SIZE_T), intent(in) :: farg3
   end function
-  function swigc_new_TpetraMultiVector__SWIG_8(farg1, farg2) &
-     bind(C, name="swigc_new_TpetraMultiVector__SWIG_8") &
+  function swigc_new_TpetraMultiVector__SWIG_7(farg1, farg2) &
+     bind(C, name="swigc_new_TpetraMultiVector__SWIG_7") &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR) :: fresult
@@ -2597,14 +2588,6 @@ contains
    class(TpetraMap) :: map
    fresult = swigc_TpetraMap_locallySameAs(self%swigptr, map%swigptr)
   end function
-  function swigf_TpetraMap_isLocallyFitted(self, map) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraMap) :: self
-   class(TpetraMap) :: map
-   fresult = swigc_TpetraMap_isLocallyFitted(self%swigptr, map%swigptr)
-  end function
   function swigf_TpetraMap_getComm(self) &
      result(fresult)
    use, intrinsic :: ISO_C_BINDING
@@ -2905,22 +2888,22 @@ contains
    if (c_associated(self%swigptr)) call self%release()
    self%swigptr = swigc_new_TpetraMultiVector__SWIG_5(map%swigptr, A%swigptr, LDA, NumVectors)
   end subroutine
-  subroutine swigf_new_TpetraMultiVector__SWIG_7(self, X, subMap, offset)
+  subroutine swigf_new_TpetraMultiVector__SWIG_6(self, X, subMap, offset)
    use, intrinsic :: ISO_C_BINDING
    class(TpetraMultiVector) :: self
    class(TpetraMultiVector) :: X
    class(TpetraMap) :: subMap
    integer(C_SIZE_T), intent(in) :: offset
    if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraMultiVector__SWIG_7(X%swigptr, subMap%swigptr, offset)
+   self%swigptr = swigc_new_TpetraMultiVector__SWIG_6(X%swigptr, subMap%swigptr, offset)
   end subroutine
-  subroutine swigf_new_TpetraMultiVector__SWIG_8(self, X, subMap)
+  subroutine swigf_new_TpetraMultiVector__SWIG_7(self, X, subMap)
    use, intrinsic :: ISO_C_BINDING
    class(TpetraMultiVector) :: self
    class(TpetraMultiVector) :: X
    class(TpetraMap) :: subMap
    if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraMultiVector__SWIG_8(X%swigptr, subMap%swigptr)
+   self%swigptr = swigc_new_TpetraMultiVector__SWIG_7(X%swigptr, subMap%swigptr)
   end subroutine
   subroutine swigf_delete_TpetraMultiVector(self)
    use, intrinsic :: ISO_C_BINDING
