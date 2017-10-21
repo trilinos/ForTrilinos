@@ -268,6 +268,9 @@ typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
 #include "Tpetra_MultiVector.hpp"
 
 
+#include "Tpetra_CrsGraph.hpp"
+
+
 #include "Tpetra_CrsMatrix.hpp"
 
 #ifdef __cplusplus
@@ -2976,7 +2979,7 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_5(void * farg1, const void* f
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_7(const void* farg1, const void* farg2, const size_t* farg3) {
+SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_6(const void* farg1, const void* farg2, const size_t* farg3) {
   void* fresult = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg1 = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type *arg2 = 0 ;
@@ -3034,7 +3037,7 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_7(const void* farg1, const vo
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_8(const void* farg1, const void* farg2) {
+SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_7(const void* farg1, const void* farg2) {
   void* fresult = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg1 = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type *arg2 = 0 ;
@@ -4729,6 +4732,2983 @@ SWIGEXPORT void* swigc_spcopy_TpetraMultiVector(void* farg1) {
 }
 
 
+SWIGEXPORT void swigc_set_RowInfo_localRow(void* farg1, const size_t* farg2) {
+  Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
+  size_t arg2 ;
+  
+  arg1 = (Tpetra::RowInfo *)(farg1);
+  arg2 = *farg2;
+  if (arg1) (arg1)->localRow = arg2;
+}
+
+
+SWIGEXPORT size_t swigc_get_RowInfo_localRow(void* farg1) {
+  size_t fresult = 0 ;
+  Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
+  size_t result;
+  
+  arg1 = (Tpetra::RowInfo *)(farg1);
+  result = (size_t) ((arg1)->localRow);
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_set_RowInfo_allocSize(void* farg1, const size_t* farg2) {
+  Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
+  size_t arg2 ;
+  
+  arg1 = (Tpetra::RowInfo *)(farg1);
+  arg2 = *farg2;
+  if (arg1) (arg1)->allocSize = arg2;
+}
+
+
+SWIGEXPORT size_t swigc_get_RowInfo_allocSize(void* farg1) {
+  size_t fresult = 0 ;
+  Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
+  size_t result;
+  
+  arg1 = (Tpetra::RowInfo *)(farg1);
+  result = (size_t) ((arg1)->allocSize);
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_set_RowInfo_numEntries(void* farg1, const size_t* farg2) {
+  Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
+  size_t arg2 ;
+  
+  arg1 = (Tpetra::RowInfo *)(farg1);
+  arg2 = *farg2;
+  if (arg1) (arg1)->numEntries = arg2;
+}
+
+
+SWIGEXPORT size_t swigc_get_RowInfo_numEntries(void* farg1) {
+  size_t fresult = 0 ;
+  Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
+  size_t result;
+  
+  arg1 = (Tpetra::RowInfo *)(farg1);
+  result = (size_t) ((arg1)->numEntries);
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_set_RowInfo_offset1D(void* farg1, const size_t* farg2) {
+  Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
+  size_t arg2 ;
+  
+  arg1 = (Tpetra::RowInfo *)(farg1);
+  arg2 = *farg2;
+  if (arg1) (arg1)->offset1D = arg2;
+}
+
+
+SWIGEXPORT size_t swigc_get_RowInfo_offset1D(void* farg1) {
+  size_t fresult = 0 ;
+  Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
+  size_t result;
+  
+  arg1 = (Tpetra::RowInfo *)(farg1);
+  result = (size_t) ((arg1)->offset1D);
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_RowInfo() {
+  void* fresult = 0 ;
+  Tpetra::RowInfo *result = 0 ;
+  
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::RowInfo *)new Tpetra::RowInfo();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_RowInfo(void* farg1) {
+  Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
+  
+  arg1 = (Tpetra::RowInfo *)(farg1);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      delete arg1;
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_0(void * farg1, const size_t* farg2, int* farg3, void * farg4) {
+  void* fresult = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
+  size_t arg2 ;
+  Tpetra::ProfileType arg3 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull1 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull4 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *result = 0 ;
+  
+  arg1 = farg1 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg1 : &tempnull1;
+  arg2 = *farg2;
+  arg3 = (Tpetra::ProfileType)(*farg3);
+  arg4 = farg4 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg4 : &tempnull4;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::CrsGraph< LO,GO,NO,false > *)new Tpetra::CrsGraph< LO,GO,NO,false >((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg1,arg2,arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(Teuchos::null);
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_1(void * farg1, const size_t* farg2, int* farg3) {
+  void* fresult = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
+  size_t arg2 ;
+  Tpetra::ProfileType arg3 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull1 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *result = 0 ;
+  
+  arg1 = farg1 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg1 : &tempnull1;
+  arg2 = *farg2;
+  arg3 = (Tpetra::ProfileType)(*farg3);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::CrsGraph< LO,GO,NO,false > *)new Tpetra::CrsGraph< LO,GO,NO,false >((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg1,arg2,arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(Teuchos::null);
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_2(void * farg1, const size_t* farg2) {
+  void* fresult = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
+  size_t arg2 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull1 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *result = 0 ;
+  
+  arg1 = farg1 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg1 : &tempnull1;
+  arg2 = *farg2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::CrsGraph< LO,GO,NO,false > *)new Tpetra::CrsGraph< LO,GO,NO,false >((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg1,arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(Teuchos::null);
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_3(void * farg1, void * farg2, const size_t* farg3, int* farg4, void * farg5) {
+  void* fresult = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
+  size_t arg3 ;
+  Tpetra::ProfileType arg4 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg5 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull1 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull2 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull5 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *result = 0 ;
+  
+  arg1 = farg1 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg1 : &tempnull1;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
+  arg3 = *farg3;
+  arg4 = (Tpetra::ProfileType)(*farg4);
+  arg5 = farg5 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg5 : &tempnull5;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::CrsGraph< LO,GO,NO,false > *)new Tpetra::CrsGraph< LO,GO,NO,false >((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg2,arg3,arg4,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg5);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(Teuchos::null);
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_4(void * farg1, void * farg2, const size_t* farg3, int* farg4) {
+  void* fresult = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
+  size_t arg3 ;
+  Tpetra::ProfileType arg4 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull1 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull2 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *result = 0 ;
+  
+  arg1 = farg1 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg1 : &tempnull1;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
+  arg3 = *farg3;
+  arg4 = (Tpetra::ProfileType)(*farg4);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::CrsGraph< LO,GO,NO,false > *)new Tpetra::CrsGraph< LO,GO,NO,false >((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg2,arg3,arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(Teuchos::null);
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_5(void * farg1, void * farg2, const size_t* farg3) {
+  void* fresult = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
+  size_t arg3 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull1 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull2 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *result = 0 ;
+  
+  arg1 = farg1 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg1 : &tempnull1;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
+  arg3 = *farg3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::CrsGraph< LO,GO,NO,false > *)new Tpetra::CrsGraph< LO,GO,NO,false >((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg2,arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(Teuchos::null);
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_TpetraCrsGraph(void* farg1) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (void)arg1; delete smartarg1;
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_setParameterList(void* farg1, void * farg2) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull2 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg2 : &tempnull2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->setParameterList((Teuchos::RCP< Teuchos::ParameterList > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void * swigc_TpetraCrsGraph_getValidParameters(const void* farg1) {
+  void * fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList const > result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getValidParameters();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = (!Teuchos::is_null((Teuchos::RCP< Teuchos::ParameterList const >)result)) ? new Teuchos::RCP< Teuchos::ParameterList const >(result) : new Teuchos::RCP< Teuchos::ParameterList const >(Teuchos::null);
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_0(void* farg1, const int* farg2, const void* farg3) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  int arg2 ;
+  Teuchos::ArrayView< int const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  arg3 = (Teuchos::ArrayView< int const > *)(((Teuchos::RCP<const Teuchos::ArrayView<const int> > *)farg3)
+    ? ((Teuchos::RCP<const Teuchos::ArrayView<const int> > *)farg3)->get()
+    :0);
+  if (!arg3)
+  {
+    throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< int const > const &");
+    return ;
+  }
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->insertGlobalIndices(arg2,(Teuchos::ArrayView< int const > const &)*arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_1(void* farg1, const int* farg2, const int* farg3, int * farg4) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  int arg2 ;
+  int arg3 ;
+  int *arg4 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  arg3 = *farg3;
+  arg4 = farg4;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->insertGlobalIndices(arg2,arg3,(int const (*))arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_globalAssemble(void* farg1) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->globalAssemble();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_resumeFill__SWIG_0(void* farg1, void * farg2) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull2 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg2 : &tempnull2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->resumeFill((Teuchos::RCP< Teuchos::ParameterList > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_resumeFill__SWIG_1(void* farg1) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->resumeFill();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_0(void* farg1, void * farg2, void * farg3, void * farg4) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull3 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull4 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg4 : &tempnull4;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->fillComplete((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg2,(Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_1(void* farg1, void * farg2, void * farg3) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull3 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg3 : &tempnull3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->fillComplete((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg2,(Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_2(void* farg1, void * farg2) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull2 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg2 : &tempnull2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->fillComplete((Teuchos::RCP< Teuchos::ParameterList > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_3(void* farg1) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->fillComplete();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_0(void* farg1, void * farg2, void * farg3, void * farg4, void * farg5, void * farg6) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type const > *arg5 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg6 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull3 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > tempnull4 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type const > tempnull5 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull6 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *)farg4 : &tempnull4;
+  arg5 = farg5 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type const > *)farg5 : &tempnull5;
+  arg6 = farg6 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg6 : &tempnull6;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->expertStaticFillComplete((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg2,(Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg3,(Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > const &)*arg4,(Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type const > const &)*arg5,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg6);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_1(void* farg1, void * farg2, void * farg3, void * farg4, void * farg5) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type const > *arg5 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull3 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > tempnull4 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type const > tempnull5 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *)farg4 : &tempnull4;
+  arg5 = farg5 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type const > *)farg5 : &tempnull5;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->expertStaticFillComplete((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg2,(Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg3,(Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > const &)*arg4,(Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type const > const &)*arg5);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_2(void* farg1, void * farg2, void * farg3, void * farg4) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull3 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > tempnull4 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *)farg4 : &tempnull4;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->expertStaticFillComplete((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg2,(Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg3,(Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > const &)*arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_3(void* farg1, void * farg2, void * farg3) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull3 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg3 : &tempnull3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->expertStaticFillComplete((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg2,(Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void * swigc_TpetraCrsGraph_getComm(const void* farg1) {
+  void * fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getComm();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = (!Teuchos::is_null((Teuchos::RCP< Teuchos::Comm< int > const >)result)) ? new Teuchos::RCP< Teuchos::Comm< int > const >(result) : new Teuchos::RCP< Teuchos::Comm< int > const >(Teuchos::null);
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraCrsGraph_getRowMap(const void* farg1) {
+  void * fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  SwigValueWrapper< Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > > result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getRowMap();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(Teuchos::null);
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraCrsGraph_getColMap(const void* farg1) {
+  void * fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  SwigValueWrapper< Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > > result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getColMap();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(Teuchos::null);
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraCrsGraph_getDomainMap(const void* farg1) {
+  void * fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  SwigValueWrapper< Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > > result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getDomainMap();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(Teuchos::null);
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraCrsGraph_getRangeMap(const void* farg1) {
+  void * fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  SwigValueWrapper< Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > > result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getRangeMap();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(Teuchos::null);
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraCrsGraph_getImporter(const void* farg1) {
+  void * fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getImporter();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const >(result) : new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const >(Teuchos::null);
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraCrsGraph_getExporter(const void* farg1) {
+  void * fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type const > result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getExporter();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type const >(result) : new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type const >(Teuchos::null);
+  return fresult;
+}
+
+
+SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumRows(const void* farg1) {
+  unsigned long fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  Tpetra::global_size_t result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::global_size_t)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getGlobalNumRows();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumCols(const void* farg1) {
+  unsigned long fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  Tpetra::global_size_t result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::global_size_t)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getGlobalNumCols();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumRows(const void* farg1) {
+  size_t fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  size_t result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (size_t)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getNodeNumRows();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumCols(const void* farg1) {
+  size_t fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  size_t result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (size_t)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getNodeNumCols();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_TpetraCrsGraph_getIndexBase(const void* farg1) {
+  int fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  int result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (int)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getIndexBase();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumEntries(const void* farg1) {
+  unsigned long fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  Tpetra::global_size_t result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::global_size_t)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getGlobalNumEntries();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumEntries(const void* farg1) {
+  size_t fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  size_t result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (size_t)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getNodeNumEntries();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT size_t swigc_TpetraCrsGraph_getNumEntriesInGlobalRow(const void* farg1, const int* farg2) {
+  size_t fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  int arg2 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  size_t result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (size_t)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getNumEntriesInGlobalRow(arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeAllocationSize(const void* farg1) {
+  size_t fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  size_t result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (size_t)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getNodeAllocationSize();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT size_t swigc_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow(const void* farg1, const int* farg2) {
+  size_t fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  int arg2 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  size_t result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (size_t)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getNumAllocatedEntriesInGlobalRow(arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumDiags(const void* farg1) {
+  unsigned long fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  Tpetra::global_size_t result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::global_size_t)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getGlobalNumDiags();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumDiags(const void* farg1) {
+  size_t fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  size_t result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (size_t)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getNodeNumDiags();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT size_t swigc_TpetraCrsGraph_getGlobalMaxNumRowEntries(const void* farg1) {
+  size_t fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  size_t result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (size_t)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getGlobalMaxNumRowEntries();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeMaxNumRowEntries(const void* farg1) {
+  size_t fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  size_t result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (size_t)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getNodeMaxNumRowEntries();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT bool swigc_TpetraCrsGraph_hasColMap(const void* farg1) {
+  bool fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  bool result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (bool)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->hasColMap();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT bool swigc_TpetraCrsGraph_isLowerTriangular(const void* farg1) {
+  bool fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  bool result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (bool)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->isLowerTriangular();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT bool swigc_TpetraCrsGraph_isUpperTriangular(const void* farg1) {
+  bool fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  bool result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (bool)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->isUpperTriangular();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT bool swigc_TpetraCrsGraph_isLocallyIndexed(const void* farg1) {
+  bool fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  bool result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (bool)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->isLocallyIndexed();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT bool swigc_TpetraCrsGraph_isGloballyIndexed(const void* farg1) {
+  bool fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  bool result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (bool)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->isGloballyIndexed();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT bool swigc_TpetraCrsGraph_isFillComplete(const void* farg1) {
+  bool fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  bool result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (bool)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->isFillComplete();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT bool swigc_TpetraCrsGraph_isFillActive(const void* farg1) {
+  bool fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  bool result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (bool)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->isFillActive();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT bool swigc_TpetraCrsGraph_isSorted(const void* farg1) {
+  bool fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  bool result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (bool)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->isSorted();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT bool swigc_TpetraCrsGraph_isStorageOptimized(const void* farg1) {
+  bool fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  bool result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (bool)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->isStorageOptimized();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_TpetraCrsGraph_getProfileType(const void* farg1) {
+  int fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  Tpetra::ProfileType result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::ProfileType)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getProfileType();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_getGlobalRowCopy(const void* farg1, const int* farg2, const void* farg3, size_t* farg4) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  int arg2 ;
+  Teuchos::ArrayView< int > *arg3 = 0 ;
+  size_t *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  arg3 = (Teuchos::ArrayView< int > *)(((Teuchos::RCP<const Teuchos::ArrayView<int> > *)farg3)
+    ? ((Teuchos::RCP<const Teuchos::ArrayView<int> > *)farg3)->get()
+    :0);
+  if (!arg3)
+  {
+    throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< int > const &");
+    return ;
+  }
+  arg4 = farg4;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      ((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getGlobalRowCopy(arg2,(Teuchos::ArrayView< int > const &)*arg3,*arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_getGlobalRowView(const void* farg1, const int* farg2, void* farg3) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  int arg2 ;
+  Teuchos::ArrayView< int const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  arg3 = (Teuchos::ArrayView< int const > *)(((Teuchos::RCP< Teuchos::ArrayView<const int> > *)farg3)
+    ? ((Teuchos::RCP< Teuchos::ArrayView<const int> > *)farg3)->get()
+    :0);
+  if (!arg3)
+  {
+    throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< int const > &");
+    return ;
+  }
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      ((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getGlobalRowView(arg2,*arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT bool swigc_TpetraCrsGraph_supportsRowViews(const void* farg1) {
+  bool fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  bool result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (bool)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->supportsRowViews();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_TpetraCrsGraph_description(const void* farg1) {
+  void* fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  std::string result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->description();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  
+#if __cplusplus >= 201103L
+  fresult = new std::string(std::move(result));
+#else
+  fresult = new std::string(result);
+#endif
+  
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_replaceColMap(void* farg1, void * farg2) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull2 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->replaceColMap((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_0(void* farg1, void * farg2, void * farg3, const bool* farg4) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *arg3 = 0 ;
+  bool arg4 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > tempnull3 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *)farg3 : &tempnull3;
+  arg4 = *farg4;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->reindexColumns((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg2,(Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > const &)*arg3,arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_1(void* farg1, void * farg2, void * farg3) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > tempnull3 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *)farg3 : &tempnull3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->reindexColumns((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg2,(Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > const &)*arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_2(void* farg1, void * farg2) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull2 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->reindexColumns((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_replaceDomainMapAndImporter(void* farg1, void * farg2, void * farg3) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > tempnull3 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *)farg3 : &tempnull3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->replaceDomainMapAndImporter((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg2,(Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > const &)*arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_removeEmptyProcessesInPlace(void* farg1, void * farg2) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull2 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->removeEmptyProcessesInPlace((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT bool swigc_TpetraCrsGraph_haveGlobalConstants(const void* farg1) {
+  bool fresult = 0 ;
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  bool result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (bool)((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->haveGlobalConstants();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_computeGlobalConstants(void* farg1) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->computeGlobalConstants();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void* swigc_spcopy_TpetraCrsGraph(void* farg1) {
+  Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >* arg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  return new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(*arg1);
+}
+
+
 SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_0(void * farg1, const size_t* farg2, int* farg3, void * farg4) {
   void* fresult = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
@@ -4983,6 +7963,91 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_5(void * farg1, void * farg2, c
     {
       // Attempt the wrapped function call
       result = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *)new Tpetra::CrsMatrix< SC,LO,GO,NO,false >((Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg1,(Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg2,arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(Teuchos::null);
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_6(void * farg1, void * farg2) {
+  void* fresult = 0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const > *arg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const > tempnull1 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull2 ;
+  Tpetra::CrsMatrix< SC,LO,GO,NO,false > *result = 0 ;
+  
+  arg1 = farg1 ? (Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const > *)farg1 : &tempnull1;
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg2 : &tempnull2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *)new Tpetra::CrsMatrix< SC,LO,GO,NO,false >((Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const > const &)*arg1,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(Teuchos::null);
+  return fresult;
+}
+
+
+SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_7(void * farg1) {
+  void* fresult = 0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const > *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const > tempnull1 ;
+  Tpetra::CrsMatrix< SC,LO,GO,NO,false > *result = 0 ;
+  
+  arg1 = farg1 ? (Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const > *)farg1 : &tempnull1;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *)new Tpetra::CrsMatrix< SC,LO,GO,NO,false >((Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const > const &)*arg1);
     }
     catch (const std::range_error& e)
     {
@@ -6094,6 +9159,149 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_replaceColMap(void* farg1, void * farg2) {
 }
 
 
+SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_0(void* farg1, void* farg2, void * farg3, void * farg4, const bool* farg5) {
+  Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
+  Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type *arg2 = (Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type *) (Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type *)0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *arg4 = 0 ;
+  bool arg5 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull3 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > tempnull4 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg2 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg2;
+  arg2 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg2 ? smartarg2->get() : 0);
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *)farg4 : &tempnull4;
+  arg5 = *farg5;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->reindexColumns(arg2,(Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg3,(Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > const &)*arg4,arg5);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_1(void* farg1, void* farg2, void * farg3, void * farg4) {
+  Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
+  Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type *arg2 = (Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type *) (Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type *)0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull3 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > tempnull4 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg2 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg2;
+  arg2 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg2 ? smartarg2->get() : 0);
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *)farg4 : &tempnull4;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->reindexColumns(arg2,(Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg3,(Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > const &)*arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_2(void* farg1, void* farg2, void * farg3) {
+  Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
+  Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type *arg2 = (Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type *) (Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type *)0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull3 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg2 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg2;
+  arg2 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg2 ? smartarg2->get() : 0);
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg3 : &tempnull3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->reindexColumns(arg2,(Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &)*arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
+      } while(0);
+    }
+  }
+}
+
+
 SWIGEXPORT void swigc_TpetraCrsMatrix_replaceDomainMapAndImporter(void* farg1, void * farg2, void * farg3) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
@@ -6301,6 +9509,48 @@ SWIGEXPORT void * swigc_TpetraCrsMatrix_getColMap(const void* farg1) {
     }
   }
   fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(Teuchos::null);
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraCrsMatrix_getCrsGraph(const void* farg1) {
+  void * fresult = 0 ;
+  Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const > result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((Tpetra::CrsMatrix< SC,LO,GO,NO,false > const *)arg1)->getCrsGraph();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      do {
+        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
+      } while(0);
+    }
+    catch (...)
+    {
+      do {
+        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
+      } while(0);
+    }
+  }
+  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const >(result) : new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const >(Teuchos::null);
   return fresult;
 }
 

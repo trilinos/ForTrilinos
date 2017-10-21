@@ -49,12 +49,15 @@
 %ignore Tpetra::MultiVector::need_sync;             // templated on device type
 %ignore Tpetra::MultiVector::sync;                  // templated on device type
 %ignore Tpetra::MultiVector::norm1(const Kokkos::View<mag_type*, device_type>& norms) const;
+%ignore Tpetra::MultiVector::norm1(const Kokkos::View<mag_type*, Kokkos::HostSpace>& norms) const;
 %ignore Tpetra::MultiVector::norm1(const Kokkos::View<T*, device_type>& norms) const;
 %ignore Tpetra::MultiVector::norm1(const Teuchos::ArrayView<T>& norms) const;
 %ignore Tpetra::MultiVector::norm2(const Kokkos::View<mag_type*, device_type>& norms) const;
+%ignore Tpetra::MultiVector::norm2(const Kokkos::View<mag_type*, Kokkos::HostSpace>& norms) const;
 %ignore Tpetra::MultiVector::norm2(const Kokkos::View<T*, device_type>& norms) const;
 %ignore Tpetra::MultiVector::norm2(const Teuchos::ArrayView<T>& norms) const;
 %ignore Tpetra::MultiVector::normInf(const Kokkos::View<mag_type*, device_type>& norms) const;
+%ignore Tpetra::MultiVector::normInf(const Kokkos::View<mag_type*, Kokkos::HostSpace>& norms) const;
 %ignore Tpetra::MultiVector::normInf(const Kokkos::View<T*, device_type>& norms) const;
 %ignore Tpetra::MultiVector::normInf(const Teuchos::ArrayView<T>& norms) const;
 %ignore Tpetra::MultiVector::offsetView;
