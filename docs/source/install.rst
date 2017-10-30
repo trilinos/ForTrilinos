@@ -59,7 +59,7 @@ required to build and install ForTrilinos:
 
   .. code-block:: bash
 
-      #!/usr/bin/env/bash
+      #!/usr/bin/env bash
 
       EXTRA_ARGS=$@
 
@@ -115,6 +115,29 @@ required to build and install ForTrilinos:
 
   More install scripts can be found in ``scripts/`` directory in the ForTrilinos
   source tree.
+
+  .. warning::
+
+      Right now, it is required to apply a patch to Trilinos. This patch is:
+
+      .. code::
+
+          --- a/packages/anasazi/src/AnasaziTraceMin.hpp
+          +++ b/packages/anasazi/src/AnasaziTraceMin.hpp
+          @@ -53,7 +53,9 @@
+           #include "AnasaziBasicSort.hpp"
+           #include "AnasaziTraceMinBase.hpp"
+
+          -#include "Epetra_Operator.h"
+          +#ifdef HAVE_ANASAZI_EPETRA
+          +  #include "Epetra_Operator.h"
+          +#endif
+
+           #include "AnasaziEigensolver.hpp"
+           #include "AnasaziMultiVecTraits.hpp"
+
+      In the future, this patch will be incorporated upstream and not
+      necessary.
 
 Build this documentation
 ------------------------
