@@ -9,7 +9,9 @@
 %{
 #include "Teuchos_Comm.hpp"
 #ifdef HAVE_MPI
-#include "Teuchos_DefaultMpiComm.hpp"
+# include "Teuchos_DefaultMpiComm.hpp"
+#else
+  typedef int MPI_Comm;
 #endif
 #include "Teuchos_DefaultSerialComm.hpp"
 %}
@@ -42,15 +44,21 @@ class Comm
   public:
 
   %extend {
-#ifdef HAVE_MPI
-    Comm(MPI_Comm rawMpiComm = MPI_COMM_WORLD) {
+    Comm(MPI_Comm rawMpiComm) {
+%#ifdef HAVE_MPI
       return static_cast<Teuchos::Comm<Ordinal>*>(new Teuchos::MpiComm<int>(rawMpiComm));
+%#else
+      throw std::runtime_error("MPI based constructor cannot be called when MPI is not enabled.");
+%#endif
     }
-#else
+
     Comm() {
+%#ifdef HAVE_MPI
+      return static_cast<Teuchos::Comm<Ordinal>*>(new Teuchos::MpiComm<int>(MPI_COMM_WORLD));
+%#else
       return static_cast<Teuchos::Comm<Ordinal>*>(new Teuchos::SerialComm<int>());
+%#endif
     }
-#endif
 
     int getRank() const {
       return $self->getRank();
