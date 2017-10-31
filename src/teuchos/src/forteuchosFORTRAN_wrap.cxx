@@ -259,12 +259,25 @@ SWIGINTERN void std_vector_Sl_double_Sg__copy_to(std::vector< double > *self,std
 
 #include "Teuchos_Comm.hpp"
 #ifdef HAVE_MPI
-#include "Teuchos_DefaultMpiComm.hpp"
+# include "Teuchos_DefaultMpiComm.hpp"
+#else
+  typedef int MPI_Comm;
 #endif
 #include "Teuchos_DefaultSerialComm.hpp"
 
-SWIGINTERN Teuchos::Comm< int > *new_Teuchos_Comm_Sl_int_Sg___SWIG_0(MPI_Comm rawMpiComm=MPI_COMM_WORLD){
+SWIGINTERN Teuchos::Comm< int > *new_Teuchos_Comm_Sl_int_Sg___SWIG_0(MPI_Comm rawMpiComm){
+#ifdef HAVE_MPI
       return static_cast<Teuchos::Comm<int>*>(new Teuchos::MpiComm<int>(rawMpiComm));
+#else
+      throw std::runtime_error("MPI based constructor cannot be called when MPI is not enabled.");
+#endif
+    }
+SWIGINTERN Teuchos::Comm< int > *new_Teuchos_Comm_Sl_int_Sg___SWIG_1(){
+#ifdef HAVE_MPI
+      return static_cast<Teuchos::Comm<int>*>(new Teuchos::MpiComm<int>(MPI_COMM_WORLD));
+#else
+      return static_cast<Teuchos::Comm<int>*>(new Teuchos::SerialComm<int>());
+#endif
     }
 SWIGINTERN int Teuchos_Comm_Sl_int_Sg__getRank(Teuchos::Comm< int > const *self){
       return self->getRank();
@@ -2495,7 +2508,7 @@ SWIGEXPORT void* swigc_new_TeuchosComm__SWIG_1() {
   void* fresult = 0 ;
   Teuchos::Comm< int > *result = 0 ;
   
-  result = (Teuchos::Comm< int > *)new_Teuchos_Comm_Sl_int_Sg___SWIG_0();
+  result = (Teuchos::Comm< int > *)new_Teuchos_Comm_Sl_int_Sg___SWIG_1();
   fresult = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Teuchos::Comm<int> >(Teuchos::null);
   return fresult;
 }
