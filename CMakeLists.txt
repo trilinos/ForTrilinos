@@ -21,6 +21,11 @@ IF (${PACKAGE_NAME}_ENABLE_DeveloperMode)
     # Ignore some SWIG warnings:
     #   401: "Nothing known about base class"
     SET(CMAKE_SWIG_FLAGS "-w401 ${CMAKE_SWIG_FLAGS}")
+
+    # Require MPI
+    IF (NOT TPL_ENABLE_MPI)
+      MESSAGE(FATAL_ERROR "We require DeveloperMode to be run only with MPI. We do that so that we do not miss part of the interface.")
+    ENDIF()
 ENDIF()
 
 ##---------------------------------------------------------------------------##
