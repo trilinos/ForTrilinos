@@ -2,8 +2,10 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 IF (ForTrilinos_ENABLE_DeveloperMode)
-    # Generate wrapper and proxy files
-    SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}")
+    IF (ForTrilinos_EXPORT_SWIG)
+        # Generate wrapper and proxy files since MPI is enabled
+        SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}")
+    ENDIF()
 
     MAKE_SWIG(MODULE fortpetra
         SOURCE fortpetra.i
