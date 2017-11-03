@@ -2,7 +2,7 @@
 ## Define the package
 ##---------------------------------------------------------------------------##
 
-TRIBITS_PACKAGE(ForTrilinos CXX Fortran)
+TRIBITS_PACKAGE(ForTrilinos)
 
 ##---------------------------------------------------------------------------##
 ## Set up package-specific options
