@@ -12,16 +12,16 @@
 
 %inline %{
 void load_from_xml(const Teuchos::RCP<Teuchos::ParameterList>& plist,
-                   const char* STRING, int SIZE)
+                   std::pair<const char*, size_t> xml)
 {
-    Teuchos::updateParametersFromXmlFile(std::string(STRING, SIZE),
+    Teuchos::updateParametersFromXmlFile(std::string(xml.first, xml.second),
                                          Teuchos::inOutArg(*plist));
 }
 
 void save_to_xml(const Teuchos::ParameterList& plist,
-                 const char* STRING, int SIZE)
+                 std::pair<const char*, size_t> xml)
 {
-    Teuchos::writeParameterListToXmlFile(plist, std::string(STRING, SIZE));
+    Teuchos::writeParameterListToXmlFile(plist, std::string(xml.first, xml.second));
 }
 %}
 

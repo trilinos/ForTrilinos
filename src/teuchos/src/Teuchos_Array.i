@@ -55,8 +55,25 @@ namespace Teuchos {
 %ignore Teuchos::Array::remove;
 %ignore Teuchos::Array::toString;
 
+%define ADD_VIEW(TYPE)
+// Extend ArrayView
+%extend Teuchos::Array<TYPE> {
+Array(std::pair<TYPE*, size_t> view)
+{
+  Teuchos::Array<TYPE>* arr = new Teuchos::Array<TYPE>(view.second);
+  for (size_t i = 0; i < view.second; i++)
+    (*arr)[i] = view.first[i];
+
+  return arr;
+}
+} // end extend
+%enddef
+
 // Include the real headers
 %include "Teuchos_Array.hpp"
+ADD_VIEW(int)
+ADD_VIEW(double)
+#undef ADD_VIEW
 
 // Make templates
 %template(TeuchosArrayInt)      Teuchos::Array<int>;
