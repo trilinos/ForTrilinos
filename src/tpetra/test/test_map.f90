@@ -1,7 +1,7 @@
 program main
 
 #include "FortranTestMacros.h"
-#include "ForTrilinosTeuchos_config.hpp"
+#include "ForTrilinosTpetra_config.hpp"
 
   use ISO_FORTRAN_ENV
   implicit none

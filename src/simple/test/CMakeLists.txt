@@ -12,13 +12,13 @@ IF (${PACKAGE_NAME}_ENABLE_Belos AND ${PACKAGE_NAME}_ENABLE_Ifpack2)
 
   TRIBITS_ADD_EXECUTABLE_AND_TEST(
     solver_handle_raw_test_fortran
-    SOURCES solver_handle_raw_test.f90 DBCF.f90
+    SOURCES solver_handle_raw_test.f90
     COMM serial mpi
   )
 
   TRIBITS_ADD_EXECUTABLE_AND_TEST(
     solver_handle_tpetra_test_fortran
-    SOURCES solver_handle_tpetra_test.f90 DBCF.f90
+    SOURCES solver_handle_tpetra_test.f90
     COMM serial mpi
   )
 
@@ -42,7 +42,7 @@ IF (${PACKAGE_NAME}_ENABLE_Anasazi)
 
   TRIBITS_ADD_EXECUTABLE_AND_TEST(
     eigen_handle_test_fortran
-    SOURCES eigen_handle_test.f90 DBCF.f90
+    SOURCES eigen_handle_test.f90
     COMM serial mpi
     NUM_MPI_PROCS 1
     )
