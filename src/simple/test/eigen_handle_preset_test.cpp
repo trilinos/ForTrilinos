@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
     si.setup_solver(paramList);
 
     // Step 4: solve the system
-    si.solve(1, evalues.data(), n, evectors.data());
+    si.solve(std::make_pair(evalues.data(), 1), std::make_pair(evectors.data(), n));
 
     // TODO: Check the solution
 

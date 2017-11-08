@@ -38,8 +38,6 @@ program main
   real(c_double), dimension(:), allocatable :: vals
 
   n = 50
-  stupid_n = n
-  stupid_1 = 1
   num_vecs = 1
 
   one = 1.0
@@ -129,8 +127,8 @@ program main
     lhs(i) = offset + i-1
   end do
   lda = n
-  call TA_lhs%create(lhs, stupid_n)
-  call TA_rhs%create(rhs, stupid_n)
+  call TA_lhs%create(lhs)
+  call TA_rhs%create(rhs)
 
   call Xtrue%create(map, TA_lhs, lda, num_vecs)
   call B%create(map, TA_rhs, lda, num_vecs)
@@ -178,7 +176,7 @@ program main
 
   ! Check the solution
   allocate(norms(1))
-  call TA_norms%create(norms, stupid_1)
+  call TA_norms%create(norms)
   call X%update(-one, Xtrue, one)
   call X%norm2(TA_norms)
 

@@ -32,8 +32,10 @@ namespace ForTrilinos {
     status_ = INITIALIZED;
   }
 
-  void SolverHandle::setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) {
-    auto A = HandleHelpers::setup_matrix_gen(comm_, numRows, rowInds, rowPtrs, numNnz, colInds, values);
+  void SolverHandle::setup_matrix(std::pair<const int*,size_t> rowInds, std::pair<const int*,size_t> rowPtrs,
+                                  std::pair<const int*,size_t> colInds, std::pair<const double*,size_t> values) {
+    TEUCHOS_ASSERT(status_ == INITIALIZED);
+    auto A = HandleHelpers::setup_matrix_gen(comm_, rowInds, rowPtrs, colInds, values);
     setup_matrix(A);
   }
 
@@ -43,11 +45,9 @@ namespace ForTrilinos {
     status_ = MATRIX_SETUP;
   }
 
-  void SolverHandle::setup_operator(int numRows, const int* rowInds, OperatorCallback funcptr) {
+  void SolverHandle::setup_operator(std::pair<const int*, size_t> rowInds, OperatorCallback callback) {
     TEUCHOS_ASSERT(status_ == INITIALIZED);
-
-    A_ = HandleHelpers::setup_operator_gen(comm_, numRows, rowInds, funcptr);
-
+    A_ = HandleHelpers::setup_operator_gen(comm_, rowInds, callback);
     status_ = MATRIX_SETUP;
   }
 
@@ -91,11 +91,13 @@ namespace ForTrilinos {
     status_ = SOLVER_SETUP;
   }
 
-  void SolverHandle::solve(int size, const double* rhs, double* lhs) const {
+  void SolverHandle::solve(std::pair<const double*, size_t> rhs, std::pair<double*, size_t> lhs) const {
     auto map = A_->getDomainMap();
+    auto size = lhs.second;
 
     TEUCHOS_ASSERT(size >= 0);
-    TEUCHOS_ASSERT((rhs != NULL && lhs != NULL) || size == 0);
+    TEUCHOS_ASSERT(lhs.second == size);
+    TEUCHOS_ASSERT((rhs.first != NULL && lhs.second != NULL) || size == 0);
     TEUCHOS_ASSERT(map->getNodeNumElements() == size_t(size));
 
     // NOTE: This is a major simplification
@@ -108,15 +110,15 @@ namespace ForTrilinos {
     auto Xdata = X->getDataNonConst(0);
     auto Bdata = B->getDataNonConst(0);
     for (int i = 0; i < size; i++) {
-      Xdata[i] = lhs[i];
-      Bdata[i] = rhs[i];
+      Xdata[i] = lhs.first[i];
+      Bdata[i] = rhs.first[i];
     }
 
     solve(B, X);
 
     // FIXME: fix data copying
     for (int i = 0; i < size; i++)
-      lhs[i] = Xdata[i];
+      lhs.first[i] = Xdata[i];
   }
 
   void SolverHandle::solve(const Teuchos::RCP<const MultiVector> B, Teuchos::RCP<MultiVector> X) const {

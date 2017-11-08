@@ -33,42 +33,39 @@ namespace ForTrilinos {
     status_ = INITIALIZED;
   }
 
-  void EigenHandle::setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) {
+  void EigenHandle::setup_matrix(std::pair<const int*,size_t> rowInds, std::pair<const int*,size_t> rowPtrs,
+                                 std::pair<const int*,size_t> colInds, std::pair<const double*,size_t> values) {
     TEUCHOS_ASSERT(status_ == INITIALIZED);
+    auto A = HandleHelpers::setup_matrix_gen(comm_, rowInds, rowPtrs, colInds, values);
+    setup_matrix(A);
+  }
 
-    A_ = HandleHelpers::setup_matrix_gen(comm_, numRows, rowInds, rowPtrs, numNnz, colInds, values);
-
+  void EigenHandle::setup_matrix(const Teuchos::RCP<Matrix> A) {
+    TEUCHOS_ASSERT(status_ == INITIALIZED);
+    A_ = Teuchos::rcp_dynamic_cast<Operator>(A);
     status_ = MATRIX_SETUP;
   }
-  void EigenHandle::setup_matrix_rhs(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) {
+
+  void EigenHandle::setup_matrix_rhs(std::pair<const int*,size_t> rowInds, std::pair<const int*,size_t> rowPtrs,
+                                     std::pair<const int*,size_t> colInds, std::pair<const double*,size_t> values) {
     TEUCHOS_ASSERT(status_ == INITIALIZED || status_ == MATRIX_SETUP);
-
-    M_ = HandleHelpers::setup_matrix_gen(comm_, numRows, rowInds, rowPtrs, numNnz, colInds, values);
+    auto M = HandleHelpers::setup_matrix_gen(comm_, rowInds, rowPtrs, colInds, values);
+    setup_matrix_rhs(M);
   }
-  void EigenHandle::setup_operator(int numRows, const int* rowInds, void (*funcptr)(int n, const double* x, double* y)) {
+  void EigenHandle::setup_matrix_rhs(const Teuchos::RCP<Matrix> M) {
+    TEUCHOS_ASSERT(status_ == INITIALIZED || status_ == MATRIX_SETUP);
+    M_ = Teuchos::rcp_dynamic_cast<Operator>(M);
+  }
+
+  void EigenHandle::setup_operator(std::pair<const int*, size_t> rowInds, OperatorCallback callback) {
     TEUCHOS_ASSERT(status_ == INITIALIZED);
-
-    A_ = HandleHelpers::setup_operator_gen(comm_, numRows, rowInds, funcptr);
-
+    A_ = HandleHelpers::setup_operator_gen(comm_, rowInds, callback);
     status_ = MATRIX_SETUP;
   }
-  void EigenHandle::setup_operator_rhs(int numRows, const int* rowInds, void (*funcptr)(int n, const double* x, double* y)) {
+
+  void EigenHandle::setup_operator_rhs(std::pair<const int*, size_t> rowInds, OperatorCallback callback) {
     TEUCHOS_ASSERT(status_ == INITIALIZED || status_ == MATRIX_SETUP);
-
-    M_ = HandleHelpers::setup_operator_gen(comm_, numRows, rowInds, funcptr);
-  }
-
-  void EigenHandle::setup_matrix(Teuchos::RCP<Matrix> A) {
-    TEUCHOS_ASSERT(status_ == INITIALIZED);
-
-    A_ = A;
-
-    status_ = MATRIX_SETUP;
-  }
-  void EigenHandle::setup_matrix_rhs(Teuchos::RCP<Matrix> M) {
-    TEUCHOS_ASSERT(status_ == INITIALIZED || status_ == MATRIX_SETUP);
-
-    M_ = M;
+    M_ = HandleHelpers::setup_operator_gen(comm_, rowInds, callback);
   }
 
   void EigenHandle::setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList) {
@@ -135,7 +132,7 @@ namespace ForTrilinos {
     status_ = SOLVER_SETUP;
   }
 
-  void EigenHandle::solve(int numEigs, double* eigenValues, int size, double* eigenVectors) const {
+  void EigenHandle::solve(std::pair<double*, size_t> eigenValues, std::pair<double*, size_t> eigenVectors) const {
     using Teuchos::RCP;
     using Teuchos::ArrayRCP;
 
@@ -150,9 +147,9 @@ namespace ForTrilinos {
     std::vector<Anasazi::Value<SC>>& evalues = solution.Evals;
     RCP<MultiVector>& evectors = solution.Evecs;
 
-    eigenValues[0] = evalues[0].realpart;
-
-    memcpy(eigenVectors, evectors->getData(0).getRawPtr(), size*sizeof(double));
+    // FIXME: deal with multiple eigenvalues
+    eigenValues.first[0] = evalues[0].realpart;
+    memcpy(eigenVectors.first, evectors->getData(0).getRawPtr(), eigenVectors.second*sizeof(double));
   }
 
   void EigenHandle::finalize() {

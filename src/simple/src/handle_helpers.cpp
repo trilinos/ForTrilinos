@@ -8,21 +8,31 @@ namespace ForTrilinos {
   typedef int                                     GO;
   typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
 
-  auto HandleHelpers::setup_matrix_gen(const Teuchos::RCP<const Teuchos::Comm<int>>& comm, int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values) -> Teuchos::RCP<Matrix> {
-    using Teuchos::ArrayRCP;
-    using Teuchos::RCP;
-    using Teuchos::rcp;
+  auto HandleHelpers::setup_matrix_gen(const Teuchos::RCP<const Teuchos::Comm<int>>& comm,
+        std::pair<const int*,size_t> rowInds_pair, std::pair<const int*,size_t>    rowPtrs_pair,
+        std::pair<const int*,size_t> colInds_pair, std::pair<const double*,size_t> values_pair) -> Teuchos::RCP<Matrix> {
     using Teuchos::ArrayView;
 
+    auto numRows = rowInds_pair.second;
+    auto numNnz  = colInds_pair.second;
+
+    TEUCHOS_ASSERT(rowPtrs_pair.second == numRows+1);
+    TEUCHOS_ASSERT(values_pair .second == numNnz);
+
+    auto rowInds = rowInds_pair.first;
+    auto rowPtrs = rowPtrs_pair.first;
+    auto colInds = colInds_pair.first;
+    auto values  = values_pair .first;
+
     TEUCHOS_ASSERT(numRows >= 0);
+    TEUCHOS_ASSERT(numNnz  >= 0);
     TEUCHOS_ASSERT((rowInds != NULL && rowPtrs != NULL) || numRows == 0);
-    TEUCHOS_ASSERT(numNnz >= 0);
-    TEUCHOS_ASSERT((colInds != NULL && values != NULL) || numNnz == 0);
+    TEUCHOS_ASSERT((colInds != NULL && values != NULL)  || numNnz  == 0);
 
     ArrayView<const GO> rows(rowInds, numRows);
     auto rowMap = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm);
 
-    auto A = rcp(new Matrix(rowMap, 1));
+    auto A = Teuchos::rcp(new Matrix(rowMap, 1));
 
     // TODO: Can we use setAllValues?
     for (int i = 0; i < numRows; i++) {
@@ -37,7 +47,10 @@ namespace ForTrilinos {
     return A;
   }
 
-  auto HandleHelpers::setup_operator_gen(const Teuchos::RCP<const Teuchos::Comm<int>>& comm, int numRows, const int* rowInds, void (*funcptr)(int n, const double* x, double* y)) -> Teuchos::RCP<Operator> {
+  auto HandleHelpers::setup_operator_gen(const Teuchos::RCP<const Teuchos::Comm<int>>& comm,
+        std::pair<const int*, size_t> rowInds_pair, OperatorCallback callback) -> Teuchos::RCP<Operator> {
+    auto rowInds = rowInds_pair.first;
+    auto numRows = rowInds_pair.second;
     TEUCHOS_ASSERT(numRows >= 0);
     TEUCHOS_ASSERT(rowInds != NULL || numRows == 0);
 
@@ -46,7 +59,7 @@ namespace ForTrilinos {
     Teuchos::ArrayView<const GO> rows(rowInds, numRows);
     auto map = Tpetra::createNonContigMapWithNode<LO,GO,NO>(rows, comm);
 
-    return Teuchos::rcp(new FortranOperator(funcptr, map, map));
+    return Teuchos::rcp(new FortranOperator(callback, map, map));
   }
 
 }

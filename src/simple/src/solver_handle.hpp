@@ -14,6 +14,8 @@
 
 #include "fortran_operator.hpp"
 
+#include <utility>
+
 namespace ForTrilinos {
 
   class SolverHandle {
@@ -33,9 +35,6 @@ namespace ForTrilinos {
     typedef Thyra::LinearOpWithSolveBase<SC>        LOWS;
 
   public:
-    typedef void (*OperatorCallback)(int n, const double* x, double* y);
-
-  public:
 
     // Constructors
     SolverHandle() : status_(NOT_INITIALIZED) { }
@@ -48,17 +47,18 @@ namespace ForTrilinos {
     void init(const Teuchos::RCP<const Teuchos::Comm<int>>& comm);
 
     // Setup matrix
-    void setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values);
+    void setup_matrix(std::pair<const int*,size_t> rowInds, std::pair<const int*,size_t> rowPtrs,
+                      std::pair<const int*,size_t> colInds, std::pair<const double*,size_t> values);
     void setup_matrix(Teuchos::RCP<Matrix> A);
 
     // Setup operator
-    void setup_operator(int numRows, const int* rowInds, OperatorCallback callback);
+    void setup_operator(std::pair<const int*, size_t> rowInds, OperatorCallback callback);
 
     // Setup solver based on the parameter list
     void setup_solver(const Teuchos::RCP<Teuchos::ParameterList> paramList);
 
     // Solve linear system given rhs
-    void solve(int size, const double* rhs, double* lhs) const;
+    void solve(std::pair<const double*, size_t> rhs, std::pair<double*, size_t> lhs) const;
     void solve(const Teuchos::RCP<const MultiVector> rhs, Teuchos::RCP<MultiVector> lhs) const;
 
     // Free all data

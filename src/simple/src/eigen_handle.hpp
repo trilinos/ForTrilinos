@@ -14,6 +14,7 @@
 
 #include "fortran_operator.hpp"
 
+#include <utility>
 
 namespace ForTrilinos {
 
@@ -27,7 +28,6 @@ namespace ForTrilinos {
     typedef Teuchos::ParameterList                  ParameterList;
 
   public:
-    typedef void (*OperatorCallback)(int n, const double* x, double* y);
     typedef Tpetra::Map<LO,GO,NO>                   Map;
     typedef Tpetra::Operator<SC,LO,GO,NO>           Operator;
     typedef Tpetra::CrsMatrix<SC,LO,GO,NO>          Matrix;
@@ -48,22 +48,24 @@ namespace ForTrilinos {
     void init(const Teuchos::RCP<const Teuchos::Comm<int>>& comm);
 
     // Setup matrices by construction
-    void setup_matrix(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values);
-    void setup_matrix_rhs(int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values);
+    void setup_matrix    (std::pair<const int*,size_t> rowInds, std::pair<const int*,size_t> rowPtrs,
+                          std::pair<const int*,size_t> colInds, std::pair<const double*,size_t> values);
+    void setup_matrix_rhs(std::pair<const int*,size_t> rowInds, std::pair<const int*,size_t> rowPtrs,
+                          std::pair<const int*,size_t> colInds, std::pair<const double*,size_t> values);
 
     // Setup matrices by user provided data
     void setup_matrix(Teuchos::RCP<Matrix> A);
     void setup_matrix_rhs(Teuchos::RCP<Matrix> M);
 
     // Setup operators
-    void setup_operator(int numRows, const int* rowInds, OperatorCallback callback);
-    void setup_operator_rhs(int numRows, const int* rowInds, OperatorCallback callback);
+    void setup_operator    (std::pair<const int*, size_t> rowInds, OperatorCallback callback);
+    void setup_operator_rhs(std::pair<const int*, size_t> rowInds, OperatorCallback callback);
 
     // Setup solver based on the parameter list
     void setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList);
 
     // Solve linear system given rhs
-    void solve(int numEigs, double* eigenValues, int size, double* eigenVectors) const;
+    void solve(std::pair<double*, size_t> eigenValues, std::pair<double*, size_t> eigenVectors) const;
 
     // Free all data
     void finalize();
