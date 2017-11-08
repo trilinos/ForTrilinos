@@ -74,13 +74,14 @@ int main(int argc, char *argv[]) {
     si.init(comm);
 
     // Step 2: setup the problem
-    si.setup_matrix(n, rowInds.data(), rowPtrs.data(), nnz, colInds.data(), values.data());
+    si.setup_matrix(std::make_pair(rowInds.data(), n), std::make_pair(rowPtrs.data(), n+1),
+                    std::make_pair(colInds.data(), nnz), std::make_pair(values.data(), nnz));
 
     // Step 3: setup the solver
     si.setup_solver(Teuchos::rcpFromRef(paramList));
 
     // Step 4: solve the system
-    si.solve(1, evalues.data(), n, evectors.data());
+    si.solve(std::make_pair(evalues.data(), 1), std::make_pair(evectors.data(), n));
 
     // TODO: Check the solution
 

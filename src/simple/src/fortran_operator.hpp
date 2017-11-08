@@ -9,6 +9,9 @@
 
 namespace ForTrilinos {
 
+  typedef void (*OperatorCallback)(std::pair<const double*, size_t> x, std::pair<double*, size_t> y);
+
+#ifndef SWIG
   class FortranOperator : public Tpetra::Operator<double, int, int, Kokkos::Compat::KokkosSerialWrapperNode> {
   private:
     typedef double                                  SC;
@@ -37,7 +40,7 @@ namespace ForTrilinos {
     FortranOperator() = delete;
 
     //! Inversion-of-Control constructor
-    FortranOperator(void (*funcptr)(int n, const double* x, double* y),
+    FortranOperator(OperatorCallback funcptr,
                     const Teuchos::RCP<const Map>& domainMap,
                     const Teuchos::RCP<const Map>& rangeMap)
         : funcptr_(funcptr)
@@ -69,11 +72,12 @@ namespace ForTrilinos {
     }
 
   private:
-    void (*funcptr_)(int n, const double* x, double* y);
+    OperatorCallback funcptr_;
 
     Teuchos::RCP<const Map> domainMap_;
     Teuchos::RCP<const Map> rangeMap_;
   };
+#endif
 
 }
 

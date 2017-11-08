@@ -5,6 +5,8 @@
 #include <Tpetra_CrsMatrix.hpp>
 #include <Teuchos_RCP.hpp>
 
+#include "fortran_operator.hpp"
+
 namespace ForTrilinos {
 
 
@@ -18,17 +20,19 @@ namespace ForTrilinos {
   public:
     typedef Tpetra::Operator<SC,LO,GO,NO>           Operator;
     typedef Tpetra::CrsMatrix<SC,LO,GO,NO>          Matrix;
-    typedef void (*OperatorCallback)(int n, const double* x, double* y);
 
   public:
 
     // Setup matrix
     static Teuchos::RCP<Matrix>
-    setup_matrix_gen(const Teuchos::RCP<const Teuchos::Comm<int>>& comm, int numRows, const int* rowInds, const int* rowPtrs, int numNnz, const int* colInds, const double* values);
+    setup_matrix_gen(const Teuchos::RCP<const Teuchos::Comm<int>>& comm,
+                     std::pair<const int*,size_t> rowInds, std::pair<const int*,size_t> rowPtrs,
+                     std::pair<const int*,size_t> colInds, std::pair<const double*,size_t> values);
 
     // Setup operator
     static Teuchos::RCP<Operator>
-    setup_operator_gen(const Teuchos::RCP<const Teuchos::Comm<int>>& comm, int numRows, const int* rowInds, OperatorCallback callback);
+    setup_operator_gen(const Teuchos::RCP<const Teuchos::Comm<int>>& comm,
+                       std::pair<const int*, size_t> rowInds, OperatorCallback callback);
   };
 
 }

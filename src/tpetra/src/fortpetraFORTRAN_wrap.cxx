@@ -173,33 +173,30 @@ template <typename T> T SwigValueInit() {
 
 
 
+// Default exception handler
+#define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
+    throw std::logic_error(MSG); return NULLRETURN;
+
+
 /* Contract support */
-#define SWIG_contract_assert(nullreturn, expr, msg) if (!(expr)) { \
-swig::fortran_store_exception(SWIG_ValueError, msg); return nullreturn; }
+#define SWIG_contract_assert(NULLRETURN, EXPR, MSG) \
+    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, NULLRETURN); }
 
 
-#include <algorithm>
+#undef SWIG_exception_impl
+#define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
+    swig::fortran_store_exception(CODE, MSG); return NULLRETURN;
+
+
+#define SWIGVERSION 0x040000 
+#define SWIG_VERSION SWIGVERSION
+
+
+#define SWIG_as_voidptr(a) const_cast< void * >(static_cast< const void * >(a)) 
+#define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
 
 
 #include <stdexcept>
-
-
-#include <sstream>
-
-
-namespace swig
-{
-void array_size_check(size_t src, size_t dst)
-{
-    if (dst < src)
-    {
-        std::ostringstream os;
-        os << "Array size mismatch: " << src << " != " << dst;
-        throw std::range_error(os.str());
-    }
-}
-}
-
 
 
 namespace swig
@@ -208,32 +205,6 @@ namespace swig
 void fortran_check_unhandled_exception();
 void fortran_store_exception(int code, const char *msg);
 } // end namespace swig
-
-
-#include <string>
-
-
-namespace swig
-{
-void string_size_check(size_t src, size_t dst)
-{
-    if (dst < src)
-    {
-        std::ostringstream os;
-        os << "String size too small: " << dst << " < " << src;
-        throw std::range_error(os.str());
-    }
-}
-
-void string_copyout(const std::string& str, char* s, size_t count)
-{
-    string_size_check(str.size(), count);
-
-    s = std::copy(str.begin(), str.end(), s);
-    std::fill_n(s, count - str.size(), ' ');
-}
-}
-
 
 
 #include "Tpetra_ConfigDefs.hpp"
@@ -254,11 +225,6 @@ typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
 #define SWIG_NO_NULL_DELETER_SWIG_POINTER_OWN
 
 
-#if __cplusplus >= 201103L
-#include <utility>
-#endif
-
-
 #include "Tpetra_Export.hpp"
 
 
@@ -276,60 +242,54 @@ typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void* swigc_new_TpetraMap__SWIG_0(const unsigned long* farg1, const int* farg2, void * farg3, int* farg4) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraMap__SWIG_0(unsigned long const *farg1, int const *farg2, void *farg3, int *farg4) {
+  void * fresult ;
   Tpetra::global_size_t arg1 ;
   int arg2 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg3 = 0 ;
   Tpetra::LocalGlobal arg4 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull3 ;
-  Tpetra::Map< LO,GO,NO > *result = 0 ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *result = 0 ;
   
   arg1 = *farg1;
   arg2 = *farg2;
   arg3 = farg3 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg3 : &tempnull3;
-  arg4 = (Tpetra::LocalGlobal)(*farg4);
+  arg4 = static_cast< Tpetra::LocalGlobal >(*farg4);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = (Tpetra::Map< LO,GO,NO > *)new Tpetra::Map< LO,GO,NO >(arg1,arg2,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg3,arg4);
+      result = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *)new Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode >(arg1,arg2,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg3,arg4);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraMap__SWIG_1(const unsigned long* farg1, const int* farg2, void * farg3) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraMap__SWIG_1(unsigned long const *farg1, int const *farg2, void *farg3) {
+  void * fresult ;
   Tpetra::global_size_t arg1 ;
   int arg2 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg3 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull3 ;
-  Tpetra::Map< LO,GO,NO > *result = 0 ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *result = 0 ;
   
   arg1 = *farg1;
   arg2 = *farg2;
@@ -340,42 +300,36 @@ SWIGEXPORT void* swigc_new_TpetraMap__SWIG_1(const unsigned long* farg1, const i
     try
     {
       // Attempt the wrapped function call
-      result = (Tpetra::Map< LO,GO,NO > *)new Tpetra::Map< LO,GO,NO >(arg1,arg2,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg3);
+      result = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *)new Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode >(arg1,arg2,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg3);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraMap__SWIG_2(const unsigned long* farg1, const size_t* farg2, const int* farg3, void * farg4) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraMap__SWIG_2(unsigned long const *farg1, size_t const *farg2, int const *farg3, void *farg4) {
+  void * fresult ;
   Tpetra::global_size_t arg1 ;
   size_t arg2 ;
   int arg3 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg4 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull4 ;
-  Tpetra::Map< LO,GO,NO > *result = 0 ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *result = 0 ;
   
   arg1 = *farg1;
   arg2 = *farg2;
@@ -387,46 +341,40 @@ SWIGEXPORT void* swigc_new_TpetraMap__SWIG_2(const unsigned long* farg1, const s
     try
     {
       // Attempt the wrapped function call
-      result = (Tpetra::Map< LO,GO,NO > *)new Tpetra::Map< LO,GO,NO >(arg1,arg2,arg3,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg4);
+      result = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *)new Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode >(arg1,arg2,arg3,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg4);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraMap__SWIG_3(const unsigned long* farg1, int * farg2, const int* farg3, const int* farg4, void * farg5) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraMap__SWIG_3(unsigned long const *farg1, int *farg2, int const *farg3, int const *farg4, void *farg5) {
+  void * fresult ;
   Tpetra::global_size_t arg1 ;
   int *arg2 ;
   int arg3 ;
   int arg4 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg5 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull5 ;
-  Tpetra::Map< LO,GO,NO > *result = 0 ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *result = 0 ;
   
   arg1 = *farg1;
-  arg2 = farg2;
+  arg2 = reinterpret_cast< int * >(farg2);
   arg3 = *farg3;
   arg4 = *farg4;
   arg5 = farg5 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg5 : &tempnull5;
@@ -436,42 +384,36 @@ SWIGEXPORT void* swigc_new_TpetraMap__SWIG_3(const unsigned long* farg1, int * f
     try
     {
       // Attempt the wrapped function call
-      result = (Tpetra::Map< LO,GO,NO > *)new Tpetra::Map< LO,GO,NO >(arg1,(int const (*))arg2,arg3,arg4,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg5);
+      result = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *)new Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode >(arg1,(int const (*))arg2,arg3,arg4,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg5);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraMap__SWIG_4(const unsigned long* farg1, const void* farg2, const int* farg3, void * farg4) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraMap__SWIG_4(unsigned long const *farg1, void const *farg2, int const *farg3, void *farg4) {
+  void * fresult ;
   Tpetra::global_size_t arg1 ;
   Teuchos::ArrayView< int const > *arg2 = 0 ;
   int arg3 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg4 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull4 ;
-  Tpetra::Map< LO,GO,NO > *result = 0 ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *result = 0 ;
   
   arg1 = *farg1;
   arg2 = (Teuchos::ArrayView< int const > *)(((Teuchos::RCP<const Teuchos::ArrayView<const int> > *)farg2)
@@ -490,37 +432,31 @@ SWIGEXPORT void* swigc_new_TpetraMap__SWIG_4(const unsigned long* farg1, const v
     try
     {
       // Attempt the wrapped function call
-      result = (Tpetra::Map< LO,GO,NO > *)new Tpetra::Map< LO,GO,NO >(arg1,(Teuchos::ArrayView< int const > const &)*arg2,arg3,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg4);
+      result = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *)new Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode >(arg1,(Teuchos::ArrayView< int const > const &)*arg2,arg3,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg4);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraMap__SWIG_5() {
-  void* fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *result = 0 ;
+SWIGEXPORT void * swigc_new_TpetraMap__SWIG_5() {
+  void * fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *result = 0 ;
   
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -528,107 +464,90 @@ SWIGEXPORT void* swigc_new_TpetraMap__SWIG_5() {
     try
     {
       // Attempt the wrapped function call
-      result = (Tpetra::Map< LO,GO,NO > *)new Tpetra::Map< LO,GO,NO >();
+      result = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *)new Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode >();
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_delete_TpetraMap(void* farg1) {
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > > *smartarg1 = 0 ;
+SWIGEXPORT void swigc_delete_TpetraMap(void *farg1) {
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > > *smartarg1 = 0 ;
   
-  smartarg1 = (Teuchos::RCP< Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = (Teuchos::RCP< Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      (void)arg1; delete smartarg1;
+      (void)arg1; delete smartarg1; 
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isOneToOne(const void* farg1) {
-  bool fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
+SWIGEXPORT bool swigc_TpetraMap_isOneToOne(void const *farg1) {
+  bool fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   bool result;
   
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = (bool)((Tpetra::Map< LO,GO,NO > const *)arg1)->isOneToOne();
+      result = (bool)((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->isOneToOne();
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -636,41 +555,35 @@ SWIGEXPORT bool swigc_TpetraMap_isOneToOne(const void* farg1) {
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraMap_getGlobalNumElements(const void* farg1) {
-  unsigned long fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
+SWIGEXPORT unsigned long swigc_TpetraMap_getGlobalNumElements(void const *farg1) {
+  unsigned long fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   Tpetra::global_size_t result;
   
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = (Tpetra::global_size_t)((Tpetra::Map< LO,GO,NO > const *)arg1)->getGlobalNumElements();
+      result = (Tpetra::global_size_t)((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->getGlobalNumElements();
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -678,41 +591,35 @@ SWIGEXPORT unsigned long swigc_TpetraMap_getGlobalNumElements(const void* farg1)
 }
 
 
-SWIGEXPORT size_t swigc_TpetraMap_getNodeNumElements(const void* farg1) {
-  size_t fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
+SWIGEXPORT size_t swigc_TpetraMap_getNodeNumElements(void const *farg1) {
+  size_t fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   size_t result;
   
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = (size_t)((Tpetra::Map< LO,GO,NO > const *)arg1)->getNodeNumElements();
+      result = (size_t)((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->getNodeNumElements();
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -720,41 +627,35 @@ SWIGEXPORT size_t swigc_TpetraMap_getNodeNumElements(const void* farg1) {
 }
 
 
-SWIGEXPORT int swigc_TpetraMap_getIndexBase(const void* farg1) {
-  int fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
+SWIGEXPORT int swigc_TpetraMap_getIndexBase(void const *farg1) {
+  int fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   int result;
   
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = (int)((Tpetra::Map< LO,GO,NO > const *)arg1)->getIndexBase();
+      result = (int)((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->getIndexBase();
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -762,41 +663,35 @@ SWIGEXPORT int swigc_TpetraMap_getIndexBase(const void* farg1) {
 }
 
 
-SWIGEXPORT int swigc_TpetraMap_getMinGlobalIndex(const void* farg1) {
-  int fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
+SWIGEXPORT int swigc_TpetraMap_getMinGlobalIndex(void const *farg1) {
+  int fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   int result;
   
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = (int)((Tpetra::Map< LO,GO,NO > const *)arg1)->getMinGlobalIndex();
+      result = (int)((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->getMinGlobalIndex();
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -804,41 +699,35 @@ SWIGEXPORT int swigc_TpetraMap_getMinGlobalIndex(const void* farg1) {
 }
 
 
-SWIGEXPORT int swigc_TpetraMap_getMaxGlobalIndex(const void* farg1) {
-  int fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
+SWIGEXPORT int swigc_TpetraMap_getMaxGlobalIndex(void const *farg1) {
+  int fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   int result;
   
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = (int)((Tpetra::Map< LO,GO,NO > const *)arg1)->getMaxGlobalIndex();
+      result = (int)((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->getMaxGlobalIndex();
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -846,41 +735,35 @@ SWIGEXPORT int swigc_TpetraMap_getMaxGlobalIndex(const void* farg1) {
 }
 
 
-SWIGEXPORT int swigc_TpetraMap_getMinAllGlobalIndex(const void* farg1) {
-  int fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
+SWIGEXPORT int swigc_TpetraMap_getMinAllGlobalIndex(void const *farg1) {
+  int fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   int result;
   
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = (int)((Tpetra::Map< LO,GO,NO > const *)arg1)->getMinAllGlobalIndex();
+      result = (int)((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->getMinAllGlobalIndex();
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -888,41 +771,35 @@ SWIGEXPORT int swigc_TpetraMap_getMinAllGlobalIndex(const void* farg1) {
 }
 
 
-SWIGEXPORT int swigc_TpetraMap_getMaxAllGlobalIndex(const void* farg1) {
-  int fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
+SWIGEXPORT int swigc_TpetraMap_getMaxAllGlobalIndex(void const *farg1) {
+  int fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   int result;
   
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = (int)((Tpetra::Map< LO,GO,NO > const *)arg1)->getMaxAllGlobalIndex();
+      result = (int)((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->getMaxAllGlobalIndex();
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -930,41 +807,35 @@ SWIGEXPORT int swigc_TpetraMap_getMaxAllGlobalIndex(const void* farg1) {
 }
 
 
-SWIGEXPORT void* swigc_TpetraMap_getNodeElementList(const void* farg1) {
-  void* fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
+SWIGEXPORT void * swigc_TpetraMap_getNodeElementList(void const *farg1) {
+  void * fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   Teuchos::ArrayView< int const > result;
   
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = ((Tpetra::Map< LO,GO,NO > const *)arg1)->getNodeElementList();
+      result = ((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->getNodeElementList();
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = new Teuchos::RCP< Teuchos::ArrayView<const int> >(new Teuchos::ArrayView< int const >((Teuchos::ArrayView< int const > &)result));
@@ -972,15 +843,15 @@ SWIGEXPORT void* swigc_TpetraMap_getNodeElementList(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isNodeGlobalElement(const void* farg1, const int* farg2) {
-  bool fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
+SWIGEXPORT bool swigc_TpetraMap_isNodeGlobalElement(void const *farg1, int const *farg2) {
+  bool fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
   int arg2 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   bool result;
   
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = *farg2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -988,27 +859,21 @@ SWIGEXPORT bool swigc_TpetraMap_isNodeGlobalElement(const void* farg1, const int
     try
     {
       // Attempt the wrapped function call
-      result = (bool)((Tpetra::Map< LO,GO,NO > const *)arg1)->isNodeGlobalElement(arg2);
+      result = (bool)((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->isNodeGlobalElement(arg2);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -1016,41 +881,35 @@ SWIGEXPORT bool swigc_TpetraMap_isNodeGlobalElement(const void* farg1, const int
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isUniform(const void* farg1) {
-  bool fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
+SWIGEXPORT bool swigc_TpetraMap_isUniform(void const *farg1) {
+  bool fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   bool result;
   
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = (bool)((Tpetra::Map< LO,GO,NO > const *)arg1)->isUniform();
+      result = (bool)((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->isUniform();
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -1058,41 +917,35 @@ SWIGEXPORT bool swigc_TpetraMap_isUniform(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isContiguous(const void* farg1) {
-  bool fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
+SWIGEXPORT bool swigc_TpetraMap_isContiguous(void const *farg1) {
+  bool fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   bool result;
   
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = (bool)((Tpetra::Map< LO,GO,NO > const *)arg1)->isContiguous();
+      result = (bool)((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->isContiguous();
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -1100,41 +953,35 @@ SWIGEXPORT bool swigc_TpetraMap_isContiguous(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isDistributed(const void* farg1) {
-  bool fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
+SWIGEXPORT bool swigc_TpetraMap_isDistributed(void const *farg1) {
+  bool fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   bool result;
   
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = (bool)((Tpetra::Map< LO,GO,NO > const *)arg1)->isDistributed();
+      result = (bool)((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->isDistributed();
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -1142,17 +989,17 @@ SWIGEXPORT bool swigc_TpetraMap_isDistributed(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isCompatible(const void* farg1, const void* farg2) {
-  bool fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
+SWIGEXPORT bool swigc_TpetraMap_isCompatible(void const *farg1, void const *farg2) {
+  bool fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
   Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg2 = 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   bool result;
   
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *)(((Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg2)
-    ? ((Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg2)->get()
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *)(((Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg2)
+    ? ((Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg2)->get()
     :0);
   if (!arg2)
   {
@@ -1165,27 +1012,21 @@ SWIGEXPORT bool swigc_TpetraMap_isCompatible(const void* farg1, const void* farg
     try
     {
       // Attempt the wrapped function call
-      result = (bool)((Tpetra::Map< LO,GO,NO > const *)arg1)->isCompatible((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2);
+      result = (bool)((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->isCompatible((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -1193,17 +1034,17 @@ SWIGEXPORT bool swigc_TpetraMap_isCompatible(const void* farg1, const void* farg
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isSameAs(const void* farg1, const void* farg2) {
-  bool fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
+SWIGEXPORT bool swigc_TpetraMap_isSameAs(void const *farg1, void const *farg2) {
+  bool fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
   Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg2 = 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   bool result;
   
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *)(((Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg2)
-    ? ((Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg2)->get()
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *)(((Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg2)
+    ? ((Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg2)->get()
     :0);
   if (!arg2)
   {
@@ -1216,27 +1057,21 @@ SWIGEXPORT bool swigc_TpetraMap_isSameAs(const void* farg1, const void* farg2) {
     try
     {
       // Attempt the wrapped function call
-      result = (bool)((Tpetra::Map< LO,GO,NO > const *)arg1)->isSameAs((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2);
+      result = (bool)((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->isSameAs((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -1244,17 +1079,17 @@ SWIGEXPORT bool swigc_TpetraMap_isSameAs(const void* farg1, const void* farg2) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_locallySameAs(const void* farg1, const void* farg2) {
-  bool fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
+SWIGEXPORT bool swigc_TpetraMap_locallySameAs(void const *farg1, void const *farg2) {
+  bool fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
   Tpetra::Map< int,int,Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::node_type > *arg2 = 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   bool result;
   
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (Tpetra::Map< int,int,Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::node_type > *)(((Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg2)
-    ? ((Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg2)->get()
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = (Tpetra::Map< int,int,Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::node_type > *)(((Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg2)
+    ? ((Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg2)->get()
     :0);
   if (!arg2)
   {
@@ -1267,27 +1102,21 @@ SWIGEXPORT bool swigc_TpetraMap_locallySameAs(const void* farg1, const void* far
     try
     {
       // Attempt the wrapped function call
-      result = (bool)((Tpetra::Map< LO,GO,NO > const *)arg1)->locallySameAs((Tpetra::Map< int,int,Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::node_type > const &)*arg2);
+      result = (bool)((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->locallySameAs((Tpetra::Map< int,int,Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::node_type > const &)*arg2);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -1295,104 +1124,86 @@ SWIGEXPORT bool swigc_TpetraMap_locallySameAs(const void* farg1, const void* far
 }
 
 
-SWIGEXPORT void * swigc_TpetraMap_getComm(const void* farg1) {
-  void * fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
+SWIGEXPORT void * swigc_TpetraMap_getComm(void const *farg1) {
+  void * fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > result;
   
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = ((Tpetra::Map< LO,GO,NO > const *)arg1)->getComm();
+      result = ((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->getComm();
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Teuchos::Comm< int > const >)result)) ? new Teuchos::RCP< Teuchos::Comm< int > const >(result) : new Teuchos::RCP< Teuchos::Comm< int > const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Teuchos::Comm< int > const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_TpetraMap_description(const void* farg1) {
-  void* fresult = 0 ;
-  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 = 0 ;
+SWIGEXPORT void * swigc_TpetraMap_description(void const *farg1) {
+  void * fresult ;
+  Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   std::string result;
   
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg1;
-  arg1 = (Tpetra::Map<LO,GO,NO> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = ((Tpetra::Map< LO,GO,NO > const *)arg1)->description();
+      result = ((Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->description();
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  
-#if __cplusplus >= 201103L
-  fresult = new std::string(std::move(result));
-#else
-  fresult = new std::string(result);
-#endif
-  
+  fresult = (new std::string(static_cast< const std::string& >(result)));
   return fresult;
 }
 
 
 SWIGEXPORT void* swigc_spcopy_TpetraMap(void* farg1) {
-  Teuchos::RCP< Tpetra::Map<LO,GO,NO> >* arg1 = (Teuchos::RCP< Tpetra::Map<LO,GO,NO> > *)farg1;
-  return new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(*arg1);
+  Teuchos::RCP< Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> >* arg1 = (Teuchos::RCP< Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  return new Teuchos::RCP< Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> >(*arg1);
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraExport__SWIG_0(void * farg1, void * farg2) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraExport__SWIG_0(void *farg1, void *farg2) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::Export< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::Export< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Export< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > tempnull1 ;
@@ -1412,31 +1223,25 @@ SWIGEXPORT void* swigc_new_TpetraExport__SWIG_0(void * farg1, void * farg2) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraExport__SWIG_1(void * farg1, void * farg2, void * farg3) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraExport__SWIG_1(void *farg1, void *farg2, void *farg3) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::Export< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::Export< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg3 = 0 ;
@@ -1459,31 +1264,25 @@ SWIGEXPORT void* swigc_new_TpetraExport__SWIG_1(void * farg1, void * farg2, void
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraExport__SWIG_2(const void* farg1) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraExport__SWIG_2(void const *farg1) {
+  void * fresult ;
   Tpetra::Export< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   Tpetra::Export< LO,GO,NO > *result = 0 ;
   
@@ -1506,35 +1305,29 @@ SWIGEXPORT void* swigc_new_TpetraExport__SWIG_2(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraExport__SWIG_3(const void* farg1) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraExport__SWIG_3(void const *farg1) {
+  void * fresult ;
   Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   Tpetra::Export< LO,GO,NO > *result = 0 ;
   
-  arg1 = (Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *)(farg1);
+  arg1 = static_cast< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode > * >(const_cast< void* >(farg1));
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -1546,30 +1339,24 @@ SWIGEXPORT void* swigc_new_TpetraExport__SWIG_3(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_delete_TpetraExport(void* farg1) {
+SWIGEXPORT void swigc_delete_TpetraExport(void *farg1) {
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > > *smartarg1 = 0 ;
   
@@ -1581,33 +1368,28 @@ SWIGEXPORT void swigc_delete_TpetraExport(void* farg1) {
     try
     {
       // Attempt the wrapped function call
-      (void)arg1; delete smartarg1;
+      (void)arg1; delete smartarg1; 
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraExport_setParameterList(void* farg1, void * farg2) {
+SWIGEXPORT void swigc_TpetraExport_setParameterList(void *farg1, void *farg2) {
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > > *smartarg1 = 0 ;
@@ -1627,29 +1409,24 @@ SWIGEXPORT void swigc_TpetraExport_setParameterList(void* farg1, void * farg2) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT size_t swigc_TpetraExport_getNumSameIDs(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraExport_getNumSameIDs(void const *farg1) {
+  size_t fresult ;
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 = 0 ;
   size_t result;
@@ -1667,22 +1444,16 @@ SWIGEXPORT size_t swigc_TpetraExport_getNumSameIDs(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -1690,8 +1461,8 @@ SWIGEXPORT size_t swigc_TpetraExport_getNumSameIDs(const void* farg1) {
 }
 
 
-SWIGEXPORT size_t swigc_TpetraExport_getNumPermuteIDs(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraExport_getNumPermuteIDs(void const *farg1) {
+  size_t fresult ;
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 = 0 ;
   size_t result;
@@ -1709,22 +1480,16 @@ SWIGEXPORT size_t swigc_TpetraExport_getNumPermuteIDs(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -1732,8 +1497,8 @@ SWIGEXPORT size_t swigc_TpetraExport_getNumPermuteIDs(const void* farg1) {
 }
 
 
-SWIGEXPORT size_t swigc_TpetraExport_getNumRemoteIDs(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraExport_getNumRemoteIDs(void const *farg1) {
+  size_t fresult ;
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 = 0 ;
   size_t result;
@@ -1751,22 +1516,16 @@ SWIGEXPORT size_t swigc_TpetraExport_getNumRemoteIDs(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -1774,8 +1533,8 @@ SWIGEXPORT size_t swigc_TpetraExport_getNumRemoteIDs(const void* farg1) {
 }
 
 
-SWIGEXPORT size_t swigc_TpetraExport_getNumExportIDs(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraExport_getNumExportIDs(void const *farg1) {
+  size_t fresult ;
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 = 0 ;
   size_t result;
@@ -1793,22 +1552,16 @@ SWIGEXPORT size_t swigc_TpetraExport_getNumExportIDs(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -1816,8 +1569,8 @@ SWIGEXPORT size_t swigc_TpetraExport_getNumExportIDs(const void* farg1) {
 }
 
 
-SWIGEXPORT void * swigc_TpetraExport_getSourceMap(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraExport_getSourceMap(void const *farg1) {
+  void * fresult ;
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 = 0 ;
   Teuchos::RCP< Tpetra::Export< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > result;
@@ -1835,31 +1588,25 @@ SWIGEXPORT void * swigc_TpetraExport_getSourceMap(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::Export< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::Export< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const >(result) : new Teuchos::RCP< Tpetra::Export< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::Export< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_TpetraExport_getTargetMap(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraExport_getTargetMap(void const *farg1) {
+  void * fresult ;
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 = 0 ;
   Teuchos::RCP< Tpetra::Export< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > result;
@@ -1877,31 +1624,25 @@ SWIGEXPORT void * swigc_TpetraExport_getTargetMap(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::Export< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::Export< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const >(result) : new Teuchos::RCP< Tpetra::Export< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::Export< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraExport_isLocallyComplete(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraExport_isLocallyComplete(void const *farg1) {
+  bool fresult ;
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 = 0 ;
   bool result;
@@ -1919,22 +1660,16 @@ SWIGEXPORT bool swigc_TpetraExport_isLocallyComplete(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -1948,8 +1683,8 @@ SWIGEXPORT void* swigc_spcopy_TpetraExport(void* farg1) {
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraImport__SWIG_0(void * farg1, void * farg2) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraImport__SWIG_0(void *farg1, void *farg2) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > tempnull1 ;
@@ -1969,31 +1704,25 @@ SWIGEXPORT void* swigc_new_TpetraImport__SWIG_0(void * farg1, void * farg2) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraImport__SWIG_1(void * farg1, void * farg2, void * farg3) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraImport__SWIG_1(void *farg1, void *farg2, void *farg3) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg3 = 0 ;
@@ -2016,31 +1745,25 @@ SWIGEXPORT void* swigc_new_TpetraImport__SWIG_1(void * farg1, void * farg2, void
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraImport__SWIG_2(void * farg1, void * farg2, void* farg3) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraImport__SWIG_2(void *farg1, void *farg2, void *farg3) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
   Teuchos::Array< int > *arg3 = 0 ;
@@ -2069,31 +1792,25 @@ SWIGEXPORT void* swigc_new_TpetraImport__SWIG_2(void * farg1, void * farg2, void
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraImport__SWIG_3(const void* farg1) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraImport__SWIG_3(void const *farg1) {
+  void * fresult ;
   Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   Tpetra::Import< LO,GO,NO > *result = 0 ;
   
@@ -2116,31 +1833,25 @@ SWIGEXPORT void* swigc_new_TpetraImport__SWIG_3(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraImport__SWIG_4(const void* farg1) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraImport__SWIG_4(void const *farg1) {
+  void * fresult ;
   Tpetra::Export< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   Tpetra::Import< LO,GO,NO > *result = 0 ;
   
@@ -2163,30 +1874,24 @@ SWIGEXPORT void* swigc_new_TpetraImport__SWIG_4(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_delete_TpetraImport(void* farg1) {
+SWIGEXPORT void swigc_delete_TpetraImport(void *farg1) {
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > > *smartarg1 = 0 ;
   
@@ -2198,33 +1903,28 @@ SWIGEXPORT void swigc_delete_TpetraImport(void* farg1) {
     try
     {
       // Attempt the wrapped function call
-      (void)arg1; delete smartarg1;
+      (void)arg1; delete smartarg1; 
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraImport_setParameterList(void* farg1, void * farg2) {
+SWIGEXPORT void swigc_TpetraImport_setParameterList(void *farg1, void *farg2) {
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > > *smartarg1 = 0 ;
@@ -2244,29 +1944,24 @@ SWIGEXPORT void swigc_TpetraImport_setParameterList(void* farg1, void * farg2) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT size_t swigc_TpetraImport_getNumSameIDs(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraImport_getNumSameIDs(void const *farg1) {
+  size_t fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 = 0 ;
   size_t result;
@@ -2284,22 +1979,16 @@ SWIGEXPORT size_t swigc_TpetraImport_getNumSameIDs(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -2307,8 +1996,8 @@ SWIGEXPORT size_t swigc_TpetraImport_getNumSameIDs(const void* farg1) {
 }
 
 
-SWIGEXPORT size_t swigc_TpetraImport_getNumPermuteIDs(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraImport_getNumPermuteIDs(void const *farg1) {
+  size_t fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 = 0 ;
   size_t result;
@@ -2326,22 +2015,16 @@ SWIGEXPORT size_t swigc_TpetraImport_getNumPermuteIDs(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -2349,8 +2032,8 @@ SWIGEXPORT size_t swigc_TpetraImport_getNumPermuteIDs(const void* farg1) {
 }
 
 
-SWIGEXPORT size_t swigc_TpetraImport_getNumRemoteIDs(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraImport_getNumRemoteIDs(void const *farg1) {
+  size_t fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 = 0 ;
   size_t result;
@@ -2368,22 +2051,16 @@ SWIGEXPORT size_t swigc_TpetraImport_getNumRemoteIDs(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -2391,8 +2068,8 @@ SWIGEXPORT size_t swigc_TpetraImport_getNumRemoteIDs(const void* farg1) {
 }
 
 
-SWIGEXPORT size_t swigc_TpetraImport_getNumExportIDs(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraImport_getNumExportIDs(void const *farg1) {
+  size_t fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 = 0 ;
   size_t result;
@@ -2410,22 +2087,16 @@ SWIGEXPORT size_t swigc_TpetraImport_getNumExportIDs(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -2433,8 +2104,8 @@ SWIGEXPORT size_t swigc_TpetraImport_getNumExportIDs(const void* farg1) {
 }
 
 
-SWIGEXPORT void * swigc_TpetraImport_getSourceMap(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraImport_getSourceMap(void const *farg1) {
+  void * fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 = 0 ;
   Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > result;
@@ -2452,31 +2123,25 @@ SWIGEXPORT void * swigc_TpetraImport_getSourceMap(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const >(result) : new Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_TpetraImport_getTargetMap(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraImport_getTargetMap(void const *farg1) {
+  void * fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 = 0 ;
   Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > result;
@@ -2494,31 +2159,25 @@ SWIGEXPORT void * swigc_TpetraImport_getTargetMap(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const >(result) : new Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraImport_isLocallyComplete(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraImport_isLocallyComplete(void const *farg1) {
+  bool fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 = 0 ;
   bool result;
@@ -2536,22 +2195,16 @@ SWIGEXPORT bool swigc_TpetraImport_isLocallyComplete(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -2559,8 +2212,8 @@ SWIGEXPORT bool swigc_TpetraImport_isLocallyComplete(const void* farg1) {
 }
 
 
-SWIGEXPORT void * swigc_TpetraImport_setUnion__SWIG_0(const void* farg1, const void* farg2) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraImport_setUnion__SWIG_0(void const *farg1, void const *farg2) {
+  void * fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 = 0 ;
@@ -2587,31 +2240,25 @@ SWIGEXPORT void * swigc_TpetraImport_setUnion__SWIG_0(const void* farg1, const v
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const >)result)) ? new Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const >(result) : new Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_TpetraImport_setUnion__SWIG_1(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraImport_setUnion__SWIG_1(void const *farg1) {
+  void * fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 = 0 ;
   Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > result;
@@ -2629,31 +2276,25 @@ SWIGEXPORT void * swigc_TpetraImport_setUnion__SWIG_1(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const >)result)) ? new Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const >(result) : new Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_TpetraImport_createRemoteOnlyImport(const void* farg1, void * farg2) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraImport_createRemoteOnlyImport(void const *farg1, void *farg2) {
+  void * fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 = 0 ;
@@ -2674,25 +2315,19 @@ SWIGEXPORT void * swigc_TpetraImport_createRemoteOnlyImport(const void* farg1, v
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const >)result)) ? new Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const >(result) : new Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::Import< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const >(result) : 0;
   return fresult;
 }
 
@@ -2703,8 +2338,8 @@ SWIGEXPORT void* swigc_spcopy_TpetraImport(void* farg1) {
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_0() {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraMultiVector__SWIG_0() {
+  void * fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO,false > *result = 0 ;
   
   {
@@ -2718,31 +2353,25 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_0() {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_1(void * farg1, const size_t* farg2, const bool* farg3) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraMultiVector__SWIG_1(void *farg1, size_t const *farg2, bool const *farg3) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   size_t arg2 ;
   bool arg3 ;
@@ -2763,31 +2392,25 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_1(void * farg1, const size_t*
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_2(void * farg1, const size_t* farg2) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraMultiVector__SWIG_2(void *farg1, size_t const *farg2) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   size_t arg2 ;
   Teuchos::RCP< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull1 ;
@@ -2806,31 +2429,25 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_2(void * farg1, const size_t*
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_3(const void* farg1) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraMultiVector__SWIG_3(void const *farg1) {
+  void * fresult ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg1 = 0 ;
   Tpetra::MultiVector< SC,LO,GO,NO,false > *result = 0 ;
   
@@ -2853,31 +2470,25 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_3(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_4(const void* farg1, int* farg2) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraMultiVector__SWIG_4(void const *farg1, int *farg2) {
+  void * fresult ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg1 = 0 ;
   Teuchos::DataAccess arg2 ;
   Tpetra::MultiVector< SC,LO,GO,NO,false > *result = 0 ;
@@ -2890,7 +2501,7 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_4(const void* farg1, int* far
     throw std::logic_error("Attempt to dereference null Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > const &");
     return 0;
   }
-  arg2 = (Teuchos::DataAccess)(*farg2);
+  arg2 = static_cast< Teuchos::DataAccess >(*farg2);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -2902,31 +2513,25 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_4(const void* farg1, int* far
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_5(void * farg1, const void* farg2, const size_t* farg3, const size_t* farg4) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraMultiVector__SWIG_5(void *farg1, void const *farg2, size_t const *farg3, size_t const *farg4) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   Teuchos::ArrayView< double const > *arg2 = 0 ;
   size_t arg3 ;
@@ -2956,31 +2561,25 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_5(void * farg1, const void* f
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_6(const void* farg1, const void* farg2, const size_t* farg3) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraMultiVector__SWIG_6(void const *farg1, void const *farg2, size_t const *farg3) {
+  void * fresult ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg1 = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type *arg2 = 0 ;
   size_t arg3 ;
@@ -2994,8 +2593,8 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_6(const void* farg1, const vo
     throw std::logic_error("Attempt to dereference null Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > const &");
     return 0;
   }
-  arg2 = (Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type *)(((Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg2)
-    ? ((Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg2)->get()
+  arg2 = (Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type *)(((Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg2)
+    ? ((Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg2)->get()
     :0);
   if (!arg2)
   {
@@ -3014,31 +2613,25 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_6(const void* farg1, const vo
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_7(const void* farg1, const void* farg2) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraMultiVector__SWIG_7(void const *farg1, void const *farg2) {
+  void * fresult ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg1 = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type *arg2 = 0 ;
   Tpetra::MultiVector< SC,LO,GO,NO,false > *result = 0 ;
@@ -3051,8 +2644,8 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_7(const void* farg1, const vo
     throw std::logic_error("Attempt to dereference null Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > const &");
     return 0;
   }
-  arg2 = (Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type *)(((Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg2)
-    ? ((Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > *)farg2)->get()
+  arg2 = (Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type *)(((Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg2)
+    ? ((Teuchos::RCP<const Tpetra::Map<int,int,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg2)->get()
     :0);
   if (!arg2)
   {
@@ -3070,30 +2663,24 @@ SWIGEXPORT void* swigc_new_TpetraMultiVector__SWIG_7(const void* farg1, const vo
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_delete_TpetraMultiVector(void* farg1) {
+SWIGEXPORT void swigc_delete_TpetraMultiVector(void *farg1) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
   
@@ -3105,33 +2692,28 @@ SWIGEXPORT void swigc_delete_TpetraMultiVector(void* farg1) {
     try
     {
       // Attempt the wrapped function call
-      (void)arg1; delete smartarg1;
+      (void)arg1; delete smartarg1; 
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_replaceGlobalValue(const void* farg1, const int* farg2, const size_t* farg3, const double* farg4) {
+SWIGEXPORT void swigc_TpetraMultiVector_replaceGlobalValue(void const *farg1, int const *farg2, size_t const *farg3, double const *farg4) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   int arg2 ;
   size_t arg3 ;
@@ -3142,7 +2724,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_replaceGlobalValue(const void* farg1, co
   arg1 = (Tpetra::MultiVector<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = *farg2;
   arg3 = *farg3;
-  arg4 = (Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::impl_scalar_type *)(farg4);
+  arg4 = reinterpret_cast< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::impl_scalar_type * >(const_cast< double* >(farg4));
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -3154,28 +2736,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_replaceGlobalValue(const void* farg1, co
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(const void* farg1, const int* farg2, const size_t* farg3, const double* farg4, const bool* farg5) {
+SWIGEXPORT void swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(void const *farg1, int const *farg2, size_t const *farg3, double const *farg4, bool const *farg5) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   int arg2 ;
   size_t arg3 ;
@@ -3187,7 +2764,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(const void* f
   arg1 = (Tpetra::MultiVector<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = *farg2;
   arg3 = *farg3;
-  arg4 = (Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::impl_scalar_type *)(farg4);
+  arg4 = reinterpret_cast< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::impl_scalar_type * >(const_cast< double* >(farg4));
   arg5 = *farg5;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -3200,28 +2777,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(const void* f
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_1(const void* farg1, const int* farg2, const size_t* farg3, const double* farg4) {
+SWIGEXPORT void swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_1(void const *farg1, int const *farg2, size_t const *farg3, double const *farg4) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   int arg2 ;
   size_t arg3 ;
@@ -3232,7 +2804,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_1(const void* f
   arg1 = (Tpetra::MultiVector<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = *farg2;
   arg3 = *farg3;
-  arg4 = (Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::impl_scalar_type *)(farg4);
+  arg4 = reinterpret_cast< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::impl_scalar_type * >(const_cast< double* >(farg4));
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -3244,28 +2816,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_1(const void* f
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_replaceLocalValue(const void* farg1, const int* farg2, const size_t* farg3, const double* farg4) {
+SWIGEXPORT void swigc_TpetraMultiVector_replaceLocalValue(void const *farg1, int const *farg2, size_t const *farg3, double const *farg4) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   int arg2 ;
   size_t arg3 ;
@@ -3276,7 +2843,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_replaceLocalValue(const void* farg1, con
   arg1 = (Tpetra::MultiVector<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = *farg2;
   arg3 = *farg3;
-  arg4 = (Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::impl_scalar_type *)(farg4);
+  arg4 = reinterpret_cast< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::impl_scalar_type * >(const_cast< double* >(farg4));
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -3288,28 +2855,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_replaceLocalValue(const void* farg1, con
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0(const void* farg1, const int* farg2, const size_t* farg3, const double* farg4, const bool* farg5) {
+SWIGEXPORT void swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0(void const *farg1, int const *farg2, size_t const *farg3, double const *farg4, bool const *farg5) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   int arg2 ;
   size_t arg3 ;
@@ -3321,7 +2883,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0(const void* fa
   arg1 = (Tpetra::MultiVector<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = *farg2;
   arg3 = *farg3;
-  arg4 = (Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::impl_scalar_type *)(farg4);
+  arg4 = reinterpret_cast< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::impl_scalar_type * >(const_cast< double* >(farg4));
   arg5 = *farg5;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -3334,28 +2896,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0(const void* fa
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_1(const void* farg1, const int* farg2, const size_t* farg3, const double* farg4) {
+SWIGEXPORT void swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_1(void const *farg1, int const *farg2, size_t const *farg3, double const *farg4) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   int arg2 ;
   size_t arg3 ;
@@ -3366,7 +2923,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_1(const void* fa
   arg1 = (Tpetra::MultiVector<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = *farg2;
   arg3 = *farg3;
-  arg4 = (Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::impl_scalar_type *)(farg4);
+  arg4 = reinterpret_cast< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::impl_scalar_type * >(const_cast< double* >(farg4));
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -3378,35 +2935,30 @@ SWIGEXPORT void swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_1(const void* fa
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_putScalar(void* farg1, const double* farg2) {
+SWIGEXPORT void swigc_TpetraMultiVector_putScalar(void *farg1, double const *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   double *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
   
   smartarg1 = (Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::MultiVector<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (double *)(farg2);
+  arg2 = reinterpret_cast< double * >(const_cast< double* >(farg2));
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -3418,28 +2970,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_putScalar(void* farg1, const double* far
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_randomize__SWIG_0(void* farg1) {
+SWIGEXPORT void swigc_TpetraMultiVector_randomize__SWIG_0(void *farg1) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
   
@@ -3456,28 +3003,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_randomize__SWIG_0(void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_randomize__SWIG_1(void* farg1, const double* farg2, const double* farg3) {
+SWIGEXPORT void swigc_TpetraMultiVector_randomize__SWIG_1(void *farg1, double const *farg2, double const *farg3) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   double *arg2 = 0 ;
   double *arg3 = 0 ;
@@ -3485,8 +3027,8 @@ SWIGEXPORT void swigc_TpetraMultiVector_randomize__SWIG_1(void* farg1, const dou
   
   smartarg1 = (Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::MultiVector<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (double *)(farg2);
-  arg3 = (double *)(farg3);
+  arg2 = reinterpret_cast< double * >(const_cast< double* >(farg2));
+  arg3 = reinterpret_cast< double * >(const_cast< double* >(farg3));
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -3498,28 +3040,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_randomize__SWIG_1(void* farg1, const dou
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_replaceMap(void* farg1, void * farg2) {
+SWIGEXPORT void swigc_TpetraMultiVector_replaceMap(void *farg1, void *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
@@ -3539,28 +3076,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_replaceMap(void* farg1, void * farg2) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_reduce(void* farg1) {
+SWIGEXPORT void swigc_TpetraMultiVector_reduce(void *farg1) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
   
@@ -3577,29 +3109,24 @@ SWIGEXPORT void swigc_TpetraMultiVector_reduce(void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void * swigc_TpetraMultiVector_offsetViewNonConst(void* farg1, void * farg2, const size_t* farg3) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraMultiVector_offsetViewNonConst(void *farg1, void *farg2, size_t const *farg3) {
+  void * fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   size_t arg3 ;
@@ -3622,30 +3149,24 @@ SWIGEXPORT void * swigc_TpetraMultiVector_offsetViewNonConst(void* farg1, void *
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > >)result)) ? new Teuchos::RCP< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > >(result) : new Teuchos::RCP< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_get1dCopy(const void* farg1, const void* farg2, const size_t* farg3) {
+SWIGEXPORT void swigc_TpetraMultiVector_get1dCopy(void const *farg1, void const *farg2, size_t const *farg3) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::ArrayView< double > *arg2 = 0 ;
   size_t arg3 ;
@@ -3673,28 +3194,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_get1dCopy(const void* farg1, const void*
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_abs(void* farg1, const void* farg2) {
+SWIGEXPORT void swigc_TpetraMultiVector_abs(void *farg1, void const *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
@@ -3720,28 +3236,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_abs(void* farg1, const void* farg2) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_reciprocal(void* farg1, const void* farg2) {
+SWIGEXPORT void swigc_TpetraMultiVector_reciprocal(void *farg1, void const *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
@@ -3767,35 +3278,30 @@ SWIGEXPORT void swigc_TpetraMultiVector_reciprocal(void* farg1, const void* farg
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_scale__SWIG_0(void* farg1, const double* farg2) {
+SWIGEXPORT void swigc_TpetraMultiVector_scale__SWIG_0(void *farg1, double const *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   double *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
   
   smartarg1 = (Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::MultiVector<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (double *)(farg2);
+  arg2 = reinterpret_cast< double * >(const_cast< double* >(farg2));
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -3807,28 +3313,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_scale__SWIG_0(void* farg1, const double*
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_scale__SWIG_1(void* farg1, const void* farg2) {
+SWIGEXPORT void swigc_TpetraMultiVector_scale__SWIG_1(void *farg1, void const *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::ArrayView< double const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
@@ -3854,28 +3355,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_scale__SWIG_1(void* farg1, const void* f
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_scale__SWIG_2(void* farg1, const double* farg2, const void* farg3) {
+SWIGEXPORT void swigc_TpetraMultiVector_scale__SWIG_2(void *farg1, double const *farg2, void const *farg3) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   double *arg2 = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -3883,7 +3379,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_scale__SWIG_2(void* farg1, const double*
   
   smartarg1 = (Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::MultiVector<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (double *)(farg2);
+  arg2 = reinterpret_cast< double * >(const_cast< double* >(farg2));
   arg3 = (Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *)(((Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg3)
     ? ((Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg3)->get()
     :0);
@@ -3903,28 +3399,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_scale__SWIG_2(void* farg1, const double*
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_update__SWIG_0(void* farg1, const double* farg2, const void* farg3, const double* farg4) {
+SWIGEXPORT void swigc_TpetraMultiVector_update__SWIG_0(void *farg1, double const *farg2, void const *farg3, double const *farg4) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   double *arg2 = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -3933,7 +3424,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_update__SWIG_0(void* farg1, const double
   
   smartarg1 = (Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::MultiVector<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (double *)(farg2);
+  arg2 = reinterpret_cast< double * >(const_cast< double* >(farg2));
   arg3 = (Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *)(((Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg3)
     ? ((Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg3)->get()
     :0);
@@ -3942,7 +3433,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_update__SWIG_0(void* farg1, const double
     throw std::logic_error("Attempt to dereference null Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > const &");
     return ;
   }
-  arg4 = (double *)(farg4);
+  arg4 = reinterpret_cast< double * >(const_cast< double* >(farg4));
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -3954,28 +3445,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_update__SWIG_0(void* farg1, const double
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_update__SWIG_1(void* farg1, const double* farg2, const void* farg3, const double* farg4, const void* farg5, const double* farg6) {
+SWIGEXPORT void swigc_TpetraMultiVector_update__SWIG_1(void *farg1, double const *farg2, void const *farg3, double const *farg4, void const *farg5, double const *farg6) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   double *arg2 = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -3986,7 +3472,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_update__SWIG_1(void* farg1, const double
   
   smartarg1 = (Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::MultiVector<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (double *)(farg2);
+  arg2 = reinterpret_cast< double * >(const_cast< double* >(farg2));
   arg3 = (Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *)(((Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg3)
     ? ((Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg3)->get()
     :0);
@@ -3995,7 +3481,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_update__SWIG_1(void* farg1, const double
     throw std::logic_error("Attempt to dereference null Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > const &");
     return ;
   }
-  arg4 = (double *)(farg4);
+  arg4 = reinterpret_cast< double * >(const_cast< double* >(farg4));
   arg5 = (Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *)(((Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg5)
     ? ((Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg5)->get()
     :0);
@@ -4004,7 +3490,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_update__SWIG_1(void* farg1, const double
     throw std::logic_error("Attempt to dereference null Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > const &");
     return ;
   }
-  arg6 = (double *)(farg6);
+  arg6 = reinterpret_cast< double * >(const_cast< double* >(farg6));
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -4016,28 +3502,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_update__SWIG_1(void* farg1, const double
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_norm1(const void* farg1, const void* farg2) {
+SWIGEXPORT void swigc_TpetraMultiVector_norm1(void const *farg1, void const *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::mag_type > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
@@ -4063,28 +3544,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_norm1(const void* farg1, const void* far
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_norm2(const void* farg1, const void* farg2) {
+SWIGEXPORT void swigc_TpetraMultiVector_norm2(void const *farg1, void const *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::mag_type > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
@@ -4110,28 +3586,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_norm2(const void* farg1, const void* far
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_normInf(const void* farg1, const void* farg2) {
+SWIGEXPORT void swigc_TpetraMultiVector_normInf(void const *farg1, void const *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::mag_type > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
@@ -4157,28 +3628,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_normInf(const void* farg1, const void* f
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_normWeighted(const void* farg1, const void* farg2, const void* farg3) {
+SWIGEXPORT void swigc_TpetraMultiVector_normWeighted(void const *farg1, void const *farg2, void const *farg3) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::mag_type > *arg3 = 0 ;
@@ -4213,28 +3679,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_normWeighted(const void* farg1, const vo
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_meanValue(const void* farg1, const void* farg2) {
+SWIGEXPORT void swigc_TpetraMultiVector_meanValue(void const *farg1, void const *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::impl_scalar_type > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
@@ -4260,28 +3721,23 @@ SWIGEXPORT void swigc_TpetraMultiVector_meanValue(const void* farg1, const void*
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_multiply(void* farg1, int* farg2, int* farg3, const double* farg4, const void* farg5, const void* farg6, const double* farg7) {
+SWIGEXPORT void swigc_TpetraMultiVector_multiply(void *farg1, int *farg2, int *farg3, double const *farg4, void const *farg5, void const *farg6, double const *farg7) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::ETransp arg2 ;
   Teuchos::ETransp arg3 ;
@@ -4293,9 +3749,9 @@ SWIGEXPORT void swigc_TpetraMultiVector_multiply(void* farg1, int* farg2, int* f
   
   smartarg1 = (Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::MultiVector<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (Teuchos::ETransp)(*farg2);
-  arg3 = (Teuchos::ETransp)(*farg3);
-  arg4 = (double *)(farg4);
+  arg2 = static_cast< Teuchos::ETransp >(*farg2);
+  arg3 = static_cast< Teuchos::ETransp >(*farg3);
+  arg4 = reinterpret_cast< double * >(const_cast< double* >(farg4));
   arg5 = (Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *)(((Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg5)
     ? ((Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg5)->get()
     :0);
@@ -4312,7 +3768,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_multiply(void* farg1, int* farg2, int* f
     throw std::logic_error("Attempt to dereference null Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > const &");
     return ;
   }
-  arg7 = (double *)(farg7);
+  arg7 = reinterpret_cast< double * >(const_cast< double* >(farg7));
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -4324,29 +3780,24 @@ SWIGEXPORT void swigc_TpetraMultiVector_multiply(void* farg1, int* farg2, int* f
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT size_t swigc_TpetraMultiVector_getNumVectors(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraMultiVector_getNumVectors(void const *farg1) {
+  size_t fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   size_t result;
@@ -4364,22 +3815,16 @@ SWIGEXPORT size_t swigc_TpetraMultiVector_getNumVectors(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -4387,8 +3832,8 @@ SWIGEXPORT size_t swigc_TpetraMultiVector_getNumVectors(const void* farg1) {
 }
 
 
-SWIGEXPORT size_t swigc_TpetraMultiVector_getLocalLength(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraMultiVector_getLocalLength(void const *farg1) {
+  size_t fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   size_t result;
@@ -4406,22 +3851,16 @@ SWIGEXPORT size_t swigc_TpetraMultiVector_getLocalLength(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -4429,8 +3868,8 @@ SWIGEXPORT size_t swigc_TpetraMultiVector_getLocalLength(const void* farg1) {
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraMultiVector_getGlobalLength(const void* farg1) {
-  unsigned long fresult = 0 ;
+SWIGEXPORT unsigned long swigc_TpetraMultiVector_getGlobalLength(void const *farg1) {
+  unsigned long fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   Tpetra::global_size_t result;
@@ -4448,22 +3887,16 @@ SWIGEXPORT unsigned long swigc_TpetraMultiVector_getGlobalLength(const void* far
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -4471,8 +3904,8 @@ SWIGEXPORT unsigned long swigc_TpetraMultiVector_getGlobalLength(const void* far
 }
 
 
-SWIGEXPORT size_t swigc_TpetraMultiVector_getStride(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraMultiVector_getStride(void const *farg1) {
+  size_t fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   size_t result;
@@ -4490,22 +3923,16 @@ SWIGEXPORT size_t swigc_TpetraMultiVector_getStride(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -4513,8 +3940,8 @@ SWIGEXPORT size_t swigc_TpetraMultiVector_getStride(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraMultiVector_isConstantStride(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraMultiVector_isConstantStride(void const *farg1) {
+  bool fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -4532,22 +3959,16 @@ SWIGEXPORT bool swigc_TpetraMultiVector_isConstantStride(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -4555,8 +3976,8 @@ SWIGEXPORT bool swigc_TpetraMultiVector_isConstantStride(const void* farg1) {
 }
 
 
-SWIGEXPORT void* swigc_TpetraMultiVector_description(const void* farg1) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraMultiVector_description(void const *farg1) {
+  void * fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   std::string result;
@@ -4574,36 +3995,24 @@ SWIGEXPORT void* swigc_TpetraMultiVector_description(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  
-#if __cplusplus >= 201103L
-  fresult = new std::string(std::move(result));
-#else
-  fresult = new std::string(result);
-#endif
-  
+  fresult = (new std::string(static_cast< const std::string& >(result)));
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_removeEmptyProcessesInPlace(void* farg1, void * farg2) {
+SWIGEXPORT void swigc_TpetraMultiVector_removeEmptyProcessesInPlace(void *farg1, void *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
@@ -4623,35 +4032,30 @@ SWIGEXPORT void swigc_TpetraMultiVector_removeEmptyProcessesInPlace(void* farg1,
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_setCopyOrView(void* farg1, int* farg2) {
+SWIGEXPORT void swigc_TpetraMultiVector_setCopyOrView(void *farg1, int *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::DataAccess arg2 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
   
   smartarg1 = (Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::MultiVector<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (Teuchos::DataAccess)(*farg2);
+  arg2 = static_cast< Teuchos::DataAccess >(*farg2);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -4663,29 +4067,24 @@ SWIGEXPORT void swigc_TpetraMultiVector_setCopyOrView(void* farg1, int* farg2) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT int swigc_TpetraMultiVector_getCopyOrView(const void* farg1) {
-  int fresult = 0 ;
+SWIGEXPORT int swigc_TpetraMultiVector_getCopyOrView(void const *farg1) {
+  int fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   Teuchos::DataAccess result;
@@ -4703,22 +4102,16 @@ SWIGEXPORT int swigc_TpetraMultiVector_getCopyOrView(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -4732,96 +4125,100 @@ SWIGEXPORT void* swigc_spcopy_TpetraMultiVector(void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_set_RowInfo_localRow(void* farg1, const size_t* farg2) {
+SWIGEXPORT void swigc_set_RowInfo_localRow(void *farg1, size_t const *farg2) {
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   size_t arg2 ;
   
-  arg1 = (Tpetra::RowInfo *)(farg1);
+  arg1 = static_cast< Tpetra::RowInfo * >(farg1);
   arg2 = *farg2;
   if (arg1) (arg1)->localRow = arg2;
+  
 }
 
 
-SWIGEXPORT size_t swigc_get_RowInfo_localRow(void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_get_RowInfo_localRow(void *farg1) {
+  size_t fresult ;
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   size_t result;
   
-  arg1 = (Tpetra::RowInfo *)(farg1);
+  arg1 = static_cast< Tpetra::RowInfo * >(farg1);
   result = (size_t) ((arg1)->localRow);
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_set_RowInfo_allocSize(void* farg1, const size_t* farg2) {
+SWIGEXPORT void swigc_set_RowInfo_allocSize(void *farg1, size_t const *farg2) {
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   size_t arg2 ;
   
-  arg1 = (Tpetra::RowInfo *)(farg1);
+  arg1 = static_cast< Tpetra::RowInfo * >(farg1);
   arg2 = *farg2;
   if (arg1) (arg1)->allocSize = arg2;
+  
 }
 
 
-SWIGEXPORT size_t swigc_get_RowInfo_allocSize(void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_get_RowInfo_allocSize(void *farg1) {
+  size_t fresult ;
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   size_t result;
   
-  arg1 = (Tpetra::RowInfo *)(farg1);
+  arg1 = static_cast< Tpetra::RowInfo * >(farg1);
   result = (size_t) ((arg1)->allocSize);
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_set_RowInfo_numEntries(void* farg1, const size_t* farg2) {
+SWIGEXPORT void swigc_set_RowInfo_numEntries(void *farg1, size_t const *farg2) {
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   size_t arg2 ;
   
-  arg1 = (Tpetra::RowInfo *)(farg1);
+  arg1 = static_cast< Tpetra::RowInfo * >(farg1);
   arg2 = *farg2;
   if (arg1) (arg1)->numEntries = arg2;
+  
 }
 
 
-SWIGEXPORT size_t swigc_get_RowInfo_numEntries(void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_get_RowInfo_numEntries(void *farg1) {
+  size_t fresult ;
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   size_t result;
   
-  arg1 = (Tpetra::RowInfo *)(farg1);
+  arg1 = static_cast< Tpetra::RowInfo * >(farg1);
   result = (size_t) ((arg1)->numEntries);
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_set_RowInfo_offset1D(void* farg1, const size_t* farg2) {
+SWIGEXPORT void swigc_set_RowInfo_offset1D(void *farg1, size_t const *farg2) {
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   size_t arg2 ;
   
-  arg1 = (Tpetra::RowInfo *)(farg1);
+  arg1 = static_cast< Tpetra::RowInfo * >(farg1);
   arg2 = *farg2;
   if (arg1) (arg1)->offset1D = arg2;
+  
 }
 
 
-SWIGEXPORT size_t swigc_get_RowInfo_offset1D(void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_get_RowInfo_offset1D(void *farg1) {
+  size_t fresult ;
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   size_t result;
   
-  arg1 = (Tpetra::RowInfo *)(farg1);
+  arg1 = static_cast< Tpetra::RowInfo * >(farg1);
   result = (size_t) ((arg1)->offset1D);
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_RowInfo() {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_RowInfo() {
+  void * fresult ;
   Tpetra::RowInfo *result = 0 ;
   
   {
@@ -4835,22 +4232,16 @@ SWIGEXPORT void* swigc_new_RowInfo() {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -4858,10 +4249,10 @@ SWIGEXPORT void* swigc_new_RowInfo() {
 }
 
 
-SWIGEXPORT void swigc_delete_RowInfo(void* farg1) {
+SWIGEXPORT void swigc_delete_RowInfo(void *farg1) {
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   
-  arg1 = (Tpetra::RowInfo *)(farg1);
+  arg1 = static_cast< Tpetra::RowInfo * >(farg1);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -4873,29 +4264,24 @@ SWIGEXPORT void swigc_delete_RowInfo(void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_0(void * farg1, const size_t* farg2, int* farg3, void * farg4) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraCrsGraph__SWIG_0(void *farg1, size_t const *farg2, int *farg3, void *farg4) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   size_t arg2 ;
   Tpetra::ProfileType arg3 ;
@@ -4906,7 +4292,7 @@ SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_0(void * farg1, const size_t* fa
   
   arg1 = farg1 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg1 : &tempnull1;
   arg2 = *farg2;
-  arg3 = (Tpetra::ProfileType)(*farg3);
+  arg3 = static_cast< Tpetra::ProfileType >(*farg3);
   arg4 = farg4 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg4 : &tempnull4;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -4919,31 +4305,25 @@ SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_0(void * farg1, const size_t* fa
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_1(void * farg1, const size_t* farg2, int* farg3) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraCrsGraph__SWIG_1(void *farg1, size_t const *farg2, int *farg3) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   size_t arg2 ;
   Tpetra::ProfileType arg3 ;
@@ -4952,7 +4332,7 @@ SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_1(void * farg1, const size_t* fa
   
   arg1 = farg1 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg1 : &tempnull1;
   arg2 = *farg2;
-  arg3 = (Tpetra::ProfileType)(*farg3);
+  arg3 = static_cast< Tpetra::ProfileType >(*farg3);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -4964,31 +4344,25 @@ SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_1(void * farg1, const size_t* fa
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_2(void * farg1, const size_t* farg2) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraCrsGraph__SWIG_2(void *farg1, size_t const *farg2) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   size_t arg2 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull1 ;
@@ -5007,31 +4381,25 @@ SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_2(void * farg1, const size_t* fa
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_3(void * farg1, void * farg2, const size_t* farg3, int* farg4, void * farg5) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraCrsGraph__SWIG_3(void *farg1, void *farg2, size_t const *farg3, int *farg4, void *farg5) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   size_t arg3 ;
@@ -5045,7 +4413,7 @@ SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_3(void * farg1, void * farg2, co
   arg1 = farg1 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg1 : &tempnull1;
   arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
   arg3 = *farg3;
-  arg4 = (Tpetra::ProfileType)(*farg4);
+  arg4 = static_cast< Tpetra::ProfileType >(*farg4);
   arg5 = farg5 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg5 : &tempnull5;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -5058,31 +4426,25 @@ SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_3(void * farg1, void * farg2, co
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_4(void * farg1, void * farg2, const size_t* farg3, int* farg4) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraCrsGraph__SWIG_4(void *farg1, void *farg2, size_t const *farg3, int *farg4) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   size_t arg3 ;
@@ -5094,7 +4456,7 @@ SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_4(void * farg1, void * farg2, co
   arg1 = farg1 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg1 : &tempnull1;
   arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
   arg3 = *farg3;
-  arg4 = (Tpetra::ProfileType)(*farg4);
+  arg4 = static_cast< Tpetra::ProfileType >(*farg4);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -5106,31 +4468,25 @@ SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_4(void * farg1, void * farg2, co
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_5(void * farg1, void * farg2, const size_t* farg3) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraCrsGraph__SWIG_5(void *farg1, void *farg2, size_t const *farg3) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   size_t arg3 ;
@@ -5152,30 +4508,24 @@ SWIGEXPORT void* swigc_new_TpetraCrsGraph__SWIG_5(void * farg1, void * farg2, co
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_delete_TpetraCrsGraph(void* farg1) {
+SWIGEXPORT void swigc_delete_TpetraCrsGraph(void *farg1) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
   
@@ -5187,33 +4537,28 @@ SWIGEXPORT void swigc_delete_TpetraCrsGraph(void* farg1) {
     try
     {
       // Attempt the wrapped function call
-      (void)arg1; delete smartarg1;
+      (void)arg1; delete smartarg1; 
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_setParameterList(void* farg1, void * farg2) {
+SWIGEXPORT void swigc_TpetraCrsGraph_setParameterList(void *farg1, void *farg2) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
@@ -5233,29 +4578,24 @@ SWIGEXPORT void swigc_TpetraCrsGraph_setParameterList(void* farg1, void * farg2)
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void * swigc_TpetraCrsGraph_getValidParameters(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraCrsGraph_getValidParameters(void const *farg1) {
+  void * fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList const > result;
@@ -5273,30 +4613,24 @@ SWIGEXPORT void * swigc_TpetraCrsGraph_getValidParameters(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Teuchos::ParameterList const >)result)) ? new Teuchos::RCP< Teuchos::ParameterList const >(result) : new Teuchos::RCP< Teuchos::ParameterList const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Teuchos::ParameterList const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_0(void* farg1, const int* farg2, const void* farg3) {
+SWIGEXPORT void swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_0(void *farg1, int const *farg2, void const *farg3) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   int arg2 ;
   Teuchos::ArrayView< int const > *arg3 = 0 ;
@@ -5324,28 +4658,23 @@ SWIGEXPORT void swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_0(void* farg1, co
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_1(void* farg1, const int* farg2, const int* farg3, int * farg4) {
+SWIGEXPORT void swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_1(void *farg1, int const *farg2, int const *farg3, int *farg4) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   int arg2 ;
   int arg3 ;
@@ -5356,7 +4685,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_1(void* farg1, co
   arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = *farg2;
   arg3 = *farg3;
-  arg4 = farg4;
+  arg4 = reinterpret_cast< int * >(farg4);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -5368,28 +4697,23 @@ SWIGEXPORT void swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_1(void* farg1, co
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_globalAssemble(void* farg1) {
+SWIGEXPORT void swigc_TpetraCrsGraph_globalAssemble(void *farg1) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
   
@@ -5406,28 +4730,23 @@ SWIGEXPORT void swigc_TpetraCrsGraph_globalAssemble(void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_resumeFill__SWIG_0(void* farg1, void * farg2) {
+SWIGEXPORT void swigc_TpetraCrsGraph_resumeFill__SWIG_0(void *farg1, void *farg2) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
@@ -5447,28 +4766,23 @@ SWIGEXPORT void swigc_TpetraCrsGraph_resumeFill__SWIG_0(void* farg1, void * farg
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_resumeFill__SWIG_1(void* farg1) {
+SWIGEXPORT void swigc_TpetraCrsGraph_resumeFill__SWIG_1(void *farg1) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
   
@@ -5485,28 +4799,23 @@ SWIGEXPORT void swigc_TpetraCrsGraph_resumeFill__SWIG_1(void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_0(void* farg1, void * farg2, void * farg3, void * farg4) {
+SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_0(void *farg1, void *farg2, void *farg3, void *farg4) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -5532,28 +4841,23 @@ SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_0(void* farg1, void * fa
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_1(void* farg1, void * farg2, void * farg3) {
+SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_1(void *farg1, void *farg2, void *farg3) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -5576,28 +4880,23 @@ SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_1(void* farg1, void * fa
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_2(void* farg1, void * farg2) {
+SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_2(void *farg1, void *farg2) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
@@ -5617,28 +4916,23 @@ SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_2(void* farg1, void * fa
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_3(void* farg1) {
+SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_3(void *farg1) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
   
@@ -5655,28 +4949,23 @@ SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_3(void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_0(void* farg1, void * farg2, void * farg3, void * farg4, void * farg5, void * farg6) {
+SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_0(void *farg1, void *farg2, void *farg3, void *farg4, void *farg5, void *farg6) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -5708,28 +4997,23 @@ SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_0(void* farg
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_1(void* farg1, void * farg2, void * farg3, void * farg4, void * farg5) {
+SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_1(void *farg1, void *farg2, void *farg3, void *farg4, void *farg5) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -5758,28 +5042,23 @@ SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_1(void* farg
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_2(void* farg1, void * farg2, void * farg3, void * farg4) {
+SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_2(void *farg1, void *farg2, void *farg3, void *farg4) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -5805,28 +5084,23 @@ SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_2(void* farg
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_3(void* farg1, void * farg2, void * farg3) {
+SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_3(void *farg1, void *farg2, void *farg3) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -5849,29 +5123,24 @@ SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_3(void* farg
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void * swigc_TpetraCrsGraph_getComm(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraCrsGraph_getComm(void const *farg1) {
+  void * fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > result;
@@ -5889,34 +5158,28 @@ SWIGEXPORT void * swigc_TpetraCrsGraph_getComm(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Teuchos::Comm< int > const >)result)) ? new Teuchos::RCP< Teuchos::Comm< int > const >(result) : new Teuchos::RCP< Teuchos::Comm< int > const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Teuchos::Comm< int > const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_TpetraCrsGraph_getRowMap(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraCrsGraph_getRowMap(void const *farg1) {
+  void * fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
-  SwigValueWrapper< Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > > result;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
@@ -5931,34 +5194,28 @@ SWIGEXPORT void * swigc_TpetraCrsGraph_getRowMap(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_TpetraCrsGraph_getColMap(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraCrsGraph_getColMap(void const *farg1) {
+  void * fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
-  SwigValueWrapper< Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > > result;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
@@ -5973,34 +5230,28 @@ SWIGEXPORT void * swigc_TpetraCrsGraph_getColMap(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_TpetraCrsGraph_getDomainMap(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraCrsGraph_getDomainMap(void const *farg1) {
+  void * fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
-  SwigValueWrapper< Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > > result;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
@@ -6015,34 +5266,28 @@ SWIGEXPORT void * swigc_TpetraCrsGraph_getDomainMap(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_TpetraCrsGraph_getRangeMap(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraCrsGraph_getRangeMap(void const *farg1) {
+  void * fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
-  SwigValueWrapper< Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > > result;
+  Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
@@ -6057,31 +5302,25 @@ SWIGEXPORT void * swigc_TpetraCrsGraph_getRangeMap(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_TpetraCrsGraph_getImporter(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraCrsGraph_getImporter(void const *farg1) {
+  void * fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > result;
@@ -6099,31 +5338,25 @@ SWIGEXPORT void * swigc_TpetraCrsGraph_getImporter(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const >(result) : new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_TpetraCrsGraph_getExporter(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraCrsGraph_getExporter(void const *farg1) {
+  void * fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type const > result;
@@ -6141,31 +5374,25 @@ SWIGEXPORT void * swigc_TpetraCrsGraph_getExporter(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type const >(result) : new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumRows(const void* farg1) {
-  unsigned long fresult = 0 ;
+SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumRows(void const *farg1) {
+  unsigned long fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   Tpetra::global_size_t result;
@@ -6183,22 +5410,16 @@ SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumRows(const void* farg1
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6206,8 +5427,8 @@ SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumRows(const void* farg1
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumCols(const void* farg1) {
-  unsigned long fresult = 0 ;
+SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumCols(void const *farg1) {
+  unsigned long fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   Tpetra::global_size_t result;
@@ -6225,22 +5446,16 @@ SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumCols(const void* farg1
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6248,8 +5463,8 @@ SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumCols(const void* farg1
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumRows(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumRows(void const *farg1) {
+  size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   size_t result;
@@ -6267,22 +5482,16 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumRows(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6290,8 +5499,8 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumRows(const void* farg1) {
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumCols(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumCols(void const *farg1) {
+  size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   size_t result;
@@ -6309,22 +5518,16 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumCols(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6332,8 +5535,8 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumCols(const void* farg1) {
 }
 
 
-SWIGEXPORT int swigc_TpetraCrsGraph_getIndexBase(const void* farg1) {
-  int fresult = 0 ;
+SWIGEXPORT int swigc_TpetraCrsGraph_getIndexBase(void const *farg1) {
+  int fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   int result;
@@ -6351,22 +5554,16 @@ SWIGEXPORT int swigc_TpetraCrsGraph_getIndexBase(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6374,8 +5571,8 @@ SWIGEXPORT int swigc_TpetraCrsGraph_getIndexBase(const void* farg1) {
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumEntries(const void* farg1) {
-  unsigned long fresult = 0 ;
+SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumEntries(void const *farg1) {
+  unsigned long fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   Tpetra::global_size_t result;
@@ -6393,22 +5590,16 @@ SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumEntries(const void* fa
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6416,8 +5607,8 @@ SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumEntries(const void* fa
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumEntries(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumEntries(void const *farg1) {
+  size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   size_t result;
@@ -6435,22 +5626,16 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumEntries(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6458,8 +5643,8 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumEntries(const void* farg1) {
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getNumEntriesInGlobalRow(const void* farg1, const int* farg2) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraCrsGraph_getNumEntriesInGlobalRow(void const *farg1, int const *farg2) {
+  size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   int arg2 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
@@ -6479,22 +5664,16 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNumEntriesInGlobalRow(const void* farg
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6502,8 +5681,8 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNumEntriesInGlobalRow(const void* farg
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeAllocationSize(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeAllocationSize(void const *farg1) {
+  size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   size_t result;
@@ -6521,22 +5700,16 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeAllocationSize(const void* farg1) 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6544,8 +5717,8 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeAllocationSize(const void* farg1) 
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow(const void* farg1, const int* farg2) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow(void const *farg1, int const *farg2) {
+  size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   int arg2 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
@@ -6565,22 +5738,16 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow(const v
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6588,8 +5755,8 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow(const v
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumDiags(const void* farg1) {
-  unsigned long fresult = 0 ;
+SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumDiags(void const *farg1) {
+  unsigned long fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   Tpetra::global_size_t result;
@@ -6607,22 +5774,16 @@ SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumDiags(const void* farg
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6630,8 +5791,8 @@ SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumDiags(const void* farg
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumDiags(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumDiags(void const *farg1) {
+  size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   size_t result;
@@ -6649,22 +5810,16 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumDiags(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6672,8 +5827,8 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumDiags(const void* farg1) {
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getGlobalMaxNumRowEntries(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraCrsGraph_getGlobalMaxNumRowEntries(void const *farg1) {
+  size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   size_t result;
@@ -6691,22 +5846,16 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getGlobalMaxNumRowEntries(const void* far
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6714,8 +5863,8 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getGlobalMaxNumRowEntries(const void* far
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeMaxNumRowEntries(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeMaxNumRowEntries(void const *farg1) {
+  size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   size_t result;
@@ -6733,22 +5882,16 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeMaxNumRowEntries(const void* farg1
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6756,8 +5899,8 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeMaxNumRowEntries(const void* farg1
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_hasColMap(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsGraph_hasColMap(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -6775,22 +5918,16 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_hasColMap(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6798,8 +5935,8 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_hasColMap(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isLowerTriangular(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsGraph_isLowerTriangular(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -6817,22 +5954,16 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isLowerTriangular(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6840,8 +5971,8 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isLowerTriangular(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isUpperTriangular(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsGraph_isUpperTriangular(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -6859,22 +5990,16 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isUpperTriangular(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6882,8 +6007,8 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isUpperTriangular(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isLocallyIndexed(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsGraph_isLocallyIndexed(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -6901,22 +6026,16 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isLocallyIndexed(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6924,8 +6043,8 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isLocallyIndexed(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isGloballyIndexed(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsGraph_isGloballyIndexed(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -6943,22 +6062,16 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isGloballyIndexed(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -6966,8 +6079,8 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isGloballyIndexed(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isFillComplete(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsGraph_isFillComplete(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -6985,22 +6098,16 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isFillComplete(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -7008,8 +6115,8 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isFillComplete(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isFillActive(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsGraph_isFillActive(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -7027,22 +6134,16 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isFillActive(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -7050,8 +6151,8 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isFillActive(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isSorted(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsGraph_isSorted(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -7069,22 +6170,16 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isSorted(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -7092,8 +6187,8 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isSorted(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isStorageOptimized(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsGraph_isStorageOptimized(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -7111,22 +6206,16 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isStorageOptimized(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -7134,8 +6223,8 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isStorageOptimized(const void* farg1) {
 }
 
 
-SWIGEXPORT int swigc_TpetraCrsGraph_getProfileType(const void* farg1) {
-  int fresult = 0 ;
+SWIGEXPORT int swigc_TpetraCrsGraph_getProfileType(void const *farg1) {
+  int fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   Tpetra::ProfileType result;
@@ -7153,22 +6242,16 @@ SWIGEXPORT int swigc_TpetraCrsGraph_getProfileType(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -7176,7 +6259,7 @@ SWIGEXPORT int swigc_TpetraCrsGraph_getProfileType(const void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_getGlobalRowCopy(const void* farg1, const int* farg2, const void* farg3, size_t* farg4) {
+SWIGEXPORT void swigc_TpetraCrsGraph_getGlobalRowCopy(void const *farg1, int const *farg2, void const *farg3, size_t *farg4) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   int arg2 ;
   Teuchos::ArrayView< int > *arg3 = 0 ;
@@ -7194,7 +6277,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_getGlobalRowCopy(const void* farg1, const i
     throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< int > const &");
     return ;
   }
-  arg4 = farg4;
+  arg4 = reinterpret_cast< size_t * >(farg4);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -7206,28 +6289,23 @@ SWIGEXPORT void swigc_TpetraCrsGraph_getGlobalRowCopy(const void* farg1, const i
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_getGlobalRowView(const void* farg1, const int* farg2, void* farg3) {
+SWIGEXPORT void swigc_TpetraCrsGraph_getGlobalRowView(void const *farg1, int const *farg2, void *farg3) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   int arg2 ;
   Teuchos::ArrayView< int const > *arg3 = 0 ;
@@ -7255,29 +6333,24 @@ SWIGEXPORT void swigc_TpetraCrsGraph_getGlobalRowView(const void* farg1, const i
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_supportsRowViews(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsGraph_supportsRowViews(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -7295,22 +6368,16 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_supportsRowViews(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -7318,8 +6385,8 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_supportsRowViews(const void* farg1) {
 }
 
 
-SWIGEXPORT void* swigc_TpetraCrsGraph_description(const void* farg1) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraCrsGraph_description(void const *farg1) {
+  void * fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   std::string result;
@@ -7337,36 +6404,24 @@ SWIGEXPORT void* swigc_TpetraCrsGraph_description(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  
-#if __cplusplus >= 201103L
-  fresult = new std::string(std::move(result));
-#else
-  fresult = new std::string(result);
-#endif
-  
+  fresult = (new std::string(static_cast< const std::string& >(result)));
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_replaceColMap(void* farg1, void * farg2) {
+SWIGEXPORT void swigc_TpetraCrsGraph_replaceColMap(void *farg1, void *farg2) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
@@ -7386,28 +6441,23 @@ SWIGEXPORT void swigc_TpetraCrsGraph_replaceColMap(void* farg1, void * farg2) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_0(void* farg1, void * farg2, void * farg3, const bool* farg4) {
+SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_0(void *farg1, void *farg2, void *farg3, bool const *farg4) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *arg3 = 0 ;
@@ -7432,28 +6482,23 @@ SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_0(void* farg1, void * 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_1(void* farg1, void * farg2, void * farg3) {
+SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_1(void *farg1, void *farg2, void *farg3) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *arg3 = 0 ;
@@ -7476,28 +6521,23 @@ SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_1(void* farg1, void * 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_2(void* farg1, void * farg2) {
+SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_2(void *farg1, void *farg2) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
@@ -7517,28 +6557,23 @@ SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_2(void* farg1, void * 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_replaceDomainMapAndImporter(void* farg1, void * farg2, void * farg3) {
+SWIGEXPORT void swigc_TpetraCrsGraph_replaceDomainMapAndImporter(void *farg1, void *farg2, void *farg3) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *arg3 = 0 ;
@@ -7561,28 +6596,23 @@ SWIGEXPORT void swigc_TpetraCrsGraph_replaceDomainMapAndImporter(void* farg1, vo
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_removeEmptyProcessesInPlace(void* farg1, void * farg2) {
+SWIGEXPORT void swigc_TpetraCrsGraph_removeEmptyProcessesInPlace(void *farg1, void *farg2) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
@@ -7602,29 +6632,24 @@ SWIGEXPORT void swigc_TpetraCrsGraph_removeEmptyProcessesInPlace(void* farg1, vo
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_haveGlobalConstants(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsGraph_haveGlobalConstants(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -7642,22 +6667,16 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_haveGlobalConstants(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -7665,7 +6684,7 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_haveGlobalConstants(const void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_computeGlobalConstants(void* farg1) {
+SWIGEXPORT void swigc_TpetraCrsGraph_computeGlobalConstants(void *farg1) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
   
@@ -7682,24 +6701,19 @@ SWIGEXPORT void swigc_TpetraCrsGraph_computeGlobalConstants(void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
@@ -7709,8 +6723,8 @@ SWIGEXPORT void* swigc_spcopy_TpetraCrsGraph(void* farg1) {
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_0(void * farg1, const size_t* farg2, int* farg3, void * farg4) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraCrsMatrix__SWIG_0(void *farg1, size_t const *farg2, int *farg3, void *farg4) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   size_t arg2 ;
   Tpetra::ProfileType arg3 ;
@@ -7721,7 +6735,7 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_0(void * farg1, const size_t* f
   
   arg1 = farg1 ? (Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg1 : &tempnull1;
   arg2 = *farg2;
-  arg3 = (Tpetra::ProfileType)(*farg3);
+  arg3 = static_cast< Tpetra::ProfileType >(*farg3);
   arg4 = farg4 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg4 : &tempnull4;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -7734,31 +6748,25 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_0(void * farg1, const size_t* f
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_1(void * farg1, const size_t* farg2, int* farg3) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraCrsMatrix__SWIG_1(void *farg1, size_t const *farg2, int *farg3) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   size_t arg2 ;
   Tpetra::ProfileType arg3 ;
@@ -7767,7 +6775,7 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_1(void * farg1, const size_t* f
   
   arg1 = farg1 ? (Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg1 : &tempnull1;
   arg2 = *farg2;
-  arg3 = (Tpetra::ProfileType)(*farg3);
+  arg3 = static_cast< Tpetra::ProfileType >(*farg3);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -7779,31 +6787,25 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_1(void * farg1, const size_t* f
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_2(void * farg1, const size_t* farg2) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraCrsMatrix__SWIG_2(void *farg1, size_t const *farg2) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   size_t arg2 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > tempnull1 ;
@@ -7822,31 +6824,25 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_2(void * farg1, const size_t* f
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_3(void * farg1, void * farg2, const size_t* farg3, int* farg4, void * farg5) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraCrsMatrix__SWIG_3(void *farg1, void *farg2, size_t const *farg3, int *farg4, void *farg5) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   size_t arg3 ;
@@ -7860,7 +6856,7 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_3(void * farg1, void * farg2, c
   arg1 = farg1 ? (Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg1 : &tempnull1;
   arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
   arg3 = *farg3;
-  arg4 = (Tpetra::ProfileType)(*farg4);
+  arg4 = static_cast< Tpetra::ProfileType >(*farg4);
   arg5 = farg5 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg5 : &tempnull5;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -7873,31 +6869,25 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_3(void * farg1, void * farg2, c
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_4(void * farg1, void * farg2, const size_t* farg3, int* farg4) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraCrsMatrix__SWIG_4(void *farg1, void *farg2, size_t const *farg3, int *farg4) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   size_t arg3 ;
@@ -7909,7 +6899,7 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_4(void * farg1, void * farg2, c
   arg1 = farg1 ? (Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg1 : &tempnull1;
   arg2 = farg2 ? (Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *)farg2 : &tempnull2;
   arg3 = *farg3;
-  arg4 = (Tpetra::ProfileType)(*farg4);
+  arg4 = static_cast< Tpetra::ProfileType >(*farg4);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -7921,31 +6911,25 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_4(void * farg1, void * farg2, c
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_5(void * farg1, void * farg2, const size_t* farg3) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraCrsMatrix__SWIG_5(void *farg1, void *farg2, size_t const *farg3) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   size_t arg3 ;
@@ -7967,31 +6951,25 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_5(void * farg1, void * farg2, c
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_6(void * farg1, void * farg2) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraCrsMatrix__SWIG_6(void *farg1, void *farg2) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const > *arg1 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const > tempnull1 ;
@@ -8011,31 +6989,25 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_6(void * farg1, void * farg2) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_7(void * farg1) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_new_TpetraCrsMatrix__SWIG_7(void *farg1) {
+  void * fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const > tempnull1 ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *result = 0 ;
@@ -8052,30 +7024,24 @@ SWIGEXPORT void* swigc_new_TpetraCrsMatrix__SWIG_7(void * farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(Teuchos::null);
+  fresult = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> >(result SWIG_NO_NULL_DELETER_1) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_delete_TpetraCrsMatrix(void* farg1) {
+SWIGEXPORT void swigc_delete_TpetraCrsMatrix(void *farg1) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
   
@@ -8087,33 +7053,28 @@ SWIGEXPORT void swigc_delete_TpetraCrsMatrix(void* farg1) {
     try
     {
       // Attempt the wrapped function call
-      (void)arg1; delete smartarg1;
+      (void)arg1; delete smartarg1; 
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_0(void* farg1, const int* farg2, const void* farg3, const void* farg4) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_0(void *farg1, int const *farg2, void const *farg3, void const *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   int arg2 ;
   Teuchos::ArrayView< int const > *arg3 = 0 ;
@@ -8150,28 +7111,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_0(void* farg1, co
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_1(void* farg1, const int* farg2, const int* farg3, double * farg4, int * farg5) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_1(void *farg1, int const *farg2, int const *farg3, double *farg4, int *farg5) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   int arg2 ;
   int arg3 ;
@@ -8183,8 +7139,8 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_1(void* farg1, co
   arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = *farg2;
   arg3 = *farg3;
-  arg4 = farg4;
-  arg5 = farg5;
+  arg4 = reinterpret_cast< double * >(farg4);
+  arg5 = reinterpret_cast< int * >(farg5);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -8196,29 +7152,24 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_1(void* farg1, co
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT int swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_1(const void* farg1, const int* farg2, const void* farg3, const void* farg4) {
-  int fresult = 0 ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_1(void const *farg1, int const *farg2, void const *farg3, void const *farg4) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   int arg2 ;
   Teuchos::ArrayView< int const > *arg3 = 0 ;
@@ -8256,22 +7207,16 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_1(const void* far
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -8279,8 +7224,8 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_1(const void* far
 }
 
 
-SWIGEXPORT int swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_2(const void* farg1, const int* farg2, const int* farg3, double * farg4, int * farg5) {
-  int fresult = 0 ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_2(void const *farg1, int const *farg2, int const *farg3, double *farg4, int *farg5) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   int arg2 ;
   int arg3 ;
@@ -8293,8 +7238,8 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_2(const void* far
   arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = *farg2;
   arg3 = *farg3;
-  arg4 = farg4;
-  arg5 = farg5;
+  arg4 = reinterpret_cast< double * >(farg4);
+  arg5 = reinterpret_cast< int * >(farg5);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -8306,22 +7251,16 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_2(const void* far
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -8329,8 +7268,8 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_2(const void* far
 }
 
 
-SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_0(void* farg1, const int* farg2, const void* farg3, const void* farg4, const bool* farg5) {
-  int fresult = 0 ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_0(void *farg1, int const *farg2, void const *farg3, void const *farg4, bool const *farg5) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   int arg2 ;
   Teuchos::ArrayView< int const > *arg3 = 0 ;
@@ -8370,22 +7309,16 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_0(void* farg1, co
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -8393,8 +7326,8 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_0(void* farg1, co
 }
 
 
-SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_1(void* farg1, const int* farg2, const void* farg3, const void* farg4) {
-  int fresult = 0 ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_1(void *farg1, int const *farg2, void const *farg3, void const *farg4) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   int arg2 ;
   Teuchos::ArrayView< int const > *arg3 = 0 ;
@@ -8432,22 +7365,16 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_1(void* farg1, co
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -8455,8 +7382,8 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_1(void* farg1, co
 }
 
 
-SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_2(void* farg1, const int* farg2, const int* farg3, double * farg4, int * farg5, const bool* farg6) {
-  int fresult = 0 ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_2(void *farg1, int const *farg2, int const *farg3, double *farg4, int *farg5, bool const *farg6) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   int arg2 ;
   int arg3 ;
@@ -8470,8 +7397,8 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_2(void* farg1, co
   arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = *farg2;
   arg3 = *farg3;
-  arg4 = farg4;
-  arg5 = farg5;
+  arg4 = reinterpret_cast< double * >(farg4);
+  arg5 = reinterpret_cast< int * >(farg5);
   arg6 = *farg6;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -8484,22 +7411,16 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_2(void* farg1, co
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -8507,8 +7428,8 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_2(void* farg1, co
 }
 
 
-SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3(void* farg1, const int* farg2, const int* farg3, double * farg4, int * farg5) {
-  int fresult = 0 ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3(void *farg1, int const *farg2, int const *farg3, double *farg4, int *farg5) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   int arg2 ;
   int arg3 ;
@@ -8521,8 +7442,8 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3(void* farg1, co
   arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = *farg2;
   arg3 = *farg3;
-  arg4 = farg4;
-  arg5 = farg5;
+  arg4 = reinterpret_cast< double * >(farg4);
+  arg5 = reinterpret_cast< int * >(farg5);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -8534,22 +7455,16 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3(void* farg1, co
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -8557,14 +7472,14 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3(void* farg1, co
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_setAllToScalar(void* farg1, const double* farg2) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_setAllToScalar(void *farg1, double const *farg2) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   double *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
   
   smartarg1 = (Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (double *)(farg2);
+  arg2 = reinterpret_cast< double * >(const_cast< double* >(farg2));
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -8576,35 +7491,30 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_setAllToScalar(void* farg1, const double* 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_scale(void* farg1, const double* farg2) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_scale(void *farg1, double const *farg2) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   double *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
   
   smartarg1 = (Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (double *)(farg2);
+  arg2 = reinterpret_cast< double * >(const_cast< double* >(farg2));
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -8616,28 +7526,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_scale(void* farg1, const double* farg2) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_globalAssemble(void* farg1) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_globalAssemble(void *farg1) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
   
@@ -8654,28 +7559,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_globalAssemble(void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_resumeFill__SWIG_0(void* farg1, void * farg2) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_resumeFill__SWIG_0(void *farg1, void *farg2) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
@@ -8695,28 +7595,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_resumeFill__SWIG_0(void* farg1, void * far
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_resumeFill__SWIG_1(void* farg1) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_resumeFill__SWIG_1(void *farg1) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
   
@@ -8733,28 +7628,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_resumeFill__SWIG_1(void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_0(void* farg1, void * farg2, void * farg3, void * farg4) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_0(void *farg1, void *farg2, void *farg3, void *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -8780,28 +7670,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_0(void* farg1, void * f
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_1(void* farg1, void * farg2, void * farg3) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_1(void *farg1, void *farg2, void *farg3) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -8824,28 +7709,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_1(void* farg1, void * f
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_2(void* farg1, void * farg2) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_2(void *farg1, void *farg2) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
@@ -8865,28 +7745,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_2(void* farg1, void * f
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_3(void* farg1) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_3(void *farg1) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
   
@@ -8903,28 +7778,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_3(void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_0(void* farg1, void * farg2, void * farg3, void * farg4, void * farg5, void * farg6) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_0(void *farg1, void *farg2, void *farg3, void *farg4, void *farg5, void *farg6) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -8956,28 +7826,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_0(void* far
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_1(void* farg1, void * farg2, void * farg3, void * farg4, void * farg5) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_1(void *farg1, void *farg2, void *farg3, void *farg4, void *farg5) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -9006,28 +7871,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_1(void* far
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_2(void* farg1, void * farg2, void * farg3, void * farg4) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_2(void *farg1, void *farg2, void *farg3, void *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -9053,28 +7913,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_2(void* far
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_3(void* farg1, void * farg2, void * farg3) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_3(void *farg1, void *farg2, void *farg3) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -9097,28 +7952,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_3(void* far
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_replaceColMap(void* farg1, void * farg2) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_replaceColMap(void *farg1, void *farg2) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
@@ -9138,28 +7988,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_replaceColMap(void* farg1, void * farg2) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_0(void* farg1, void* farg2, void * farg3, void * farg4, const bool* farg5) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_0(void *farg1, void *farg2, void *farg3, void *farg4, bool const *farg5) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type *arg2 = (Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type *) (Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type *)0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -9188,28 +8033,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_0(void* farg1, void* 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_1(void* farg1, void* farg2, void * farg3, void * farg4) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_1(void *farg1, void *farg2, void *farg3, void *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type *arg2 = (Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type *) (Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type *)0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -9236,28 +8076,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_1(void* farg1, void* 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_2(void* farg1, void* farg2, void * farg3) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_2(void *farg1, void *farg2, void *farg3) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type *arg2 = (Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type *) (Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type *)0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -9281,28 +8116,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_2(void* farg1, void* 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_replaceDomainMapAndImporter(void* farg1, void * farg2, void * farg3) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_replaceDomainMapAndImporter(void *farg1, void *farg2, void *farg3) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *arg3 = 0 ;
@@ -9325,28 +8155,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_replaceDomainMapAndImporter(void* farg1, v
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_removeEmptyProcessesInPlace(void* farg1, void * farg2) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_removeEmptyProcessesInPlace(void *farg1, void *farg2) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > > *smartarg1 = 0 ;
@@ -9366,29 +8191,24 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_removeEmptyProcessesInPlace(void* farg1, v
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void * swigc_TpetraCrsMatrix_getComm(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraCrsMatrix_getComm(void const *farg1) {
+  void * fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > result;
@@ -9406,34 +8226,28 @@ SWIGEXPORT void * swigc_TpetraCrsMatrix_getComm(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Teuchos::Comm< int > const >)result)) ? new Teuchos::RCP< Teuchos::Comm< int > const >(result) : new Teuchos::RCP< Teuchos::Comm< int > const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Teuchos::Comm< int > const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_TpetraCrsMatrix_getRowMap(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraCrsMatrix_getRowMap(void const *farg1) {
+  void * fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
-  SwigValueWrapper< Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > > result;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
@@ -9448,34 +8262,28 @@ SWIGEXPORT void * swigc_TpetraCrsMatrix_getRowMap(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_TpetraCrsMatrix_getColMap(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraCrsMatrix_getColMap(void const *farg1) {
+  void * fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
-  SwigValueWrapper< Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > > result;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
@@ -9490,31 +8298,25 @@ SWIGEXPORT void * swigc_TpetraCrsMatrix_getColMap(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_TpetraCrsMatrix_getCrsGraph(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraCrsMatrix_getCrsGraph(void const *farg1) {
+  void * fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const > result;
@@ -9532,31 +8334,25 @@ SWIGEXPORT void * swigc_TpetraCrsMatrix_getCrsGraph(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const >(result) : new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::crs_graph_type const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumRows(const void* farg1) {
-  unsigned long fresult = 0 ;
+SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumRows(void const *farg1) {
+  unsigned long fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   Tpetra::global_size_t result;
@@ -9574,22 +8370,16 @@ SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumRows(const void* farg
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -9597,8 +8387,8 @@ SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumRows(const void* farg
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumCols(const void* farg1) {
-  unsigned long fresult = 0 ;
+SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumCols(void const *farg1) {
+  unsigned long fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   Tpetra::global_size_t result;
@@ -9616,22 +8406,16 @@ SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumCols(const void* farg
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -9639,8 +8423,8 @@ SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumCols(const void* farg
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumRows(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumRows(void const *farg1) {
+  size_t fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   size_t result;
@@ -9658,22 +8442,16 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumRows(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -9681,8 +8459,8 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumRows(const void* farg1) {
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumCols(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumCols(void const *farg1) {
+  size_t fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   size_t result;
@@ -9700,22 +8478,16 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumCols(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -9723,8 +8495,8 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumCols(const void* farg1) {
 }
 
 
-SWIGEXPORT int swigc_TpetraCrsMatrix_getIndexBase(const void* farg1) {
-  int fresult = 0 ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_getIndexBase(void const *farg1) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   int result;
@@ -9742,22 +8514,16 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_getIndexBase(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -9765,8 +8531,8 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_getIndexBase(const void* farg1) {
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumEntries(const void* farg1) {
-  unsigned long fresult = 0 ;
+SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumEntries(void const *farg1) {
+  unsigned long fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   Tpetra::global_size_t result;
@@ -9784,22 +8550,16 @@ SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumEntries(const void* f
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -9807,8 +8567,8 @@ SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumEntries(const void* f
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumEntries(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumEntries(void const *farg1) {
+  size_t fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   size_t result;
@@ -9826,22 +8586,16 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumEntries(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -9849,8 +8603,8 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumEntries(const void* farg1) {
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNumEntriesInGlobalRow(const void* farg1, const int* farg2) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNumEntriesInGlobalRow(void const *farg1, int const *farg2) {
+  size_t fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   int arg2 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
@@ -9870,22 +8624,16 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNumEntriesInGlobalRow(const void* far
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -9893,8 +8641,8 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNumEntriesInGlobalRow(const void* far
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumDiags(const void* farg1) {
-  unsigned long fresult = 0 ;
+SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumDiags(void const *farg1) {
+  unsigned long fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   Tpetra::global_size_t result;
@@ -9912,22 +8660,16 @@ SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumDiags(const void* far
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -9935,8 +8677,8 @@ SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumDiags(const void* far
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumDiags(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumDiags(void const *farg1) {
+  size_t fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   size_t result;
@@ -9954,22 +8696,16 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumDiags(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -9977,8 +8713,8 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumDiags(const void* farg1) {
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsMatrix_getGlobalMaxNumRowEntries(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraCrsMatrix_getGlobalMaxNumRowEntries(void const *farg1) {
+  size_t fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   size_t result;
@@ -9996,22 +8732,16 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getGlobalMaxNumRowEntries(const void* fa
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -10019,8 +8749,8 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getGlobalMaxNumRowEntries(const void* fa
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeMaxNumRowEntries(const void* farg1) {
-  size_t fresult = 0 ;
+SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeMaxNumRowEntries(void const *farg1) {
+  size_t fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   size_t result;
@@ -10038,22 +8768,16 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeMaxNumRowEntries(const void* farg
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -10061,8 +8785,8 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeMaxNumRowEntries(const void* farg
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_hasColMap(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsMatrix_hasColMap(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -10080,22 +8804,16 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_hasColMap(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -10103,8 +8821,8 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_hasColMap(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isLowerTriangular(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsMatrix_isLowerTriangular(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -10122,22 +8840,16 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isLowerTriangular(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -10145,8 +8857,8 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isLowerTriangular(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isUpperTriangular(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsMatrix_isUpperTriangular(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -10164,22 +8876,16 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isUpperTriangular(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -10187,8 +8893,8 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isUpperTriangular(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isLocallyIndexed(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsMatrix_isLocallyIndexed(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -10206,22 +8912,16 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isLocallyIndexed(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -10229,8 +8929,8 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isLocallyIndexed(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isGloballyIndexed(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsMatrix_isGloballyIndexed(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -10248,22 +8948,16 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isGloballyIndexed(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -10271,8 +8965,8 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isGloballyIndexed(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isFillComplete(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsMatrix_isFillComplete(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -10290,22 +8984,16 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isFillComplete(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -10313,8 +9001,8 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isFillComplete(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isFillActive(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsMatrix_isFillActive(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -10332,22 +9020,16 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isFillActive(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -10355,8 +9037,8 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isFillActive(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isStorageOptimized(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsMatrix_isStorageOptimized(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -10374,22 +9056,16 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isStorageOptimized(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -10397,8 +9073,8 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isStorageOptimized(const void* farg1) {
 }
 
 
-SWIGEXPORT int swigc_TpetraCrsMatrix_getProfileType(const void* farg1) {
-  int fresult = 0 ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_getProfileType(void const *farg1) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   Tpetra::ProfileType result;
@@ -10416,22 +9092,16 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_getProfileType(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -10439,8 +9109,8 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_getProfileType(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isStaticGraph(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsMatrix_isStaticGraph(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -10458,22 +9128,16 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isStaticGraph(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -10481,8 +9145,8 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isStaticGraph(const void* farg1) {
 }
 
 
-SWIGEXPORT double swigc_TpetraCrsMatrix_getFrobeniusNorm(const void* farg1) {
-  double fresult = 0 ;
+SWIGEXPORT double swigc_TpetraCrsMatrix_getFrobeniusNorm(void const *farg1) {
+  double fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::mag_type result;
@@ -10500,22 +9164,16 @@ SWIGEXPORT double swigc_TpetraCrsMatrix_getFrobeniusNorm(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -10523,8 +9181,8 @@ SWIGEXPORT double swigc_TpetraCrsMatrix_getFrobeniusNorm(const void* farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_supportsRowViews(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsMatrix_supportsRowViews(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -10542,22 +9200,16 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_supportsRowViews(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -10565,7 +9217,7 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_supportsRowViews(const void* farg1) {
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowCopy(const void* farg1, const int* farg2, const void* farg3, const void* farg4, size_t* farg5) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowCopy(void const *farg1, int const *farg2, void const *farg3, void const *farg4, size_t *farg5) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   int arg2 ;
   Teuchos::ArrayView< int > *arg3 = 0 ;
@@ -10592,7 +9244,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowCopy(const void* farg1, const 
     throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< double > const &");
     return ;
   }
-  arg5 = farg5;
+  arg5 = reinterpret_cast< size_t * >(farg5);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -10604,28 +9256,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowCopy(const void* farg1, const 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowView(const void* farg1, const int* farg2, void* farg3, void* farg4) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowView(void const *farg1, int const *farg2, void *farg3, void *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   int arg2 ;
   Teuchos::ArrayView< int const > *arg3 = 0 ;
@@ -10662,29 +9309,24 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowView(const void* farg1, const 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT int swigc_TpetraCrsMatrix_getLocalRowViewRaw(const void* farg1, const int* farg2, int* farg3, void* farg4, void* farg5) {
-  int fresult = 0 ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_getLocalRowViewRaw(void const *farg1, int const *farg2, int *farg3, int **farg4, double **farg5) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   int arg2 ;
   int *arg3 = 0 ;
@@ -10696,9 +9338,9 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_getLocalRowViewRaw(const void* farg1, const
   smartarg1 = (Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
   arg2 = *farg2;
-  arg3 = farg3;
-  arg4 = (int **)farg4;
-  arg5 = (double **)farg5;
+  arg3 = reinterpret_cast< int * >(farg3);
+  arg4 = const_cast< int ** >(farg4);
+  arg5 = const_cast< double ** >(farg5);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -10710,22 +9352,16 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_getLocalRowViewRaw(const void* farg1, const
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -10733,7 +9369,7 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_getLocalRowViewRaw(const void* farg1, const
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_0(const void* farg1, const void* farg2, void* farg3, int* farg4, const double* farg5, const double* farg6) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_0(void const *farg1, void const *farg2, void *farg3, int *farg4, double const *farg5, double const *farg6) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -10760,7 +9396,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_0(const void* farg1, const voi
     throw std::logic_error("Attempt to dereference null Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > &");
     return ;
   }
-  arg4 = (Teuchos::ETransp)(*farg4);
+  arg4 = static_cast< Teuchos::ETransp >(*farg4);
   arg5 = *farg5;
   arg6 = *farg6;
   {
@@ -10774,28 +9410,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_0(const void* farg1, const voi
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_1(const void* farg1, const void* farg2, void* farg3, int* farg4, const double* farg5) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_1(void const *farg1, void const *farg2, void *farg3, int *farg4, double const *farg5) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -10821,7 +9452,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_1(const void* farg1, const voi
     throw std::logic_error("Attempt to dereference null Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > &");
     return ;
   }
-  arg4 = (Teuchos::ETransp)(*farg4);
+  arg4 = static_cast< Teuchos::ETransp >(*farg4);
   arg5 = *farg5;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -10834,28 +9465,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_1(const void* farg1, const voi
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_2(const void* farg1, const void* farg2, void* farg3, int* farg4) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_2(void const *farg1, void const *farg2, void *farg3, int *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -10880,7 +9506,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_2(const void* farg1, const voi
     throw std::logic_error("Attempt to dereference null Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > &");
     return ;
   }
-  arg4 = (Teuchos::ETransp)(*farg4);
+  arg4 = static_cast< Teuchos::ETransp >(*farg4);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -10892,28 +9518,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_2(const void* farg1, const voi
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_3(const void* farg1, const void* farg2, void* farg3) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_3(void const *farg1, void const *farg2, void *farg3) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -10948,29 +9569,24 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_3(const void* farg1, const voi
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_hasTransposeApply(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsMatrix_hasTransposeApply(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -10988,22 +9604,16 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_hasTransposeApply(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;
@@ -11011,11 +9621,11 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_hasTransposeApply(const void* farg1) {
 }
 
 
-SWIGEXPORT void * swigc_TpetraCrsMatrix_getDomainMap(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraCrsMatrix_getDomainMap(void const *farg1) {
+  void * fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
-  SwigValueWrapper< Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > > result;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
@@ -11030,34 +9640,28 @@ SWIGEXPORT void * swigc_TpetraCrsMatrix_getDomainMap(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_TpetraCrsMatrix_getRangeMap(const void* farg1) {
-  void * fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraCrsMatrix_getRangeMap(void const *farg1) {
+  void * fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
-  SwigValueWrapper< Teuchos::RCP< Tpetra::Map< int,int,Kokkos::Compat::KokkosSerialWrapperNode > const > > result;
+  Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
@@ -11072,30 +9676,24 @@ SWIGEXPORT void * swigc_TpetraCrsMatrix_getRangeMap(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = (!Teuchos::is_null((Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >)result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(Teuchos::null);
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const >(result) : 0;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_gaussSeidel(const void* farg1, const void* farg2, void* farg3, const void* farg4, const double* farg5, int* farg6, const int* farg7) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_gaussSeidel(void const *farg1, void const *farg2, void *farg3, void const *farg4, double const *farg5, int *farg6, int const *farg7) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -11131,8 +9729,8 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_gaussSeidel(const void* farg1, const void*
     throw std::logic_error("Attempt to dereference null Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > const &");
     return ;
   }
-  arg5 = (double *)(farg5);
-  arg6 = (Tpetra::ESweepDirection)(*farg6);
+  arg5 = reinterpret_cast< double * >(const_cast< double* >(farg5));
+  arg6 = static_cast< Tpetra::ESweepDirection >(*farg6);
   arg7 = *farg7;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -11145,28 +9743,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_gaussSeidel(const void* farg1, const void*
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_reorderedGaussSeidel(const void* farg1, const void* farg2, void* farg3, const void* farg4, const void* farg5, const double* farg6, int* farg7, const int* farg8) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_reorderedGaussSeidel(void const *farg1, void const *farg2, void *farg3, void const *farg4, void const *farg5, double const *farg6, int *farg7, int const *farg8) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -11211,8 +9804,8 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_reorderedGaussSeidel(const void* farg1, co
     throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< int > const &");
     return ;
   }
-  arg6 = (double *)(farg6);
-  arg7 = (Tpetra::ESweepDirection)(*farg7);
+  arg6 = reinterpret_cast< double * >(const_cast< double* >(farg6));
+  arg7 = static_cast< Tpetra::ESweepDirection >(*farg7);
   arg8 = *farg8;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -11225,28 +9818,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_reorderedGaussSeidel(const void* farg1, co
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_gaussSeidelCopy(const void* farg1, void* farg2, const void* farg3, const void* farg4, const double* farg5, int* farg6, const int* farg7, const bool* farg8) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_gaussSeidelCopy(void const *farg1, void *farg2, void const *farg3, void const *farg4, double const *farg5, int *farg6, int const *farg7, bool const *farg8) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -11283,8 +9871,8 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_gaussSeidelCopy(const void* farg1, void* f
     throw std::logic_error("Attempt to dereference null Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > const &");
     return ;
   }
-  arg5 = (double *)(farg5);
-  arg6 = (Tpetra::ESweepDirection)(*farg6);
+  arg5 = reinterpret_cast< double * >(const_cast< double* >(farg5));
+  arg6 = static_cast< Tpetra::ESweepDirection >(*farg6);
   arg7 = *farg7;
   arg8 = *farg8;
   {
@@ -11298,28 +9886,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_gaussSeidelCopy(const void* farg1, void* f
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_reorderedGaussSeidelCopy(const void* farg1, void* farg2, const void* farg3, const void* farg4, const void* farg5, const double* farg6, int* farg7, const int* farg8, const bool* farg9) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_reorderedGaussSeidelCopy(void const *farg1, void *farg2, void const *farg3, void const *farg4, void const *farg5, double const *farg6, int *farg7, int const *farg8, bool const *farg9) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -11365,8 +9948,8 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_reorderedGaussSeidelCopy(const void* farg1
     throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< int > const &");
     return ;
   }
-  arg6 = (double *)(farg6);
-  arg7 = (Tpetra::ESweepDirection)(*farg7);
+  arg6 = reinterpret_cast< double * >(const_cast< double* >(farg6));
+  arg7 = static_cast< Tpetra::ESweepDirection >(*farg7);
   arg8 = *farg8;
   arg9 = *farg9;
   {
@@ -11380,29 +9963,24 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_reorderedGaussSeidelCopy(const void* farg1
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void* swigc_TpetraCrsMatrix_description(const void* farg1) {
-  void* fresult = 0 ;
+SWIGEXPORT void * swigc_TpetraCrsMatrix_description(void const *farg1) {
+  void * fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   std::string result;
@@ -11420,36 +9998,24 @@ SWIGEXPORT void* swigc_TpetraCrsMatrix_description(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  
-#if __cplusplus >= 201103L
-  fresult = new std::string(std::move(result));
-#else
-  fresult = new std::string(result);
-#endif
-  
+  fresult = (new std::string(static_cast< const std::string& >(result)));
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_0(const void* farg1, void * farg2, const void* farg3, void * farg4, void * farg5, void * farg6) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_0(void const *farg1, void *farg2, void const *farg3, void *farg4, void *farg5, void *farg6) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > > *arg2 = 0 ;
   Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type *arg3 = 0 ;
@@ -11487,28 +10053,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_0(const void* 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_1(const void* farg1, void * farg2, const void* farg3, void * farg4, void * farg5) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_1(void const *farg1, void *farg2, void const *farg3, void *farg4, void *farg5) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > > *arg2 = 0 ;
   Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type *arg3 = 0 ;
@@ -11543,28 +10104,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_1(const void* 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_2(const void* farg1, void * farg2, const void* farg3, const void* farg4, void * farg5, void * farg6, void * farg7) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_2(void const *farg1, void *farg2, void const *farg3, void const *farg4, void *farg5, void *farg6, void *farg7) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > > *arg2 = 0 ;
   Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type *arg3 = 0 ;
@@ -11611,28 +10167,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_2(const void* 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_0(const void* farg1, void * farg2, const void* farg3, void * farg4, void * farg5, void * farg6) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_0(void const *farg1, void *farg2, void const *farg3, void *farg4, void *farg5, void *farg6) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > > *arg2 = 0 ;
   Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type *arg3 = 0 ;
@@ -11670,28 +10221,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_0(const void* 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_1(const void* farg1, void * farg2, const void* farg3, void * farg4, void * farg5) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_1(void const *farg1, void *farg2, void const *farg3, void *farg4, void *farg5) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > > *arg2 = 0 ;
   Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type *arg3 = 0 ;
@@ -11726,28 +10272,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_1(const void* 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_2(const void* farg1, void * farg2, const void* farg3, void * farg4) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_2(void const *farg1, void *farg2, void const *farg3, void *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > > *arg2 = 0 ;
   Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type *arg3 = 0 ;
@@ -11779,28 +10320,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_2(const void* 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_3(const void* farg1, void * farg2, const void* farg3) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_3(void const *farg1, void *farg2, void const *farg3) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > > *arg2 = 0 ;
   Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type *arg3 = 0 ;
@@ -11829,28 +10365,23 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_3(const void* 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_4(const void* farg1, void * farg2, const void* farg3, const void* farg4, void * farg5, void * farg6, void * farg7) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_4(void const *farg1, void *farg2, void const *farg3, void const *farg4, void *farg5, void *farg6, void *farg7) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > > *arg2 = 0 ;
   Tpetra::CrsMatrix< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::export_type *arg3 = 0 ;
@@ -11897,29 +10428,24 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_4(const void* 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return ; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_haveGlobalConstants(const void* farg1) {
-  bool fresult = 0 ;
+SWIGEXPORT bool swigc_TpetraCrsMatrix_haveGlobalConstants(void const *farg1) {
+  bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   bool result;
@@ -11937,22 +10463,16 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_haveGlobalConstants(const void* farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_IndexError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      do {
-        swig::fortran_store_exception(SWIG_RuntimeError, e.what()); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
     }
     catch (...)
     {
-      do {
-        swig::fortran_store_exception(SWIG_UnknownError, "An unknown exception occurred"); return 0; 
-      } while(0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
   fresult = result;

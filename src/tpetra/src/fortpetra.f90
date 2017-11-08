@@ -24,7 +24,7 @@ module fortpetra
  public :: ELocalGlobal, LocalIndices, GlobalIndices
  public :: TpetraCrsGraph
  public :: TpetraCrsMatrix
- ! TYPES
+ ! PARAMETERS
  enum, bind(c)
   enumerator :: LocalGlobal = -1
   enumerator :: LocallyReplicated = 0
@@ -59,7 +59,15 @@ module fortpetra
   enumerator :: Backward = Forward + 1
   enumerator :: Symmetric = Backward + 1
  end enum
+ enum, bind(c)
+  enumerator :: ELocalGlobal = -1
+  enumerator :: LocalIndices = 0
+  enumerator :: GlobalIndices = LocalIndices + 1
+ end enum
+
+ ! TYPES
  type :: TpetraMap
+  ! These should be treated as PROTECTED data
   type(C_PTR), public :: swigptr = C_NULL_PTR
  contains
   procedure, private :: create__SWIG_0 => swigf_new_TpetraMap__SWIG_0
@@ -92,6 +100,7 @@ module fortpetra
   generic :: assignment(=) => swigf_assign_TpetraMap
  end type
  type :: TpetraExport
+  ! These should be treated as PROTECTED data
   type(C_PTR), public :: swigptr = C_NULL_PTR
  contains
   procedure, private :: create__SWIG_0 => swigf_new_TpetraExport__SWIG_0
@@ -112,6 +121,7 @@ module fortpetra
   generic :: assignment(=) => swigf_assign_TpetraExport
  end type
  type :: TpetraImport
+  ! These should be treated as PROTECTED data
   type(C_PTR), public :: swigptr = C_NULL_PTR
  contains
   procedure, private :: create__SWIG_0 => swigf_new_TpetraImport__SWIG_0
@@ -137,6 +147,7 @@ module fortpetra
   generic :: setUnion => setUnion__SWIG_0, setUnion__SWIG_1
  end type
  type :: TpetraMultiVector
+  ! These should be treated as PROTECTED data
   type(C_PTR), public :: swigptr = C_NULL_PTR
  contains
   procedure, private :: create__SWIG_0 => swigf_new_TpetraMultiVector__SWIG_0
@@ -196,7 +207,6 @@ module fortpetra
  type :: RowInfo
   ! These should be treated as PROTECTED data
   type(C_PTR), public :: swigptr = C_NULL_PTR
-  logical, public :: swigown = .false.
  contains
   procedure :: set_localRow => swigf_set_RowInfo_localRow
   procedure :: get_localRow => swigf_get_RowInfo_localRow
@@ -209,12 +219,8 @@ module fortpetra
   procedure :: create => swigf_new_RowInfo
   procedure :: release => swigf_delete_RowInfo
  end type
- enum, bind(c)
-  enumerator :: ELocalGlobal = -1
-  enumerator :: LocalIndices = 0
-  enumerator :: GlobalIndices = LocalIndices + 1
- end enum
  type :: TpetraCrsGraph
+  ! These should be treated as PROTECTED data
   type(C_PTR), public :: swigptr = C_NULL_PTR
  contains
   procedure, private :: create__SWIG_0 => swigf_new_TpetraCrsGraph__SWIG_0
@@ -293,6 +299,7 @@ module fortpetra
     expertStaticFillComplete__SWIG_2, expertStaticFillComplete__SWIG_3
  end type
  type :: TpetraCrsMatrix
+  ! These should be treated as PROTECTED data
   type(C_PTR), public :: swigptr = C_NULL_PTR
  contains
   procedure, private :: create__SWIG_0 => swigf_new_TpetraCrsMatrix__SWIG_0
@@ -406,197 +413,222 @@ module fortpetra
  ! WRAPPER DECLARATIONS
  private
  interface
-  function swigc_new_TpetraMap__SWIG_0(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_new_TpetraMap__SWIG_0") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   integer(C_LONG), intent(in) :: farg1
-   integer(C_INT), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-   integer(C_INT), intent(in) :: farg4
-  end function
-  function swigc_new_TpetraMap__SWIG_1(farg1, farg2, farg3) &
-     bind(C, name="swigc_new_TpetraMap__SWIG_1") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   integer(C_LONG), intent(in) :: farg1
-   integer(C_INT), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-  end function
-  function swigc_new_TpetraMap__SWIG_2(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_new_TpetraMap__SWIG_2") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   integer(C_LONG), intent(in) :: farg1
-   integer(C_SIZE_T), intent(in) :: farg2
-   integer(C_INT), intent(in) :: farg3
-   type(C_PTR), value :: farg4
-  end function
-  function swigc_new_TpetraMap__SWIG_3(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_new_TpetraMap__SWIG_3") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   integer(C_LONG), intent(in) :: farg1
-   integer(C_INT), dimension(*), intent(in) :: farg2
-   integer(C_INT), intent(in) :: farg3
-   integer(C_INT), intent(in) :: farg4
-   type(C_PTR), value :: farg5
-  end function
-  function swigc_new_TpetraMap__SWIG_4(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_new_TpetraMap__SWIG_4") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   integer(C_LONG), intent(in) :: farg1
-   type(C_PTR), value :: farg2
-   integer(C_INT), intent(in) :: farg3
-   type(C_PTR), value :: farg4
-  end function
-  function swigc_new_TpetraMap__SWIG_5() &
-     bind(C, name="swigc_new_TpetraMap__SWIG_5") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-  end function
-  subroutine swigc_delete_TpetraMap(farg1) &
-     bind(C, name="swigc_delete_TpetraMap")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  function swigc_TpetraMap_isOneToOne(farg1) &
-     bind(C, name="swigc_TpetraMap_isOneToOne") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMap_getGlobalNumElements(farg1) &
-     bind(C, name="swigc_TpetraMap_getGlobalNumElements") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMap_getNodeNumElements(farg1) &
-     bind(C, name="swigc_TpetraMap_getNodeNumElements") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMap_getIndexBase(farg1) &
-     bind(C, name="swigc_TpetraMap_getIndexBase") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMap_getMinGlobalIndex(farg1) &
-     bind(C, name="swigc_TpetraMap_getMinGlobalIndex") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMap_getMaxGlobalIndex(farg1) &
-     bind(C, name="swigc_TpetraMap_getMaxGlobalIndex") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMap_getMinAllGlobalIndex(farg1) &
-     bind(C, name="swigc_TpetraMap_getMinAllGlobalIndex") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMap_getMaxAllGlobalIndex(farg1) &
-     bind(C, name="swigc_TpetraMap_getMaxAllGlobalIndex") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMap_getNodeElementList(farg1) &
-     bind(C, name="swigc_TpetraMap_getNodeElementList") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMap_isNodeGlobalElement(farg1, farg2) &
-     bind(C, name="swigc_TpetraMap_isNodeGlobalElement") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-  end function
-  function swigc_TpetraMap_isUniform(farg1) &
-     bind(C, name="swigc_TpetraMap_isUniform") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMap_isContiguous(farg1) &
-     bind(C, name="swigc_TpetraMap_isContiguous") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMap_isDistributed(farg1) &
-     bind(C, name="swigc_TpetraMap_isDistributed") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMap_isCompatible(farg1, farg2) &
-     bind(C, name="swigc_TpetraMap_isCompatible") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end function
-  function swigc_TpetraMap_isSameAs(farg1, farg2) &
-     bind(C, name="swigc_TpetraMap_isSameAs") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end function
-  function swigc_TpetraMap_locallySameAs(farg1, farg2) &
-     bind(C, name="swigc_TpetraMap_locallySameAs") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end function
-  function swigc_TpetraMap_getComm(farg1) &
-     bind(C, name="swigc_TpetraMap_getComm") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMap_description(farg1) &
-     bind(C, name="swigc_TpetraMap_description") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
+function swigc_new_TpetraMap__SWIG_0(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_new_TpetraMap__SWIG_0") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+integer(C_LONG), intent(in) :: farg1
+integer(C_INT), intent(in) :: farg2
+type(C_PTR), value :: farg3
+integer(C_INT), intent(in) :: farg4
+end function
+
+function swigc_new_TpetraMap__SWIG_1(farg1, farg2, farg3) &
+bind(C, name="swigc_new_TpetraMap__SWIG_1") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+integer(C_LONG), intent(in) :: farg1
+integer(C_INT), intent(in) :: farg2
+type(C_PTR), value :: farg3
+end function
+
+function swigc_new_TpetraMap__SWIG_2(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_new_TpetraMap__SWIG_2") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+integer(C_LONG), intent(in) :: farg1
+integer(C_SIZE_T), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg3
+type(C_PTR), value :: farg4
+end function
+
+function swigc_new_TpetraMap__SWIG_3(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_new_TpetraMap__SWIG_3") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+integer(C_LONG), intent(in) :: farg1
+type(C_PTR), value :: farg2
+integer(C_INT), intent(in) :: farg3
+integer(C_INT), intent(in) :: farg4
+type(C_PTR), value :: farg5
+end function
+
+function swigc_new_TpetraMap__SWIG_4(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_new_TpetraMap__SWIG_4") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+integer(C_LONG), intent(in) :: farg1
+type(C_PTR), value :: farg2
+integer(C_INT), intent(in) :: farg3
+type(C_PTR), value :: farg4
+end function
+
+function swigc_new_TpetraMap__SWIG_5() &
+bind(C, name="swigc_new_TpetraMap__SWIG_5") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+end function
+
+subroutine swigc_delete_TpetraMap(farg1) &
+bind(C, name="swigc_delete_TpetraMap")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+function swigc_TpetraMap_isOneToOne(farg1) &
+bind(C, name="swigc_TpetraMap_isOneToOne") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMap_getGlobalNumElements(farg1) &
+bind(C, name="swigc_TpetraMap_getGlobalNumElements") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMap_getNodeNumElements(farg1) &
+bind(C, name="swigc_TpetraMap_getNodeNumElements") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMap_getIndexBase(farg1) &
+bind(C, name="swigc_TpetraMap_getIndexBase") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMap_getMinGlobalIndex(farg1) &
+bind(C, name="swigc_TpetraMap_getMinGlobalIndex") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMap_getMaxGlobalIndex(farg1) &
+bind(C, name="swigc_TpetraMap_getMaxGlobalIndex") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMap_getMinAllGlobalIndex(farg1) &
+bind(C, name="swigc_TpetraMap_getMinAllGlobalIndex") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMap_getMaxAllGlobalIndex(farg1) &
+bind(C, name="swigc_TpetraMap_getMaxAllGlobalIndex") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMap_getNodeElementList(farg1) &
+bind(C, name="swigc_TpetraMap_getNodeElementList") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMap_isNodeGlobalElement(farg1, farg2) &
+bind(C, name="swigc_TpetraMap_isNodeGlobalElement") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+end function
+
+function swigc_TpetraMap_isUniform(farg1) &
+bind(C, name="swigc_TpetraMap_isUniform") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMap_isContiguous(farg1) &
+bind(C, name="swigc_TpetraMap_isContiguous") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMap_isDistributed(farg1) &
+bind(C, name="swigc_TpetraMap_isDistributed") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMap_isCompatible(farg1, farg2) &
+bind(C, name="swigc_TpetraMap_isCompatible") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end function
+
+function swigc_TpetraMap_isSameAs(farg1, farg2) &
+bind(C, name="swigc_TpetraMap_isSameAs") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end function
+
+function swigc_TpetraMap_locallySameAs(farg1, farg2) &
+bind(C, name="swigc_TpetraMap_locallySameAs") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end function
+
+function swigc_TpetraMap_getComm(farg1) &
+bind(C, name="swigc_TpetraMap_getComm") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMap_description(farg1) &
+bind(C, name="swigc_TpetraMap_description") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
   function swigc_spcopy_TpetraMap(farg1) &
      bind(C, name="swigc_spcopy_TpetraMap") &
      result(fresult)
@@ -604,97 +636,110 @@ module fortpetra
    type(C_PTR) :: fresult
    type(C_PTR), value :: farg1
   end function
-  function swigc_new_TpetraExport__SWIG_0(farg1, farg2) &
-     bind(C, name="swigc_new_TpetraExport__SWIG_0") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end function
-  function swigc_new_TpetraExport__SWIG_1(farg1, farg2, farg3) &
-     bind(C, name="swigc_new_TpetraExport__SWIG_1") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-  end function
-  function swigc_new_TpetraExport__SWIG_2(farg1) &
-     bind(C, name="swigc_new_TpetraExport__SWIG_2") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_new_TpetraExport__SWIG_3(farg1) &
-     bind(C, name="swigc_new_TpetraExport__SWIG_3") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  subroutine swigc_delete_TpetraExport(farg1) &
-     bind(C, name="swigc_delete_TpetraExport")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  subroutine swigc_TpetraExport_setParameterList(farg1, farg2) &
-     bind(C, name="swigc_TpetraExport_setParameterList")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  function swigc_TpetraExport_getNumSameIDs(farg1) &
-     bind(C, name="swigc_TpetraExport_getNumSameIDs") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraExport_getNumPermuteIDs(farg1) &
-     bind(C, name="swigc_TpetraExport_getNumPermuteIDs") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraExport_getNumRemoteIDs(farg1) &
-     bind(C, name="swigc_TpetraExport_getNumRemoteIDs") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraExport_getNumExportIDs(farg1) &
-     bind(C, name="swigc_TpetraExport_getNumExportIDs") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraExport_getSourceMap(farg1) &
-     bind(C, name="swigc_TpetraExport_getSourceMap") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraExport_getTargetMap(farg1) &
-     bind(C, name="swigc_TpetraExport_getTargetMap") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraExport_isLocallyComplete(farg1) &
-     bind(C, name="swigc_TpetraExport_isLocallyComplete") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
+function swigc_new_TpetraExport__SWIG_0(farg1, farg2) &
+bind(C, name="swigc_new_TpetraExport__SWIG_0") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end function
+
+function swigc_new_TpetraExport__SWIG_1(farg1, farg2, farg3) &
+bind(C, name="swigc_new_TpetraExport__SWIG_1") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+end function
+
+function swigc_new_TpetraExport__SWIG_2(farg1) &
+bind(C, name="swigc_new_TpetraExport__SWIG_2") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_new_TpetraExport__SWIG_3(farg1) &
+bind(C, name="swigc_new_TpetraExport__SWIG_3") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+subroutine swigc_delete_TpetraExport(farg1) &
+bind(C, name="swigc_delete_TpetraExport")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+subroutine swigc_TpetraExport_setParameterList(farg1, farg2) &
+bind(C, name="swigc_TpetraExport_setParameterList")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+function swigc_TpetraExport_getNumSameIDs(farg1) &
+bind(C, name="swigc_TpetraExport_getNumSameIDs") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraExport_getNumPermuteIDs(farg1) &
+bind(C, name="swigc_TpetraExport_getNumPermuteIDs") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraExport_getNumRemoteIDs(farg1) &
+bind(C, name="swigc_TpetraExport_getNumRemoteIDs") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraExport_getNumExportIDs(farg1) &
+bind(C, name="swigc_TpetraExport_getNumExportIDs") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraExport_getSourceMap(farg1) &
+bind(C, name="swigc_TpetraExport_getSourceMap") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraExport_getTargetMap(farg1) &
+bind(C, name="swigc_TpetraExport_getTargetMap") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraExport_isLocallyComplete(farg1) &
+bind(C, name="swigc_TpetraExport_isLocallyComplete") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
   function swigc_spcopy_TpetraExport(farg1) &
      bind(C, name="swigc_spcopy_TpetraExport") &
      result(fresult)
@@ -702,129 +747,146 @@ module fortpetra
    type(C_PTR) :: fresult
    type(C_PTR), value :: farg1
   end function
-  function swigc_new_TpetraImport__SWIG_0(farg1, farg2) &
-     bind(C, name="swigc_new_TpetraImport__SWIG_0") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end function
-  function swigc_new_TpetraImport__SWIG_1(farg1, farg2, farg3) &
-     bind(C, name="swigc_new_TpetraImport__SWIG_1") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-  end function
-  function swigc_new_TpetraImport__SWIG_2(farg1, farg2, farg3) &
-     bind(C, name="swigc_new_TpetraImport__SWIG_2") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-  end function
-  function swigc_new_TpetraImport__SWIG_3(farg1) &
-     bind(C, name="swigc_new_TpetraImport__SWIG_3") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_new_TpetraImport__SWIG_4(farg1) &
-     bind(C, name="swigc_new_TpetraImport__SWIG_4") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  subroutine swigc_delete_TpetraImport(farg1) &
-     bind(C, name="swigc_delete_TpetraImport")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  subroutine swigc_TpetraImport_setParameterList(farg1, farg2) &
-     bind(C, name="swigc_TpetraImport_setParameterList")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  function swigc_TpetraImport_getNumSameIDs(farg1) &
-     bind(C, name="swigc_TpetraImport_getNumSameIDs") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraImport_getNumPermuteIDs(farg1) &
-     bind(C, name="swigc_TpetraImport_getNumPermuteIDs") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraImport_getNumRemoteIDs(farg1) &
-     bind(C, name="swigc_TpetraImport_getNumRemoteIDs") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraImport_getNumExportIDs(farg1) &
-     bind(C, name="swigc_TpetraImport_getNumExportIDs") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraImport_getSourceMap(farg1) &
-     bind(C, name="swigc_TpetraImport_getSourceMap") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraImport_getTargetMap(farg1) &
-     bind(C, name="swigc_TpetraImport_getTargetMap") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraImport_isLocallyComplete(farg1) &
-     bind(C, name="swigc_TpetraImport_isLocallyComplete") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraImport_setUnion__SWIG_0(farg1, farg2) &
-     bind(C, name="swigc_TpetraImport_setUnion__SWIG_0") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end function
-  function swigc_TpetraImport_setUnion__SWIG_1(farg1) &
-     bind(C, name="swigc_TpetraImport_setUnion__SWIG_1") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraImport_createRemoteOnlyImport(farg1, farg2) &
-     bind(C, name="swigc_TpetraImport_createRemoteOnlyImport") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end function
+function swigc_new_TpetraImport__SWIG_0(farg1, farg2) &
+bind(C, name="swigc_new_TpetraImport__SWIG_0") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end function
+
+function swigc_new_TpetraImport__SWIG_1(farg1, farg2, farg3) &
+bind(C, name="swigc_new_TpetraImport__SWIG_1") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+end function
+
+function swigc_new_TpetraImport__SWIG_2(farg1, farg2, farg3) &
+bind(C, name="swigc_new_TpetraImport__SWIG_2") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+end function
+
+function swigc_new_TpetraImport__SWIG_3(farg1) &
+bind(C, name="swigc_new_TpetraImport__SWIG_3") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_new_TpetraImport__SWIG_4(farg1) &
+bind(C, name="swigc_new_TpetraImport__SWIG_4") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+subroutine swigc_delete_TpetraImport(farg1) &
+bind(C, name="swigc_delete_TpetraImport")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+subroutine swigc_TpetraImport_setParameterList(farg1, farg2) &
+bind(C, name="swigc_TpetraImport_setParameterList")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+function swigc_TpetraImport_getNumSameIDs(farg1) &
+bind(C, name="swigc_TpetraImport_getNumSameIDs") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraImport_getNumPermuteIDs(farg1) &
+bind(C, name="swigc_TpetraImport_getNumPermuteIDs") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraImport_getNumRemoteIDs(farg1) &
+bind(C, name="swigc_TpetraImport_getNumRemoteIDs") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraImport_getNumExportIDs(farg1) &
+bind(C, name="swigc_TpetraImport_getNumExportIDs") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraImport_getSourceMap(farg1) &
+bind(C, name="swigc_TpetraImport_getSourceMap") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraImport_getTargetMap(farg1) &
+bind(C, name="swigc_TpetraImport_getTargetMap") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraImport_isLocallyComplete(farg1) &
+bind(C, name="swigc_TpetraImport_isLocallyComplete") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraImport_setUnion__SWIG_0(farg1, farg2) &
+bind(C, name="swigc_TpetraImport_setUnion__SWIG_0") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end function
+
+function swigc_TpetraImport_setUnion__SWIG_1(farg1) &
+bind(C, name="swigc_TpetraImport_setUnion__SWIG_1") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraImport_createRemoteOnlyImport(farg1, farg2) &
+bind(C, name="swigc_TpetraImport_createRemoteOnlyImport") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end function
+
   function swigc_spcopy_TpetraImport(farg1) &
      bind(C, name="swigc_spcopy_TpetraImport") &
      result(fresult)
@@ -832,323 +894,367 @@ module fortpetra
    type(C_PTR) :: fresult
    type(C_PTR), value :: farg1
   end function
-  function swigc_new_TpetraMultiVector__SWIG_0() &
-     bind(C, name="swigc_new_TpetraMultiVector__SWIG_0") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-  end function
-  function swigc_new_TpetraMultiVector__SWIG_1(farg1, farg2, farg3) &
-     bind(C, name="swigc_new_TpetraMultiVector__SWIG_1") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_SIZE_T), intent(in) :: farg2
-   logical(C_BOOL), intent(in) :: farg3
-  end function
-  function swigc_new_TpetraMultiVector__SWIG_2(farg1, farg2) &
-     bind(C, name="swigc_new_TpetraMultiVector__SWIG_2") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_SIZE_T), intent(in) :: farg2
-  end function
-  function swigc_new_TpetraMultiVector__SWIG_3(farg1) &
-     bind(C, name="swigc_new_TpetraMultiVector__SWIG_3") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_new_TpetraMultiVector__SWIG_4(farg1, farg2) &
-     bind(C, name="swigc_new_TpetraMultiVector__SWIG_4") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-  end function
-  function swigc_new_TpetraMultiVector__SWIG_5(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_new_TpetraMultiVector__SWIG_5") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   integer(C_SIZE_T), intent(in) :: farg3
-   integer(C_SIZE_T), intent(in) :: farg4
-  end function
-  function swigc_new_TpetraMultiVector__SWIG_6(farg1, farg2, farg3) &
-     bind(C, name="swigc_new_TpetraMultiVector__SWIG_6") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   integer(C_SIZE_T), intent(in) :: farg3
-  end function
-  function swigc_new_TpetraMultiVector__SWIG_7(farg1, farg2) &
-     bind(C, name="swigc_new_TpetraMultiVector__SWIG_7") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end function
-  subroutine swigc_delete_TpetraMultiVector(farg1) &
-     bind(C, name="swigc_delete_TpetraMultiVector")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  subroutine swigc_TpetraMultiVector_replaceGlobalValue(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraMultiVector_replaceGlobalValue")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   integer(C_SIZE_T), intent(in) :: farg3
-   real(C_DOUBLE), intent(in) :: farg4
-  end subroutine
-  subroutine swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   integer(C_SIZE_T), intent(in) :: farg3
-   real(C_DOUBLE), intent(in) :: farg4
-   logical(C_BOOL), intent(in) :: farg5
-  end subroutine
-  subroutine swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_1(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   integer(C_SIZE_T), intent(in) :: farg3
-   real(C_DOUBLE), intent(in) :: farg4
-  end subroutine
-  subroutine swigc_TpetraMultiVector_replaceLocalValue(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraMultiVector_replaceLocalValue")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   integer(C_SIZE_T), intent(in) :: farg3
-   real(C_DOUBLE), intent(in) :: farg4
-  end subroutine
-  subroutine swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   integer(C_SIZE_T), intent(in) :: farg3
-   real(C_DOUBLE), intent(in) :: farg4
-   logical(C_BOOL), intent(in) :: farg5
-  end subroutine
-  subroutine swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_1(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   integer(C_SIZE_T), intent(in) :: farg3
-   real(C_DOUBLE), intent(in) :: farg4
-  end subroutine
-  subroutine swigc_TpetraMultiVector_putScalar(farg1, farg2) &
-     bind(C, name="swigc_TpetraMultiVector_putScalar")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   real(C_DOUBLE), intent(in) :: farg2
-  end subroutine
-  subroutine swigc_TpetraMultiVector_randomize__SWIG_0(farg1) &
-     bind(C, name="swigc_TpetraMultiVector_randomize__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  subroutine swigc_TpetraMultiVector_randomize__SWIG_1(farg1, farg2, farg3) &
-     bind(C, name="swigc_TpetraMultiVector_randomize__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   real(C_DOUBLE), intent(in) :: farg2
-   real(C_DOUBLE), intent(in) :: farg3
-  end subroutine
-  subroutine swigc_TpetraMultiVector_replaceMap(farg1, farg2) &
-     bind(C, name="swigc_TpetraMultiVector_replaceMap")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  subroutine swigc_TpetraMultiVector_reduce(farg1) &
-     bind(C, name="swigc_TpetraMultiVector_reduce")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  function swigc_TpetraMultiVector_offsetViewNonConst(farg1, farg2, farg3) &
-     bind(C, name="swigc_TpetraMultiVector_offsetViewNonConst") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   integer(C_SIZE_T), intent(in) :: farg3
-  end function
-  subroutine swigc_TpetraMultiVector_get1dCopy(farg1, farg2, farg3) &
-     bind(C, name="swigc_TpetraMultiVector_get1dCopy")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   integer(C_SIZE_T), intent(in) :: farg3
-  end subroutine
-  subroutine swigc_TpetraMultiVector_abs(farg1, farg2) &
-     bind(C, name="swigc_TpetraMultiVector_abs")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  subroutine swigc_TpetraMultiVector_reciprocal(farg1, farg2) &
-     bind(C, name="swigc_TpetraMultiVector_reciprocal")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  subroutine swigc_TpetraMultiVector_scale__SWIG_0(farg1, farg2) &
-     bind(C, name="swigc_TpetraMultiVector_scale__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   real(C_DOUBLE), intent(in) :: farg2
-  end subroutine
-  subroutine swigc_TpetraMultiVector_scale__SWIG_1(farg1, farg2) &
-     bind(C, name="swigc_TpetraMultiVector_scale__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  subroutine swigc_TpetraMultiVector_scale__SWIG_2(farg1, farg2, farg3) &
-     bind(C, name="swigc_TpetraMultiVector_scale__SWIG_2")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   real(C_DOUBLE), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-  end subroutine
-  subroutine swigc_TpetraMultiVector_update__SWIG_0(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraMultiVector_update__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   real(C_DOUBLE), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-   real(C_DOUBLE), intent(in) :: farg4
-  end subroutine
-  subroutine swigc_TpetraMultiVector_update__SWIG_1(farg1, farg2, farg3, farg4, farg5, farg6) &
-     bind(C, name="swigc_TpetraMultiVector_update__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   real(C_DOUBLE), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-   real(C_DOUBLE), intent(in) :: farg4
-   type(C_PTR), value :: farg5
-   real(C_DOUBLE), intent(in) :: farg6
-  end subroutine
-  subroutine swigc_TpetraMultiVector_norm1(farg1, farg2) &
-     bind(C, name="swigc_TpetraMultiVector_norm1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  subroutine swigc_TpetraMultiVector_norm2(farg1, farg2) &
-     bind(C, name="swigc_TpetraMultiVector_norm2")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  subroutine swigc_TpetraMultiVector_normInf(farg1, farg2) &
-     bind(C, name="swigc_TpetraMultiVector_normInf")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  subroutine swigc_TpetraMultiVector_normWeighted(farg1, farg2, farg3) &
-     bind(C, name="swigc_TpetraMultiVector_normWeighted")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-  end subroutine
-  subroutine swigc_TpetraMultiVector_meanValue(farg1, farg2) &
-     bind(C, name="swigc_TpetraMultiVector_meanValue")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  subroutine swigc_TpetraMultiVector_multiply(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
-     bind(C, name="swigc_TpetraMultiVector_multiply")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   integer(C_INT), intent(in) :: farg3
-   real(C_DOUBLE), intent(in) :: farg4
-   type(C_PTR), value :: farg5
-   type(C_PTR), value :: farg6
-   real(C_DOUBLE), intent(in) :: farg7
-  end subroutine
-  function swigc_TpetraMultiVector_getNumVectors(farg1) &
-     bind(C, name="swigc_TpetraMultiVector_getNumVectors") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMultiVector_getLocalLength(farg1) &
-     bind(C, name="swigc_TpetraMultiVector_getLocalLength") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMultiVector_getGlobalLength(farg1) &
-     bind(C, name="swigc_TpetraMultiVector_getGlobalLength") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMultiVector_getStride(farg1) &
-     bind(C, name="swigc_TpetraMultiVector_getStride") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMultiVector_isConstantStride(farg1) &
-     bind(C, name="swigc_TpetraMultiVector_isConstantStride") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraMultiVector_description(farg1) &
-     bind(C, name="swigc_TpetraMultiVector_description") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  subroutine swigc_TpetraMultiVector_removeEmptyProcessesInPlace(farg1, farg2) &
-     bind(C, name="swigc_TpetraMultiVector_removeEmptyProcessesInPlace")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  subroutine swigc_TpetraMultiVector_setCopyOrView(farg1, farg2) &
-     bind(C, name="swigc_TpetraMultiVector_setCopyOrView")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-  end subroutine
-  function swigc_TpetraMultiVector_getCopyOrView(farg1) &
-     bind(C, name="swigc_TpetraMultiVector_getCopyOrView") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-  end function
+function swigc_new_TpetraMultiVector__SWIG_0() &
+bind(C, name="swigc_new_TpetraMultiVector__SWIG_0") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+end function
+
+function swigc_new_TpetraMultiVector__SWIG_1(farg1, farg2, farg3) &
+bind(C, name="swigc_new_TpetraMultiVector__SWIG_1") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+integer(C_SIZE_T), intent(in) :: farg2
+logical(C_BOOL), intent(in) :: farg3
+end function
+
+function swigc_new_TpetraMultiVector__SWIG_2(farg1, farg2) &
+bind(C, name="swigc_new_TpetraMultiVector__SWIG_2") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+integer(C_SIZE_T), intent(in) :: farg2
+end function
+
+function swigc_new_TpetraMultiVector__SWIG_3(farg1) &
+bind(C, name="swigc_new_TpetraMultiVector__SWIG_3") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_new_TpetraMultiVector__SWIG_4(farg1, farg2) &
+bind(C, name="swigc_new_TpetraMultiVector__SWIG_4") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+end function
+
+function swigc_new_TpetraMultiVector__SWIG_5(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_new_TpetraMultiVector__SWIG_5") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+integer(C_SIZE_T), intent(in) :: farg3
+integer(C_SIZE_T), intent(in) :: farg4
+end function
+
+function swigc_new_TpetraMultiVector__SWIG_6(farg1, farg2, farg3) &
+bind(C, name="swigc_new_TpetraMultiVector__SWIG_6") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+integer(C_SIZE_T), intent(in) :: farg3
+end function
+
+function swigc_new_TpetraMultiVector__SWIG_7(farg1, farg2) &
+bind(C, name="swigc_new_TpetraMultiVector__SWIG_7") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end function
+
+subroutine swigc_delete_TpetraMultiVector(farg1) &
+bind(C, name="swigc_delete_TpetraMultiVector")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+subroutine swigc_TpetraMultiVector_replaceGlobalValue(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraMultiVector_replaceGlobalValue")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+integer(C_SIZE_T), intent(in) :: farg3
+real(C_DOUBLE), intent(in) :: farg4
+end subroutine
+
+subroutine swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+integer(C_SIZE_T), intent(in) :: farg3
+real(C_DOUBLE), intent(in) :: farg4
+logical(C_BOOL), intent(in) :: farg5
+end subroutine
+
+subroutine swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_1(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+integer(C_SIZE_T), intent(in) :: farg3
+real(C_DOUBLE), intent(in) :: farg4
+end subroutine
+
+subroutine swigc_TpetraMultiVector_replaceLocalValue(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraMultiVector_replaceLocalValue")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+integer(C_SIZE_T), intent(in) :: farg3
+real(C_DOUBLE), intent(in) :: farg4
+end subroutine
+
+subroutine swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+integer(C_SIZE_T), intent(in) :: farg3
+real(C_DOUBLE), intent(in) :: farg4
+logical(C_BOOL), intent(in) :: farg5
+end subroutine
+
+subroutine swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_1(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+integer(C_SIZE_T), intent(in) :: farg3
+real(C_DOUBLE), intent(in) :: farg4
+end subroutine
+
+subroutine swigc_TpetraMultiVector_putScalar(farg1, farg2) &
+bind(C, name="swigc_TpetraMultiVector_putScalar")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+real(C_DOUBLE), intent(in) :: farg2
+end subroutine
+
+subroutine swigc_TpetraMultiVector_randomize__SWIG_0(farg1) &
+bind(C, name="swigc_TpetraMultiVector_randomize__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+subroutine swigc_TpetraMultiVector_randomize__SWIG_1(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraMultiVector_randomize__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+real(C_DOUBLE), intent(in) :: farg2
+real(C_DOUBLE), intent(in) :: farg3
+end subroutine
+
+subroutine swigc_TpetraMultiVector_replaceMap(farg1, farg2) &
+bind(C, name="swigc_TpetraMultiVector_replaceMap")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+subroutine swigc_TpetraMultiVector_reduce(farg1) &
+bind(C, name="swigc_TpetraMultiVector_reduce")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+function swigc_TpetraMultiVector_offsetViewNonConst(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraMultiVector_offsetViewNonConst") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+integer(C_SIZE_T), intent(in) :: farg3
+end function
+
+subroutine swigc_TpetraMultiVector_get1dCopy(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraMultiVector_get1dCopy")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+integer(C_SIZE_T), intent(in) :: farg3
+end subroutine
+
+subroutine swigc_TpetraMultiVector_abs(farg1, farg2) &
+bind(C, name="swigc_TpetraMultiVector_abs")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+subroutine swigc_TpetraMultiVector_reciprocal(farg1, farg2) &
+bind(C, name="swigc_TpetraMultiVector_reciprocal")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+subroutine swigc_TpetraMultiVector_scale__SWIG_0(farg1, farg2) &
+bind(C, name="swigc_TpetraMultiVector_scale__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+real(C_DOUBLE), intent(in) :: farg2
+end subroutine
+
+subroutine swigc_TpetraMultiVector_scale__SWIG_1(farg1, farg2) &
+bind(C, name="swigc_TpetraMultiVector_scale__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+subroutine swigc_TpetraMultiVector_scale__SWIG_2(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraMultiVector_scale__SWIG_2")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+real(C_DOUBLE), intent(in) :: farg2
+type(C_PTR), value :: farg3
+end subroutine
+
+subroutine swigc_TpetraMultiVector_update__SWIG_0(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraMultiVector_update__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+real(C_DOUBLE), intent(in) :: farg2
+type(C_PTR), value :: farg3
+real(C_DOUBLE), intent(in) :: farg4
+end subroutine
+
+subroutine swigc_TpetraMultiVector_update__SWIG_1(farg1, farg2, farg3, farg4, farg5, farg6) &
+bind(C, name="swigc_TpetraMultiVector_update__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+real(C_DOUBLE), intent(in) :: farg2
+type(C_PTR), value :: farg3
+real(C_DOUBLE), intent(in) :: farg4
+type(C_PTR), value :: farg5
+real(C_DOUBLE), intent(in) :: farg6
+end subroutine
+
+subroutine swigc_TpetraMultiVector_norm1(farg1, farg2) &
+bind(C, name="swigc_TpetraMultiVector_norm1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+subroutine swigc_TpetraMultiVector_norm2(farg1, farg2) &
+bind(C, name="swigc_TpetraMultiVector_norm2")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+subroutine swigc_TpetraMultiVector_normInf(farg1, farg2) &
+bind(C, name="swigc_TpetraMultiVector_normInf")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+subroutine swigc_TpetraMultiVector_normWeighted(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraMultiVector_normWeighted")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+end subroutine
+
+subroutine swigc_TpetraMultiVector_meanValue(farg1, farg2) &
+bind(C, name="swigc_TpetraMultiVector_meanValue")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+subroutine swigc_TpetraMultiVector_multiply(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
+bind(C, name="swigc_TpetraMultiVector_multiply")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg3
+real(C_DOUBLE), intent(in) :: farg4
+type(C_PTR), value :: farg5
+type(C_PTR), value :: farg6
+real(C_DOUBLE), intent(in) :: farg7
+end subroutine
+
+function swigc_TpetraMultiVector_getNumVectors(farg1) &
+bind(C, name="swigc_TpetraMultiVector_getNumVectors") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMultiVector_getLocalLength(farg1) &
+bind(C, name="swigc_TpetraMultiVector_getLocalLength") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMultiVector_getGlobalLength(farg1) &
+bind(C, name="swigc_TpetraMultiVector_getGlobalLength") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMultiVector_getStride(farg1) &
+bind(C, name="swigc_TpetraMultiVector_getStride") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMultiVector_isConstantStride(farg1) &
+bind(C, name="swigc_TpetraMultiVector_isConstantStride") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMultiVector_description(farg1) &
+bind(C, name="swigc_TpetraMultiVector_description") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+subroutine swigc_TpetraMultiVector_removeEmptyProcessesInPlace(farg1, farg2) &
+bind(C, name="swigc_TpetraMultiVector_removeEmptyProcessesInPlace")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+subroutine swigc_TpetraMultiVector_setCopyOrView(farg1, farg2) &
+bind(C, name="swigc_TpetraMultiVector_setCopyOrView")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+end subroutine
+
+function swigc_TpetraMultiVector_getCopyOrView(farg1) &
+bind(C, name="swigc_TpetraMultiVector_getCopyOrView") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+end function
+
   function swigc_spcopy_TpetraMultiVector(farg1) &
      bind(C, name="swigc_spcopy_TpetraMultiVector") &
      result(fresult)
@@ -1156,535 +1262,610 @@ module fortpetra
    type(C_PTR) :: fresult
    type(C_PTR), value :: farg1
   end function
-  subroutine swigc_set_RowInfo_localRow(farg1, farg2) &
-     bind(C, name="swigc_set_RowInfo_localRow")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_SIZE_T), intent(in) :: farg2
-  end subroutine
-  function swigc_get_RowInfo_localRow(farg1) &
-     bind(C, name="swigc_get_RowInfo_localRow") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  subroutine swigc_set_RowInfo_allocSize(farg1, farg2) &
-     bind(C, name="swigc_set_RowInfo_allocSize")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_SIZE_T), intent(in) :: farg2
-  end subroutine
-  function swigc_get_RowInfo_allocSize(farg1) &
-     bind(C, name="swigc_get_RowInfo_allocSize") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  subroutine swigc_set_RowInfo_numEntries(farg1, farg2) &
-     bind(C, name="swigc_set_RowInfo_numEntries")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_SIZE_T), intent(in) :: farg2
-  end subroutine
-  function swigc_get_RowInfo_numEntries(farg1) &
-     bind(C, name="swigc_get_RowInfo_numEntries") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  subroutine swigc_set_RowInfo_offset1D(farg1, farg2) &
-     bind(C, name="swigc_set_RowInfo_offset1D")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_SIZE_T), intent(in) :: farg2
-  end subroutine
-  function swigc_get_RowInfo_offset1D(farg1) &
-     bind(C, name="swigc_get_RowInfo_offset1D") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_new_RowInfo() &
-     bind(C, name="swigc_new_RowInfo") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-  end function
-  subroutine swigc_delete_RowInfo(farg1) &
-     bind(C, name="swigc_delete_RowInfo")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  function swigc_new_TpetraCrsGraph__SWIG_0(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_new_TpetraCrsGraph__SWIG_0") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_SIZE_T), intent(in) :: farg2
-   integer(C_INT), intent(in) :: farg3
-   type(C_PTR), value :: farg4
-  end function
-  function swigc_new_TpetraCrsGraph__SWIG_1(farg1, farg2, farg3) &
-     bind(C, name="swigc_new_TpetraCrsGraph__SWIG_1") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_SIZE_T), intent(in) :: farg2
-   integer(C_INT), intent(in) :: farg3
-  end function
-  function swigc_new_TpetraCrsGraph__SWIG_2(farg1, farg2) &
-     bind(C, name="swigc_new_TpetraCrsGraph__SWIG_2") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_SIZE_T), intent(in) :: farg2
-  end function
-  function swigc_new_TpetraCrsGraph__SWIG_3(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_new_TpetraCrsGraph__SWIG_3") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   integer(C_SIZE_T), intent(in) :: farg3
-   integer(C_INT), intent(in) :: farg4
-   type(C_PTR), value :: farg5
-  end function
-  function swigc_new_TpetraCrsGraph__SWIG_4(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_new_TpetraCrsGraph__SWIG_4") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   integer(C_SIZE_T), intent(in) :: farg3
-   integer(C_INT), intent(in) :: farg4
-  end function
-  function swigc_new_TpetraCrsGraph__SWIG_5(farg1, farg2, farg3) &
-     bind(C, name="swigc_new_TpetraCrsGraph__SWIG_5") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   integer(C_SIZE_T), intent(in) :: farg3
-  end function
-  subroutine swigc_delete_TpetraCrsGraph(farg1) &
-     bind(C, name="swigc_delete_TpetraCrsGraph")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_setParameterList(farg1, farg2) &
-     bind(C, name="swigc_TpetraCrsGraph_setParameterList")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  function swigc_TpetraCrsGraph_getValidParameters(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getValidParameters") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  subroutine swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_0(farg1, farg2, farg3) &
-     bind(C, name="swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_1(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   integer(C_INT), intent(in) :: farg3
-   integer(C_INT), dimension(*), intent(in) :: farg4
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_globalAssemble(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_globalAssemble")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_resumeFill__SWIG_0(farg1, farg2) &
-     bind(C, name="swigc_TpetraCrsGraph_resumeFill__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_resumeFill__SWIG_1(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_resumeFill__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_fillComplete__SWIG_0(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraCrsGraph_fillComplete__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_fillComplete__SWIG_1(farg1, farg2, farg3) &
-     bind(C, name="swigc_TpetraCrsGraph_fillComplete__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_fillComplete__SWIG_2(farg1, farg2) &
-     bind(C, name="swigc_TpetraCrsGraph_fillComplete__SWIG_2")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_fillComplete__SWIG_3(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_fillComplete__SWIG_3")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6) &
-     bind(C, name="swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   type(C_PTR), value :: farg5
-   type(C_PTR), value :: farg6
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_1(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   type(C_PTR), value :: farg5
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_2(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_2")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_3(farg1, farg2, farg3) &
-     bind(C, name="swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_3")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-  end subroutine
-  function swigc_TpetraCrsGraph_getComm(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getComm") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getRowMap(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getRowMap") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getColMap(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getColMap") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getDomainMap(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getDomainMap") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getRangeMap(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getRangeMap") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getImporter(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getImporter") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getExporter(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getExporter") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getGlobalNumRows(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getGlobalNumRows") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getGlobalNumCols(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getGlobalNumCols") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getNodeNumRows(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getNodeNumRows") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getNodeNumCols(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getNodeNumCols") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getIndexBase(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getIndexBase") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getGlobalNumEntries(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getGlobalNumEntries") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getNodeNumEntries(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getNodeNumEntries") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getNumEntriesInGlobalRow(farg1, farg2) &
-     bind(C, name="swigc_TpetraCrsGraph_getNumEntriesInGlobalRow") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-  end function
-  function swigc_TpetraCrsGraph_getNodeAllocationSize(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getNodeAllocationSize") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow(farg1, farg2) &
-     bind(C, name="swigc_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-  end function
-  function swigc_TpetraCrsGraph_getGlobalNumDiags(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getGlobalNumDiags") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getNodeNumDiags(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getNodeNumDiags") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getGlobalMaxNumRowEntries(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getGlobalMaxNumRowEntries") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getNodeMaxNumRowEntries(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getNodeMaxNumRowEntries") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_hasColMap(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_hasColMap") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_isLowerTriangular(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_isLowerTriangular") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_isUpperTriangular(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_isUpperTriangular") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_isLocallyIndexed(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_isLocallyIndexed") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_isGloballyIndexed(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_isGloballyIndexed") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_isFillComplete(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_isFillComplete") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_isFillActive(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_isFillActive") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_isSorted(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_isSorted") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_isStorageOptimized(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_isStorageOptimized") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_getProfileType(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_getProfileType") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  subroutine swigc_TpetraCrsGraph_getGlobalRowCopy(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraCrsGraph_getGlobalRowCopy")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-   integer(C_SIZE_T), intent(inout) :: farg4
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_getGlobalRowView(farg1, farg2, farg3) &
-     bind(C, name="swigc_TpetraCrsGraph_getGlobalRowView")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-  end subroutine
-  function swigc_TpetraCrsGraph_supportsRowViews(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_supportsRowViews") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsGraph_description(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_description") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  subroutine swigc_TpetraCrsGraph_replaceColMap(farg1, farg2) &
-     bind(C, name="swigc_TpetraCrsGraph_replaceColMap")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_reindexColumns__SWIG_0(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraCrsGraph_reindexColumns__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   logical(C_BOOL), intent(in) :: farg4
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_reindexColumns__SWIG_1(farg1, farg2, farg3) &
-     bind(C, name="swigc_TpetraCrsGraph_reindexColumns__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_reindexColumns__SWIG_2(farg1, farg2) &
-     bind(C, name="swigc_TpetraCrsGraph_reindexColumns__SWIG_2")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_replaceDomainMapAndImporter(farg1, farg2, farg3) &
-     bind(C, name="swigc_TpetraCrsGraph_replaceDomainMapAndImporter")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-  end subroutine
-  subroutine swigc_TpetraCrsGraph_removeEmptyProcessesInPlace(farg1, farg2) &
-     bind(C, name="swigc_TpetraCrsGraph_removeEmptyProcessesInPlace")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  function swigc_TpetraCrsGraph_haveGlobalConstants(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_haveGlobalConstants") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  subroutine swigc_TpetraCrsGraph_computeGlobalConstants(farg1) &
-     bind(C, name="swigc_TpetraCrsGraph_computeGlobalConstants")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
+subroutine swigc_set_RowInfo_localRow(farg1, farg2) &
+bind(C, name="swigc_set_RowInfo_localRow")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_SIZE_T), intent(in) :: farg2
+end subroutine
+
+function swigc_get_RowInfo_localRow(farg1) &
+bind(C, name="swigc_get_RowInfo_localRow") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+subroutine swigc_set_RowInfo_allocSize(farg1, farg2) &
+bind(C, name="swigc_set_RowInfo_allocSize")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_SIZE_T), intent(in) :: farg2
+end subroutine
+
+function swigc_get_RowInfo_allocSize(farg1) &
+bind(C, name="swigc_get_RowInfo_allocSize") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+subroutine swigc_set_RowInfo_numEntries(farg1, farg2) &
+bind(C, name="swigc_set_RowInfo_numEntries")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_SIZE_T), intent(in) :: farg2
+end subroutine
+
+function swigc_get_RowInfo_numEntries(farg1) &
+bind(C, name="swigc_get_RowInfo_numEntries") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+subroutine swigc_set_RowInfo_offset1D(farg1, farg2) &
+bind(C, name="swigc_set_RowInfo_offset1D")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_SIZE_T), intent(in) :: farg2
+end subroutine
+
+function swigc_get_RowInfo_offset1D(farg1) &
+bind(C, name="swigc_get_RowInfo_offset1D") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_new_RowInfo() &
+bind(C, name="swigc_new_RowInfo") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+end function
+
+subroutine swigc_delete_RowInfo(farg1) &
+bind(C, name="swigc_delete_RowInfo")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+function swigc_new_TpetraCrsGraph__SWIG_0(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_new_TpetraCrsGraph__SWIG_0") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+integer(C_SIZE_T), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg3
+type(C_PTR), value :: farg4
+end function
+
+function swigc_new_TpetraCrsGraph__SWIG_1(farg1, farg2, farg3) &
+bind(C, name="swigc_new_TpetraCrsGraph__SWIG_1") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+integer(C_SIZE_T), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg3
+end function
+
+function swigc_new_TpetraCrsGraph__SWIG_2(farg1, farg2) &
+bind(C, name="swigc_new_TpetraCrsGraph__SWIG_2") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+integer(C_SIZE_T), intent(in) :: farg2
+end function
+
+function swigc_new_TpetraCrsGraph__SWIG_3(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_new_TpetraCrsGraph__SWIG_3") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+integer(C_SIZE_T), intent(in) :: farg3
+integer(C_INT), intent(in) :: farg4
+type(C_PTR), value :: farg5
+end function
+
+function swigc_new_TpetraCrsGraph__SWIG_4(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_new_TpetraCrsGraph__SWIG_4") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+integer(C_SIZE_T), intent(in) :: farg3
+integer(C_INT), intent(in) :: farg4
+end function
+
+function swigc_new_TpetraCrsGraph__SWIG_5(farg1, farg2, farg3) &
+bind(C, name="swigc_new_TpetraCrsGraph__SWIG_5") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+integer(C_SIZE_T), intent(in) :: farg3
+end function
+
+subroutine swigc_delete_TpetraCrsGraph(farg1) &
+bind(C, name="swigc_delete_TpetraCrsGraph")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_setParameterList(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsGraph_setParameterList")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+function swigc_TpetraCrsGraph_getValidParameters(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getValidParameters") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+subroutine swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_0(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+type(C_PTR), value :: farg3
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_1(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg3
+type(C_PTR), value :: farg4
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_globalAssemble(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_globalAssemble")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_resumeFill__SWIG_0(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsGraph_resumeFill__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_resumeFill__SWIG_1(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_resumeFill__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_fillComplete__SWIG_0(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraCrsGraph_fillComplete__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_fillComplete__SWIG_1(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraCrsGraph_fillComplete__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_fillComplete__SWIG_2(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsGraph_fillComplete__SWIG_2")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_fillComplete__SWIG_3(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_fillComplete__SWIG_3")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6) &
+bind(C, name="swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+type(C_PTR), value :: farg6
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_1(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_2(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_2")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_3(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_3")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+end subroutine
+
+function swigc_TpetraCrsGraph_getComm(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getComm") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getRowMap(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getRowMap") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getColMap(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getColMap") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getDomainMap(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getDomainMap") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getRangeMap(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getRangeMap") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getImporter(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getImporter") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getExporter(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getExporter") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getGlobalNumRows(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getGlobalNumRows") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getGlobalNumCols(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getGlobalNumCols") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getNodeNumRows(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getNodeNumRows") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getNodeNumCols(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getNodeNumCols") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getIndexBase(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getIndexBase") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getGlobalNumEntries(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getGlobalNumEntries") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getNodeNumEntries(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getNodeNumEntries") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getNumEntriesInGlobalRow(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsGraph_getNumEntriesInGlobalRow") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+end function
+
+function swigc_TpetraCrsGraph_getNodeAllocationSize(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getNodeAllocationSize") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+end function
+
+function swigc_TpetraCrsGraph_getGlobalNumDiags(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getGlobalNumDiags") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getNodeNumDiags(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getNodeNumDiags") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getGlobalMaxNumRowEntries(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getGlobalMaxNumRowEntries") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getNodeMaxNumRowEntries(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getNodeMaxNumRowEntries") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_hasColMap(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_hasColMap") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_isLowerTriangular(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_isLowerTriangular") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_isUpperTriangular(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_isUpperTriangular") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_isLocallyIndexed(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_isLocallyIndexed") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_isGloballyIndexed(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_isGloballyIndexed") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_isFillComplete(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_isFillComplete") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_isFillActive(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_isFillActive") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_isSorted(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_isSorted") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_isStorageOptimized(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_isStorageOptimized") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_getProfileType(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_getProfileType") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+subroutine swigc_TpetraCrsGraph_getGlobalRowCopy(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraCrsGraph_getGlobalRowCopy")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_getGlobalRowView(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraCrsGraph_getGlobalRowView")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+type(C_PTR), value :: farg3
+end subroutine
+
+function swigc_TpetraCrsGraph_supportsRowViews(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_supportsRowViews") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsGraph_description(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_description") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+subroutine swigc_TpetraCrsGraph_replaceColMap(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsGraph_replaceColMap")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_reindexColumns__SWIG_0(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraCrsGraph_reindexColumns__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+logical(C_BOOL), intent(in) :: farg4
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_reindexColumns__SWIG_1(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraCrsGraph_reindexColumns__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_reindexColumns__SWIG_2(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsGraph_reindexColumns__SWIG_2")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_replaceDomainMapAndImporter(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraCrsGraph_replaceDomainMapAndImporter")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_removeEmptyProcessesInPlace(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsGraph_removeEmptyProcessesInPlace")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+function swigc_TpetraCrsGraph_haveGlobalConstants(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_haveGlobalConstants") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+subroutine swigc_TpetraCrsGraph_computeGlobalConstants(farg1) &
+bind(C, name="swigc_TpetraCrsGraph_computeGlobalConstants")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
   function swigc_spcopy_TpetraCrsGraph(farg1) &
      bind(C, name="swigc_spcopy_TpetraCrsGraph") &
      result(fresult)
@@ -1692,713 +1873,801 @@ module fortpetra
    type(C_PTR) :: fresult
    type(C_PTR), value :: farg1
   end function
-  function swigc_new_TpetraCrsMatrix__SWIG_0(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_new_TpetraCrsMatrix__SWIG_0") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_SIZE_T), intent(in) :: farg2
-   integer(C_INT), intent(in) :: farg3
-   type(C_PTR), value :: farg4
-  end function
-  function swigc_new_TpetraCrsMatrix__SWIG_1(farg1, farg2, farg3) &
-     bind(C, name="swigc_new_TpetraCrsMatrix__SWIG_1") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_SIZE_T), intent(in) :: farg2
-   integer(C_INT), intent(in) :: farg3
-  end function
-  function swigc_new_TpetraCrsMatrix__SWIG_2(farg1, farg2) &
-     bind(C, name="swigc_new_TpetraCrsMatrix__SWIG_2") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_SIZE_T), intent(in) :: farg2
-  end function
-  function swigc_new_TpetraCrsMatrix__SWIG_3(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_new_TpetraCrsMatrix__SWIG_3") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   integer(C_SIZE_T), intent(in) :: farg3
-   integer(C_INT), intent(in) :: farg4
-   type(C_PTR), value :: farg5
-  end function
-  function swigc_new_TpetraCrsMatrix__SWIG_4(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_new_TpetraCrsMatrix__SWIG_4") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   integer(C_SIZE_T), intent(in) :: farg3
-   integer(C_INT), intent(in) :: farg4
-  end function
-  function swigc_new_TpetraCrsMatrix__SWIG_5(farg1, farg2, farg3) &
-     bind(C, name="swigc_new_TpetraCrsMatrix__SWIG_5") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   integer(C_SIZE_T), intent(in) :: farg3
-  end function
-  function swigc_new_TpetraCrsMatrix__SWIG_6(farg1, farg2) &
-     bind(C, name="swigc_new_TpetraCrsMatrix__SWIG_6") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end function
-  function swigc_new_TpetraCrsMatrix__SWIG_7(farg1) &
-     bind(C, name="swigc_new_TpetraCrsMatrix__SWIG_7") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  subroutine swigc_delete_TpetraCrsMatrix(farg1) &
-     bind(C, name="swigc_delete_TpetraCrsMatrix")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_0(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_1(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   integer(C_INT), intent(in) :: farg3
-   real(C_DOUBLE), dimension(*), intent(in) :: farg4
-   integer(C_INT), dimension(*), intent(in) :: farg5
-  end subroutine
-  function swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_1(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_1") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-  end function
-  function swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_2(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_2") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   integer(C_INT), intent(in) :: farg3
-   real(C_DOUBLE), dimension(*), intent(in) :: farg4
-   integer(C_INT), dimension(*), intent(in) :: farg5
-  end function
-  function swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_0") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   logical(C_BOOL), intent(in) :: farg5
-  end function
-  function swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_1(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_1") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-  end function
-  function swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_2(farg1, farg2, farg3, farg4, farg5, farg6) &
-     bind(C, name="swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_2") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   integer(C_INT), intent(in) :: farg3
-   real(C_DOUBLE), dimension(*), intent(in) :: farg4
-   integer(C_INT), dimension(*), intent(in) :: farg5
-   logical(C_BOOL), intent(in) :: farg6
-  end function
-  function swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   integer(C_INT), intent(in) :: farg3
-   real(C_DOUBLE), dimension(*), intent(in) :: farg4
-   integer(C_INT), dimension(*), intent(in) :: farg5
-  end function
-  subroutine swigc_TpetraCrsMatrix_setAllToScalar(farg1, farg2) &
-     bind(C, name="swigc_TpetraCrsMatrix_setAllToScalar")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   real(C_DOUBLE), intent(in) :: farg2
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_scale(farg1, farg2) &
-     bind(C, name="swigc_TpetraCrsMatrix_scale")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   real(C_DOUBLE), intent(in) :: farg2
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_globalAssemble(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_globalAssemble")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_resumeFill__SWIG_0(farg1, farg2) &
-     bind(C, name="swigc_TpetraCrsMatrix_resumeFill__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_resumeFill__SWIG_1(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_resumeFill__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_fillComplete__SWIG_0(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraCrsMatrix_fillComplete__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_fillComplete__SWIG_1(farg1, farg2, farg3) &
-     bind(C, name="swigc_TpetraCrsMatrix_fillComplete__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_fillComplete__SWIG_2(farg1, farg2) &
-     bind(C, name="swigc_TpetraCrsMatrix_fillComplete__SWIG_2")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_fillComplete__SWIG_3(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_fillComplete__SWIG_3")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6) &
-     bind(C, name="swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   type(C_PTR), value :: farg5
-   type(C_PTR), value :: farg6
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_1(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   type(C_PTR), value :: farg5
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_2(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_2")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_3(farg1, farg2, farg3) &
-     bind(C, name="swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_3")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_replaceColMap(farg1, farg2) &
-     bind(C, name="swigc_TpetraCrsMatrix_replaceColMap")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_reindexColumns__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraCrsMatrix_reindexColumns__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   logical(C_BOOL), intent(in) :: farg5
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_reindexColumns__SWIG_1(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraCrsMatrix_reindexColumns__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_reindexColumns__SWIG_2(farg1, farg2, farg3) &
-     bind(C, name="swigc_TpetraCrsMatrix_reindexColumns__SWIG_2")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_replaceDomainMapAndImporter(farg1, farg2, farg3) &
-     bind(C, name="swigc_TpetraCrsMatrix_replaceDomainMapAndImporter")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_removeEmptyProcessesInPlace(farg1, farg2) &
-     bind(C, name="swigc_TpetraCrsMatrix_removeEmptyProcessesInPlace")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-  end subroutine
-  function swigc_TpetraCrsMatrix_getComm(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getComm") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_getRowMap(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getRowMap") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_getColMap(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getColMap") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_getCrsGraph(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getCrsGraph") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_getGlobalNumRows(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getGlobalNumRows") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_getGlobalNumCols(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getGlobalNumCols") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_getNodeNumRows(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getNodeNumRows") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_getNodeNumCols(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getNodeNumCols") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_getIndexBase(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getIndexBase") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_getGlobalNumEntries(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getGlobalNumEntries") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_getNodeNumEntries(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getNodeNumEntries") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_getNumEntriesInGlobalRow(farg1, farg2) &
-     bind(C, name="swigc_TpetraCrsMatrix_getNumEntriesInGlobalRow") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-  end function
-  function swigc_TpetraCrsMatrix_getGlobalNumDiags(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getGlobalNumDiags") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_getNodeNumDiags(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getNodeNumDiags") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_getGlobalMaxNumRowEntries(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getGlobalMaxNumRowEntries") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_getNodeMaxNumRowEntries(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getNodeMaxNumRowEntries") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_hasColMap(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_hasColMap") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_isLowerTriangular(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_isLowerTriangular") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_isUpperTriangular(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_isUpperTriangular") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_isLocallyIndexed(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_isLocallyIndexed") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_isGloballyIndexed(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_isGloballyIndexed") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_isFillComplete(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_isFillComplete") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_isFillActive(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_isFillActive") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_isStorageOptimized(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_isStorageOptimized") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_getProfileType(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getProfileType") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_isStaticGraph(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_isStaticGraph") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_getFrobeniusNorm(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getFrobeniusNorm") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_supportsRowViews(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_supportsRowViews") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  subroutine swigc_TpetraCrsMatrix_getGlobalRowCopy(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraCrsMatrix_getGlobalRowCopy")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   integer(C_SIZE_T), intent(inout) :: farg5
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_getGlobalRowView(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraCrsMatrix_getGlobalRowView")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-  end subroutine
-  function swigc_TpetraCrsMatrix_getLocalRowViewRaw(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraCrsMatrix_getLocalRowViewRaw") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   type(C_PTR), value :: farg1
-   integer(C_INT), intent(in) :: farg2
-   integer(C_INT), intent(inout) :: farg3
-   type(C_PTR), value :: farg4
-   type(C_PTR), value :: farg5
-  end function
-  subroutine swigc_TpetraCrsMatrix_apply__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6) &
-     bind(C, name="swigc_TpetraCrsMatrix_apply__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   integer(C_INT), intent(in) :: farg4
-   real(C_DOUBLE), intent(in) :: farg5
-   real(C_DOUBLE), intent(in) :: farg6
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_apply__SWIG_1(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraCrsMatrix_apply__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   integer(C_INT), intent(in) :: farg4
-   real(C_DOUBLE), intent(in) :: farg5
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_apply__SWIG_2(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraCrsMatrix_apply__SWIG_2")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   integer(C_INT), intent(in) :: farg4
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_apply__SWIG_3(farg1, farg2, farg3) &
-     bind(C, name="swigc_TpetraCrsMatrix_apply__SWIG_3")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-  end subroutine
-  function swigc_TpetraCrsMatrix_hasTransposeApply(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_hasTransposeApply") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_getDomainMap(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getDomainMap") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  function swigc_TpetraCrsMatrix_getRangeMap(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_getRangeMap") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  subroutine swigc_TpetraCrsMatrix_gaussSeidel(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
-     bind(C, name="swigc_TpetraCrsMatrix_gaussSeidel")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   real(C_DOUBLE), intent(in) :: farg5
-   integer(C_INT), intent(in) :: farg6
-   integer(C_INT), intent(in) :: farg7
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_reorderedGaussSeidel(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8) &
-     bind(C, name="swigc_TpetraCrsMatrix_reorderedGaussSeidel")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   type(C_PTR), value :: farg5
-   real(C_DOUBLE), intent(in) :: farg6
-   integer(C_INT), intent(in) :: farg7
-   integer(C_INT), intent(in) :: farg8
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_gaussSeidelCopy(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8) &
-     bind(C, name="swigc_TpetraCrsMatrix_gaussSeidelCopy")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   real(C_DOUBLE), intent(in) :: farg5
-   integer(C_INT), intent(in) :: farg6
-   integer(C_INT), intent(in) :: farg7
-   logical(C_BOOL), intent(in) :: farg8
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_reorderedGaussSeidelCopy(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8, farg9) &
-     bind(C, name="swigc_TpetraCrsMatrix_reorderedGaussSeidelCopy")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   type(C_PTR), value :: farg5
-   real(C_DOUBLE), intent(in) :: farg6
-   integer(C_INT), intent(in) :: farg7
-   integer(C_INT), intent(in) :: farg8
-   logical(C_BOOL), intent(in) :: farg9
-  end subroutine
-  function swigc_TpetraCrsMatrix_description(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_description") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
-  subroutine swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6) &
-     bind(C, name="swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   type(C_PTR), value :: farg5
-   type(C_PTR), value :: farg6
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_1(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   type(C_PTR), value :: farg5
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_2(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
-     bind(C, name="swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_2")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   type(C_PTR), value :: farg5
-   type(C_PTR), value :: farg6
-   type(C_PTR), value :: farg7
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6) &
-     bind(C, name="swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_0")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   type(C_PTR), value :: farg5
-   type(C_PTR), value :: farg6
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_1(farg1, farg2, farg3, farg4, farg5) &
-     bind(C, name="swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_1")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   type(C_PTR), value :: farg5
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_2(farg1, farg2, farg3, farg4) &
-     bind(C, name="swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_2")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_3(farg1, farg2, farg3) &
-     bind(C, name="swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_3")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-  end subroutine
-  subroutine swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_4(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
-     bind(C, name="swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_4")
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR), value :: farg1
-   type(C_PTR), value :: farg2
-   type(C_PTR), value :: farg3
-   type(C_PTR), value :: farg4
-   type(C_PTR), value :: farg5
-   type(C_PTR), value :: farg6
-   type(C_PTR), value :: farg7
-  end subroutine
-  function swigc_TpetraCrsMatrix_haveGlobalConstants(farg1) &
-     bind(C, name="swigc_TpetraCrsMatrix_haveGlobalConstants") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   type(C_PTR), value :: farg1
-  end function
+function swigc_new_TpetraCrsMatrix__SWIG_0(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_new_TpetraCrsMatrix__SWIG_0") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+integer(C_SIZE_T), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg3
+type(C_PTR), value :: farg4
+end function
+
+function swigc_new_TpetraCrsMatrix__SWIG_1(farg1, farg2, farg3) &
+bind(C, name="swigc_new_TpetraCrsMatrix__SWIG_1") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+integer(C_SIZE_T), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg3
+end function
+
+function swigc_new_TpetraCrsMatrix__SWIG_2(farg1, farg2) &
+bind(C, name="swigc_new_TpetraCrsMatrix__SWIG_2") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+integer(C_SIZE_T), intent(in) :: farg2
+end function
+
+function swigc_new_TpetraCrsMatrix__SWIG_3(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_new_TpetraCrsMatrix__SWIG_3") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+integer(C_SIZE_T), intent(in) :: farg3
+integer(C_INT), intent(in) :: farg4
+type(C_PTR), value :: farg5
+end function
+
+function swigc_new_TpetraCrsMatrix__SWIG_4(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_new_TpetraCrsMatrix__SWIG_4") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+integer(C_SIZE_T), intent(in) :: farg3
+integer(C_INT), intent(in) :: farg4
+end function
+
+function swigc_new_TpetraCrsMatrix__SWIG_5(farg1, farg2, farg3) &
+bind(C, name="swigc_new_TpetraCrsMatrix__SWIG_5") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+integer(C_SIZE_T), intent(in) :: farg3
+end function
+
+function swigc_new_TpetraCrsMatrix__SWIG_6(farg1, farg2) &
+bind(C, name="swigc_new_TpetraCrsMatrix__SWIG_6") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end function
+
+function swigc_new_TpetraCrsMatrix__SWIG_7(farg1) &
+bind(C, name="swigc_new_TpetraCrsMatrix__SWIG_7") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+subroutine swigc_delete_TpetraCrsMatrix(farg1) &
+bind(C, name="swigc_delete_TpetraCrsMatrix")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_0(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_1(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+end subroutine
+
+function swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_1(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_1") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+end function
+
+function swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_2(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_2") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+end function
+
+function swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_0") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+logical(C_BOOL), intent(in) :: farg5
+end function
+
+function swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_1(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_1") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+end function
+
+function swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_2(farg1, farg2, farg3, farg4, farg5, farg6) &
+bind(C, name="swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_2") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+logical(C_BOOL), intent(in) :: farg6
+end function
+
+function swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+end function
+
+subroutine swigc_TpetraCrsMatrix_setAllToScalar(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsMatrix_setAllToScalar")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+real(C_DOUBLE), intent(in) :: farg2
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_scale(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsMatrix_scale")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+real(C_DOUBLE), intent(in) :: farg2
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_globalAssemble(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_globalAssemble")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_resumeFill__SWIG_0(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsMatrix_resumeFill__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_resumeFill__SWIG_1(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_resumeFill__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_fillComplete__SWIG_0(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraCrsMatrix_fillComplete__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_fillComplete__SWIG_1(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraCrsMatrix_fillComplete__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_fillComplete__SWIG_2(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsMatrix_fillComplete__SWIG_2")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_fillComplete__SWIG_3(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_fillComplete__SWIG_3")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6) &
+bind(C, name="swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+type(C_PTR), value :: farg6
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_1(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_2(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_2")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_3(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_3")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_replaceColMap(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsMatrix_replaceColMap")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_reindexColumns__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_TpetraCrsMatrix_reindexColumns__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+logical(C_BOOL), intent(in) :: farg5
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_reindexColumns__SWIG_1(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraCrsMatrix_reindexColumns__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_reindexColumns__SWIG_2(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraCrsMatrix_reindexColumns__SWIG_2")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_replaceDomainMapAndImporter(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraCrsMatrix_replaceDomainMapAndImporter")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_removeEmptyProcessesInPlace(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsMatrix_removeEmptyProcessesInPlace")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+function swigc_TpetraCrsMatrix_getComm(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getComm") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_getRowMap(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getRowMap") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_getColMap(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getColMap") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_getCrsGraph(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getCrsGraph") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_getGlobalNumRows(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getGlobalNumRows") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_getGlobalNumCols(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getGlobalNumCols") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_getNodeNumRows(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getNodeNumRows") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_getNodeNumCols(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getNodeNumCols") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_getIndexBase(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getIndexBase") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_getGlobalNumEntries(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getGlobalNumEntries") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_getNodeNumEntries(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getNodeNumEntries") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_getNumEntriesInGlobalRow(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsMatrix_getNumEntriesInGlobalRow") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+end function
+
+function swigc_TpetraCrsMatrix_getGlobalNumDiags(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getGlobalNumDiags") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_getNodeNumDiags(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getNodeNumDiags") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_getGlobalMaxNumRowEntries(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getGlobalMaxNumRowEntries") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_getNodeMaxNumRowEntries(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getNodeMaxNumRowEntries") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_hasColMap(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_hasColMap") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_isLowerTriangular(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_isLowerTriangular") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_isUpperTriangular(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_isUpperTriangular") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_isLocallyIndexed(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_isLocallyIndexed") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_isGloballyIndexed(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_isGloballyIndexed") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_isFillComplete(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_isFillComplete") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_isFillActive(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_isFillActive") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_isStorageOptimized(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_isStorageOptimized") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_getProfileType(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getProfileType") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_isStaticGraph(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_isStaticGraph") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_getFrobeniusNorm(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getFrobeniusNorm") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_supportsRowViews(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_supportsRowViews") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+subroutine swigc_TpetraCrsMatrix_getGlobalRowCopy(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_TpetraCrsMatrix_getGlobalRowCopy")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_getGlobalRowView(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraCrsMatrix_getGlobalRowView")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+end subroutine
+
+function swigc_TpetraCrsMatrix_getLocalRowViewRaw(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_TpetraCrsMatrix_getLocalRowViewRaw") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+end function
+
+subroutine swigc_TpetraCrsMatrix_apply__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6) &
+bind(C, name="swigc_TpetraCrsMatrix_apply__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+integer(C_INT), intent(in) :: farg4
+real(C_DOUBLE), intent(in) :: farg5
+real(C_DOUBLE), intent(in) :: farg6
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_apply__SWIG_1(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_TpetraCrsMatrix_apply__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+integer(C_INT), intent(in) :: farg4
+real(C_DOUBLE), intent(in) :: farg5
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_apply__SWIG_2(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraCrsMatrix_apply__SWIG_2")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+integer(C_INT), intent(in) :: farg4
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_apply__SWIG_3(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraCrsMatrix_apply__SWIG_3")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+end subroutine
+
+function swigc_TpetraCrsMatrix_hasTransposeApply(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_hasTransposeApply") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_getDomainMap(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getDomainMap") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraCrsMatrix_getRangeMap(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_getRangeMap") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+subroutine swigc_TpetraCrsMatrix_gaussSeidel(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
+bind(C, name="swigc_TpetraCrsMatrix_gaussSeidel")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+real(C_DOUBLE), intent(in) :: farg5
+integer(C_INT), intent(in) :: farg6
+integer(C_INT), intent(in) :: farg7
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_reorderedGaussSeidel(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8) &
+bind(C, name="swigc_TpetraCrsMatrix_reorderedGaussSeidel")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+real(C_DOUBLE), intent(in) :: farg6
+integer(C_INT), intent(in) :: farg7
+integer(C_INT), intent(in) :: farg8
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_gaussSeidelCopy(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8) &
+bind(C, name="swigc_TpetraCrsMatrix_gaussSeidelCopy")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+real(C_DOUBLE), intent(in) :: farg5
+integer(C_INT), intent(in) :: farg6
+integer(C_INT), intent(in) :: farg7
+logical(C_BOOL), intent(in) :: farg8
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_reorderedGaussSeidelCopy(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8, farg9) &
+bind(C, name="swigc_TpetraCrsMatrix_reorderedGaussSeidelCopy")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+real(C_DOUBLE), intent(in) :: farg6
+integer(C_INT), intent(in) :: farg7
+integer(C_INT), intent(in) :: farg8
+logical(C_BOOL), intent(in) :: farg9
+end subroutine
+
+function swigc_TpetraCrsMatrix_description(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_description") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+subroutine swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6) &
+bind(C, name="swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+type(C_PTR), value :: farg6
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_1(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_2(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
+bind(C, name="swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_2")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+type(C_PTR), value :: farg6
+type(C_PTR), value :: farg7
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6) &
+bind(C, name="swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+type(C_PTR), value :: farg6
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_1(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_2(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_2")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_3(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_3")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+end subroutine
+
+subroutine swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_4(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
+bind(C, name="swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_4")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+type(C_PTR), value :: farg6
+type(C_PTR), value :: farg7
+end subroutine
+
+function swigc_TpetraCrsMatrix_haveGlobalConstants(farg1) &
+bind(C, name="swigc_TpetraCrsMatrix_haveGlobalConstants") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+end function
+
   function swigc_spcopy_TpetraCrsMatrix(farg1) &
      bind(C, name="swigc_spcopy_TpetraCrsMatrix") &
      result(fresult)
@@ -2410,2019 +2679,4182 @@ module fortpetra
 
 contains
   ! FORTRAN PROXY CODE
-  subroutine swigf_new_TpetraMap__SWIG_0(self, numGlobalElements, indexBase, comm, lg)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMap) :: self
-   integer(C_LONG), intent(in) :: numGlobalElements
-   integer(C_INT), intent(in) :: indexBase
-   type(TeuchosComm) :: comm
-   integer(kind(LocalGlobal)) :: lg
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraMap__SWIG_0(numGlobalElements, indexBase, comm%swigptr, lg)
-  end subroutine
-  subroutine swigf_new_TpetraMap__SWIG_1(self, numGlobalElements, indexBase, comm)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMap) :: self
-   integer(C_LONG), intent(in) :: numGlobalElements
-   integer(C_INT), intent(in) :: indexBase
-   type(TeuchosComm) :: comm
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraMap__SWIG_1(numGlobalElements, indexBase, comm%swigptr)
-  end subroutine
-  subroutine swigf_new_TpetraMap__SWIG_2(self, numGlobalElements, numLocalElements, indexBase, comm)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMap) :: self
-   integer(C_LONG), intent(in) :: numGlobalElements
-   integer(C_SIZE_T), intent(in) :: numLocalElements
-   integer(C_INT), intent(in) :: indexBase
-   type(TeuchosComm) :: comm
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraMap__SWIG_2(numGlobalElements, numLocalElements, indexBase, comm%swigptr)
-  end subroutine
-  subroutine swigf_new_TpetraMap__SWIG_3(self, numGlobalElements, indexList, indexListSize, indexBase, comm)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMap) :: self
-   integer(C_LONG), intent(in) :: numGlobalElements
-   integer(C_INT), dimension(:), intent(in) :: indexList
-   integer(C_INT), intent(in) :: indexListSize
-   integer(C_INT), intent(in) :: indexBase
-   type(TeuchosComm) :: comm
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraMap__SWIG_3(numGlobalElements, indexList, indexListSize, indexBase, comm%swigptr)
-  end subroutine
-  subroutine swigf_new_TpetraMap__SWIG_4(self, numGlobalElements, indexList, indexBase, comm)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMap) :: self
-   integer(C_LONG), intent(in) :: numGlobalElements
-   class(TeuchosArrayViewIntConst) :: indexList
-   integer(C_INT), intent(in) :: indexBase
-   type(TeuchosComm) :: comm
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraMap__SWIG_4(numGlobalElements, indexList%swigptr, indexBase, comm%swigptr)
-  end subroutine
-  subroutine swigf_new_TpetraMap__SWIG_5(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMap) :: self
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraMap__SWIG_5()
-  end subroutine
-  subroutine swigf_delete_TpetraMap(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMap) :: self
-   call swigc_delete_TpetraMap(self%swigptr)
-   self%swigptr = C_NULL_PTR
-  end subroutine
-  function swigf_TpetraMap_isOneToOne(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraMap) :: self
-   fresult = swigc_TpetraMap_isOneToOne(self%swigptr)
-  end function
-  function swigf_TpetraMap_getGlobalNumElements(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   class(TpetraMap) :: self
-   fresult = swigc_TpetraMap_getGlobalNumElements(self%swigptr)
-  end function
-  function swigf_TpetraMap_getNodeNumElements(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraMap) :: self
-   fresult = swigc_TpetraMap_getNodeNumElements(self%swigptr)
-  end function
-  function swigf_TpetraMap_getIndexBase(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraMap) :: self
-   fresult = swigc_TpetraMap_getIndexBase(self%swigptr)
-  end function
-  function swigf_TpetraMap_getMinGlobalIndex(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraMap) :: self
-   fresult = swigc_TpetraMap_getMinGlobalIndex(self%swigptr)
-  end function
-  function swigf_TpetraMap_getMaxGlobalIndex(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraMap) :: self
-   fresult = swigc_TpetraMap_getMaxGlobalIndex(self%swigptr)
-  end function
-  function swigf_TpetraMap_getMinAllGlobalIndex(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraMap) :: self
-   fresult = swigc_TpetraMap_getMinAllGlobalIndex(self%swigptr)
-  end function
-  function swigf_TpetraMap_getMaxAllGlobalIndex(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraMap) :: self
-   fresult = swigc_TpetraMap_getMaxAllGlobalIndex(self%swigptr)
-  end function
-  function swigf_TpetraMap_getNodeElementList(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TeuchosArrayViewIntConst) :: fresult
-   class(TpetraMap) :: self
-   fresult%swigptr = swigc_TpetraMap_getNodeElementList(self%swigptr)
-  end function
-  function swigf_TpetraMap_isNodeGlobalElement(self, globalIndex) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraMap) :: self
-   integer(C_INT), intent(in) :: globalIndex
-   fresult = swigc_TpetraMap_isNodeGlobalElement(self%swigptr, globalIndex)
-  end function
-  function swigf_TpetraMap_isUniform(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraMap) :: self
-   fresult = swigc_TpetraMap_isUniform(self%swigptr)
-  end function
-  function swigf_TpetraMap_isContiguous(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraMap) :: self
-   fresult = swigc_TpetraMap_isContiguous(self%swigptr)
-  end function
-  function swigf_TpetraMap_isDistributed(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraMap) :: self
-   fresult = swigc_TpetraMap_isDistributed(self%swigptr)
-  end function
-  function swigf_TpetraMap_isCompatible(self, map) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraMap) :: self
-   class(TpetraMap) :: map
-   fresult = swigc_TpetraMap_isCompatible(self%swigptr, map%swigptr)
-  end function
-  function swigf_TpetraMap_isSameAs(self, map) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraMap) :: self
-   class(TpetraMap) :: map
-   fresult = swigc_TpetraMap_isSameAs(self%swigptr, map%swigptr)
-  end function
-  function swigf_TpetraMap_locallySameAs(self, map) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraMap) :: self
-   class(TpetraMap) :: map
-   fresult = swigc_TpetraMap_locallySameAs(self%swigptr, map%swigptr)
-  end function
-  function swigf_TpetraMap_getComm(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TeuchosComm) :: fresult
-   class(TpetraMap) :: self
-   fresult%swigptr = swigc_TpetraMap_getComm(self%swigptr)
-  end function
-  function swigf_TpetraMap_description(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(string) :: fresult
-   class(TpetraMap) :: self
-   fresult%swigptr = swigc_TpetraMap_description(self%swigptr)
-   fresult%swigown = .true.
-  end function
+subroutine swigf_new_TpetraMap__SWIG_0(self, numglobalelements, indexbase, comm, lg)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMap) :: self
+integer(C_LONG), intent(in) :: numglobalelements
+integer(C_INT), intent(in) :: indexbase
+type(TeuchosComm) :: comm
+integer(kind(LocalGlobal)) :: lg
+type(C_PTR) :: fresult 
+integer(C_LONG) :: farg1 
+integer(C_INT) :: farg2 
+type(C_PTR) :: farg3 
+integer(C_INT) :: farg4 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = numglobalelements
+farg2 = indexbase
+farg3 = comm%swigptr
+farg4 = lg
+fresult = swigc_new_TpetraMap__SWIG_0(farg1, farg2, farg3, farg4)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraMap__SWIG_1(self, numglobalelements, indexbase, comm)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMap) :: self
+integer(C_LONG), intent(in) :: numglobalelements
+integer(C_INT), intent(in) :: indexbase
+type(TeuchosComm) :: comm
+type(C_PTR) :: fresult 
+integer(C_LONG) :: farg1 
+integer(C_INT) :: farg2 
+type(C_PTR) :: farg3 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = numglobalelements
+farg2 = indexbase
+farg3 = comm%swigptr
+fresult = swigc_new_TpetraMap__SWIG_1(farg1, farg2, farg3)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraMap__SWIG_2(self, numglobalelements, numlocalelements, indexbase, comm)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMap) :: self
+integer(C_LONG), intent(in) :: numglobalelements
+integer(C_SIZE_T), intent(in) :: numlocalelements
+integer(C_INT), intent(in) :: indexbase
+type(TeuchosComm) :: comm
+type(C_PTR) :: fresult 
+integer(C_LONG) :: farg1 
+integer(C_SIZE_T) :: farg2 
+integer(C_INT) :: farg3 
+type(C_PTR) :: farg4 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = numglobalelements
+farg2 = numlocalelements
+farg3 = indexbase
+farg4 = comm%swigptr
+fresult = swigc_new_TpetraMap__SWIG_2(farg1, farg2, farg3, farg4)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraMap__SWIG_3(self, numglobalelements, indexlist, indexlistsize, indexbase, comm)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMap) :: self
+integer(C_LONG), intent(in) :: numglobalelements
+integer(C_INT), dimension(:), target, intent(in) :: indexlist
+integer(C_INT), intent(in) :: indexlistsize
+integer(C_INT), intent(in) :: indexbase
+type(TeuchosComm) :: comm
+type(C_PTR) :: fresult 
+integer(C_LONG) :: farg1 
+type(C_PTR) :: farg2 
+integer(C_INT) :: farg3 
+integer(C_INT) :: farg4 
+type(C_PTR) :: farg5 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = numglobalelements
+farg2 = c_loc(indexlist)
+farg3 = indexlistsize
+farg4 = indexbase
+farg5 = comm%swigptr
+fresult = swigc_new_TpetraMap__SWIG_3(farg1, farg2, farg3, farg4, farg5)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraMap__SWIG_4(self, numglobalelements, indexlist, indexbase, comm)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMap) :: self
+integer(C_LONG), intent(in) :: numglobalelements
+class(TeuchosArrayViewIntConst) :: indexlist
+integer(C_INT), intent(in) :: indexbase
+type(TeuchosComm) :: comm
+type(C_PTR) :: fresult 
+integer(C_LONG) :: farg1 
+type(C_PTR) :: farg2 
+integer(C_INT) :: farg3 
+type(C_PTR) :: farg4 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = numglobalelements
+farg2 = indexlist%swigptr
+farg3 = indexbase
+farg4 = comm%swigptr
+fresult = swigc_new_TpetraMap__SWIG_4(farg1, farg2, farg3, farg4)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraMap__SWIG_5(self)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMap) :: self
+type(C_PTR) :: fresult 
+
+if (c_associated(self%swigptr)) call self%release()
+fresult = swigc_new_TpetraMap__SWIG_5()
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_delete_TpetraMap(self)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMap) :: self
+type(C_PTR) :: farg1 
+
+if (.not. c_associated(self%swigptr)) return
+farg1 = self%swigptr
+call swigc_delete_TpetraMap(farg1)
+
+self%swigptr = C_NULL_PTR
+end subroutine
+
+function swigf_TpetraMap_isOneToOne(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraMap) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMap_isOneToOne(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_getGlobalNumElements(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: swigf_result
+class(TpetraMap) :: self
+integer(C_LONG) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMap_getGlobalNumElements(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_getNodeNumElements(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraMap) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMap_getNodeNumElements(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_getIndexBase(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraMap) :: self
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMap_getIndexBase(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_getMinGlobalIndex(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraMap) :: self
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMap_getMinGlobalIndex(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_getMaxGlobalIndex(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraMap) :: self
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMap_getMaxGlobalIndex(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_getMinAllGlobalIndex(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraMap) :: self
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMap_getMinAllGlobalIndex(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_getMaxAllGlobalIndex(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraMap) :: self
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMap_getMaxAllGlobalIndex(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_getNodeElementList(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TeuchosArrayViewIntConst) :: swigf_result
+class(TpetraMap) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMap_getNodeElementList(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraMap_isNodeGlobalElement(self, globalindex) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraMap) :: self
+integer(C_INT), intent(in) :: globalindex
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+
+farg1 = self%swigptr
+farg2 = globalindex
+fresult = swigc_TpetraMap_isNodeGlobalElement(farg1, farg2)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_isUniform(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraMap) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMap_isUniform(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_isContiguous(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraMap) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMap_isContiguous(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_isDistributed(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraMap) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMap_isDistributed(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_isCompatible(self, map) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraMap) :: self
+class(TpetraMap) :: map
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = map%swigptr
+fresult = swigc_TpetraMap_isCompatible(farg1, farg2)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_isSameAs(self, map) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraMap) :: self
+class(TpetraMap) :: map
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = map%swigptr
+fresult = swigc_TpetraMap_isSameAs(farg1, farg2)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_locallySameAs(self, map) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraMap) :: self
+class(TpetraMap) :: map
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = map%swigptr
+fresult = swigc_TpetraMap_locallySameAs(farg1, farg2)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_getComm(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TeuchosComm) :: swigf_result
+class(TpetraMap) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMap_getComm(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraMap_description(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(string) :: swigf_result
+class(TpetraMap) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMap_description(farg1)
+swigf_result%swigptr = fresult
+end function
+
   subroutine swigf_assign_TpetraMap(self, other)
    use, intrinsic :: ISO_C_BINDING
    class(TpetraMap), intent(inout) :: self
    type(TpetraMap), intent(in) :: other
-   call self%release()
+if (c_associated(self%swigptr)) call self%release()
    self%swigptr = swigc_spcopy_TpetraMap(other%swigptr)
   end subroutine
-  subroutine swigf_new_TpetraExport__SWIG_0(self, source, target)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraExport) :: self
-   type(TpetraMap) :: source
-   type(TpetraMap) :: target
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraExport__SWIG_0(source%swigptr, target%swigptr)
-  end subroutine
-  subroutine swigf_new_TpetraExport__SWIG_1(self, source, target, plist)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraExport) :: self
-   type(TpetraMap) :: source
-   type(TpetraMap) :: target
-   type(ParameterList) :: plist
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraExport__SWIG_1(source%swigptr, target%swigptr, plist%swigptr)
-  end subroutine
-  subroutine swigf_new_TpetraExport__SWIG_2(self, rhs)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraExport) :: self
-   class(TpetraExport) :: rhs
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraExport__SWIG_2(rhs%swigptr)
-  end subroutine
-  subroutine swigf_new_TpetraExport__SWIG_3(self, importer)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraExport) :: self
-   class(TpetraImport) :: importer
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraExport__SWIG_3(importer%swigptr)
-  end subroutine
-  subroutine swigf_delete_TpetraExport(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraExport) :: self
-   call swigc_delete_TpetraExport(self%swigptr)
-   self%swigptr = C_NULL_PTR
-  end subroutine
-  subroutine swigf_TpetraExport_setParameterList(self, plist)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraExport) :: self
-   type(ParameterList) :: plist
-   call swigc_TpetraExport_setParameterList(self%swigptr, plist%swigptr)
-  end subroutine
-  function swigf_TpetraExport_getNumSameIDs(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraExport) :: self
-   fresult = swigc_TpetraExport_getNumSameIDs(self%swigptr)
-  end function
-  function swigf_TpetraExport_getNumPermuteIDs(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraExport) :: self
-   fresult = swigc_TpetraExport_getNumPermuteIDs(self%swigptr)
-  end function
-  function swigf_TpetraExport_getNumRemoteIDs(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraExport) :: self
-   fresult = swigc_TpetraExport_getNumRemoteIDs(self%swigptr)
-  end function
-  function swigf_TpetraExport_getNumExportIDs(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraExport) :: self
-   fresult = swigc_TpetraExport_getNumExportIDs(self%swigptr)
-  end function
-  function swigf_TpetraExport_getSourceMap(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraMap) :: fresult
-   class(TpetraExport) :: self
-   fresult%swigptr = swigc_TpetraExport_getSourceMap(self%swigptr)
-  end function
-  function swigf_TpetraExport_getTargetMap(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraMap) :: fresult
-   class(TpetraExport) :: self
-   fresult%swigptr = swigc_TpetraExport_getTargetMap(self%swigptr)
-  end function
-  function swigf_TpetraExport_isLocallyComplete(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraExport) :: self
-   fresult = swigc_TpetraExport_isLocallyComplete(self%swigptr)
-  end function
+subroutine swigf_new_TpetraExport__SWIG_0(self, source, target)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraExport) :: self
+type(TpetraMap) :: source
+type(TpetraMap) :: target
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = source%swigptr
+farg2 = target%swigptr
+fresult = swigc_new_TpetraExport__SWIG_0(farg1, farg2)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraExport__SWIG_1(self, source, target, plist)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraExport) :: self
+type(TpetraMap) :: source
+type(TpetraMap) :: target
+type(ParameterList) :: plist
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = source%swigptr
+farg2 = target%swigptr
+farg3 = plist%swigptr
+fresult = swigc_new_TpetraExport__SWIG_1(farg1, farg2, farg3)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraExport__SWIG_2(self, rhs)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraExport) :: self
+class(TpetraExport) :: rhs
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rhs%swigptr
+fresult = swigc_new_TpetraExport__SWIG_2(farg1)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraExport__SWIG_3(self, importer)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraExport) :: self
+class(TpetraImport) :: importer
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = importer%swigptr
+fresult = swigc_new_TpetraExport__SWIG_3(farg1)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_delete_TpetraExport(self)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraExport) :: self
+type(C_PTR) :: farg1 
+
+if (.not. c_associated(self%swigptr)) return
+farg1 = self%swigptr
+call swigc_delete_TpetraExport(farg1)
+
+self%swigptr = C_NULL_PTR
+end subroutine
+
+subroutine swigf_TpetraExport_setParameterList(self, plist)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraExport) :: self
+type(ParameterList) :: plist
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = plist%swigptr
+call swigc_TpetraExport_setParameterList(farg1, farg2)
+
+end subroutine
+
+function swigf_TpetraExport_getNumSameIDs(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraExport) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraExport_getNumSameIDs(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraExport_getNumPermuteIDs(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraExport) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraExport_getNumPermuteIDs(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraExport_getNumRemoteIDs(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraExport) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraExport_getNumRemoteIDs(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraExport_getNumExportIDs(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraExport) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraExport_getNumExportIDs(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraExport_getSourceMap(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraMap) :: swigf_result
+class(TpetraExport) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraExport_getSourceMap(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraExport_getTargetMap(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraMap) :: swigf_result
+class(TpetraExport) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraExport_getTargetMap(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraExport_isLocallyComplete(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraExport) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraExport_isLocallyComplete(farg1)
+swigf_result = fresult
+end function
+
   subroutine swigf_assign_TpetraExport(self, other)
    use, intrinsic :: ISO_C_BINDING
    class(TpetraExport), intent(inout) :: self
    type(TpetraExport), intent(in) :: other
-   call self%release()
+if (c_associated(self%swigptr)) call self%release()
    self%swigptr = swigc_spcopy_TpetraExport(other%swigptr)
   end subroutine
-  subroutine swigf_new_TpetraImport__SWIG_0(self, source, target)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraImport) :: self
-   type(TpetraMap) :: source
-   type(TpetraMap) :: target
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraImport__SWIG_0(source%swigptr, target%swigptr)
-  end subroutine
-  subroutine swigf_new_TpetraImport__SWIG_1(self, source, target, plist)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraImport) :: self
-   type(TpetraMap) :: source
-   type(TpetraMap) :: target
-   type(ParameterList) :: plist
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraImport__SWIG_1(source%swigptr, target%swigptr, plist%swigptr)
-  end subroutine
-  subroutine swigf_new_TpetraImport__SWIG_2(self, source, target, remotePIDs)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraImport) :: self
-   type(TpetraMap) :: source
-   type(TpetraMap) :: target
-   class(TeuchosArrayInt) :: remotePIDs
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraImport__SWIG_2(source%swigptr, target%swigptr, remotePIDs%swigptr)
-  end subroutine
-  subroutine swigf_new_TpetraImport__SWIG_3(self, importer)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraImport) :: self
-   class(TpetraImport) :: importer
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraImport__SWIG_3(importer%swigptr)
-  end subroutine
-  subroutine swigf_new_TpetraImport__SWIG_4(self, exporter)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraImport) :: self
-   class(TpetraExport) :: exporter
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraImport__SWIG_4(exporter%swigptr)
-  end subroutine
-  subroutine swigf_delete_TpetraImport(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraImport) :: self
-   call swigc_delete_TpetraImport(self%swigptr)
-   self%swigptr = C_NULL_PTR
-  end subroutine
-  subroutine swigf_TpetraImport_setParameterList(self, plist)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraImport) :: self
-   type(ParameterList) :: plist
-   call swigc_TpetraImport_setParameterList(self%swigptr, plist%swigptr)
-  end subroutine
-  function swigf_TpetraImport_getNumSameIDs(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraImport) :: self
-   fresult = swigc_TpetraImport_getNumSameIDs(self%swigptr)
-  end function
-  function swigf_TpetraImport_getNumPermuteIDs(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraImport) :: self
-   fresult = swigc_TpetraImport_getNumPermuteIDs(self%swigptr)
-  end function
-  function swigf_TpetraImport_getNumRemoteIDs(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraImport) :: self
-   fresult = swigc_TpetraImport_getNumRemoteIDs(self%swigptr)
-  end function
-  function swigf_TpetraImport_getNumExportIDs(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraImport) :: self
-   fresult = swigc_TpetraImport_getNumExportIDs(self%swigptr)
-  end function
-  function swigf_TpetraImport_getSourceMap(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraMap) :: fresult
-   class(TpetraImport) :: self
-   fresult%swigptr = swigc_TpetraImport_getSourceMap(self%swigptr)
-  end function
-  function swigf_TpetraImport_getTargetMap(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraMap) :: fresult
-   class(TpetraImport) :: self
-   fresult%swigptr = swigc_TpetraImport_getTargetMap(self%swigptr)
-  end function
-  function swigf_TpetraImport_isLocallyComplete(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraImport) :: self
-   fresult = swigc_TpetraImport_isLocallyComplete(self%swigptr)
-  end function
-  function swigf_TpetraImport_setUnion__SWIG_0(self, rhs) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraImport) :: fresult
-   class(TpetraImport) :: self
-   class(TpetraImport) :: rhs
-   fresult%swigptr = swigc_TpetraImport_setUnion__SWIG_0(self%swigptr, rhs%swigptr)
-  end function
-  function swigf_TpetraImport_setUnion__SWIG_1(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraImport) :: fresult
-   class(TpetraImport) :: self
-   fresult%swigptr = swigc_TpetraImport_setUnion__SWIG_1(self%swigptr)
-  end function
-  function swigf_TpetraImport_createRemoteOnlyImport(self, remoteTarget) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraImport) :: fresult
-   class(TpetraImport) :: self
-   type(TpetraMap) :: remoteTarget
-   fresult%swigptr = swigc_TpetraImport_createRemoteOnlyImport(self%swigptr, remoteTarget%swigptr)
-  end function
+subroutine swigf_new_TpetraImport__SWIG_0(self, source, target)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraImport) :: self
+type(TpetraMap) :: source
+type(TpetraMap) :: target
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = source%swigptr
+farg2 = target%swigptr
+fresult = swigc_new_TpetraImport__SWIG_0(farg1, farg2)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraImport__SWIG_1(self, source, target, plist)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraImport) :: self
+type(TpetraMap) :: source
+type(TpetraMap) :: target
+type(ParameterList) :: plist
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = source%swigptr
+farg2 = target%swigptr
+farg3 = plist%swigptr
+fresult = swigc_new_TpetraImport__SWIG_1(farg1, farg2, farg3)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraImport__SWIG_2(self, source, target, remotepids)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraImport) :: self
+type(TpetraMap) :: source
+type(TpetraMap) :: target
+class(TeuchosArrayInt) :: remotepids
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = source%swigptr
+farg2 = target%swigptr
+farg3 = remotepids%swigptr
+fresult = swigc_new_TpetraImport__SWIG_2(farg1, farg2, farg3)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraImport__SWIG_3(self, importer)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraImport) :: self
+class(TpetraImport) :: importer
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = importer%swigptr
+fresult = swigc_new_TpetraImport__SWIG_3(farg1)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraImport__SWIG_4(self, exporter)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraImport) :: self
+class(TpetraExport) :: exporter
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = exporter%swigptr
+fresult = swigc_new_TpetraImport__SWIG_4(farg1)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_delete_TpetraImport(self)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraImport) :: self
+type(C_PTR) :: farg1 
+
+if (.not. c_associated(self%swigptr)) return
+farg1 = self%swigptr
+call swigc_delete_TpetraImport(farg1)
+
+self%swigptr = C_NULL_PTR
+end subroutine
+
+subroutine swigf_TpetraImport_setParameterList(self, plist)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraImport) :: self
+type(ParameterList) :: plist
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = plist%swigptr
+call swigc_TpetraImport_setParameterList(farg1, farg2)
+
+end subroutine
+
+function swigf_TpetraImport_getNumSameIDs(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraImport) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraImport_getNumSameIDs(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraImport_getNumPermuteIDs(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraImport) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraImport_getNumPermuteIDs(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraImport_getNumRemoteIDs(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraImport) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraImport_getNumRemoteIDs(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraImport_getNumExportIDs(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraImport) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraImport_getNumExportIDs(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraImport_getSourceMap(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraMap) :: swigf_result
+class(TpetraImport) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraImport_getSourceMap(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraImport_getTargetMap(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraMap) :: swigf_result
+class(TpetraImport) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraImport_getTargetMap(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraImport_isLocallyComplete(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraImport) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraImport_isLocallyComplete(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraImport_setUnion__SWIG_0(self, rhs) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraImport) :: swigf_result
+class(TpetraImport) :: self
+class(TpetraImport) :: rhs
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = rhs%swigptr
+fresult = swigc_TpetraImport_setUnion__SWIG_0(farg1, farg2)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraImport_setUnion__SWIG_1(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraImport) :: swigf_result
+class(TpetraImport) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraImport_setUnion__SWIG_1(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraImport_createRemoteOnlyImport(self, remotetarget) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraImport) :: swigf_result
+class(TpetraImport) :: self
+type(TpetraMap) :: remotetarget
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = remotetarget%swigptr
+fresult = swigc_TpetraImport_createRemoteOnlyImport(farg1, farg2)
+swigf_result%swigptr = fresult
+end function
+
   subroutine swigf_assign_TpetraImport(self, other)
    use, intrinsic :: ISO_C_BINDING
    class(TpetraImport), intent(inout) :: self
    type(TpetraImport), intent(in) :: other
-   call self%release()
+if (c_associated(self%swigptr)) call self%release()
    self%swigptr = swigc_spcopy_TpetraImport(other%swigptr)
   end subroutine
-  subroutine swigf_new_TpetraMultiVector__SWIG_0(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraMultiVector__SWIG_0()
-  end subroutine
-  subroutine swigf_new_TpetraMultiVector__SWIG_1(self, map, numVecs, zeroOut)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   type(TpetraMap) :: map
-   integer(C_SIZE_T), intent(in) :: numVecs
-   logical(C_BOOL), intent(in) :: zeroOut
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraMultiVector__SWIG_1(map%swigptr, numVecs, zeroOut)
-  end subroutine
-  subroutine swigf_new_TpetraMultiVector__SWIG_2(self, map, numVecs)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   type(TpetraMap) :: map
-   integer(C_SIZE_T), intent(in) :: numVecs
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraMultiVector__SWIG_2(map%swigptr, numVecs)
-  end subroutine
-  subroutine swigf_new_TpetraMultiVector__SWIG_3(self, source)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   class(TpetraMultiVector) :: source
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraMultiVector__SWIG_3(source%swigptr)
-  end subroutine
-  subroutine swigf_new_TpetraMultiVector__SWIG_4(self, source, copyOrView)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   class(TpetraMultiVector) :: source
-   integer(kind(DataAccess)) :: copyOrView
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraMultiVector__SWIG_4(source%swigptr, copyOrView)
-  end subroutine
-  subroutine swigf_new_TpetraMultiVector__SWIG_5(self, map, A, LDA, NumVectors)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   type(TpetraMap) :: map
-   class(TeuchosArrayViewDoubleConst) :: A
-   integer(C_SIZE_T), intent(in) :: LDA
-   integer(C_SIZE_T), intent(in) :: NumVectors
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraMultiVector__SWIG_5(map%swigptr, A%swigptr, LDA, NumVectors)
-  end subroutine
-  subroutine swigf_new_TpetraMultiVector__SWIG_6(self, X, subMap, offset)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   class(TpetraMultiVector) :: X
-   class(TpetraMap) :: subMap
-   integer(C_SIZE_T), intent(in) :: offset
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraMultiVector__SWIG_6(X%swigptr, subMap%swigptr, offset)
-  end subroutine
-  subroutine swigf_new_TpetraMultiVector__SWIG_7(self, X, subMap)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   class(TpetraMultiVector) :: X
-   class(TpetraMap) :: subMap
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraMultiVector__SWIG_7(X%swigptr, subMap%swigptr)
-  end subroutine
-  subroutine swigf_delete_TpetraMultiVector(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   call swigc_delete_TpetraMultiVector(self%swigptr)
-   self%swigptr = C_NULL_PTR
-  end subroutine
-  subroutine swigf_TpetraMultiVector_replaceGlobalValue(self, gblRow, col, value)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   integer(C_INT), intent(in) :: gblRow
-   integer(C_SIZE_T), intent(in) :: col
-   real(C_DOUBLE), intent(in) :: value
-   call swigc_TpetraMultiVector_replaceGlobalValue(self%swigptr, gblRow, col, value)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(self, gblRow, col, value, atomic)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   integer(C_INT), intent(in) :: gblRow
-   integer(C_SIZE_T), intent(in) :: col
-   real(C_DOUBLE), intent(in) :: value
-   logical(C_BOOL), intent(in) :: atomic
-   call swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(self%swigptr, gblRow, col, value, atomic)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_sumIntoGlobalValue__SWIG_1(self, gblRow, col, value)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   integer(C_INT), intent(in) :: gblRow
-   integer(C_SIZE_T), intent(in) :: col
-   real(C_DOUBLE), intent(in) :: value
-   call swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_1(self%swigptr, gblRow, col, value)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_replaceLocalValue(self, lclRow, col, value)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   integer(C_INT), intent(in) :: lclRow
-   integer(C_SIZE_T), intent(in) :: col
-   real(C_DOUBLE), intent(in) :: value
-   call swigc_TpetraMultiVector_replaceLocalValue(self%swigptr, lclRow, col, value)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_sumIntoLocalValue__SWIG_0(self, lclRow, col, val, atomic)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   integer(C_INT), intent(in) :: lclRow
-   integer(C_SIZE_T), intent(in) :: col
-   real(C_DOUBLE), intent(in) :: val
-   logical(C_BOOL), intent(in) :: atomic
-   call swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0(self%swigptr, lclRow, col, val, atomic)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_sumIntoLocalValue__SWIG_1(self, lclRow, col, val)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   integer(C_INT), intent(in) :: lclRow
-   integer(C_SIZE_T), intent(in) :: col
-   real(C_DOUBLE), intent(in) :: val
-   call swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_1(self%swigptr, lclRow, col, val)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_putScalar(self, value)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   real(C_DOUBLE), intent(in) :: value
-   call swigc_TpetraMultiVector_putScalar(self%swigptr, value)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_randomize__SWIG_0(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   call swigc_TpetraMultiVector_randomize__SWIG_0(self%swigptr)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_randomize__SWIG_1(self, minVal, maxVal)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   real(C_DOUBLE), intent(in) :: minVal
-   real(C_DOUBLE), intent(in) :: maxVal
-   call swigc_TpetraMultiVector_randomize__SWIG_1(self%swigptr, minVal, maxVal)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_replaceMap(self, map)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   type(TpetraMap) :: map
-   call swigc_TpetraMultiVector_replaceMap(self%swigptr, map%swigptr)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_reduce(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   call swigc_TpetraMultiVector_reduce(self%swigptr)
-  end subroutine
-  function swigf_TpetraMultiVector_offsetViewNonConst(self, subMap, offset) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraMultiVector) :: fresult
-   class(TpetraMultiVector) :: self
-   type(TpetraMap) :: subMap
-   integer(C_SIZE_T), intent(in) :: offset
-   fresult%swigptr = swigc_TpetraMultiVector_offsetViewNonConst(self%swigptr, subMap%swigptr, offset)
-  end function
-  subroutine swigf_TpetraMultiVector_get1dCopy(self, A, LDA)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   class(TeuchosArrayViewDouble) :: A
-   integer(C_SIZE_T), intent(in) :: LDA
-   call swigc_TpetraMultiVector_get1dCopy(self%swigptr, A%swigptr, LDA)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_abs(self, A)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   class(TpetraMultiVector) :: A
-   call swigc_TpetraMultiVector_abs(self%swigptr, A%swigptr)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_reciprocal(self, A)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   class(TpetraMultiVector) :: A
-   call swigc_TpetraMultiVector_reciprocal(self%swigptr, A%swigptr)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_scale__SWIG_0(self, alpha)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   real(C_DOUBLE), intent(in) :: alpha
-   call swigc_TpetraMultiVector_scale__SWIG_0(self%swigptr, alpha)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_scale__SWIG_1(self, alpha)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   class(TeuchosArrayViewDoubleConst) :: alpha
-   call swigc_TpetraMultiVector_scale__SWIG_1(self%swigptr, alpha%swigptr)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_scale__SWIG_2(self, alpha, A)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   real(C_DOUBLE), intent(in) :: alpha
-   class(TpetraMultiVector) :: A
-   call swigc_TpetraMultiVector_scale__SWIG_2(self%swigptr, alpha, A%swigptr)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_update__SWIG_0(self, alpha, A, beta)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   real(C_DOUBLE), intent(in) :: alpha
-   class(TpetraMultiVector) :: A
-   real(C_DOUBLE), intent(in) :: beta
-   call swigc_TpetraMultiVector_update__SWIG_0(self%swigptr, alpha, A%swigptr, beta)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_update__SWIG_1(self, alpha, A, beta, B, gamma)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   real(C_DOUBLE), intent(in) :: alpha
-   class(TpetraMultiVector) :: A
-   real(C_DOUBLE), intent(in) :: beta
-   class(TpetraMultiVector) :: B
-   real(C_DOUBLE), intent(in) :: gamma
-   call swigc_TpetraMultiVector_update__SWIG_1(self%swigptr, alpha, A%swigptr, beta, B%swigptr, gamma)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_norm1(self, norms)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   class(TeuchosArrayViewDouble) :: norms
-   call swigc_TpetraMultiVector_norm1(self%swigptr, norms%swigptr)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_norm2(self, norms)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   class(TeuchosArrayViewDouble) :: norms
-   call swigc_TpetraMultiVector_norm2(self%swigptr, norms%swigptr)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_normInf(self, norms)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   class(TeuchosArrayViewDouble) :: norms
-   call swigc_TpetraMultiVector_normInf(self%swigptr, norms%swigptr)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_normWeighted(self, weights, norms)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   class(TpetraMultiVector) :: weights
-   class(TeuchosArrayViewDouble) :: norms
-   call swigc_TpetraMultiVector_normWeighted(self%swigptr, weights%swigptr, norms%swigptr)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_meanValue(self, means)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   class(TeuchosArrayViewDouble) :: means
-   call swigc_TpetraMultiVector_meanValue(self%swigptr, means%swigptr)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_multiply(self, transA, transB, alpha, A, B, beta)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   integer(kind(ETransp)) :: transA
-   integer(kind(ETransp)) :: transB
-   real(C_DOUBLE), intent(in) :: alpha
-   class(TpetraMultiVector) :: A
-   class(TpetraMultiVector) :: B
-   real(C_DOUBLE), intent(in) :: beta
-   call swigc_TpetraMultiVector_multiply(self%swigptr, transA, transB, alpha, A%swigptr, B%swigptr, beta)
-  end subroutine
-  function swigf_TpetraMultiVector_getNumVectors(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraMultiVector) :: self
-   fresult = swigc_TpetraMultiVector_getNumVectors(self%swigptr)
-  end function
-  function swigf_TpetraMultiVector_getLocalLength(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraMultiVector) :: self
-   fresult = swigc_TpetraMultiVector_getLocalLength(self%swigptr)
-  end function
-  function swigf_TpetraMultiVector_getGlobalLength(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   class(TpetraMultiVector) :: self
-   fresult = swigc_TpetraMultiVector_getGlobalLength(self%swigptr)
-  end function
-  function swigf_TpetraMultiVector_getStride(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraMultiVector) :: self
-   fresult = swigc_TpetraMultiVector_getStride(self%swigptr)
-  end function
-  function swigf_TpetraMultiVector_isConstantStride(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraMultiVector) :: self
-   fresult = swigc_TpetraMultiVector_isConstantStride(self%swigptr)
-  end function
-  function swigf_TpetraMultiVector_description(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(string) :: fresult
-   class(TpetraMultiVector) :: self
-   fresult%swigptr = swigc_TpetraMultiVector_description(self%swigptr)
-   fresult%swigown = .true.
-  end function
-  subroutine swigf_TpetraMultiVector_removeEmptyProcessesInPlace(self, newMap)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   type(TpetraMap) :: newMap
-   call swigc_TpetraMultiVector_removeEmptyProcessesInPlace(self%swigptr, newMap%swigptr)
-  end subroutine
-  subroutine swigf_TpetraMultiVector_setCopyOrView(self, copyOrView)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector) :: self
-   integer(kind(DataAccess)) :: copyOrView
-   call swigc_TpetraMultiVector_setCopyOrView(self%swigptr, copyOrView)
-  end subroutine
-  function swigf_TpetraMultiVector_getCopyOrView(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(kind(DataAccess)) :: fresult
-   class(TpetraMultiVector) :: self
-   fresult = swigc_TpetraMultiVector_getCopyOrView(self%swigptr)
-  end function
+subroutine swigf_new_TpetraMultiVector__SWIG_0(self)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+type(C_PTR) :: fresult 
+
+if (c_associated(self%swigptr)) call self%release()
+fresult = swigc_new_TpetraMultiVector__SWIG_0()
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraMultiVector__SWIG_1(self, map, numvecs, zeroout)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+type(TpetraMap) :: map
+integer(C_SIZE_T), intent(in) :: numvecs
+logical(C_BOOL), intent(in) :: zeroout
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_SIZE_T) :: farg2 
+logical(C_BOOL) :: farg3 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = map%swigptr
+farg2 = numvecs
+farg3 = zeroout
+fresult = swigc_new_TpetraMultiVector__SWIG_1(farg1, farg2, farg3)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraMultiVector__SWIG_2(self, map, numvecs)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+type(TpetraMap) :: map
+integer(C_SIZE_T), intent(in) :: numvecs
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_SIZE_T) :: farg2 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = map%swigptr
+farg2 = numvecs
+fresult = swigc_new_TpetraMultiVector__SWIG_2(farg1, farg2)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraMultiVector__SWIG_3(self, source)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+class(TpetraMultiVector) :: source
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = source%swigptr
+fresult = swigc_new_TpetraMultiVector__SWIG_3(farg1)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraMultiVector__SWIG_4(self, source, copyorview)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+class(TpetraMultiVector) :: source
+integer(kind(DataAccess)) :: copyorview
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = source%swigptr
+farg2 = copyorview
+fresult = swigc_new_TpetraMultiVector__SWIG_4(farg1, farg2)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraMultiVector__SWIG_5(self, map, a, lda, numvectors)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+type(TpetraMap) :: map
+class(TeuchosArrayViewDoubleConst) :: a
+integer(C_SIZE_T), intent(in) :: lda
+integer(C_SIZE_T), intent(in) :: numvectors
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+integer(C_SIZE_T) :: farg3 
+integer(C_SIZE_T) :: farg4 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = map%swigptr
+farg2 = a%swigptr
+farg3 = lda
+farg4 = numvectors
+fresult = swigc_new_TpetraMultiVector__SWIG_5(farg1, farg2, farg3, farg4)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraMultiVector__SWIG_6(self, x, submap, offset)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+class(TpetraMultiVector) :: x
+class(TpetraMap) :: submap
+integer(C_SIZE_T), intent(in) :: offset
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+integer(C_SIZE_T) :: farg3 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = x%swigptr
+farg2 = submap%swigptr
+farg3 = offset
+fresult = swigc_new_TpetraMultiVector__SWIG_6(farg1, farg2, farg3)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraMultiVector__SWIG_7(self, x, submap)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+class(TpetraMultiVector) :: x
+class(TpetraMap) :: submap
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = x%swigptr
+farg2 = submap%swigptr
+fresult = swigc_new_TpetraMultiVector__SWIG_7(farg1, farg2)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_delete_TpetraMultiVector(self)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+type(C_PTR) :: farg1 
+
+if (.not. c_associated(self%swigptr)) return
+farg1 = self%swigptr
+call swigc_delete_TpetraMultiVector(farg1)
+
+self%swigptr = C_NULL_PTR
+end subroutine
+
+subroutine swigf_TpetraMultiVector_replaceGlobalValue(self, gblrow, col, value)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+integer(C_INT), intent(in) :: gblrow
+integer(C_SIZE_T), intent(in) :: col
+real(C_DOUBLE), intent(in) :: value
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+integer(C_SIZE_T) :: farg3 
+real(C_DOUBLE) :: farg4 
+
+farg1 = self%swigptr
+farg2 = gblrow
+farg3 = col
+farg4 = value
+call swigc_TpetraMultiVector_replaceGlobalValue(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(self, gblrow, col, value, atomic)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+integer(C_INT), intent(in) :: gblrow
+integer(C_SIZE_T), intent(in) :: col
+real(C_DOUBLE), intent(in) :: value
+logical(C_BOOL), intent(in) :: atomic
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+integer(C_SIZE_T) :: farg3 
+real(C_DOUBLE) :: farg4 
+logical(C_BOOL) :: farg5 
+
+farg1 = self%swigptr
+farg2 = gblrow
+farg3 = col
+farg4 = value
+farg5 = atomic
+call swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(farg1, farg2, farg3, farg4, farg5)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_sumIntoGlobalValue__SWIG_1(self, gblrow, col, value)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+integer(C_INT), intent(in) :: gblrow
+integer(C_SIZE_T), intent(in) :: col
+real(C_DOUBLE), intent(in) :: value
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+integer(C_SIZE_T) :: farg3 
+real(C_DOUBLE) :: farg4 
+
+farg1 = self%swigptr
+farg2 = gblrow
+farg3 = col
+farg4 = value
+call swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_1(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_replaceLocalValue(self, lclrow, col, value)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+integer(C_INT), intent(in) :: lclrow
+integer(C_SIZE_T), intent(in) :: col
+real(C_DOUBLE), intent(in) :: value
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+integer(C_SIZE_T) :: farg3 
+real(C_DOUBLE) :: farg4 
+
+farg1 = self%swigptr
+farg2 = lclrow
+farg3 = col
+farg4 = value
+call swigc_TpetraMultiVector_replaceLocalValue(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_sumIntoLocalValue__SWIG_0(self, lclrow, col, val, atomic)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+integer(C_INT), intent(in) :: lclrow
+integer(C_SIZE_T), intent(in) :: col
+real(C_DOUBLE), intent(in) :: val
+logical(C_BOOL), intent(in) :: atomic
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+integer(C_SIZE_T) :: farg3 
+real(C_DOUBLE) :: farg4 
+logical(C_BOOL) :: farg5 
+
+farg1 = self%swigptr
+farg2 = lclrow
+farg3 = col
+farg4 = val
+farg5 = atomic
+call swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0(farg1, farg2, farg3, farg4, farg5)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_sumIntoLocalValue__SWIG_1(self, lclrow, col, val)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+integer(C_INT), intent(in) :: lclrow
+integer(C_SIZE_T), intent(in) :: col
+real(C_DOUBLE), intent(in) :: val
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+integer(C_SIZE_T) :: farg3 
+real(C_DOUBLE) :: farg4 
+
+farg1 = self%swigptr
+farg2 = lclrow
+farg3 = col
+farg4 = val
+call swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_1(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_putScalar(self, value)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+real(C_DOUBLE), intent(in) :: value
+type(C_PTR) :: farg1 
+real(C_DOUBLE) :: farg2 
+
+farg1 = self%swigptr
+farg2 = value
+call swigc_TpetraMultiVector_putScalar(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_randomize__SWIG_0(self)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+call swigc_TpetraMultiVector_randomize__SWIG_0(farg1)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_randomize__SWIG_1(self, minval, maxval)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+real(C_DOUBLE), intent(in) :: minval
+real(C_DOUBLE), intent(in) :: maxval
+type(C_PTR) :: farg1 
+real(C_DOUBLE) :: farg2 
+real(C_DOUBLE) :: farg3 
+
+farg1 = self%swigptr
+farg2 = minval
+farg3 = maxval
+call swigc_TpetraMultiVector_randomize__SWIG_1(farg1, farg2, farg3)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_replaceMap(self, map)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+type(TpetraMap) :: map
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = map%swigptr
+call swigc_TpetraMultiVector_replaceMap(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_reduce(self)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+call swigc_TpetraMultiVector_reduce(farg1)
+
+end subroutine
+
+function swigf_TpetraMultiVector_offsetViewNonConst(self, submap, offset) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraMultiVector) :: swigf_result
+class(TpetraMultiVector) :: self
+type(TpetraMap) :: submap
+integer(C_SIZE_T), intent(in) :: offset
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+integer(C_SIZE_T) :: farg3 
+
+farg1 = self%swigptr
+farg2 = submap%swigptr
+farg3 = offset
+fresult = swigc_TpetraMultiVector_offsetViewNonConst(farg1, farg2, farg3)
+swigf_result%swigptr = fresult
+end function
+
+subroutine swigf_TpetraMultiVector_get1dCopy(self, a, lda)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+class(TeuchosArrayViewDouble) :: a
+integer(C_SIZE_T), intent(in) :: lda
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+integer(C_SIZE_T) :: farg3 
+
+farg1 = self%swigptr
+farg2 = a%swigptr
+farg3 = lda
+call swigc_TpetraMultiVector_get1dCopy(farg1, farg2, farg3)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_abs(self, a)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+class(TpetraMultiVector) :: a
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = a%swigptr
+call swigc_TpetraMultiVector_abs(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_reciprocal(self, a)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+class(TpetraMultiVector) :: a
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = a%swigptr
+call swigc_TpetraMultiVector_reciprocal(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_scale__SWIG_0(self, alpha)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+real(C_DOUBLE), intent(in) :: alpha
+type(C_PTR) :: farg1 
+real(C_DOUBLE) :: farg2 
+
+farg1 = self%swigptr
+farg2 = alpha
+call swigc_TpetraMultiVector_scale__SWIG_0(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_scale__SWIG_1(self, alpha)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+class(TeuchosArrayViewDoubleConst) :: alpha
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = alpha%swigptr
+call swigc_TpetraMultiVector_scale__SWIG_1(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_scale__SWIG_2(self, alpha, a)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+real(C_DOUBLE), intent(in) :: alpha
+class(TpetraMultiVector) :: a
+type(C_PTR) :: farg1 
+real(C_DOUBLE) :: farg2 
+type(C_PTR) :: farg3 
+
+farg1 = self%swigptr
+farg2 = alpha
+farg3 = a%swigptr
+call swigc_TpetraMultiVector_scale__SWIG_2(farg1, farg2, farg3)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_update__SWIG_0(self, alpha, a, beta)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+real(C_DOUBLE), intent(in) :: alpha
+class(TpetraMultiVector) :: a
+real(C_DOUBLE), intent(in) :: beta
+type(C_PTR) :: farg1 
+real(C_DOUBLE) :: farg2 
+type(C_PTR) :: farg3 
+real(C_DOUBLE) :: farg4 
+
+farg1 = self%swigptr
+farg2 = alpha
+farg3 = a%swigptr
+farg4 = beta
+call swigc_TpetraMultiVector_update__SWIG_0(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_update__SWIG_1(self, alpha, a, beta, b, gamma)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+real(C_DOUBLE), intent(in) :: alpha
+class(TpetraMultiVector) :: a
+real(C_DOUBLE), intent(in) :: beta
+class(TpetraMultiVector) :: b
+real(C_DOUBLE), intent(in) :: gamma
+type(C_PTR) :: farg1 
+real(C_DOUBLE) :: farg2 
+type(C_PTR) :: farg3 
+real(C_DOUBLE) :: farg4 
+type(C_PTR) :: farg5 
+real(C_DOUBLE) :: farg6 
+
+farg1 = self%swigptr
+farg2 = alpha
+farg3 = a%swigptr
+farg4 = beta
+farg5 = b%swigptr
+farg6 = gamma
+call swigc_TpetraMultiVector_update__SWIG_1(farg1, farg2, farg3, farg4, farg5, farg6)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_norm1(self, norms)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+class(TeuchosArrayViewDouble) :: norms
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = norms%swigptr
+call swigc_TpetraMultiVector_norm1(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_norm2(self, norms)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+class(TeuchosArrayViewDouble) :: norms
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = norms%swigptr
+call swigc_TpetraMultiVector_norm2(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_normInf(self, norms)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+class(TeuchosArrayViewDouble) :: norms
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = norms%swigptr
+call swigc_TpetraMultiVector_normInf(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_normWeighted(self, weights, norms)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+class(TpetraMultiVector) :: weights
+class(TeuchosArrayViewDouble) :: norms
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+
+farg1 = self%swigptr
+farg2 = weights%swigptr
+farg3 = norms%swigptr
+call swigc_TpetraMultiVector_normWeighted(farg1, farg2, farg3)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_meanValue(self, means)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+class(TeuchosArrayViewDouble) :: means
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = means%swigptr
+call swigc_TpetraMultiVector_meanValue(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_multiply(self, transa, transb, alpha, a, b, beta)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+integer(kind(ETransp)) :: transa
+integer(kind(ETransp)) :: transb
+real(C_DOUBLE), intent(in) :: alpha
+class(TpetraMultiVector) :: a
+class(TpetraMultiVector) :: b
+real(C_DOUBLE), intent(in) :: beta
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+integer(C_INT) :: farg3 
+real(C_DOUBLE) :: farg4 
+type(C_PTR) :: farg5 
+type(C_PTR) :: farg6 
+real(C_DOUBLE) :: farg7 
+
+farg1 = self%swigptr
+farg2 = transa
+farg3 = transb
+farg4 = alpha
+farg5 = a%swigptr
+farg6 = b%swigptr
+farg7 = beta
+call swigc_TpetraMultiVector_multiply(farg1, farg2, farg3, farg4, farg5, farg6, farg7)
+
+end subroutine
+
+function swigf_TpetraMultiVector_getNumVectors(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraMultiVector) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMultiVector_getNumVectors(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMultiVector_getLocalLength(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraMultiVector) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMultiVector_getLocalLength(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMultiVector_getGlobalLength(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: swigf_result
+class(TpetraMultiVector) :: self
+integer(C_LONG) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMultiVector_getGlobalLength(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMultiVector_getStride(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraMultiVector) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMultiVector_getStride(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMultiVector_isConstantStride(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraMultiVector) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMultiVector_isConstantStride(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMultiVector_description(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(string) :: swigf_result
+class(TpetraMultiVector) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMultiVector_description(farg1)
+swigf_result%swigptr = fresult
+end function
+
+subroutine swigf_TpetraMultiVector_removeEmptyProcessesInPlace(self, newmap)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+type(TpetraMap) :: newmap
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = newmap%swigptr
+call swigc_TpetraMultiVector_removeEmptyProcessesInPlace(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_setCopyOrView(self, copyorview)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+integer(kind(DataAccess)) :: copyorview
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+
+farg1 = self%swigptr
+farg2 = copyorview
+call swigc_TpetraMultiVector_setCopyOrView(farg1, farg2)
+
+end subroutine
+
+function swigf_TpetraMultiVector_getCopyOrView(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(kind(DataAccess)) :: swigf_result
+class(TpetraMultiVector) :: self
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMultiVector_getCopyOrView(farg1)
+swigf_result = fresult
+end function
+
   subroutine swigf_assign_TpetraMultiVector(self, other)
    use, intrinsic :: ISO_C_BINDING
    class(TpetraMultiVector), intent(inout) :: self
    type(TpetraMultiVector), intent(in) :: other
-   call self%release()
+if (c_associated(self%swigptr)) call self%release()
    self%swigptr = swigc_spcopy_TpetraMultiVector(other%swigptr)
   end subroutine
-  subroutine swigf_set_RowInfo_localRow(self, localRow)
-   use, intrinsic :: ISO_C_BINDING
-   class(RowInfo) :: self
-   integer(C_SIZE_T), intent(in) :: localRow
-   call swigc_set_RowInfo_localRow(self%swigptr, localRow)
-  end subroutine
-  function swigf_get_RowInfo_localRow(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(RowInfo) :: self
-   fresult = swigc_get_RowInfo_localRow(self%swigptr)
-  end function
-  subroutine swigf_set_RowInfo_allocSize(self, allocSize)
-   use, intrinsic :: ISO_C_BINDING
-   class(RowInfo) :: self
-   integer(C_SIZE_T), intent(in) :: allocSize
-   call swigc_set_RowInfo_allocSize(self%swigptr, allocSize)
-  end subroutine
-  function swigf_get_RowInfo_allocSize(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(RowInfo) :: self
-   fresult = swigc_get_RowInfo_allocSize(self%swigptr)
-  end function
-  subroutine swigf_set_RowInfo_numEntries(self, numEntries)
-   use, intrinsic :: ISO_C_BINDING
-   class(RowInfo) :: self
-   integer(C_SIZE_T), intent(in) :: numEntries
-   call swigc_set_RowInfo_numEntries(self%swigptr, numEntries)
-  end subroutine
-  function swigf_get_RowInfo_numEntries(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(RowInfo) :: self
-   fresult = swigc_get_RowInfo_numEntries(self%swigptr)
-  end function
-  subroutine swigf_set_RowInfo_offset1D(self, offset1D)
-   use, intrinsic :: ISO_C_BINDING
-   class(RowInfo) :: self
-   integer(C_SIZE_T), intent(in) :: offset1D
-   call swigc_set_RowInfo_offset1D(self%swigptr, offset1D)
-  end subroutine
-  function swigf_get_RowInfo_offset1D(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(RowInfo) :: self
-   fresult = swigc_get_RowInfo_offset1D(self%swigptr)
-  end function
-  subroutine swigf_new_RowInfo(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(RowInfo) :: self
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_RowInfo()
-   self%swigown = .true.
-  end subroutine
-  subroutine swigf_delete_RowInfo(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(RowInfo) :: self
-   if (self%swigown) then
-    call swigc_delete_RowInfo(self%swigptr)
-    self%swigown = .false.
-   end if
-   self%swigptr = C_NULL_PTR
-  end subroutine
-  subroutine swigf_new_TpetraCrsGraph__SWIG_0(self, rowMap, maxNumEntriesPerRow, pftype, params)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(TpetraMap) :: rowMap
-   integer(C_SIZE_T), intent(in) :: maxNumEntriesPerRow
-   integer(kind(ProfileType)) :: pftype
-   type(ParameterList) :: params
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraCrsGraph__SWIG_0(rowMap%swigptr, maxNumEntriesPerRow, pftype, params%swigptr)
-  end subroutine
-  subroutine swigf_new_TpetraCrsGraph__SWIG_1(self, rowMap, maxNumEntriesPerRow, pftype)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(TpetraMap) :: rowMap
-   integer(C_SIZE_T), intent(in) :: maxNumEntriesPerRow
-   integer(kind(ProfileType)) :: pftype
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraCrsGraph__SWIG_1(rowMap%swigptr, maxNumEntriesPerRow, pftype)
-  end subroutine
-  subroutine swigf_new_TpetraCrsGraph__SWIG_2(self, rowMap, maxNumEntriesPerRow)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(TpetraMap) :: rowMap
-   integer(C_SIZE_T), intent(in) :: maxNumEntriesPerRow
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraCrsGraph__SWIG_2(rowMap%swigptr, maxNumEntriesPerRow)
-  end subroutine
-  subroutine swigf_new_TpetraCrsGraph__SWIG_3(self, rowMap, colMap, maxNumEntriesPerRow, pftype, params)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(TpetraMap) :: rowMap
-   type(TpetraMap) :: colMap
-   integer(C_SIZE_T), intent(in) :: maxNumEntriesPerRow
-   integer(kind(ProfileType)) :: pftype
-   type(ParameterList) :: params
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraCrsGraph__SWIG_3(rowMap%swigptr, colMap%swigptr, maxNumEntriesPerRow, pftype, params%swigptr)
-  end subroutine
-  subroutine swigf_new_TpetraCrsGraph__SWIG_4(self, rowMap, colMap, maxNumEntriesPerRow, pftype)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(TpetraMap) :: rowMap
-   type(TpetraMap) :: colMap
-   integer(C_SIZE_T), intent(in) :: maxNumEntriesPerRow
-   integer(kind(ProfileType)) :: pftype
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraCrsGraph__SWIG_4(rowMap%swigptr, colMap%swigptr, maxNumEntriesPerRow, pftype)
-  end subroutine
-  subroutine swigf_new_TpetraCrsGraph__SWIG_5(self, rowMap, colMap, maxNumEntriesPerRow)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(TpetraMap) :: rowMap
-   type(TpetraMap) :: colMap
-   integer(C_SIZE_T), intent(in) :: maxNumEntriesPerRow
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraCrsGraph__SWIG_5(rowMap%swigptr, colMap%swigptr, maxNumEntriesPerRow)
-  end subroutine
-  subroutine swigf_delete_TpetraCrsGraph(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   call swigc_delete_TpetraCrsGraph(self%swigptr)
-   self%swigptr = C_NULL_PTR
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_setParameterList(self, params)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(ParameterList) :: params
-   call swigc_TpetraCrsGraph_setParameterList(self%swigptr, params%swigptr)
-  end subroutine
-  function swigf_TpetraCrsGraph_getValidParameters(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(ParameterList) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult%swigptr = swigc_TpetraCrsGraph_getValidParameters(self%swigptr)
-  end function
-  subroutine swigf_TpetraCrsGraph_insertGlobalIndices__SWIG_0(self, globalRow, indices)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   integer(C_INT), intent(in) :: globalRow
-   class(TeuchosArrayViewIntConst) :: indices
-   call swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_0(self%swigptr, globalRow, indices%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_insertGlobalIndices__SWIG_1(self, globalRow, numEnt, inds)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   integer(C_INT), intent(in) :: globalRow
-   integer(C_INT), intent(in) :: numEnt
-   integer(C_INT), dimension(:), intent(in) :: inds
-   call swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_1(self%swigptr, globalRow, numEnt, inds)
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_globalAssemble(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   call swigc_TpetraCrsGraph_globalAssemble(self%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_resumeFill__SWIG_0(self, params)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(ParameterList) :: params
-   call swigc_TpetraCrsGraph_resumeFill__SWIG_0(self%swigptr, params%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_resumeFill__SWIG_1(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   call swigc_TpetraCrsGraph_resumeFill__SWIG_1(self%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_fillComplete__SWIG_0(self, domainMap, rangeMap, params)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(TpetraMap) :: domainMap
-   type(TpetraMap) :: rangeMap
-   type(ParameterList) :: params
-   call swigc_TpetraCrsGraph_fillComplete__SWIG_0(self%swigptr, domainMap%swigptr, rangeMap%swigptr, params%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_fillComplete__SWIG_1(self, domainMap, rangeMap)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(TpetraMap) :: domainMap
-   type(TpetraMap) :: rangeMap
-   call swigc_TpetraCrsGraph_fillComplete__SWIG_1(self%swigptr, domainMap%swigptr, rangeMap%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_fillComplete__SWIG_2(self, params)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(ParameterList) :: params
-   call swigc_TpetraCrsGraph_fillComplete__SWIG_2(self%swigptr, params%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_fillComplete__SWIG_3(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   call swigc_TpetraCrsGraph_fillComplete__SWIG_3(self%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_expertStaticFillComplete__SWIG_0(self, domainMap, rangeMap, importer, exporter, params)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(TpetraMap) :: domainMap
-   type(TpetraMap) :: rangeMap
-   type(TpetraImport) :: importer
-   type(TpetraExport) :: exporter
-   type(ParameterList) :: params
-   call swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_0(self%swigptr, domainMap%swigptr, rangeMap%swigptr, importer%swigptr, exporter%swigptr, params%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_expertStaticFillComplete__SWIG_1(self, domainMap, rangeMap, importer, exporter)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(TpetraMap) :: domainMap
-   type(TpetraMap) :: rangeMap
-   type(TpetraImport) :: importer
-   type(TpetraExport) :: exporter
-   call swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_1(self%swigptr, domainMap%swigptr, rangeMap%swigptr, importer%swigptr, exporter%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_expertStaticFillComplete__SWIG_2(self, domainMap, rangeMap, importer)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(TpetraMap) :: domainMap
-   type(TpetraMap) :: rangeMap
-   type(TpetraImport) :: importer
-   call swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_2(self%swigptr, domainMap%swigptr, rangeMap%swigptr, importer%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_expertStaticFillComplete__SWIG_3(self, domainMap, rangeMap)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(TpetraMap) :: domainMap
-   type(TpetraMap) :: rangeMap
-   call swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_3(self%swigptr, domainMap%swigptr, rangeMap%swigptr)
-  end subroutine
-  function swigf_TpetraCrsGraph_getComm(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TeuchosComm) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult%swigptr = swigc_TpetraCrsGraph_getComm(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getRowMap(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraMap) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult%swigptr = swigc_TpetraCrsGraph_getRowMap(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getColMap(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraMap) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult%swigptr = swigc_TpetraCrsGraph_getColMap(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getDomainMap(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraMap) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult%swigptr = swigc_TpetraCrsGraph_getDomainMap(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getRangeMap(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraMap) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult%swigptr = swigc_TpetraCrsGraph_getRangeMap(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getImporter(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraImport) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult%swigptr = swigc_TpetraCrsGraph_getImporter(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getExporter(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraExport) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult%swigptr = swigc_TpetraCrsGraph_getExporter(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getGlobalNumRows(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_getGlobalNumRows(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getGlobalNumCols(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_getGlobalNumCols(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getNodeNumRows(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_getNodeNumRows(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getNodeNumCols(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_getNodeNumCols(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getIndexBase(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_getIndexBase(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getGlobalNumEntries(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_getGlobalNumEntries(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getNodeNumEntries(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_getNodeNumEntries(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getNumEntriesInGlobalRow(self, globalRow) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraCrsGraph) :: self
-   integer(C_INT), intent(in) :: globalRow
-   fresult = swigc_TpetraCrsGraph_getNumEntriesInGlobalRow(self%swigptr, globalRow)
-  end function
-  function swigf_TpetraCrsGraph_getNodeAllocationSize(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_getNodeAllocationSize(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow(self, globalRow) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraCrsGraph) :: self
-   integer(C_INT), intent(in) :: globalRow
-   fresult = swigc_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow(self%swigptr, globalRow)
-  end function
-  function swigf_TpetraCrsGraph_getGlobalNumDiags(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_getGlobalNumDiags(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getNodeNumDiags(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_getNodeNumDiags(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getGlobalMaxNumRowEntries(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_getGlobalMaxNumRowEntries(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getNodeMaxNumRowEntries(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_getNodeMaxNumRowEntries(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_hasColMap(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_hasColMap(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_isLowerTriangular(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_isLowerTriangular(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_isUpperTriangular(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_isUpperTriangular(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_isLocallyIndexed(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_isLocallyIndexed(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_isGloballyIndexed(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_isGloballyIndexed(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_isFillComplete(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_isFillComplete(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_isFillActive(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_isFillActive(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_isSorted(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_isSorted(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_isStorageOptimized(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_isStorageOptimized(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_getProfileType(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(kind(ProfileType)) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_getProfileType(self%swigptr)
-  end function
-  subroutine swigf_TpetraCrsGraph_getGlobalRowCopy(self, GlobalRow, Indices, NumIndices)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   integer(C_INT), intent(in) :: GlobalRow
-   class(TeuchosArrayViewInt) :: Indices
-   integer(C_SIZE_T), intent(inout) :: NumIndices
-   call swigc_TpetraCrsGraph_getGlobalRowCopy(self%swigptr, GlobalRow, Indices%swigptr, NumIndices)
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_getGlobalRowView(self, gblRow, gblColInds)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   integer(C_INT), intent(in) :: gblRow
-   class(TeuchosArrayViewIntConst) :: gblColInds
-   call swigc_TpetraCrsGraph_getGlobalRowView(self%swigptr, gblRow, gblColInds%swigptr)
-  end subroutine
-  function swigf_TpetraCrsGraph_supportsRowViews(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_supportsRowViews(self%swigptr)
-  end function
-  function swigf_TpetraCrsGraph_description(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(string) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult%swigptr = swigc_TpetraCrsGraph_description(self%swigptr)
-   fresult%swigown = .true.
-  end function
-  subroutine swigf_TpetraCrsGraph_replaceColMap(self, newColMap)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(TpetraMap) :: newColMap
-   call swigc_TpetraCrsGraph_replaceColMap(self%swigptr, newColMap%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_reindexColumns__SWIG_0(self, newColMap, newImport, sortIndicesInEachRow)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(TpetraMap) :: newColMap
-   type(TpetraImport) :: newImport
-   logical(C_BOOL), intent(in) :: sortIndicesInEachRow
-   call swigc_TpetraCrsGraph_reindexColumns__SWIG_0(self%swigptr, newColMap%swigptr, newImport%swigptr, sortIndicesInEachRow)
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_reindexColumns__SWIG_1(self, newColMap, newImport)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(TpetraMap) :: newColMap
-   type(TpetraImport) :: newImport
-   call swigc_TpetraCrsGraph_reindexColumns__SWIG_1(self%swigptr, newColMap%swigptr, newImport%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_reindexColumns__SWIG_2(self, newColMap)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(TpetraMap) :: newColMap
-   call swigc_TpetraCrsGraph_reindexColumns__SWIG_2(self%swigptr, newColMap%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_replaceDomainMapAndImporter(self, newDomainMap, newImporter)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(TpetraMap) :: newDomainMap
-   type(TpetraImport) :: newImporter
-   call swigc_TpetraCrsGraph_replaceDomainMapAndImporter(self%swigptr, newDomainMap%swigptr, newImporter%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsGraph_removeEmptyProcessesInPlace(self, newMap)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   type(TpetraMap) :: newMap
-   call swigc_TpetraCrsGraph_removeEmptyProcessesInPlace(self%swigptr, newMap%swigptr)
-  end subroutine
-  function swigf_TpetraCrsGraph_haveGlobalConstants(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsGraph) :: self
-   fresult = swigc_TpetraCrsGraph_haveGlobalConstants(self%swigptr)
-  end function
-  subroutine swigf_TpetraCrsGraph_computeGlobalConstants(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsGraph) :: self
-   call swigc_TpetraCrsGraph_computeGlobalConstants(self%swigptr)
-  end subroutine
+subroutine swigf_set_RowInfo_localRow(self, localrow)
+use, intrinsic :: ISO_C_BINDING
+class(RowInfo) :: self
+integer(C_SIZE_T), intent(in) :: localrow
+type(C_PTR) :: farg1 
+integer(C_SIZE_T) :: farg2 
+
+farg1 = self%swigptr
+farg2 = localrow
+call swigc_set_RowInfo_localRow(farg1, farg2)
+
+end subroutine
+
+function swigf_get_RowInfo_localRow(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(RowInfo) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_get_RowInfo_localRow(farg1)
+swigf_result = fresult
+end function
+
+subroutine swigf_set_RowInfo_allocSize(self, allocsize)
+use, intrinsic :: ISO_C_BINDING
+class(RowInfo) :: self
+integer(C_SIZE_T), intent(in) :: allocsize
+type(C_PTR) :: farg1 
+integer(C_SIZE_T) :: farg2 
+
+farg1 = self%swigptr
+farg2 = allocsize
+call swigc_set_RowInfo_allocSize(farg1, farg2)
+
+end subroutine
+
+function swigf_get_RowInfo_allocSize(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(RowInfo) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_get_RowInfo_allocSize(farg1)
+swigf_result = fresult
+end function
+
+subroutine swigf_set_RowInfo_numEntries(self, numentries)
+use, intrinsic :: ISO_C_BINDING
+class(RowInfo) :: self
+integer(C_SIZE_T), intent(in) :: numentries
+type(C_PTR) :: farg1 
+integer(C_SIZE_T) :: farg2 
+
+farg1 = self%swigptr
+farg2 = numentries
+call swigc_set_RowInfo_numEntries(farg1, farg2)
+
+end subroutine
+
+function swigf_get_RowInfo_numEntries(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(RowInfo) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_get_RowInfo_numEntries(farg1)
+swigf_result = fresult
+end function
+
+subroutine swigf_set_RowInfo_offset1D(self, offset1d)
+use, intrinsic :: ISO_C_BINDING
+class(RowInfo) :: self
+integer(C_SIZE_T), intent(in) :: offset1d
+type(C_PTR) :: farg1 
+integer(C_SIZE_T) :: farg2 
+
+farg1 = self%swigptr
+farg2 = offset1d
+call swigc_set_RowInfo_offset1D(farg1, farg2)
+
+end subroutine
+
+function swigf_get_RowInfo_offset1D(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(RowInfo) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_get_RowInfo_offset1D(farg1)
+swigf_result = fresult
+end function
+
+subroutine swigf_new_RowInfo(self)
+use, intrinsic :: ISO_C_BINDING
+class(RowInfo) :: self
+type(C_PTR) :: fresult 
+
+if (c_associated(self%swigptr)) call self%release()
+fresult = swigc_new_RowInfo()
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_delete_RowInfo(self)
+use, intrinsic :: ISO_C_BINDING
+class(RowInfo) :: self
+type(C_PTR) :: farg1 
+
+if (.not. c_associated(self%swigptr)) return
+farg1 = self%swigptr
+call swigc_delete_RowInfo(farg1)
+
+self%swigptr = C_NULL_PTR
+end subroutine
+
+subroutine swigf_new_TpetraCrsGraph__SWIG_0(self, rowmap, maxnumentriesperrow, pftype, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: rowmap
+integer(C_SIZE_T), intent(in) :: maxnumentriesperrow
+integer(kind(ProfileType)) :: pftype
+type(ParameterList) :: params
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_SIZE_T) :: farg2 
+integer(C_INT) :: farg3 
+type(C_PTR) :: farg4 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2 = maxnumentriesperrow
+farg3 = pftype
+farg4 = params%swigptr
+fresult = swigc_new_TpetraCrsGraph__SWIG_0(farg1, farg2, farg3, farg4)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsGraph__SWIG_1(self, rowmap, maxnumentriesperrow, pftype)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: rowmap
+integer(C_SIZE_T), intent(in) :: maxnumentriesperrow
+integer(kind(ProfileType)) :: pftype
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_SIZE_T) :: farg2 
+integer(C_INT) :: farg3 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2 = maxnumentriesperrow
+farg3 = pftype
+fresult = swigc_new_TpetraCrsGraph__SWIG_1(farg1, farg2, farg3)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsGraph__SWIG_2(self, rowmap, maxnumentriesperrow)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: rowmap
+integer(C_SIZE_T), intent(in) :: maxnumentriesperrow
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_SIZE_T) :: farg2 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2 = maxnumentriesperrow
+fresult = swigc_new_TpetraCrsGraph__SWIG_2(farg1, farg2)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsGraph__SWIG_3(self, rowmap, colmap, maxnumentriesperrow, pftype, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: rowmap
+type(TpetraMap) :: colmap
+integer(C_SIZE_T), intent(in) :: maxnumentriesperrow
+integer(kind(ProfileType)) :: pftype
+type(ParameterList) :: params
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+integer(C_SIZE_T) :: farg3 
+integer(C_INT) :: farg4 
+type(C_PTR) :: farg5 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2 = colmap%swigptr
+farg3 = maxnumentriesperrow
+farg4 = pftype
+farg5 = params%swigptr
+fresult = swigc_new_TpetraCrsGraph__SWIG_3(farg1, farg2, farg3, farg4, farg5)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsGraph__SWIG_4(self, rowmap, colmap, maxnumentriesperrow, pftype)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: rowmap
+type(TpetraMap) :: colmap
+integer(C_SIZE_T), intent(in) :: maxnumentriesperrow
+integer(kind(ProfileType)) :: pftype
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+integer(C_SIZE_T) :: farg3 
+integer(C_INT) :: farg4 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2 = colmap%swigptr
+farg3 = maxnumentriesperrow
+farg4 = pftype
+fresult = swigc_new_TpetraCrsGraph__SWIG_4(farg1, farg2, farg3, farg4)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsGraph__SWIG_5(self, rowmap, colmap, maxnumentriesperrow)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: rowmap
+type(TpetraMap) :: colmap
+integer(C_SIZE_T), intent(in) :: maxnumentriesperrow
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+integer(C_SIZE_T) :: farg3 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2 = colmap%swigptr
+farg3 = maxnumentriesperrow
+fresult = swigc_new_TpetraCrsGraph__SWIG_5(farg1, farg2, farg3)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_delete_TpetraCrsGraph(self)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(C_PTR) :: farg1 
+
+if (.not. c_associated(self%swigptr)) return
+farg1 = self%swigptr
+call swigc_delete_TpetraCrsGraph(farg1)
+
+self%swigptr = C_NULL_PTR
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_setParameterList(self, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(ParameterList) :: params
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = params%swigptr
+call swigc_TpetraCrsGraph_setParameterList(farg1, farg2)
+
+end subroutine
+
+function swigf_TpetraCrsGraph_getValidParameters(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(ParameterList) :: swigf_result
+class(TpetraCrsGraph) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getValidParameters(farg1)
+swigf_result%swigptr = fresult
+end function
+
+subroutine swigf_TpetraCrsGraph_insertGlobalIndices__SWIG_0(self, globalrow, indices)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+integer(C_INT), intent(in) :: globalrow
+class(TeuchosArrayViewIntConst) :: indices
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+type(C_PTR) :: farg3 
+
+farg1 = self%swigptr
+farg2 = globalrow
+farg3 = indices%swigptr
+call swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_0(farg1, farg2, farg3)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_insertGlobalIndices__SWIG_1(self, globalrow, nument, inds)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+integer(C_INT), intent(in) :: globalrow
+integer(C_INT), intent(in) :: nument
+integer(C_INT), dimension(:), target, intent(in) :: inds
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+integer(C_INT) :: farg3 
+type(C_PTR) :: farg4 
+
+farg1 = self%swigptr
+farg2 = globalrow
+farg3 = nument
+farg4 = c_loc(inds)
+call swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_1(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_globalAssemble(self)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+call swigc_TpetraCrsGraph_globalAssemble(farg1)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_resumeFill__SWIG_0(self, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(ParameterList) :: params
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = params%swigptr
+call swigc_TpetraCrsGraph_resumeFill__SWIG_0(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_resumeFill__SWIG_1(self)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+call swigc_TpetraCrsGraph_resumeFill__SWIG_1(farg1)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_fillComplete__SWIG_0(self, domainmap, rangemap, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: domainmap
+type(TpetraMap) :: rangemap
+type(ParameterList) :: params
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+
+farg1 = self%swigptr
+farg2 = domainmap%swigptr
+farg3 = rangemap%swigptr
+farg4 = params%swigptr
+call swigc_TpetraCrsGraph_fillComplete__SWIG_0(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_fillComplete__SWIG_1(self, domainmap, rangemap)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: domainmap
+type(TpetraMap) :: rangemap
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+
+farg1 = self%swigptr
+farg2 = domainmap%swigptr
+farg3 = rangemap%swigptr
+call swigc_TpetraCrsGraph_fillComplete__SWIG_1(farg1, farg2, farg3)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_fillComplete__SWIG_2(self, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(ParameterList) :: params
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = params%swigptr
+call swigc_TpetraCrsGraph_fillComplete__SWIG_2(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_fillComplete__SWIG_3(self)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+call swigc_TpetraCrsGraph_fillComplete__SWIG_3(farg1)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_expertStaticFillComplete__SWIG_0(self, domainmap, rangemap, importer, exporter, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: domainmap
+type(TpetraMap) :: rangemap
+type(TpetraImport) :: importer
+type(TpetraExport) :: exporter
+type(ParameterList) :: params
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+type(C_PTR) :: farg6 
+
+farg1 = self%swigptr
+farg2 = domainmap%swigptr
+farg3 = rangemap%swigptr
+farg4 = importer%swigptr
+farg5 = exporter%swigptr
+farg6 = params%swigptr
+call swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_expertStaticFillComplete__SWIG_1(self, domainmap, rangemap, importer, exporter)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: domainmap
+type(TpetraMap) :: rangemap
+type(TpetraImport) :: importer
+type(TpetraExport) :: exporter
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+
+farg1 = self%swigptr
+farg2 = domainmap%swigptr
+farg3 = rangemap%swigptr
+farg4 = importer%swigptr
+farg5 = exporter%swigptr
+call swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_1(farg1, farg2, farg3, farg4, farg5)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_expertStaticFillComplete__SWIG_2(self, domainmap, rangemap, importer)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: domainmap
+type(TpetraMap) :: rangemap
+type(TpetraImport) :: importer
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+
+farg1 = self%swigptr
+farg2 = domainmap%swigptr
+farg3 = rangemap%swigptr
+farg4 = importer%swigptr
+call swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_2(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_expertStaticFillComplete__SWIG_3(self, domainmap, rangemap)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: domainmap
+type(TpetraMap) :: rangemap
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+
+farg1 = self%swigptr
+farg2 = domainmap%swigptr
+farg3 = rangemap%swigptr
+call swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_3(farg1, farg2, farg3)
+
+end subroutine
+
+function swigf_TpetraCrsGraph_getComm(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TeuchosComm) :: swigf_result
+class(TpetraCrsGraph) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getComm(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraCrsGraph_getRowMap(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraMap) :: swigf_result
+class(TpetraCrsGraph) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getRowMap(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraCrsGraph_getColMap(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraMap) :: swigf_result
+class(TpetraCrsGraph) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getColMap(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraCrsGraph_getDomainMap(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraMap) :: swigf_result
+class(TpetraCrsGraph) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getDomainMap(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraCrsGraph_getRangeMap(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraMap) :: swigf_result
+class(TpetraCrsGraph) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getRangeMap(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraCrsGraph_getImporter(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraImport) :: swigf_result
+class(TpetraCrsGraph) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getImporter(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraCrsGraph_getExporter(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraExport) :: swigf_result
+class(TpetraCrsGraph) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getExporter(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraCrsGraph_getGlobalNumRows(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: swigf_result
+class(TpetraCrsGraph) :: self
+integer(C_LONG) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getGlobalNumRows(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_getGlobalNumCols(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: swigf_result
+class(TpetraCrsGraph) :: self
+integer(C_LONG) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getGlobalNumCols(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_getNodeNumRows(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraCrsGraph) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getNodeNumRows(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_getNodeNumCols(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraCrsGraph) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getNodeNumCols(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_getIndexBase(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraCrsGraph) :: self
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getIndexBase(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_getGlobalNumEntries(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: swigf_result
+class(TpetraCrsGraph) :: self
+integer(C_LONG) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getGlobalNumEntries(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_getNodeNumEntries(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraCrsGraph) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getNodeNumEntries(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_getNumEntriesInGlobalRow(self, globalrow) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraCrsGraph) :: self
+integer(C_INT), intent(in) :: globalrow
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+
+farg1 = self%swigptr
+farg2 = globalrow
+fresult = swigc_TpetraCrsGraph_getNumEntriesInGlobalRow(farg1, farg2)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_getNodeAllocationSize(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraCrsGraph) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getNodeAllocationSize(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow(self, globalrow) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraCrsGraph) :: self
+integer(C_INT), intent(in) :: globalrow
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+
+farg1 = self%swigptr
+farg2 = globalrow
+fresult = swigc_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow(farg1, farg2)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_getGlobalNumDiags(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: swigf_result
+class(TpetraCrsGraph) :: self
+integer(C_LONG) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getGlobalNumDiags(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_getNodeNumDiags(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraCrsGraph) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getNodeNumDiags(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_getGlobalMaxNumRowEntries(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraCrsGraph) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getGlobalMaxNumRowEntries(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_getNodeMaxNumRowEntries(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraCrsGraph) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getNodeMaxNumRowEntries(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_hasColMap(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsGraph) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_hasColMap(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_isLowerTriangular(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsGraph) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_isLowerTriangular(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_isUpperTriangular(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsGraph) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_isUpperTriangular(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_isLocallyIndexed(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsGraph) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_isLocallyIndexed(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_isGloballyIndexed(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsGraph) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_isGloballyIndexed(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_isFillComplete(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsGraph) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_isFillComplete(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_isFillActive(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsGraph) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_isFillActive(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_isSorted(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsGraph) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_isSorted(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_isStorageOptimized(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsGraph) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_isStorageOptimized(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_getProfileType(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(kind(ProfileType)) :: swigf_result
+class(TpetraCrsGraph) :: self
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_getProfileType(farg1)
+swigf_result = fresult
+end function
+
+subroutine swigf_TpetraCrsGraph_getGlobalRowCopy(self, globalrow, indices, numindices)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+integer(C_INT), intent(in) :: globalrow
+class(TeuchosArrayViewInt) :: indices
+integer(C_SIZE_T), target, intent(inout) :: numindices
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+
+farg1 = self%swigptr
+farg2 = globalrow
+farg3 = indices%swigptr
+farg4 = c_loc(numindices)
+call swigc_TpetraCrsGraph_getGlobalRowCopy(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_getGlobalRowView(self, gblrow, gblcolinds)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+integer(C_INT), intent(in) :: gblrow
+class(TeuchosArrayViewIntConst) :: gblcolinds
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+type(C_PTR) :: farg3 
+
+farg1 = self%swigptr
+farg2 = gblrow
+farg3 = gblcolinds%swigptr
+call swigc_TpetraCrsGraph_getGlobalRowView(farg1, farg2, farg3)
+
+end subroutine
+
+function swigf_TpetraCrsGraph_supportsRowViews(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsGraph) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_supportsRowViews(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_description(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(string) :: swigf_result
+class(TpetraCrsGraph) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_description(farg1)
+swigf_result%swigptr = fresult
+end function
+
+subroutine swigf_TpetraCrsGraph_replaceColMap(self, newcolmap)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: newcolmap
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = newcolmap%swigptr
+call swigc_TpetraCrsGraph_replaceColMap(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_reindexColumns__SWIG_0(self, newcolmap, newimport, sortindicesineachrow)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: newcolmap
+type(TpetraImport) :: newimport
+logical(C_BOOL), intent(in) :: sortindicesineachrow
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+logical(C_BOOL) :: farg4 
+
+farg1 = self%swigptr
+farg2 = newcolmap%swigptr
+farg3 = newimport%swigptr
+farg4 = sortindicesineachrow
+call swigc_TpetraCrsGraph_reindexColumns__SWIG_0(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_reindexColumns__SWIG_1(self, newcolmap, newimport)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: newcolmap
+type(TpetraImport) :: newimport
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+
+farg1 = self%swigptr
+farg2 = newcolmap%swigptr
+farg3 = newimport%swigptr
+call swigc_TpetraCrsGraph_reindexColumns__SWIG_1(farg1, farg2, farg3)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_reindexColumns__SWIG_2(self, newcolmap)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: newcolmap
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = newcolmap%swigptr
+call swigc_TpetraCrsGraph_reindexColumns__SWIG_2(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_replaceDomainMapAndImporter(self, newdomainmap, newimporter)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: newdomainmap
+type(TpetraImport) :: newimporter
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+
+farg1 = self%swigptr
+farg2 = newdomainmap%swigptr
+farg3 = newimporter%swigptr
+call swigc_TpetraCrsGraph_replaceDomainMapAndImporter(farg1, farg2, farg3)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_removeEmptyProcessesInPlace(self, newmap)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: newmap
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = newmap%swigptr
+call swigc_TpetraCrsGraph_removeEmptyProcessesInPlace(farg1, farg2)
+
+end subroutine
+
+function swigf_TpetraCrsGraph_haveGlobalConstants(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsGraph) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsGraph_haveGlobalConstants(farg1)
+swigf_result = fresult
+end function
+
+subroutine swigf_TpetraCrsGraph_computeGlobalConstants(self)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+call swigc_TpetraCrsGraph_computeGlobalConstants(farg1)
+
+end subroutine
+
   subroutine swigf_assign_TpetraCrsGraph(self, other)
    use, intrinsic :: ISO_C_BINDING
    class(TpetraCrsGraph), intent(inout) :: self
    type(TpetraCrsGraph), intent(in) :: other
-   call self%release()
+if (c_associated(self%swigptr)) call self%release()
    self%swigptr = swigc_spcopy_TpetraCrsGraph(other%swigptr)
   end subroutine
-  subroutine swigf_new_TpetraCrsMatrix__SWIG_0(self, rowMap, maxNumEntriesPerRow, pftype, params)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraMap) :: rowMap
-   integer(C_SIZE_T), intent(in) :: maxNumEntriesPerRow
-   integer(kind(ProfileType)) :: pftype
-   type(ParameterList) :: params
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraCrsMatrix__SWIG_0(rowMap%swigptr, maxNumEntriesPerRow, pftype, params%swigptr)
-  end subroutine
-  subroutine swigf_new_TpetraCrsMatrix__SWIG_1(self, rowMap, maxNumEntriesPerRow, pftype)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraMap) :: rowMap
-   integer(C_SIZE_T), intent(in) :: maxNumEntriesPerRow
-   integer(kind(ProfileType)) :: pftype
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraCrsMatrix__SWIG_1(rowMap%swigptr, maxNumEntriesPerRow, pftype)
-  end subroutine
-  subroutine swigf_new_TpetraCrsMatrix__SWIG_2(self, rowMap, maxNumEntriesPerRow)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraMap) :: rowMap
-   integer(C_SIZE_T), intent(in) :: maxNumEntriesPerRow
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraCrsMatrix__SWIG_2(rowMap%swigptr, maxNumEntriesPerRow)
-  end subroutine
-  subroutine swigf_new_TpetraCrsMatrix__SWIG_3(self, rowMap, colMap, maxNumEntriesPerRow, pftype, params)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraMap) :: rowMap
-   type(TpetraMap) :: colMap
-   integer(C_SIZE_T), intent(in) :: maxNumEntriesPerRow
-   integer(kind(ProfileType)) :: pftype
-   type(ParameterList) :: params
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraCrsMatrix__SWIG_3(rowMap%swigptr, colMap%swigptr, maxNumEntriesPerRow, pftype, params%swigptr)
-  end subroutine
-  subroutine swigf_new_TpetraCrsMatrix__SWIG_4(self, rowMap, colMap, maxNumEntriesPerRow, pftype)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraMap) :: rowMap
-   type(TpetraMap) :: colMap
-   integer(C_SIZE_T), intent(in) :: maxNumEntriesPerRow
-   integer(kind(ProfileType)) :: pftype
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraCrsMatrix__SWIG_4(rowMap%swigptr, colMap%swigptr, maxNumEntriesPerRow, pftype)
-  end subroutine
-  subroutine swigf_new_TpetraCrsMatrix__SWIG_5(self, rowMap, colMap, maxNumEntriesPerRow)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraMap) :: rowMap
-   type(TpetraMap) :: colMap
-   integer(C_SIZE_T), intent(in) :: maxNumEntriesPerRow
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraCrsMatrix__SWIG_5(rowMap%swigptr, colMap%swigptr, maxNumEntriesPerRow)
-  end subroutine
-  subroutine swigf_new_TpetraCrsMatrix__SWIG_6(self, graph, params)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraCrsGraph) :: graph
-   type(ParameterList) :: params
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraCrsMatrix__SWIG_6(graph%swigptr, params%swigptr)
-  end subroutine
-  subroutine swigf_new_TpetraCrsMatrix__SWIG_7(self, graph)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraCrsGraph) :: graph
-   if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_new_TpetraCrsMatrix__SWIG_7(graph%swigptr)
-  end subroutine
-  subroutine swigf_delete_TpetraCrsMatrix(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   call swigc_delete_TpetraCrsMatrix(self%swigptr)
-   self%swigptr = C_NULL_PTR
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_insertGlobalValues__SWIG_0(self, globalRow, cols, vals)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: globalRow
-   class(TeuchosArrayViewIntConst) :: cols
-   class(TeuchosArrayViewDoubleConst) :: vals
-   call swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_0(self%swigptr, globalRow, cols%swigptr, vals%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_insertGlobalValues__SWIG_1(self, globalRow, numEnt, vals, inds)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: globalRow
-   integer(C_INT), intent(in) :: numEnt
-   real(C_DOUBLE), dimension(:), intent(in) :: vals
-   integer(C_INT), dimension(:), intent(in) :: inds
-   call swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_1(self%swigptr, globalRow, numEnt, vals, inds)
-  end subroutine
-  function swigf_TpetraCrsMatrix_replaceGlobalValues__SWIG_1(self, globalRow, cols, vals) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: globalRow
-   class(TeuchosArrayViewIntConst) :: cols
-   class(TeuchosArrayViewDoubleConst) :: vals
-   fresult = swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_1(self%swigptr, globalRow, cols%swigptr, vals%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_replaceGlobalValues__SWIG_2(self, globalRow, numEnt, vals, cols) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: globalRow
-   integer(C_INT), intent(in) :: numEnt
-   real(C_DOUBLE), dimension(:), intent(in) :: vals
-   integer(C_INT), dimension(:), intent(in) :: cols
-   fresult = swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_2(self%swigptr, globalRow, numEnt, vals, cols)
-  end function
-  function swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_0(self, globalRow, cols, vals, atomic) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: globalRow
-   class(TeuchosArrayViewIntConst) :: cols
-   class(TeuchosArrayViewDoubleConst) :: vals
-   logical(C_BOOL), intent(in) :: atomic
-   fresult = swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_0(self%swigptr, globalRow, cols%swigptr, vals%swigptr, atomic)
-  end function
-  function swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_1(self, globalRow, cols, vals) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: globalRow
-   class(TeuchosArrayViewIntConst) :: cols
-   class(TeuchosArrayViewDoubleConst) :: vals
-   fresult = swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_1(self%swigptr, globalRow, cols%swigptr, vals%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_2(self, globalRow, numEnt, vals, cols, atomic) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: globalRow
-   integer(C_INT), intent(in) :: numEnt
-   real(C_DOUBLE), dimension(:), intent(in) :: vals
-   integer(C_INT), dimension(:), intent(in) :: cols
-   logical(C_BOOL), intent(in) :: atomic
-   fresult = swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_2(self%swigptr, globalRow, numEnt, vals, cols, atomic)
-  end function
-  function swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3(self, globalRow, numEnt, vals, cols) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: globalRow
-   integer(C_INT), intent(in) :: numEnt
-   real(C_DOUBLE), dimension(:), intent(in) :: vals
-   integer(C_INT), dimension(:), intent(in) :: cols
-   fresult = swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3(self%swigptr, globalRow, numEnt, vals, cols)
-  end function
-  subroutine swigf_TpetraCrsMatrix_setAllToScalar(self, alpha)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   real(C_DOUBLE), intent(in) :: alpha
-   call swigc_TpetraCrsMatrix_setAllToScalar(self%swigptr, alpha)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_scale(self, alpha)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   real(C_DOUBLE), intent(in) :: alpha
-   call swigc_TpetraCrsMatrix_scale(self%swigptr, alpha)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_globalAssemble(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   call swigc_TpetraCrsMatrix_globalAssemble(self%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_resumeFill__SWIG_0(self, params)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(ParameterList) :: params
-   call swigc_TpetraCrsMatrix_resumeFill__SWIG_0(self%swigptr, params%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_resumeFill__SWIG_1(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   call swigc_TpetraCrsMatrix_resumeFill__SWIG_1(self%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_fillComplete__SWIG_0(self, domainMap, rangeMap, params)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraMap) :: domainMap
-   type(TpetraMap) :: rangeMap
-   type(ParameterList) :: params
-   call swigc_TpetraCrsMatrix_fillComplete__SWIG_0(self%swigptr, domainMap%swigptr, rangeMap%swigptr, params%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_fillComplete__SWIG_1(self, domainMap, rangeMap)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraMap) :: domainMap
-   type(TpetraMap) :: rangeMap
-   call swigc_TpetraCrsMatrix_fillComplete__SWIG_1(self%swigptr, domainMap%swigptr, rangeMap%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_fillComplete__SWIG_2(self, params)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(ParameterList) :: params
-   call swigc_TpetraCrsMatrix_fillComplete__SWIG_2(self%swigptr, params%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_fillComplete__SWIG_3(self)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   call swigc_TpetraCrsMatrix_fillComplete__SWIG_3(self%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_expertStaticFillComplete__SWIG_0(self, domainMap, rangeMap, importer, exporter, params)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraMap) :: domainMap
-   type(TpetraMap) :: rangeMap
-   type(TpetraImport) :: importer
-   type(TpetraExport) :: exporter
-   type(ParameterList) :: params
-   call swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_0(self%swigptr, domainMap%swigptr, rangeMap%swigptr, importer%swigptr, exporter%swigptr, params%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_expertStaticFillComplete__SWIG_1(self, domainMap, rangeMap, importer, exporter)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraMap) :: domainMap
-   type(TpetraMap) :: rangeMap
-   type(TpetraImport) :: importer
-   type(TpetraExport) :: exporter
-   call swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_1(self%swigptr, domainMap%swigptr, rangeMap%swigptr, importer%swigptr, exporter%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_expertStaticFillComplete__SWIG_2(self, domainMap, rangeMap, importer)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraMap) :: domainMap
-   type(TpetraMap) :: rangeMap
-   type(TpetraImport) :: importer
-   call swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_2(self%swigptr, domainMap%swigptr, rangeMap%swigptr, importer%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_expertStaticFillComplete__SWIG_3(self, domainMap, rangeMap)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraMap) :: domainMap
-   type(TpetraMap) :: rangeMap
-   call swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_3(self%swigptr, domainMap%swigptr, rangeMap%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_replaceColMap(self, newColMap)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraMap) :: newColMap
-   call swigc_TpetraCrsMatrix_replaceColMap(self%swigptr, newColMap%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_reindexColumns__SWIG_0(self, graph, newColMap, newImport, sortEachRow)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraCrsGraph) :: graph
-   type(TpetraMap) :: newColMap
-   type(TpetraImport) :: newImport
-   logical(C_BOOL), intent(in) :: sortEachRow
-   call swigc_TpetraCrsMatrix_reindexColumns__SWIG_0(self%swigptr, graph%swigptr, newColMap%swigptr, newImport%swigptr, sortEachRow)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_reindexColumns__SWIG_1(self, graph, newColMap, newImport)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraCrsGraph) :: graph
-   type(TpetraMap) :: newColMap
-   type(TpetraImport) :: newImport
-   call swigc_TpetraCrsMatrix_reindexColumns__SWIG_1(self%swigptr, graph%swigptr, newColMap%swigptr, newImport%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_reindexColumns__SWIG_2(self, graph, newColMap)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraCrsGraph) :: graph
-   type(TpetraMap) :: newColMap
-   call swigc_TpetraCrsMatrix_reindexColumns__SWIG_2(self%swigptr, graph%swigptr, newColMap%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_replaceDomainMapAndImporter(self, newDomainMap, newImporter)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraMap) :: newDomainMap
-   type(TpetraImport) :: newImporter
-   call swigc_TpetraCrsMatrix_replaceDomainMapAndImporter(self%swigptr, newDomainMap%swigptr, newImporter%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_removeEmptyProcessesInPlace(self, newMap)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraMap) :: newMap
-   call swigc_TpetraCrsMatrix_removeEmptyProcessesInPlace(self%swigptr, newMap%swigptr)
-  end subroutine
-  function swigf_TpetraCrsMatrix_getComm(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TeuchosComm) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult%swigptr = swigc_TpetraCrsMatrix_getComm(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_getRowMap(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraMap) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult%swigptr = swigc_TpetraCrsMatrix_getRowMap(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_getColMap(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraMap) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult%swigptr = swigc_TpetraCrsMatrix_getColMap(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_getCrsGraph(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraCrsGraph) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult%swigptr = swigc_TpetraCrsMatrix_getCrsGraph(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_getGlobalNumRows(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_getGlobalNumRows(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_getGlobalNumCols(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_getGlobalNumCols(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_getNodeNumRows(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_getNodeNumRows(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_getNodeNumCols(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_getNodeNumCols(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_getIndexBase(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_getIndexBase(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_getGlobalNumEntries(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_getGlobalNumEntries(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_getNodeNumEntries(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_getNodeNumEntries(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_getNumEntriesInGlobalRow(self, globalRow) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: globalRow
-   fresult = swigc_TpetraCrsMatrix_getNumEntriesInGlobalRow(self%swigptr, globalRow)
-  end function
-  function swigf_TpetraCrsMatrix_getGlobalNumDiags(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_LONG) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_getGlobalNumDiags(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_getNodeNumDiags(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_getNodeNumDiags(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_getGlobalMaxNumRowEntries(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_getGlobalMaxNumRowEntries(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_getNodeMaxNumRowEntries(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_SIZE_T) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_getNodeMaxNumRowEntries(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_hasColMap(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_hasColMap(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_isLowerTriangular(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_isLowerTriangular(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_isUpperTriangular(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_isUpperTriangular(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_isLocallyIndexed(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_isLocallyIndexed(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_isGloballyIndexed(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_isGloballyIndexed(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_isFillComplete(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_isFillComplete(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_isFillActive(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_isFillActive(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_isStorageOptimized(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_isStorageOptimized(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_getProfileType(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(kind(ProfileType)) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_getProfileType(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_isStaticGraph(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_isStaticGraph(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_getFrobeniusNorm(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   real(C_DOUBLE) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_getFrobeniusNorm(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_supportsRowViews(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_supportsRowViews(self%swigptr)
-  end function
-  subroutine swigf_TpetraCrsMatrix_getGlobalRowCopy(self, GlobalRow, Indices, Values, NumEntries)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: GlobalRow
-   class(TeuchosArrayViewInt) :: Indices
-   class(TeuchosArrayViewDouble) :: Values
-   integer(C_SIZE_T), intent(inout) :: NumEntries
-   call swigc_TpetraCrsMatrix_getGlobalRowCopy(self%swigptr, GlobalRow, Indices%swigptr, Values%swigptr, NumEntries)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_getGlobalRowView(self, GlobalRow, indices, values)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: GlobalRow
-   class(TeuchosArrayViewIntConst) :: indices
-   class(TeuchosArrayViewDoubleConst) :: values
-   call swigc_TpetraCrsMatrix_getGlobalRowView(self%swigptr, GlobalRow, indices%swigptr, values%swigptr)
-  end subroutine
-  function swigf_TpetraCrsMatrix_getLocalRowViewRaw(self, lclRow, numEnt, lclColInds, vals) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   integer(C_INT) :: fresult
-   class(TpetraCrsMatrix) :: self
-   integer(C_INT), intent(in) :: lclRow
-   integer(C_INT), intent(inout) :: numEnt
-   type(C_PTR) :: lclColInds
-   type(C_PTR) :: vals
-   fresult = swigc_TpetraCrsMatrix_getLocalRowViewRaw(self%swigptr, lclRow, numEnt, lclColInds, vals)
-  end function
-  subroutine swigf_TpetraCrsMatrix_apply__SWIG_0(self, X, Y, mode, alpha, beta)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   class(TpetraMultiVector) :: X
-   class(TpetraMultiVector) :: Y
-   integer(kind(ETransp)) :: mode
-   real(C_DOUBLE), intent(in) :: alpha
-   real(C_DOUBLE), intent(in) :: beta
-   call swigc_TpetraCrsMatrix_apply__SWIG_0(self%swigptr, X%swigptr, Y%swigptr, mode, alpha, beta)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_apply__SWIG_1(self, X, Y, mode, alpha)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   class(TpetraMultiVector) :: X
-   class(TpetraMultiVector) :: Y
-   integer(kind(ETransp)) :: mode
-   real(C_DOUBLE), intent(in) :: alpha
-   call swigc_TpetraCrsMatrix_apply__SWIG_1(self%swigptr, X%swigptr, Y%swigptr, mode, alpha)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_apply__SWIG_2(self, X, Y, mode)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   class(TpetraMultiVector) :: X
-   class(TpetraMultiVector) :: Y
-   integer(kind(ETransp)) :: mode
-   call swigc_TpetraCrsMatrix_apply__SWIG_2(self%swigptr, X%swigptr, Y%swigptr, mode)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_apply__SWIG_3(self, X, Y)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   class(TpetraMultiVector) :: X
-   class(TpetraMultiVector) :: Y
-   call swigc_TpetraCrsMatrix_apply__SWIG_3(self%swigptr, X%swigptr, Y%swigptr)
-  end subroutine
-  function swigf_TpetraCrsMatrix_hasTransposeApply(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_hasTransposeApply(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_getDomainMap(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraMap) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult%swigptr = swigc_TpetraCrsMatrix_getDomainMap(self%swigptr)
-  end function
-  function swigf_TpetraCrsMatrix_getRangeMap(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(TpetraMap) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult%swigptr = swigc_TpetraCrsMatrix_getRangeMap(self%swigptr)
-  end function
-  subroutine swigf_TpetraCrsMatrix_gaussSeidel(self, B, X, D, dampingFactor, direction, numSweeps)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   class(TpetraMultiVector) :: B
-   class(TpetraMultiVector) :: X
-   class(TpetraMultiVector) :: D
-   real(C_DOUBLE), intent(in) :: dampingFactor
-   integer(kind(ESweepDirection)) :: direction
-   integer(C_INT), intent(in) :: numSweeps
-   call swigc_TpetraCrsMatrix_gaussSeidel(self%swigptr, B%swigptr, X%swigptr, D%swigptr, dampingFactor, direction, numSweeps)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_reorderedGaussSeidel(self, B, X, D, rowIndices, dampingFactor, direction, numSweeps)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   class(TpetraMultiVector) :: B
-   class(TpetraMultiVector) :: X
-   class(TpetraMultiVector) :: D
-   class(TeuchosArrayViewInt) :: rowIndices
-   real(C_DOUBLE), intent(in) :: dampingFactor
-   integer(kind(ESweepDirection)) :: direction
-   integer(C_INT), intent(in) :: numSweeps
-   call swigc_TpetraCrsMatrix_reorderedGaussSeidel(self%swigptr, B%swigptr, X%swigptr, D%swigptr, rowIndices%swigptr, dampingFactor, direction, numSweeps)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_gaussSeidelCopy(self, X, B, D, dampingFactor, direction, numSweeps, zeroInitialGuess)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   class(TpetraMultiVector) :: X
-   class(TpetraMultiVector) :: B
-   class(TpetraMultiVector) :: D
-   real(C_DOUBLE), intent(in) :: dampingFactor
-   integer(kind(ESweepDirection)) :: direction
-   integer(C_INT), intent(in) :: numSweeps
-   logical(C_BOOL), intent(in) :: zeroInitialGuess
-   call swigc_TpetraCrsMatrix_gaussSeidelCopy(self%swigptr, X%swigptr, B%swigptr, D%swigptr, dampingFactor, direction, numSweeps, zeroInitialGuess)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_reorderedGaussSeidelCopy(self, X, B, D, rowIndices, dampingFactor, direction, numSweeps, zeroInitialGuess)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   class(TpetraMultiVector) :: X
-   class(TpetraMultiVector) :: B
-   class(TpetraMultiVector) :: D
-   class(TeuchosArrayViewInt) :: rowIndices
-   real(C_DOUBLE), intent(in) :: dampingFactor
-   integer(kind(ESweepDirection)) :: direction
-   integer(C_INT), intent(in) :: numSweeps
-   logical(C_BOOL), intent(in) :: zeroInitialGuess
-   call swigc_TpetraCrsMatrix_reorderedGaussSeidelCopy(self%swigptr, X%swigptr, B%swigptr, D%swigptr, rowIndices%swigptr, dampingFactor, direction, numSweeps, zeroInitialGuess)
-  end subroutine
-  function swigf_TpetraCrsMatrix_description(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(string) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult%swigptr = swigc_TpetraCrsMatrix_description(self%swigptr)
-   fresult%swigown = .true.
-  end function
-  subroutine swigf_TpetraCrsMatrix_importAndFillComplete__SWIG_0(self, destMatrix, importer, domainMap, rangeMap, params)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraCrsMatrix) :: destMatrix
-   class(TpetraImport) :: importer
-   type(TpetraMap) :: domainMap
-   type(TpetraMap) :: rangeMap
-   type(ParameterList) :: params
-   call swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_0(self%swigptr, destMatrix%swigptr, importer%swigptr, domainMap%swigptr, rangeMap%swigptr, params%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_importAndFillComplete__SWIG_1(self, destMatrix, importer, domainMap, rangeMap)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraCrsMatrix) :: destMatrix
-   class(TpetraImport) :: importer
-   type(TpetraMap) :: domainMap
-   type(TpetraMap) :: rangeMap
-   call swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_1(self%swigptr, destMatrix%swigptr, importer%swigptr, domainMap%swigptr, rangeMap%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_importAndFillComplete__SWIG_2(self, destMatrix, rowImporter, domainImporter, domainMap, rangeMap, params)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraCrsMatrix) :: destMatrix
-   class(TpetraImport) :: rowImporter
-   class(TpetraImport) :: domainImporter
-   type(TpetraMap) :: domainMap
-   type(TpetraMap) :: rangeMap
-   type(ParameterList) :: params
-   call swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_2(self%swigptr, destMatrix%swigptr, rowImporter%swigptr, domainImporter%swigptr, domainMap%swigptr, rangeMap%swigptr, params%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_0(self, destMatrix, exporter, domainMap, rangeMap, params)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraCrsMatrix) :: destMatrix
-   class(TpetraExport) :: exporter
-   type(TpetraMap) :: domainMap
-   type(TpetraMap) :: rangeMap
-   type(ParameterList) :: params
-   call swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_0(self%swigptr, destMatrix%swigptr, exporter%swigptr, domainMap%swigptr, rangeMap%swigptr, params%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_1(self, destMatrix, exporter, domainMap, rangeMap)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraCrsMatrix) :: destMatrix
-   class(TpetraExport) :: exporter
-   type(TpetraMap) :: domainMap
-   type(TpetraMap) :: rangeMap
-   call swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_1(self%swigptr, destMatrix%swigptr, exporter%swigptr, domainMap%swigptr, rangeMap%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_2(self, destMatrix, exporter, domainMap)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraCrsMatrix) :: destMatrix
-   class(TpetraExport) :: exporter
-   type(TpetraMap) :: domainMap
-   call swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_2(self%swigptr, destMatrix%swigptr, exporter%swigptr, domainMap%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_3(self, destMatrix, exporter)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraCrsMatrix) :: destMatrix
-   class(TpetraExport) :: exporter
-   call swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_3(self%swigptr, destMatrix%swigptr, exporter%swigptr)
-  end subroutine
-  subroutine swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_4(self, destMatrix, rowExporter, domainExporter, domainMap, rangeMap, params)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraCrsMatrix) :: self
-   type(TpetraCrsMatrix) :: destMatrix
-   class(TpetraExport) :: rowExporter
-   class(TpetraExport) :: domainExporter
-   type(TpetraMap) :: domainMap
-   type(TpetraMap) :: rangeMap
-   type(ParameterList) :: params
-   call swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_4(self%swigptr, destMatrix%swigptr, rowExporter%swigptr, domainExporter%swigptr, domainMap%swigptr, rangeMap%swigptr, params%swigptr)
-  end subroutine
-  function swigf_TpetraCrsMatrix_haveGlobalConstants(self) &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   logical(C_BOOL) :: fresult
-   class(TpetraCrsMatrix) :: self
-   fresult = swigc_TpetraCrsMatrix_haveGlobalConstants(self%swigptr)
-  end function
+subroutine swigf_new_TpetraCrsMatrix__SWIG_0(self, rowmap, maxnumentriesperrow, pftype, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraMap) :: rowmap
+integer(C_SIZE_T), intent(in) :: maxnumentriesperrow
+integer(kind(ProfileType)) :: pftype
+type(ParameterList) :: params
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_SIZE_T) :: farg2 
+integer(C_INT) :: farg3 
+type(C_PTR) :: farg4 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2 = maxnumentriesperrow
+farg3 = pftype
+farg4 = params%swigptr
+fresult = swigc_new_TpetraCrsMatrix__SWIG_0(farg1, farg2, farg3, farg4)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsMatrix__SWIG_1(self, rowmap, maxnumentriesperrow, pftype)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraMap) :: rowmap
+integer(C_SIZE_T), intent(in) :: maxnumentriesperrow
+integer(kind(ProfileType)) :: pftype
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_SIZE_T) :: farg2 
+integer(C_INT) :: farg3 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2 = maxnumentriesperrow
+farg3 = pftype
+fresult = swigc_new_TpetraCrsMatrix__SWIG_1(farg1, farg2, farg3)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsMatrix__SWIG_2(self, rowmap, maxnumentriesperrow)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraMap) :: rowmap
+integer(C_SIZE_T), intent(in) :: maxnumentriesperrow
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_SIZE_T) :: farg2 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2 = maxnumentriesperrow
+fresult = swigc_new_TpetraCrsMatrix__SWIG_2(farg1, farg2)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsMatrix__SWIG_3(self, rowmap, colmap, maxnumentriesperrow, pftype, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraMap) :: rowmap
+type(TpetraMap) :: colmap
+integer(C_SIZE_T), intent(in) :: maxnumentriesperrow
+integer(kind(ProfileType)) :: pftype
+type(ParameterList) :: params
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+integer(C_SIZE_T) :: farg3 
+integer(C_INT) :: farg4 
+type(C_PTR) :: farg5 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2 = colmap%swigptr
+farg3 = maxnumentriesperrow
+farg4 = pftype
+farg5 = params%swigptr
+fresult = swigc_new_TpetraCrsMatrix__SWIG_3(farg1, farg2, farg3, farg4, farg5)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsMatrix__SWIG_4(self, rowmap, colmap, maxnumentriesperrow, pftype)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraMap) :: rowmap
+type(TpetraMap) :: colmap
+integer(C_SIZE_T), intent(in) :: maxnumentriesperrow
+integer(kind(ProfileType)) :: pftype
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+integer(C_SIZE_T) :: farg3 
+integer(C_INT) :: farg4 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2 = colmap%swigptr
+farg3 = maxnumentriesperrow
+farg4 = pftype
+fresult = swigc_new_TpetraCrsMatrix__SWIG_4(farg1, farg2, farg3, farg4)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsMatrix__SWIG_5(self, rowmap, colmap, maxnumentriesperrow)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraMap) :: rowmap
+type(TpetraMap) :: colmap
+integer(C_SIZE_T), intent(in) :: maxnumentriesperrow
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+integer(C_SIZE_T) :: farg3 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2 = colmap%swigptr
+farg3 = maxnumentriesperrow
+fresult = swigc_new_TpetraCrsMatrix__SWIG_5(farg1, farg2, farg3)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsMatrix__SWIG_6(self, graph, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraCrsGraph) :: graph
+type(ParameterList) :: params
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = graph%swigptr
+farg2 = params%swigptr
+fresult = swigc_new_TpetraCrsMatrix__SWIG_6(farg1, farg2)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsMatrix__SWIG_7(self, graph)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraCrsGraph) :: graph
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = graph%swigptr
+fresult = swigc_new_TpetraCrsMatrix__SWIG_7(farg1)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_delete_TpetraCrsMatrix(self)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(C_PTR) :: farg1 
+
+if (.not. c_associated(self%swigptr)) return
+farg1 = self%swigptr
+call swigc_delete_TpetraCrsMatrix(farg1)
+
+self%swigptr = C_NULL_PTR
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_insertGlobalValues__SWIG_0(self, globalrow, cols, vals)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+integer(C_INT), intent(in) :: globalrow
+class(TeuchosArrayViewIntConst) :: cols
+class(TeuchosArrayViewDoubleConst) :: vals
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+
+farg1 = self%swigptr
+farg2 = globalrow
+farg3 = cols%swigptr
+farg4 = vals%swigptr
+call swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_0(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_insertGlobalValues__SWIG_1(self, globalrow, nument, vals, inds)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+integer(C_INT), intent(in) :: globalrow
+integer(C_INT), intent(in) :: nument
+real(C_DOUBLE), dimension(:), target, intent(in) :: vals
+integer(C_INT), dimension(:), target, intent(in) :: inds
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+integer(C_INT) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+
+farg1 = self%swigptr
+farg2 = globalrow
+farg3 = nument
+farg4 = c_loc(vals)
+farg5 = c_loc(inds)
+call swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_1(farg1, farg2, farg3, farg4, farg5)
+
+end subroutine
+
+function swigf_TpetraCrsMatrix_replaceGlobalValues__SWIG_1(self, globalrow, cols, vals) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_INT), intent(in) :: globalrow
+class(TeuchosArrayViewIntConst) :: cols
+class(TeuchosArrayViewDoubleConst) :: vals
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+
+farg1 = self%swigptr
+farg2 = globalrow
+farg3 = cols%swigptr
+farg4 = vals%swigptr
+fresult = swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_1(farg1, farg2, farg3, farg4)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_replaceGlobalValues__SWIG_2(self, globalrow, nument, vals, cols) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_INT), intent(in) :: globalrow
+integer(C_INT), intent(in) :: nument
+real(C_DOUBLE), dimension(:), target, intent(in) :: vals
+integer(C_INT), dimension(:), target, intent(in) :: cols
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+integer(C_INT) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+
+farg1 = self%swigptr
+farg2 = globalrow
+farg3 = nument
+farg4 = c_loc(vals)
+farg5 = c_loc(cols)
+fresult = swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_2(farg1, farg2, farg3, farg4, farg5)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_0(self, globalrow, cols, vals, atomic) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_INT), intent(in) :: globalrow
+class(TeuchosArrayViewIntConst) :: cols
+class(TeuchosArrayViewDoubleConst) :: vals
+logical(C_BOOL), intent(in) :: atomic
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+logical(C_BOOL) :: farg5 
+
+farg1 = self%swigptr
+farg2 = globalrow
+farg3 = cols%swigptr
+farg4 = vals%swigptr
+farg5 = atomic
+fresult = swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_0(farg1, farg2, farg3, farg4, farg5)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_1(self, globalrow, cols, vals) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_INT), intent(in) :: globalrow
+class(TeuchosArrayViewIntConst) :: cols
+class(TeuchosArrayViewDoubleConst) :: vals
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+
+farg1 = self%swigptr
+farg2 = globalrow
+farg3 = cols%swigptr
+farg4 = vals%swigptr
+fresult = swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_1(farg1, farg2, farg3, farg4)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_2(self, globalrow, nument, vals, cols, atomic) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_INT), intent(in) :: globalrow
+integer(C_INT), intent(in) :: nument
+real(C_DOUBLE), dimension(:), target, intent(in) :: vals
+integer(C_INT), dimension(:), target, intent(in) :: cols
+logical(C_BOOL), intent(in) :: atomic
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+integer(C_INT) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+logical(C_BOOL) :: farg6 
+
+farg1 = self%swigptr
+farg2 = globalrow
+farg3 = nument
+farg4 = c_loc(vals)
+farg5 = c_loc(cols)
+farg6 = atomic
+fresult = swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_2(farg1, farg2, farg3, farg4, farg5, farg6)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3(self, globalrow, nument, vals, cols) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_INT), intent(in) :: globalrow
+integer(C_INT), intent(in) :: nument
+real(C_DOUBLE), dimension(:), target, intent(in) :: vals
+integer(C_INT), dimension(:), target, intent(in) :: cols
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+integer(C_INT) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+
+farg1 = self%swigptr
+farg2 = globalrow
+farg3 = nument
+farg4 = c_loc(vals)
+farg5 = c_loc(cols)
+fresult = swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3(farg1, farg2, farg3, farg4, farg5)
+swigf_result = fresult
+end function
+
+subroutine swigf_TpetraCrsMatrix_setAllToScalar(self, alpha)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+real(C_DOUBLE), intent(in) :: alpha
+type(C_PTR) :: farg1 
+real(C_DOUBLE) :: farg2 
+
+farg1 = self%swigptr
+farg2 = alpha
+call swigc_TpetraCrsMatrix_setAllToScalar(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_scale(self, alpha)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+real(C_DOUBLE), intent(in) :: alpha
+type(C_PTR) :: farg1 
+real(C_DOUBLE) :: farg2 
+
+farg1 = self%swigptr
+farg2 = alpha
+call swigc_TpetraCrsMatrix_scale(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_globalAssemble(self)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+call swigc_TpetraCrsMatrix_globalAssemble(farg1)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_resumeFill__SWIG_0(self, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(ParameterList) :: params
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = params%swigptr
+call swigc_TpetraCrsMatrix_resumeFill__SWIG_0(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_resumeFill__SWIG_1(self)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+call swigc_TpetraCrsMatrix_resumeFill__SWIG_1(farg1)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_fillComplete__SWIG_0(self, domainmap, rangemap, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraMap) :: domainmap
+type(TpetraMap) :: rangemap
+type(ParameterList) :: params
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+
+farg1 = self%swigptr
+farg2 = domainmap%swigptr
+farg3 = rangemap%swigptr
+farg4 = params%swigptr
+call swigc_TpetraCrsMatrix_fillComplete__SWIG_0(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_fillComplete__SWIG_1(self, domainmap, rangemap)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraMap) :: domainmap
+type(TpetraMap) :: rangemap
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+
+farg1 = self%swigptr
+farg2 = domainmap%swigptr
+farg3 = rangemap%swigptr
+call swigc_TpetraCrsMatrix_fillComplete__SWIG_1(farg1, farg2, farg3)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_fillComplete__SWIG_2(self, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(ParameterList) :: params
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = params%swigptr
+call swigc_TpetraCrsMatrix_fillComplete__SWIG_2(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_fillComplete__SWIG_3(self)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+call swigc_TpetraCrsMatrix_fillComplete__SWIG_3(farg1)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_expertStaticFillComplete__SWIG_0(self, domainmap, rangemap, importer, exporter, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraMap) :: domainmap
+type(TpetraMap) :: rangemap
+type(TpetraImport) :: importer
+type(TpetraExport) :: exporter
+type(ParameterList) :: params
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+type(C_PTR) :: farg6 
+
+farg1 = self%swigptr
+farg2 = domainmap%swigptr
+farg3 = rangemap%swigptr
+farg4 = importer%swigptr
+farg5 = exporter%swigptr
+farg6 = params%swigptr
+call swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_expertStaticFillComplete__SWIG_1(self, domainmap, rangemap, importer, exporter)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraMap) :: domainmap
+type(TpetraMap) :: rangemap
+type(TpetraImport) :: importer
+type(TpetraExport) :: exporter
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+
+farg1 = self%swigptr
+farg2 = domainmap%swigptr
+farg3 = rangemap%swigptr
+farg4 = importer%swigptr
+farg5 = exporter%swigptr
+call swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_1(farg1, farg2, farg3, farg4, farg5)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_expertStaticFillComplete__SWIG_2(self, domainmap, rangemap, importer)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraMap) :: domainmap
+type(TpetraMap) :: rangemap
+type(TpetraImport) :: importer
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+
+farg1 = self%swigptr
+farg2 = domainmap%swigptr
+farg3 = rangemap%swigptr
+farg4 = importer%swigptr
+call swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_2(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_expertStaticFillComplete__SWIG_3(self, domainmap, rangemap)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraMap) :: domainmap
+type(TpetraMap) :: rangemap
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+
+farg1 = self%swigptr
+farg2 = domainmap%swigptr
+farg3 = rangemap%swigptr
+call swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_3(farg1, farg2, farg3)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_replaceColMap(self, newcolmap)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraMap) :: newcolmap
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = newcolmap%swigptr
+call swigc_TpetraCrsMatrix_replaceColMap(farg1, farg2)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_reindexColumns__SWIG_0(self, graph, newcolmap, newimport, sorteachrow)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+class(TpetraCrsGraph) :: graph
+type(TpetraMap) :: newcolmap
+type(TpetraImport) :: newimport
+logical(C_BOOL), intent(in) :: sorteachrow
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+logical(C_BOOL) :: farg5 
+
+farg1 = self%swigptr
+farg2 = graph%swigptr
+farg3 = newcolmap%swigptr
+farg4 = newimport%swigptr
+farg5 = sorteachrow
+call swigc_TpetraCrsMatrix_reindexColumns__SWIG_0(farg1, farg2, farg3, farg4, farg5)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_reindexColumns__SWIG_1(self, graph, newcolmap, newimport)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+class(TpetraCrsGraph) :: graph
+type(TpetraMap) :: newcolmap
+type(TpetraImport) :: newimport
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+
+farg1 = self%swigptr
+farg2 = graph%swigptr
+farg3 = newcolmap%swigptr
+farg4 = newimport%swigptr
+call swigc_TpetraCrsMatrix_reindexColumns__SWIG_1(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_reindexColumns__SWIG_2(self, graph, newcolmap)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+class(TpetraCrsGraph) :: graph
+type(TpetraMap) :: newcolmap
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+
+farg1 = self%swigptr
+farg2 = graph%swigptr
+farg3 = newcolmap%swigptr
+call swigc_TpetraCrsMatrix_reindexColumns__SWIG_2(farg1, farg2, farg3)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_replaceDomainMapAndImporter(self, newdomainmap, newimporter)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraMap) :: newdomainmap
+type(TpetraImport) :: newimporter
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+
+farg1 = self%swigptr
+farg2 = newdomainmap%swigptr
+farg3 = newimporter%swigptr
+call swigc_TpetraCrsMatrix_replaceDomainMapAndImporter(farg1, farg2, farg3)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_removeEmptyProcessesInPlace(self, newmap)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraMap) :: newmap
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigptr
+farg2 = newmap%swigptr
+call swigc_TpetraCrsMatrix_removeEmptyProcessesInPlace(farg1, farg2)
+
+end subroutine
+
+function swigf_TpetraCrsMatrix_getComm(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TeuchosComm) :: swigf_result
+class(TpetraCrsMatrix) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getComm(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getRowMap(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraMap) :: swigf_result
+class(TpetraCrsMatrix) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getRowMap(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getColMap(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraMap) :: swigf_result
+class(TpetraCrsMatrix) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getColMap(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getCrsGraph(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraCrsGraph) :: swigf_result
+class(TpetraCrsMatrix) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getCrsGraph(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getGlobalNumRows(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_LONG) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getGlobalNumRows(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getGlobalNumCols(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_LONG) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getGlobalNumCols(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getNodeNumRows(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getNodeNumRows(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getNodeNumCols(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getNodeNumCols(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getIndexBase(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getIndexBase(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getGlobalNumEntries(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_LONG) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getGlobalNumEntries(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getNodeNumEntries(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getNodeNumEntries(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getNumEntriesInGlobalRow(self, globalrow) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_INT), intent(in) :: globalrow
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+
+farg1 = self%swigptr
+farg2 = globalrow
+fresult = swigc_TpetraCrsMatrix_getNumEntriesInGlobalRow(farg1, farg2)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getGlobalNumDiags(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_LONG) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getGlobalNumDiags(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getNodeNumDiags(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getNodeNumDiags(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getGlobalMaxNumRowEntries(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getGlobalMaxNumRowEntries(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getNodeMaxNumRowEntries(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getNodeMaxNumRowEntries(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_hasColMap(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsMatrix) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_hasColMap(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_isLowerTriangular(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsMatrix) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_isLowerTriangular(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_isUpperTriangular(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsMatrix) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_isUpperTriangular(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_isLocallyIndexed(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsMatrix) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_isLocallyIndexed(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_isGloballyIndexed(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsMatrix) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_isGloballyIndexed(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_isFillComplete(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsMatrix) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_isFillComplete(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_isFillActive(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsMatrix) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_isFillActive(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_isStorageOptimized(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsMatrix) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_isStorageOptimized(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getProfileType(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(kind(ProfileType)) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getProfileType(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_isStaticGraph(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsMatrix) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_isStaticGraph(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getFrobeniusNorm(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: swigf_result
+class(TpetraCrsMatrix) :: self
+real(C_DOUBLE) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getFrobeniusNorm(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_supportsRowViews(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsMatrix) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_supportsRowViews(farg1)
+swigf_result = fresult
+end function
+
+subroutine swigf_TpetraCrsMatrix_getGlobalRowCopy(self, globalrow, indices, values, numentries)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+integer(C_INT), intent(in) :: globalrow
+class(TeuchosArrayViewInt) :: indices
+class(TeuchosArrayViewDouble) :: values
+integer(C_SIZE_T), target, intent(inout) :: numentries
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+
+farg1 = self%swigptr
+farg2 = globalrow
+farg3 = indices%swigptr
+farg4 = values%swigptr
+farg5 = c_loc(numentries)
+call swigc_TpetraCrsMatrix_getGlobalRowCopy(farg1, farg2, farg3, farg4, farg5)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_getGlobalRowView(self, globalrow, indices, values)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+integer(C_INT), intent(in) :: globalrow
+class(TeuchosArrayViewIntConst) :: indices
+class(TeuchosArrayViewDoubleConst) :: values
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+
+farg1 = self%swigptr
+farg2 = globalrow
+farg3 = indices%swigptr
+farg4 = values%swigptr
+call swigc_TpetraCrsMatrix_getGlobalRowView(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+function swigf_TpetraCrsMatrix_getLocalRowViewRaw(self, lclrow, nument, lclcolinds, vals) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_INT), intent(in) :: lclrow
+integer(C_INT), target, intent(inout) :: nument
+type(C_PTR) :: lclcolinds
+type(C_PTR) :: vals
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+
+farg1 = self%swigptr
+farg2 = lclrow
+farg3 = c_loc(nument)
+farg4 = lclcolinds
+farg5 = vals
+fresult = swigc_TpetraCrsMatrix_getLocalRowViewRaw(farg1, farg2, farg3, farg4, farg5)
+swigf_result = fresult
+end function
+
+subroutine swigf_TpetraCrsMatrix_apply__SWIG_0(self, x, y, mode, alpha, beta)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+class(TpetraMultiVector) :: x
+class(TpetraMultiVector) :: y
+integer(kind(ETransp)) :: mode
+real(C_DOUBLE), intent(in) :: alpha
+real(C_DOUBLE), intent(in) :: beta
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+integer(C_INT) :: farg4 
+real(C_DOUBLE) :: farg5 
+real(C_DOUBLE) :: farg6 
+
+farg1 = self%swigptr
+farg2 = x%swigptr
+farg3 = y%swigptr
+farg4 = mode
+farg5 = alpha
+farg6 = beta
+call swigc_TpetraCrsMatrix_apply__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_apply__SWIG_1(self, x, y, mode, alpha)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+class(TpetraMultiVector) :: x
+class(TpetraMultiVector) :: y
+integer(kind(ETransp)) :: mode
+real(C_DOUBLE), intent(in) :: alpha
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+integer(C_INT) :: farg4 
+real(C_DOUBLE) :: farg5 
+
+farg1 = self%swigptr
+farg2 = x%swigptr
+farg3 = y%swigptr
+farg4 = mode
+farg5 = alpha
+call swigc_TpetraCrsMatrix_apply__SWIG_1(farg1, farg2, farg3, farg4, farg5)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_apply__SWIG_2(self, x, y, mode)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+class(TpetraMultiVector) :: x
+class(TpetraMultiVector) :: y
+integer(kind(ETransp)) :: mode
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+integer(C_INT) :: farg4 
+
+farg1 = self%swigptr
+farg2 = x%swigptr
+farg3 = y%swigptr
+farg4 = mode
+call swigc_TpetraCrsMatrix_apply__SWIG_2(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_apply__SWIG_3(self, x, y)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+class(TpetraMultiVector) :: x
+class(TpetraMultiVector) :: y
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+
+farg1 = self%swigptr
+farg2 = x%swigptr
+farg3 = y%swigptr
+call swigc_TpetraCrsMatrix_apply__SWIG_3(farg1, farg2, farg3)
+
+end subroutine
+
+function swigf_TpetraCrsMatrix_hasTransposeApply(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsMatrix) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_hasTransposeApply(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getDomainMap(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraMap) :: swigf_result
+class(TpetraCrsMatrix) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getDomainMap(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraCrsMatrix_getRangeMap(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraMap) :: swigf_result
+class(TpetraCrsMatrix) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_getRangeMap(farg1)
+swigf_result%swigptr = fresult
+end function
+
+subroutine swigf_TpetraCrsMatrix_gaussSeidel(self, b, x, d, dampingfactor, direction, numsweeps)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+class(TpetraMultiVector) :: b
+class(TpetraMultiVector) :: x
+class(TpetraMultiVector) :: d
+real(C_DOUBLE), intent(in) :: dampingfactor
+integer(kind(ESweepDirection)) :: direction
+integer(C_INT), intent(in) :: numsweeps
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+real(C_DOUBLE) :: farg5 
+integer(C_INT) :: farg6 
+integer(C_INT) :: farg7 
+
+farg1 = self%swigptr
+farg2 = b%swigptr
+farg3 = x%swigptr
+farg4 = d%swigptr
+farg5 = dampingfactor
+farg6 = direction
+farg7 = numsweeps
+call swigc_TpetraCrsMatrix_gaussSeidel(farg1, farg2, farg3, farg4, farg5, farg6, farg7)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_reorderedGaussSeidel(self, b, x, d, rowindices, dampingfactor, direction, numsweeps)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+class(TpetraMultiVector) :: b
+class(TpetraMultiVector) :: x
+class(TpetraMultiVector) :: d
+class(TeuchosArrayViewInt) :: rowindices
+real(C_DOUBLE), intent(in) :: dampingfactor
+integer(kind(ESweepDirection)) :: direction
+integer(C_INT), intent(in) :: numsweeps
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+real(C_DOUBLE) :: farg6 
+integer(C_INT) :: farg7 
+integer(C_INT) :: farg8 
+
+farg1 = self%swigptr
+farg2 = b%swigptr
+farg3 = x%swigptr
+farg4 = d%swigptr
+farg5 = rowindices%swigptr
+farg6 = dampingfactor
+farg7 = direction
+farg8 = numsweeps
+call swigc_TpetraCrsMatrix_reorderedGaussSeidel(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_gaussSeidelCopy(self, x, b, d, dampingfactor, direction, numsweeps, zeroinitialguess)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+class(TpetraMultiVector) :: x
+class(TpetraMultiVector) :: b
+class(TpetraMultiVector) :: d
+real(C_DOUBLE), intent(in) :: dampingfactor
+integer(kind(ESweepDirection)) :: direction
+integer(C_INT), intent(in) :: numsweeps
+logical(C_BOOL), intent(in) :: zeroinitialguess
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+real(C_DOUBLE) :: farg5 
+integer(C_INT) :: farg6 
+integer(C_INT) :: farg7 
+logical(C_BOOL) :: farg8 
+
+farg1 = self%swigptr
+farg2 = x%swigptr
+farg3 = b%swigptr
+farg4 = d%swigptr
+farg5 = dampingfactor
+farg6 = direction
+farg7 = numsweeps
+farg8 = zeroinitialguess
+call swigc_TpetraCrsMatrix_gaussSeidelCopy(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_reorderedGaussSeidelCopy(self, x, b, d, rowindices, dampingfactor, direction, numsweeps, zeroinitialguess)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+class(TpetraMultiVector) :: x
+class(TpetraMultiVector) :: b
+class(TpetraMultiVector) :: d
+class(TeuchosArrayViewInt) :: rowindices
+real(C_DOUBLE), intent(in) :: dampingfactor
+integer(kind(ESweepDirection)) :: direction
+integer(C_INT), intent(in) :: numsweeps
+logical(C_BOOL), intent(in) :: zeroinitialguess
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+real(C_DOUBLE) :: farg6 
+integer(C_INT) :: farg7 
+integer(C_INT) :: farg8 
+logical(C_BOOL) :: farg9 
+
+farg1 = self%swigptr
+farg2 = x%swigptr
+farg3 = b%swigptr
+farg4 = d%swigptr
+farg5 = rowindices%swigptr
+farg6 = dampingfactor
+farg7 = direction
+farg8 = numsweeps
+farg9 = zeroinitialguess
+call swigc_TpetraCrsMatrix_reorderedGaussSeidelCopy(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8, farg9)
+
+end subroutine
+
+function swigf_TpetraCrsMatrix_description(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(string) :: swigf_result
+class(TpetraCrsMatrix) :: self
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_description(farg1)
+swigf_result%swigptr = fresult
+end function
+
+subroutine swigf_TpetraCrsMatrix_importAndFillComplete__SWIG_0(self, destmatrix, importer, domainmap, rangemap, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraCrsMatrix) :: destmatrix
+class(TpetraImport) :: importer
+type(TpetraMap) :: domainmap
+type(TpetraMap) :: rangemap
+type(ParameterList) :: params
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+type(C_PTR) :: farg6 
+
+farg1 = self%swigptr
+farg2 = destmatrix%swigptr
+farg3 = importer%swigptr
+farg4 = domainmap%swigptr
+farg5 = rangemap%swigptr
+farg6 = params%swigptr
+call swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_importAndFillComplete__SWIG_1(self, destmatrix, importer, domainmap, rangemap)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraCrsMatrix) :: destmatrix
+class(TpetraImport) :: importer
+type(TpetraMap) :: domainmap
+type(TpetraMap) :: rangemap
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+
+farg1 = self%swigptr
+farg2 = destmatrix%swigptr
+farg3 = importer%swigptr
+farg4 = domainmap%swigptr
+farg5 = rangemap%swigptr
+call swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_1(farg1, farg2, farg3, farg4, farg5)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_importAndFillComplete__SWIG_2(self, destmatrix, rowimporter, domainimporter, domainmap, rangemap, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraCrsMatrix) :: destmatrix
+class(TpetraImport) :: rowimporter
+class(TpetraImport) :: domainimporter
+type(TpetraMap) :: domainmap
+type(TpetraMap) :: rangemap
+type(ParameterList) :: params
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+type(C_PTR) :: farg6 
+type(C_PTR) :: farg7 
+
+farg1 = self%swigptr
+farg2 = destmatrix%swigptr
+farg3 = rowimporter%swigptr
+farg4 = domainimporter%swigptr
+farg5 = domainmap%swigptr
+farg6 = rangemap%swigptr
+farg7 = params%swigptr
+call swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_2(farg1, farg2, farg3, farg4, farg5, farg6, farg7)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_0(self, destmatrix, exporter, domainmap, rangemap, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraCrsMatrix) :: destmatrix
+class(TpetraExport) :: exporter
+type(TpetraMap) :: domainmap
+type(TpetraMap) :: rangemap
+type(ParameterList) :: params
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+type(C_PTR) :: farg6 
+
+farg1 = self%swigptr
+farg2 = destmatrix%swigptr
+farg3 = exporter%swigptr
+farg4 = domainmap%swigptr
+farg5 = rangemap%swigptr
+farg6 = params%swigptr
+call swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_1(self, destmatrix, exporter, domainmap, rangemap)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraCrsMatrix) :: destmatrix
+class(TpetraExport) :: exporter
+type(TpetraMap) :: domainmap
+type(TpetraMap) :: rangemap
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+
+farg1 = self%swigptr
+farg2 = destmatrix%swigptr
+farg3 = exporter%swigptr
+farg4 = domainmap%swigptr
+farg5 = rangemap%swigptr
+call swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_1(farg1, farg2, farg3, farg4, farg5)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_2(self, destmatrix, exporter, domainmap)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraCrsMatrix) :: destmatrix
+class(TpetraExport) :: exporter
+type(TpetraMap) :: domainmap
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+
+farg1 = self%swigptr
+farg2 = destmatrix%swigptr
+farg3 = exporter%swigptr
+farg4 = domainmap%swigptr
+call swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_2(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_3(self, destmatrix, exporter)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraCrsMatrix) :: destmatrix
+class(TpetraExport) :: exporter
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+
+farg1 = self%swigptr
+farg2 = destmatrix%swigptr
+farg3 = exporter%swigptr
+call swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_3(farg1, farg2, farg3)
+
+end subroutine
+
+subroutine swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_4(self, destmatrix, rowexporter, domainexporter, domainmap, rangemap, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+type(TpetraCrsMatrix) :: destmatrix
+class(TpetraExport) :: rowexporter
+class(TpetraExport) :: domainexporter
+type(TpetraMap) :: domainmap
+type(TpetraMap) :: rangemap
+type(ParameterList) :: params
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+type(C_PTR) :: farg6 
+type(C_PTR) :: farg7 
+
+farg1 = self%swigptr
+farg2 = destmatrix%swigptr
+farg3 = rowexporter%swigptr
+farg4 = domainexporter%swigptr
+farg5 = domainmap%swigptr
+farg6 = rangemap%swigptr
+farg7 = params%swigptr
+call swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_4(farg1, farg2, farg3, farg4, farg5, farg6, farg7)
+
+end subroutine
+
+function swigf_TpetraCrsMatrix_haveGlobalConstants(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraCrsMatrix) :: self
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = self%swigptr
+fresult = swigc_TpetraCrsMatrix_haveGlobalConstants(farg1)
+swigf_result = fresult
+end function
+
   subroutine swigf_assign_TpetraCrsMatrix(self, other)
    use, intrinsic :: ISO_C_BINDING
    class(TpetraCrsMatrix), intent(inout) :: self
    type(TpetraCrsMatrix), intent(in) :: other
-   call self%release()
+if (c_associated(self%swigptr)) call self%release()
    self%swigptr = swigc_spcopy_TpetraCrsMatrix(other%swigptr)
   end subroutine
 end module fortpetra

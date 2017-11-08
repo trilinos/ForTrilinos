@@ -2,7 +2,7 @@
 ## Define the package
 ##---------------------------------------------------------------------------##
 
-TRIBITS_PACKAGE(ForTrilinos CXX Fortran)
+TRIBITS_PACKAGE(ForTrilinos)
 
 ##---------------------------------------------------------------------------##
 ## Set up package-specific options
@@ -22,9 +22,15 @@ IF (${PACKAGE_NAME}_ENABLE_DeveloperMode)
     #   401: "Nothing known about base class"
     SET(CMAKE_SWIG_FLAGS "-w401 ${CMAKE_SWIG_FLAGS}")
 
-    # Require MPI
     IF (NOT TPL_ENABLE_MPI)
-      MESSAGE(FATAL_ERROR "We require DeveloperMode to be run only with MPI. We do that so that we do not miss part of the interface.")
+        # Warn if MPI is disabled since not all wrapper functions will be
+        # generated. Later this might be extended to other optional packages.
+        MESSAGE(WARNING "DeveloperMode is being used without MPI: "
+          "the newly generated wrappers will NOT be generated in the source "
+          "directory, since they will not contain MPI-related classes.")
+    ELSE()
+        # Export the newly generated wrappers to the source directory.
+        SET(ForTrilinos_EXPORT_SWIG TRUE)
     ENDIF()
 ENDIF()
 

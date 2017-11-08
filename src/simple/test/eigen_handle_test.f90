@@ -132,7 +132,7 @@ program main
   endif
 
   ! Step 2: setup the problem
-  call tri_handle%setup_matrix(n, row_inds, row_ptrs, nnz, col_inds, values)
+  call tri_handle%setup_matrix(row_inds, row_ptrs, col_inds, values)
   if (ierr /= 0) then
     write(*,*) "Got error ", ierr, ": ", trim(serr)
     stop 1
@@ -146,7 +146,7 @@ program main
   endif
 
   ! Step 4: solve the system
-  call tri_handle%solve(1, evalues, n, evectors)
+  call tri_handle%solve(evalues, evectors)
   if (ierr /= 0) then
     write(*,*) "Got error ", ierr, ": ", trim(serr)
     stop 1
@@ -175,7 +175,7 @@ program main
 
   ! Step 2: setup the problem
   ! Implicit (inversion-of-control) setup
-  call tri_handle%setup_operator(n, row_inds, C_FUNLOC(matvec))
+  call tri_handle%setup_operator(row_inds, C_FUNLOC(matvec))
   if (ierr /= 0) then
     write(*,*) "Got error ", ierr, ": ", trim(serr)
     stop 1
@@ -194,7 +194,7 @@ program main
   ! Step 4: solve the system
   ! We only check that it runs, but do not check the result as
   ! we are using a dummy operator
-  call tri_handle%solve(n, rhs, lhs)
+  call tri_handle%solve(rhs, lhs)
   if (ierr /= 0) then
     write(*,*) "Got error ", ierr, ":", trim(serr)
     stop 1

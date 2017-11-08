@@ -69,13 +69,14 @@ int main(int argc, char *argv[]) {
     si.init(comm);
 
     // Step 2: setup the problem
-    si.setup_matrix(n, rowInds.data(), rowPtrs.data(), nnz, colInds.data(), values.data());
+    si.setup_matrix(std::make_pair(rowInds.data(), rowInds.size()), std::make_pair(rowPtrs.data(), rowPtrs.size()),
+                    std::make_pair(colInds.data(), colInds.size()), std::make_pair(values.data(), values.size()));
 
     // Step 3: setup the solver
     si.setup_solver(Teuchos::rcpFromRef(paramList));
 
     // Step 4: solve the system
-    si.solve(n, rhs.data(), lhs.data());
+    si.solve(std::make_pair(rhs.data(), rhs.size()), std::make_pair(lhs.data(), lhs.size()));
 
     // Check the solution
     double norm = 0.0;

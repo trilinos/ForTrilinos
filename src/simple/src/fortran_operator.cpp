@@ -4,7 +4,6 @@ namespace ForTrilinos {
 
   void FortranOperator::apply(const MultiVector& X, MultiVector& Y,
                               Teuchos::ETransp mode, SC alpha, SC beta) const {
-    using Teuchos::RCP;
     using Teuchos::ArrayRCP;
     typedef Teuchos::ScalarTraits<SC> STS;
 
@@ -21,6 +20,6 @@ namespace ForTrilinos {
     ArrayRCP<SC>       Ydata = Y.getDataNonConst(0);
 
     int n = Xdata.size();
-    funcptr_(n, Xdata.get(), Ydata.get());
+    funcptr_(std::make_pair(Xdata.get(), n), std::make_pair(Ydata.get(), n));
   }
 }

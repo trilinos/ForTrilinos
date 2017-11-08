@@ -52,7 +52,7 @@ subroutine test_plist()
 
     call plist%set("intarr", test_int)
     call plist%set("dblarr", test_dbl)
-    
+
     EXPECT_EQ(6, plist%get_length('intarr'))
     EXPECT_EQ(4, plist%get_length('dblarr'))
 

@@ -5,8 +5,7 @@
 #include "Teuchos_ArrayViewDecl.hpp"
 %}
 
-// Typedefs
-typedef int Teuchos_Ordinal;
+%include <typemaps.i>
 
 // Make RCPs
 %teuchos_rcp(Teuchos::ArrayView<int>)
@@ -41,8 +40,31 @@ typedef int Teuchos_Ordinal;
 %ignore Teuchos::ArrayView::getConst() const;
 %ignore Teuchos::ArrayView::operator ArrayView<const T>() const;
 
+%define ADD_VIEW(TYPE)
+// Extend ArrayView
+%extend Teuchos::ArrayView<TYPE> {
+ArrayView(std::pair<TYPE*, size_t> view)
+{
+  return new Teuchos::ArrayView<TYPE>(view.first, view.second);
+}
+
+  /* std::pair<TYPE*, std::size_t> view() { */
+    /* if ($self->size()) */
+      /* return {nullptr, 0}; */
+    /* return {$self->getRawPtr(), $self->size()}; */
+  /* } */
+} // end extend
+%enddef
+
 // Include the real headers
 %include "Teuchos_ArrayViewDecl.hpp"
+ADD_VIEW(int)
+ADD_VIEW(const int)
+ADD_VIEW(double)
+ADD_VIEW(const double)
+ADD_VIEW(size_t)
+ADD_VIEW(const size_t)
+#undef ADD_VIEW
 
 // Make templates
 %template(TeuchosArrayViewInt)          Teuchos::ArrayView<int>;

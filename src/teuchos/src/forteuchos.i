@@ -15,12 +15,20 @@
 %template(VectorInt)    std::vector<int>;
 %template(VectorDouble) std::vector<double>;
 
+// Typedefs
+typedef int Teuchos_Ordinal;
+
+%include <typemaps.i>
+%fortran_view(int)
+%fortran_view(double)
+
 %include "Teuchos_Types.i"
+%include "Teuchos_Exceptions.i"
+%include "Teuchos_RCP.i"
+
 %include "Teuchos_Array.i"
 %include "Teuchos_ArrayView.i"
 %include "Teuchos_Comm.i"
-%include "Teuchos_Exceptions.i"
-%include "Teuchos_RCP.i"
 %include "Teuchos_ParameterList.i"
 %include "Teuchos_XML.i"
 

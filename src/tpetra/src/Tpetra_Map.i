@@ -52,10 +52,14 @@
 %ignore Tpetra::Map::replaceCommWithSubset;     // ?
 
 
-%teuchos_rcp(Tpetra::Map<LO,GO,NO>)
+// FIXME: figure out why the first verion does not work
+/* %teuchos_rcp(Tpetra::Map<LO,GO,NO>); */
+%teuchos_rcp(Tpetra::Map<int, int, Kokkos::Compat::KokkosSerialWrapperNode>)
 
 #define HAVE_TPETRA_INST_INT_INT
 %include "Tpetra_ConfigDefs.hpp"
 %include "Tpetra_Map_decl.hpp"
 
-%template(TpetraMap) Tpetra::Map<LO,GO,NO>;
+// FIXME: figure out why the first verion does not work
+/* %template(TpetraMap) Tpetra::Map<LO,GO,NO>; */
+%template(TpetraMap) Tpetra::Map<int, int, Kokkos::Compat::KokkosSerialWrapperNode>;

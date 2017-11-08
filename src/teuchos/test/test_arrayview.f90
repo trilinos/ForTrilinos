@@ -26,7 +26,7 @@ contains
     farr(1) = 1
     farr(2) = 2
 
-    call arrview_int%create(farr, sz)
+    call arrview_int%create(farr)
     EXPECT_EQ(0, ierr)
 
     EXPECT_EQ(arrview_int%size(), sz)
