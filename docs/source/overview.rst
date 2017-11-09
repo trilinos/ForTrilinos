@@ -34,6 +34,7 @@ Former developers include:
 Questions, Bug Reporting, and Issue Tracking
 --------------------------------------------
 
-Questions, bug reporting and issue tracking are provided by GitHub. Please
-report all bugs by creating a new issue. You can ask questions by creating a
-new issue with the question tag.
+Questions, bug reporting and issue tracking are provided through `ForTrilinos
+GitHub repository <https://github.com/trilinos/ForTrilinos>`_. The recommended
+way to report any bug is by creating a new issue in the repository. You can also
+ask questions by creating a new issue with the question tag.

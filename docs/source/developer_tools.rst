@@ -73,3 +73,45 @@ This can be done by adding the following configuration options to the script (as
     ForTrilinos does not automatically pick up the changes in the files in the SWIG library, such as
     ``fortypemaps.swg``. Therefore, to regenerate all wrapper files after changes in SWIG one must touch all ``.i``
     files in ForTrilinos.
+
+
+.. warning::
+
+    When using the developer mode, it is required to apply two patches to
+    Trilinos. The first patch is
+
+    .. code::
+
+        --- a/packages/anasazi/src/AnasaziTraceMin.hpp
+        +++ b/packages/anasazi/src/AnasaziTraceMin.hpp
+        @@ -53,7 +53,9 @@
+         #include "AnasaziBasicSort.hpp"
+         #include "AnasaziTraceMinBase.hpp"
+
+        -#include "Epetra_Operator.h"
+        +#ifdef HAVE_ANASAZI_EPETRA
+        +  #include "Epetra_Operator.h"
+        +#endif
+
+         #include "AnasaziEigensolver.hpp"
+         #include "AnasaziMultiVecTraits.hpp"
+
+    The second patch is
+
+    .. code::
+
+        --- a/packages/tpetra/core/src/Tpetra_Map_decl.hpp
+        +++ b/packages/tpetra/core/src/Tpetra_Map_decl.hpp
+        @@ -1248,7 +1248,9 @@ namespace Tpetra {
+             /// getGlobalElement() (which is a host method, and therefore
+             /// requires a host View) if necessary (only noncontiguous Maps
+             /// need this).
+        +#ifndef SWIG
+             mutable typename decltype (lgMap_)::HostMirror lgMapHost_;
+        +#endif
+
+             //! Type of a mapping from global IDs to local IDs.
+             typedef Details::FixedHashTable<GlobalOrdinal, LocalOrdinal, device_type>
+
+    In the future, these patches will be incorporated upstream and not
+    necessary.

@@ -16,75 +16,105 @@ The following third party libraries (TPLs) are used by ForTrilinos:
 | MPI                    | Required   | N/A     |
 +------------------------+------------+---------+
 
+.. warning::
+
+    Currently, the ForTrilinos library can be built using any Fortran compiler.
+    However, only gfortran compiler is supported when building tests.
+
 Building ForTrilinos
 --------------------
 
 ForTrilinos is configured and built using `TriBITS <https://tribits.org>`_. ForTrilinos builds
-within Trilinos effectively as an internal package. First, link ForTrilinos into the
-Trilinos main directory:
+within Trilinos effectively as an internal package. The following steps are
+required to build and install ForTrilinos:
 
-.. code::
+1. Download Trilinos 12.12 release
 
-    $ cd $TRILINOS_DIR/packages
-    $ ln -s $ForTrilinos_DIR
+  ForTrilinos release model requires users to work with a specific version of
+  Trilinos, as otherwise the interfaces may have changed. Users may download
+  Trilinos 12.12.1 source `here
+  <https://github.com/trilinos/Trilinos/archive/trilinos-release-12-12-1.tar.gz>`_.
+  An alternative is to checkout a specific version of Trilinos repository like
+  this:
 
-Create a ``do-configure`` script such as:
+  .. code::
 
-.. code-block:: bash
+      $ git clone https://github.com/trilinos/Trilinos.git $TRILINOS_DIR
+      $ cd $TRILINOS_DIR
+      $ git checkout trilinos-release-12.12
 
-    #!/usr/bin/env/bash
+  Here, ``$TRILINOS_DIR`` is the name you want give to the repository.
 
-    EXTRA_ARGS=$@
+2. Download and link ForTrilinos into the Trilinos packages directory
 
-    ARGS=(
-        -D CMAKE_BUILD_TYPE=Debug
+  .. code::
 
-        -D BUILD_SHARED_LIBS=ON
+      $ git clone https://github.com/trilinos/ForTrilinos.git $FORTRILINOS_DIR
+      $ cd $TRILINOS_DIR/packages
+      $ ln -s $FORTRILINOS_DIR
 
-        ### COMPILERS AND FLAGS ###
-        -D Trilinos_ENABLE_Fortran=ON
-        -D CMAKE_CXX_FLAGS="-Wall -Wpedantic"
+3. Create a CMake configuration script
 
-        ### TPLs ###
-        -D TPL_ENABLE_MPI=ON
-        -D TPL_ENABLE_BLAS=ON
-        -D TPL_ENABLE_LAPACK=ON
+  Here is an example of the ``do-configure`` configuration script:
 
-        ### ETI ###
-        -D Trilinos_ENABLE_EXPLICIT_INSTANTIATION=ON
+  .. code-block:: bash
 
-        ### PACKAGES CONFIGURATION ###
-        -D Trilinos_ENABLE_ALL_PACKAGES=OFF
-        -D Trilinos_ENABLE_ALL_OPTIONAL_PACKAGES=OFF
+      #!/usr/bin/env/bash
 
-        -D Trilinos_ENABLE_TESTS=OFF
-        -D Trilinos_ENABLE_EXAMPLES=OFF
+      EXTRA_ARGS=$@
 
-        -D Trilinos_ENABLE_Amesos2=ON
-        -D Trilinos_ENABLE_Anasazi=ON
-        -D Trilinos_ENABLE_Belos=ON
-        -D Trilinos_ENABLE_Epetra=OFF
-        -D Trilinos_ENABLE_Ifpack2=ON
-        -D Trilinos_ENABLE_MueLu=ON
-        -D Trilinos_ENABLE_Stratimikos=ON
-        -D Trilinos_ENABLE_Tpetra=ON
-        -D Trilinos_ENABLE_Thyra=ON
+      ARGS=(
+          -D CMAKE_BUILD_TYPE=Debug
 
-        ### FORTRILINOS ###
-        -D Trilinos_ENABLE_ForTrilinos=ON
-            -D ForTrilinos_ENABLE_EXAMPLES=ON
-            -D ForTrilinos_ENABLE_TESTS=ON
-        )
-    cmake "${ARGS[@]}" $EXTRA_ARGS $TRILINOS_DIR
+          -D BUILD_SHARED_LIBS=ON
 
-and run it from your build directory:
+          ### COMPILERS AND FLAGS ###
+          -D Trilinos_ENABLE_Fortran=ON
+          -D CMAKE_CXX_FLAGS="-Wall -Wpedantic"
 
-.. code::
+          ### TPLs ###
+          -D TPL_ENABLE_MPI=ON
+          -D TPL_ENABLE_BLAS=ON
+          -D TPL_ENABLE_LAPACK=ON
 
-    $ mkdir build && cd build
-    $ ../do-configure
+          ### ETI ###
+          -D Trilinos_ENABLE_EXPLICIT_INSTANTIATION=ON
 
-More install scripts can be found in ``scripts/``.
+          ### PACKAGES CONFIGURATION ###
+          -D Trilinos_ENABLE_ALL_PACKAGES=OFF
+          -D Trilinos_ENABLE_ALL_OPTIONAL_PACKAGES=OFF
+
+          -D Trilinos_ENABLE_TESTS=OFF
+          -D Trilinos_ENABLE_EXAMPLES=OFF
+
+          -D Trilinos_ENABLE_Amesos2=ON
+          -D Trilinos_ENABLE_Anasazi=ON
+          -D Trilinos_ENABLE_Belos=ON
+          -D Trilinos_ENABLE_Epetra=OFF
+          -D Trilinos_ENABLE_Ifpack2=ON
+          -D Trilinos_ENABLE_MueLu=ON
+          -D Trilinos_ENABLE_Stratimikos=ON
+          -D Trilinos_ENABLE_Tpetra=ON
+          -D Trilinos_ENABLE_Thyra=ON
+
+          ### FORTRILINOS ###
+          -D Trilinos_ENABLE_ForTrilinos=ON
+              -D ForTrilinos_ENABLE_EXAMPLES=ON
+              -D ForTrilinos_ENABLE_TESTS=ON
+          )
+      cmake "${ARGS[@]}" $EXTRA_ARGS $TRILINOS_DIR
+
+4. Run the configuration script
+
+  From your build directory:
+
+  .. code::
+
+      $ mkdir build && cd build
+      $ ./do-configure
+
+  More install scripts can be found in ``scripts/`` directory in the ForTrilinos
+  source tree.
 
 Build this documentation
 ------------------------
