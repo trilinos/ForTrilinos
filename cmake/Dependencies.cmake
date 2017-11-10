@@ -3,5 +3,6 @@ TRIBITS_PACKAGE_DEFINE_DEPENDENCIES(
   Utils             src/utils       SS OPTIONAL
   Teuchos           src/teuchos     SS OPTIONAL
   Tpetra            src/tpetra      SS OPTIONAL
+  Belos             src/belos       SS OPTIONAL
   SimpleInterface   src/simple      SS OPTIONAL
 )
