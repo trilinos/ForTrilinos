@@ -63,8 +63,6 @@
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);    // needs Kokkos::StaticCrsGraph
 %ignore Tpetra::CrsGraph::insertLocalIndices;                 // ±1 issue
 %ignore Tpetra::CrsGraph::removeLocalIndices;                 // ±1 issue
-%ignore Tpetra::CrsGraph::getNumEntriesInLocalRow;            // ±1 issue
-%ignore Tpetra::CrsGraph::getNumAllocatedEntriesInLocalRow;   // ±1 issue
 %ignore Tpetra::CrsGraph::getLocalRowCopy;                    // ±1 issue
 %ignore Tpetra::CrsGraph::getLocalRowView;                    // ±1 issue
 %ignore Tpetra::CrsGraph::describe;                           // needs Teuchos::FancyOStream
@@ -76,6 +74,10 @@
 %ignore Tpetra::CrsGraph::getNodePackedIndices;               // needs Teuchos::RCP
 %ignore Tpetra::CrsGraph::getLocalGraph;                      // needs Kokkos::StaticCrsGraph
 
+// =======================================================================
+// Fix ±1 issues
+// =======================================================================
+%typemap(in)  int localRow %{$1 = *$input - 1;%}
 
 
 %teuchos_rcp(Tpetra::CrsGraph<LO,GO,NO,false>)

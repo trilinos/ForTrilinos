@@ -93,11 +93,16 @@ end type
   procedure :: getGlobalNumElements => swigf_TpetraMap_getGlobalNumElements
   procedure :: getNodeNumElements => swigf_TpetraMap_getNodeNumElements
   procedure :: getIndexBase => swigf_TpetraMap_getIndexBase
+  procedure :: getMinLocalIndex => swigf_TpetraMap_getMinLocalIndex
+  procedure :: getMaxLocalIndex => swigf_TpetraMap_getMaxLocalIndex
   procedure :: getMinGlobalIndex => swigf_TpetraMap_getMinGlobalIndex
   procedure :: getMaxGlobalIndex => swigf_TpetraMap_getMaxGlobalIndex
   procedure :: getMinAllGlobalIndex => swigf_TpetraMap_getMinAllGlobalIndex
   procedure :: getMaxAllGlobalIndex => swigf_TpetraMap_getMaxAllGlobalIndex
+  procedure :: getLocalElement => swigf_TpetraMap_getLocalElement
+  procedure :: getGlobalElement => swigf_TpetraMap_getGlobalElement
   procedure :: getNodeElementList => swigf_TpetraMap_getNodeElementList
+  procedure :: isNodeLocalElement => swigf_TpetraMap_isNodeLocalElement
   procedure :: isNodeGlobalElement => swigf_TpetraMap_isNodeGlobalElement
   procedure :: isUniform => swigf_TpetraMap_isUniform
   procedure :: isContiguous => swigf_TpetraMap_isContiguous
@@ -107,6 +112,8 @@ end type
   procedure :: locallySameAs => swigf_TpetraMap_locallySameAs
   procedure :: getComm => swigf_TpetraMap_getComm
   procedure :: description => swigf_TpetraMap_description
+  procedure :: removeEmptyProcesses => swigf_TpetraMap_removeEmptyProcesses
+  procedure :: replaceCommWithSubset => swigf_TpetraMap_replaceCommWithSubset
   procedure, private :: swigf_assign_TpetraMap
   generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2, create__SWIG_3, create__SWIG_4, create__SWIG_5
   generic :: assignment(=) => swigf_assign_TpetraMap
@@ -183,6 +190,8 @@ end type
   procedure :: replaceMap => swigf_TpetraMultiVector_replaceMap
   procedure :: reduce => swigf_TpetraMultiVector_reduce
   procedure :: offsetViewNonConst => swigf_TpetraMultiVector_offsetViewNonConst
+  procedure :: getVector => swigf_TpetraMultiVector_getVector
+  procedure :: getVectorNonConst => swigf_TpetraMultiVector_getVectorNonConst
   procedure :: get1dCopy => swigf_TpetraMultiVector_get1dCopy
   procedure :: dot => swigf_TpetraMultiVector_dot
   procedure :: abs => swigf_TpetraMultiVector_abs
@@ -526,6 +535,22 @@ integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
 end function
 
+function swigc_TpetraMap_getMinLocalIndex(farg1) &
+bind(C, name="swigc_TpetraMap_getMinLocalIndex") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMap_getMaxLocalIndex(farg1) &
+bind(C, name="swigc_TpetraMap_getMaxLocalIndex") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+end function
+
 function swigc_TpetraMap_getMinGlobalIndex(farg1) &
 bind(C, name="swigc_TpetraMap_getMinGlobalIndex") &
 result(fresult)
@@ -558,12 +583,39 @@ integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
 end function
 
+function swigc_TpetraMap_getLocalElement(farg1, farg2) &
+bind(C, name="swigc_TpetraMap_getLocalElement") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+end function
+
+function swigc_TpetraMap_getGlobalElement(farg1, farg2) &
+bind(C, name="swigc_TpetraMap_getGlobalElement") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+end function
+
 function swigc_TpetraMap_getNodeElementList(farg1) &
 bind(C, name="swigc_TpetraMap_getNodeElementList") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMap_isNodeLocalElement(farg1, farg2) &
+bind(C, name="swigc_TpetraMap_isNodeLocalElement") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
 end function
 
 function swigc_TpetraMap_isNodeGlobalElement(farg1, farg2) &
@@ -640,6 +692,23 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMap_removeEmptyProcesses(farg1) &
+bind(C, name="swigc_TpetraMap_removeEmptyProcesses") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+end function
+
+function swigc_TpetraMap_replaceCommWithSubset(farg1, farg2) &
+bind(C, name="swigc_TpetraMap_replaceCommWithSubset") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
 end function
 
   function swigc_spcopy_TpetraMap(farg1) &
@@ -1084,6 +1153,24 @@ type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 type(C_PTR), value :: farg2
 integer(C_SIZE_T), intent(in) :: farg3
+end function
+
+function swigc_TpetraMultiVector_getVector(farg1, farg2) &
+bind(C, name="swigc_TpetraMultiVector_getVector") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+integer(C_SIZE_T), intent(in) :: farg2
+end function
+
+function swigc_TpetraMultiVector_getVectorNonConst(farg1, farg2) &
+bind(C, name="swigc_TpetraMultiVector_getVectorNonConst") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+integer(C_SIZE_T), intent(in) :: farg2
 end function
 
 subroutine swigc_TpetraMultiVector_get1dCopy(farg1, farg2, farg3) &
@@ -2891,6 +2978,32 @@ fresult = swigc_TpetraMap_getIndexBase(farg1)
 swigf_result = fresult
 end function
 
+function swigf_TpetraMap_getMinLocalIndex(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraMap) :: self
+integer(C_INT) :: fresult
+type(C_PTR) :: farg1
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMap_getMinLocalIndex(farg1)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_getMaxLocalIndex(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraMap) :: self
+integer(C_INT) :: fresult
+type(C_PTR) :: farg1
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMap_getMaxLocalIndex(farg1)
+swigf_result = fresult
+end function
+
 function swigf_TpetraMap_getMinGlobalIndex(self) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
@@ -2943,6 +3056,38 @@ fresult = swigc_TpetraMap_getMaxAllGlobalIndex(farg1)
 swigf_result = fresult
 end function
 
+function swigf_TpetraMap_getLocalElement(self, globalindex) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraMap) :: self
+integer(C_INT), intent(in) :: globalindex
+integer(C_INT) :: fresult
+type(C_PTR) :: farg1
+integer(C_INT) :: farg2
+
+farg1 = self%swigptr
+farg2 = globalindex
+fresult = swigc_TpetraMap_getLocalElement(farg1, farg2)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_getGlobalElement(self, localindex) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraMap) :: self
+integer(C_INT), intent(in) :: localindex
+integer(C_INT) :: fresult
+type(C_PTR) :: farg1
+integer(C_INT) :: farg2
+
+farg1 = self%swigptr
+farg2 = localindex
+fresult = swigc_TpetraMap_getGlobalElement(farg1, farg2)
+swigf_result = fresult
+end function
+
 function swigf_TpetraMap_getNodeElementList(self) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
@@ -2954,6 +3099,22 @@ type(C_PTR) :: farg1
 farg1 = self%swigptr
 fresult = swigc_TpetraMap_getNodeElementList(farg1)
 swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraMap_isNodeLocalElement(self, localindex) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+class(TpetraMap) :: self
+integer(C_INT), intent(in) :: localindex
+logical(C_BOOL) :: fresult
+type(C_PTR) :: farg1
+integer(C_INT) :: farg2
+
+farg1 = self%swigptr
+farg2 = localindex
+fresult = swigc_TpetraMap_isNodeLocalElement(farg1, farg2)
+swigf_result = fresult
 end function
 
 function swigf_TpetraMap_isNodeGlobalElement(self, globalindex) &
@@ -3082,6 +3243,35 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 fresult = swigc_TpetraMap_description(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraMap_removeEmptyProcesses(self) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraMap) :: swigf_result
+class(TpetraMap) :: self
+type(C_PTR) :: fresult
+type(C_PTR) :: farg1
+
+farg1 = self%swigptr
+fresult = swigc_TpetraMap_removeEmptyProcesses(farg1)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraMap_replaceCommWithSubset(self, newcomm) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraMap) :: swigf_result
+class(TpetraMap) :: self
+type(TeuchosComm) :: newcomm
+type(C_PTR) :: fresult
+type(C_PTR) :: farg1
+type(C_PTR) :: farg2
+
+farg1 = self%swigptr
+farg2 = newcomm%swigptr
+fresult = swigc_TpetraMap_replaceCommWithSubset(farg1, farg2)
 swigf_result%swigptr = fresult
 end function
 
@@ -3882,6 +4072,38 @@ farg1 = self%swigptr
 farg2 = submap%swigptr
 farg3 = offset
 fresult = swigc_TpetraMultiVector_offsetViewNonConst(farg1, farg2, farg3)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraMultiVector_getVector(self, j) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(SwigfUnknownClass) :: swigf_result
+class(TpetraMultiVector) :: self
+integer(C_SIZE_T), intent(in) :: j
+type(C_PTR) :: fresult
+type(C_PTR) :: farg1
+integer(C_SIZE_T) :: farg2
+
+farg1 = self%swigptr
+farg2 = j
+fresult = swigc_TpetraMultiVector_getVector(farg1, farg2)
+swigf_result%swigptr = fresult
+end function
+
+function swigf_TpetraMultiVector_getVectorNonConst(self, j) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(SwigfUnknownClass) :: swigf_result
+class(TpetraMultiVector) :: self
+integer(C_SIZE_T), intent(in) :: j
+type(C_PTR) :: fresult
+type(C_PTR) :: farg1
+integer(C_SIZE_T) :: farg2
+
+farg1 = self%swigptr
+farg2 = j
+fresult = swigc_TpetraMultiVector_getVectorNonConst(farg1, farg2)
 swigf_result%swigptr = fresult
 end function
 

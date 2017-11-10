@@ -92,6 +92,10 @@
 %ignore Tpetra::CrsMatrix::sumIntoLocalValues;              // ±1 issue
 %ignore Tpetra::CrsMatrix::transformLocalValues;            // ±1 issue
 
+// =======================================================================
+// Fix ±1 issues
+// =======================================================================
+%typemap(in)  int localRow %{$1 = *$input - 1;%}
 
 %teuchos_rcp(Tpetra::CrsMatrix<SC,LO,GO,NO,false>)
 

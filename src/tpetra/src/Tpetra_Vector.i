@@ -17,11 +17,14 @@
 %ignore Tpetra::Vector::assign;
 %ignore Tpetra::Vector::Vector(const Teuchos::RCP<const map_type> &map, const dual_view_type &view);    // needs Kokkos::DualView
 %ignore Tpetra::Vector::Vector(const Teuchos::RCP<const map_type> &map, const dual_view_type &view, const dual_view_type &origView);    // needs Kokkos::DualView
-%ignore Tpetra::Vector::replaceLocalValue;      // ±1 issue
-%ignore Tpetra::Vector::sumIntoLocalValue;      // ±1 issue
 %ignore Tpetra::Vector::getData;                // needs Teuchos::ArrayRCP
 %ignore Tpetra::Vector::getDataNonConst;        // needs Teuchos::ArrayRCP
 %ignore Tpetra::Vector::describe;               // needs Teuchos::FancyOStream
+
+// =======================================================================
+// Fix ±1 issues
+// =======================================================================
+%typemap(in)  int myRow %{$1 = *$input - 1;%}
 
 %teuchos_rcp(Tpetra::Vector<SC,LO,GO,NO,false>)
 
