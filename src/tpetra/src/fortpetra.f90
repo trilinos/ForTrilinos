@@ -101,6 +101,8 @@ end type
   procedure :: getMaxAllGlobalIndex => swigf_TpetraMap_getMaxAllGlobalIndex
   procedure :: getLocalElement => swigf_TpetraMap_getLocalElement
   procedure :: getGlobalElement => swigf_TpetraMap_getGlobalElement
+  procedure, private :: getRemoteIndexList__SWIG_0 => swigf_TpetraMap_getRemoteIndexList__SWIG_0
+  procedure, private :: getRemoteIndexList__SWIG_1 => swigf_TpetraMap_getRemoteIndexList__SWIG_1
   procedure :: getNodeElementList => swigf_TpetraMap_getNodeElementList
   procedure :: isNodeLocalElement => swigf_TpetraMap_isNodeLocalElement
   procedure :: isNodeGlobalElement => swigf_TpetraMap_isNodeGlobalElement
@@ -117,6 +119,7 @@ end type
   procedure, private :: swigf_assign_TpetraMap
   generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2, create__SWIG_3, create__SWIG_4, create__SWIG_5
   generic :: assignment(=) => swigf_assign_TpetraMap
+  generic :: getRemoteIndexList => getRemoteIndexList__SWIG_0, getRemoteIndexList__SWIG_1
  end type
  type :: TpetraExport
   ! These should be treated as PROTECTED data
@@ -190,8 +193,6 @@ end type
   procedure :: replaceMap => swigf_TpetraMultiVector_replaceMap
   procedure :: reduce => swigf_TpetraMultiVector_reduce
   procedure :: offsetViewNonConst => swigf_TpetraMultiVector_offsetViewNonConst
-  procedure :: getVector => swigf_TpetraMultiVector_getVector
-  procedure :: getVectorNonConst => swigf_TpetraMultiVector_getVectorNonConst
   procedure :: get1dCopy => swigf_TpetraMultiVector_get1dCopy
   procedure :: dot => swigf_TpetraMultiVector_dot
   procedure :: abs => swigf_TpetraMultiVector_abs
@@ -282,8 +283,10 @@ end type
   procedure :: getGlobalNumEntries => swigf_TpetraCrsGraph_getGlobalNumEntries
   procedure :: getNodeNumEntries => swigf_TpetraCrsGraph_getNodeNumEntries
   procedure :: getNumEntriesInGlobalRow => swigf_TpetraCrsGraph_getNumEntriesInGlobalRow
+  procedure :: getNumEntriesInLocalRow => swigf_TpetraCrsGraph_getNumEntriesInLocalRow
   procedure :: getNodeAllocationSize => swigf_TpetraCrsGraph_getNodeAllocationSize
   procedure :: getNumAllocatedEntriesInGlobalRow => swigf_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow
+  procedure :: getNumAllocatedEntriesInLocalRow => swigf_TpetraCrsGraph_getNumAllocatedEntriesInLocalRow
   procedure :: getGlobalNumDiags => swigf_TpetraCrsGraph_getGlobalNumDiags
   procedure :: getNodeNumDiags => swigf_TpetraCrsGraph_getNodeNumDiags
   procedure :: getGlobalMaxNumRowEntries => swigf_TpetraCrsGraph_getGlobalMaxNumRowEntries
@@ -599,6 +602,27 @@ use, intrinsic :: ISO_C_BINDING
 integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
+end function
+
+function swigc_TpetraMap_getRemoteIndexList__SWIG_0(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraMap_getRemoteIndexList__SWIG_0") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+end function
+
+function swigc_TpetraMap_getRemoteIndexList__SWIG_1(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraMap_getRemoteIndexList__SWIG_1") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
 end function
 
 function swigc_TpetraMap_getNodeElementList(farg1) &
@@ -1153,24 +1177,6 @@ type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 type(C_PTR), value :: farg2
 integer(C_SIZE_T), intent(in) :: farg3
-end function
-
-function swigc_TpetraMultiVector_getVector(farg1, farg2) &
-bind(C, name="swigc_TpetraMultiVector_getVector") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
-type(C_PTR), value :: farg1
-integer(C_SIZE_T), intent(in) :: farg2
-end function
-
-function swigc_TpetraMultiVector_getVectorNonConst(farg1, farg2) &
-bind(C, name="swigc_TpetraMultiVector_getVectorNonConst") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
-type(C_PTR), value :: farg1
-integer(C_SIZE_T), intent(in) :: farg2
 end function
 
 subroutine swigc_TpetraMultiVector_get1dCopy(farg1, farg2, farg3) &
@@ -1752,6 +1758,15 @@ type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 end function
 
+function swigc_TpetraCrsGraph_getNumEntriesInLocalRow(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsGraph_getNumEntriesInLocalRow") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+end function
+
 function swigc_TpetraCrsGraph_getNodeAllocationSize(farg1) &
 bind(C, name="swigc_TpetraCrsGraph_getNodeAllocationSize") &
 result(fresult)
@@ -1762,6 +1777,15 @@ end function
 
 function swigc_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow(farg1, farg2) &
 bind(C, name="swigc_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: fresult
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+end function
+
+function swigc_TpetraCrsGraph_getNumAllocatedEntriesInLocalRow(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsGraph_getNumAllocatedEntriesInLocalRow") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 integer(C_SIZE_T) :: fresult
@@ -2983,8 +3007,8 @@ result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT) :: swigf_result
 class(TpetraMap) :: self
-integer(C_INT) :: fresult
-type(C_PTR) :: farg1
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
 
 farg1 = self%swigptr
 fresult = swigc_TpetraMap_getMinLocalIndex(farg1)
@@ -2996,8 +3020,8 @@ result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT) :: swigf_result
 class(TpetraMap) :: self
-integer(C_INT) :: fresult
-type(C_PTR) :: farg1
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
 
 farg1 = self%swigptr
 fresult = swigc_TpetraMap_getMaxLocalIndex(farg1)
@@ -3062,9 +3086,9 @@ use, intrinsic :: ISO_C_BINDING
 integer(C_INT) :: swigf_result
 class(TpetraMap) :: self
 integer(C_INT), intent(in) :: globalindex
-integer(C_INT) :: fresult
-type(C_PTR) :: farg1
-integer(C_INT) :: farg2
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
 
 farg1 = self%swigptr
 farg2 = globalindex
@@ -3078,13 +3102,54 @@ use, intrinsic :: ISO_C_BINDING
 integer(C_INT) :: swigf_result
 class(TpetraMap) :: self
 integer(C_INT), intent(in) :: localindex
-integer(C_INT) :: fresult
-type(C_PTR) :: farg1
-integer(C_INT) :: farg2
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
 
 farg1 = self%swigptr
 farg2 = localindex
 fresult = swigc_TpetraMap_getGlobalElement(farg1, farg2)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_getRemoteIndexList__SWIG_0(self, gidlist, nodeidlist, lidlist) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(kind(LookupStatus)) :: swigf_result
+class(TpetraMap) :: self
+class(TeuchosArrayViewIntConst) :: gidlist
+class(TeuchosArrayViewInt) :: nodeidlist
+class(TeuchosArrayViewInt) :: lidlist
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+
+farg1 = self%swigptr
+farg2 = gidlist%swigptr
+farg3 = nodeidlist%swigptr
+farg4 = lidlist%swigptr
+fresult = swigc_TpetraMap_getRemoteIndexList__SWIG_0(farg1, farg2, farg3, farg4)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_getRemoteIndexList__SWIG_1(self, gidlist, nodeidlist) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(kind(LookupStatus)) :: swigf_result
+class(TpetraMap) :: self
+class(TeuchosArrayViewIntConst) :: gidlist
+class(TeuchosArrayViewInt) :: nodeidlist
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+
+farg1 = self%swigptr
+farg2 = gidlist%swigptr
+farg3 = nodeidlist%swigptr
+fresult = swigc_TpetraMap_getRemoteIndexList__SWIG_1(farg1, farg2, farg3)
 swigf_result = fresult
 end function
 
@@ -3107,9 +3172,9 @@ use, intrinsic :: ISO_C_BINDING
 logical(C_BOOL) :: swigf_result
 class(TpetraMap) :: self
 integer(C_INT), intent(in) :: localindex
-logical(C_BOOL) :: fresult
-type(C_PTR) :: farg1
-integer(C_INT) :: farg2
+logical(C_BOOL) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
 
 farg1 = self%swigptr
 farg2 = localindex
@@ -3251,8 +3316,8 @@ result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraMap) :: swigf_result
 class(TpetraMap) :: self
-type(C_PTR) :: fresult
-type(C_PTR) :: farg1
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
 
 farg1 = self%swigptr
 fresult = swigc_TpetraMap_removeEmptyProcesses(farg1)
@@ -3265,9 +3330,9 @@ use, intrinsic :: ISO_C_BINDING
 type(TpetraMap) :: swigf_result
 class(TpetraMap) :: self
 type(TeuchosComm) :: newcomm
-type(C_PTR) :: fresult
-type(C_PTR) :: farg1
-type(C_PTR) :: farg2
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
 
 farg1 = self%swigptr
 farg2 = newcomm%swigptr
@@ -4072,38 +4137,6 @@ farg1 = self%swigptr
 farg2 = submap%swigptr
 farg3 = offset
 fresult = swigc_TpetraMultiVector_offsetViewNonConst(farg1, farg2, farg3)
-swigf_result%swigptr = fresult
-end function
-
-function swigf_TpetraMultiVector_getVector(self, j) &
-result(swigf_result)
-use, intrinsic :: ISO_C_BINDING
-type(SwigfUnknownClass) :: swigf_result
-class(TpetraMultiVector) :: self
-integer(C_SIZE_T), intent(in) :: j
-type(C_PTR) :: fresult
-type(C_PTR) :: farg1
-integer(C_SIZE_T) :: farg2
-
-farg1 = self%swigptr
-farg2 = j
-fresult = swigc_TpetraMultiVector_getVector(farg1, farg2)
-swigf_result%swigptr = fresult
-end function
-
-function swigf_TpetraMultiVector_getVectorNonConst(self, j) &
-result(swigf_result)
-use, intrinsic :: ISO_C_BINDING
-type(SwigfUnknownClass) :: swigf_result
-class(TpetraMultiVector) :: self
-integer(C_SIZE_T), intent(in) :: j
-type(C_PTR) :: fresult
-type(C_PTR) :: farg1
-integer(C_SIZE_T) :: farg2
-
-farg1 = self%swigptr
-farg2 = j
-fresult = swigc_TpetraMultiVector_getVectorNonConst(farg1, farg2)
 swigf_result%swigptr = fresult
 end function
 
@@ -5171,6 +5204,22 @@ fresult = swigc_TpetraCrsGraph_getNumEntriesInGlobalRow(farg1, farg2)
 swigf_result = fresult
 end function
 
+function swigf_TpetraCrsGraph_getNumEntriesInLocalRow(self, localrow) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraCrsGraph) :: self
+integer(C_INT), intent(in) :: localrow
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+
+farg1 = self%swigptr
+farg2 = localrow
+fresult = swigc_TpetraCrsGraph_getNumEntriesInLocalRow(farg1, farg2)
+swigf_result = fresult
+end function
+
 function swigf_TpetraCrsGraph_getNodeAllocationSize(self) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
@@ -5197,6 +5246,22 @@ integer(C_INT) :: farg2
 farg1 = self%swigptr
 farg2 = globalrow
 fresult = swigc_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow(farg1, farg2)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsGraph_getNumAllocatedEntriesInLocalRow(self, localrow) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swigf_result
+class(TpetraCrsGraph) :: self
+integer(C_INT), intent(in) :: localrow
+integer(C_SIZE_T) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+
+farg1 = self%swigptr
+farg2 = localrow
+fresult = swigc_TpetraCrsGraph_getNumAllocatedEntriesInLocalRow(farg1, farg2)
 swigf_result = fresult
 end function
 

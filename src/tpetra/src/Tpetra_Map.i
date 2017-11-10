@@ -40,7 +40,6 @@
 %ignore Tpetra::Map::describe;                  // needs Teuchos::FancyOStream
 %ignore Tpetra::Map::getLocalMap;               // ?
 %ignore Tpetra::Map::getMyGlobalIndices;        // return type is not exposed externally, requires using `auto`
-%ignore Tpetra::Map::getRemoteIndexList;        // ±1 issue
 
 // =======================================================================
 // Fix ±1 issues
@@ -49,6 +48,14 @@
 %typemap(out) int getMinLocalIndex  %{$result = $1 + 1;%}
 %typemap(out) int getMaxLocalIndex  %{$result = $1 + 1;%}
 %typemap(out) int getLocalElement   %{$result = $1 + 1;%}
+%typemap(argout) const Teuchos::ArrayView<int>& nodeIDList %{
+  for (int i = 0; i < $1->size(); i++)
+    (*$1)[i]++;
+%}
+%typemap(argout) const Teuchos::ArrayView<int>& LIDList %{
+  for (int i = 0; i < $1->size(); i++)
+    (*$1)[i]++;
+%}
 
 // FIXME: figure out why the first verion does not work
 /* %teuchos_rcp(Tpetra::Map<LO,GO,NO>); */
