@@ -11,10 +11,10 @@
 ##---------------------------------------------------------------------------##
 
 SET(TESTS
-  test_array.f90
-  test_arrayview.f90
-  test_comm.f90
-  test_plist.f90
+  test_teuchos_array.f90
+  test_teuchos_arrayview.f90
+  test_teuchos_comm.f90
+  test_teuchos_plist.f90
   )
 
 FOREACH(test ${TESTS})
