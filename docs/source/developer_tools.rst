@@ -77,23 +77,4 @@ This can be done by adding the following configuration options to the script (as
 
 .. warning::
 
-    When using the developer mode, it is required to apply a second patch to
-    Trilinos (the first patch is listed in the installation instructions). This
-    patch is
-
-    .. code::
-
-        --- a/packages/tpetra/core/src/Tpetra_Map_decl.hpp
-        +++ b/packages/tpetra/core/src/Tpetra_Map_decl.hpp
-        @@ -1248,7 +1248,9 @@ namespace Tpetra {
-             /// getGlobalElement() (which is a host method, and therefore
-             /// requires a host View) if necessary (only noncontiguous Maps
-             /// need this).
-        +#ifndef SWIG
-             mutable typename decltype (lgMap_)::HostMirror lgMapHost_;
-        +#endif
-
-             //! Type of a mapping from global IDs to local IDs.
-             typedef Details::FixedHashTable<GlobalOrdinal, LocalOrdinal, device_type>
-
-    In the future, this patch will be incorporated upstream and not necessary.
+    When using the developer mode, all of the patches ``scripts/patches`` directory of the ForTrilinos source tree must be applied.  If you previously used the ``scripts/patches/apply-patches`` script, this was done for you.  Otherwise, be sure that all of the patches are applied.

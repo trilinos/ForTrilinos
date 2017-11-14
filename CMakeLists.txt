@@ -42,24 +42,12 @@ ENDIF()
 # TRIBITS_ADD_TEST_DIRECTORIES(test)
 
 ##---------------------------------------------------------------------------##
-## Build the documentation published on http://datatransferkit.readthedocs.org
-##---------------------------------------------------------------------------##
-
-IF(DataTransferKit_ENABLE_ReadTheDocs)
-    ADD_SUBDIRECTORY(docs)
-ENDIF()
-
-##---------------------------------------------------------------------------##
 ## Generate the Doxygen documentation
 ##---------------------------------------------------------------------------##
-
-IF(DataTransferKit_ENABLE_Doxygen)
-    ADD_SUBDIRECTORY(docs/doxygen)
-ENDIF()
-
-TRIBITS_PROCESS_SUBPACKAGES()
-TRIBITS_PACKAGE_DEF()
-TRIBITS_PACKAGE_POSTPROCESS()
+# There does not currently exist Doxygen documentation
+#IF(ForTrilinos_ENABLE_Doxygen)
+#    ADD_SUBDIRECTORY(docs/doxygen)
+#ENDIF()
 
 ##---------------------------------------------------------------------------##
 ## Build the documentation published on http://fortrilinos.readthedocs.org
@@ -67,3 +55,7 @@ TRIBITS_PACKAGE_POSTPROCESS()
 IF(ForTrilinos_ENABLE_ReadTheDocs)
     ADD_SUBDIRECTORY(docs)
 ENDIF()
+
+TRIBITS_PROCESS_SUBPACKAGES()
+TRIBITS_PACKAGE_DEF()
+TRIBITS_PACKAGE_POSTPROCESS()

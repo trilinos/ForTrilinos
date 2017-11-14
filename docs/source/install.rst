@@ -1,3 +1,5 @@
+.. _install_fortrilinos:
+
 Installation
 ============
 
@@ -41,7 +43,7 @@ required to build and install ForTrilinos:
 
       $ git clone https://github.com/trilinos/Trilinos.git $TRILINOS_DIR
       $ cd $TRILINOS_DIR
-      $ git checkout trilinos-release-12.12
+      $ git checkout trilinos-release-12.12-1
 
   Here, ``$TRILINOS_DIR`` is the name you want give to the repository.
 
@@ -50,12 +52,18 @@ required to build and install ForTrilinos:
   .. code::
 
       $ git clone https://github.com/trilinos/ForTrilinos.git $FORTRILINOS_DIR
-      $ cd $TRILINOS_DIR/packages
-      $ ln -s $FORTRILINOS_DIR
+      $ ln -s $FORTRILINOS_DIR $TRILINOS_DIR/packages
 
-3. Create a CMake configuration script
+3. Create a build directory and in it a CMake configuration script.
 
-  Here is an example of the ``do-configure`` configuration script:
+  .. code::
+
+      $ cd $TRILINOS_DIR
+      $ mkdir build
+      $ cd build
+
+  The following CMake script defines a near minimal CMake configuration to build
+  Trilinos with ForTrilinos enabled:
 
   .. code-block:: bash
 
@@ -89,6 +97,7 @@ required to build and install ForTrilinos:
 
           -D Trilinos_ENABLE_Amesos2=ON
           -D Trilinos_ENABLE_Anasazi=ON
+          -D Anasazi_ENABLE_Epetra=OFF
           -D Trilinos_ENABLE_Belos=ON
           -D Trilinos_ENABLE_Epetra=OFF
           -D Trilinos_ENABLE_Ifpack2=ON
@@ -104,40 +113,30 @@ required to build and install ForTrilinos:
           )
       cmake "${ARGS[@]}" $EXTRA_ARGS $TRILINOS_DIR
 
-4. Run the configuration script
+.. _patches:
 
-  From your build directory:
+4. Apply one-time patches to Trilinos.  In future updates, patches will be incorporated directly in to Trilinos but, for now, they must be applied manually.  All required patches can be found in ``scripts/patches`` directory in the ForTrilinos source tree. The script ``scripts/patches/apply-patches`` can be used to apply all of the patches at once.
 
   .. code::
 
-      $ mkdir build && cd build
+     $ cd $FORTRILINOS_DIR/scripts/patches
+     $ ./apply-patches
+
+  .. note::
+
+     Note, the environment variable ``TRILINOS_DIR`` must be defined and point to the 12.12 release version of Trilinos cloned in Step 1 for the patching and building to succeed.
+
+
+5. Run the configuration script from your build directory.  Here the CMake
+   configure script is assumed to be named ``do-configure``
+
+  .. code::
+
+      $ cd $TRILINOS_DIR/build
       $ ./do-configure
 
   More install scripts can be found in ``scripts/`` directory in the ForTrilinos
   source tree.
-
-  .. warning::
-
-      Right now, it is required to apply a patch to Trilinos. This patch is:
-
-      .. code::
-
-          --- a/packages/anasazi/src/AnasaziTraceMin.hpp
-          +++ b/packages/anasazi/src/AnasaziTraceMin.hpp
-          @@ -53,7 +53,9 @@
-           #include "AnasaziBasicSort.hpp"
-           #include "AnasaziTraceMinBase.hpp"
-
-          -#include "Epetra_Operator.h"
-          +#ifdef HAVE_ANASAZI_EPETRA
-          +  #include "Epetra_Operator.h"
-          +#endif
-
-           #include "AnasaziEigensolver.hpp"
-           #include "AnasaziMultiVecTraits.hpp"
-
-      In the future, this patch will be incorporated upstream and not
-      necessary.
 
 Build this documentation
 ------------------------
@@ -148,4 +147,12 @@ Build this documentation
 
     $ make docs
 
-Open the ``index.html`` in the directory ``ReadTheDocs/docs/html``.
+Open ``index.html`` in ``$TRILINOS_DIR/packages/ForTrilinos/docs/html``.
+
+.. note::
+
+   Building the documentation requires the Sphinx html theme
+   ``sphinx_rtd_theme`` which does not come installed by default on some
+   installations of Sphinx.  Be sure to install ``sphinx_rtd_theme`` (via
+   ``pip``, ``conda``, etc.) before building the documentation or build
+   errors will occur.

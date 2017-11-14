@@ -1,0 +1,19 @@
+#!/usr/bin/env python
+
+import os
+import glob
+from subprocess import Popen
+
+TRILINOS_DIR = os.getenv('TRILINOS_DIR')
+if TRILINOS_DIR is None:
+    raise SystemExit('TRILINOS_DIR environment variable must be defined')
+if not os.path.isdir(TRILINOS_DIR):
+    raise SystemExit('{0} is not a directory'.format(TRILINOS_DIR))
+
+this_dir = os.path.dirname(os.path.realpath(__file__))
+for filename in glob.glob(os.path.join(this_dir, '*.diff')):
+    diff_file = os.path.join(this_dir, filename)
+    print(diff_file)
+    command = 'patch -p 1 < {0}'.format(diff_file)
+    p = Popen(command, cwd=TRILINOS_DIR, shell=True)
+    p.wait()
