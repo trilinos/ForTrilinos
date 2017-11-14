@@ -38,7 +38,7 @@
          const GlobalOrdinal indexBase,
          const Teuchos::RCP<const Teuchos::Comm<int> >& comm); // needs Kokkos::View
 %ignore Tpetra::Map::describe;                  // needs Teuchos::FancyOStream
-%ignore Tpetra::Map::getLocalMap;               // ?
+%ignore Tpetra::Map::getLocalMap;               // no need to expose this yet
 %ignore Tpetra::Map::getMyGlobalIndices;        // return type is not exposed externally, requires using `auto`
 
 // =======================================================================

@@ -257,6 +257,9 @@ end type
   procedure :: getValidParameters => swigf_TpetraCrsGraph_getValidParameters
   procedure, private :: insertGlobalIndices__SWIG_0 => swigf_TpetraCrsGraph_insertGlobalIndices__SWIG_0
   procedure, private :: insertGlobalIndices__SWIG_1 => swigf_TpetraCrsGraph_insertGlobalIndices__SWIG_1
+  procedure, private :: insertLocalIndices__SWIG_0 => swigf_TpetraCrsGraph_insertLocalIndices__SWIG_0
+  procedure, private :: insertLocalIndices__SWIG_1 => swigf_TpetraCrsGraph_insertLocalIndices__SWIG_1
+  procedure :: removeLocalIndices => swigf_TpetraCrsGraph_removeLocalIndices
   procedure :: globalAssemble => swigf_TpetraCrsGraph_globalAssemble
   procedure, private :: resumeFill__SWIG_0 => swigf_TpetraCrsGraph_resumeFill__SWIG_0
   procedure, private :: resumeFill__SWIG_1 => swigf_TpetraCrsGraph_resumeFill__SWIG_1
@@ -302,6 +305,7 @@ end type
   procedure :: isStorageOptimized => swigf_TpetraCrsGraph_isStorageOptimized
   procedure :: getProfileType => swigf_TpetraCrsGraph_getProfileType
   procedure :: getGlobalRowCopy => swigf_TpetraCrsGraph_getGlobalRowCopy
+  procedure :: getLocalRowCopy => swigf_TpetraCrsGraph_getLocalRowCopy
   procedure :: getGlobalRowView => swigf_TpetraCrsGraph_getGlobalRowView
   procedure :: supportsRowViews => swigf_TpetraCrsGraph_supportsRowViews
   procedure :: description => swigf_TpetraCrsGraph_description
@@ -318,6 +322,7 @@ end type
   generic :: assignment(=) => swigf_assign_TpetraCrsGraph
   generic :: reindexColumns => reindexColumns__SWIG_0, reindexColumns__SWIG_1, reindexColumns__SWIG_2
   generic :: insertGlobalIndices => insertGlobalIndices__SWIG_0, insertGlobalIndices__SWIG_1
+  generic :: insertLocalIndices => insertLocalIndices__SWIG_0, insertLocalIndices__SWIG_1
   generic :: resumeFill => resumeFill__SWIG_0, resumeFill__SWIG_1
   generic :: fillComplete => fillComplete__SWIG_0, fillComplete__SWIG_1, fillComplete__SWIG_2, fillComplete__SWIG_3
   generic :: expertStaticFillComplete => expertStaticFillComplete__SWIG_0, expertStaticFillComplete__SWIG_1, &
@@ -1550,6 +1555,30 @@ integer(C_INT), intent(in) :: farg3
 type(C_PTR), value :: farg4
 end subroutine
 
+subroutine swigc_TpetraCrsGraph_insertLocalIndices__SWIG_0(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraCrsGraph_insertLocalIndices__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+type(C_PTR), value :: farg3
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_insertLocalIndices__SWIG_1(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraCrsGraph_insertLocalIndices__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg3
+type(C_PTR), value :: farg4
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_removeLocalIndices(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsGraph_removeLocalIndices")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+end subroutine
+
 subroutine swigc_TpetraCrsGraph_globalAssemble(farg1) &
 bind(C, name="swigc_TpetraCrsGraph_globalAssemble")
 use, intrinsic :: ISO_C_BINDING
@@ -1907,6 +1936,15 @@ end function
 
 subroutine swigc_TpetraCrsGraph_getGlobalRowCopy(farg1, farg2, farg3, farg4) &
 bind(C, name="swigc_TpetraCrsGraph_getGlobalRowCopy")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+end subroutine
+
+subroutine swigc_TpetraCrsGraph_getLocalRowCopy(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraCrsGraph_getLocalRowCopy")
 use, intrinsic :: ISO_C_BINDING
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
@@ -4833,6 +4871,54 @@ call swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_1(farg1, farg2, farg3, farg4
 
 end subroutine
 
+subroutine swigf_TpetraCrsGraph_insertLocalIndices__SWIG_0(self, localrow, indices)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+integer(C_INT), intent(in) :: localrow
+class(TeuchosArrayViewIntConst) :: indices
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+type(C_PTR) :: farg3 
+
+farg1 = self%swigptr
+farg2 = localrow
+farg3 = indices%swigptr
+call swigc_TpetraCrsGraph_insertLocalIndices__SWIG_0(farg1, farg2, farg3)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_insertLocalIndices__SWIG_1(self, localrow, nument, inds)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+integer(C_INT), intent(in) :: localrow
+integer(C_INT), intent(in) :: nument
+integer(C_INT), dimension(:), target, intent(in) :: inds
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+integer(C_INT) :: farg3 
+type(C_PTR) :: farg4 
+
+farg1 = self%swigptr
+farg2 = localrow
+farg3 = nument
+farg4 = c_loc(inds)
+call swigc_TpetraCrsGraph_insertLocalIndices__SWIG_1(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_removeLocalIndices(self, localrow)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+integer(C_INT), intent(in) :: localrow
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+
+farg1 = self%swigptr
+farg2 = localrow
+call swigc_TpetraCrsGraph_removeLocalIndices(farg1, farg2)
+
+end subroutine
+
 subroutine swigf_TpetraCrsGraph_globalAssemble(self)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsGraph) :: self
@@ -5463,6 +5549,25 @@ farg2 = globalrow
 farg3 = indices%swigptr
 farg4 = c_loc(numindices)
 call swigc_TpetraCrsGraph_getGlobalRowCopy(farg1, farg2, farg3, farg4)
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_getLocalRowCopy(self, localrow, indices, numindices)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+integer(C_INT), intent(in) :: localrow
+class(TeuchosArrayViewInt) :: indices
+integer(C_SIZE_T), target, intent(inout) :: numindices
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+
+farg1 = self%swigptr
+farg2 = localrow
+farg3 = indices%swigptr
+farg4 = c_loc(numindices)
+call swigc_TpetraCrsGraph_getLocalRowCopy(farg1, farg2, farg3, farg4)
 
 end subroutine
 

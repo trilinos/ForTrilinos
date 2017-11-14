@@ -5156,6 +5156,124 @@ SWIGEXPORT void swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_1(void *farg1, in
 }
 
 
+SWIGEXPORT void swigc_TpetraCrsGraph_insertLocalIndices__SWIG_0(void *farg1, int const *farg2, void const *farg3) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  int arg2 ;
+  Teuchos::ArrayView< int const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2 - 1;
+  arg3 = (Teuchos::ArrayView< int const > *)(((Teuchos::RCP<const Teuchos::ArrayView<const int> > *)farg3)
+    ? ((Teuchos::RCP<const Teuchos::ArrayView<const int> > *)farg3)->get()
+    :0);
+  if (!arg3)
+  {
+    throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< int const > const &");
+    return ;
+  }
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->insertLocalIndices(arg2,(Teuchos::ArrayView< int const > const &)*arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_insertLocalIndices__SWIG_1(void *farg1, int const *farg2, int const *farg3, int *farg4) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  int arg2 ;
+  int arg3 ;
+  int *arg4 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2 - 1;
+  arg3 = *farg3;
+  arg4 = reinterpret_cast< int * >(farg4);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->insertLocalIndices(arg2,arg3,(int const (*))arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_removeLocalIndices(void *farg1, int const *farg2) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  int arg2 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2 - 1;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->removeLocalIndices(arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
 SWIGEXPORT void swigc_TpetraCrsGraph_globalAssemble(void *farg1) {
   Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > > *smartarg1 = 0 ;
@@ -6820,6 +6938,59 @@ SWIGEXPORT void swigc_TpetraCrsGraph_getGlobalRowCopy(void const *farg1, int con
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
     }
   }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_getLocalRowCopy(void const *farg1, int const *farg2, void const *farg3, size_t *farg4) {
+  Tpetra::CrsGraph< LO,GO,NO,false > *arg1 = (Tpetra::CrsGraph< LO,GO,NO,false > *) 0 ;
+  int arg2 ;
+  Teuchos::ArrayView< int > *arg3 = 0 ;
+  size_t *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,false > const > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,false> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2;
+  // Original typemap: convert void* to thinvec reference
+  arg3 = static_cast< Teuchos::ArrayView< int > * >(const_cast< void* >(farg3));
+  
+  // Construct temporary array and view
+  Teuchos::Array<int> tmp = Teuchos::Array<int>(arg3->size());
+  for (int i = 0; i < arg3->size(); i++)
+  tmp[i] = (*arg3)[i] - 1;
+  Teuchos::ArrayView<int> tmpview = tmp();
+  
+  // Make the input argument point to our temporary vector
+  arg3 = &tmpview;
+  arg4 = reinterpret_cast< size_t * >(farg4);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      ((Tpetra::CrsGraph< LO,GO,NO,false > const *)arg1)->getLocalRowCopy(arg2,(Teuchos::ArrayView< int > const &)*arg3,*arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+  
+  for (int i = 0; i < arg3->size(); i++)
+  (*arg3)[i]++;
   
 }
 

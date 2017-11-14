@@ -61,10 +61,6 @@
         const Teuchos::RCP< const map_type > &domainMap=Teuchos::null, \
         const Teuchos::RCP< const map_type > &rangeMap=Teuchos::null, \
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);    // needs Kokkos::StaticCrsGraph
-%ignore Tpetra::CrsGraph::insertLocalIndices;                 // ±1 issue
-%ignore Tpetra::CrsGraph::removeLocalIndices;                 // ±1 issue
-%ignore Tpetra::CrsGraph::getLocalRowCopy;                    // ±1 issue
-%ignore Tpetra::CrsGraph::getLocalRowView;                    // ±1 issue
 %ignore Tpetra::CrsGraph::describe;                           // needs Teuchos::FancyOStream
 %ignore Tpetra::CrsGraph::getLocalDiagOffsets (const Kokkos::View< size_t *, device_type, Kokkos::MemoryUnmanaged > &offsets) const;    // needs Kokkos::View
 %ignore Tpetra::CrsGraph::getLocalDiagOffsets (Teuchos::ArrayRCP< size_t > &offsets) const;     // needs Teuchos:ArrayRCP
@@ -73,11 +69,30 @@
 %ignore Tpetra::CrsGraph::getNodeRowPtrs;                     // needs Teuchos::RCP
 %ignore Tpetra::CrsGraph::getNodePackedIndices;               // needs Teuchos::RCP
 %ignore Tpetra::CrsGraph::getLocalGraph;                      // needs Kokkos::StaticCrsGraph
+%ignore Tpetra::CrsGraph::getLocalRowView;                    // ±1 issue
 
 // =======================================================================
 // Fix ±1 issues
 // =======================================================================
 %typemap(in)  int localRow %{$1 = *$input - 1;%}
+%typemap(argout) const Teuchos::ArrayView< int > &indices %{
+  for (int i = 0; i < $1->size(); i++)
+    (*$1)[i]++;
+%}
+%typemap(in, noblock=1) const Teuchos::ArrayView< int > &indices () {
+
+  // Original typemap: convert void* to thinvec reference
+  $1 = %static_cast(%const_cast($input, void*), $1_ltype);
+
+  // Construct temporary array and view
+  Teuchos::Array<int> tmp = Teuchos::Array<int>($1->size());
+  for (int i = 0; i < $1->size(); i++)
+    tmp[i] = (*$1)[i] - 1;
+  Teuchos::ArrayView<int> tmpview = tmp();
+
+  // Make the input argument point to our temporary vector
+  $1 = &tmpview;
+}
 
 
 %teuchos_rcp(Tpetra::CrsGraph<LO,GO,NO,false>)
