@@ -80,18 +80,22 @@
 %ignore Tpetra::CrsMatrix::getLocalDiagCopy;                // needs Tpetra::Vector
 %ignore Tpetra::CrsMatrix::getLocalDiagOffsets;             // needs Teuchos::ArrayRCP
 %ignore Tpetra::CrsMatrix::getLocalMatrix;                  // needs KokkosSparse::CrsMatrix
+%ignore Tpetra::CrsMatrix::getLocalValuesView;              // needs Kokkos::View
+%ignore Tpetra::CrsMatrix::leftScale;                       // needs Tpetra::Vector
+%ignore Tpetra::CrsMatrix::rightScale;                      // needs Tpetra::Vector
+
+// =======================================================================
+// Fix ±1 issues
+// =======================================================================
+%typemap(in)  int localRow %{$1 = *$input - 1;%}
 %ignore Tpetra::CrsMatrix::getLocalRowCopy;                 // ±1 issue
 %ignore Tpetra::CrsMatrix::getLocalRowView;                 // ±1 issue
-%ignore Tpetra::CrsMatrix::getLocalValuesView;              // needs Kokkos::View
 %ignore Tpetra::CrsMatrix::getNumEntriesInLocalRow;         // ±1 issue
 %ignore Tpetra::CrsMatrix::insertLocalValues;               // ±1 issue
-%ignore Tpetra::CrsMatrix::leftScale;                       // needs Tpetra::Vector
 %ignore Tpetra::CrsMatrix::reorderedLocalGaussSeidel;       // ±1 issue
 %ignore Tpetra::CrsMatrix::replaceLocalValues;              // ±1 issue
-%ignore Tpetra::CrsMatrix::rightScale;                      // needs Tpetra::Vector
 %ignore Tpetra::CrsMatrix::sumIntoLocalValues;              // ±1 issue
 %ignore Tpetra::CrsMatrix::transformLocalValues;            // ±1 issue
-
 
 %teuchos_rcp(Tpetra::CrsMatrix<SC,LO,GO,NO,false>)
 

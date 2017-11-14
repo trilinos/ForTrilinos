@@ -47,8 +47,8 @@
 %ignore Tpetra::MultiVector::getDataNonConst;       // needs Teuchos::ArrayRCP
 %ignore Tpetra::MultiVector::getDualView;           // needs Kokkos::DualView
 %ignore Tpetra::MultiVector::getLocalView;          // needs Kokkos::View
-%ignore Tpetra::MultiVector::getVector;             // ±1 issue; needs Tpetra::Vector
-%ignore Tpetra::MultiVector::getVectorNonConst;     // ±1 issue; needs Tpetra::Vector
+%ignore Tpetra::MultiVector::getVector;             // needs Tpetra::Vector
+%ignore Tpetra::MultiVector::getVectorNonConst;     // needs Tpetra::Vector
 %ignore Tpetra::MultiVector::modify;                // templated on device type
 %ignore Tpetra::MultiVector::need_sync;             // templated on device type
 %ignore Tpetra::MultiVector::sync;                  // templated on device type
@@ -70,6 +70,11 @@
 %ignore Tpetra::MultiVector::subCopy;               // ±1 issue; needs Teuchos::Range1D
 %ignore Tpetra::MultiVector::subView;               // ±1 issue; needs Teuchos::Range1D
 %ignore Tpetra::MultiVector::subViewNonConst;       // ±1 issue; needs Teuchos::Range1D
+
+// =======================================================================
+// Fix ±1 issues
+// =======================================================================
+%typemap(in)  const size_t j %{$1 = *$input - 1;%}
 
 %teuchos_rcp(Tpetra::MultiVector<SC,LO,GO,NO,false>)
 
