@@ -7,6 +7,7 @@ module fortpetra
  use, intrinsic :: ISO_C_BINDING
  use forteuchos
  implicit none
+ private
 
  ! PUBLIC METHODS AND TYPES
  public :: LocalGlobal, LocallyReplicated, GloballyDistributed
@@ -20,11 +21,21 @@ module fortpetra
  public :: TpetraExport
  public :: TpetraImport
  public :: TpetraMultiVector
+
+type :: SwigfUnknownClass
+  type(C_PTR), public :: swigptr
+end type
+
  public :: RowInfo
  public :: ELocalGlobal, LocalIndices, GlobalIndices
  public :: TpetraCrsGraph
  public :: TpetraCrsMatrix
+
  ! PARAMETERS
+ integer(C_INT), parameter, public :: TPETRA_THROWS_EFFICIENCY_WARNINGS = 0_C_INT
+ integer(C_INT), parameter, public :: TPETRA_PRINTS_EFFICIENCY_WARNINGS = 0_C_INT
+ integer(C_INT), parameter, public :: TPETRA_THROWS_ABUSE_WARNINGS = 0_C_INT
+ integer(C_INT), parameter, public :: TPETRA_PRINTS_ABUSE_WARNINGS = 0_C_INT
  enum, bind(c)
   enumerator :: LocalGlobal = -1
   enumerator :: LocallyReplicated = 0
@@ -59,6 +70,7 @@ module fortpetra
   enumerator :: Backward = Forward + 1
   enumerator :: Symmetric = Backward + 1
  end enum
+ integer(C_INT), parameter, public :: TPETRA_USE_KOKKOS_DISTOBJECT = 0_C_INT
  enum, bind(c)
   enumerator :: ELocalGlobal = -1
   enumerator :: LocalIndices = 0
@@ -172,6 +184,7 @@ module fortpetra
   procedure :: reduce => swigf_TpetraMultiVector_reduce
   procedure :: offsetViewNonConst => swigf_TpetraMultiVector_offsetViewNonConst
   procedure :: get1dCopy => swigf_TpetraMultiVector_get1dCopy
+  procedure :: dot => swigf_TpetraMultiVector_dot
   procedure :: abs => swigf_TpetraMultiVector_abs
   procedure :: reciprocal => swigf_TpetraMultiVector_reciprocal
   procedure, private :: scale__SWIG_0 => swigf_TpetraMultiVector_scale__SWIG_0
@@ -410,8 +423,8 @@ module fortpetra
     exportAndFillComplete__SWIG_2, exportAndFillComplete__SWIG_3, exportAndFillComplete__SWIG_4
  end type
 
+
  ! WRAPPER DECLARATIONS
- private
  interface
 function swigc_new_TpetraMap__SWIG_0(farg1, farg2, farg3, farg4) &
 bind(C, name="swigc_new_TpetraMap__SWIG_0") &
@@ -1079,6 +1092,14 @@ use, intrinsic :: ISO_C_BINDING
 type(C_PTR), value :: farg1
 type(C_PTR), value :: farg2
 integer(C_SIZE_T), intent(in) :: farg3
+end subroutine
+
+subroutine swigc_TpetraMultiVector_dot(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraMultiVector_dot")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
 end subroutine
 
 subroutine swigc_TpetraMultiVector_abs(farg1, farg2) &
@@ -2677,8 +2698,9 @@ end function
   end function
  end interface
 
+
 contains
-  ! FORTRAN PROXY CODE
+ ! FORTRAN PROXY CODE
 subroutine swigf_new_TpetraMap__SWIG_0(self, numglobalelements, indexbase, comm, lg)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraMap) :: self
@@ -3876,6 +3898,22 @@ farg1 = self%swigptr
 farg2 = a%swigptr
 farg3 = lda
 call swigc_TpetraMultiVector_get1dCopy(farg1, farg2, farg3)
+
+end subroutine
+
+subroutine swigf_TpetraMultiVector_dot(self, a, dots)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMultiVector) :: self
+class(TpetraMultiVector) :: a
+class(SwigfUnknownClass) :: dots
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(C_PTR) :: farg3 
+
+farg1 = self%swigptr
+farg2 = a%swigptr
+farg3 = dots%swigptr
+call swigc_TpetraMultiVector_dot(farg1, farg2, farg3)
 
 end subroutine
 
@@ -6857,4 +6895,5 @@ end function
 if (c_associated(self%swigptr)) call self%release()
    self%swigptr = swigc_spcopy_TpetraCrsMatrix(other%swigptr)
   end subroutine
+
 end module fortpetra
