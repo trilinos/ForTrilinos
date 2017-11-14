@@ -21,6 +21,7 @@ typedef int Teuchos_Ordinal;
 %include <typemaps.i>
 %fortran_view(int)
 %fortran_view(double)
+%fortran_view(size_t)
 
 %include "Teuchos_Types.i"
 %include "Teuchos_Exceptions.i"

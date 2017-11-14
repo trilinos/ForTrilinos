@@ -155,6 +155,15 @@ template <typename T> T SwigValueInit() {
 # pragma warning disable 592
 #endif
 
+
+#ifndef SWIGEXTERN
+#ifdef __cplusplus
+#define SWIGEXTERN extern
+#else
+#define SWIGEXTERN
+#endif
+#endif
+
 /*  Errors in SWIG */
 #define  SWIG_UnknownError    	   -1
 #define  SWIG_IOError        	   -2
@@ -4492,12 +4501,14 @@ SWIGEXPORT void const * swigc_TeuchosArrayViewSizeT_assert_in_range(void const *
 }
 
 
-SWIGEXPORT void * swigc_new_TeuchosArrayViewSizeT__SWIG_2(void *farg1) {
+SWIGEXPORT void * swigc_new_TeuchosArrayViewSizeT__SWIG_2(swig::SwigfArrayWrapper< size_t > *farg1) {
   void * fresult ;
-  SwigValueWrapper< std::pair< unsigned long *,unsigned long > > arg1 ;
+  std::pair< std::size_t *,std::size_t > arg1 ;
   Teuchos::ArrayView< std::size_t > *result = 0 ;
   
-  arg1 = *static_cast< std::pair< std::size_t *,std::size_t > * >(farg1);
+  arg1 = ::std::pair< size_t*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -4938,12 +4949,14 @@ SWIGEXPORT void const * swigc_TeuchosArrayViewSizeTConst_assert_in_range(void co
 }
 
 
-SWIGEXPORT void * swigc_new_TeuchosArrayViewSizeTConst__SWIG_2(void *farg1) {
+SWIGEXPORT void * swigc_new_TeuchosArrayViewSizeTConst__SWIG_2(swig::SwigfArrayWrapper< size_t const > *farg1) {
   void * fresult ;
-  SwigValueWrapper< std::pair< unsigned long const *,unsigned long > > arg1 ;
+  std::pair< std::size_t const *,std::size_t > arg1 ;
   Teuchos::ArrayView< std::size_t const > *result = 0 ;
   
-  arg1 = *static_cast< std::pair< std::size_t const *,std::size_t > * >(farg1);
+  arg1 = ::std::pair< const size_t*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
