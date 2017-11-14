@@ -32,7 +32,11 @@
         const dual_view_type& view, const dual_view_type& origView);    // needs Kokkos::DualView
 %ignore Tpetra::MultiVector::assign;
 %ignore Tpetra::MultiVector::describe;              // needs Teuchos::FancyOStream
-%ignore Tpetra::MultiVector::dot;                   // too many dots, not sure how to unignore one
+%ignore Tpetra::MultiVector::dot(const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const Teuchos::ArrayView< dot_type > &dots) const;
+%ignore Tpetra::MultiVector::dot(const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, std::vector< T > &dots) const;
+%ignore Tpetra::MultiVector::dot(const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const Kokkos::View< dot_type *, Kokkos::HostSpace > &norms) const;
+%ignore Tpetra::MultiVector::dot(typename std::enable_if< std::is_same< typename ViewType::value_type, dot_type >::value &&std::is_same< typename ViewType::memory_space, typename device_type::memory_space >::value, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic >>::type &A, const ViewType &dots) const;
+%ignore Tpetra::MultiVector::dot(const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const Kokkos::View< T *, device_type > &dots) const;
 %ignore Tpetra::MultiVector::elementWiseMultiply;   // needs Vector
 %ignore Tpetra::MultiVector::get1dView;             // needs Teuchos::ArrayRCP
 %ignore Tpetra::MultiVector::get1dViewNonConst;     // needs Teuchos::ArrayRCP
