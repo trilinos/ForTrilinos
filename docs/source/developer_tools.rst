@@ -49,7 +49,7 @@ Do not forget to cleanup after yourself:
 Auto-generating source files using SWIG
 ---------------------------------------
 
-ForTrilinos carries generated ``.f90`` and ``_wrap.cxx`` files with its source. Thus, introducing new ``.i`` files
+ForTrilinos carries generated ``.F90`` and ``_wrap.cxx`` files with its source. Thus, introducing new ``.i`` files
 requires a developer to generate the corresponding wrapper and proxy files. To do this automatically, the CMake
 configuration of the build must include
 

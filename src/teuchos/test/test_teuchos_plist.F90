@@ -1,5 +1,5 @@
 !-----------------------------------------------------------------------------!
-! \file   parameterlist/test.f90
+! \file   parameterlist/test.F90
 ! \author Seth R Johnson
 ! \date   Tue Dec 06 18:15:21 2016
 ! \brief  test module
@@ -115,5 +115,5 @@ end subroutine
 end program
 
 !-----------------------------------------------------------------------------!
-! end of parameterlist/test.f90
+! end of parameterlist/test.F90
 !-----------------------------------------------------------------------------!
