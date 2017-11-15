@@ -3612,7 +3612,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_get1dCopy(void const *farg1, void const 
 SWIGEXPORT void swigc_TpetraMultiVector_dot(void const *farg1, void const *farg2, void const *farg3) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
   Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
-  Kokkos::View< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::dot_type *,Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::device_type > *arg3 = 0 ;
+  Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::dot_type > *arg3 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg1;
@@ -3625,14 +3625,21 @@ SWIGEXPORT void swigc_TpetraMultiVector_dot(void const *farg1, void const *farg2
     throw std::logic_error("Attempt to dereference null Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > const &");
     return ;
   }
-  arg3 = static_cast< Kokkos::View< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::dot_type *,Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::device_type > * >(const_cast< void* >(farg3));
+  arg3 = (Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::dot_type > *)(((Teuchos::RCP<const Teuchos::ArrayView<double> > *)farg3)
+    ? ((Teuchos::RCP<const Teuchos::ArrayView<double> > *)farg3)->get()
+    :0);
+  if (!arg3)
+  {
+    throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::dot_type > const &");
+    return ;
+  }
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      ((Tpetra::MultiVector< SC,LO,GO,NO,false > const *)arg1)->dot((Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > const &)*arg2,(Kokkos::View< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::dot_type *,Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::device_type > const &)*arg3);
+      ((Tpetra::MultiVector< SC,LO,GO,NO,false > const *)arg1)->dot((Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false > const &)*arg2,(Teuchos::ArrayView< Tpetra::MultiVector< double,int,int,Kokkos::Compat::KokkosSerialWrapperNode,false >::dot_type > const &)*arg3);
     }
     catch (const std::range_error& e)
     {
