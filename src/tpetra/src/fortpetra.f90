@@ -21,11 +21,6 @@ module fortpetra
  public :: TpetraExport
  public :: TpetraImport
  public :: TpetraMultiVector
-
-type :: SwigfUnknownClass
-  type(C_PTR), public :: swigptr
-end type
-
  public :: RowInfo
  public :: ELocalGlobal, LocalIndices, GlobalIndices
  public :: TpetraCrsGraph
@@ -4198,7 +4193,7 @@ subroutine swigf_TpetraMultiVector_dot(self, a, dots)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraMultiVector) :: self
 class(TpetraMultiVector) :: a
-class(SwigfUnknownClass) :: dots
+class(TeuchosArrayViewDouble) :: dots
 type(C_PTR) :: farg1 
 type(C_PTR) :: farg2 
 type(C_PTR) :: farg3 
