@@ -77,26 +77,9 @@ This can be done by adding the following configuration options to the script (as
 
 .. warning::
 
-    When using the developer mode, it is required to apply two patches to
-    Trilinos. The first patch is
-
-    .. code::
-
-        --- a/packages/anasazi/src/AnasaziTraceMin.hpp
-        +++ b/packages/anasazi/src/AnasaziTraceMin.hpp
-        @@ -53,7 +53,9 @@
-         #include "AnasaziBasicSort.hpp"
-         #include "AnasaziTraceMinBase.hpp"
-
-        -#include "Epetra_Operator.h"
-        +#ifdef HAVE_ANASAZI_EPETRA
-        +  #include "Epetra_Operator.h"
-        +#endif
-
-         #include "AnasaziEigensolver.hpp"
-         #include "AnasaziMultiVecTraits.hpp"
-
-    The second patch is
+    When using the developer mode, it is required to apply a second patch to
+    Trilinos (the first patch is listed in the installation instructions). This
+    patch is
 
     .. code::
 
@@ -113,5 +96,4 @@ This can be done by adding the following configuration options to the script (as
              //! Type of a mapping from global IDs to local IDs.
              typedef Details::FixedHashTable<GlobalOrdinal, LocalOrdinal, device_type>
 
-    In the future, these patches will be incorporated upstream and not
-    necessary.
+    In the future, this patch will be incorporated upstream and not necessary.
