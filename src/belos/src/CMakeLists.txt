@@ -2,8 +2,10 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 IF (ForTrilinos_ENABLE_DeveloperMode)
-  # Generate wrapper and proxy files
-  SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}")
+  IF (ForTrilinos_EXPORT_SWIG)
+    # Generate wrapper and proxy files since MPI is enabled
+    SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}")
+  ENDIF()
 
   MAKE_SWIG(MODULE forbelos
     SOURCE forbelos.i
@@ -13,7 +15,7 @@ IF (ForTrilinos_ENABLE_DeveloperMode)
 ELSE()
   # Use pre-generated files
   SET(GEN_SOURCE
-    forbelos.f90
+    forbelos.F90
     forbelosFORTRAN_wrap.cxx)
 
   TRIBITS_ADD_LIBRARY(

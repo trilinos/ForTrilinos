@@ -3,7 +3,7 @@
 ##---------------------------------------------------------------------------##
 
 SET(TESTS
-  test_tpetra_map.f90
+  test_tpetra_map.F90
   )
 
 FOREACH(test ${TESTS})

@@ -35,8 +35,8 @@ IF(PYTHON_VERSION_STRING VERSION_GREATER 3.0)
 ENDIF()
 
 # Define extra output files
-set(SWIG_FORTRAN_EXTRA_FILE_EXTENSION "f90") # old CMake
-set(SWIG_FORTRAN_EXTRA_FILE_EXTENSIONS "f90")# new CMake
+set(SWIG_FORTRAN_EXTRA_FILE_EXTENSION "F90") # old CMake
+set(SWIG_FORTRAN_EXTRA_FILE_EXTENSIONS ".F90")# new CMake
 
 ##---------------------------------------------------------------------------##
 # Look through a header/SWIG file and find dependencies
@@ -153,7 +153,7 @@ function(MAKE_SWIG)
   set(SWIG_MODULE_${PARSE_MODULE}_EXTRA_DEPS ${DEPENDENCIES} )
 
   if (PARSE_LANGUAGE STREQUAL "FORTRAN")
-    set(SWIG_FORTRAN_GENERATED_SRC "${CMAKE_SWIG_OUTDIR}/${PARSE_MODULE}.f90")
+    set(SWIG_FORTRAN_GENERATED_SRC "${CMAKE_SWIG_OUTDIR}/${PARSE_MODULE}.F90")
     # Usually SWIG wrapper libraries need to be built as shared libraries that
     # are never linked into the CMake dependencies themselves (the "MODULE"
     # type); not the case with fortran. This relies on the patched UseSWIG.
