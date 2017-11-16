@@ -60,6 +60,8 @@ ArrayView(std::pair<TYPE*, size_t> view)
 %include "Teuchos_ArrayViewDecl.hpp"
 ADD_VIEW(int)
 ADD_VIEW(const int)
+ADD_VIEW(long long)
+ADD_VIEW(const long long)
 ADD_VIEW(double)
 ADD_VIEW(const double)
 ADD_VIEW(size_t)
@@ -69,6 +71,8 @@ ADD_VIEW(const size_t)
 // Make templates
 %template(TeuchosArrayViewInt)          Teuchos::ArrayView<int>;
 %template(TeuchosArrayViewIntConst)     Teuchos::ArrayView<const int>;
+%template(TeuchosArrayViewLongLong)     Teuchos::ArrayView<long long>;
+%template(TeuchosArrayViewLongLongConst)Teuchos::ArrayView<const long long>;
 %template(TeuchosArrayViewDouble)       Teuchos::ArrayView<double>;
 %template(TeuchosArrayViewDoubleConst)  Teuchos::ArrayView<const double>;
 %template(TeuchosArrayViewSizeT)        Teuchos::ArrayView<size_t>;

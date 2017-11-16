@@ -29,6 +29,9 @@
          const GlobalOrdinal indexBase,
          const Teuchos::RCP<const Teuchos::Comm<int> >& comm,
          const Teuchos::RCP<Node>& node);
+%ignore Tpetra::Map::Map(const global_size_t numGlobalElements, const GlobalOrdinal indexList[],
+         const LocalOrdinal indexListSize, const GlobalOrdinal indexBase,
+         const Teuchos::RCP< const Teuchos::Comm< int > > &comm);
 
 // =======================================================================
 // Postpone temporarily
@@ -59,7 +62,7 @@
 
 // FIXME: figure out why the first verion does not work
 /* %teuchos_rcp(Tpetra::Map<LO,GO,NO>); */
-%teuchos_rcp(Tpetra::Map<int, int, Kokkos::Compat::KokkosSerialWrapperNode>)
+%teuchos_rcp(Tpetra::Map<int, long long, Kokkos::Compat::KokkosSerialWrapperNode>)
 
 #define HAVE_TPETRA_INST_INT_INT
 %include "Tpetra_ConfigDefs.hpp"
@@ -67,4 +70,4 @@
 
 // FIXME: figure out why the first verion does not work
 /* %template(TpetraMap) Tpetra::Map<LO,GO,NO>; */
-%template(TpetraMap) Tpetra::Map<int, int, Kokkos::Compat::KokkosSerialWrapperNode>;
+%template(TpetraMap) Tpetra::Map<int, long long, Kokkos::Compat::KokkosSerialWrapperNode>;
