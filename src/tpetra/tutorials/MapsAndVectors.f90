@@ -222,5 +222,12 @@ call contig_map2%release()
 call contig_map%release()
 call element_list%release()
 call comm%release()
+deallocate(norms)
+
+#ifdef HAVE_MPI
+! Finalize MPI must be called after releasing all handles
+call MPI_FINALIZE(ierr)
+EXPECT_EQ(0, ierr)
+#endif
 
 end program main
