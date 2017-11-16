@@ -7,7 +7,6 @@ use iso_fortran_env
 use, intrinsic :: iso_c_binding
 use forteuchos
 use fortpetra
-use fortpetra_types
 
 #ifdef HAVE_MPI
 use mpi

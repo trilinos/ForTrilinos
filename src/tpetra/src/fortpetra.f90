@@ -3,11 +3,22 @@
 !
 ! Do not make changes to this file unless you know what you are doing--modify
 ! the SWIG interface file instead.
+
 module fortpetra
  use, intrinsic :: ISO_C_BINDING
  use forteuchos
  implicit none
  private
+
+ integer, public, parameter :: global_ordinal_type = c_int
+ integer, public, parameter :: global_size_t = c_long
+ integer, public, parameter :: local_ordinal_type = c_int
+ integer, public, parameter :: size_type = c_size_t
+ integer, public, parameter :: bool_type = c_bool
+ integer, public, parameter :: int_type = c_int
+ integer, public, parameter :: scalar_type = c_double
+ integer, public, parameter :: mag_type = c_double
+ integer, public, parameter :: norm_type = c_double
 
  ! PUBLIC METHODS AND TYPES
  public :: LocalGlobal, LocallyReplicated, GloballyDistributed
