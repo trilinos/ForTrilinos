@@ -31,7 +31,8 @@ int main(int argc, char *argv[]) {
     int       nnz = 3*n;
 
     // Step 0: Construct tri-diagonal matrix
-    std::vector<int> rowPtrs(n+1), rowInds(n), colInds(nnz);
+    std::vector<int> rowPtrs(n+1);
+    std::vector<long long> rowInds(n), colInds(nnz);
     std::vector<double> values(nnz);
 
     rowPtrs[0] = 0;

@@ -11,10 +11,10 @@ namespace ForTrilinos {
 
 
   class HandleHelpers {
-  private:
+  public:
     typedef double                                  SC;
     typedef int                                     LO;
-    typedef int                                     GO;
+    typedef long long                               GO;
     typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
 
   public:
@@ -26,13 +26,13 @@ namespace ForTrilinos {
     // Setup matrix
     static Teuchos::RCP<Matrix>
     setup_matrix_gen(const Teuchos::RCP<const Teuchos::Comm<int>>& comm,
-                     std::pair<const int*,size_t> rowInds, std::pair<const int*,size_t> rowPtrs,
-                     std::pair<const int*,size_t> colInds, std::pair<const double*,size_t> values);
+                     std::pair<const GO*,size_t> rowInds, std::pair<const LO*,size_t> rowPtrs,
+                     std::pair<const GO*,size_t> colInds, std::pair<const SC*,size_t> values);
 
     // Setup operator
     static Teuchos::RCP<Operator>
     setup_operator_gen(const Teuchos::RCP<const Teuchos::Comm<int>>& comm,
-                       std::pair<const int*, size_t> rowInds, OperatorCallback callback);
+                       std::pair<const GO*, size_t> rowInds, OperatorCallback callback);
   };
 
 }
