@@ -31,7 +31,6 @@ program main
   type(SolverHandle) :: tri_handle
 
   type(TeuchosArrayViewDoubleConst) :: TA_rhs, TA_lhs
-  type(TeuchosArrayViewDouble) :: TA_norms
   real(scalar_type), dimension(:), allocatable :: lhs, rhs
   real(norm_type), dimension(:), allocatable :: norms
   integer(global_ordinal_type), dimension(:), allocatable :: cols
@@ -177,13 +176,11 @@ program main
 
   ! Check the solution
   allocate(norms(1))
-  call TA_norms%create(norms)
   call X%update(-one, Xtrue, one)
-  call X%norm2(TA_norms)
+  call X%norm2(norms)
 
   ! TODO: Get the tolerance out of the parameter list
-  EXPECT_TRUE(TA_norms%back() < 1e-6)
-  call TA_norms%release()
+  EXPECT_TRUE(norms(1) < 1e-6)
 
   ! Step 5: clean up
   call tri_handle%finalize()
