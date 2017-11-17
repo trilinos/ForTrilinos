@@ -47,6 +47,12 @@ public :: norm_type
  public :: EPrivateHostViewConstructor, HOST_VIEW_CONSTRUCTOR
  public :: ESweepDirection, Forward, Backward, Symmetric
  public :: TpetraMap
+
+type, bind(C) :: SwigfArrayWrapper
+  type(C_PTR), public :: data
+  integer(C_SIZE_T), public :: size
+end type
+
  public :: TpetraExport
  public :: TpetraImport
  public :: TpetraMultiVector
@@ -110,7 +116,6 @@ public :: norm_type
   procedure, private :: create__SWIG_1 => swigf_new_TpetraMap__SWIG_1
   procedure, private :: create__SWIG_2 => swigf_new_TpetraMap__SWIG_2
   procedure, private :: create__SWIG_3 => swigf_new_TpetraMap__SWIG_3
-  procedure, private :: create__SWIG_4 => swigf_new_TpetraMap__SWIG_4
   procedure :: release => swigf_delete_TpetraMap
   procedure :: isOneToOne => swigf_TpetraMap_isOneToOne
   procedure :: getGlobalNumElements => swigf_TpetraMap_getGlobalNumElements
@@ -124,8 +129,6 @@ public :: norm_type
   procedure :: getMaxAllGlobalIndex => swigf_TpetraMap_getMaxAllGlobalIndex
   procedure :: getLocalElement => swigf_TpetraMap_getLocalElement
   procedure :: getGlobalElement => swigf_TpetraMap_getGlobalElement
-  procedure, private :: getRemoteIndexList__SWIG_0 => swigf_TpetraMap_getRemoteIndexList__SWIG_0
-  procedure, private :: getRemoteIndexList__SWIG_1 => swigf_TpetraMap_getRemoteIndexList__SWIG_1
   procedure :: getNodeElementList => swigf_TpetraMap_getNodeElementList
   procedure :: isNodeLocalElement => swigf_TpetraMap_isNodeLocalElement
   procedure :: isNodeGlobalElement => swigf_TpetraMap_isNodeGlobalElement
@@ -139,6 +142,9 @@ public :: norm_type
   procedure :: description => swigf_TpetraMap_description
   procedure :: removeEmptyProcesses => swigf_TpetraMap_removeEmptyProcesses
   procedure :: replaceCommWithSubset => swigf_TpetraMap_replaceCommWithSubset
+  procedure, private :: create__SWIG_4 => swigf_new_TpetraMap__SWIG_4
+  procedure, private :: getRemoteIndexList__SWIG_0 => swigf_TpetraMap_getRemoteIndexList__SWIG_0
+  procedure, private :: getRemoteIndexList__SWIG_1 => swigf_TpetraMap_getRemoteIndexList__SWIG_1
   procedure, private :: swigf_assign_TpetraMap
   generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2, create__SWIG_3, create__SWIG_4
   generic :: assignment(=) => swigf_assign_TpetraMap
@@ -498,19 +504,8 @@ integer(C_LONG_LONG), intent(in) :: farg3
 type(C_PTR), value :: farg4
 end function
 
-function swigc_new_TpetraMap__SWIG_3(farg1, farg2, farg3, farg4) &
+function swigc_new_TpetraMap__SWIG_3() &
 bind(C, name="swigc_new_TpetraMap__SWIG_3") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
-integer(C_LONG), intent(in) :: farg1
-type(C_PTR), value :: farg2
-integer(C_LONG_LONG), intent(in) :: farg3
-type(C_PTR), value :: farg4
-end function
-
-function swigc_new_TpetraMap__SWIG_4() &
-bind(C, name="swigc_new_TpetraMap__SWIG_4") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 type(C_PTR) :: fresult
@@ -618,27 +613,6 @@ use, intrinsic :: ISO_C_BINDING
 integer(C_LONG_LONG) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
-end function
-
-function swigc_TpetraMap_getRemoteIndexList__SWIG_0(farg1, farg2, farg3, farg4) &
-bind(C, name="swigc_TpetraMap_getRemoteIndexList__SWIG_0") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
-type(C_PTR), value :: farg1
-type(C_PTR), value :: farg2
-type(C_PTR), value :: farg3
-type(C_PTR), value :: farg4
-end function
-
-function swigc_TpetraMap_getRemoteIndexList__SWIG_1(farg1, farg2, farg3) &
-bind(C, name="swigc_TpetraMap_getRemoteIndexList__SWIG_1") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
-type(C_PTR), value :: farg1
-type(C_PTR), value :: farg2
-type(C_PTR), value :: farg3
 end function
 
 function swigc_TpetraMap_getNodeElementList(farg1) &
@@ -749,6 +723,43 @@ use, intrinsic :: ISO_C_BINDING
 type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 type(C_PTR), value :: farg2
+end function
+
+function swigc_new_TpetraMap__SWIG_4(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_new_TpetraMap__SWIG_4") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
+type(C_PTR) :: fresult
+integer(C_LONG), intent(in) :: farg1
+type(SwigfArrayWrapper) :: farg2
+integer(C_LONG_LONG), intent(in) :: farg3
+type(C_PTR), value :: farg4
+end function
+
+function swigc_TpetraMap_getRemoteIndexList__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_TpetraMap_getRemoteIndexList__SWIG_0") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(SwigfArrayWrapper) :: farg3
+type(SwigfArrayWrapper) :: farg4
+type(SwigfArrayWrapper) :: farg5
+end function
+
+function swigc_TpetraMap_getRemoteIndexList__SWIG_1(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_TpetraMap_getRemoteIndexList__SWIG_1") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
+integer(C_INT) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(SwigfArrayWrapper) :: farg3
+type(SwigfArrayWrapper) :: farg4
 end function
 
   function swigc_spcopy_TpetraMap(farg1) &
@@ -2927,36 +2938,13 @@ self%swigptr = fresult
 
 end subroutine
 
-subroutine swigf_new_TpetraMap__SWIG_3(self, numglobalelements, indexlist, indexbase, comm)
-use, intrinsic :: ISO_C_BINDING
-class(TpetraMap) :: self
-integer(C_LONG), intent(in) :: numglobalelements
-class(TeuchosArrayViewLongLongConst) :: indexlist
-integer(C_LONG_LONG), intent(in) :: indexbase
-type(TeuchosComm) :: comm
-type(C_PTR) :: fresult 
-integer(C_LONG) :: farg1 
-type(C_PTR) :: farg2 
-integer(C_LONG_LONG) :: farg3 
-type(C_PTR) :: farg4 
-
-if (c_associated(self%swigptr)) call self%release()
-farg1 = numglobalelements
-farg2 = indexlist%swigptr
-farg3 = indexbase
-farg4 = comm%swigptr
-fresult = swigc_new_TpetraMap__SWIG_3(farg1, farg2, farg3, farg4)
-self%swigptr = fresult
-
-end subroutine
-
-subroutine swigf_new_TpetraMap__SWIG_4(self)
+subroutine swigf_new_TpetraMap__SWIG_3(self)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraMap) :: self
 type(C_PTR) :: fresult 
 
 if (c_associated(self%swigptr)) call self%release()
-fresult = swigc_new_TpetraMap__SWIG_4()
+fresult = swigc_new_TpetraMap__SWIG_3()
 self%swigptr = fresult
 
 end subroutine
@@ -3132,47 +3120,6 @@ integer(C_INT) :: farg2
 farg1 = self%swigptr
 farg2 = localindex
 fresult = swigc_TpetraMap_getGlobalElement(farg1, farg2)
-swigf_result = fresult
-end function
-
-function swigf_TpetraMap_getRemoteIndexList__SWIG_0(self, gidlist, nodeidlist, lidlist) &
-result(swigf_result)
-use, intrinsic :: ISO_C_BINDING
-integer(kind(LookupStatus)) :: swigf_result
-class(TpetraMap) :: self
-class(TeuchosArrayViewLongLongConst) :: gidlist
-class(TeuchosArrayViewInt) :: nodeidlist
-class(TeuchosArrayViewInt) :: lidlist
-integer(C_INT) :: fresult 
-type(C_PTR) :: farg1 
-type(C_PTR) :: farg2 
-type(C_PTR) :: farg3 
-type(C_PTR) :: farg4 
-
-farg1 = self%swigptr
-farg2 = gidlist%swigptr
-farg3 = nodeidlist%swigptr
-farg4 = lidlist%swigptr
-fresult = swigc_TpetraMap_getRemoteIndexList__SWIG_0(farg1, farg2, farg3, farg4)
-swigf_result = fresult
-end function
-
-function swigf_TpetraMap_getRemoteIndexList__SWIG_1(self, gidlist, nodeidlist) &
-result(swigf_result)
-use, intrinsic :: ISO_C_BINDING
-integer(kind(LookupStatus)) :: swigf_result
-class(TpetraMap) :: self
-class(TeuchosArrayViewLongLongConst) :: gidlist
-class(TeuchosArrayViewInt) :: nodeidlist
-integer(C_INT) :: fresult 
-type(C_PTR) :: farg1 
-type(C_PTR) :: farg2 
-type(C_PTR) :: farg3 
-
-farg1 = self%swigptr
-farg2 = gidlist%swigptr
-farg3 = nodeidlist%swigptr
-fresult = swigc_TpetraMap_getRemoteIndexList__SWIG_1(farg1, farg2, farg3)
 swigf_result = fresult
 end function
 
@@ -3361,6 +3308,82 @@ farg1 = self%swigptr
 farg2 = newcomm%swigptr
 fresult = swigc_TpetraMap_replaceCommWithSubset(farg1, farg2)
 swigf_result%swigptr = fresult
+end function
+
+subroutine swigf_new_TpetraMap__SWIG_4(self, numglobalelements, indexlist, indexbase, comm)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMap) :: self
+integer(C_LONG), intent(in) :: numglobalelements
+integer(C_LONG_LONG), dimension(:), target, intent(inout) :: indexlist
+integer(C_LONG_LONG), intent(in) :: indexbase
+type(TeuchosComm) :: comm
+type(C_PTR) :: fresult 
+integer(C_LONG) :: farg1 
+type(SwigfArrayWrapper) :: farg2 
+integer(C_LONG_LONG) :: farg3 
+type(C_PTR) :: farg4 
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = numglobalelements
+farg2%data = c_loc(indexlist(1))
+farg2%size = size(indexlist)
+farg3 = indexbase
+farg4 = comm%swigptr
+fresult = swigc_new_TpetraMap__SWIG_4(farg1, farg2, farg3, farg4)
+self%swigptr = fresult
+
+end subroutine
+
+function swigf_TpetraMap_getRemoteIndexList__SWIG_0(self, map, gidlist, nodeidlist, lidlist) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(kind(LookupStatus)) :: swigf_result
+class(TpetraMap) :: self
+class(TpetraMap) :: map
+integer(C_LONG_LONG), dimension(:), target, intent(inout) :: gidlist
+integer(C_INT), dimension(:), target, intent(inout) :: nodeidlist
+integer(C_INT), dimension(:), target, intent(inout) :: lidlist
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(SwigfArrayWrapper) :: farg3 
+type(SwigfArrayWrapper) :: farg4 
+type(SwigfArrayWrapper) :: farg5 
+
+farg1 = self%swigptr
+farg2 = map%swigptr
+farg3%data = c_loc(gidlist(1))
+farg3%size = size(gidlist)
+farg4%data = c_loc(nodeidlist(1))
+farg4%size = size(nodeidlist)
+farg5%data = c_loc(lidlist(1))
+farg5%size = size(lidlist)
+fresult = swigc_TpetraMap_getRemoteIndexList__SWIG_0(farg1, farg2, farg3, farg4, farg5)
+swigf_result = fresult
+end function
+
+function swigf_TpetraMap_getRemoteIndexList__SWIG_1(self, map, gidlist, nodeidlist) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(kind(LookupStatus)) :: swigf_result
+class(TpetraMap) :: self
+class(TpetraMap) :: map
+integer(C_LONG_LONG), dimension(:), target, intent(inout) :: gidlist
+integer(C_INT), dimension(:), target, intent(inout) :: nodeidlist
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(SwigfArrayWrapper) :: farg3 
+type(SwigfArrayWrapper) :: farg4 
+
+farg1 = self%swigptr
+farg2 = map%swigptr
+farg3%data = c_loc(gidlist(1))
+farg3%size = size(gidlist)
+farg4%data = c_loc(nodeidlist(1))
+farg4%size = size(nodeidlist)
+fresult = swigc_TpetraMap_getRemoteIndexList__SWIG_1(farg1, farg2, farg3, farg4)
+swigf_result = fresult
 end function
 
   subroutine swigf_assign_TpetraMap(self, other)

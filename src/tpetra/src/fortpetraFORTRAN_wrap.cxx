@@ -234,6 +234,33 @@ typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
 #define SWIG_NO_NULL_DELETER_SWIG_POINTER_OWN
 
 
+namespace swig {
+template<class T>
+struct SwigfArrayWrapper
+{
+    T* data;
+    std::size_t size;
+};
+}
+
+SWIGINTERN Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *new_Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg___SWIG_4(Tpetra::global_size_t const numGlobalElements,std::pair< long long const *,std::size_t > indexList,long long const indexBase,Teuchos::RCP< Teuchos::Comm< int > const > const &comm){
+      Teuchos::ArrayView<const GO> indexListView = Teuchos::arrayView(indexList.first, indexList.second);
+      return new Tpetra::Map<LO,GO,NO>(numGlobalElements, indexListView, indexBase, comm);
+    }
+SWIGINTERN Tpetra::LookupStatus Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg__getRemoteIndexList__SWIG_0(Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *self,Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *map,std::pair< long long const *,std::size_t > GIDList,std::pair< int *,std::size_t > nodeIDList,std::pair< int *,std::size_t > LIDList){
+      Teuchos::ArrayView<const GO> GIDListView  = Teuchos::arrayView(GIDList.first, GIDList.second);
+      Teuchos::ArrayView<int>  nodeIDListView   = Teuchos::arrayView(nodeIDList.first, nodeIDList.second);
+      Teuchos::ArrayView<LO> LIDListView        = Teuchos::arrayView(LIDList.first, LIDList.second);
+
+      return map->getRemoteIndexList(GIDListView, nodeIDListView, LIDListView);
+    }
+SWIGINTERN Tpetra::LookupStatus Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg__getRemoteIndexList__SWIG_1(Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *self,Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *map,std::pair< long long const *,std::size_t > GIDList,std::pair< int *,std::size_t > nodeIDList){
+      Teuchos::ArrayView<const GO> GIDListView  = Teuchos::arrayView(GIDList.first, GIDList.second);
+      Teuchos::ArrayView<int>  nodeIDListView   = Teuchos::arrayView(nodeIDList.first, nodeIDList.second);
+
+      return map->getRemoteIndexList(GIDListView, nodeIDListView);
+    }
+
 #include "Tpetra_Export.hpp"
 
 
@@ -372,48 +399,7 @@ SWIGEXPORT void * swigc_new_TpetraMap__SWIG_2(unsigned long const *farg1, size_t
 }
 
 
-SWIGEXPORT void * swigc_new_TpetraMap__SWIG_3(unsigned long const *farg1, void const *farg2, long long const *farg3, void *farg4) {
-  void * fresult ;
-  Tpetra::global_size_t arg1 ;
-  Teuchos::ArrayView< long long const > *arg2 = 0 ;
-  long long arg3 ;
-  Teuchos::RCP< Teuchos::Comm< int > const > *arg4 = 0 ;
-  Teuchos::RCP< Teuchos::Comm< int > const > tempnull4 ;
-  Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *result = 0 ;
-  
-  arg1 = *farg1;
-  arg2 = static_cast< Teuchos::ArrayView< long long const > * >(const_cast< void* >(farg2));
-  arg3 = *farg3;
-  arg4 = farg4 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg4 : &tempnull4;
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
-    try
-    {
-      // Attempt the wrapped function call
-      result = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *)new Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >(arg1,(Teuchos::ArrayView< long long const > const &)*arg2,arg3,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg4);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
-    }
-    catch (...)
-    {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
-    }
-  }
-  fresult = result ? new Teuchos::RCP< Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> >(result SWIG_NO_NULL_DELETER_1) : 0;
-  return fresult;
-}
-
-
-SWIGEXPORT void * swigc_new_TpetraMap__SWIG_4() {
+SWIGEXPORT void * swigc_new_TpetraMap__SWIG_3() {
   void * fresult ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *result = 0 ;
   
@@ -910,121 +896,6 @@ SWIGEXPORT long long swigc_TpetraMap_getGlobalElement(void const *farg1, int con
     }
   }
   fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT int swigc_TpetraMap_getRemoteIndexList__SWIG_0(void const *farg1, void const *farg2, void const *farg3, void const *farg4) {
-  int fresult ;
-  Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
-  Teuchos::ArrayView< long long const > *arg2 = 0 ;
-  Teuchos::ArrayView< int > *arg3 = 0 ;
-  Teuchos::ArrayView< int > *arg4 = 0 ;
-  Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
-  Tpetra::LookupStatus result;
-  
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
-  arg1 = (Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = static_cast< Teuchos::ArrayView< long long const > * >(const_cast< void* >(farg2));
-  arg3 = (Teuchos::ArrayView< int > *)(((Teuchos::RCP<const Teuchos::ArrayView<int> > *)farg3)
-    ? ((Teuchos::RCP<const Teuchos::ArrayView<int> > *)farg3)->get()
-    :0);
-  if (!arg3)
-  {
-    throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< int > const &");
-    return 0;
-  }
-  arg4 = (Teuchos::ArrayView< int > *)(((Teuchos::RCP<const Teuchos::ArrayView<int> > *)farg4)
-    ? ((Teuchos::RCP<const Teuchos::ArrayView<int> > *)farg4)->get()
-    :0);
-  if (!arg4)
-  {
-    throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< int > const &");
-    return 0;
-  }
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
-    try
-    {
-      // Attempt the wrapped function call
-      result = (Tpetra::LookupStatus)((Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->getRemoteIndexList((Teuchos::ArrayView< long long const > const &)*arg2,(Teuchos::ArrayView< int > const &)*arg3,(Teuchos::ArrayView< int > const &)*arg4);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
-    }
-    catch (...)
-    {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
-    }
-  }
-  fresult = result;
-  
-  for (int i = 0; i < arg3->size(); i++)
-  (*arg3)[i]++;
-  
-  
-  for (int i = 0; i < arg4->size(); i++)
-  (*arg4)[i]++;
-  
-  return fresult;
-}
-
-
-SWIGEXPORT int swigc_TpetraMap_getRemoteIndexList__SWIG_1(void const *farg1, void const *farg2, void const *farg3) {
-  int fresult ;
-  Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
-  Teuchos::ArrayView< long long const > *arg2 = 0 ;
-  Teuchos::ArrayView< int > *arg3 = 0 ;
-  Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
-  Tpetra::LookupStatus result;
-  
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
-  arg1 = (Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = static_cast< Teuchos::ArrayView< long long const > * >(const_cast< void* >(farg2));
-  arg3 = (Teuchos::ArrayView< int > *)(((Teuchos::RCP<const Teuchos::ArrayView<int> > *)farg3)
-    ? ((Teuchos::RCP<const Teuchos::ArrayView<int> > *)farg3)->get()
-    :0);
-  if (!arg3)
-  {
-    throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< int > const &");
-    return 0;
-  }
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
-    try
-    {
-      // Attempt the wrapped function call
-      result = (Tpetra::LookupStatus)((Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->getRemoteIndexList((Teuchos::ArrayView< long long const > const &)*arg2,(Teuchos::ArrayView< int > const &)*arg3);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
-    }
-    catch (...)
-    {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
-    }
-  }
-  fresult = result;
-  
-  for (int i = 0; i < arg3->size(); i++)
-  (*arg3)[i]++;
-  
   return fresult;
 }
 
@@ -1527,6 +1398,149 @@ SWIGEXPORT void * swigc_TpetraMap_replaceCommWithSubset(void const *farg1, void 
     }
   }
   fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_new_TpetraMap__SWIG_4(unsigned long const *farg1, swig::SwigfArrayWrapper< long long const > *farg2, long long const *farg3, void *farg4) {
+  void * fresult ;
+  Tpetra::global_size_t arg1 ;
+  std::pair< long long const *,std::size_t > arg2 ;
+  long long arg3 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *arg4 = 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > tempnull4 ;
+  Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *result = 0 ;
+  
+  arg2 = ::std::pair< const long long*, std::size_t >();
+  arg1 = *farg1;
+  (&arg2)->first  = farg2->data;
+  (&arg2)->second = farg2->size;
+  arg3 = *farg3;
+  arg4 = farg4 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg4 : &tempnull4;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *)new_Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg___SWIG_4(arg1,arg2,arg3,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result ? new Teuchos::RCP< Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_TpetraMap_getRemoteIndexList__SWIG_0(void const *farg1, void const *farg2, swig::SwigfArrayWrapper< long long const > *farg3, swig::SwigfArrayWrapper< int > *farg4, swig::SwigfArrayWrapper< int > *farg5) {
+  int fresult ;
+  Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg2 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  std::pair< long long const *,std::size_t > arg3 ;
+  std::pair< int *,std::size_t > arg4 ;
+  std::pair< int *,std::size_t > arg5 ;
+  Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg2 = 0 ;
+  Tpetra::LookupStatus result;
+  
+  arg3 = ::std::pair< const long long*, std::size_t >();
+  arg4 = ::std::pair< int*, std::size_t >();
+  arg5 = ::std::pair< int*, std::size_t >();
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg2 = (Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg2;
+  arg2 = (Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg2 ? smartarg2->get() : 0);
+  (&arg3)->first  = farg3->data;
+  (&arg3)->second = farg3->size;
+  (&arg4)->first  = farg4->data;
+  (&arg4)->second = farg4->size;
+  (&arg5)->first  = farg5->data;
+  (&arg5)->second = farg5->size;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::LookupStatus)Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg__getRemoteIndexList__SWIG_0((Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1,(Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg2,arg3,arg4,arg5);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_TpetraMap_getRemoteIndexList__SWIG_1(void const *farg1, void const *farg2, swig::SwigfArrayWrapper< long long const > *farg3, swig::SwigfArrayWrapper< int > *farg4) {
+  int fresult ;
+  Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg2 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  std::pair< long long const *,std::size_t > arg3 ;
+  std::pair< int *,std::size_t > arg4 ;
+  Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
+  Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg2 = 0 ;
+  Tpetra::LookupStatus result;
+  
+  arg3 = ::std::pair< const long long*, std::size_t >();
+  arg4 = ::std::pair< int*, std::size_t >();
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg2 = (Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg2;
+  arg2 = (Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg2 ? smartarg2->get() : 0);
+  (&arg3)->first  = farg3->data;
+  (&arg3)->second = farg3->size;
+  (&arg4)->first  = farg4->data;
+  (&arg4)->second = farg4->size;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::LookupStatus)Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg__getRemoteIndexList__SWIG_1((Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1,(Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg2,arg3,arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
   return fresult;
 }
 
