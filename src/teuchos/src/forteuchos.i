@@ -14,12 +14,14 @@
 %include <std_vector.i>
 %template(VectorInt)    std::vector<int>;
 %template(VectorDouble) std::vector<double>;
+%template(VectorLongLong) std::vector<long long>;
 
 // Typedefs
 typedef int Teuchos_Ordinal;
 
 %include <typemaps.i>
 %fortran_view(int)
+%fortran_view(long long)
 %fortran_view(double)
 %fortran_view(size_t)
 

@@ -155,6 +155,15 @@ template <typename T> T SwigValueInit() {
 # pragma warning disable 592
 #endif
 
+
+#ifndef SWIGEXTERN
+#ifdef __cplusplus
+#define SWIGEXTERN extern
+#else
+#define SWIGEXTERN
+#endif
+#endif
+
 /*  Errors in SWIG */
 #define  SWIG_UnknownError    	   -1
 #define  SWIG_IOError        	   -2
@@ -325,16 +334,16 @@ SWIGEXPORT void swigc_SolverHandle_init__SWIG_1(void *farg1, void *farg2) {
 }
 
 
-SWIGEXPORT void swigc_SolverHandle_setup_matrix__SWIG_0(void *farg1, swig::SwigfArrayWrapper< int const > *farg2, swig::SwigfArrayWrapper< int const > *farg3, swig::SwigfArrayWrapper< int const > *farg4, swig::SwigfArrayWrapper< double const > *farg5) {
+SWIGEXPORT void swigc_SolverHandle_setup_matrix__SWIG_0(void *farg1, swig::SwigfArrayWrapper< long long const > *farg2, swig::SwigfArrayWrapper< int const > *farg3, swig::SwigfArrayWrapper< long long const > *farg4, swig::SwigfArrayWrapper< double const > *farg5) {
   ForTrilinos::SolverHandle *arg1 = (ForTrilinos::SolverHandle *) 0 ;
-  std::pair< int const *,std::size_t > arg2 ;
-  std::pair< int const *,std::size_t > arg3 ;
-  std::pair< int const *,std::size_t > arg4 ;
-  std::pair< double const *,std::size_t > arg5 ;
+  std::pair< ForTrilinos::SolverHandle::GO const *,std::size_t > arg2 ;
+  std::pair< ForTrilinos::SolverHandle::LO const *,std::size_t > arg3 ;
+  std::pair< ForTrilinos::SolverHandle::GO const *,std::size_t > arg4 ;
+  std::pair< ForTrilinos::SolverHandle::SC const *,std::size_t > arg5 ;
   
-  arg2 = ::std::pair< const int*, std::size_t >();
+  arg2 = ::std::pair< const long long*, std::size_t >();
   arg3 = ::std::pair< const int*, std::size_t >();
-  arg4 = ::std::pair< const int*, std::size_t >();
+  arg4 = ::std::pair< const long long*, std::size_t >();
   arg5 = ::std::pair< const double*, std::size_t >();
   arg1 = static_cast< ForTrilinos::SolverHandle * >(farg1);
   (&arg2)->first  = farg2->data;
@@ -405,12 +414,12 @@ SWIGEXPORT void swigc_SolverHandle_setup_matrix__SWIG_1(void *farg1, void *farg2
 }
 
 
-SWIGEXPORT void swigc_SolverHandle_setup_operator(void *farg1, swig::SwigfArrayWrapper< int const > *farg2, ForTrilinos::OperatorCallback farg3) {
+SWIGEXPORT void swigc_SolverHandle_setup_operator(void *farg1, swig::SwigfArrayWrapper< long long const > *farg2, ForTrilinos::OperatorCallback farg3) {
   ForTrilinos::SolverHandle *arg1 = (ForTrilinos::SolverHandle *) 0 ;
-  std::pair< int const *,std::size_t > arg2 ;
+  std::pair< ForTrilinos::SolverHandle::GO const *,std::size_t > arg2 ;
   ForTrilinos::OperatorCallback arg3 = (ForTrilinos::OperatorCallback) 0 ;
   
-  arg2 = ::std::pair< const int*, std::size_t >();
+  arg2 = ::std::pair< const long long*, std::size_t >();
   arg1 = static_cast< ForTrilinos::SolverHandle * >(farg1);
   (&arg2)->first  = farg2->data;
   (&arg2)->second = farg2->size;
@@ -477,8 +486,8 @@ SWIGEXPORT void swigc_SolverHandle_setup_solver(void *farg1, void *farg2) {
 
 SWIGEXPORT void swigc_SolverHandle_solve__SWIG_0(void const *farg1, swig::SwigfArrayWrapper< double const > *farg2, swig::SwigfArrayWrapper< double > *farg3) {
   ForTrilinos::SolverHandle *arg1 = (ForTrilinos::SolverHandle *) 0 ;
-  std::pair< double const *,std::size_t > arg2 ;
-  std::pair< double *,std::size_t > arg3 ;
+  std::pair< ForTrilinos::SolverHandle::SC const *,std::size_t > arg2 ;
+  std::pair< ForTrilinos::SolverHandle::SC *,std::size_t > arg3 ;
   
   arg2 = ::std::pair< const double*, std::size_t >();
   arg3 = ::std::pair< double*, std::size_t >();
@@ -708,16 +717,16 @@ SWIGEXPORT void swigc_EigenHandle_init__SWIG_1(void *farg1, void *farg2) {
 }
 
 
-SWIGEXPORT void swigc_EigenHandle_setup_matrix(void *farg1, swig::SwigfArrayWrapper< int const > *farg2, swig::SwigfArrayWrapper< int const > *farg3, swig::SwigfArrayWrapper< int const > *farg4, swig::SwigfArrayWrapper< double const > *farg5) {
+SWIGEXPORT void swigc_EigenHandle_setup_matrix(void *farg1, swig::SwigfArrayWrapper< long long const > *farg2, swig::SwigfArrayWrapper< int const > *farg3, swig::SwigfArrayWrapper< long long const > *farg4, swig::SwigfArrayWrapper< double const > *farg5) {
   ForTrilinos::EigenHandle *arg1 = (ForTrilinos::EigenHandle *) 0 ;
-  std::pair< int const *,std::size_t > arg2 ;
-  std::pair< int const *,std::size_t > arg3 ;
-  std::pair< int const *,std::size_t > arg4 ;
-  std::pair< double const *,std::size_t > arg5 ;
+  std::pair< ForTrilinos::EigenHandle::GO const *,std::size_t > arg2 ;
+  std::pair< ForTrilinos::EigenHandle::LO const *,std::size_t > arg3 ;
+  std::pair< ForTrilinos::EigenHandle::GO const *,std::size_t > arg4 ;
+  std::pair< ForTrilinos::EigenHandle::SC const *,std::size_t > arg5 ;
   
-  arg2 = ::std::pair< const int*, std::size_t >();
+  arg2 = ::std::pair< const long long*, std::size_t >();
   arg3 = ::std::pair< const int*, std::size_t >();
-  arg4 = ::std::pair< const int*, std::size_t >();
+  arg4 = ::std::pair< const long long*, std::size_t >();
   arg5 = ::std::pair< const double*, std::size_t >();
   arg1 = static_cast< ForTrilinos::EigenHandle * >(farg1);
   (&arg2)->first  = farg2->data;
@@ -755,16 +764,16 @@ SWIGEXPORT void swigc_EigenHandle_setup_matrix(void *farg1, swig::SwigfArrayWrap
 }
 
 
-SWIGEXPORT void swigc_EigenHandle_setup_matrix_rhs(void *farg1, swig::SwigfArrayWrapper< int const > *farg2, swig::SwigfArrayWrapper< int const > *farg3, swig::SwigfArrayWrapper< int const > *farg4, swig::SwigfArrayWrapper< double const > *farg5) {
+SWIGEXPORT void swigc_EigenHandle_setup_matrix_rhs(void *farg1, swig::SwigfArrayWrapper< long long const > *farg2, swig::SwigfArrayWrapper< int const > *farg3, swig::SwigfArrayWrapper< long long const > *farg4, swig::SwigfArrayWrapper< double const > *farg5) {
   ForTrilinos::EigenHandle *arg1 = (ForTrilinos::EigenHandle *) 0 ;
-  std::pair< int const *,std::size_t > arg2 ;
-  std::pair< int const *,std::size_t > arg3 ;
-  std::pair< int const *,std::size_t > arg4 ;
-  std::pair< double const *,std::size_t > arg5 ;
+  std::pair< ForTrilinos::EigenHandle::GO const *,std::size_t > arg2 ;
+  std::pair< ForTrilinos::EigenHandle::LO const *,std::size_t > arg3 ;
+  std::pair< ForTrilinos::EigenHandle::GO const *,std::size_t > arg4 ;
+  std::pair< ForTrilinos::EigenHandle::SC const *,std::size_t > arg5 ;
   
-  arg2 = ::std::pair< const int*, std::size_t >();
+  arg2 = ::std::pair< const long long*, std::size_t >();
   arg3 = ::std::pair< const int*, std::size_t >();
-  arg4 = ::std::pair< const int*, std::size_t >();
+  arg4 = ::std::pair< const long long*, std::size_t >();
   arg5 = ::std::pair< const double*, std::size_t >();
   arg1 = static_cast< ForTrilinos::EigenHandle * >(farg1);
   (&arg2)->first  = farg2->data;
@@ -802,12 +811,12 @@ SWIGEXPORT void swigc_EigenHandle_setup_matrix_rhs(void *farg1, swig::SwigfArray
 }
 
 
-SWIGEXPORT void swigc_EigenHandle_setup_operator(void *farg1, swig::SwigfArrayWrapper< int const > *farg2, ForTrilinos::OperatorCallback farg3) {
+SWIGEXPORT void swigc_EigenHandle_setup_operator(void *farg1, swig::SwigfArrayWrapper< long long const > *farg2, ForTrilinos::OperatorCallback farg3) {
   ForTrilinos::EigenHandle *arg1 = (ForTrilinos::EigenHandle *) 0 ;
-  std::pair< int const *,std::size_t > arg2 ;
+  std::pair< ForTrilinos::EigenHandle::GO const *,std::size_t > arg2 ;
   ForTrilinos::OperatorCallback arg3 = (ForTrilinos::OperatorCallback) 0 ;
   
-  arg2 = ::std::pair< const int*, std::size_t >();
+  arg2 = ::std::pair< const long long*, std::size_t >();
   arg1 = static_cast< ForTrilinos::EigenHandle * >(farg1);
   (&arg2)->first  = farg2->data;
   (&arg2)->second = farg2->size;
@@ -839,12 +848,12 @@ SWIGEXPORT void swigc_EigenHandle_setup_operator(void *farg1, swig::SwigfArrayWr
 }
 
 
-SWIGEXPORT void swigc_EigenHandle_setup_operator_rhs(void *farg1, swig::SwigfArrayWrapper< int const > *farg2, ForTrilinos::OperatorCallback farg3) {
+SWIGEXPORT void swigc_EigenHandle_setup_operator_rhs(void *farg1, swig::SwigfArrayWrapper< long long const > *farg2, ForTrilinos::OperatorCallback farg3) {
   ForTrilinos::EigenHandle *arg1 = (ForTrilinos::EigenHandle *) 0 ;
-  std::pair< int const *,std::size_t > arg2 ;
+  std::pair< ForTrilinos::EigenHandle::GO const *,std::size_t > arg2 ;
   ForTrilinos::OperatorCallback arg3 = (ForTrilinos::OperatorCallback) 0 ;
   
-  arg2 = ::std::pair< const int*, std::size_t >();
+  arg2 = ::std::pair< const long long*, std::size_t >();
   arg1 = static_cast< ForTrilinos::EigenHandle * >(farg1);
   (&arg2)->first  = farg2->data;
   (&arg2)->second = farg2->size;
@@ -912,8 +921,8 @@ SWIGEXPORT void swigc_EigenHandle_setup_solver(void *farg1, void *farg2) {
 
 SWIGEXPORT void swigc_EigenHandle_solve(void const *farg1, swig::SwigfArrayWrapper< double > *farg2, swig::SwigfArrayWrapper< double > *farg3) {
   ForTrilinos::EigenHandle *arg1 = (ForTrilinos::EigenHandle *) 0 ;
-  std::pair< double *,std::size_t > arg2 ;
-  std::pair< double *,std::size_t > arg3 ;
+  std::pair< ForTrilinos::EigenHandle::SC *,std::size_t > arg2 ;
+  std::pair< ForTrilinos::EigenHandle::SC *,std::size_t > arg3 ;
   
   arg2 = ::std::pair< double*, std::size_t >();
   arg3 = ::std::pair< double*, std::size_t >();

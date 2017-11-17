@@ -21,8 +21,10 @@ contains
 
     type(TeuchosComm) :: comm
     type(TpetraMap) :: map
-    integer(C_LONG) :: num_global, sum_local
-    integer(C_SIZE_T) :: num_local
+    integer(global_ordinal_type) :: num_global, sum_local, zero
+    integer(size_type) :: num_local
+
+    zero = 0
 
 #ifdef HAVE_MPI
     ! Initialize MPI subsystem
@@ -43,7 +45,7 @@ contains
     ! Test 1
     num_global = sum_local
 
-    call map%create(num_global, 0, comm)
+    call map%create(num_global, zero, comm)
     EXPECT_EQ(ierr, 0)
 
     EXPECT_EQ(map%getGlobalNumElements(), num_global)
@@ -53,7 +55,7 @@ contains
     ! Test 2
     num_global = -1
 
-    call map%create(num_global, num_local, 0, comm)
+    call map%create(num_global, num_local, zero, comm)
     EXPECT_EQ(ierr, 0)
 
     EXPECT_EQ(map%getNodeNumElements(), num_local)
