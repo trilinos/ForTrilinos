@@ -32,9 +32,6 @@
         const dual_view_type& view, const dual_view_type& origView);    // needs Kokkos::DualView
 %ignore Tpetra::MultiVector::assign;
 %ignore Tpetra::MultiVector::describe;              // needs Teuchos::FancyOStream
-/* %ignore Tpetra::MultiVector::dot(const MultiVector<Scalar, LocalOrdinal, GlobalOrdinal, Node, classic>& A, const Teuchos::ArrayView<dot_type>& dots) const; */
-%ignore Tpetra::MultiVector::dot(const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, std::vector< T > &dots) const;
-%ignore Tpetra::MultiVector::dot(const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const Kokkos::View< dot_type *, device_type > &dots) const;
 %ignore Tpetra::MultiVector::elementWiseMultiply;   // needs Vector
 %ignore Tpetra::MultiVector::get1dView;             // needs Teuchos::ArrayRCP
 %ignore Tpetra::MultiVector::get1dViewNonConst;     // needs Teuchos::ArrayRCP
@@ -50,18 +47,6 @@
 %ignore Tpetra::MultiVector::modify;                // templated on device type
 %ignore Tpetra::MultiVector::need_sync;             // templated on device type
 %ignore Tpetra::MultiVector::sync;                  // templated on device type
-%ignore Tpetra::MultiVector::norm1(const Kokkos::View<mag_type*, device_type>& norms) const;
-%ignore Tpetra::MultiVector::norm1(const Kokkos::View<mag_type*, Kokkos::HostSpace>& norms) const;
-%ignore Tpetra::MultiVector::norm1(const Kokkos::View<T*, device_type>& norms) const;
-%ignore Tpetra::MultiVector::norm1(const Teuchos::ArrayView<T>& norms) const;
-%ignore Tpetra::MultiVector::norm2(const Kokkos::View<mag_type*, device_type>& norms) const;
-%ignore Tpetra::MultiVector::norm2(const Kokkos::View<mag_type*, Kokkos::HostSpace>& norms) const;
-%ignore Tpetra::MultiVector::norm2(const Kokkos::View<T*, device_type>& norms) const;
-%ignore Tpetra::MultiVector::norm2(const Teuchos::ArrayView<T>& norms) const;
-%ignore Tpetra::MultiVector::normInf(const Kokkos::View<mag_type*, device_type>& norms) const;
-%ignore Tpetra::MultiVector::normInf(const Kokkos::View<mag_type*, Kokkos::HostSpace>& norms) const;
-%ignore Tpetra::MultiVector::normInf(const Kokkos::View<T*, device_type>& norms) const;
-%ignore Tpetra::MultiVector::normInf(const Teuchos::ArrayView<T>& norms) const;
 %ignore Tpetra::MultiVector::offsetView;
 %ignore Tpetra::MultiVector::operator=;
 %ignore Tpetra::MultiVector::scale(const Kokkos::View<const impl_scalar_type*, device_type>& alpha);
@@ -73,6 +58,51 @@
 // Fix ±1 issues
 // =======================================================================
 %typemap(in)  const size_t j %{$1 = *$input - 1;%}
+
+// =======================================================================
+// Make interface more Fortran friendly
+// =======================================================================
+%ignore Tpetra::MultiVector::dot(const MultiVector<Scalar, LocalOrdinal, GlobalOrdinal, Node, classic>& A, const Teuchos::ArrayView<dot_type>& dots) const;
+%ignore Tpetra::MultiVector::dot(const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, std::vector< T > &dots) const;
+%ignore Tpetra::MultiVector::dot(const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const Kokkos::View< dot_type *, device_type > &dots) const;
+%ignore Tpetra::MultiVector::norm1(const Kokkos::View<mag_type*, device_type>& norms) const;
+%ignore Tpetra::MultiVector::norm1(const Kokkos::View<mag_type*, Kokkos::HostSpace>& norms) const;
+%ignore Tpetra::MultiVector::norm1(const Kokkos::View<T*, device_type>& norms) const;
+%ignore Tpetra::MultiVector::norm1(const Teuchos::ArrayView<mag_type>& norms) const;
+%ignore Tpetra::MultiVector::norm1(const Teuchos::ArrayView<T>& norms) const;
+%ignore Tpetra::MultiVector::norm2(const Kokkos::View<mag_type*, device_type>& norms) const;
+%ignore Tpetra::MultiVector::norm2(const Kokkos::View<mag_type*, Kokkos::HostSpace>& norms) const;
+%ignore Tpetra::MultiVector::norm2(const Kokkos::View<T*, device_type>& norms) const;
+%ignore Tpetra::MultiVector::norm2(const Teuchos::ArrayView<mag_type>& norms) const;
+%ignore Tpetra::MultiVector::norm2(const Teuchos::ArrayView<T>& norms) const;
+%ignore Tpetra::MultiVector::normInf(const Kokkos::View<mag_type*, device_type>& norms) const;
+%ignore Tpetra::MultiVector::normInf(const Kokkos::View<mag_type*, Kokkos::HostSpace>& norms) const;
+%ignore Tpetra::MultiVector::normInf(const Kokkos::View<T*, device_type>& norms) const;
+%ignore Tpetra::MultiVector::normInf(const Teuchos::ArrayView<mag_type>& norms) const;
+%ignore Tpetra::MultiVector::normInf(const Teuchos::ArrayView<T>& norms) const;
+%extend Tpetra::MultiVector<SC,LO,GO,NO,false> {
+    void dot( const Tpetra::MultiVector<double,int,long long, Kokkos::Compat::KokkosSerialWrapperNode,false> &A, std::pair<double*,size_t> dots) const {
+      Teuchos::ArrayView<SC> dotsView = Teuchos::arrayView(dots.first, dots.second);
+
+      return self->dot(A, dotsView);
+    }
+    void norm1(std::pair<double*,size_t> norms) const {
+      Teuchos::ArrayView<SC> normsView = Teuchos::arrayView(norms.first, norms.second);
+
+      return self->norm1(normsView);
+    }
+    void norm2(std::pair<double*,size_t> norms) const {
+      Teuchos::ArrayView<SC> normsView = Teuchos::arrayView(norms.first, norms.second);
+
+      return self->norm2(normsView);
+    }
+    void normInf(std::pair<double*,size_t> norms) const {
+      Teuchos::ArrayView<SC> normsView = Teuchos::arrayView(norms.first, norms.second);
+
+      return self->normInf(normsView);
+    }
+}
+
 
 %teuchos_rcp(Tpetra::MultiVector<SC,LO,GO,NO,false>)
 

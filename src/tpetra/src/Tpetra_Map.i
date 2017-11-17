@@ -72,18 +72,18 @@
       Teuchos::ArrayView<const GO> indexListView = Teuchos::arrayView(indexList.first, indexList.second);
       return new Tpetra::Map<LO,GO,NO>(numGlobalElements, indexListView, indexBase, comm);
     }
-    LookupStatus getRemoteIndexList(Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *map, std::pair<const long long*, size_t> GIDList, std::pair<int*, size_t> nodeIDList, std::pair<int*, size_t> LIDList) const {
+    LookupStatus getRemoteIndexList(std::pair<const long long*, size_t> GIDList, std::pair<int*, size_t> nodeIDList, std::pair<int*, size_t> LIDList) const {
       Teuchos::ArrayView<const GO> GIDListView  = Teuchos::arrayView(GIDList.first, GIDList.second);
       Teuchos::ArrayView<int>  nodeIDListView   = Teuchos::arrayView(nodeIDList.first, nodeIDList.second);
       Teuchos::ArrayView<LO> LIDListView        = Teuchos::arrayView(LIDList.first, LIDList.second);
 
-      return map->getRemoteIndexList(GIDListView, nodeIDListView, LIDListView);
+      return self->getRemoteIndexList(GIDListView, nodeIDListView, LIDListView);
     }
-    LookupStatus getRemoteIndexList(Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *map, std::pair<const long long*, size_t> GIDList, std::pair<int*, size_t> nodeIDList) const {
+    LookupStatus getRemoteIndexList(std::pair<const long long*, size_t> GIDList, std::pair<int*, size_t> nodeIDList) const {
       Teuchos::ArrayView<const GO> GIDListView  = Teuchos::arrayView(GIDList.first, GIDList.second);
       Teuchos::ArrayView<int>  nodeIDListView   = Teuchos::arrayView(nodeIDList.first, nodeIDList.second);
 
-      return map->getRemoteIndexList(GIDListView, nodeIDListView);
+      return self->getRemoteIndexList(GIDListView, nodeIDListView);
     }
 }
 
