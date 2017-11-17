@@ -425,7 +425,6 @@ end type
   procedure :: isStaticGraph => swigf_TpetraCrsMatrix_isStaticGraph
   procedure :: getFrobeniusNorm => swigf_TpetraCrsMatrix_getFrobeniusNorm
   procedure :: supportsRowViews => swigf_TpetraCrsMatrix_supportsRowViews
-  procedure :: getGlobalRowCopy => swigf_TpetraCrsMatrix_getGlobalRowCopy
   procedure :: getGlobalRowView => swigf_TpetraCrsMatrix_getGlobalRowView
   procedure :: getLocalRowViewRaw => swigf_TpetraCrsMatrix_getLocalRowViewRaw
   procedure, private :: apply__SWIG_0 => swigf_TpetraCrsMatrix_apply__SWIG_0
@@ -449,6 +448,7 @@ end type
   procedure, private :: exportAndFillComplete__SWIG_3 => swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_3
   procedure, private :: exportAndFillComplete__SWIG_4 => swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_4
   procedure :: haveGlobalConstants => swigf_TpetraCrsMatrix_haveGlobalConstants
+  procedure :: getGlobalRowCopy => swigf_TpetraCrsMatrix_getGlobalRowCopy
   procedure, private :: swigf_assign_TpetraCrsMatrix
   generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2, create__SWIG_3, create__SWIG_4, create__SWIG_5, &
     create__SWIG_6, create__SWIG_7
@@ -2618,16 +2618,6 @@ logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
 end function
 
-subroutine swigc_TpetraCrsMatrix_getGlobalRowCopy(farg1, farg2, farg3, farg4, farg5) &
-bind(C, name="swigc_TpetraCrsMatrix_getGlobalRowCopy")
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-integer(C_LONG_LONG), intent(in) :: farg2
-type(C_PTR), value :: farg3
-type(C_PTR), value :: farg4
-type(C_PTR), value :: farg5
-end subroutine
-
 subroutine swigc_TpetraCrsMatrix_getGlobalRowView(farg1, farg2, farg3, farg4) &
 bind(C, name="swigc_TpetraCrsMatrix_getGlobalRowView")
 use, intrinsic :: ISO_C_BINDING
@@ -2861,6 +2851,17 @@ use, intrinsic :: ISO_C_BINDING
 logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
 end function
+
+subroutine swigc_TpetraCrsMatrix_getGlobalRowCopy(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_TpetraCrsMatrix_getGlobalRowCopy")
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
+type(C_PTR), value :: farg1
+real(C_DOUBLE), intent(in) :: farg2
+type(SwigfArrayWrapper) :: farg3
+type(SwigfArrayWrapper) :: farg4
+type(C_PTR), value :: farg5
+end subroutine
 
   function swigc_spcopy_TpetraCrsMatrix(farg1) &
      bind(C, name="swigc_spcopy_TpetraCrsMatrix") &
@@ -3346,7 +3347,7 @@ integer(C_INT), dimension(:), target, intent(inout) :: nodeidlist
 integer(C_INT), dimension(:), target, intent(inout) :: lidlist
 integer(C_INT) :: fresult 
 type(C_PTR) :: farg1 
-type(SwigfArrayWrapper) :: farg2
+type(SwigfArrayWrapper) :: farg2 
 type(SwigfArrayWrapper) :: farg3 
 type(SwigfArrayWrapper) :: farg4 
 
@@ -3370,7 +3371,7 @@ integer(C_LONG_LONG), dimension(:), target, intent(inout) :: gidlist
 integer(C_INT), dimension(:), target, intent(inout) :: nodeidlist
 integer(C_INT) :: fresult 
 type(C_PTR) :: farg1 
-type(SwigfArrayWrapper) :: farg2
+type(SwigfArrayWrapper) :: farg2 
 type(SwigfArrayWrapper) :: farg3 
 
 farg1 = self%swigptr
@@ -4489,9 +4490,9 @@ use, intrinsic :: ISO_C_BINDING
 class(TpetraMultiVector) :: self
 class(TpetraMultiVector) :: a
 real(C_DOUBLE), dimension(:), target, intent(inout) :: dots
-type(C_PTR) :: farg1
-type(C_PTR) :: farg2
-type(SwigfArrayWrapper) :: farg3
+type(C_PTR) :: farg1 
+type(C_PTR) :: farg2 
+type(SwigfArrayWrapper) :: farg3 
 
 farg1 = self%swigptr
 farg2 = a%swigptr
@@ -4505,8 +4506,8 @@ subroutine swigf_TpetraMultiVector_norm1(self, norms)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraMultiVector) :: self
 real(C_DOUBLE), dimension(:), target, intent(inout) :: norms
-type(C_PTR) :: farg1
-type(SwigfArrayWrapper) :: farg2
+type(C_PTR) :: farg1 
+type(SwigfArrayWrapper) :: farg2 
 
 farg1 = self%swigptr
 farg2%data = c_loc(norms(1))
@@ -4519,8 +4520,8 @@ subroutine swigf_TpetraMultiVector_norm2(self, norms)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraMultiVector) :: self
 real(C_DOUBLE), dimension(:), target, intent(inout) :: norms
-type(C_PTR) :: farg1
-type(SwigfArrayWrapper) :: farg2
+type(C_PTR) :: farg1 
+type(SwigfArrayWrapper) :: farg2 
 
 farg1 = self%swigptr
 farg2%data = c_loc(norms(1))
@@ -4533,8 +4534,8 @@ subroutine swigf_TpetraMultiVector_normInf(self, norms)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraMultiVector) :: self
 real(C_DOUBLE), dimension(:), target, intent(inout) :: norms
-type(C_PTR) :: farg1
-type(SwigfArrayWrapper) :: farg2
+type(C_PTR) :: farg1 
+type(SwigfArrayWrapper) :: farg2 
 
 farg1 = self%swigptr
 farg2%data = c_loc(norms(1))
@@ -6766,28 +6767,6 @@ fresult = swigc_TpetraCrsMatrix_supportsRowViews(farg1)
 swigf_result = fresult
 end function
 
-subroutine swigf_TpetraCrsMatrix_getGlobalRowCopy(self, globalrow, indices, values, numentries)
-use, intrinsic :: ISO_C_BINDING
-class(TpetraCrsMatrix) :: self
-integer(C_LONG_LONG), intent(in) :: globalrow
-class(TeuchosArrayViewLongLong) :: indices
-class(TeuchosArrayViewDouble) :: values
-integer(C_SIZE_T), target, intent(inout) :: numentries
-type(C_PTR) :: farg1 
-integer(C_LONG_LONG) :: farg2 
-type(C_PTR) :: farg3 
-type(C_PTR) :: farg4 
-type(C_PTR) :: farg5 
-
-farg1 = self%swigptr
-farg2 = globalrow
-farg3 = indices%swigptr
-farg4 = values%swigptr
-farg5 = c_loc(numentries)
-call swigc_TpetraCrsMatrix_getGlobalRowCopy(farg1, farg2, farg3, farg4, farg5)
-
-end subroutine
-
 subroutine swigf_TpetraCrsMatrix_getGlobalRowView(self, globalrow, indices, values)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsMatrix) :: self
@@ -7287,6 +7266,30 @@ farg1 = self%swigptr
 fresult = swigc_TpetraCrsMatrix_haveGlobalConstants(farg1)
 swigf_result = fresult
 end function
+
+subroutine swigf_TpetraCrsMatrix_getGlobalRowCopy(self, globalrow, indices, values, numindices)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+real(C_DOUBLE), intent(in) :: globalrow
+integer(C_LONG_LONG), dimension(:), target, intent(inout) :: indices
+real(C_DOUBLE), dimension(:), target, intent(inout) :: values
+integer(C_SIZE_T), target, intent(inout) :: numindices
+type(C_PTR) :: farg1 
+real(C_DOUBLE) :: farg2 
+type(SwigfArrayWrapper) :: farg3 
+type(SwigfArrayWrapper) :: farg4 
+type(C_PTR) :: farg5 
+
+farg1 = self%swigptr
+farg2 = globalrow
+farg3%data = c_loc(indices(1))
+farg3%size = size(indices)
+farg4%data = c_loc(values(1))
+farg4%size = size(values)
+farg5 = c_loc(numindices)
+call swigc_TpetraCrsMatrix_getGlobalRowCopy(farg1, farg2, farg3, farg4, farg5)
+
+end subroutine
 
   subroutine swigf_assign_TpetraCrsMatrix(self, other)
    use, intrinsic :: ISO_C_BINDING
