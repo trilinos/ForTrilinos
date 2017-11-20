@@ -12,11 +12,11 @@ namespace ForTrilinos {
   typedef void (*OperatorCallback)(std::pair<const double*, size_t> x, std::pair<double*, size_t> y);
 
 #ifndef SWIG
-  class FortranOperator : public Tpetra::Operator<double, int, int, Kokkos::Compat::KokkosSerialWrapperNode> {
+  class FortranOperator : public Tpetra::Operator<double, int, long long, Kokkos::Compat::KokkosSerialWrapperNode> {
   private:
     typedef double                                  SC;
     typedef int                                     LO;
-    typedef int                                     GO;
+    typedef long long                               GO;
     typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
 
   public:

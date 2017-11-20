@@ -13,17 +13,16 @@ program main
 #endif
   implicit none
 
-  integer(c_int) :: i
   integer(c_int) :: my_rank, num_procs
 
-  integer(c_int) :: cur_pos, offset
+  integer(c_long_long) :: i, cur_pos, offset, one_int
   real(c_double) :: norm, one
 
   type(TeuchosComm) :: comm
 
-  integer(C_LONG) :: n_global
-  integer(C_SIZE_T) :: n, max_entries_per_row, num_vecs, lda
-  integer(C_INT) :: stupid_n, row_nnz, stupid_1
+  integer(global_size_type) :: n_global
+  integer(size_type) :: n, max_entries_per_row, num_vecs, lda
+  integer(int_type) :: stupid_n, row_nnz, stupid_1
   type(TpetraMap) :: map
   type(TpetraCrsMatrix) :: A
   type(TpetraMultiVector) :: B, X, Xtrue
@@ -32,15 +31,16 @@ program main
   type(SolverHandle) :: tri_handle
 
   type(TeuchosArrayViewDoubleConst) :: TA_rhs, TA_lhs
-  type(TeuchosArrayViewDouble) :: TA_norms
-  real(c_double), dimension(:), allocatable :: lhs, rhs, norms
-  integer(c_int), dimension(:), allocatable :: cols
-  real(c_double), dimension(:), allocatable :: vals
+  real(scalar_type), dimension(:), allocatable :: lhs, rhs
+  real(norm_type), dimension(:), allocatable :: norms
+  integer(global_ordinal_type), dimension(:), allocatable :: cols
+  real(scalar_type), dimension(:), allocatable :: vals
 
   n = 50
   num_vecs = 1
 
   one = 1.0
+  one_int = 1
 
   my_rank = 0
   num_procs = 1
@@ -75,7 +75,7 @@ program main
   ! ------------------------------------------------------------------
   ! Step 0: Construct tri-diagonal matrix, and rhs
   n_global = -1
-  call map%create(n_global, n, 1, comm) ! 1 = index base (Fortran)
+  call map%create(n_global, n, one_int, comm) ! 1 = index base (Fortran)
 
   max_entries_per_row = 3
   call A%create(map, max_entries_per_row, DynamicProfile)
@@ -176,13 +176,11 @@ program main
 
   ! Check the solution
   allocate(norms(1))
-  call TA_norms%create(norms)
   call X%update(-one, Xtrue, one)
-  call X%norm2(TA_norms)
+  call X%norm2(norms)
 
   ! TODO: Get the tolerance out of the parameter list
-  EXPECT_TRUE(TA_norms%back() < 1e-6)
-  call TA_norms%release()
+  EXPECT_TRUE(norms(1) < 1e-6)
 
   ! Step 5: clean up
   call tri_handle%finalize()

@@ -3,14 +3,9 @@
 
 namespace ForTrilinos {
 
-  typedef double                                  SC;
-  typedef int                                     LO;
-  typedef int                                     GO;
-  typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
-
   auto HandleHelpers::setup_matrix_gen(const Teuchos::RCP<const Teuchos::Comm<int>>& comm,
-        std::pair<const int*,size_t> rowInds_pair, std::pair<const int*,size_t>    rowPtrs_pair,
-        std::pair<const int*,size_t> colInds_pair, std::pair<const double*,size_t> values_pair) -> Teuchos::RCP<Matrix> {
+        std::pair<const GO*,size_t> rowInds_pair, std::pair<const LO*,size_t> rowPtrs_pair,
+        std::pair<const GO*,size_t> colInds_pair, std::pair<const SC*,size_t> values_pair) -> Teuchos::RCP<Matrix> {
     using Teuchos::ArrayView;
 
     auto numRows = rowInds_pair.second;
@@ -48,7 +43,7 @@ namespace ForTrilinos {
   }
 
   auto HandleHelpers::setup_operator_gen(const Teuchos::RCP<const Teuchos::Comm<int>>& comm,
-        std::pair<const int*, size_t> rowInds_pair, OperatorCallback callback) -> Teuchos::RCP<Operator> {
+        std::pair<const GO*, size_t> rowInds_pair, OperatorCallback callback) -> Teuchos::RCP<Operator> {
     auto rowInds = rowInds_pair.first;
     auto numRows = rowInds_pair.second;
     TEUCHOS_ASSERT(numRows >= 0);

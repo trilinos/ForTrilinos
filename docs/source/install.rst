@@ -87,6 +87,9 @@ required to build and install ForTrilinos:
 
           ### ETI ###
           -D Trilinos_ENABLE_EXPLICIT_INSTANTIATION=ON
+            -D Tpetra_INST_INT_INT=OFF
+            -D Tpetra_INST_INT_LONG=OFF
+            -D Tpetra_INST_INT_LONG_LONG=ON
 
           ### PACKAGES CONFIGURATION ###
           -D Trilinos_ENABLE_ALL_PACKAGES=OFF
