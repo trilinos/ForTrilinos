@@ -10,9 +10,9 @@ use mpi
 #endif
   implicit none
   integer ierr2
+type(TeuchosComm) :: comm
 #ifdef HAVE_MPI
 ! Initialize MPI subsystem
-type(TeuchosComm) :: comm
 call MPI_INIT(ierr)
 EXPECT_EQ(ierr, 0)
 call comm%create(MPI_COMM_WORLD)
