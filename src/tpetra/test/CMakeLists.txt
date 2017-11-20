@@ -4,7 +4,6 @@
 
 SET(TESTS
   test_tpetra_map.f90
-  test_TpetraMap.f90
   )
 
 FOREACH(test ${TESTS})
