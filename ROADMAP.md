@@ -30,7 +30,7 @@ Now is the extensive list.
 
 ### Tpetra::Map
 
-**Public Member Functions**
+**Constructor/destructor methods**
 
 Status | Command| Comment
 -------|--------|---------
@@ -108,5 +108,51 @@ Status | Command| Comment
 :white_check_mark: | `Teuchos::ArrayView< const GlobalOrdinal > 	getNodeElementList () const`
 
 
-Belos
------
+### Tpetra::Export
+
+**Constructor/Destructor Methods**
+
+Status | Command| Comment
+-------|--------|---------
+:white_check_mark: | `Export (const Teuchos::RCP< const map_type > &source, const Teuchos::RCP< const map_type > &target)`
+:x:                | `Export (const Teuchos::RCP< const map_type > &source, const Teuchos::RCP< const map_type > &target, const Teuchos::RCP< Teuchos::FancyOStream > &out)`
+:white_check_mark: | `Export (const Teuchos::RCP< const map_type > &source, const Teuchos::RCP< const map_type > &target, const Teuchos::RCP< Teuchos::ParameterList > &plist)`
+:x:                | `Export (const Teuchos::RCP< const map_type > &source, const Teuchos::RCP< const map_type > &target, const Teuchos::RCP< Teuchos::FancyOStream > &out, const Teuchos::RCP< Teuchos::ParameterList > &plist)`
+:white_check_mark: | `Export (const Export< LocalOrdinal, GlobalOrdinal, Node > &rhs)`
+:white_check_mark: | `Export (const Import< LocalOrdinal, GlobalOrdinal, Node > &importer)`
+:white_check_mark: | `virtual 	~Export ()`
+:white_check_mark: | `void 	setParameterList (const Teuchos::RCP< Teuchos::ParameterList > &plist)`
+
+**Export Attribute Methods**
+
+Status | Command| Comment
+-------|--------|---------
+:white_check_mark: | `size_t 	getNumSameIDs () const`
+:white_check_mark: | `size_t 	getNumPermuteIDs () const`
+:running: | `Teuchos::ArrayView< const LocalOrdinal > 	getPermuteFromLIDs () const`
+:running: | `Teuchos::ArrayView< const LocalOrdinal > 	getPermuteToLIDs () const`
+:white_check_mark: | `size_t 	getNumRemoteIDs () const`
+:running: | `Teuchos::ArrayView< const LocalOrdinal > 	getRemoteLIDs () const`
+:white_check_mark: | `size_t 	getNumExportIDs () const`
+:running: | `Teuchos::ArrayView< const LocalOrdinal > 	getExportLIDs () const`
+:running: | `Teuchos::ArrayView< const int > 	getExportPIDs () const`
+:white_check_mark: | `Teuchos::RCP< const map_type > 	getSourceMap () const`
+:white_check_mark: | `Teuchos::RCP< const map_type > 	getTargetMap () const`
+:x: | `Distributor & 	getDistributor () const`
+:white_check_mark: | `bool 	isLocallyComplete () const`
+:arrow_down: | `Export< LocalOrdinal, GlobalOrdinal, Node > & 	operator= (const Export< LocalOrdinal, GlobalOrdinal, Node > &rhs)`
+
+**I/O Methods**
+
+Status | Command| Comment
+-------|--------|---------
+:x: | `virtual void 	describe (Teuchos::FancyOStream &out, const Teuchos::EVerbosityLevel verbLevel=Teuchos::Describable::verbLevel_default) const`
+:x: | `virtual void 	print (std::ostream &os) const`
+
+**Related Functions (non-member functions)**
+
+Status | Command| Comment
+-------|--------|---------
+:x: | `template<class LocalOrdinal , class GlobalOrdinal , class Node > Teuchos::RCP< const Export < LocalOrdinal, GlobalOrdinal, Node > > 	createExport (const Teuchos::RCP< const Map< LocalOrdinal, GlobalOrdinal, Node > > &src, const Teuchos::RCP< const Map< LocalOrdinal, GlobalOrdinal, Node > > &tgt)`
+
+## Belos
