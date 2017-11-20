@@ -3,7 +3,6 @@
 !
 ! Do not make changes to this file unless you know what you are doing--modify
 ! the SWIG interface file instead.
-
 module fortpetra
  use, intrinsic :: ISO_C_BINDING
  use forteuchos
@@ -2858,7 +2857,7 @@ bind(C, name="swigc_TpetraCrsMatrix_getGlobalRowCopy")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
 type(C_PTR), value :: farg1
-INTEGER(C_LONG_LONG), intent(in) :: farg2
+integer(C_LONG_LONG), intent(in) :: farg2
 type(SwigfArrayWrapper) :: farg3
 type(SwigfArrayWrapper) :: farg4
 type(C_PTR), value :: farg5
@@ -7288,9 +7287,7 @@ farg3%size = size(indices)
 farg4%data = c_loc(values(1))
 farg4%size = size(values)
 farg5 = c_loc(numindices)
-print*,indices
 call swigc_TpetraCrsMatrix_getGlobalRowCopy(farg1, farg2, farg3, farg4, farg5)
-print*,indices
 
 end subroutine
 
