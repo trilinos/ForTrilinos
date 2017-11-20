@@ -24,6 +24,8 @@ ForTrilinos is developed and maintained by:
 
 * `Seth Johnson <sethrj@ornl.gov>`_
 
+* `Tim Fuller <tjfulle@sandia.gov>`_
+
 Former developers include:
 
 * `Karla Morris <knmorri@sandia.gov>`_
