@@ -102,7 +102,7 @@
 // =======================================================================
 %ignore Tpetra::CrsMatrix::getGlobalRowCopy(GlobalOrdinal GlobalRow, const Teuchos::ArrayView< GlobalOrdinal > &Indices, const Teuchos::ArrayView< Scalar > &Values, size_t &NumEntries) const;
 %extend Tpetra::CrsMatrix<SC,LO,GO,NO,false> {
-    void getGlobalRowCopy(double GlobalRow, std::pair<long long*,size_t> Indices, std::pair<double*, size_t> Values, size_t &NumIndices) const {
+    void getGlobalRowCopy(GlobalOrdinal GlobalRow, std::pair<long long*,size_t> Indices, std::pair<double*, size_t> Values, size_t &NumIndices) const {
       Teuchos::ArrayView<GO> IndicesView = Teuchos::arrayView(Indices.first, Indices.second);
       Teuchos::ArrayView<SC> ValuesView  = Teuchos::arrayView(Values.first, Values.second);
 

@@ -16,7 +16,6 @@ ELSE()
     # Use pre-generated files
     SET(GEN_SOURCE
       fortpetra.f90
-      fortpetra_types.f90
       fortpetraFORTRAN_wrap.cxx)
 
     TRIBITS_ADD_LIBRARY(

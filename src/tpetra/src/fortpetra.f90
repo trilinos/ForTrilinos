@@ -28,16 +28,6 @@ module fortpetra
  implicit none
  private
 
- integer, public, parameter :: global_ordinal_type = c_int
- integer, public, parameter :: global_size_t = c_long
- integer, public, parameter :: local_ordinal_type = c_int
- integer, public, parameter :: size_type = c_size_t
- integer, public, parameter :: bool_type = c_bool
- integer, public, parameter :: int_type = c_int
- integer, public, parameter :: scalar_type = c_double
- integer, public, parameter :: mag_type = c_double
- integer, public, parameter :: norm_type = c_double
-
  ! PUBLIC METHODS AND TYPES
 
 public :: scalar_type
@@ -2868,7 +2858,7 @@ bind(C, name="swigc_TpetraCrsMatrix_getGlobalRowCopy")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
 type(C_PTR), value :: farg1
-real(C_DOUBLE), intent(in) :: farg2
+INTEGER(C_LONG_LONG), intent(in) :: farg2
 type(SwigfArrayWrapper) :: farg3
 type(SwigfArrayWrapper) :: farg4
 type(C_PTR), value :: farg5
@@ -7281,12 +7271,12 @@ end function
 subroutine swigf_TpetraCrsMatrix_getGlobalRowCopy(self, globalrow, indices, values, numindices)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsMatrix) :: self
-real(C_DOUBLE), intent(in) :: globalrow
+integer(C_LONG_LONG), intent(in) :: globalrow
 integer(C_LONG_LONG), dimension(:), target, intent(inout) :: indices
 real(C_DOUBLE), dimension(:), target, intent(inout) :: values
 integer(C_SIZE_T), target, intent(inout) :: numindices
 type(C_PTR) :: farg1 
-real(C_DOUBLE) :: farg2 
+integer(C_LONG_LONG) :: farg2 
 type(SwigfArrayWrapper) :: farg3 
 type(SwigfArrayWrapper) :: farg4 
 type(C_PTR) :: farg5 
@@ -7298,7 +7288,9 @@ farg3%size = size(indices)
 farg4%data = c_loc(values(1))
 farg4%size = size(values)
 farg5 = c_loc(numindices)
+print*,indices
 call swigc_TpetraCrsMatrix_getGlobalRowCopy(farg1, farg2, farg3, farg4, farg5)
+print*,indices
 
 end subroutine
 

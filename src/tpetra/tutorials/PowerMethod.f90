@@ -28,17 +28,15 @@ real(scalar_type), parameter :: one=1., two=2., neg_one=-1.
 type(TeuchosComm) :: comm
 type(TpetraMap) :: map
 type(TpetraCrsMatrix) :: A
-type(TeuchosArrayViewInt) :: cols_av
-type(TeuchosArrayViewDouble) :: vals_av
 
 ! -- Scalars
 real(scalar_type)  lambda
-integer(global_size_t) :: num_gbl_indices
+integer(global_size_type) :: num_gbl_indices
 integer(size_type) :: my_rank
 integer(size_type) :: num_entries_in_row, max_entries_per_row, i
-integer(local_ordinal_type) lcl_row, id_of_first_row
-integer(local_ordinal_type) row_nnz, num_my_elements, col, n, iconv
-integer(global_ordinal_type) gbl_row, index_base
+integer(local_ordinal_type) lcl_row, row_nnz, n
+integer(local_ordinal_type) num_my_elements, col, iconv
+integer(global_ordinal_type) gbl_row, index_base, id_of_first_row
 
 ! -- Arrays
 integer(global_ordinal_type), allocatable :: cols(:)
@@ -88,7 +86,7 @@ call A%create(map, max_entries_per_row, DynamicProfile)
 ! Fill the sparse matrix, one row at a time.
 allocate(vals(3))
 allocate(cols(3))
-num_my_elements = int(map%getNodeNumElements(), kind=kind(lcl_row))
+num_my_elements = int(map%getNodeNumElements(), kind=kind(num_my_elements))
 fill: do lcl_row = 1, num_my_elements
   gbl_row = map%getGlobalElement(lcl_row)
   if (gbl_row == 1) then
@@ -117,10 +115,10 @@ call A%fillComplete()
 
 ! Run the power method and report the result.
 call PowerMethod(A, lambda, iconv, comm)
-EXPECT_TRUE(abs(lambda-3.99)/3.99 < .005)
 if (iconv > 0 .and. my_rank == 0) then
   write(*, *) "Estimated max eigenvalue: ", lambda
 end if
+EXPECT_TRUE(abs(lambda-3.99)/3.99 < .005)
 
 ! Now we're going to change values in the sparse matrix and run the
 ! power method again.  In Tpetra, if fillComplete() has been
@@ -134,11 +132,13 @@ if (my_rank == 0) &
 ! Must call resumeFill() before changing the matrix, even its values.
 call A%resumeFill()
 
-if (map%isNodeGlobalElement(1)) then
+id_of_first_row = 1
+if (map%isNodeGlobalElement(id_of_first_row)) then
   ! Get a copy of the row with with global index 1.  Modify the diagonal entry
   ! of that row.  Submit the modified values to the matrix.
-  id_of_first_row = 1
+  print*, 'here i am!'
   num_entries_in_row = A%getNumEntriesInGlobalRow(id_of_first_row);
+  print*, 'num_entries_in_row=', num_entries_in_row
   n = int(num_entries_in_row, kind=kind(n))
   allocate(vals(n))
   allocate(cols(n))
@@ -153,9 +153,8 @@ if (map%isNodeGlobalElement(1)) then
   ! really the sum of all processes' values for that entry.  However, scaling
   ! the entry by a constant factor distributes across that sum, so it's OK to do
   ! so.
-  call cols_av%create(cols)
-  call vals_av%create(vals)
-  call A%getGlobalRowCopy(id_of_first_row, cols_av, vals_av, num_entries_in_row)
+  call A%getGlobalRowCopy(id_of_first_row, cols, vals, num_entries_in_row)
+  print*, 'cols=', cols
   do i = 1, n
     if (cols(i) == id_of_first_row) then
       vals(i) = vals(i) * 10.
@@ -169,8 +168,6 @@ if (map%isNodeGlobalElement(1)) then
   ! insertGlobalValues().
   i = A%replaceGlobalValues(id_of_first_row, n, vals, cols)
 
-  call cols_av%release()
-  call vals_av%release()
   deallocate(vals)
   deallocate(cols)
 
@@ -182,10 +179,10 @@ call A%fillComplete()
 
 ! Run the power method again.
 call PowerMethod(A, lambda, iconv, comm)
-EXPECT_TRUE(abs(lambda-20.05555)/20.05555 < .0001)
 if (iconv > 0 .and. my_rank == 0) then
   write(*, *) "Estimated max eigenvalue: ", lambda
 end if
+EXPECT_TRUE(abs(lambda-20.05555)/20.05555 < .0001)
 
 call A%release()
 call map%release()
@@ -243,7 +240,6 @@ contains
     real(scalar_type) :: norms(num_vecs), dots(num_vecs)
 
     ! -- Local ForTrilinos Objects
-    type(TeuchosArrayViewDouble) :: norms_av, dots_av
     type(TpetraMultiVector) :: q, z, resid
     type(TpetraMap) :: domain_map, range_map
     ! ----------------------------------------------------------------------- !
@@ -289,21 +285,19 @@ contains
     ! Do the power method, until the method has converged or the
     ! maximum iteration count has been reached.
     iconv = 0
-    call norms_av%create(norms)
-    call dots_av%create(dots)
     iters: do it = 1, maxit2
-      call z%norm2(norms_av)
+      call z%norm2(norms)
       normz = norms(1)
       call q%scale(one / normz, z)  !  q := z / normz
       call A%apply(q, z)  !  z := A * q
-      call q%dot(z, dots_av)
+      call q%dot(z, dots)
       lambda = dots(1)  !  Approx. max eigenvalue
 
       ! Compute and report the residual norm every report_frequency
       ! iterations, or if we've reached the maximum iteration count.
       if (mod(it-1, report_frequency) == 0 .or. it == maxit2) then
         call resid%update(one, z, -lambda, q, zero)  ! z := A*q - lambda*q
-        call resid%norm2(norms_av)
+        call resid%norm2(norms)
         residual = norms(1)  ! 2-norm of the residual vector
         if (verbose .and. my_rank == 0) then
           write(*, '(A,I3,A)') "Iteration ", it, ":"
@@ -330,8 +324,6 @@ contains
       write(*, *) "PowerMethod failed to converge after ", maxit2, " iterations"
     end if
 
-    call dots_av%release()
-    call norms_av%release()
     call q%release()
     call z%release()
     call resid%release()

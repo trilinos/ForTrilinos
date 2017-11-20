@@ -295,7 +295,7 @@ SWIGINTERN void Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sc_false_Sg__normInf(
 
 #include "Tpetra_CrsMatrix.hpp"
 
-SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sc_false_Sg__getGlobalRowCopy(Tpetra::CrsMatrix< SC,LO,GO,NO,false > const *self,double GlobalRow,std::pair< long long *,std::size_t > Indices,std::pair< double *,std::size_t > Values,size_t &NumIndices){
+SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sc_false_Sg__getGlobalRowCopy(Tpetra::CrsMatrix< SC,LO,GO,NO,false > const *self,long long GlobalRow,std::pair< long long *,std::size_t > Indices,std::pair< double *,std::size_t > Values,size_t &NumIndices){
       Teuchos::ArrayView<GO> IndicesView = Teuchos::arrayView(Indices.first, Indices.second);
       Teuchos::ArrayView<SC> ValuesView  = Teuchos::arrayView(Values.first, Values.second);
 
@@ -11014,9 +11014,9 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_haveGlobalConstants(void const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowCopy(void const *farg1, double const *farg2, swig::SwigfArrayWrapper< long long > *farg3, swig::SwigfArrayWrapper< double > *farg4, size_t *farg5) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowCopy(void const *farg1, long long const *farg2, swig::SwigfArrayWrapper< long long > *farg3, swig::SwigfArrayWrapper< double > *farg4, size_t *farg5) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
-  double arg2 ;
+  long long arg2 ;
   std::pair< long long *,std::size_t > arg3 ;
   std::pair< double *,std::size_t > arg4 ;
   size_t *arg5 = 0 ;

@@ -23,12 +23,11 @@ type(TeuchosComm) :: comm
 type(TpetraMap) :: contig_map, contig_map2, contig_map3, cyclic_map
 type(TeuchosArrayInt) :: element_list
 type(TpetraMultiVector) :: x, y
-type(TeuchosArrayViewDouble) :: norms_av
 
 ! -- Scalars
 integer(size_type) :: my_rank, num_procs, k
 integer(size_type) :: num_local_entries, num_elements_per_proc
-integer(global_size_t) :: num_global_entries, invalid
+integer(global_size_type) :: num_global_entries, invalid
 integer(global_ordinal_type) :: index_base
 logical(bool_type) :: zero_out, x_test
 real(scalar_type) :: alpha, beta, gamma
@@ -200,9 +199,7 @@ call y%update(alpha, x, beta)
 
 ! Compute the 2-norm of y.
 allocate(norms(num_vecs))
-call norms_av%create(norms)
-call y%norm2(norms_av)
-call norms_av%release()
+call y%norm2(norms)
 
 the_norm = norms(1)
 
