@@ -18,6 +18,8 @@ ADD_SUBDIRECTORY(src)
 
 TRIBITS_ADD_TEST_DIRECTORIES(test)
 
+TRIBITS_ADD_TEST_DIRECTORIES(tutorials)
+
 #TRIBITS_ADD_EXAMPLE_DIRECTORIES(example)
 
 ##---------------------------------------------------------------------------##

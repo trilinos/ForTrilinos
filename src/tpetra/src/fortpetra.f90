@@ -2857,7 +2857,7 @@ bind(C, name="swigc_TpetraCrsMatrix_getGlobalRowCopy")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
 type(C_PTR), value :: farg1
-real(C_DOUBLE), intent(in) :: farg2
+integer(C_LONG_LONG), intent(in) :: farg2
 type(SwigfArrayWrapper) :: farg3
 type(SwigfArrayWrapper) :: farg4
 type(C_PTR), value :: farg5
@@ -7270,12 +7270,12 @@ end function
 subroutine swigf_TpetraCrsMatrix_getGlobalRowCopy(self, globalrow, indices, values, numindices)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsMatrix) :: self
-real(C_DOUBLE), intent(in) :: globalrow
+integer(C_LONG_LONG), intent(in) :: globalrow
 integer(C_LONG_LONG), dimension(:), target, intent(inout) :: indices
 real(C_DOUBLE), dimension(:), target, intent(inout) :: values
 integer(C_SIZE_T), target, intent(inout) :: numindices
 type(C_PTR) :: farg1 
-real(C_DOUBLE) :: farg2 
+integer(C_LONG_LONG) :: farg2 
 type(SwigfArrayWrapper) :: farg3 
 type(SwigfArrayWrapper) :: farg4 
 type(C_PTR) :: farg5 

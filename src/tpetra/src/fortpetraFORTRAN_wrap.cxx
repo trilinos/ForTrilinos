@@ -243,18 +243,18 @@ struct SwigfArrayWrapper
 };
 }
 
-SWIGINTERN Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *new_Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg___SWIG_4(Tpetra::global_size_t const numGlobalElements,std::pair< long long const *,std::size_t > indexList,long long const indexBase,Teuchos::RCP< Teuchos::Comm< int > const > const &comm){
+SWIGINTERN Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *new_Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg___SWIG_4(Tpetra::global_size_t const numGlobalElements,std::pair< GO const *,std::size_t > indexList,GO const indexBase,Teuchos::RCP< Teuchos::Comm< int > const > const &comm){
       Teuchos::ArrayView<const GO> indexListView = Teuchos::arrayView(indexList.first, indexList.second);
       return new Tpetra::Map<LO,GO,NO>(numGlobalElements, indexListView, indexBase, comm);
     }
-SWIGINTERN Tpetra::LookupStatus Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg__getRemoteIndexList__SWIG_0(Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *self,std::pair< long long const *,std::size_t > GIDList,std::pair< int *,std::size_t > nodeIDList,std::pair< int *,std::size_t > LIDList){
+SWIGINTERN Tpetra::LookupStatus Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg__getRemoteIndexList__SWIG_0(Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *self,std::pair< GO const *,std::size_t > GIDList,std::pair< int *,std::size_t > nodeIDList,std::pair< LO *,std::size_t > LIDList){
       Teuchos::ArrayView<const GO> GIDListView  = Teuchos::arrayView(GIDList.first, GIDList.second);
       Teuchos::ArrayView<int>  nodeIDListView   = Teuchos::arrayView(nodeIDList.first, nodeIDList.second);
       Teuchos::ArrayView<LO> LIDListView        = Teuchos::arrayView(LIDList.first, LIDList.second);
 
       return self->getRemoteIndexList(GIDListView, nodeIDListView, LIDListView);
     }
-SWIGINTERN Tpetra::LookupStatus Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg__getRemoteIndexList__SWIG_1(Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *self,std::pair< long long const *,std::size_t > GIDList,std::pair< int *,std::size_t > nodeIDList){
+SWIGINTERN Tpetra::LookupStatus Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg__getRemoteIndexList__SWIG_1(Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *self,std::pair< GO const *,std::size_t > GIDList,std::pair< int *,std::size_t > nodeIDList){
       Teuchos::ArrayView<const GO> GIDListView  = Teuchos::arrayView(GIDList.first, GIDList.second);
       Teuchos::ArrayView<int>  nodeIDListView   = Teuchos::arrayView(nodeIDList.first, nodeIDList.second);
 
@@ -269,22 +269,22 @@ SWIGINTERN Tpetra::LookupStatus Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Comp
 
 #include "Tpetra_MultiVector.hpp"
 
-SWIGINTERN void Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sc_false_Sg__dot(Tpetra::MultiVector< SC,LO,GO,NO,false > const *self,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > const &A,std::pair< double *,std::size_t > dots){
+SWIGINTERN void Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sc_false_Sg__dot(Tpetra::MultiVector< SC,LO,GO,NO,false > const *self,Tpetra::MultiVector< SC,LO,GO,NO,false > const &A,std::pair< SC *,std::size_t > dots){
       Teuchos::ArrayView<SC> dotsView = Teuchos::arrayView(dots.first, dots.second);
 
       return self->dot(A, dotsView);
     }
-SWIGINTERN void Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sc_false_Sg__norm1(Tpetra::MultiVector< SC,LO,GO,NO,false > const *self,std::pair< double *,std::size_t > norms){
+SWIGINTERN void Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sc_false_Sg__norm1(Tpetra::MultiVector< SC,LO,GO,NO,false > const *self,std::pair< SC *,std::size_t > norms){
       Teuchos::ArrayView<SC> normsView = Teuchos::arrayView(norms.first, norms.second);
 
       return self->norm1(normsView);
     }
-SWIGINTERN void Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sc_false_Sg__norm2(Tpetra::MultiVector< SC,LO,GO,NO,false > const *self,std::pair< double *,std::size_t > norms){
+SWIGINTERN void Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sc_false_Sg__norm2(Tpetra::MultiVector< SC,LO,GO,NO,false > const *self,std::pair< SC *,std::size_t > norms){
       Teuchos::ArrayView<SC> normsView = Teuchos::arrayView(norms.first, norms.second);
 
       return self->norm2(normsView);
     }
-SWIGINTERN void Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sc_false_Sg__normInf(Tpetra::MultiVector< SC,LO,GO,NO,false > const *self,std::pair< double *,std::size_t > norms){
+SWIGINTERN void Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sc_false_Sg__normInf(Tpetra::MultiVector< SC,LO,GO,NO,false > const *self,std::pair< SC *,std::size_t > norms){
       Teuchos::ArrayView<SC> normsView = Teuchos::arrayView(norms.first, norms.second);
 
       return self->normInf(normsView);
@@ -295,7 +295,7 @@ SWIGINTERN void Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sc_false_Sg__normInf(
 
 #include "Tpetra_CrsMatrix.hpp"
 
-SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sc_false_Sg__getGlobalRowCopy(Tpetra::CrsMatrix< SC,LO,GO,NO,false > const *self,double GlobalRow,std::pair< long long *,std::size_t > Indices,std::pair< double *,std::size_t > Values,size_t &NumIndices){
+SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sc_false_Sg__getGlobalRowCopy(Tpetra::CrsMatrix< SC,LO,GO,NO,false > const *self,GO GlobalRow,std::pair< GO *,std::size_t > Indices,std::pair< SC *,std::size_t > Values,size_t &NumIndices){
       Teuchos::ArrayView<GO> IndicesView = Teuchos::arrayView(Indices.first, Indices.second);
       Teuchos::ArrayView<SC> ValuesView  = Teuchos::arrayView(Values.first, Values.second);
 
@@ -1431,8 +1431,8 @@ SWIGEXPORT void * swigc_TpetraMap_replaceCommWithSubset(void const *farg1, void 
 SWIGEXPORT void * swigc_new_TpetraMap__SWIG_4(unsigned long const *farg1, swig::SwigfArrayWrapper< long long const > *farg2, long long const *farg3, void *farg4) {
   void * fresult ;
   Tpetra::global_size_t arg1 ;
-  std::pair< long long const *,std::size_t > arg2 ;
-  long long arg3 ;
+  std::pair< GO const *,std::size_t > arg2 ;
+  GO arg3 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg4 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull4 ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *result = 0 ;
@@ -1474,9 +1474,9 @@ SWIGEXPORT void * swigc_new_TpetraMap__SWIG_4(unsigned long const *farg1, swig::
 SWIGEXPORT int swigc_TpetraMap_getRemoteIndexList__SWIG_0(void const *farg1, swig::SwigfArrayWrapper< long long const > *farg2, swig::SwigfArrayWrapper< int > *farg3, swig::SwigfArrayWrapper< int > *farg4) {
   int fresult ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
-  std::pair< long long const *,std::size_t > arg2 ;
+  std::pair< GO const *,std::size_t > arg2 ;
   std::pair< int *,std::size_t > arg3 ;
-  std::pair< int *,std::size_t > arg4 ;
+  std::pair< LO *,std::size_t > arg4 ;
   Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   Tpetra::LookupStatus result;
   
@@ -1522,7 +1522,7 @@ SWIGEXPORT int swigc_TpetraMap_getRemoteIndexList__SWIG_0(void const *farg1, swi
 SWIGEXPORT int swigc_TpetraMap_getRemoteIndexList__SWIG_1(void const *farg1, swig::SwigfArrayWrapper< long long const > *farg2, swig::SwigfArrayWrapper< int > *farg3) {
   int fresult ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
-  std::pair< long long const *,std::size_t > arg2 ;
+  std::pair< GO const *,std::size_t > arg2 ;
   std::pair< int *,std::size_t > arg3 ;
   Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
   Tpetra::LookupStatus result;
@@ -4362,19 +4362,19 @@ SWIGEXPORT int swigc_TpetraMultiVector_getCopyOrView(void const *farg1) {
 
 SWIGEXPORT void swigc_TpetraMultiVector_dot(void const *farg1, void const *farg2, swig::SwigfArrayWrapper< double > *farg3) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
-  Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
-  std::pair< double *,std::size_t > arg3 ;
+  Tpetra::MultiVector< SC,LO,GO,NO,false > *arg2 = 0 ;
+  std::pair< SC *,std::size_t > arg3 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   
   arg3 = ::std::pair< double*, std::size_t >();
   smartarg1 = (Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg1;
   arg1 = (Tpetra::MultiVector<SC,LO,GO,NO,false> *)(smartarg1 ? smartarg1->get() : 0);
-  arg2 = (Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *)(((Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg2)
+  arg2 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *)(((Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg2)
     ? ((Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > *)farg2)->get()
     :0);
   if (!arg2)
   {
-    throw std::logic_error("Attempt to dereference null Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > const &");
+    throw std::logic_error("Attempt to dereference null Tpetra::MultiVector< SC,LO,GO,NO,false > const &");
     return ;
   }
   (&arg3)->first  = farg3->data;
@@ -4408,7 +4408,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_dot(void const *farg1, void const *farg2
 
 SWIGEXPORT void swigc_TpetraMultiVector_norm1(void const *farg1, swig::SwigfArrayWrapper< double > *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
-  std::pair< double *,std::size_t > arg2 ;
+  std::pair< SC *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   
   arg2 = ::std::pair< double*, std::size_t >();
@@ -4445,7 +4445,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_norm1(void const *farg1, swig::SwigfArra
 
 SWIGEXPORT void swigc_TpetraMultiVector_norm2(void const *farg1, swig::SwigfArrayWrapper< double > *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
-  std::pair< double *,std::size_t > arg2 ;
+  std::pair< SC *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   
   arg2 = ::std::pair< double*, std::size_t >();
@@ -4482,7 +4482,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_norm2(void const *farg1, swig::SwigfArra
 
 SWIGEXPORT void swigc_TpetraMultiVector_normInf(void const *farg1, swig::SwigfArrayWrapper< double > *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO,false > *) 0 ;
-  std::pair< double *,std::size_t > arg2 ;
+  std::pair< SC *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   
   arg2 = ::std::pair< double*, std::size_t >();
@@ -11014,11 +11014,11 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_haveGlobalConstants(void const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowCopy(void const *farg1, double const *farg2, swig::SwigfArrayWrapper< long long > *farg3, swig::SwigfArrayWrapper< double > *farg4, size_t *farg5) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowCopy(void const *farg1, long long const *farg2, swig::SwigfArrayWrapper< long long > *farg3, swig::SwigfArrayWrapper< double > *farg4, size_t *farg5) {
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO,false > *) 0 ;
-  double arg2 ;
-  std::pair< long long *,std::size_t > arg3 ;
-  std::pair< double *,std::size_t > arg4 ;
+  GO arg2 ;
+  std::pair< GO *,std::size_t > arg3 ;
+  std::pair< SC *,std::size_t > arg4 ;
   size_t *arg5 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,false > const > *smartarg1 = 0 ;
   

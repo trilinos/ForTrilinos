@@ -81,22 +81,22 @@
 %ignore Tpetra::MultiVector::normInf(const Teuchos::ArrayView<mag_type>& norms) const;
 %ignore Tpetra::MultiVector::normInf(const Teuchos::ArrayView<T>& norms) const;
 %extend Tpetra::MultiVector<SC,LO,GO,NO,false> {
-    void dot( const Tpetra::MultiVector<double,int,long long, Kokkos::Compat::KokkosSerialWrapperNode,false> &A, std::pair<double*,size_t> dots) const {
+    void dot( const Tpetra::MultiVector<SC,LO,GO,NO,false> &A, std::pair<SC*,size_t> dots) const {
       Teuchos::ArrayView<SC> dotsView = Teuchos::arrayView(dots.first, dots.second);
 
       return self->dot(A, dotsView);
     }
-    void norm1(std::pair<double*,size_t> norms) const {
+    void norm1(std::pair<SC*,size_t> norms) const {
       Teuchos::ArrayView<SC> normsView = Teuchos::arrayView(norms.first, norms.second);
 
       return self->norm1(normsView);
     }
-    void norm2(std::pair<double*,size_t> norms) const {
+    void norm2(std::pair<SC*,size_t> norms) const {
       Teuchos::ArrayView<SC> normsView = Teuchos::arrayView(norms.first, norms.second);
 
       return self->norm2(normsView);
     }
-    void normInf(std::pair<double*,size_t> norms) const {
+    void normInf(std::pair<SC*,size_t> norms) const {
       Teuchos::ArrayView<SC> normsView = Teuchos::arrayView(norms.first, norms.second);
 
       return self->normInf(normsView);

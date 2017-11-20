@@ -68,18 +68,18 @@
 %ignore Tpetra::Map::getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList, const Teuchos::ArrayView< LocalOrdinal > &LIDList) const;
 %ignore getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList) const;
 %extend Tpetra::Map<int, long long, Kokkos::Compat::KokkosSerialWrapperNode> {
-    Map(const global_size_t numGlobalElements, std::pair<const long long*,size_t> indexList, const long long indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm) {
+    Map(const global_size_t numGlobalElements, std::pair<const GO*,size_t> indexList, const GO indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm) {
       Teuchos::ArrayView<const GO> indexListView = Teuchos::arrayView(indexList.first, indexList.second);
       return new Tpetra::Map<LO,GO,NO>(numGlobalElements, indexListView, indexBase, comm);
     }
-    LookupStatus getRemoteIndexList(std::pair<const long long*, size_t> GIDList, std::pair<int*, size_t> nodeIDList, std::pair<int*, size_t> LIDList) const {
+    LookupStatus getRemoteIndexList(std::pair<const GO*, size_t> GIDList, std::pair<int*, size_t> nodeIDList, std::pair<LO*, size_t> LIDList) const {
       Teuchos::ArrayView<const GO> GIDListView  = Teuchos::arrayView(GIDList.first, GIDList.second);
       Teuchos::ArrayView<int>  nodeIDListView   = Teuchos::arrayView(nodeIDList.first, nodeIDList.second);
       Teuchos::ArrayView<LO> LIDListView        = Teuchos::arrayView(LIDList.first, LIDList.second);
 
       return self->getRemoteIndexList(GIDListView, nodeIDListView, LIDListView);
     }
-    LookupStatus getRemoteIndexList(std::pair<const long long*, size_t> GIDList, std::pair<int*, size_t> nodeIDList) const {
+    LookupStatus getRemoteIndexList(std::pair<const GO*, size_t> GIDList, std::pair<int*, size_t> nodeIDList) const {
       Teuchos::ArrayView<const GO> GIDListView  = Teuchos::arrayView(GIDList.first, GIDList.second);
       Teuchos::ArrayView<int>  nodeIDListView   = Teuchos::arrayView(nodeIDList.first, nodeIDList.second);
 

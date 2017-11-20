@@ -13,4 +13,5 @@ Contents:
 
    overview
    install
+   packages/index
    developer_tools
