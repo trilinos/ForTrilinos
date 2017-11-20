@@ -1,15 +1,15 @@
 
 .. _Trilinos: https://trilinos.github.io
-.. _Tpetra: http://www.trilinos.org/packages/tpetra
-.. _Teuchos: https://www.trilinos.org/packages/teuchos
-.. _Belos: http://www.trilinos.org/packages/belos
-.. _Anasazi: http://www.trilinos.org/packages/anasazi
+.. _Tpetra: http://trilinos.github.io/tpetra
+.. _Teuchos: https://trilinos.github.io/teuchos
+.. _Belos: http://trilinos.github.io/belos
+.. _Anasazi: http://trilinos.github.io/anasazi
 .. _MPI: https://en.wikipedia.org/wiki/Message_Passing_Interface
 .. _Kokkos: https://www.github.com/kokkos
+
 .. _OpenMP: http://www.openmp.org
 .. _`POSIX Threads`: https://en.wikipedia.org/wiki/POSIX_Threads
 .. _Nvidia: http://www.nvidia.com
-.. _Epetra: http://www.trilinos.org/packages/epetra
 .. _CUDA: http://www.nvidia.com/object/cuda_home_new.html
 
 .. |tpetra_map| replace:: :code:`Tpetra::Map`
