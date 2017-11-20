@@ -1,5 +1,5 @@
 
-.. _Trilinos: http://www.trilinos.org/
+.. _Trilinos: https://trilinos.github.io
 .. _Tpetra: http://www.trilinos.org/packages/tpetra
 .. _Teuchos: https://www.trilinos.org/packages/teuchos
 .. _Belos: http://www.trilinos.org/packages/belos

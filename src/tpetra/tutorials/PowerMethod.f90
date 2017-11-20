@@ -120,10 +120,12 @@ if (iconv > 0 .and. my_rank == 0) then
 end if
 EXPECT_TRUE(abs(lambda-3.99)/3.99 < .005)
 
-! Now we're going to change values in the sparse matrix and run the
-! power method again.  In Tpetra, if fillComplete() has been
-! called, you have to call resumeFill() before you may change the
-! matrix(either its values or its structure).
+! Now we're going to change values in the sparse matrix and run the power method
+! again.  We'll increase the value of the (1,1) component of the matrix to make
+! the matrix more diagonally dominant.  It should decrease the number of
+! iterations required for the power method to converge. In Tpetra, if
+! fillComplete() has been called, you have to call resumeFill() before you may
+! change the matrix(either its values or its structure).
 
 ! Increase diagonal dominance
 if (my_rank == 0) &
@@ -136,9 +138,7 @@ id_of_first_row = 1
 if (map%isNodeGlobalElement(id_of_first_row)) then
   ! Get a copy of the row with with global index 1.  Modify the diagonal entry
   ! of that row.  Submit the modified values to the matrix.
-  print*, 'here i am!'
   num_entries_in_row = A%getNumEntriesInGlobalRow(id_of_first_row);
-  print*, 'num_entries_in_row=', num_entries_in_row
   n = int(num_entries_in_row, kind=kind(n))
   allocate(vals(n))
   allocate(cols(n))
@@ -154,7 +154,6 @@ if (map%isNodeGlobalElement(id_of_first_row)) then
   ! the entry by a constant factor distributes across that sum, so it's OK to do
   ! so.
   call A%getGlobalRowCopy(id_of_first_row, cols, vals, num_entries_in_row)
-  print*, 'cols=', cols
   do i = 1, n
     if (cols(i) == id_of_first_row) then
       vals(i) = vals(i) * 10.

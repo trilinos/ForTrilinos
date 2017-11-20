@@ -21,8 +21,7 @@ integer(size_type), parameter :: num_vecs=1
 ! -- ForTrilinos objects
 type(TeuchosComm) :: comm
 type(TpetraMap) :: contig_map, contig_map2, contig_map3, cyclic_map
-type(TeuchosArrayInt) :: element_list
-type(TpetraMultiVector) :: x, y
+type(TpetraMultiVector) :: x, y, z
 
 ! -- Scalars
 integer(size_type) :: my_rank, num_procs, k
@@ -33,6 +32,7 @@ logical(bool_type) :: zero_out, x_test
 real(scalar_type) :: alpha, beta, gamma
 real(mag_type) :: the_norm
 real(mag_type), allocatable :: norms(:)
+integer(global_ordinal_type), allocatable :: element_list(:)
 
 ! --------------------------------------------------------------------------- !
 
@@ -51,9 +51,9 @@ call comm%create()
 my_rank = comm%getRank()
 num_procs = comm%getSize()
 
-! Tpetra objects are templated are templated on several parameters.  ForTrilinos
+! Tpetra objects are templated on several parameters.  ForTrilinos
 ! provides concrete specializations of Tpetra objects and exposes them to
-! Fortran users.  The module fortpetra_types provides named constants of type
+! Fortran users.  The module fortpetra provides named constants of type
 ! default integer for Tpetra data types that can be used as the kind type
 ! parameters.
 
@@ -74,8 +74,7 @@ num_local_entries = 5
 !
 ! For this example, we scale the global number of entries in the Map with the
 ! number of MPI processes.  That way, you can run this example with any number
-! of MPI processes and every process will still have a positive number of
-! entries.
+! of MPI processes and every process will still have at least one entry
 num_global_entries = num_procs * num_local_entries
 
 ! Tpetra can index the entries of a Map starting with 0 (C style),
@@ -129,31 +128,29 @@ EXPECT_TRUE(contig_map2%isSameAs(contig_map3))
 ! Map, in which one or more entries are owned by multiple processes.  We don't
 ! do that here; we make a nonoverlapping (also called "1-to-1") Map.
 num_elements_per_proc = 5
-call element_list%create()
+allocate(element_list(num_elements_per_proc))
 do k = 1, num_elements_per_proc
-  call element_list%push_back(int(my_rank + k * num_procs, kind=c_int))
+  element_list(k) = int(my_rank + k * num_procs, kind=global_ordinal_type)
 end do
-! TODO: TpetraMap%create does not yet take a list of elements
-! TODO: when the element list creation is complete, remove all lines starting
-! with "! MCELC (Map Creation from Element List Complete)
-!call cyclic_map%create(num_global_entries, element_list, index_base, comm);
+call cyclic_map%create(num_global_entries, element_list, index_base, comm);
+deallocate(element_list)
 
 ! If there's more than one MPI process in the communicator, then cyclic_map is
 ! definitely NOT contiguous.
-! MCELC: if (num_procs > 1) then
-! MCELC:   x_test = .not. cyclic_map%isContiguous()
-! MCELC:   EXPECT_TRUE(x_test)
-! MCELC: end if
+if (num_procs > 1) then
+  x_test = .not. cyclic_map%isContiguous()
+  EXPECT_TRUE(x_test)
+end if
 
 ! contig_map and cyclic_map should always be compatible.  However, if the
 ! communicator contains more than 1 process, then contig_map and cyclic_map are
 ! NOT the same.
-! MCELC: EXPECT_TRUE(contig_map%isCompatible(cyclic_map))
+EXPECT_TRUE(contig_map%isCompatible(cyclic_map))
 
-! MCELC: if (num_procs > 1) then
-! MCELC:   x_test = .not. contig_map%isSameAs(cyclic_map)
-! MCELC:   EXPECT_TRUE(x_test)
-! MCELC: end if
+if (num_procs > 1) then
+  x_test = .not. contig_map%isSameAs(cyclic_map)
+  EXPECT_TRUE(x_test)
+end if
 
 ! We have maps now, so we can create vectors.
 
@@ -170,12 +167,12 @@ call y%create(x, Copy)
 ! with false for the second argument leaves the data uninitialized,
 ! so that you can fill it later without paying the cost of
 ! initially filling it with zeros.
-! MCELC: zero_out = .false.
-! MCELC: call z%create(cyclic_map, num_vecs, zero_out)
+zero_out = .false.
+call z%create(cyclic_map, num_vecs, zero_out)
 
 ! Set the entries of z to (pseudo)random numbers.  Please don't consider this
 ! a good parallel pseudorandom number generator.
-! MCELC: call z%randomize()
+call z%randomize()
 
 ! Set the entries of x to all ones.
 call x%putScalar(one)
@@ -189,12 +186,12 @@ gamma = -10.0;
 ! This is a legal operation!  Even though the Maps of x and z are not the same,
 ! their Maps are compatible.  Whether it makes sense or not depends on your
 ! application.
-! MCELC: call x%update(alpha, z, beta)
+call x%update(alpha, z, beta)
 
 call y%putScalar(fortytwo)
 
 ! y = gamma*y + alpha*x + beta*z
-! MCELC: call y%update(alpha, x, beta, z, gamma)
+call y%update(alpha, x, beta, z, gamma)
 call y%update(alpha, x, beta)
 
 ! Compute the 2-norm of y.
@@ -209,14 +206,13 @@ if (my_rank == 0) then
 end if
 
 ! Release objects created and no longer in use
-! MCELC: call z%release()
+call z%release()
 call y%release()
 call x%release()
-! MCELC: call cyclic_map%release()
+call cyclic_map%release()
 call contig_map3%release()
 call contig_map2%release()
 call contig_map%release()
-call element_list%release()
 call comm%release()
 deallocate(norms)
 

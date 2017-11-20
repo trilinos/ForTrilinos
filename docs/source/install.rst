@@ -100,7 +100,6 @@ required to build and install ForTrilinos:
 
           -D Trilinos_ENABLE_Amesos2=ON
           -D Trilinos_ENABLE_Anasazi=ON
-          -D Anasazi_ENABLE_Epetra=OFF
           -D Trilinos_ENABLE_Belos=ON
           -D Trilinos_ENABLE_Epetra=OFF
           -D Trilinos_ENABLE_Ifpack2=ON
