@@ -51,7 +51,7 @@ Tpetra Support in ForTrilinos
 
 Tpetra is a large library and its full functionality has not been exposed in
 ForTrilinos, though coverage is actively being expanded.  The Tpetra
-tpetra_examples_ provide a good overview of the Tpetra functionality currently
+:ref:`tpetra_examples` provide a good overview of the Tpetra functionality currently
 supported.
 
 .. include:: /links.txt
