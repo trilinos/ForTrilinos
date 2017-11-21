@@ -1,72 +1,53 @@
 program test_TpetraMap
-#include "FortranTestMacros.h"
 #include "ForTrilinosTpetra_config.hpp"
+#include "FortranTestMacros.h"
   use iso_fortran_env
   use, intrinsic :: iso_c_binding
   use forteuchos
   use fortpetra
 
-#ifdef HAVE_MPI
-use mpi
-#endif
-
-  implicit none
-  integer kerr
+  DECLARE_TEST_VARIABLES()
   type(TeuchosComm) :: comm
 
+  INITIALIZE_TESTS()
+
 #ifdef HAVE_MPI
-  ! Initialize MPI subsystem
-  call MPI_INIT(ierr)
-  EXPECT_EQ(ierr, 0)
   call comm%create(MPI_COMM_WORLD)
+  CHECK_IERR()
 #else
-  call comm%create()
+  comm%create()
 #endif
 
-  kerr = 0
-
-  ADD_TEST(test_isOneToOne, kerr)
-  ADD_TEST(test_getGlobalNumElements, kerr)
-  ADD_TEST(test_getNodeNumElements, kerr)
-  ADD_TEST(test_getIndexBase, kerr)
-  ADD_TEST(test_getMinLocalIndex, kerr)
-  ADD_TEST(test_getMaxLocalIndex, kerr)
-  ADD_TEST(test_getMinGlobalIndex, kerr)
-  ADD_TEST(test_getMaxGlobalIndex, kerr)
-  ADD_TEST(test_getMinAllGlobalIndex, kerr)
-  ADD_TEST(test_getMaxAllGlobalIndex, kerr)
-  ADD_TEST(test_getLocalElement, kerr)
-  ADD_TEST(test_getGlobalElement, kerr)
-  ADD_TEST(test_getNodeElementList, kerr)
-  ADD_TEST(test_isNodeLocalElement, kerr)
-  ADD_TEST(test_isNodeGlobalElement, kerr)
-  ADD_TEST(test_isUniform, kerr)
-  ADD_TEST(test_isContiguous, kerr)
-  ADD_TEST(test_isDistributed, kerr)
-  ADD_TEST(test_isCompatible, kerr)
-  ADD_TEST(test_isSameAs, kerr)
-  ADD_TEST(test_locallySameAs, kerr)
-  ADD_TEST(test_getComm, kerr)
-  ADD_TEST(test_description, kerr)
-  ADD_TEST(test_removeEmptyProcesses, kerr)
-  ADD_TEST(test_replaceCommWithSubset, kerr)
-
-  if (comm%getRank() == 0) then
-    if (kerr == 0) then
-      write(*,*) "Test PASSED"
-    else
-      write(*,*) "A total of ", kerr, " tests FAILED"
-    end if
-  end if
-
-  EXPECT_EQ(kerr, 0)
+  ADD_TEST(test_isOneToOne)
+  ADD_TEST(test_getGlobalNumElements)
+  ADD_TEST(test_getNodeNumElements)
+  ADD_TEST(test_getIndexBase)
+  ADD_TEST(test_getMinLocalIndex)
+  ADD_TEST(test_getMaxLocalIndex)
+  ADD_TEST(test_getMinGlobalIndex)
+  ADD_TEST(test_getMaxGlobalIndex)
+  ADD_TEST(test_getMinAllGlobalIndex)
+  ADD_TEST(test_getMaxAllGlobalIndex)
+  ADD_TEST(test_getLocalElement)
+  ADD_TEST(test_getGlobalElement)
+  ADD_TEST(test_getNodeElementList)
+  ADD_TEST(test_isNodeLocalElement)
+  ADD_TEST(test_isNodeGlobalElement)
+  ADD_TEST(test_isUniform)
+  ADD_TEST(test_isContiguous)
+  ADD_TEST(test_isDistributed)
+  ADD_TEST(test_isCompatible)
+  ADD_TEST(test_isSameAs)
+  ADD_TEST(test_locallySameAs)
+  ADD_TEST(test_getComm)
+  ADD_TEST(test_description)
+  ADD_TEST(test_removeEmptyProcesses)
+  ADD_TEST(test_replaceCommWithSubset)
 
   call comm%release()
-#ifdef HAVE_MPI
-    ! Finalize MPI must be called after releasing all handles
-    call MPI_FINALIZE(ierr)
-    EXPECT_EQ(0, ierr)
-#endif
+  CHECK_IERR()
+
+  FINALIZE_TESTS()
 
 contains
 

@@ -1,5 +1,7 @@
 TRIBITS_SUBPACKAGE(Utils)
 
+TRIBITS_CONFIGURE_FILE(FortranTestMacros.h)
+
 ##---------------------------------------------------------------------------##
 ## Generate config file and add it to the list
 ##---------------------------------------------------------------------------##

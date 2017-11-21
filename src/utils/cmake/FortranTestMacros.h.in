@@ -1,7 +1,19 @@
-#ifndef ScaleSTL_FortranTestMacros_H
-#define ScaleSTL_FortranTestMacros_H
+#ifndef FOTRANTESTMACROS_H
+#define FOTRANTESTMACROS_H
+
+/* Options */
+
+#cmakedefine HAVE_MPI
 
 #include "DBCF.h"
+
+/*
+ If deprecated warnings are on, and the compiler supports them, then
+ define FORTRILINOS_DEPRECATED to emit deprecated warnings.  Otherwise,
+ give it an empty definition.
+*/
+@FORTRILINOS_DEPRECATED_DECLARATIONS@
+
 
 #define ASSERT_C_ASSOC( X ) \
     Insist( C_ASSOCIATED( X % instance_ptr ), "X not C_ASSOCIATED" )
@@ -50,12 +62,6 @@
       return; \
     endif
 
-#define ADD_TEST(TEST_NAME, ERROR_COUNTER) \
-    if ( TEST_NAME() /= 0 ) then; \
-      write(0, *) "Test FAILED!"; \
-      ERROR_COUNTER = ERROR_COUNTER + 1; \
-    endif
-
 #define SET_ERROR_COUNT_AND_RETURN(NAME, ERROR_COUNT) \
     NAME = ERROR_COUNT + ierr; \
     ierr = 0; \
@@ -63,4 +69,57 @@
 
 use DBCF_M
 
+#ifdef HAVE_MPI
+  use mpi
+
+#define DECLARE_TEST_VARIABLES() \
+  integer ERR1(1), ERR2(1), IERROR, COMM_RANK, ERROR_COUNTER
+
+#define INITIALIZE_TESTS() \
+  ERR1(1) = 0; ERR2(1) = 0; ERROR_COUNTER = 0; \
+  call MPI_INIT(ierr); \
+  call MPI_COMM_RANK(MPI_COMM_WORLD, COMM_RANK, IERROR)
+
+#define ADD_TEST(TEST_NAME) \
+    ERR1(1) = TEST_NAME(); \
+    call MPI_ALLREDUCE(ERR1, ERR2, 1, MPI_INTEGER, MPI_MAX, MPI_COMM_WORLD, IERROR); \
+    if ( ERR2(1) /= 0 ) then; \
+      if (COMM_RANK == 0) write(0, *) "Test FAILED!"; \
+      ERROR_COUNTER = ERROR_COUNTER + 1; \
+    endif
+
+#define FINALIZE_TESTS() \
+  if (COMM_RANK == 0) then; \
+    if (ERROR_COUNTER == 0) then; \
+      write(*,*) "Test PASSED"; \
+    else; \
+      write(*,*) "A total of ", ERROR_COUNTER, " tests FAILED"; \
+    end if; \
+  end if; \
+  call MPI_FINALIZE(ierr); \
+  CHECK_IERR()
+
+#else
+
+#define DECLARE_TEST_VARIABLES() \
+  integer ERROR_COUNTER
+
+#define INITIALIZE_TESTS() \
+  ERROR_COUNTER = 0;
+
+#define ADD_TEST(TEST_NAME) \
+    if ( TEST_NAME() /= 0 ) then; \
+      write(0, *) "Test FAILED!"; \
+      ERROR_COUNTER = ERROR_COUNTER + 1; \
+    endif
+
+#define FINALIZE_TESTS() \
+  if (ERROR_COUNTER == 0) then; \
+    write(*,*) "Test PASSED"; \
+  else; \
+    write(*,*) "A total of ", ERROR_COUNTER, " tests FAILED"; \
+  end if;
+
 #endif
+
+#endif /* FOTRANTESTMACROS_H */
