@@ -129,7 +129,6 @@ end type
   procedure :: getMaxAllGlobalIndex => swigf_TpetraMap_getMaxAllGlobalIndex
   procedure :: getLocalElement => swigf_TpetraMap_getLocalElement
   procedure :: getGlobalElement => swigf_TpetraMap_getGlobalElement
-  procedure :: getNodeElementList => swigf_TpetraMap_getNodeElementList
   procedure :: isNodeLocalElement => swigf_TpetraMap_isNodeLocalElement
   procedure :: isNodeGlobalElement => swigf_TpetraMap_isNodeGlobalElement
   procedure :: isUniform => swigf_TpetraMap_isUniform
@@ -145,6 +144,7 @@ end type
   procedure, private :: create__SWIG_4 => swigf_new_TpetraMap__SWIG_4
   procedure, private :: getRemoteIndexList__SWIG_0 => swigf_TpetraMap_getRemoteIndexList__SWIG_0
   procedure, private :: getRemoteIndexList__SWIG_1 => swigf_TpetraMap_getRemoteIndexList__SWIG_1
+  procedure :: getNodeElementList => swigf_TpetraMap_getNodeElementList
   procedure, private :: swigf_assign_TpetraMap
   generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2, create__SWIG_3, create__SWIG_4
   generic :: assignment(=) => swigf_assign_TpetraMap
@@ -615,14 +615,6 @@ type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 end function
 
-function swigc_TpetraMap_getNodeElementList(farg1) &
-bind(C, name="swigc_TpetraMap_getNodeElementList") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
-type(C_PTR), value :: farg1
-end function
-
 function swigc_TpetraMap_isNodeLocalElement(farg1, farg2) &
 bind(C, name="swigc_TpetraMap_isNodeLocalElement") &
 result(fresult)
@@ -759,6 +751,14 @@ type(C_PTR), value :: farg1
 type(SwigfArrayWrapper) :: farg2
 type(SwigfArrayWrapper) :: farg3
 end function
+
+subroutine swigc_TpetraMap_getNodeElementList(farg1, farg2) &
+bind(C, name="swigc_TpetraMap_getNodeElementList")
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
+type(C_PTR), value :: farg1
+type(SwigfArrayWrapper) :: farg2
+end subroutine
 
   function swigc_spcopy_TpetraMap(farg1) &
      bind(C, name="swigc_spcopy_TpetraMap") &
@@ -3126,19 +3126,6 @@ fresult = swigc_TpetraMap_getGlobalElement(farg1, farg2)
 swigf_result = fresult
 end function
 
-function swigf_TpetraMap_getNodeElementList(self) &
-result(swigf_result)
-use, intrinsic :: ISO_C_BINDING
-type(TeuchosArrayViewLongLongConst) :: swigf_result
-class(TpetraMap) :: self
-type(C_PTR) :: fresult 
-type(C_PTR) :: farg1 
-
-farg1 = self%swigptr
-fresult = swigc_TpetraMap_getNodeElementList(farg1)
-swigf_result%swigptr = fresult
-end function
-
 function swigf_TpetraMap_isNodeLocalElement(self, localindex) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
@@ -3382,6 +3369,20 @@ farg3%size = size(nodeidlist)
 fresult = swigc_TpetraMap_getRemoteIndexList__SWIG_1(farg1, farg2, farg3)
 swigf_result = fresult
 end function
+
+subroutine swigf_TpetraMap_getNodeElementList(self, elementlist)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraMap) :: self
+integer(C_LONG_LONG), dimension(:), target, intent(inout) :: elementlist
+type(C_PTR) :: farg1 
+type(SwigfArrayWrapper) :: farg2 
+
+farg1 = self%swigptr
+farg2%data = c_loc(elementlist(1))
+farg2%size = size(elementlist)
+call swigc_TpetraMap_getNodeElementList(farg1, farg2)
+
+end subroutine
 
   subroutine swigf_assign_TpetraMap(self, other)
    use, intrinsic :: ISO_C_BINDING

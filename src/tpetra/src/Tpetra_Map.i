@@ -29,9 +29,10 @@
          const GlobalOrdinal indexBase,
          const Teuchos::RCP<const Teuchos::Comm<int> >& comm,
          const Teuchos::RCP<Node>& node);
+
 %ignore Tpetra::Map::Map(const global_size_t numGlobalElements, const GlobalOrdinal indexList[],
          const LocalOrdinal indexListSize, const GlobalOrdinal indexBase,
-         const Teuchos::RCP< const Teuchos::Comm< int > > &comm);
+         const Teuchos::RCP< const Teuchos::Comm< int > > &comm);       // superseded by Teuchos::ArrayView version
 
 // =======================================================================
 // Postpone temporarily
@@ -42,7 +43,7 @@
          const Teuchos::RCP<const Teuchos::Comm<int> >& comm); // needs Kokkos::View
 %ignore Tpetra::Map::describe;                  // needs Teuchos::FancyOStream
 %ignore Tpetra::Map::getLocalMap;               // no need to expose this yet
-%ignore Tpetra::Map::getMyGlobalIndices;        // return type is not exposed externally, requires using `auto`
+%ignore Tpetra::Map::getMyGlobalIndices;        // return type is not exposed externally, requires using `auto`; for now, use getNodeElementList
 
 // =======================================================================
 // Fix ±1 issues
@@ -66,7 +67,8 @@
 // =======================================================================
 %ignore Tpetra::Map::Map(const global_size_t numGlobalElements, const Teuchos::ArrayView< const GlobalOrdinal > &indexList, const GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm);
 %ignore Tpetra::Map::getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList, const Teuchos::ArrayView< LocalOrdinal > &LIDList) const;
-%ignore getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList) const;
+%ignore Tpetra::Map::getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList) const;
+%ignore Tpetra::Map::getNodeElementList() const;
 %extend Tpetra::Map<int, long long, Kokkos::Compat::KokkosSerialWrapperNode> {
     Map(const global_size_t numGlobalElements, std::pair<const GO*,size_t> indexList, const GO indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm) {
       Teuchos::ArrayView<const GO> indexListView = Teuchos::arrayView(indexList.first, indexList.second);
@@ -84,6 +86,11 @@
       Teuchos::ArrayView<int>  nodeIDListView   = Teuchos::arrayView(nodeIDList.first, nodeIDList.second);
 
       return self->getRemoteIndexList(GIDListView, nodeIDListView);
+    }
+    void getNodeElementList(std::pair<const GO*,size_t> elementList) const {
+      auto view = self->getNodeElementList();
+      elementList.first  = view.getRawPtr();
+      elementList.second = view.size();
     }
 }
 

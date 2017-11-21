@@ -21,7 +21,6 @@
         const Teuchos::RCP< const map_type > &target, \
         const Teuchos::RCP< Teuchos::FancyOStream > &out, \
         const Teuchos::RCP< Teuchos::ParameterList > &plist);   // needs Teuchos::FancyOStream
-/* %ignore Tpetra::Export::Export(const Import< LocalOrdinal, GlobalOrdinal, Node > &importer);   // needs Tpetra::Import */
 %ignore Tpetra::Export::getPermuteFromLIDs;     // ±1 issue
 %ignore Tpetra::Export::getPermuteToLIDs;       // ±1 issue
 %ignore Tpetra::Export::getRemoteLIDs;          // ±1 issue

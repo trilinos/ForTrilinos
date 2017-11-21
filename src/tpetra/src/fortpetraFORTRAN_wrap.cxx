@@ -260,6 +260,11 @@ SWIGINTERN Tpetra::LookupStatus Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Comp
 
       return self->getRemoteIndexList(GIDListView, nodeIDListView);
     }
+SWIGINTERN void Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg__getNodeElementList(Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *self,std::pair< GO const *,std::size_t > elementList){
+      auto view = self->getNodeElementList();
+      elementList.first  = view.getRawPtr();
+      elementList.second = view.size();
+    }
 
 #include "Tpetra_Export.hpp"
 
@@ -926,42 +931,6 @@ SWIGEXPORT long long swigc_TpetraMap_getGlobalElement(void const *farg1, int con
 }
 
 
-SWIGEXPORT void * swigc_TpetraMap_getNodeElementList(void const *farg1) {
-  void * fresult ;
-  Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
-  Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
-  Teuchos::ArrayView< long long const > result;
-  
-  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
-  arg1 = (Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
-    try
-    {
-      // Attempt the wrapped function call
-      result = ((Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1)->getNodeElementList();
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
-    }
-    catch (...)
-    {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
-    }
-  }
-  fresult = (new Teuchos::ArrayView< long long const >(static_cast< const Teuchos::ArrayView< long long const >& >(result)));
-  return fresult;
-}
-
-
 SWIGEXPORT bool swigc_TpetraMap_isNodeLocalElement(void const *farg1, int const *farg2) {
   bool fresult ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
@@ -1560,6 +1529,43 @@ SWIGEXPORT int swigc_TpetraMap_getRemoteIndexList__SWIG_1(void const *farg1, swi
   }
   fresult = result;
   return fresult;
+}
+
+
+SWIGEXPORT void swigc_TpetraMap_getNodeElementList(void const *farg1, swig::SwigfArrayWrapper< long long const > *farg2) {
+  Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
+  std::pair< GO const *,std::size_t > arg2 ;
+  Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 = 0 ;
+  
+  arg2 = ::std::pair< const long long*, std::size_t >();
+  smartarg1 = (Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg1;
+  arg1 = (Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> *)(smartarg1 ? smartarg1->get() : 0);
+  (&arg2)->first  = farg2->data;
+  (&arg2)->second = farg2->size;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg__getNodeElementList((Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1,arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
 }
 
 

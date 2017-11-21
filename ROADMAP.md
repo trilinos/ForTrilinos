@@ -104,8 +104,8 @@ Status | Command| Comment
 :white_check_mark: | `local_map_type 	getLocalMap () const`
 :white_check_mark: :star: | `LookupStatus 	getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList, const Teuchos::ArrayView< LocalOrdinal > &LIDList) const` | Using Fortran arrays instead of `ArrayView`, 1-based arrays
 :white_check_mark: :star: | `LookupStatus 	getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList) const` | Using Fortran arrays instead of `ArrayView`, 1-based arrays
-:x: | `global_indices_array_type 	getMyGlobalIndices () const` | Return type is not exposed, needs to be implemented.
-:white_check_mark: | `Teuchos::ArrayView< const GlobalOrdinal > 	getNodeElementList () const`
+:arrow_down: | `global_indices_array_type 	getMyGlobalIndices () const` | Return type is not exposed, needs to be implemented.
+:white_check_mark: :star: | `Teuchos::ArrayView< const GlobalOrdinal > 	getNodeElementList () const` | converted to subroutine
 
 
 ### Tpetra::Export
