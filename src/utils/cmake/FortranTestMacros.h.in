@@ -70,17 +70,18 @@
 use DBCF_M
 
 #ifdef HAVE_MPI
-  use mpi
 
 #define DECLARE_TEST_VARIABLES() \
+  use mpi; \
+  implicit none; \
   integer ERR1(1), ERR2(1), IERROR, COMM_RANK, ERROR_COUNTER
 
-#define INITIALIZE_TESTS() \
+#define INITIALIZE_TEST() \
   ERR1(1) = 0; ERR2(1) = 0; ERROR_COUNTER = 0; \
   call MPI_INIT(ierr); \
   call MPI_COMM_RANK(MPI_COMM_WORLD, COMM_RANK, IERROR)
 
-#define ADD_TEST(TEST_NAME) \
+#define ADD_SUBTEST_AND_RUN(TEST_NAME) \
     ERR1(1) = TEST_NAME(); \
     call MPI_ALLREDUCE(ERR1, ERR2, 1, MPI_INTEGER, MPI_MAX, MPI_COMM_WORLD, IERROR); \
     if ( ERR2(1) /= 0 ) then; \
@@ -88,7 +89,7 @@ use DBCF_M
       ERROR_COUNTER = ERROR_COUNTER + 1; \
     endif
 
-#define FINALIZE_TESTS() \
+#define SHUTDOWN_TEST() \
   if (COMM_RANK == 0) then; \
     if (ERROR_COUNTER == 0) then; \
       write(*,*) "Test PASSED"; \
@@ -102,18 +103,19 @@ use DBCF_M
 #else
 
 #define DECLARE_TEST_VARIABLES() \
+  implicit none; \
   integer ERROR_COUNTER
 
-#define INITIALIZE_TESTS() \
+#define INITIALIZE_TEST() \
   ERROR_COUNTER = 0;
 
-#define ADD_TEST(TEST_NAME) \
+#define ADD_SUBTEST_AND_RUN(TEST_NAME) \
     if ( TEST_NAME() /= 0 ) then; \
       write(0, *) "Test FAILED!"; \
       ERROR_COUNTER = ERROR_COUNTER + 1; \
     endif
 
-#define FINALIZE_TESTS() \
+#define SHUTDOWN_TEST() \
   if (ERROR_COUNTER == 0) then; \
     write(*,*) "Test PASSED"; \
   else; \
