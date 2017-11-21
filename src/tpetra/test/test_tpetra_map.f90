@@ -9,7 +9,7 @@ program test_TpetraMap
 use mpi
 #endif
   implicit none
-  integer ierr2
+  integer ierr2, ierr3
   type(TeuchosComm) :: comm
 #ifdef HAVE_MPI
   ! Initialize MPI subsystem
@@ -19,142 +19,170 @@ use mpi
 #else
   call comm%create()
 #endif
-  ierr2 = 0
+  ierr2 = 0; ierr3 = 0
   ierr2 = test_isOneToOne()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'isOneToOne' failed!"
   end if
   ierr2 = test_getGlobalNumElements()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'getGlobalNumElements' failed!"
   end if
   ierr2 = test_getNodeNumElements()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'getNodeNumElements' failed!"
   end if
   ierr2 = test_getIndexBase()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'getIndexBase' failed!"
   end if
   ierr2 = test_getMinLocalIndex()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'getMinLocalIndex' failed!"
   end if
   ierr2 = test_getMaxLocalIndex()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'getMaxLocalIndex' failed!"
   end if
   ierr2 = test_getMinGlobalIndex()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'getMinGlobalIndex' failed!"
   end if
   ierr2 = test_getMaxGlobalIndex()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'getMaxGlobalIndex' failed!"
   end if
   ierr2 = test_getMinAllGlobalIndex()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'getMinAllGlobalIndex' failed!"
   end if
   ierr2 = test_getMaxAllGlobalIndex()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'getMaxAllGlobalIndex' failed!"
   end if
   ierr2 = test_getLocalElement()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'getLocalElement' failed!"
   end if
   ierr2 = test_getGlobalElement()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'getGlobalElement' failed!"
   end if
   ierr2 = test_getNodeElementList()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'getNodeElementList' failed!"
   end if
   ierr2 = test_isNodeLocalElement()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'isNodeLocalElement' failed!"
   end if
   ierr2 = test_isNodeGlobalElement()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'isNodeGlobalElement' failed!"
   end if
   ierr2 = test_isUniform()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'isUniform' failed!"
   end if
   ierr2 = test_isContiguous()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'isContiguous' failed!"
   end if
   ierr2 = test_isDistributed()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'isDistributed' failed!"
   end if
   ierr2 = test_isCompatible()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'isCompatible' failed!"
   end if
   ierr2 = test_isSameAs()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'isSameAs' failed!"
   end if
   ierr2 = test_locallySameAs()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'locallySameAs' failed!"
   end if
   ierr2 = test_getComm()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'getComm' failed!"
   end if
   ierr2 = test_description()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'description' failed!"
   end if
   ierr2 = test_removeEmptyProcesses()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'removeEmptyProcesses' failed!"
   end if
   ierr2 = test_replaceCommWithSubset()
   if (ierr2 /= 0) then
+    ierr3 = ierr3 + 1
     if (comm%getRank() == 0) &
       write(*,*) "Test 'replaceCommWithSubset' failed!"
   end if
-  EXPECT_EQ(ierr2, 0)
-  if (ierr2 == 0) then
+  if (ierr3 == 0) then
     if (comm%getRank() == 0) &
       write(*,*) "Test PASSED"
+  else
+    if (comm%getRank() == 0) &
+      write(*,*) "A total of ", ierr3, " tests FAILED"
   end if
+  EXPECT_EQ(ierr3, 0)
   call comm%release()
 #ifdef HAVE_MPI
     ! Finalize MPI must be called after releasing all handles
-    call MPI_FINALIZE(ierr2)
-    EXPECT_EQ(0, ierr2)
+    call MPI_FINALIZE(ierr)
+    EXPECT_EQ(0, ierr)
 #endif
 contains
 
