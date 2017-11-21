@@ -15,7 +15,8 @@ program test_TpetraMap
   call comm%create(MPI_COMM_WORLD)
   CHECK_IERR()
 #else
-  comm%create()
+  call comm%create()
+  CHECK_IERR()
 #endif
 
   ADD_SUBTEST_AND_RUN(test_isOneToOne)
@@ -927,10 +928,16 @@ contains
 ! --------------------------------description--------------------------------- !
   integer function test_description()
     integer :: jerr
+    type(TpetraMap) :: Obj
+    type(string) :: fresult
+    integer(global_ordinal_type) :: num_global, index_base
     jerr = 0
-    ! TODO: Implement this test?
-    if (comm%getRank()==0) &
-      write(*,*) 'description: Test not yet implemented'
+    num_global = 4*comm%getSize()
+    index_base = 1
+    call Obj%create(num_global, index_base, comm)
+    TEST_FOR_IERR(test_description)
+    fresult = Obj%description()
+    TEST_FOR_IERR(test_description)
     SET_ERROR_COUNT_AND_RETURN(test_description, jerr)
   end function
 
