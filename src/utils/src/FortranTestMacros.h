@@ -81,15 +81,17 @@ use DBCF_M
     endif
 
 #define SHUTDOWN_TEST() \
-  if (COMM_RANK == 0) then; \
-    if (ERROR_COUNTER == 0) then; \
+  if (ERROR_COUNTER == 0) then; \
+    if (COMM_RANK == 0) then; \
       write(*,*) "Test PASSED"; \
-    else; \
+    end if; \
+  else; \
+    if (COMM_RANK == 0) then; \
       write(*,*) "A total of ", ERROR_COUNTER, " tests FAILED"; \
     end if; \
+    Insist(.false., "FAILED TESTS ENCOUNTERED" ); \
   end if; \
-  call MPI_FINALIZE(ierr); \
-  CHECK_IERR()
+  call MPI_FINALIZE(ierr);
 
 #else
 
@@ -111,7 +113,8 @@ use DBCF_M
     write(*,*) "Test PASSED"; \
   else; \
     write(*,*) "A total of ", ERROR_COUNTER, " tests FAILED"; \
-  end if;
+    Insist(.false., "FAILED TESTS ENCOUNTERED" ); \
+  end if
 
 #endif
 
