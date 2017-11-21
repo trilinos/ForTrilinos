@@ -29,9 +29,10 @@
          const GlobalOrdinal indexBase,
          const Teuchos::RCP<const Teuchos::Comm<int> >& comm,
          const Teuchos::RCP<Node>& node);
+
 %ignore Tpetra::Map::Map(const global_size_t numGlobalElements, const GlobalOrdinal indexList[],
          const LocalOrdinal indexListSize, const GlobalOrdinal indexBase,
-         const Teuchos::RCP< const Teuchos::Comm< int > > &comm);
+         const Teuchos::RCP< const Teuchos::Comm< int > > &comm);       // superseded by Teuchos::ArrayView version
 
 // =======================================================================
 // Postpone temporarily
