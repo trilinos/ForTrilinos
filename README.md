@@ -57,7 +57,7 @@ Installing ForTrilinos requires:
   ```
 
 - Installing Trilinos with the ForTrilinos package enabled.  See the
-  [Installation](http://fortrilinos.readthedocs.io/en/latest/install.html#installation) section of the [ForTrilinos documentation]((http://fortrilinos.readthedocs.io/en/latest/index.html) for details on installing Trilinos with ForTrilinos enabled.
+  [Installation](http://fortrilinos.readthedocs.io/en/latest/install.html#installation) section of the [ForTrilinos documentation](http://fortrilinos.readthedocs.io/en/latest/index.html) for details on installing Trilinos with ForTrilinos enabled.
 
 Questions, Bug Reporting, and Issue Tracking
 --------------------------------------------

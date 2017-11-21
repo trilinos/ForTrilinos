@@ -168,7 +168,7 @@ contains
     num_global = 4*comm%getSize()
     call Obj%create(num_global, index_base, comm)
     if (.not. Obj%isOneToOne()) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "isOneToOne: Expected map to be one to one"
       ierr2 = 1
     end if
@@ -177,7 +177,7 @@ contains
         indices = [1, 2, 3, 4]
         call Obj%create(num_global, indices, index_base, comm)
         if (Obj%isOneToOne()) then
-          if (comm%getSize() == 0) &
+          if (comm%getRank() == 0) &
             write(*,*) "isOneToOne: Expected map to NOT be one to one"
       ierr2 = 1
         end if
@@ -199,7 +199,7 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%getGlobalNumElements()
     if (fresult /= num_global) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "getGlobalNumElements: Expected ", num_global, " elements, got ", fresult
       ierr2 = 1
     end if
@@ -220,7 +220,7 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%getNodeNumElements()
     if (fresult /= 4) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "getNodeNumElements: Expected ", 4, " elements, got ", fresult
       ierr2 = 1
     end if
@@ -241,7 +241,7 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%getIndexBase()
     if (fresult /= 1) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "getIndexBase: Expected indexBase = ", 1, " got ", fresult
       ierr2 = 1
     end if
@@ -250,7 +250,7 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%getIndexBase()
     if (fresult /= 0) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "getIndexBase: Expected indexBase = ", 0, " got ", fresult
       ierr2 = 1
     end if
@@ -271,7 +271,7 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%getMinLocalIndex()
     if (fresult /= 1) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "getMinLocalIndex: Expected minLocalIndex = ", 1, " got ", fresult
       ierr2 = 1
     end if
@@ -292,7 +292,7 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%getMaxLocalIndex()
     if (fresult /= 4) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "getMaxLocalIndex: Expected maxLocalIndex = ", 4, " got ", fresult
       ierr2 = 1
     end if
@@ -314,7 +314,7 @@ contains
     fresult = Obj%getMinGlobalIndex()
     expected = comm%getRank() * 4 + 1
     if (fresult /= expected) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "getMindGlobalIndex: Expected minGlobalIndex = ", expected, " got ", fresult
       ierr2 = 1
     end if
@@ -336,7 +336,7 @@ contains
     fresult = Obj%getMaxGlobalIndex()
     expected = comm%getRank() * 4 + 4
     if (fresult /= expected) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "getMaxGlobalIndex: Expected maxGloblIndex = ", expected, " got ", fresult
       ierr2 = 1
     end if
@@ -356,7 +356,7 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%getMinAllGlobalIndex()
     if (fresult /= index_base) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "getMinAllGlobalIndex: Expected minAllGlobalIndex = ", index_base, " got ", fresult
       ierr2 = 1
     end if
@@ -377,7 +377,7 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%getMaxAllGlobalIndex()
     if (fresult /= num_global) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "getMaxAllGlobalIndex: Expected maxAllGlobalIndex = ", num_global, " got ", fresult
       ierr2 = 1
     end if
@@ -400,14 +400,14 @@ contains
     globalindex = comm%getRank() * 4 + 1
     fresult = Obj%getLocalElement(globalindex)
     if (fresult /= 1) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "getLocalElement: Expected local element = ", 1, " got ", fresult
       ierr2 = 1
     end if
     globalindex = comm%getRank() * 4 + 4
     fresult = Obj%getLocalElement(globalindex)
     if (fresult /= 4) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "getLocalElement: Expected local element = ", 4, " got ", fresult
       ierr2 = 1
     end if
@@ -431,7 +431,7 @@ contains
     expected = comm%getRank() * 4 + 1
     fresult = Obj%getGlobalElement(localindex)
     if (fresult /= expected) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "getGlobalElement: Expected global element = ", expected, " got ", fresult
       ierr2 = 1
     end if
@@ -439,7 +439,7 @@ contains
     expected = comm%getRank() * 4 + 4
     fresult = Obj%getGlobalElement(localindex)
     if (fresult /= expected) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "getGlobalElement: Expected global element = ", expected, " got ", fresult
       ierr2 = 1
     end if
@@ -462,7 +462,7 @@ contains
     ! TODO: getNodeElementList should be modified to be a subroutine that takes
     ! TODO: the element list as a return argument.  Otherwise, there is no
     ! TODO: (current) way to get to the data in the ArrayView returned.
-    if (comm%getSize() == 0) &
+    if (comm%getRank() == 0) &
       write(*,*) "getNodeElementList: Test not yet implemented"
     call fresult%release()
     call Obj%release()
@@ -484,14 +484,14 @@ contains
     localindex = 1
     fresult = Obj%isNodeLocalElement(localindex)
     if (.not. fresult) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "isNodeLocalElement: expected 1 to be a local index"
       ierr2 = 1
     end if
     localindex = 5
     fresult = Obj%isNodeLocalElement(localindex)
     if (fresult) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "isNodeLocalElement: expected 5 to NOT be a local index"
       ierr2 = 1
     end if
@@ -514,14 +514,14 @@ contains
     globalindex = int(comm%getRank() * 4 + 1, kind=global_ordinal_type)
     fresult = Obj%isNodeGlobalElement(globalindex)
     if (.not. fresult) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "isNodeGlobalElement: expected 1 to be a global index"
       ierr2 = 1
     end if
     globalindex = num_global + 1
     fresult = Obj%isNodeGlobalElement(globalindex)
     if (fresult) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "isNodeGlobalElement: expected 5 to NOT be a global index"
       ierr2 = 1
     end if
@@ -543,7 +543,7 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%isUniform()
     if (.not. fresult) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "isUniform: expected map to be uniform"
       ierr2 = 1
     end if
@@ -554,7 +554,7 @@ contains
     call Obj%create(num_global, elements, index_base, comm);
     fresult = Obj%isUniform()
     if (fresult) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "isUniform: expected map to NOT be uniform"
       ierr2 = 1
     end if
@@ -576,7 +576,7 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%isContiguous()
     if (.not. fresult) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "isContiguous: expected map to be uniform"
       ierr2 = 1
     end if
@@ -587,7 +587,7 @@ contains
     call Obj%create(num_global, elements, index_base, comm);
     fresult = Obj%isContiguous()
     if (fresult) then
-      if (comm%getSize() == 0) &
+      if (comm%getRank() == 0) &
         write(*,*) "isContiguous: expected map to NOT be uniform"
       ierr2 = 1
     end if
