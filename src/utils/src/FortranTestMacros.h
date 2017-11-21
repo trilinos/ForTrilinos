@@ -87,7 +87,7 @@
       return; \
     endif
 
-#define CALL_FCN_AND_CHECK_IERR( NAME, PROCEDURE, RES) \
+#define EVAL_FCN_AND_CHECK_IERR( NAME, PROCEDURE, RES) \
     RES = PROCEDURE( ); \
     if (ierr /= 0) then; \
       NAME = ierr; \
@@ -101,10 +101,10 @@
       ERROR_COUNTER = ERROR_COUNTER + 1; \
     endif
 
-#define SET_ERROR_COUNT_AND_RESET_IERR(TEST_NAME, ERROR_COUNT) \
-    TEST_NAME = ERROR_COUNT + ierr; \
-    ierr = 0
-
+#define SET_ERROR_COUNT_AND_RETURN(NAME, ERROR_COUNT) \
+    NAME = ERROR_COUNT + ierr; \
+    ierr = 0; \
+    return
 
 use DBCF_M
 

@@ -81,7 +81,7 @@ contains
     num_global = 4*comm%getSize()
 
     CALL_AND_CHECK_IERR_3(test_isOneToOne, Obj%create, num_global, index_base, comm)
-    CALL_FCN_AND_CHECK_IERR(test_isOneToOne, Obj%isOneToOne, bool)
+    EVAL_FCN_AND_CHECK_IERR(test_isOneToOne, Obj%isOneToOne, bool)
 
     if (.not. bool) then
       jerr = jerr + 1
@@ -95,7 +95,7 @@ contains
       indices = [1, 2, 3, 4]
       CALL_AND_CHECK_IERR_4(test_isOneToOne, Obj%create, num_global, \
         indices, index_base, comm)
-      CALL_FCN_AND_CHECK_IERR(test_isOneToOne, Obj%isOneToOne, bool)
+      EVAL_FCN_AND_CHECK_IERR(test_isOneToOne, Obj%isOneToOne, bool)
       if (bool) then
         jerr = jerr + 1
         if (comm%getRank() == 0) &
@@ -106,7 +106,7 @@ contains
 
     end if
 
-    SET_ERROR_COUNT_AND_RESET_IERR(test_isOneToOne, jerr)
+    SET_ERROR_COUNT_AND_RETURN(test_isOneToOne, jerr)
     return
 
   end function
