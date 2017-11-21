@@ -10,117 +10,146 @@ use mpi
 #endif
   implicit none
   integer ierr2
-type(TeuchosComm) :: comm
+  type(TeuchosComm) :: comm
 #ifdef HAVE_MPI
-! Initialize MPI subsystem
-call MPI_INIT(ierr)
-EXPECT_EQ(ierr, 0)
-call comm%create(MPI_COMM_WORLD)
+  ! Initialize MPI subsystem
+  call MPI_INIT(ierr)
+  EXPECT_EQ(ierr, 0)
+  call comm%create(MPI_COMM_WORLD)
 #else
-call comm%create()
+  call comm%create()
 #endif
   ierr2 = 0
   ierr2 = test_isOneToOne()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'isOneToOne' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'isOneToOne' failed!"
   end if
   ierr2 = test_getGlobalNumElements()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'getGlobalNumElements' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'getGlobalNumElements' failed!"
   end if
   ierr2 = test_getNodeNumElements()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'getNodeNumElements' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'getNodeNumElements' failed!"
   end if
   ierr2 = test_getIndexBase()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'getIndexBase' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'getIndexBase' failed!"
   end if
   ierr2 = test_getMinLocalIndex()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'getMinLocalIndex' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'getMinLocalIndex' failed!"
   end if
   ierr2 = test_getMaxLocalIndex()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'getMaxLocalIndex' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'getMaxLocalIndex' failed!"
   end if
   ierr2 = test_getMinGlobalIndex()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'getMinGlobalIndex' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'getMinGlobalIndex' failed!"
   end if
   ierr2 = test_getMaxGlobalIndex()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'getMaxGlobalIndex' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'getMaxGlobalIndex' failed!"
   end if
   ierr2 = test_getMinAllGlobalIndex()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'getMinAllGlobalIndex' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'getMinAllGlobalIndex' failed!"
   end if
   ierr2 = test_getMaxAllGlobalIndex()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'getMaxAllGlobalIndex' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'getMaxAllGlobalIndex' failed!"
   end if
   ierr2 = test_getLocalElement()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'getLocalElement' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'getLocalElement' failed!"
   end if
   ierr2 = test_getGlobalElement()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'getGlobalElement' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'getGlobalElement' failed!"
   end if
   ierr2 = test_getNodeElementList()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'getNodeElementList' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'getNodeElementList' failed!"
   end if
   ierr2 = test_isNodeLocalElement()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'isNodeLocalElement' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'isNodeLocalElement' failed!"
   end if
   ierr2 = test_isNodeGlobalElement()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'isNodeGlobalElement' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'isNodeGlobalElement' failed!"
   end if
   ierr2 = test_isUniform()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'isUniform' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'isUniform' failed!"
   end if
   ierr2 = test_isContiguous()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'isContiguous' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'isContiguous' failed!"
   end if
   ierr2 = test_isDistributed()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'isDistributed' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'isDistributed' failed!"
   end if
   ierr2 = test_isCompatible()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'isCompatible' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'isCompatible' failed!"
   end if
   ierr2 = test_isSameAs()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'isSameAs' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'isSameAs' failed!"
   end if
   ierr2 = test_locallySameAs()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'locallySameAs' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'locallySameAs' failed!"
   end if
   ierr2 = test_getComm()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'getComm' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'getComm' failed!"
   end if
   ierr2 = test_description()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'description' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'description' failed!"
   end if
   ierr2 = test_removeEmptyProcesses()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'removeEmptyProcesses' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'removeEmptyProcesses' failed!"
   end if
   ierr2 = test_replaceCommWithSubset()
   if (ierr2 /= 0) then
-    write(*,*) "Test 'replaceCommWithSubset' failed!"
+    if (comm%getRank() == 0) &
+      write(*,*) "Test 'replaceCommWithSubset' failed!"
   end if
   EXPECT_EQ(ierr2, 0)
+  if (ierr2 == 0) then
+    if (comm%getRank() == 0) &
+      write(*,*) "Test PASSED"
+  end if
   call comm%release()
 #ifdef HAVE_MPI
     ! Finalize MPI must be called after releasing all handles
@@ -139,16 +168,18 @@ contains
     num_global = 4*comm%getSize()
     call Obj%create(num_global, index_base, comm)
     if (.not. Obj%isOneToOne()) then
+      if (comm%getSize() == 0) &
         write(*,*) "isOneToOne: Expected map to be one to one"
-        ierr2 = 1
+      ierr2 = 1
     end if
     call Obj%release()
     if (comm%getSize() > 1) then
         indices = [1, 2, 3, 4]
         call Obj%create(num_global, indices, index_base, comm)
         if (Obj%isOneToOne()) then
+          if (comm%getSize() == 0) &
             write(*,*) "isOneToOne: Expected map to NOT be one to one"
-            ierr2 = 1
+      ierr2 = 1
         end if
         call Obj%release()
     end if
@@ -168,8 +199,9 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%getGlobalNumElements()
     if (fresult /= num_global) then
+      if (comm%getSize() == 0) &
         write(*,*) "getGlobalNumElements: Expected ", num_global, " elements, got ", fresult
-        ierr2 = 1
+      ierr2 = 1
     end if
     call Obj%release()
     test_getGlobalNumElements = ierr2
@@ -188,8 +220,9 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%getNodeNumElements()
     if (fresult /= 4) then
+      if (comm%getSize() == 0) &
         write(*,*) "getNodeNumElements: Expected ", 4, " elements, got ", fresult
-        ierr2 = 1
+      ierr2 = 1
     end if
     call Obj%release()
     test_getNodeNumElements = ierr2
@@ -208,16 +241,18 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%getIndexBase()
     if (fresult /= 1) then
+      if (comm%getSize() == 0) &
         write(*,*) "getIndexBase: Expected indexBase = ", 1, " got ", fresult
-        ierr2 = 1
+      ierr2 = 1
     end if
     call Obj%release()
     index_base = 0
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%getIndexBase()
     if (fresult /= 0) then
+      if (comm%getSize() == 0) &
         write(*,*) "getIndexBase: Expected indexBase = ", 0, " got ", fresult
-        ierr2 = 1
+      ierr2 = 1
     end if
     call Obj%release()
     test_getIndexBase = ierr2
@@ -236,8 +271,9 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%getMinLocalIndex()
     if (fresult /= 1) then
+      if (comm%getSize() == 0) &
         write(*,*) "getMinLocalIndex: Expected minLocalIndex = ", 1, " got ", fresult
-        ierr2 = 1
+      ierr2 = 1
     end if
     call Obj%release()
     test_getMinLocalIndex = ierr2
@@ -256,8 +292,9 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%getMaxLocalIndex()
     if (fresult /= 4) then
+      if (comm%getSize() == 0) &
         write(*,*) "getMaxLocalIndex: Expected maxLocalIndex = ", 4, " got ", fresult
-        ierr2 = 1
+      ierr2 = 1
     end if
     call Obj%release()
     test_getMaxLocalIndex = ierr2
@@ -277,8 +314,9 @@ contains
     fresult = Obj%getMinGlobalIndex()
     expected = comm%getRank() * 4 + 1
     if (fresult /= expected) then
+      if (comm%getSize() == 0) &
         write(*,*) "getMindGlobalIndex: Expected minGlobalIndex = ", expected, " got ", fresult
-        ierr2 = 1
+      ierr2 = 1
     end if
     call Obj%release()
     test_getMinGlobalIndex = ierr2
@@ -298,8 +336,9 @@ contains
     fresult = Obj%getMaxGlobalIndex()
     expected = comm%getRank() * 4 + 4
     if (fresult /= expected) then
+      if (comm%getSize() == 0) &
         write(*,*) "getMaxGlobalIndex: Expected maxGloblIndex = ", expected, " got ", fresult
-        ierr2 = 1
+      ierr2 = 1
     end if
     call Obj%release()
     test_getMaxGlobalIndex = ierr2
@@ -317,8 +356,9 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%getMinAllGlobalIndex()
     if (fresult /= index_base) then
+      if (comm%getSize() == 0) &
         write(*,*) "getMinAllGlobalIndex: Expected minAllGlobalIndex = ", index_base, " got ", fresult
-        ierr2 = 1
+      ierr2 = 1
     end if
     call Obj%release()
     test_getMinAllGlobalIndex = ierr2
@@ -337,8 +377,9 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%getMaxAllGlobalIndex()
     if (fresult /= num_global) then
+      if (comm%getSize() == 0) &
         write(*,*) "getMaxAllGlobalIndex: Expected maxAllGlobalIndex = ", num_global, " got ", fresult
-        ierr2 = 1
+      ierr2 = 1
     end if
     call Obj%release()
     test_getMaxAllGlobalIndex = ierr2
@@ -359,14 +400,16 @@ contains
     globalindex = comm%getRank() * 4 + 1
     fresult = Obj%getLocalElement(globalindex)
     if (fresult /= 1) then
-        write(*,*) "Expected local element = ", 1, " got ", fresult
-        ierr2 = 1
+      if (comm%getSize() == 0) &
+        write(*,*) "getLocalElement: Expected local element = ", 1, " got ", fresult
+      ierr2 = 1
     end if
     globalindex = comm%getRank() * 4 + 4
     fresult = Obj%getLocalElement(globalindex)
     if (fresult /= 4) then
-        write(*,*) "Expected local element = ", 4, " got ", fresult
-        ierr2 = 1
+      if (comm%getSize() == 0) &
+        write(*,*) "getLocalElement: Expected local element = ", 4, " got ", fresult
+      ierr2 = 1
     end if
     call Obj%release()
     test_getLocalElement = ierr2
@@ -388,15 +431,17 @@ contains
     expected = comm%getRank() * 4 + 1
     fresult = Obj%getGlobalElement(localindex)
     if (fresult /= expected) then
-        write(*,*) "Expected global element = ", expected, " got ", fresult
-        ierr2 = 1
+      if (comm%getSize() == 0) &
+        write(*,*) "getGlobalElement: Expected global element = ", expected, " got ", fresult
+      ierr2 = 1
     end if
     localindex = 4
     expected = comm%getRank() * 4 + 4
     fresult = Obj%getGlobalElement(localindex)
     if (fresult /= expected) then
-        write(*,*) "Expected global element = ", expected, " got ", fresult
-        ierr2 = 1
+      if (comm%getSize() == 0) &
+        write(*,*) "getGlobalElement: Expected global element = ", expected, " got ", fresult
+      ierr2 = 1
     end if
     call Obj%release()
     test_getGlobalElement = ierr2
@@ -414,10 +459,11 @@ contains
     index_base = 1
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%getNodeElementList()
-    ! TODO: @aprokop: how to test fresult?  I need to check the values, but
-    ! TODO: ArrayView (and friends) don't have a method to get values
-    ! TODO: (that I know of)
-    write(*,*) "getNodeElementList: Test not yet implemented"
+    ! TODO: getNodeElementList should be modified to be a subroutine that takes
+    ! TODO: the element list as a return argument.  Otherwise, there is no
+    ! TODO: (current) way to get to the data in the ArrayView returned.
+    if (comm%getSize() == 0) &
+      write(*,*) "getNodeElementList: Test not yet implemented"
     call fresult%release()
     call Obj%release()
     test_getNodeElementList = ierr2
@@ -438,14 +484,16 @@ contains
     localindex = 1
     fresult = Obj%isNodeLocalElement(localindex)
     if (.not. fresult) then
+      if (comm%getSize() == 0) &
         write(*,*) "isNodeLocalElement: expected 1 to be a local index"
-        ierr2 = 1
+      ierr2 = 1
     end if
     localindex = 5
     fresult = Obj%isNodeLocalElement(localindex)
     if (fresult) then
+      if (comm%getSize() == 0) &
         write(*,*) "isNodeLocalElement: expected 5 to NOT be a local index"
-        ierr2 = 1
+      ierr2 = 1
     end if
     call Obj%release()
     test_isNodeLocalElement = ierr2
@@ -466,14 +514,16 @@ contains
     globalindex = int(comm%getRank() * 4 + 1, kind=global_ordinal_type)
     fresult = Obj%isNodeGlobalElement(globalindex)
     if (.not. fresult) then
+      if (comm%getSize() == 0) &
         write(*,*) "isNodeGlobalElement: expected 1 to be a global index"
-        ierr2 = 1
+      ierr2 = 1
     end if
     globalindex = num_global + 1
     fresult = Obj%isNodeGlobalElement(globalindex)
     if (fresult) then
+      if (comm%getSize() == 0) &
         write(*,*) "isNodeGlobalElement: expected 5 to NOT be a global index"
-        ierr2 = 1
+      ierr2 = 1
     end if
     call Obj%release()
     test_isNodeGlobalElement = ierr2
@@ -493,8 +543,9 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%isUniform()
     if (.not. fresult) then
+      if (comm%getSize() == 0) &
         write(*,*) "isUniform: expected map to be uniform"
-        ierr2 = 1
+      ierr2 = 1
     end if
     call Obj%release()
     do k = 1, 4
@@ -503,8 +554,9 @@ contains
     call Obj%create(num_global, elements, index_base, comm);
     fresult = Obj%isUniform()
     if (fresult) then
+      if (comm%getSize() == 0) &
         write(*,*) "isUniform: expected map to NOT be uniform"
-        ierr2 = 1
+      ierr2 = 1
     end if
     call Obj%release()
     test_isUniform = ierr2
@@ -524,8 +576,9 @@ contains
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%isContiguous()
     if (.not. fresult) then
+      if (comm%getSize() == 0) &
         write(*,*) "isContiguous: expected map to be uniform"
-        ierr2 = 1
+      ierr2 = 1
     end if
     call Obj%release()
     do k = 1, 4
@@ -534,8 +587,9 @@ contains
     call Obj%create(num_global, elements, index_base, comm);
     fresult = Obj%isContiguous()
     if (fresult) then
+      if (comm%getSize() == 0) &
         write(*,*) "isContiguous: expected map to NOT be uniform"
-        ierr2 = 1
+      ierr2 = 1
     end if
     call Obj%release()
     test_isContiguous = ierr2
@@ -554,12 +608,14 @@ contains
     fresult = Obj%isDistributed()
     if (comm%getSize() == 1) then
       if (fresult) then
-        write(*,*) "isDistributed: expected map to NOT be distributed"
+        if (comm%getRank()==0) &
+          write(*,*) "isDistributed: expected map to NOT be distributed"
         ierr2 = 1
       end if
     else
       if (.not. fresult) then
-        write(*,*) "isDistributed: expected map to be distributed"
+        if (comm%getRank()==0) &
+          write(*,*) "isDistributed: expected map to be distributed"
         ierr2 = 1
       end if
     end if
@@ -573,12 +629,14 @@ contains
     fresult = Obj%isDistributed()
     if (comm%getSize() == 1) then
       if (fresult) then
-        write(*,*) "isDistributed: expected map to NOT be distributed"
+        if (comm%getRank()==0) &
+          write(*,*) "isDistributed: expected map to NOT be distributed"
         ierr2 = 1
       end if
     else
       if (fresult) then
-        write(*,*) "isDistributed: expected map to NOT be distributed"
+        if (comm%getRank()==0) &
+          write(*,*) "isDistributed: expected map to NOT be distributed"
         ierr2 = 1
       end if
     end if
@@ -606,16 +664,18 @@ contains
     ! Cyclic map should be compatible
     fresult = Obj1%isCompatible(Obj2)
     if (.not. fresult) then
+        if (comm%getRank()==0) &
+          write(*,*) "isCompatible: Expected maps to be compatible"
         ierr = 1
-        write(*,*) "Expected maps to be compatible"
     end if
     call Obj2%release()
     num_global = num_global + 10
     call Obj2%create(num_global, index_base, comm);
     fresult = Obj1%isCompatible(Obj2)
     if (fresult) then
+        if (comm%getRank()==0) &
+          write(*,*) "isCompatible: Expected maps to NOT be compatible"
         ierr = 1
-        write(*,*) "Expected maps to NOT be compatible"
     end if
     call Obj2%release()
     call Obj1%release()
@@ -637,24 +697,28 @@ contains
     num_global = 4*comm%getSize()
     index_base = 1
     call Obj1%create(num_global, index_base, comm)
-    do k = 1, 4
-      elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
-    end do
-    call Obj2%create(num_global, elements, index_base, comm);
-    ! Cyclic map should not be SameAs
-    fresult = Obj1%isSameAs(Obj2)
-    if (fresult) then
+    if (comm%getSize() > 1) then
+      do k = 1, 4
+        elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
+      end do
+      call Obj2%create(num_global, elements, index_base, comm);
+      ! Cyclic map should not be SameAs
+      fresult = Obj1%isSameAs(Obj2)
+      if (fresult) then
+        if (comm%getRank()==0) &
+          write(*,*) "isSameAs: Expected maps to NOT be same"
         ierr = 1
-        write(*,*) "Expected maps to NOT be same"
+      end if
+      call Obj2%release()
     end if
-    call Obj2%release()
 
     invalid = -1; num_local = 4
     call Obj2%create(invalid, num_local, index_base, comm)
     fresult = Obj1%isSameAs(Obj2)
     if (.not. fresult) then
+        if (comm%getRank()==0) &
+          write(*,*) "isSameAs: Expected maps to be same"
         ierr = 1
-        write(*,*) "Expected maps to be same"
     end if
     call Obj1%release()
     call Obj2%release()
@@ -675,23 +739,27 @@ contains
     num_global = 4*comm%getSize()
     index_base = 1
     call Obj1%create(num_global, index_base, comm)
-    do k = 1, 4
-      elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
-    end do
-    call Obj2%create(num_global, elements, index_base, comm);
-    ! Cyclic map should not be locallySameAs
-    fresult = Obj1%locallySameAs(Obj2)
-    if (fresult) then
+    if (comm%getSize() > 1) then
+      do k = 1, 4
+        elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
+      end do
+      call Obj2%create(num_global, elements, index_base, comm);
+      ! Cyclic map should not be locallySameAs
+      fresult = Obj1%locallySameAs(Obj2)
+      if (fresult) then
+        if (comm%getRank()==0) &
+          write(*,*) "locallySameAs: Expected maps to NOT be same"
         ierr = 1
-        write(*,*) "locallySameAs: Expected maps to NOT be same"
+      end if
+      call Obj2%release()
     end if
-    call Obj2%release()
     invalid = -1; num_local = 4
     call Obj2%create(invalid, num_local, index_base, comm)
     fresult = Obj1%locallySameAs(Obj2)
     if (.not. fresult) then
-        ierr = 1
+      if (comm%getRank()==0) &
         write(*,*) "locallySameAs: Expected maps to be same"
+      ierr = 1
     end if
     call Obj1%release()
     call Obj2%release()
@@ -710,15 +778,17 @@ contains
     index_base = 1
     call Obj%create(num_global, index_base, comm)
     fresult = Obj%getComm()
-    ! TODO: How to test fresult, I check for the same rank and size,
-    ! TODO: but that is all.  Is it enough?
+    ! We only test the comm returned has the same rank and size.  More
+    ! comprehensive testing is (assumed to be) done in Teuchos itself.
     if (fresult%getRank() /= comm%getRank()) then
-        ierr2 = 1
+      if (comm%getRank()==0) &
         write(*,*) "getComm: expected ranks to be same"
+      ierr2 = 1
     end if
     if (fresult%getSize() /= comm%getSize()) then
-        ierr2 = 1
+      if (comm%getRank()==0) &
         write(*,*) "getComm: expected sizes to be same"
+      ierr2 = 1
     end if
     call Obj%release()
     test_getComm = ierr2
@@ -730,7 +800,8 @@ contains
     integer :: ierr2
     ierr2 = 0
     ! TODO: Implement this test?
-    write(*,*) 'description: Test not yet implemented'
+    if (comm%getRank()==0) &
+      write(*,*) 'description: Test not yet implemented'
     test_description = ierr2
     return
   end function
@@ -740,7 +811,8 @@ contains
     integer :: ierr2
     ierr2 = 0
     ! TODO: Implement this test?
-    write(*,*) 'removeEmptyProcesses: Test is not yet Implemented'
+    if (comm%getRank()==0) &
+      write(*,*) 'removeEmptyProcesses: Test is not yet Implemented'
     test_removeEmptyProcesses = ierr2
     return
   end function
@@ -750,7 +822,8 @@ contains
     integer :: ierr2
     ierr2 = 0
     ! TODO: Implement this test?
-    write(*,*) 'replaceCommWithSubset: Test is not yet implemented'
+    if (comm%getRank()==0) &
+      write(*,*) 'replaceCommWithSubset: Test is not yet implemented'
     test_replaceCommWithSubset = ierr2
     return
   end function
