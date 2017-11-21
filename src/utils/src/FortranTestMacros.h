@@ -37,6 +37,75 @@
     Insist(.false., "EXPECT_FALSE(TEST)" ); \
     endif
 
+! NOTE: Gfortran and ifort do not support variadic macros, so we need several
+! macros, instead of just 1
+#define CALL_AND_CHECK_IERR( NAME, PROCEDURE ) \
+    call PROCEDURE(); \
+    if (ierr /= 0) then; \
+      NAME = ierr; \
+      ierr = 0; \
+      return; \
+    endif
+
+#define CALL_AND_CHECK_IERR_1( NAME, PROCEDURE, X1 ) \
+    call PROCEDURE( X1 ); \
+    if (ierr /= 0) then; \
+      NAME = ierr; \
+      ierr = 0; \
+      return; \
+    endif
+
+#define CALL_AND_CHECK_IERR_2( NAME, PROCEDURE, X1, X2 ) \
+    call PROCEDURE( X1, X2 ); \
+    if (ierr /= 0) then; \
+      NAME = ierr; \
+      ierr = 0; \
+      return; \
+    endif
+
+#define CALL_AND_CHECK_IERR_3( NAME, PROCEDURE, X1, X2, X3 ) \
+    call PROCEDURE( X1, X2, X3 ); \
+    if (ierr /= 0) then; \
+      NAME = ierr; \
+      ierr = 0; \
+      return; \
+    endif
+
+#define CALL_AND_CHECK_IERR_4( NAME, PROCEDURE, X1, X2, X3, X4 ) \
+    call PROCEDURE( X1, X2, X3, X4 ); \
+    if (ierr /= 0) then; \
+      NAME = ierr; \
+      ierr = 0; \
+      return; \
+    endif
+
+#define CALL_AND_CHECK_IERR_5( NAME, PROCEDURE, X1, X2, X3, X4, X5 ) \
+    call PROCEDURE( X1, X2, X3, X4, X5 ); \
+    if (ierr /= 0) then; \
+      NAME = ierr; \
+      ierr = 0; \
+      return; \
+    endif
+
+#define CALL_FCN_AND_CHECK_IERR( NAME, PROCEDURE, RES) \
+    RES = PROCEDURE( ); \
+    if (ierr /= 0) then; \
+      NAME = ierr; \
+      ierr = 0; \
+      return; \
+    endif
+
+#define ADD_TEST(TEST_NAME, ERROR_COUNTER) \
+    if ( TEST_NAME() /= 0 ) then; \
+      write(0, *) "Test FAILED!"; \
+      ERROR_COUNTER = ERROR_COUNTER + 1; \
+    endif
+
+#define SET_ERROR_COUNT_AND_RESET_IERR(TEST_NAME, ERROR_COUNT) \
+    TEST_NAME = ERROR_COUNT + ierr; \
+    ierr = 0
+
+
 use DBCF_M
 
 #endif

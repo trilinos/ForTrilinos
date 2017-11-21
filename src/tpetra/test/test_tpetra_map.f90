@@ -25,155 +25,31 @@ use mpi
 
   kerr = 0
 
-  if (test_isOneToOne() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'isOneToOne' FAILED!"
-  end if
-
-  if (test_getGlobalNumElements() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'getGlobalNumElements' FAILED!"
-  end if
-
-  if (test_getNodeNumElements() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'getNodeNumElements' FAILED!"
-  end if
-
-  if (test_getIndexBase() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'getIndexBase' FAILED!"
-  end if
-
-  if (test_getMinLocalIndex() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'getMinLocalIndex' FAILED!"
-  end if
-
-  if (test_getMaxLocalIndex() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'getMaxLocalIndex' FAILED!"
-  end if
-
-  if (test_getMinGlobalIndex() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'getMinGlobalIndex' FAILED!"
-  end if
-
-  if (test_getMaxGlobalIndex() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'getMaxGlobalIndex' FAILED!"
-  end if
-
-  if (test_getMinAllGlobalIndex() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'getMinAllGlobalIndex' FAILED!"
-  end if
-
-  if (test_getMaxAllGlobalIndex() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'getMaxAllGlobalIndex' FAILED!"
-  end if
-
-  if (test_getLocalElement() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'getLocalElement' FAILED!"
-  end if
-
-  if (test_getGlobalElement() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'getGlobalElement' FAILED!"
-  end if
-
-  if (test_getNodeElementList() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'getNodeElementList' FAILED!"
-  end if
-
-  if (test_isNodeLocalElement() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'isNodeLocalElement' FAILED!"
-  end if
-
-  if (test_isNodeGlobalElement() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'isNodeGlobalElement' FAILED!"
-  end if
-
-  if (test_isUniform() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'isUniform' FAILED!"
-  end if
-
-  if (test_isContiguous() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'isContiguous' FAILED!"
-  end if
-
-  if (test_isDistributed() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'isDistributed' FAILED!"
-  end if
-
-  if (test_isCompatible() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'isCompatible' FAILED!"
-  end if
-
-  if (test_isSameAs() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'isSameAs' FAILED!"
-  end if
-
-  if (test_locallySameAs() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'locallySameAs' FAILED!"
-  end if
-
-  if (test_getComm() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'getComm' FAILED!"
-  end if
-
-  if (test_description() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'description' FAILED!"
-  end if
-
-  if (test_removeEmptyProcesses() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'removeEmptyProcesses' FAILED!"
-  end if
-
-  if (test_replaceCommWithSubset() /= 0) then
-    kerr = kerr + 1
-    if (comm%getRank() == 0) &
-      write(*,*) "Test 'replaceCommWithSubset' FAILED!"
-  end if
+  ADD_TEST(test_isOneToOne, kerr)
+  ADD_TEST(test_getGlobalNumElements, kerr)
+  ADD_TEST(test_getNodeNumElements, kerr)
+  ADD_TEST(test_getIndexBase, kerr)
+  ADD_TEST(test_getMinLocalIndex, kerr)
+  ADD_TEST(test_getMaxLocalIndex, kerr)
+  ADD_TEST(test_getMinGlobalIndex, kerr)
+  ADD_TEST(test_getMaxGlobalIndex, kerr)
+  ADD_TEST(test_getMinAllGlobalIndex, kerr)
+  ADD_TEST(test_getMaxAllGlobalIndex, kerr)
+  ADD_TEST(test_getLocalElement, kerr)
+  ADD_TEST(test_getGlobalElement, kerr)
+  ADD_TEST(test_getNodeElementList, kerr)
+  ADD_TEST(test_isNodeLocalElement, kerr)
+  ADD_TEST(test_isNodeGlobalElement, kerr)
+  ADD_TEST(test_isUniform, kerr)
+  ADD_TEST(test_isContiguous, kerr)
+  ADD_TEST(test_isDistributed, kerr)
+  ADD_TEST(test_isCompatible, kerr)
+  ADD_TEST(test_isSameAs, kerr)
+  ADD_TEST(test_locallySameAs, kerr)
+  ADD_TEST(test_getComm, kerr)
+  ADD_TEST(test_description, kerr)
+  ADD_TEST(test_removeEmptyProcesses, kerr)
+  ADD_TEST(test_replaceCommWithSubset, kerr)
 
   if (comm%getRank() == 0) then
     if (kerr == 0) then
@@ -197,48 +73,40 @@ contains
 ! ---------------------------------isOneToOne--------------------------------- !
   integer function test_isOneToOne()
     integer :: jerr
+    logical(c_bool) :: bool
     type(TpetraMap) :: Obj
     integer(global_ordinal_type) :: num_global, index_base, indices(4)
     jerr = 0
     index_base = 1
     num_global = 4*comm%getSize()
 
-    call Obj%create(num_global, index_base, comm)
-    if (ierr /= 0) then
-      test_isOneToOne = jerr + ierr
-      ierr = 0
-      return
-    end if
+    CALL_AND_CHECK_IERR_3(test_isOneToOne, Obj%create, num_global, index_base, comm)
+    CALL_FCN_AND_CHECK_IERR(test_isOneToOne, Obj%isOneToOne, bool)
 
-    if (.not. Obj%isOneToOne()) then
+    if (.not. bool) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "isOneToOne: Expected map to be one to one"
     end if
 
-    call Obj%release()
+    CALL_AND_CHECK_IERR(test_isOneToOne, Obj%release)
 
     if (comm%getSize() > 1) then
-        indices = [1, 2, 3, 4]
-        call Obj%create(num_global, indices, index_base, comm)
-        if (ierr /= 0) then
-          test_isOneToOne = jerr + ierr
-          ierr = 0
-          return
-        end if
+      indices = [1, 2, 3, 4]
+      CALL_AND_CHECK_IERR_4(test_isOneToOne, Obj%create, num_global, \
+        indices, index_base, comm)
+      CALL_FCN_AND_CHECK_IERR(test_isOneToOne, Obj%isOneToOne, bool)
+      if (bool) then
+        jerr = jerr + 1
+        if (comm%getRank() == 0) &
+          write(*,*) "isOneToOne: Expected map to NOT be one to one"
+      end if
 
-        if (Obj%isOneToOne()) then
-          jerr = jerr + 1
-          if (comm%getRank() == 0) &
-            write(*,*) "isOneToOne: Expected map to NOT be one to one"
-        end if
-
-        call Obj%release()
+      CALL_AND_CHECK_IERR(test_isOneToOne, Obj%release)
 
     end if
 
-    test_isOneToOne = jerr + ierr
-    ierr = 0
+    SET_ERROR_COUNT_AND_RESET_IERR(test_isOneToOne, jerr)
     return
 
   end function
