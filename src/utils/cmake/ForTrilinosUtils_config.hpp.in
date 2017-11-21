@@ -1,0 +1,8 @@
+#ifndef FORTRILINOSUTILS_CONFIG_H
+#define FORTRILINOSUTILS_CONFIG_H
+
+/* Options */
+
+#cmakedefine HAVE_MPI
+
+#endif /* FORTRILINOSUTILS_CONFIG_H */
