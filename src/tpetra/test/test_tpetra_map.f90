@@ -80,29 +80,35 @@ contains
     index_base = 1
     num_global = 4*comm%getSize()
 
-    CALL_AND_CHECK_IERR_3(test_isOneToOne, Obj%create, num_global, index_base, comm)
-    EVAL_FCN_AND_CHECK_IERR(test_isOneToOne, Obj%isOneToOne, bool)
+    call Obj%create(num_global, index_base, comm)
+    TEST_FOR_IERR(test_isOneToOne)
 
+    bool = Obj%isOneToOne()
+    TEST_FOR_IERR(test_isOneToOne)
     if (.not. bool) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "isOneToOne: Expected map to be one to one"
     end if
 
-    CALL_AND_CHECK_IERR(test_isOneToOne, Obj%release)
+    call Obj%release()
+    TEST_FOR_IERR(test_isOneToOne)
 
     if (comm%getSize() > 1) then
       indices = [1, 2, 3, 4]
-      CALL_AND_CHECK_IERR_4(test_isOneToOne, Obj%create, num_global, \
-        indices, index_base, comm)
-      EVAL_FCN_AND_CHECK_IERR(test_isOneToOne, Obj%isOneToOne, bool)
+      call Obj%create(num_global, indices, index_base, comm)
+      TEST_FOR_IERR(test_isOneToOne)
+
+      bool = Obj%isOneToOne()
+      TEST_FOR_IERR(test_isOneToOne)
       if (bool) then
         jerr = jerr + 1
         if (comm%getRank() == 0) &
           write(*,*) "isOneToOne: Expected map to NOT be one to one"
       end if
 
-      CALL_AND_CHECK_IERR(test_isOneToOne, Obj%release)
+      call Obj%release()
+      TEST_FOR_IERR(test_isOneToOne)
 
     end if
 
