@@ -113,7 +113,6 @@ contains
     end if
 
     SET_ERROR_COUNT_AND_RETURN(test_isOneToOne, jerr)
-    return
 
   end function
 
