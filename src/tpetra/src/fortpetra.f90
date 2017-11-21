@@ -291,8 +291,6 @@ end type
   procedure :: getValidParameters => swigf_TpetraCrsGraph_getValidParameters
   procedure, private :: insertGlobalIndices__SWIG_0 => swigf_TpetraCrsGraph_insertGlobalIndices__SWIG_0
   procedure, private :: insertGlobalIndices__SWIG_1 => swigf_TpetraCrsGraph_insertGlobalIndices__SWIG_1
-  procedure, private :: insertLocalIndices__SWIG_0 => swigf_TpetraCrsGraph_insertLocalIndices__SWIG_0
-  procedure, private :: insertLocalIndices__SWIG_1 => swigf_TpetraCrsGraph_insertLocalIndices__SWIG_1
   procedure :: removeLocalIndices => swigf_TpetraCrsGraph_removeLocalIndices
   procedure :: globalAssemble => swigf_TpetraCrsGraph_globalAssemble
   procedure, private :: resumeFill__SWIG_0 => swigf_TpetraCrsGraph_resumeFill__SWIG_0
@@ -351,12 +349,22 @@ end type
   procedure :: removeEmptyProcessesInPlace => swigf_TpetraCrsGraph_removeEmptyProcessesInPlace
   procedure :: haveGlobalConstants => swigf_TpetraCrsGraph_haveGlobalConstants
   procedure :: computeGlobalConstants => swigf_TpetraCrsGraph_computeGlobalConstants
+  procedure, private :: create__SWIG_6 => swigf_new_TpetraCrsGraph__SWIG_6
+  procedure, private :: create__SWIG_7 => swigf_new_TpetraCrsGraph__SWIG_7
+  procedure, private :: create__SWIG_8 => swigf_new_TpetraCrsGraph__SWIG_8
+  procedure, private :: create__SWIG_9 => swigf_new_TpetraCrsGraph__SWIG_9
+  procedure, private :: create__SWIG_10 => swigf_new_TpetraCrsGraph__SWIG_10
+  procedure, private :: create__SWIG_11 => swigf_new_TpetraCrsGraph__SWIG_11
+  procedure, private :: create__SWIG_12 => swigf_new_TpetraCrsGraph__SWIG_12
+  procedure, private :: create__SWIG_13 => swigf_new_TpetraCrsGraph__SWIG_13
+  procedure :: insertLocalIndices => swigf_TpetraCrsGraph_insertLocalIndices
   procedure, private :: swigf_assign_TpetraCrsGraph
-  generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2, create__SWIG_3, create__SWIG_4, create__SWIG_5
+  generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2, create__SWIG_3, create__SWIG_4, create__SWIG_5, &
+    create__SWIG_6, create__SWIG_7, create__SWIG_8, create__SWIG_9, create__SWIG_10, create__SWIG_11, create__SWIG_12, &
+    create__SWIG_13
   generic :: assignment(=) => swigf_assign_TpetraCrsGraph
   generic :: reindexColumns => reindexColumns__SWIG_0, reindexColumns__SWIG_1, reindexColumns__SWIG_2
   generic :: insertGlobalIndices => insertGlobalIndices__SWIG_0, insertGlobalIndices__SWIG_1
-  generic :: insertLocalIndices => insertLocalIndices__SWIG_0, insertLocalIndices__SWIG_1
   generic :: resumeFill => resumeFill__SWIG_0, resumeFill__SWIG_1
   generic :: fillComplete => fillComplete__SWIG_0, fillComplete__SWIG_1, fillComplete__SWIG_2, fillComplete__SWIG_3
   generic :: expertStaticFillComplete => expertStaticFillComplete__SWIG_0, expertStaticFillComplete__SWIG_1, &
@@ -1584,23 +1592,6 @@ integer(C_INT), intent(in) :: farg3
 type(C_PTR), value :: farg4
 end subroutine
 
-subroutine swigc_TpetraCrsGraph_insertLocalIndices__SWIG_0(farg1, farg2, farg3) &
-bind(C, name="swigc_TpetraCrsGraph_insertLocalIndices__SWIG_0")
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-integer(C_INT), intent(in) :: farg2
-type(C_PTR), value :: farg3
-end subroutine
-
-subroutine swigc_TpetraCrsGraph_insertLocalIndices__SWIG_1(farg1, farg2, farg3, farg4) &
-bind(C, name="swigc_TpetraCrsGraph_insertLocalIndices__SWIG_1")
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-integer(C_INT), intent(in) :: farg2
-integer(C_INT), intent(in) :: farg3
-type(C_PTR), value :: farg4
-end subroutine
-
 subroutine swigc_TpetraCrsGraph_removeLocalIndices(farg1, farg2) &
 bind(C, name="swigc_TpetraCrsGraph_removeLocalIndices")
 use, intrinsic :: ISO_C_BINDING
@@ -2063,6 +2054,109 @@ subroutine swigc_TpetraCrsGraph_computeGlobalConstants(farg1) &
 bind(C, name="swigc_TpetraCrsGraph_computeGlobalConstants")
 use, intrinsic :: ISO_C_BINDING
 type(C_PTR), value :: farg1
+end subroutine
+
+function swigc_new_TpetraCrsGraph__SWIG_6(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_new_TpetraCrsGraph__SWIG_6") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(SwigfArrayWrapper) :: farg2
+integer(C_INT), intent(in) :: farg3
+type(C_PTR), value :: farg4
+end function
+
+function swigc_new_TpetraCrsGraph__SWIG_7(farg1, farg2, farg3) &
+bind(C, name="swigc_new_TpetraCrsGraph__SWIG_7") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(SwigfArrayWrapper) :: farg2
+integer(C_INT), intent(in) :: farg3
+end function
+
+function swigc_new_TpetraCrsGraph__SWIG_8(farg1, farg2) &
+bind(C, name="swigc_new_TpetraCrsGraph__SWIG_8") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(SwigfArrayWrapper) :: farg2
+end function
+
+function swigc_new_TpetraCrsGraph__SWIG_9(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_new_TpetraCrsGraph__SWIG_9") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(SwigfArrayWrapper) :: farg3
+integer(C_INT), intent(in) :: farg4
+type(C_PTR), value :: farg5
+end function
+
+function swigc_new_TpetraCrsGraph__SWIG_10(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_new_TpetraCrsGraph__SWIG_10") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(SwigfArrayWrapper) :: farg3
+integer(C_INT), intent(in) :: farg4
+end function
+
+function swigc_new_TpetraCrsGraph__SWIG_11(farg1, farg2, farg3) &
+bind(C, name="swigc_new_TpetraCrsGraph__SWIG_11") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(SwigfArrayWrapper) :: farg3
+end function
+
+function swigc_new_TpetraCrsGraph__SWIG_12(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_new_TpetraCrsGraph__SWIG_12") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(SwigfArrayWrapper) :: farg3
+type(SwigfArrayWrapper) :: farg4
+type(C_PTR), value :: farg5
+end function
+
+function swigc_new_TpetraCrsGraph__SWIG_13(farg1, farg2, farg3, farg4) &
+bind(C, name="swigc_new_TpetraCrsGraph__SWIG_13") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
+type(C_PTR) :: fresult
+type(C_PTR), value :: farg1
+type(C_PTR), value :: farg2
+type(SwigfArrayWrapper) :: farg3
+type(SwigfArrayWrapper) :: farg4
+end function
+
+subroutine swigc_TpetraCrsGraph_insertLocalIndices(farg1, farg2, farg3) &
+bind(C, name="swigc_TpetraCrsGraph_insertLocalIndices")
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+type(SwigfArrayWrapper) :: farg3
 end subroutine
 
   function swigc_spcopy_TpetraCrsGraph(farg1) &
@@ -4886,41 +4980,6 @@ call swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_1(farg1, farg2, farg3, farg4
 
 end subroutine
 
-subroutine swigf_TpetraCrsGraph_insertLocalIndices__SWIG_0(self, localrow, indices)
-use, intrinsic :: ISO_C_BINDING
-class(TpetraCrsGraph) :: self
-integer(C_INT), intent(in) :: localrow
-class(TeuchosArrayViewIntConst) :: indices
-type(C_PTR) :: farg1 
-integer(C_INT) :: farg2 
-type(C_PTR) :: farg3 
-
-farg1 = self%swigptr
-farg2 = localrow
-farg3 = indices%swigptr
-call swigc_TpetraCrsGraph_insertLocalIndices__SWIG_0(farg1, farg2, farg3)
-
-end subroutine
-
-subroutine swigf_TpetraCrsGraph_insertLocalIndices__SWIG_1(self, localrow, nument, inds)
-use, intrinsic :: ISO_C_BINDING
-class(TpetraCrsGraph) :: self
-integer(C_INT), intent(in) :: localrow
-integer(C_INT), intent(in) :: nument
-integer(C_INT), dimension(:), target, intent(in) :: inds
-type(C_PTR) :: farg1 
-integer(C_INT) :: farg2 
-integer(C_INT) :: farg3 
-type(C_PTR) :: farg4 
-
-farg1 = self%swigptr
-farg2 = localrow
-farg3 = nument
-farg4 = c_loc(inds)
-call swigc_TpetraCrsGraph_insertLocalIndices__SWIG_1(farg1, farg2, farg3, farg4)
-
-end subroutine
-
 subroutine swigf_TpetraCrsGraph_removeLocalIndices(self, localrow)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsGraph) :: self
@@ -5738,6 +5797,211 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_TpetraCrsGraph_computeGlobalConstants(farg1)
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsGraph__SWIG_6(self, rowmap, numentperrow, pftype, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: rowmap
+integer(C_SIZE_T), dimension(:), target, intent(inout) :: numentperrow
+integer(kind(ProfileType)) :: pftype
+type(ParameterList) :: params
+type(C_PTR) :: fresult
+type(C_PTR) :: farg1
+type(SwigfArrayWrapper) :: farg2
+integer(C_INT) :: farg3
+type(C_PTR) :: farg4
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2%data = c_loc(numentperrow(1))
+farg2%size = size(numentperrow)
+farg3 = pftype
+farg4 = params%swigptr
+fresult = swigc_new_TpetraCrsGraph__SWIG_6(farg1, farg2, farg3, farg4)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsGraph__SWIG_7(self, rowmap, numentperrow, pftype)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: rowmap
+integer(C_SIZE_T), dimension(:), target, intent(inout) :: numentperrow
+integer(kind(ProfileType)) :: pftype
+type(C_PTR) :: fresult
+type(C_PTR) :: farg1
+type(SwigfArrayWrapper) :: farg2
+integer(C_INT) :: farg3
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2%data = c_loc(numentperrow(1))
+farg2%size = size(numentperrow)
+farg3 = pftype
+fresult = swigc_new_TpetraCrsGraph__SWIG_7(farg1, farg2, farg3)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsGraph__SWIG_8(self, rowmap, numentperrow)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: rowmap
+integer(C_SIZE_T), dimension(:), target, intent(inout) :: numentperrow
+type(C_PTR) :: fresult
+type(C_PTR) :: farg1
+type(SwigfArrayWrapper) :: farg2
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2%data = c_loc(numentperrow(1))
+farg2%size = size(numentperrow)
+fresult = swigc_new_TpetraCrsGraph__SWIG_8(farg1, farg2)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsGraph__SWIG_9(self, rowmap, colmap, numentperrow, pftype, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: rowmap
+type(TpetraMap) :: colmap
+integer(C_SIZE_T), dimension(:), target, intent(inout) :: numentperrow
+integer(kind(ProfileType)) :: pftype
+type(ParameterList) :: params
+type(C_PTR) :: fresult
+type(C_PTR) :: farg1
+type(C_PTR) :: farg2
+type(SwigfArrayWrapper) :: farg3
+integer(C_INT) :: farg4
+type(C_PTR) :: farg5
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2 = colmap%swigptr
+farg3%data = c_loc(numentperrow(1))
+farg3%size = size(numentperrow)
+farg4 = pftype
+farg5 = params%swigptr
+fresult = swigc_new_TpetraCrsGraph__SWIG_9(farg1, farg2, farg3, farg4, farg5)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsGraph__SWIG_10(self, rowmap, colmap, numentperrow, pftype)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: rowmap
+type(TpetraMap) :: colmap
+integer(C_SIZE_T), dimension(:), target, intent(inout) :: numentperrow
+integer(kind(ProfileType)) :: pftype
+type(C_PTR) :: fresult
+type(C_PTR) :: farg1
+type(C_PTR) :: farg2
+type(SwigfArrayWrapper) :: farg3
+integer(C_INT) :: farg4
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2 = colmap%swigptr
+farg3%data = c_loc(numentperrow(1))
+farg3%size = size(numentperrow)
+farg4 = pftype
+fresult = swigc_new_TpetraCrsGraph__SWIG_10(farg1, farg2, farg3, farg4)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsGraph__SWIG_11(self, rowmap, colmap, numentperrow)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: rowmap
+type(TpetraMap) :: colmap
+integer(C_SIZE_T), dimension(:), target, intent(inout) :: numentperrow
+type(C_PTR) :: fresult
+type(C_PTR) :: farg1
+type(C_PTR) :: farg2
+type(SwigfArrayWrapper) :: farg3
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2 = colmap%swigptr
+farg3%data = c_loc(numentperrow(1))
+farg3%size = size(numentperrow)
+fresult = swigc_new_TpetraCrsGraph__SWIG_11(farg1, farg2, farg3)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsGraph__SWIG_12(self, rowmap, colmap, rowpointers, columnindices, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: rowmap
+type(TpetraMap) :: colmap
+integer(C_SIZE_T), dimension(:), target, intent(inout) :: rowpointers
+integer(C_INT), dimension(:), target, intent(inout) :: columnindices
+type(ParameterList) :: params
+type(C_PTR) :: fresult
+type(C_PTR) :: farg1
+type(C_PTR) :: farg2
+type(SwigfArrayWrapper) :: farg3
+type(SwigfArrayWrapper) :: farg4
+type(C_PTR) :: farg5
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2 = colmap%swigptr
+farg3%data = c_loc(rowpointers(1))
+farg3%size = size(rowpointers)
+farg4%data = c_loc(columnindices(1))
+farg4%size = size(columnindices)
+farg5 = params%swigptr
+fresult = swigc_new_TpetraCrsGraph__SWIG_12(farg1, farg2, farg3, farg4, farg5)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_new_TpetraCrsGraph__SWIG_13(self, rowmap, colmap, rowpointers, columnindices)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+type(TpetraMap) :: rowmap
+type(TpetraMap) :: colmap
+integer(C_SIZE_T), dimension(:), target, intent(inout) :: rowpointers
+integer(C_INT), dimension(:), target, intent(inout) :: columnindices
+type(C_PTR) :: fresult
+type(C_PTR) :: farg1
+type(C_PTR) :: farg2
+type(SwigfArrayWrapper) :: farg3
+type(SwigfArrayWrapper) :: farg4
+
+if (c_associated(self%swigptr)) call self%release()
+farg1 = rowmap%swigptr
+farg2 = colmap%swigptr
+farg3%data = c_loc(rowpointers(1))
+farg3%size = size(rowpointers)
+farg4%data = c_loc(columnindices(1))
+farg4%size = size(columnindices)
+fresult = swigc_new_TpetraCrsGraph__SWIG_13(farg1, farg2, farg3, farg4)
+self%swigptr = fresult
+
+end subroutine
+
+subroutine swigf_TpetraCrsGraph_insertLocalIndices(self, localrow, indices)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph) :: self
+integer(C_INT), intent(in) :: localrow
+integer(C_INT), dimension(:), target, intent(inout) :: indices
+type(C_PTR) :: farg1
+integer(C_INT) :: farg2
+type(SwigfArrayWrapper) :: farg3
+
+farg1 = self%swigptr
+farg2 = localrow
+farg3%data = c_loc(indices(1))
+farg3%size = size(indices)
+call swigc_TpetraCrsGraph_insertLocalIndices(farg1, farg2, farg3)
 
 end subroutine
 
