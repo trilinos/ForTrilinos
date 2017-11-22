@@ -8,6 +8,8 @@ program test_TpetraMap
 
   DECLARE_TEST_VARIABLES()
   type(TeuchosComm) :: comm
+  integer(global_size_type), parameter :: invalid=-1
+  integer(global_ordinal_type), parameter :: index_base=1
 
   INITIALIZE_TEST()
 
@@ -19,31 +21,33 @@ program test_TpetraMap
   CHECK_IERR()
 #endif
 
-  ADD_SUBTEST_AND_RUN(test_isOneToOne)
-  ADD_SUBTEST_AND_RUN(test_getGlobalNumElements)
-  ADD_SUBTEST_AND_RUN(test_getNodeNumElements)
-  ADD_SUBTEST_AND_RUN(test_getIndexBase)
-  ADD_SUBTEST_AND_RUN(test_getMinLocalIndex)
-  ADD_SUBTEST_AND_RUN(test_getMaxLocalIndex)
-  ADD_SUBTEST_AND_RUN(test_getMinGlobalIndex)
-  ADD_SUBTEST_AND_RUN(test_getMaxGlobalIndex)
-  ADD_SUBTEST_AND_RUN(test_getMinAllGlobalIndex)
-  ADD_SUBTEST_AND_RUN(test_getMaxAllGlobalIndex)
-  ADD_SUBTEST_AND_RUN(test_getLocalElement)
-  ADD_SUBTEST_AND_RUN(test_getGlobalElement)
-  ADD_SUBTEST_AND_RUN(test_getNodeElementList)
-  ADD_SUBTEST_AND_RUN(test_isNodeLocalElement)
-  ADD_SUBTEST_AND_RUN(test_isNodeGlobalElement)
-  ADD_SUBTEST_AND_RUN(test_isUniform)
-  ADD_SUBTEST_AND_RUN(test_isContiguous)
-  ADD_SUBTEST_AND_RUN(test_isDistributed)
-  ADD_SUBTEST_AND_RUN(test_isCompatible)
-  ADD_SUBTEST_AND_RUN(test_isSameAs)
-  ADD_SUBTEST_AND_RUN(test_locallySameAs)
-  ADD_SUBTEST_AND_RUN(test_getComm)
-  ADD_SUBTEST_AND_RUN(test_description)
-  ADD_SUBTEST_AND_RUN(test_removeEmptyProcesses)
-  ADD_SUBTEST_AND_RUN(test_replaceCommWithSubset)
+  ADD_SUBTEST_AND_RUN(TpetraMap_isOneToOne)
+  ADD_SUBTEST_AND_RUN(TpetraMap_getGlobalNumElements)
+  ADD_SUBTEST_AND_RUN(TpetraMap_getNodeNumElements)
+  ADD_SUBTEST_AND_RUN(TpetraMap_getIndexBase)
+  ADD_SUBTEST_AND_RUN(TpetraMap_getMinLocalIndex)
+  ADD_SUBTEST_AND_RUN(TpetraMap_getMaxLocalIndex)
+  ADD_SUBTEST_AND_RUN(TpetraMap_getMinGlobalIndex)
+  ADD_SUBTEST_AND_RUN(TpetraMap_getMaxGlobalIndex)
+  ADD_SUBTEST_AND_RUN(TpetraMap_getMinAllGlobalIndex)
+  ADD_SUBTEST_AND_RUN(TpetraMap_getMaxAllGlobalIndex)
+  ADD_SUBTEST_AND_RUN(TpetraMap_getLocalElement)
+  ADD_SUBTEST_AND_RUN(TpetraMap_getGlobalElement)
+  ADD_SUBTEST_AND_RUN(TpetraMap_getNodeElementList)
+  ADD_SUBTEST_AND_RUN(TpetraMap_isNodeLocalElement)
+  ADD_SUBTEST_AND_RUN(TpetraMap_isNodeGlobalElement)
+  ADD_SUBTEST_AND_RUN(TpetraMap_isUniform)
+  ADD_SUBTEST_AND_RUN(TpetraMap_isContiguous)
+  ADD_SUBTEST_AND_RUN(TpetraMap_isDistributed)
+  ADD_SUBTEST_AND_RUN(TpetraMap_isCompatible)
+  ADD_SUBTEST_AND_RUN(TpetraMap_isSameAs)
+  ADD_SUBTEST_AND_RUN(TpetraMap_locallySameAs)
+  ADD_SUBTEST_AND_RUN(TpetraMap_getComm)
+  ADD_SUBTEST_AND_RUN(TpetraMap_description)
+
+  ! Methods listed below are marked as "may go away or change at any time"
+  ADD_SUBTEST_AND_RUN(TpetraMap_removeEmptyProcesses)
+  ADD_SUBTEST_AND_RUN(TpetraMap_replaceCommWithSubset)
 
   call comm%release()
   CHECK_IERR()
@@ -53,87 +57,78 @@ program test_TpetraMap
 contains
 
 ! ---------------------------------isOneToOne--------------------------------- !
-  integer function test_isOneToOne()
+  FORTRILINOS_UNIT_TEST(TpetraMap_isOneToOne)
     integer :: jerr
     logical(c_bool) :: bool
     type(TpetraMap) :: Obj
-    integer(global_ordinal_type) :: num_global, index_base, indices(4)
+    integer(global_ordinal_type) :: num_global, indices(4)
     jerr = 0
-    index_base = 1
     num_global = 4*comm%getSize()
 
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_isOneToOne)
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
 
-    bool = Obj%isOneToOne(); TEST_FOR_IERR(test_isOneToOne)
+    bool = Obj%isOneToOne(); TEST_IERR()
     if (.not. bool) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "isOneToOne: Expected map to be one to one"
     end if
 
-    call Obj%release(); TEST_FOR_IERR(test_isOneToOne)
+    call Obj%release(); TEST_IERR()
 
     if (comm%getSize() > 1) then
       indices = [1, 2, 3, 4]
-      call Obj%create(num_global, indices, index_base, comm)
-      TEST_FOR_IERR(test_isOneToOne)
+      call Obj%create(num_global, indices, index_base, comm); TEST_IERR()
 
-      bool = Obj%isOneToOne(); TEST_FOR_IERR(test_isOneToOne)
+      bool = Obj%isOneToOne(); TEST_IERR()
       if (bool) then
         jerr = jerr + 1
         if (comm%getRank() == 0) &
           write(*,*) "isOneToOne: Expected map to NOT be one to one"
       end if
 
-      call Obj%release(); TEST_FOR_IERR(test_isOneToOne)
+      call Obj%release(); TEST_IERR()
 
     end if
 
-    SET_ERROR_COUNT_AND_RETURN(test_isOneToOne, jerr)
+    success = (jerr == 0)
 
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_isOneToOne)
 
 ! ----------------------------getGlobalNumElements---------------------------- !
-  integer function test_getGlobalNumElements()
+  FORTRILINOS_UNIT_TEST(TpetraMap_getGlobalNumElements)
     integer :: jerr
     type(TpetraMap) :: Obj
     integer(C_LONG) :: fresult
-    integer(global_ordinal_type) :: num_global, index_base
+    integer(global_ordinal_type) :: num_global
     jerr = 0
-    index_base = 1
     num_global = 4*comm%getSize()
 
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_getGlobalNumElements)
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
 
-    fresult = Obj%getGlobalNumElements()
-    TEST_FOR_IERR(test_getGlobalNumElements)
+    fresult = Obj%getGlobalNumElements(); TEST_IERR()
     if (fresult /= num_global) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "getGlobalNumElements: Expected ", num_global, " elements, got ", fresult
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_getGlobalNumElements)
+    call Obj%release(); TEST_IERR()
 
-    SET_ERROR_COUNT_AND_RETURN(test_getGlobalNumElements, jerr)
+    success = (jerr == 0)
 
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_getGlobalNumElements)
 
 ! -----------------------------getNodeNumElements----------------------------- !
-  integer function test_getNodeNumElements()
+  FORTRILINOS_UNIT_TEST(TpetraMap_getNodeNumElements)
     integer :: jerr
     type(TpetraMap) :: Obj
     integer(C_SIZE_T) :: fresult
-    integer(global_ordinal_type) :: num_global, index_base
+    integer(global_ordinal_type) :: num_global
     jerr = 0
-    index_base = 1
     num_global = 4*comm%getSize()
 
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_getNodeNumElements)
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
 
     fresult = Obj%getNodeNumElements()
     if (fresult /= 4) then
@@ -142,155 +137,132 @@ contains
         write(*,*) "getNodeNumElements: Expected ", 4, " elements, got ", fresult
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_getNodeNumElements)
+    call Obj%release(); TEST_IERR()
 
-    SET_ERROR_COUNT_AND_RETURN(test_getNodeNumElements, jerr)
+    success = (jerr == 0)
 
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_getNodeNumElements)
 
 ! --------------------------------getIndexBase-------------------------------- !
-  integer function test_getIndexBase()
+  FORTRILINOS_UNIT_TEST(TpetraMap_getIndexBase)
     integer :: jerr
     type(TpetraMap) :: Obj
     integer(C_LONG_LONG) :: fresult
-    integer(global_ordinal_type) :: num_global, index_base
+    integer(global_ordinal_type) :: num_global, index_base_0
     jerr = 0
     num_global = 4*comm%getSize()
-    index_base = 1
 
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_getIndexBase)
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
 
-    fresult = Obj%getIndexBase()
-    TEST_FOR_IERR(test_getIndexBase)
+    fresult = Obj%getIndexBase(); TEST_IERR()
     if (fresult /= 1) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "getIndexBase: Expected indexBase = ", 1, " got ", fresult
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_getIndexBase)
+    call Obj%release(); TEST_IERR()
 
-    index_base = 0
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_getIndexBase)
+    index_base_0 = 0
+    call Obj%create(num_global, index_base_0, comm); TEST_IERR()
 
-    fresult = Obj%getIndexBase()
-    TEST_FOR_IERR(test_getIndexBase)
+    fresult = Obj%getIndexBase(); TEST_IERR()
     if (fresult /= 0) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "getIndexBase: Expected indexBase = ", 0, " got ", fresult
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_getIndexBase)
+    call Obj%release(); TEST_IERR()
 
-    SET_ERROR_COUNT_AND_RETURN(test_getIndexBase, jerr)
+    success = (jerr == 0)
 
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_getIndexBase)
 
 ! ------------------------------getMinLocalIndex------------------------------ !
-  integer function test_getMinLocalIndex()
+  FORTRILINOS_UNIT_TEST(TpetraMap_getMinLocalIndex)
     integer :: jerr
     type(TpetraMap) :: Obj
     integer(C_INT) :: fresult
-    integer(global_ordinal_type) :: num_global, index_base
+    integer(global_ordinal_type) :: num_global
     jerr = 0
     num_global = 4*comm%getSize()
-    index_base = 1
 
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_getMinLocalIndex)
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
 
-    fresult = Obj%getMinLocalIndex()
-    TEST_FOR_IERR(test_getMinLocalIndex)
+    fresult = Obj%getMinLocalIndex(); TEST_IERR()
     if (fresult /= 1) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "getMinLocalIndex: Expected minLocalIndex = ", 1, " got ", fresult
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_getMinLocalIndex)
+    call Obj%release(); TEST_IERR()
 
-    SET_ERROR_COUNT_AND_RETURN(test_getMinLocalIndex, jerr)
+    success = (jerr == 0)
 
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_getMinLocalIndex)
 
 ! ------------------------------getMaxLocalIndex------------------------------ !
-  integer function test_getMaxLocalIndex()
+  FORTRILINOS_UNIT_TEST(TpetraMap_getMaxLocalIndex)
     integer :: jerr
     type(TpetraMap) :: Obj
     integer(C_INT) :: fresult
-    integer(global_ordinal_type) :: num_global, index_base
+    integer(global_ordinal_type) :: num_global
     jerr = 0
     num_global = 4*comm%getSize()
-    index_base = 1
 
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_getMaxLocalIndex)
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
 
-    fresult = Obj%getMaxLocalIndex()
-    TEST_FOR_IERR(test_getMaxLocalIndex)
+    fresult = Obj%getMaxLocalIndex(); TEST_IERR()
     if (fresult /= 4) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "getMaxLocalIndex: Expected maxLocalIndex = ", 4, " got ", fresult
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_getMaxLocalIndex)
+    call Obj%release(); TEST_IERR()
 
-    SET_ERROR_COUNT_AND_RETURN(test_getMaxLocalIndex, jerr)
+    success = (jerr == 0)
 
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_getMaxLocalIndex)
 
 ! -----------------------------getMinGlobalIndex------------------------------ !
-  integer function test_getMinGlobalIndex()
+  FORTRILINOS_UNIT_TEST(TpetraMap_getMinGlobalIndex)
     integer :: jerr
     type(TpetraMap) :: Obj
     integer(C_LONG_LONG) :: fresult, expected
-    integer(global_ordinal_type) :: num_global, index_base
+    integer(global_ordinal_type) :: num_global
     jerr = 0
     num_global = 4*comm%getSize()
-    index_base = 1
 
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_getMinGlobalIndex)
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
 
-    fresult = Obj%getMinGlobalIndex()
-    TEST_FOR_IERR(test_getMinGlobalIndex)
+    fresult = Obj%getMinGlobalIndex(); TEST_IERR()
     expected = comm%getRank() * 4 + 1
     if (fresult /= expected) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "getMindGlobalIndex: Expected minGlobalIndex = ", expected, " got ", fresult
     end if
-    call Obj%release()
-    TEST_FOR_IERR(test_getMinGlobalIndex)
+    call Obj%release(); TEST_IERR()
 
-    SET_ERROR_COUNT_AND_RETURN(test_getMinGlobalIndex, jerr)
+    success = (jerr == 0)
 
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_getMinGlobalIndex)
 
 ! -----------------------------getMaxGlobalIndex------------------------------ !
-  integer function test_getMaxGlobalIndex()
+  FORTRILINOS_UNIT_TEST(TpetraMap_getMaxGlobalIndex)
     integer :: jerr
     type(TpetraMap) :: Obj
     integer(C_LONG_LONG) :: fresult, expected
-    integer(global_ordinal_type) :: num_global, index_base
+    integer(global_ordinal_type) :: num_global
     jerr = 0
     num_global = 4*comm%getSize()
-    index_base = 1
 
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_getMaxGlobalIndex)
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
 
-    fresult = Obj%getMaxGlobalIndex()
-    TEST_FOR_IERR(test_getMaxGlobalIndex)
+    fresult = Obj%getMaxGlobalIndex(); TEST_IERR()
     expected = comm%getRank() * 4 + 4
     if (fresult /= expected) then
       jerr = jerr + 1
@@ -298,86 +270,74 @@ contains
         write(*,*) "getMaxGlobalIndex: Expected maxGloblIndex = ", expected, " got ", fresult
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_getMaxGlobalIndex)
+    call Obj%release(); TEST_IERR()
 
-    SET_ERROR_COUNT_AND_RETURN(test_getMaxGlobalIndex, jerr)
+    success = (jerr == 0)
 
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_getMaxGlobalIndex)
 
 ! ----------------------------getMinAllGlobalIndex---------------------------- !
-  integer function test_getMinAllGlobalIndex()
+  FORTRILINOS_UNIT_TEST(TpetraMap_getMinAllGlobalIndex)
     integer :: jerr
     type(TpetraMap) :: Obj
     integer(C_LONG_LONG) :: fresult
-    integer(global_ordinal_type) :: num_global, index_base
+    integer(global_ordinal_type) :: num_global
     jerr = 0
     num_global = 4*comm%getSize()
-    index_base = 1
 
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_getMinAllGlobalIndex)
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
 
-    fresult = Obj%getMinAllGlobalIndex()
-    TEST_FOR_IERR(test_getMinAllGlobalIndex)
+    fresult = Obj%getMinAllGlobalIndex(); TEST_IERR()
     if (fresult /= index_base) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "getMinAllGlobalIndex: Expected minAllGlobalIndex = ", index_base, " got ", fresult
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_getMinAllGlobalIndex)
+    call Obj%release(); TEST_IERR()
 
-    SET_ERROR_COUNT_AND_RETURN(test_getMinAllGlobalIndex, jerr)
+    success = (jerr == 0)
 
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_getMinAllGlobalIndex)
 
 ! ----------------------------getMaxAllGlobalIndex---------------------------- !
-  integer function test_getMaxAllGlobalIndex()
+  FORTRILINOS_UNIT_TEST(TpetraMap_getMaxAllGlobalIndex)
     integer :: jerr
     type(TpetraMap) :: Obj
     integer(C_LONG_LONG) :: fresult
-    integer(global_ordinal_type) :: num_global, index_base
+    integer(global_ordinal_type) :: num_global
     jerr = 0
     num_global = 4*comm%getSize()
-    index_base = 1
 
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_getMaxAllGlobalIndex)
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
 
-    fresult = Obj%getMaxAllGlobalIndex()
-    TEST_FOR_IERR(test_getMaxAllGlobalIndex)
+    fresult = Obj%getMaxAllGlobalIndex(); TEST_IERR()
     if (fresult /= num_global) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "getMaxAllGlobalIndex: Expected maxAllGlobalIndex = ", num_global, " got ", fresult
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_getMaxAllGlobalIndex)
+    call Obj%release(); TEST_IERR()
 
-    SET_ERROR_COUNT_AND_RETURN(test_getMaxAllGlobalIndex, jerr)
+    success = (jerr == 0)
 
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_getMaxAllGlobalIndex)
 
 ! ------------------------------getLocalElement------------------------------- !
-  integer function test_getLocalElement()
+  FORTRILINOS_UNIT_TEST(TpetraMap_getLocalElement)
     integer :: jerr
     type(TpetraMap) :: Obj
     integer(C_LONG_LONG) :: globalindex
     integer(C_INT) :: fresult
-    integer(global_ordinal_type) :: num_global, index_base
+    integer(global_ordinal_type) :: num_global
     jerr = 0
     num_global = 4*comm%getSize()
-    index_base = 1
 
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_getLocalElement)
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
 
     globalindex = comm%getRank() * 4 + 1
-    fresult = Obj%getLocalElement(globalindex)
-    TEST_FOR_IERR(test_getLocalElement)
+    fresult = Obj%getLocalElement(globalindex); TEST_IERR()
     if (fresult /= 1) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
@@ -385,39 +345,34 @@ contains
     end if
 
     globalindex = comm%getRank() * 4 + 4
-    fresult = Obj%getLocalElement(globalindex)
-    TEST_FOR_IERR(test_getLocalElement)
+    fresult = Obj%getLocalElement(globalindex); TEST_IERR()
     if (fresult /= 4) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "getLocalElement: Expected local element = ", 4, " got ", fresult
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_getLocalElement)
+    call Obj%release(); TEST_IERR()
 
-    SET_ERROR_COUNT_AND_RETURN(test_getLocalElement, jerr)
+    success = (jerr == 0)
 
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_getLocalElement)
 
 ! ------------------------------getGlobalElement------------------------------ !
-  integer function test_getGlobalElement()
+  FORTRILINOS_UNIT_TEST(TpetraMap_getGlobalElement)
     integer :: jerr
     type(TpetraMap) :: Obj
     integer(C_INT) :: localindex
     integer(C_LONG_LONG) :: fresult, expected
-    integer(global_ordinal_type) :: num_global, index_base
+    integer(global_ordinal_type) :: num_global
     jerr = 0
     num_global = 4*comm%getSize()
-    index_base = 1
 
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_getGlobalElement)
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
 
     localindex = 1
     expected = comm%getRank() * 4 + 1
-    fresult = Obj%getGlobalElement(localindex)
-    TEST_FOR_IERR(test_getGlobalElement)
+    fresult = Obj%getGlobalElement(localindex); TEST_IERR()
     if (fresult /= expected) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
@@ -426,70 +381,47 @@ contains
 
     localindex = 4
     expected = comm%getRank() * 4 + 4
-    fresult = Obj%getGlobalElement(localindex)
-    TEST_FOR_IERR(test_getGlobalElement)
+    fresult = Obj%getGlobalElement(localindex); TEST_IERR()
     if (fresult /= expected) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "getGlobalElement: Expected global element = ", expected, " got ", fresult
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_getGlobalElement)
+    call Obj%release(); TEST_IERR()
 
-    SET_ERROR_COUNT_AND_RETURN(test_getGlobalElement, jerr)
+    success = (jerr == 0)
 
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_getGlobalElement)
 
 ! -----------------------------getNodeElementList----------------------------- !
-  integer function test_getNodeElementList()
-    integer :: jerr
+  FORTRILINOS_UNIT_TEST(TpetraMap_getNodeElementList)
     type(TpetraMap) :: Obj
-    type(TeuchosArrayViewLongLongConst) :: fresult
-    integer(global_ordinal_type) :: num_global, index_base
-    jerr = 0
+    integer(global_ordinal_type), allocatable :: element_list(:)
+    integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    index_base = 1
-
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_getNodeElementList)
-
-    fresult = Obj%getNodeElementList()
-    TEST_FOR_IERR(test_getNodeElementList)
-
-    ! TODO: getNodeElementList should be modified to be a subroutine that takes
-    ! TODO: the element list as a return argument.  Otherwise, there is no
-    ! TODO: (current) way to get to the data in the ArrayView returned.
-    if (comm%getRank() == 0) &
-      write(*,*) "getNodeElementList: Test not yet implemented"
-
-    call fresult%release()
-    TEST_FOR_IERR(test_getNodeElementList)
-
-    call Obj%release()
-    TEST_FOR_IERR(test_getNodeElementList)
-
-    SET_ERROR_COUNT_AND_RETURN(test_getNodeElementList, jerr)
-
-  end function
+    allocate(element_list(4))
+    ! TODO: The element list returned is junk
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%getNodeElementList(element_list)
+    deallocate(element_list)
+    call Obj%release(); TEST_IERR()
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_getNodeElementList)
 
 ! -----------------------------isNodeLocalElement----------------------------- !
-  integer function test_isNodeLocalElement()
+  FORTRILINOS_UNIT_TEST(TpetraMap_isNodeLocalElement)
     integer :: jerr
     type(TpetraMap) :: Obj
     integer(C_INT) :: localindex
     logical(C_BOOL) :: fresult
-    integer(global_ordinal_type) :: num_global, index_base
+    integer(global_ordinal_type) :: num_global
     jerr = 0
     num_global = 4*comm%getSize()
-    index_base = 1
 
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_isNodeLocalElement)
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
 
     localindex = 1
-    fresult = Obj%isNodeLocalElement(localindex)
-    TEST_FOR_IERR(test_isNodeLocalElement)
+    fresult = Obj%isNodeLocalElement(localindex); TEST_IERR()
     if (.not. fresult) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
@@ -497,38 +429,33 @@ contains
     end if
 
     localindex = 5
-    fresult = Obj%isNodeLocalElement(localindex)
-    TEST_FOR_IERR(test_isNodeLocalElement)
+    fresult = Obj%isNodeLocalElement(localindex); TEST_IERR()
     if (fresult) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "isNodeLocalElement: expected 5 to NOT be a local index"
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_isNodeLocalElement)
+    call Obj%release(); TEST_IERR()
 
-    SET_ERROR_COUNT_AND_RETURN(test_isNodeLocalElement, jerr)
+    success = (jerr == 0)
 
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_isNodeLocalElement)
 
 ! ----------------------------isNodeGlobalElement----------------------------- !
-  integer function test_isNodeGlobalElement()
+  FORTRILINOS_UNIT_TEST(TpetraMap_isNodeGlobalElement)
     integer :: jerr
     type(TpetraMap) :: Obj
     integer(C_LONG_LONG) :: globalindex
     logical(C_BOOL) :: fresult
-    integer(global_ordinal_type) :: num_global, index_base
+    integer(global_ordinal_type) :: num_global
     jerr = 0
     num_global = 4*comm%getSize()
-    index_base = 1
 
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_isNodeGlobalElement)
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
 
     globalindex = int(comm%getRank() * 4 + 1, kind=global_ordinal_type)
-    fresult = Obj%isNodeGlobalElement(globalindex)
-    TEST_FOR_IERR(test_isNodeGlobalElement)
+    fresult = Obj%isNodeGlobalElement(globalindex); TEST_IERR()
     if (.not. fresult) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
@@ -536,128 +463,109 @@ contains
     end if
     globalindex = num_global + 1
 
-    fresult = Obj%isNodeGlobalElement(globalindex)
-    TEST_FOR_IERR(test_isNodeGlobalElement)
+    fresult = Obj%isNodeGlobalElement(globalindex); TEST_IERR()
     if (fresult) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "isNodeGlobalElement: expected 5 to NOT be a global index"
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_isNodeGlobalElement)
+    call Obj%release(); TEST_IERR()
 
-    SET_ERROR_COUNT_AND_RETURN(test_isNodeGlobalElement, jerr)
+    success = (jerr == 0)
 
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_isNodeGlobalElement)
 
 ! ---------------------------------isUniform---------------------------------- !
-  integer function test_isUniform()
+  FORTRILINOS_UNIT_TEST(TpetraMap_isUniform)
     integer :: jerr
     type(TpetraMap) :: Obj
     logical(C_BOOL) :: fresult
     integer :: k
-    integer(global_ordinal_type) :: num_global, index_base, elements(4)
+    integer(global_ordinal_type) :: num_global, elements(4)
     jerr = 0
     num_global = 4*comm%getSize()
-    index_base = 1
 
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_isUniform)
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
 
-    fresult = Obj%isUniform()
-    TEST_FOR_IERR(test_isUniform)
+    fresult = Obj%isUniform(); TEST_IERR()
     if (.not. fresult) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "isUniform: expected map to be uniform"
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_isUniform)
+    call Obj%release(); TEST_IERR()
 
     do k = 1, 4
       elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
     end do
-    call Obj%create(num_global, elements, index_base, comm);
-    TEST_FOR_IERR(test_isUniform)
+    call Obj%create(num_global, elements, index_base, comm); TEST_IERR()
 
-    fresult = Obj%isUniform()
-    TEST_FOR_IERR(test_isUniform)
+    fresult = Obj%isUniform(); TEST_IERR()
     if (fresult) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "isUniform: expected map to NOT be uniform"
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_isUniform)
+    call Obj%release(); TEST_IERR()
 
-    SET_ERROR_COUNT_AND_RETURN(test_isUniform, jerr)
+    success = (jerr == 0)
 
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_isUniform)
 
 ! --------------------------------isContiguous-------------------------------- !
-  integer function test_isContiguous()
+  FORTRILINOS_UNIT_TEST(TpetraMap_isContiguous)
     integer :: jerr
     type(TpetraMap) :: Obj
     logical(C_BOOL) :: fresult
     integer :: k
-    integer(global_ordinal_type) :: num_global, index_base, elements(4)
+    integer(global_ordinal_type) :: num_global, elements(4)
     jerr = 0
     num_global = 4*comm%getSize()
-    index_base = 1
 
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_isContiguous)
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
 
-    fresult = Obj%isContiguous()
-    TEST_FOR_IERR(test_isContiguous)
+    fresult = Obj%isContiguous(); TEST_IERR()
     if (.not. fresult) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "isContiguous: expected map to be uniform"
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_isContiguous)
+    call Obj%release(); TEST_IERR()
 
     do k = 1, 4
       elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
     end do
-    call Obj%create(num_global, elements, index_base, comm);
-    TEST_FOR_IERR(test_isContiguous)
+    call Obj%create(num_global, elements, index_base, comm); TEST_IERR()
 
-    fresult = Obj%isContiguous()
-    TEST_FOR_IERR(test_isContiguous)
+    fresult = Obj%isContiguous(); TEST_IERR()
     if (fresult) then
       jerr = jerr + 1
       if (comm%getRank() == 0) &
         write(*,*) "isContiguous: expected map to NOT be uniform"
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_isContiguous)
+    call Obj%release(); TEST_IERR()
 
-    SET_ERROR_COUNT_AND_RETURN(test_isContiguous, jerr)
+    success = (jerr == 0)
 
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_isContiguous)
 
 ! -------------------------------isDistributed-------------------------------- !
-  integer function test_isDistributed()
+  FORTRILINOS_UNIT_TEST(TpetraMap_isDistributed)
     integer :: jerr
     type(TpetraMap) :: Obj
     logical(C_BOOL) :: fresult
-    integer(global_ordinal_type) :: num_global, index_base, elements(4)
+    integer(global_ordinal_type) :: num_global, elements(4)
     jerr = 0
     num_global = 4*comm%getSize()
-    index_base = 1
 
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_isDistributed)
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
 
-    fresult = Obj%isDistributed()
-    TEST_FOR_IERR(test_isDistributed)
+    fresult = Obj%isDistributed(); TEST_IERR()
     if (comm%getSize() == 1) then
 
       if (fresult) then
@@ -676,18 +584,15 @@ contains
 
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_isDistributed)
+    call Obj%release(); TEST_IERR()
 
     ! All elements have 4 entries and map has only 4 entries so the map should
     ! not be distributed
     num_global = 4
     elements = [1, 2, 3, 4]
-    call Obj%create(num_global, elements, index_base, comm)
-    TEST_FOR_IERR(test_isDistributed)
+    call Obj%create(num_global, elements, index_base, comm); TEST_IERR()
 
-    fresult = Obj%isDistributed()
-    TEST_FOR_IERR(test_isDistributed)
+    fresult = Obj%isDistributed(); TEST_IERR()
     if (comm%getSize() == 1) then
 
       if (fresult) then
@@ -706,206 +611,170 @@ contains
 
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_isDistributed)
+    call Obj%release(); TEST_IERR()
 
-    SET_ERROR_COUNT_AND_RETURN(test_isDistributed, jerr)
+    success = (jerr == 0)
 
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_isDistributed)
 
 ! --------------------------------isCompatible-------------------------------- !
-  integer function test_isCompatible()
+  FORTRILINOS_UNIT_TEST(TpetraMap_isCompatible)
     integer :: jerr
     type(TpetraMap) :: Obj1, Obj2
     type(TpetraMap) :: map
     logical(C_BOOL) :: fresult
-    integer(global_ordinal_type) :: num_global, index_base, elements(4)
+    integer(global_ordinal_type) :: num_global, elements(4)
     integer :: k
     jerr = 0
     num_global = 4*comm%getSize()
-    index_base = 1
 
-    call Obj1%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_isCompatible)
+    call Obj1%create(num_global, index_base, comm); TEST_IERR()
 
     do k = 1, 4
       elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
     end do
-    call Obj2%create(num_global, elements, index_base, comm);
-    TEST_FOR_IERR(test_isCompatible)
+    call Obj2%create(num_global, elements, index_base, comm); TEST_IERR()
 
     ! Cyclic map should be compatible
-    fresult = Obj1%isCompatible(Obj2)
-    TEST_FOR_IERR(test_isCompatible)
+    fresult = Obj1%isCompatible(Obj2); TEST_IERR()
     if (.not. fresult) then
         jerr = jerr + 1
         if (comm%getRank()==0) &
           write(*,*) "isCompatible: Expected maps to be compatible"
     end if
 
-    call Obj2%release()
-    TEST_FOR_IERR(test_isCompatible)
+    call Obj2%release(); TEST_IERR()
 
     num_global = num_global + 10
-    call Obj2%create(num_global, index_base, comm);
-    TEST_FOR_IERR(test_isCompatible)
+    call Obj2%create(num_global, index_base, comm); TEST_IERR()
 
-    fresult = Obj1%isCompatible(Obj2)
-    TEST_FOR_IERR(test_isCompatible)
+    fresult = Obj1%isCompatible(Obj2); TEST_IERR()
     if (fresult) then
       jerr = jerr + 1
       if (comm%getRank()==0) &
         write(*,*) "isCompatible: Expected maps to NOT be compatible"
     end if
 
-    call Obj2%release()
-    TEST_FOR_IERR(test_isCompatible)
+    call Obj2%release(); TEST_IERR()
+    call Obj1%release(); TEST_IERR()
 
-    call Obj1%release()
-    TEST_FOR_IERR(test_isCompatible)
+    success = (jerr == 0)
 
-    SET_ERROR_COUNT_AND_RETURN(test_isCompatible, jerr)
-
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_isCompatible)
 
 ! ----------------------------------isSameAs---------------------------------- !
-  integer function test_isSameAs()
+  FORTRILINOS_UNIT_TEST(TpetraMap_isSameAs)
     integer :: jerr
     type(TpetraMap) :: Obj1, Obj2
     type(TpetraMap) :: map
     logical(C_BOOL) :: fresult
     integer(size_type) :: num_local
-    integer(global_ordinal_type) :: num_global, index_base, elements(4)
-    integer(global_size_type) :: invalid
+    integer(global_ordinal_type) :: num_global, elements(4)
     integer :: k
     jerr = 0
     num_global = 4*comm%getSize()
-    index_base = 1
 
-    call Obj1%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_isSameAs)
+    call Obj1%create(num_global, index_base, comm); TEST_IERR()
 
     if (comm%getSize() > 1) then
 
       do k = 1, 4
         elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
       end do
-      call Obj2%create(num_global, elements, index_base, comm);
-      TEST_FOR_IERR(test_isSameAs)
+      call Obj2%create(num_global, elements, index_base, comm); TEST_IERR()
 
       ! Cyclic map should not be SameAs
-      fresult = Obj1%isSameAs(Obj2)
-      TEST_FOR_IERR(test_isSameAs)
+      fresult = Obj1%isSameAs(Obj2); TEST_IERR()
       if (fresult) then
         jerr = jerr + 1
         if (comm%getRank()==0) &
           write(*,*) "isSameAs: Expected maps to NOT be same"
       end if
 
-      call Obj2%release()
-      TEST_FOR_IERR(test_isSameAs)
+      call Obj2%release(); TEST_IERR()
 
     end if
 
-    invalid = -1; num_local = 4
-    call Obj2%create(invalid, num_local, index_base, comm)
-    TEST_FOR_IERR(test_isSameAs)
+    num_local = 4
+    call Obj2%create(invalid, num_local, index_base, comm); TEST_IERR()
 
-    fresult = Obj1%isSameAs(Obj2)
-    TEST_FOR_IERR(test_isSameAs)
+    fresult = Obj1%isSameAs(Obj2); TEST_IERR()
     if (.not. fresult) then
       jerr = jerr + 1
       if (comm%getRank()==0) &
         write(*,*) "isSameAs: Expected maps to be same"
     end if
 
-    call Obj1%release()
-    TEST_FOR_IERR(test_isSameAs)
+    call Obj1%release(); TEST_IERR()
+    call Obj2%release(); TEST_IERR()
 
-    call Obj2%release()
-    TEST_FOR_IERR(test_isSameAs)
+    success = (jerr == 0)
 
-    SET_ERROR_COUNT_AND_RETURN(test_isSameAs, jerr)
-
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_isSameAs)
 
 ! -------------------------------locallySameAs-------------------------------- !
-  integer function test_locallySameAs()
+  FORTRILINOS_UNIT_TEST(TpetraMap_locallySameAs)
     integer :: jerr
     type(TpetraMap) :: Obj1, Obj2
     logical(C_BOOL) :: fresult
     integer(size_type) :: num_local
-    integer(global_ordinal_type) :: num_global, index_base, elements(4)
-    integer(global_size_type) :: invalid
+    integer(global_ordinal_type) :: num_global, elements(4)
     integer :: k
     jerr = 0
     num_global = 4*comm%getSize()
-    index_base = 1
 
-    call Obj1%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_locallySameAs)
+    call Obj1%create(num_global, index_base, comm); TEST_IERR()
 
     if (comm%getSize() > 1) then
 
       do k = 1, 4
         elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
       end do
-      call Obj2%create(num_global, elements, index_base, comm);
-      TEST_FOR_IERR(test_locallySameAs)
+      call Obj2%create(num_global, elements, index_base, comm); TEST_IERR()
 
       ! Cyclic map should not be locallySameAs
-      fresult = Obj1%locallySameAs(Obj2)
-      TEST_FOR_IERR(test_locallySameAs)
+      fresult = Obj1%locallySameAs(Obj2); TEST_IERR()
       if (fresult) then
         jerr = jerr + 1
         if (comm%getRank()==0) &
           write(*,*) "locallySameAs: Expected maps to NOT be same"
       end if
 
-      call Obj2%release()
-      TEST_FOR_IERR(test_locallySameAs)
+      call Obj2%release(); TEST_IERR()
 
     end if
 
-    invalid = -1; num_local = 4
-    call Obj2%create(invalid, num_local, index_base, comm)
-    TEST_FOR_IERR(test_locallySameAs)
+    num_local = 4
+    call Obj2%create(invalid, num_local, index_base, comm); TEST_IERR()
 
-    fresult = Obj1%locallySameAs(Obj2)
-    TEST_FOR_IERR(test_locallySameAs)
+    fresult = Obj1%locallySameAs(Obj2); TEST_IERR()
     if (.not. fresult) then
       jerr = jerr + 1
       if (comm%getRank()==0) &
         write(*,*) "locallySameAs: Expected maps to be same"
     end if
 
-    call Obj1%release()
-    TEST_FOR_IERR(test_locallySameAs)
+    call Obj1%release(); TEST_IERR()
+    call Obj2%release(); TEST_IERR()
 
-    call Obj2%release()
-    TEST_FOR_IERR(test_locallySameAs)
+    success = (jerr == 0)
 
-    SET_ERROR_COUNT_AND_RETURN(test_locallySameAs, jerr)
-
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_locallySameAs)
 
 ! ----------------------------------getComm----------------------------------- !
-  integer function test_getComm()
+  FORTRILINOS_UNIT_TEST(TpetraMap_getComm)
     integer :: jerr
     type(TpetraMap) :: Obj
     type(TeuchosComm) :: fresult
-    integer(global_ordinal_type) :: num_global, index_base
+    integer(global_ordinal_type) :: num_global
     jerr = 0
     num_global = 4*comm%getSize()
-    index_base = 1
 
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_getComm)
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
 
     ! We only test the comm returned has the same rank and size.  More
     ! comprehensive testing is (assumed to be) done in Teuchos itself.
-    fresult = Obj%getComm()
-    TEST_FOR_IERR(test_getComm)
+    fresult = Obj%getComm(); TEST_IERR()
     if (fresult%getRank() /= comm%getRank()) then
       jerr = jerr + 1
       if (comm%getRank()==0) &
@@ -918,47 +787,34 @@ contains
         write(*,*) "getComm: expected sizes to be same"
     end if
 
-    call Obj%release()
-    TEST_FOR_IERR(test_getComm)
+    call Obj%release(); TEST_IERR()
 
-    SET_ERROR_COUNT_AND_RETURN(test_getComm, jerr)
+    success = (jerr == 0)
 
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_getComm)
 
 ! --------------------------------description--------------------------------- !
-  integer function test_description()
-    integer :: jerr
+  FORTRILINOS_UNIT_TEST(TpetraMap_description)
     type(TpetraMap) :: Obj
     type(string) :: fresult
-    integer(global_ordinal_type) :: num_global, index_base
-    jerr = 0
+    integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    index_base = 1
-    call Obj%create(num_global, index_base, comm)
-    TEST_FOR_IERR(test_description)
-    fresult = Obj%description()
-    TEST_FOR_IERR(test_description)
-    SET_ERROR_COUNT_AND_RETURN(test_description, jerr)
-  end function
+    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    fresult = Obj%description(); TEST_IERR()
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_description)
 
 ! ----------------------------removeEmptyProcesses---------------------------- !
-  integer function test_removeEmptyProcesses()
-    integer :: jerr
-    jerr = 0
+  FORTRILINOS_UNIT_TEST(TpetraMap_removeEmptyProcesses)
     ! TODO: Implement this test?
     if (comm%getRank()==0) &
       write(*,*) 'removeEmptyProcesses: Test is not yet Implemented'
-    SET_ERROR_COUNT_AND_RETURN(test_removeEmptyProcesses, jerr)
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_removeEmptyProcesses)
 
 ! ---------------------------replaceCommWithSubset---------------------------- !
-  integer function test_replaceCommWithSubset()
-    integer :: jerr
-    jerr = 0
+  FORTRILINOS_UNIT_TEST(TpetraMap_replaceCommWithSubset)
     ! TODO: Implement this test?
     if (comm%getRank()==0) &
       write(*,*) 'replaceCommWithSubset: Test is not yet implemented'
-    SET_ERROR_COUNT_AND_RETURN(test_replaceCommWithSubset, jerr)
-  end function
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_replaceCommWithSubset)
 
 end program test_TpetraMap
