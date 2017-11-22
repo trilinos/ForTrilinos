@@ -5,6 +5,7 @@
 /* Options */
 
 #include "DBCF.h"
+use DBCF_M
 
 #define ASSERT_C_ASSOC( X ) \
     Insist( C_ASSOCIATED( X % instance_ptr ), "X not C_ASSOCIATED" )
@@ -45,6 +46,91 @@
     WRITE( 0, * ) "Expected ierr = 0, but got ", ierr; \
     Insist(.false., "Expected ierr = 0" );             \
     end if
+
+#define FORTRILINOS_UNIT_TEST(NAME) \
+    subroutine NAME(success);       \
+    implicit none;                  \
+    logical :: success
+
+#define END_FORTRILINOS_UNIT_TEST(NAME) \
+    if (success) success = (ierr == 0); \
+    ierr = 0;                           \
+    return;                             \
+    end subroutine NAME
+
+! Two versions of several macros are provided for with/without MPI.
+#ifdef HAVE_MPI
+
+#define DECLARE_TEST_VARIABLES()                                \
+  use mpi;                                                      \
+  implicit none;                                                \
+  logical LOCAL_SUCCESS;                                        \
+  integer ERR1(1), ERR2(1), IERROR, COMM_RANK, ERROR_COUNTER
+
+#define INITIALIZE_TEST()                                       \
+  ERR1(1) = 0; ERR2(1) = 0; ERROR_COUNTER = 0;                  \
+  call MPI_INIT(ierr);                                          \
+  call MPI_COMM_RANK(MPI_COMM_WORLD, COMM_RANK, IERROR)
+
+#define ADD_SUBTEST_AND_RUN(NAME)                               \
+    LOCAL_SUCCESS = .true.;                                     \
+    call NAME(LOCAL_SUCCESS);                                   \
+    if (LOCAL_SUCCESS) then;                                    \
+    ERR1(1) = 0;                                                \
+    else;                                                       \
+    ERR1(1) = 1;                                                \
+    end if;                                                     \
+    call MPI_ALLREDUCE(ERR1, ERR2, 1, MPI_INTEGER, MPI_MAX, MPI_COMM_WORLD, IERROR); \
+    if ( ERR2(1) /= 0 ) then;                                   \
+      if (COMM_RANK == 0) write(0, *) "Test FAILED!";           \
+      ERROR_COUNTER = ERROR_COUNTER + 1;                        \
+    end if
+
+#define SHUTDOWN_TEST()                                         \
+  if (ERROR_COUNTER == 0) then;                                 \
+    if (COMM_RANK == 0) then;                                   \
+      write(*,*) "Test PASSED";                                 \
+    end if;                                                     \
+  else;                                                         \
+    if (COMM_RANK == 0) then;                                   \
+      write(*,*) "A total of ", ERROR_COUNTER, " tests FAILED"; \
+    end if;                                                     \
+    Insist(.false., "FAILED TESTS ENCOUNTERED" );               \
+  end if;                                                       \
+  call MPI_FINALIZE(ierr)
+
+#else
+
+#define DECLARE_TEST_VARIABLES()         \
+  implicit none;                         \
+  logical LOCAL_SUCCESS;                 \
+  integer ERROR_COUNTER, COMM_RANK
+
+#define INITIALIZE_TEST()                \
+  ERROR_COUNTER = 0; COMM_RANK = 0;
+
+#define ADD_SUBTEST_AND_RUN(NAME)                               \
+    LOCAL_SUCCESS = .true.;                                     \
+    call NAME(LOCAL_SUCCESS);                                   \
+    if (.not. LOCAL_SUCCESS) then;                              \
+      if (COMM_RANK == 0) write(0, *) "Test FAILED!";           \
+      ERROR_COUNTER = ERROR_COUNTER + 1;                        \
+    end if
+
+#define SHUTDOWN_TEST()                                       \
+  if (ERROR_COUNTER == 0) then;                               \
+    write(*,*) "Test PASSED";                                 \
+  else;                                                       \
+    write(*,*) "A total of ", ERROR_COUNTER, " tests FAILED"; \
+    Insist(.false., "FAILED TESTS ENCOUNTERED" );             \
+  end if
+
+#endif
+
+! The TEST_* macros to follow are intended to be called from within
+! a FORTRILINOS_UNIT_TEST.  Insetad of stopping calculations at the first sign of
+! error, they set the variable "success" to .false. and return.  This informs the
+! ADD_SUBTEST_AND_RUN macro that the subtest failed.
 
 #define TEST_IERR() \
     if (ierr /= 0) then; \
@@ -98,88 +184,8 @@
     return;                                                  \
     end if
 
-#define FORTRILINOS_UNIT_TEST(NAME) \
-    subroutine NAME(success);       \
-    implicit none;                  \
-    logical :: success
-
-#define END_FORTRILINOS_UNIT_TEST(NAME) \
-    if (success) success = (ierr == 0); \
-    ierr = 0;                           \
-    return;                             \
-    end subroutine NAME
-
 #define OUT0(STRING) \
     if (COMM_RANK == 0) WRITE(0, *) STRING
 
-use DBCF_M
-
-#ifdef HAVE_MPI
-
-#define DECLARE_TEST_VARIABLES()                                \
-  use mpi;                                                      \
-  implicit none;                                                \
-  logical LOCAL_SUCCESS;                                        \
-  integer ERR1(1), ERR2(1), IERROR, COMM_RANK, ERROR_COUNTER
-
-#define INITIALIZE_TEST()                                       \
-  ERR1(1) = 0; ERR2(1) = 0; ERROR_COUNTER = 0;                  \
-  call MPI_INIT(ierr);                                          \
-  call MPI_COMM_RANK(MPI_COMM_WORLD, COMM_RANK, IERROR)
-
-#define ADD_SUBTEST_AND_RUN(NAME)                               \
-    LOCAL_SUCCESS = .true.;                                     \
-    call NAME(LOCAL_SUCCESS);                                   \
-    if (LOCAL_SUCCESS) then;                                    \
-    ERR1(1) = 0;                                                \
-    else;                                                       \
-    ERR1(1) = 1;                                                \
-    end if;                                                     \
-    call MPI_ALLREDUCE(ERR1, ERR2, 1, MPI_INTEGER, MPI_MAX, MPI_COMM_WORLD, IERROR); \
-    if ( ERR2(1) /= 0 ) then;                                   \
-      if (COMM_RANK == 0) write(0, *) "Test FAILED!";           \
-      ERROR_COUNTER = ERROR_COUNTER + 1;                        \
-    endif
-
-#define SHUTDOWN_TEST()                                         \
-  if (ERROR_COUNTER == 0) then;                                 \
-    if (COMM_RANK == 0) then;                                   \
-      write(*,*) "Test PASSED";                                 \
-    end if;                                                     \
-  else;                                                         \
-    if (COMM_RANK == 0) then;                                   \
-      write(*,*) "A total of ", ERROR_COUNTER, " tests FAILED"; \
-    end if;                                                     \
-    Insist(.false., "FAILED TESTS ENCOUNTERED" );               \
-  end if;                                                       \
-  call MPI_FINALIZE(ierr)
-
-#else
-
-#define DECLARE_TEST_VARIABLES()         \
-  implicit none;                         \
-  logical LOCAL_SUCCESS;                 \
-  integer ERROR_COUNTER, COMM_RANK
-
-#define INITIALIZE_TEST()                \
-  ERROR_COUNTER = 0; COMM_RANK = 0;
-
-#define ADD_SUBTEST_AND_RUN(NAME)        \
-    LOCAL_SUCCESS = .true.               \
-    call NAME(LOCAL_SUCCESS);            \
-    if ( .not. LOCAL_SUCCESS ) then;     \
-      write(0, *) "Test FAILED!";        \
-      ERROR_COUNTER = ERROR_COUNTER + 1; \
-    endif
-
-#define SHUTDOWN_TEST()                                       \
-  if (ERROR_COUNTER == 0) then;                               \
-    write(*,*) "Test PASSED";                                 \
-  else;                                                       \
-    write(*,*) "A total of ", ERROR_COUNTER, " tests FAILED"; \
-    Insist(.false., "FAILED TESTS ENCOUNTERED" );             \
-  end if
-
-#endif
 
 #endif /* FOTRANTESTMACROS_H */
