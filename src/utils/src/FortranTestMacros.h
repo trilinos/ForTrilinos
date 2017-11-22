@@ -156,28 +156,28 @@ use DBCF_M
 
 #else
 
-#define DECLARE_TEST_VARIABLES() \
-  implicit none; \
-  logical LOCAL_SUCCESS; \
+#define DECLARE_TEST_VARIABLES()         \
+  implicit none;                         \
+  logical LOCAL_SUCCESS;                 \
   integer ERROR_COUNTER, COMM_RANK
 
-#define INITIALIZE_TEST() \
+#define INITIALIZE_TEST()                \
   ERROR_COUNTER = 0; COMM_RANK = 0;
 
-#define ADD_SUBTEST_AND_RUN(NAME) \
-    LOCAL_SUCCESS = .true.
-    call NAME(LOCAL_SUCCESS); \
-    if ( .not. LOCAL_SUCCESS ) then; \
-      write(0, *) "Test FAILED!"; \
+#define ADD_SUBTEST_AND_RUN(NAME)        \
+    LOCAL_SUCCESS = .true.               \
+    call NAME(LOCAL_SUCCESS);            \
+    if ( .not. LOCAL_SUCCESS ) then;     \
+      write(0, *) "Test FAILED!";        \
       ERROR_COUNTER = ERROR_COUNTER + 1; \
     endif
 
-#define SHUTDOWN_TEST() \
-  if (ERROR_COUNTER == 0) then; \
-    write(*,*) "Test PASSED"; \
-  else; \
+#define SHUTDOWN_TEST()                                       \
+  if (ERROR_COUNTER == 0) then;                               \
+    write(*,*) "Test PASSED";                                 \
+  else;                                                       \
     write(*,*) "A total of ", ERROR_COUNTER, " tests FAILED"; \
-    Insist(.false., "FAILED TESTS ENCOUNTERED" ); \
+    Insist(.false., "FAILED TESTS ENCOUNTERED" );             \
   end if
 
 #endif
