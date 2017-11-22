@@ -4,6 +4,8 @@
 
 SET(TESTS
   test_tpetra_map.f90
+  test_tpetra_multivector.f90
+  test_tpetra_crsmatrix.f90
   )
 
 FOREACH(test ${TESTS})

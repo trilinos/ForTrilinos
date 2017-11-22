@@ -1,3 +1,4 @@
+! vi: ft=fortran
 #ifndef FOTRANTESTMACROS_H
 #define FOTRANTESTMACROS_H
 
@@ -5,6 +6,7 @@
 /* Options */
 
 #include "DBCF.h"
+use DBCF_M
 
 #define ASSERT_C_ASSOC( X ) \
     Insist( C_ASSOCIATED( X % instance_ptr ), "X not C_ASSOCIATED" )
@@ -41,81 +43,205 @@
     endif
 
 #define CHECK_IERR( ) \
-    if(.NOT. ierr == 0 ) then;                         \
-    WRITE( 0, * ) "Expected ierr = 0, but got ", ierr; \
-    Insist(.false., "Expected ierr = 0" );             \
-    endif
+    if(.NOT. ierr == 0 ) then;                                    \
+    WRITE( 0, * ) "Expected ierr = 0, but got ", ierr;            \
+    WRITE( *, * ) "With associated serr = ", trim(serr);          \
+    Insist(.false., "Expected ierr = 0" );                        \
+    end if
 
-#define TEST_FOR_IERR( NAME ) \
-    if (ierr /= 0) then; \
-      NAME = ierr; \
-      ierr = 0; \
-      return; \
-    endif
+#define FORTRILINOS_UNIT_TEST(NAME)                               \
+    subroutine NAME(success);                                     \
+    implicit none;                                                \
+    logical :: success
 
-#define SET_ERROR_COUNT_AND_RETURN(NAME, ERROR_COUNT) \
-    NAME = ERROR_COUNT + ierr; \
-    ierr = 0; \
-    return
+#define END_FORTRILINOS_UNIT_TEST(NAME)                           \
+    if (success) success = (ierr == 0);                           \
+    ierr = 0;                                                     \
+    return;                                                       \
+    end subroutine NAME
 
-use DBCF_M
-
+! Two versions of several macros are provided for with/without MPI.
 #ifdef HAVE_MPI
 
-#define DECLARE_TEST_VARIABLES() \
-  use mpi; \
-  implicit none; \
-  integer ERR1(1), ERR2(1), IERROR, COMM_RANK, ERROR_COUNTER
+#define DECLARE_TEST_VARIABLES()                                  \
+  use mpi;                                                        \
+  implicit none;                                                  \
+  logical LOCAL_SUCCESS;                                          \
+  character(len=256) JNKSTR;                                      \
+  integer ERR1(1), ERR2(1), IERROR;                               \
+  integer COMM_RANK, FAILED_TESTS, TOTAL_TESTS
 
-#define INITIALIZE_TEST() \
-  ERR1(1) = 0; ERR2(1) = 0; ERROR_COUNTER = 0; \
-  call MPI_INIT(ierr); \
+#define INITIALIZE_TEST()                                         \
+  ERR1(1) = 0; ERR2(1) = 0; FAILED_TESTS = 0; TOTAL_TESTS=0;      \
+  call MPI_INIT(ierr);                                            \
   call MPI_COMM_RANK(MPI_COMM_WORLD, COMM_RANK, IERROR)
 
-#define ADD_SUBTEST_AND_RUN(TEST_NAME) \
-    ERR1(1) = TEST_NAME(); \
+#define ADD_SUBTEST_AND_RUN(NAME)                                 \
+    LOCAL_SUCCESS = .true.;                                       \
+    TOTAL_TESTS = TOTAL_TESTS + 1;                                \
+    call NAME(LOCAL_SUCCESS);                                     \
+    if (LOCAL_SUCCESS) then;                                      \
+    ERR1(1) = 0;                                                  \
+    else;                                                         \
+    ERR1(1) = 1;                                                  \
+    end if;                                                       \
     call MPI_ALLREDUCE(ERR1, ERR2, 1, MPI_INTEGER, MPI_MAX, MPI_COMM_WORLD, IERROR); \
-    if ( ERR2(1) /= 0 ) then; \
-      if (COMM_RANK == 0) write(0, *) "Test FAILED!"; \
-      ERROR_COUNTER = ERROR_COUNTER + 1; \
-    endif
+    if ( ERR2(1) /= 0 ) then;                                     \
+    if (COMM_RANK == 0) write(0, *) "Test FAILED!";               \
+    FAILED_TESTS = FAILED_TESTS + 1;                              \
+    end if
 
-#define SHUTDOWN_TEST() \
-  if (ERROR_COUNTER == 0) then; \
-    if (COMM_RANK == 0) then; \
-      write(*,*) "Test PASSED"; \
-    end if; \
-  else; \
-    if (COMM_RANK == 0) then; \
-      write(*,*) "A total of ", ERROR_COUNTER, " tests FAILED"; \
-    end if; \
-    Insist(.false., "FAILED TESTS ENCOUNTERED" ); \
-  end if; \
-  call MPI_FINALIZE(ierr);
+#define SHUTDOWN_TEST()                                           \
+  if (FAILED_TESTS == 0) then;                                    \
+  if (COMM_RANK == 0) then;                                       \
+  write(0,'(A,I3,A)') "100% of ", TOTAL_TESTS, " tests PASSED";   \
+  end if;                                                         \
+  else;                                                           \
+  if (COMM_RANK == 0) then;                                       \
+  write(*,'(I3,A,I3,A)') FAILED_TESTS, " of ", TOTAL_TESTS, " tests FAILED";   \
+  end if;                                                         \
+  Insist(.false., "FAILED TESTS ENCOUNTERED" );                   \
+  end if;                                                         \
+  call MPI_FINALIZE(ierr)
 
 #else
 
-#define DECLARE_TEST_VARIABLES() \
-  implicit none; \
-  integer ERROR_COUNTER
+#define DECLARE_TEST_VARIABLES()                                  \
+  implicit none;                                                  \
+  logical LOCAL_SUCCESS;                                          \
+  character(len=256) JNKSTR;                                      \
+  integer COMM_RANK, TOTAL_TESTS, FAILED_TESTS
 
-#define INITIALIZE_TEST() \
-  ERROR_COUNTER = 0;
+#define INITIALIZE_TEST()                                         \
+  FAILED_TESTS = 0; COMM_RANK = 0;
 
-#define ADD_SUBTEST_AND_RUN(TEST_NAME) \
-    if ( TEST_NAME() /= 0 ) then; \
-      write(0, *) "Test FAILED!"; \
-      ERROR_COUNTER = ERROR_COUNTER + 1; \
-    endif
+#define ADD_SUBTEST_AND_RUN(NAME)                                 \
+    LOCAL_SUCCESS = .true.;                                       \
+    TOTAL_TESTS = TOTAL_TESTS + 1;                                \
+    call NAME(LOCAL_SUCCESS);                                     \
+    if (.not. LOCAL_SUCCESS) then;                                \
+    if (COMM_RANK == 0) write(0, *) "Test FAILED!";               \
+    FAILED_TESTS = FAILED_TESTS + 1;                              \
+    end if
 
-#define SHUTDOWN_TEST() \
-  if (ERROR_COUNTER == 0) then; \
-    write(*,*) "Test PASSED"; \
-  else; \
-    write(*,*) "A total of ", ERROR_COUNTER, " tests FAILED"; \
-    Insist(.false., "FAILED TESTS ENCOUNTERED" ); \
+#define SHUTDOWN_TEST()                                           \
+  if (FAILED_TESTS == 0) then;                                    \
+  write(0,'(A,I3,A)') "100% of ", TOTAL_TESTS, " tests PASSED";   \
+  else;                                                           \
+  write(*,'(I3,A,I3,A)') FAILED_TESTS, " of ", TOTAL_TESTS, " tests FAILED";   \
+  Insist(.false., "FAILED TESTS ENCOUNTERED" );                   \
   end if
 
 #endif
+
+! The TEST_* macros to follow are intended to be called from within
+! a FORTRILINOS_UNIT_TEST.  Insetad of stopping calculations at the first sign of
+! error, they set the variable "success" to .false. and return.  This informs the
+! ADD_SUBTEST_AND_RUN macro that the subtest failed.
+#define TEST_IERR()                                               \
+  if (ierr /= 0) then;                                            \
+  if (COMM_RANK == 0) then;                                       \
+  WRITE(0, '(A,A,A,I6)') "File '", __FILE__, "', line ", __LINE__; \
+  write(0, '(A)') "  TEST_IERR()";                                \
+  write(0, '(A)') "Error:", trim(serr);                           \
+  end if;                                                         \
+  success = .false.; ierr = 0;                                    \
+  return;                                                         \
+  end if
+
+#define TEST_COMPARE_FLOATING_ARRAYS(ARR1, ARR2, TOL)             \
+  IF(ABS(MAXVAL(ARR1 - ARR2)) > TOL) THEN;                        \
+  if (COMM_RANK == 0) then;                                       \
+  WRITE(0, '(A,A,A,I6)') "File '", __FILE__, "', line ", __LINE__; \
+  write(0, '(A)') "  TEST_COMPARE_FLOATING_ARRAYS(ARR1,ARR2,TOL)";\
+  write(0, '(A)') "Error: Expected ARR1 == ARR2";                 \
+  end if;                                                         \
+  success = .false.; ierr = 0;                                    \
+  return;                                                         \
+  end if
+
+#define TEST_ARRAY_EQUALITY(ARR, VAL, TOL)                        \
+  if(abs(maxval(ARR - VAL)) > TOL) then;                          \
+  if (COMM_RANK == 0) then;                                       \
+  WRITE(0, '(A,A,A,I6)') "File '", __FILE__, "', line ", __LINE__; \
+  write(0, '(A)') "  TEST_ARRAY_EQUALITY(ARR1,ARR2,TOL)";         \
+  write(0, '(A)') "Error: Expected ARR1 == ARR2";                 \
+  end if;                                                         \
+  success = .false.; ierr = 0;                                    \
+  return;                                                         \
+  end if
+
+#define TEST_ARRAY_INEQUALITY(ARR, VAL, TOL)                      \
+  if(abs(maxval(ARR - VAL)) <= TOL) then;                         \
+  if (COMM_RANK == 0) then;                                       \
+  WRITE(0, '(A,A,A,I6)') "File '", __FILE__, "', line ", __LINE__; \
+  write(0, '(A)') "  TEST_ARRAY_INEQUALITY(ARR1,ARR2,TOL)";       \
+  write(0, '(A)') "Error: Expected ARR1 /= ARR2";                 \
+  end if;                                                         \
+  success = .false.; ierr = 0;                                    \
+  return;                                                         \
+  end if
+
+#define TEST_FLOATING_EQUALITY(VAL1, VAL2, TOL)                   \
+  if(abs(VAL1 - VAL2) > TOL) then;                                \
+  if (COMM_RANK == 0) then;                                       \
+  WRITE(0, '(A,A,A,I6)') "File '", __FILE__, "', line ", __LINE__; \
+  WRITE(0, '(A)') "  TEST_FLOATING_EQUALITY(VAL1,VAL2,TOL)";      \
+  write(0, *) "Error: Expected ", VAL1, "==", VAL2;           \
+  end if;                                                         \
+  success = .false.; ierr = 0;                                    \
+  return;                                                         \
+  end if
+
+#define TEST_EQUALITY(VAL1, VAL2)                                 \
+  if(VAL1 /= VAL2) then;                                          \
+  if (COMM_RANK == 0) then;                                       \
+  WRITE(0, '(A,A,A,I6)') "File '", __FILE__, "', line ", __LINE__; \
+  WRITE(0, '(A)') "  TEST_EQUALITY(VAL1,VAL2)";                   \
+  write(0, *) "Error: Expected ", VAL1, "==", VAL2;           \
+  end if;                                                         \
+  success = .false.; ierr = 0;                                    \
+  return;                                                         \
+  end if
+
+#define TEST_ASSERT(COND)                                         \
+  if(.not. COND) then;                                            \
+  if (COMM_RANK == 0) then;                                       \
+  WRITE(0, '(A,A,A,I6)') "File '", __FILE__, "', line ", __LINE__; \
+  WRITE(0, '(A)') "  TEST_ASSERT(COND)";                          \
+  WRITE(0, '(A)') "Error: Expected COND to evaluate to .TRUE.";   \
+  end if;                                                         \
+  success = .false.; ierr = 0;                                    \
+  return;                                                         \
+  end if
+
+#define TEST_THROW(CODE)                                          \
+  CODE;                                                           \
+  if (ierr == 0) then;                                            \
+  if (COMM_RANK == 0) then;                                       \
+  WRITE(0, '(A,A,A,I6)') "File '", __FILE__, "', line ", __LINE__; \
+  WRITE(0, '(A)') "  TEST_THROW(CODE)";                           \
+  WRITE(0, '(A)') "Error: Expected CODE to set ierr /= 0";        \
+  end if;                                                         \
+  success = .false.; ierr = 0;                                    \
+  return;                                                         \
+  end if
+
+#define TEST_NOTHROW(CODE)                                        \
+  CODE;                                                           \
+  if (ierr /= 0) then;                                            \
+  if (COMM_RANK == 0) then;                                       \
+  WRITE(0, '(A,A,A,I6)') "File '", __FILE__, "', line ", __LINE__; \
+  WRITE(0, '(A)') "  TEST_NOTHROW(CODE)";                         \
+  WRITE(0, '(A)') "Error: Expected CODE to not set ierr /= 0";    \
+  WRITE(0, '(A,A)') "serr: ", trim(serr);                         \
+  end if;                                                         \
+  success = .false.; ierr = 0;                                    \
+  return;                                                         \
+  end if
+
+#define OUT0(STRING)                                              \
+    if (COMM_RANK == 0) WRITE(0, *) STRING
+
 
 #endif /* FOTRANTESTMACROS_H */
