@@ -154,7 +154,18 @@ use DBCF_M
   if (COMM_RANK == 0) then;                                       \
   WRITE(0, '(A,A,A,I6)') "File '", __FILE__, "', line ", __LINE__; \
   write(0, '(A)') "  TEST_COMPARE_FLOATING_ARRAYS(ARR1,ARR2,TOL)";\
-  write(0, '(A)') "Error: Expected ARR1 == ARR2";                 \
+  write(0, *) "Error: Expected ", ARR1, "==",  ARR2;              \
+  end if;                                                         \
+  success = .false.; ierr = 0;                                    \
+  return;                                                         \
+  end if
+
+#define TEST_COMPARE_ARRAYS(ARR1, ARR2)                           \
+  IF(ABS(MAXVAL(ARR1 - ARR2)) > epsilon(1.)) THEN;           \
+  if (COMM_RANK == 0) then;                                       \
+  WRITE(0, '(A,A,A,I6)') "File '", __FILE__, "', line ", __LINE__; \
+  write(0, '(A)') "  TEST_COMPARE_ARRAYS(ARR1,ARR2)";             \
+  write(0, *) "Error: Expected ", ARR1, "==",  ARR2;              \
   end if;                                                         \
   success = .false.; ierr = 0;                                    \
   return;                                                         \
@@ -165,7 +176,7 @@ use DBCF_M
   if (COMM_RANK == 0) then;                                       \
   WRITE(0, '(A,A,A,I6)') "File '", __FILE__, "', line ", __LINE__; \
   write(0, '(A)') "  TEST_ARRAY_EQUALITY(ARR1,ARR2,TOL)";         \
-  write(0, '(A)') "Error: Expected ARR1 == ARR2";                 \
+  write(0, *) "Error: Expected ", ARR, "==",  VAL;                \
   end if;                                                         \
   success = .false.; ierr = 0;                                    \
   return;                                                         \
@@ -175,8 +186,8 @@ use DBCF_M
   if(abs(maxval(ARR - VAL)) <= TOL) then;                         \
   if (COMM_RANK == 0) then;                                       \
   WRITE(0, '(A,A,A,I6)') "File '", __FILE__, "', line ", __LINE__; \
-  write(0, '(A)') "  TEST_ARRAY_INEQUALITY(ARR1,ARR2,TOL)";       \
-  write(0, '(A)') "Error: Expected ARR1 /= ARR2";                 \
+  write(0, '(A)') "  TEST_ARRAY_INEQUALITY(ARR,VAL,TOL)";         \
+  write(0, *) "Error: Expected ", ARR, "/=",  VAL;                \
   end if;                                                         \
   success = .false.; ierr = 0;                                    \
   return;                                                         \

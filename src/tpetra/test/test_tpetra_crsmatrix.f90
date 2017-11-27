@@ -38,7 +38,6 @@ program test_TpetraCrsMatrix
 !  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_reorderedGaussSeidel)
 !  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_gaussSeidelCopy)
 !  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_reorderedGaussSeidelCopy)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_getGlobalRowCopy)
 
   call comm%release()
   CHECK_IERR()
@@ -183,13 +182,14 @@ contains
     type(TpetraCrsMatrix) :: A
     type(TpetraMultiVector) :: ones, threes
     integer(size_type), parameter :: izero=0, ione=1, ithree=3
-    integer(size_type) :: num_images, my_image_id
+    integer(size_type) :: num_images, my_image_id, numindices
     integer(local_ordinal_type) :: nnz
     logical(c_bool), parameter :: false=.false., true=.true.
     real(scalar_type), parameter :: zero=0., one=1., two=2., negthree=-3.
-    real(scalar_type) :: vals(3)
     real(norm_type) :: norms(1)
-    integer(global_ordinal_type) :: gblrow, cols(3)
+    integer(global_ordinal_type) :: gblrow
+    integer(global_ordinal_type), allocatable :: cols(:), xcols(:)
+    real(scalar_type), allocatable :: vals(:), xvals(:)
 
     OUT0("Starting TpetraCrsMatrix_SimpleEigTest")
     num_images = comm%getSize()
@@ -220,16 +220,19 @@ contains
     gblrow = my_image_id + 1
     if (gblrow == 1) then
       nnz = 2
+      allocate(cols(nnz)); allocate(vals(nnz));
       cols(1:nnz) = [gblrow, gblrow+1]
       vals(1:nnz) = [two, one]
       call A%insertGlobalValues(gblrow, nnz, vals, cols); TEST_IERR()
     else if (gblrow == num_images) then
       nnz = 2;
+      allocate(cols(nnz)); allocate(vals(nnz));
       cols(1:nnz) = [gblrow-1, gblrow]
       vals(1:nnz) = [one, two]
       call A%insertGlobalValues(gblrow, nnz, vals, cols); TEST_IERR()
     else
       nnz = 3;
+      allocate(cols(nnz)); allocate(vals(nnz));
       vals = [one, one, one]
       cols = [gblrow-1, gblrow, gblrow+1]
       call A%insertGlobalValues(gblrow, nnz, vals, cols); TEST_IERR()
@@ -257,13 +260,21 @@ contains
     TEST_ASSERT(row_map%isSameAs(A%getDomainMap()))
     TEST_ASSERT(row_map%isSameAs(A%getRangeMap()))
 
+    allocate(xcols(nnz)); allocate(xvals(nnz))
+    numindices = int(nnz, kind=size_type)
+    ! TODO: 1 based fortran index below!
+    call A%getGlobalRowCopy(gblrow-1, xcols, xvals, numindices); TEST_IERR()
+    ! TEST_COMPARE_ARRAYS(xcols, cols) TODO: This method returns junk for cols
+    ! TEST_COMPARE_FLOATING_ARRAYS(xvals, vals, epsilon(zero)) TODO: junk for vals too
+    deallocate(xcols); deallocate(xvals)
+
     ! test the action
     call threes%randomize(); TEST_IERR()
     call A%apply(ones, threes); TEST_IERR()
 
     ! now, threes should be 3*ones
     call threes%update(negthree, ones, one)
-    !call threes%norm1(norms) TODO: This call hangs with numprocs > 1
+    call threes%norm1(norms)
     TEST_COMPARE_FLOATING_ARRAYS(norms, zero, epsilon(zero))
 
     call ones%release()
@@ -271,6 +282,7 @@ contains
     call Map%release()
     call A%release()
     call row_map%release()
+    deallocate(cols); deallocate(vals)
 
     OUT0("Finished TpetraCrsMatrix_SimpleEigTest!")
 
@@ -701,34 +713,6 @@ contains
     OUT0("Finished TpetraCrsMatrix_reorderedGaussSeidelCopy")
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_reorderedGaussSeidelCopy)
-
-  ! -----------------------------getGlobalRowCopy----------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_getGlobalRowCopy)
-    type(TpetraCrsMatrix) :: Obj
-    integer(C_LONG_LONG) :: globalrow
-    integer(C_LONG_LONG), allocatable :: indices(:)
-    real(C_DOUBLE), allocatable :: values(:)
-    integer(C_SIZE_T) :: numindices
-    OUT0("Starting TpetraCrsMatrix_getGlobalRowCopy")
-
-    success = .false.
-
-    globalrow = 0
-    !allocate(indices(:)(0))
-    !allocate(values(:)(0))
-    numindices = 0
-    !call Obj%create(); TEST_IERR()
-    !call Obj%getGlobalRowCopy(globalrow, indices(:), values(:), numindices); TEST_IERR()
-
-    !deallocate(indices(:))
-    !deallocate(values(:))
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraCrsMatrix_getGlobalRowCopy: Test not yet implemented'
-
-    OUT0("Finished TpetraCrsMatrix_getGlobalRowCopy")
-
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_getGlobalRowCopy)
 
   ! ------------------------------replaceColMap------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_replaceColMap)
