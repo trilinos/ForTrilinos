@@ -56,7 +56,7 @@
 %ignore Tpetra::MultiVector::sync;                  // templated on device type
 %ignore Tpetra::MultiVector::offsetView;
 %ignore Tpetra::MultiVector::operator=;
-%ignore Tpetra::MultiVector::scale(const Kokkos::View<const impl_scalar_type*, device_type>& alpha);
+%ignore Tpetra::MultiVector::scale(const Kokkos::View<const impl_scalar_type*, device_type>& alpha);    // needs Kokkos::View
 %ignore Tpetra::MultiVector::subCopy;               // ±1 issue; needs Teuchos::Range1D
 %ignore Tpetra::MultiVector::subView;               // ±1 issue; needs Teuchos::Range1D
 %ignore Tpetra::MultiVector::subViewNonConst;       // ±1 issue; needs Teuchos::Range1D

@@ -210,6 +210,175 @@ Status | Command| Comment
 
 ### Tpetra::MultiVector
 
+Status | Command| Comment
+-------|--------|---------
+:white_check_mark: | `virtual void 	removeEmptyProcessesInPlace (const Teuchos::RCP< const map_type > &newMap)`
+:white_check_mark: | `void 	setCopyOrView (const Teuchos::DataAccess copyOrView)`
+:white_check_mark: | `Teuchos::DataAccess 	getCopyOrView () const`
+:white_check_mark: | `void 	assign (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &src)`
+
+**Constructors and destructor**
+
+Status | Command| Comment
+-------|--------|---------
+:white_check_mark: | `MultiVector ()`
+:white_check_mark: | `MultiVector (const Teuchos::RCP< const map_type > &map, const size_t numVecs, const bool zeroOut=true)`
+:white_check_mark: | `MultiVector (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &source)`
+:white_check_mark: | `MultiVector (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &source, const Teuchos::DataAccess copyOrView)`
+:arrow_down: | `MultiVector (const Teuchos::RCP< const map_type > &map, const Teuchos::ArrayView< const Scalar > &A, const size_t LDA, const size_t NumVectors)`
+:arrow_down: | `MultiVector (const Teuchos::RCP< const map_type > &map, const Teuchos::ArrayView< const Teuchos::ArrayView< const Scalar > > &ArrayOfPtrs, const size_t NumVectors)`
+:x: | `MultiVector (const Teuchos::RCP< const map_type > &map, const dual_view_type &view)`
+:x: | `MultiVector (const Teuchos::RCP< const map_type > &map, const typename dual_view_type::t_dev &d_view)`
+:x: | `MultiVector (const Teuchos::RCP< const map_type > &map, const dual_view_type &view, const dual_view_type &origView)`
+:x: | `MultiVector (const Teuchos::RCP< const map_type > &map, const dual_view_type &view, const Teuchos::ArrayView< const size_t > &whichVectors)`
+:x: | `MultiVector (const Teuchos::RCP< const map_type > &map, const dual_view_type &view, const dual_view_type &origView, const Teuchos::ArrayView< const size_t > &whichVectors)`
+:white_check_mark: | `MultiVector (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &X, const map_type &subMap, const size_t offset=0)`
+:x: | `template<class Node2 > Teuchos::RCP< MultiVector < Scalar, LocalOrdinal, GlobalOrdinal, Node2 > > 	clone (const Teuchos::RCP< Node2 > &node2) const`
+:white_check_mark: | `virtual 	~MultiVector () Destructor (virtual for memory safety of derived classes)`
+
+**The following methods get either a (deep) copy or a view (shallow copy) of a subset of rows and/or columns of the MultiVector**
+
+Status | Command| Comment
+-------|--------|---------
+:arrow_down: | `Teuchos::RCP< MultiVector < Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > 	subCopy (const Teuchos::Range1D &colRng) const`
+:arrow_down: | `Teuchos::RCP< MultiVector < Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > 	subCopy (const Teuchos::ArrayView< const size_t > &cols) const`
+:arrow_down: | `Teuchos::RCP< const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > 	subView (const Teuchos::Range1D &colRng) const`
+:arrow_down: | `Teuchos::RCP< const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > 	subView (const Teuchos::ArrayView< const size_t > &cols) const`
+:arrow_down: | `Teuchos::RCP< MultiVector < Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > 	subViewNonConst (const Teuchos::Range1D &colRng)`
+:arrow_down: | `Teuchos::RCP< MultiVector < Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > 	subViewNonConst (const Teuchos::ArrayView< const size_t > &cols)`
+:arrow_down: | `Teuchos::RCP< const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > 	offsetView (const Teuchos::RCP< const map_type > &subMap, const size_t offset) const`
+:arrow_down: | `Teuchos::RCP< MultiVector < Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > 	offsetViewNonConst (const Teuchos::RCP< const map_type > &subMap, const size_t offset)`
+:arrow_down: | `Teuchos::RCP< const Vector < Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > 	getVector (const size_t j) const`
+:arrow_down: | `Teuchos::RCP< Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > 	getVectorNonConst (const size_t j)`
+:running: | `Teuchos::ArrayRCP< const Scalar > 	getData (size_t j) const`
+:running: | `Teuchos::ArrayRCP< Scalar > 	getDataNonConst (size_t j)`
+:arrow_down: | `void 	get1dCopy (const Teuchos::ArrayView< Scalar > &A, const size_t LDA) const`
+:arrow_down: | `void 	get2dCopy (const Teuchos::ArrayView< const Teuchos::ArrayView< Scalar > > &ArrayOfPtrs) const`
+:arrow_down: | `Teuchos::ArrayRCP< const Scalar > 	get1dView () const`
+:arrow_down: | `Teuchos::ArrayRCP < Teuchos::ArrayRCP< const Scalar > > 	get2dView () const`
+:arrow_down: | `Teuchos::ArrayRCP< Scalar > 	get1dViewNonConst ()`
+:arrow_down: | `Teuchos::ArrayRCP < Teuchos::ArrayRCP< Scalar > > 	get2dViewNonConst ()`
+:x: | `dual_view_type 	getDualView () const`
+:x: | `template<class TargetDeviceType > void 	sync ()`
+:x: | `template<class TargetDeviceType > bool 	need_sync () const`
+:x: | `template<class TargetDeviceType > void 	modify ()`
+:x: | `template<class TargetDeviceType > Kokkos::Impl::if_c < std::is_same< typename device_type::memory_space, typename TargetDeviceType::memory_space > ::value, typename dual_view_type::t_dev, typename dual_view_type::t_host >::type 	getLocalView () const`
+
+**Mathematical methods**
+
+Status | Command| Comment
+-------|--------|---------
+:white_check_mark: :star: | `void 	dot (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const Teuchos::ArrayView< dot_type > &dots) const`
+:x: | `template<typename T > std::enable_if< !(std::is_same < dot_type, T >::value), void > ::type 	dot (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const Teuchos::ArrayView< T > &dots) const`
+:x: | `template<typename T > std::enable_if< !(std::is_same < dot_type, T >::value), void > ::type 	dot (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, std::vector< T > &dots) const`
+:x: | `void 	dot (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const Kokkos::View< dot_type *, device_type > &dots) const`
+:x: | `template<typename T > std::enable_if< !(std::is_same < dot_type, T >::value), void > ::type 	dot (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const Kokkos::View< T *, device_type > &dots) const`
+:white_check_mark: | `void 	abs (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A)`
+:white_check_mark: | `void 	reciprocal (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A)`
+:white_check_mark: | `void 	scale (const Scalar &alpha)`
+:running: | `void 	scale (const Teuchos::ArrayView< const Scalar > &alpha)`
+:x: | `void 	scale (const Kokkos::View< const impl_scalar_type *, device_type > &alpha)`
+:white_check_mark: | `void 	scale (const Scalar &alpha, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A)`
+:white_check_mark: | `void 	update (const Scalar &alpha, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const Scalar &beta)`
+:white_check_mark: | `void 	update (const Scalar &alpha, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const Scalar &beta, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &B, const Scalar &gamma)`
+:x: | `void 	norm1 (const Kokkos::View< mag_type *, device_type > &norms) const`
+:x: | `template<typename T > std::enable_if< !(std::is_same < mag_type, T >::value), void > ::type 	norm1 (const Kokkos::View< T *, device_type > &norms) const`
+:white_check_mark: :star: | `void 	norm1 (const Teuchos::ArrayView< mag_type > &norms) const`
+:x: | `template<typename T > std::enable_if< !(std::is_same < mag_type, T >::value), void > ::type 	norm1 (const Teuchos::ArrayView< T > &norms) const`
+:x: | `void 	norm2 (const Kokkos::View< mag_type *, device_type > &norms) const`
+:x: | `template<typename T > std::enable_if< !(std::is_same < mag_type, T >::value), void > ::type 	norm2 (const Kokkos::View< T *, device_type > &norms) const`
+:white_check_mark: :star: | `void 	norm2 (const Teuchos::ArrayView< mag_type > &norms) const`
+:x: | `template<typename T > std::enable_if< !(std::is_same < mag_type, T >::value), void > ::type 	norm2 (const Teuchos::ArrayView< T > &norms) const`
+:x: | `void 	normInf (const Kokkos::View< mag_type *, device_type > &norms) const`
+:x: | `template<typename T > std::enable_if< !(std::is_same < mag_type, T >::value), void > ::type 	normInf (const Kokkos::View< T *, device_type > &norms) const`
+:white_check_mark: :star: | `void 	normInf (const Teuchos::ArrayView< mag_type > &norms) const`
+:x: | `template<typename T > std::enable_if< !(std::is_same < mag_type, T >::value), void > ::type 	normInf (const Teuchos::ArrayView< T > &norms) const`
+:running: | `void TPETRA_DEPRECATED 	normWeighted (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &weights, const Teuchos::ArrayView< mag_type > &norms) const`
+:x: | `template<typename T > std::enable_if< !(std::is_same < mag_type, T >::value), void > ::type TPETRA_DEPRECATED 	normWeighted (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &weights, const Teuchos::ArrayView< T > &norms) const`
+:white_check_mark: | `void 	meanValue (const Teuchos::ArrayView< impl_scalar_type > &means) const`
+:x: | `template<typename T > std::enable_if<!std::is_same < impl_scalar_type, T >::value, void >::type 	meanValue (const Teuchos::ArrayView< T > &means) const`
+:white_check_mark: | `void 	multiply (Teuchos::ETransp transA, Teuchos::ETransp transB, const Scalar &alpha, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &B, const Scalar &beta)`
+:arrow_down: | `void 	elementWiseMultiply (Scalar scalarAB, const Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &B, Scalar scalarThis)`
+
+**Attribute access functions**
+
+Status | Command| Comment
+-------|--------|---------
+:white_check_mark: | `size_t 	getNumVectors () const`
+:white_check_mark: | `size_t 	getLocalLength () const`
+:white_check_mark: | `global_size_t 	getGlobalLength () const`
+:white_check_mark: | `size_t 	getStride () const`
+:white_check_mark: | `bool 	isConstantStride () const`
+
+**Overridden from Teuchos::Describable**
+
+Status | Command| Comment
+-------|--------|---------
+:running: | `virtual std::string 	description () const`
+:x: | `virtual void 	describe (Teuchos::FancyOStream &out, const Teuchos::EVerbosityLevel verbLevel=Teuchos::Describable::verbLevel_default) const`
+
+**Public methods for redistributing data**
+
+Status | Command| Comment
+-------|--------|---------
+:x: | `void 	doImport (const SrcDistObject &source, const Import< LocalOrdinal, GlobalOrdinal, Node > &importer, CombineMode CM)`
+:x: | `void 	doImport (const SrcDistObject &source, const Export< LocalOrdinal, GlobalOrdinal, Node > &exporter, CombineMode CM)`
+:x: | `void 	doExport (const SrcDistObject &source, const Export< LocalOrdinal, GlobalOrdinal, Node > &exporter, CombineMode CM)`
+:x: | `void 	doExport (const SrcDistObject &source, const Import< LocalOrdinal, GlobalOrdinal, Node > &importer, CombineMode CM)`
+
+**Attribute accessor methods**
+
+Status | Command| Comment
+-------|--------|---------
+:arrow_down: | `bool 	isDistributed () const`
+:arrow_down: | `virtual Teuchos::RCP< const map_type > 	getMap () const`
+
+**I/O methods**
+
+Status | Command| Comment
+-------|--------|---------
+:x: | `void 	print (std::ostream &os) const`
+
+**Methods for use only by experts**
+
+Status | Command| Comment
+-------|--------|---------
+:white_check_mark: | `virtual void 	removeEmptyProcessesInPlace (const Teuchos::RCP< const map_type > &newMap)`
+
+**Friends**
+
+Status | Command| Comment
+-------|--------|---------
+:x: | `template<class DS , class DL , class DG , class DN , const bool dstClassic, class SS , class SL , class SG , class SN , const bool srcClassic> void 	deep_copy (MultiVector< DS, DL, DG, DN, dstClassic > &dst, const MultiVector< SS, SL, SG, SN, srcClassic > &src)`
+
+**Related Functions (non-member functions)**
+
+Status | Command| Comment
+-------|--------|---------
+:x: | `template<class DS , class DL , class DG , class DN , const bool dstClassic, class SS , class SL , class SG , class SN , const bool srcClassic> void 	deep_copy (MultiVector< DS, DL, DG, DN, dstClassic > &dst, const MultiVector< SS, SL, SG, SN, srcClassic > &src)`
+:x: | `template<class ST , class LO , class GO , class NT , const bool classic = NT::classic> MultiVector< ST, LO, GO, NT, classic > 	createCopy (const MultiVector< ST, LO, GO, NT, classic > &src)`
+
+**Post-construction modification routines**
+
+Status | Command| Comment
+-------|--------|---------
+:x: | `static const bool 	useAtomicUpdatesByDefault`
+:running: | `void 	replaceGlobalValue (const GlobalOrdinal gblRow, const size_t col, const impl_scalar_type &value) const`
+:x: | `template<typename T > std::enable_if<!std::is_same < T, impl_scalar_type >::value &&std::is_convertible< T, impl_scalar_type >::value, void >::type 	replaceGlobalValue (GlobalOrdinal globalRow, size_t col, const T &value) const`
+:running: | `void 	sumIntoGlobalValue (const GlobalOrdinal gblRow, const size_t col, const impl_scalar_type &value, const bool atomic=useAtomicUpdatesByDefault) const`
+:x: | `template<typename T > std::enable_if<!std::is_same < T, impl_scalar_type >::value &&std::is_convertible< T, impl_scalar_type >::value, void >::type 	sumIntoGlobalValue (const GlobalOrdinal gblRow, const size_t col, const T &val, const bool atomic=useAtomicUpdatesByDefault) const`
+:running: | `void 	replaceLocalValue (const LocalOrdinal lclRow, const size_t col, const impl_scalar_type &value) const`
+:x: | `template<typename T > std::enable_if<!std::is_same < T, impl_scalar_type >::value &&std::is_convertible< T, impl_scalar_type >::value, void >::type 	replaceLocalValue (const LocalOrdinal lclRow, const size_t col, const T &val) const`
+:running: | `void 	sumIntoLocalValue (const LocalOrdinal lclRow, const size_t col, const impl_scalar_type &val, const bool atomic=useAtomicUpdatesByDefault) const`
+:x: | `template<typename T > std::enable_if<!std::is_same < T, impl_scalar_type >::value &&std::is_convertible< T, impl_scalar_type >::value, void >::type 	sumIntoLocalValue (const LocalOrdinal lclRow, const size_t col, const T &val, const bool atomic=useAtomicUpdatesByDefault) const`
+:white_check_mark: | `void 	putScalar (const Scalar &value)`
+:x: | `template<typename T > std::enable_if<!std::is_same < T, impl_scalar_type >::value &&std::is_convertible< T, impl_scalar_type >::value, void >::type 	putScalar (const T &value)`
+:white_check_mark: | `void 	randomize ()`
+:white_check_mark: | `void 	randomize (const Scalar &minVal, const Scalar &maxVal)`
+:white_check_mark: | `void 	replaceMap (const Teuchos::RCP< const map_type > &map)`
+:white_check_mark: | `void 	reduce ()`
+:x: | `MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > & 	operator= (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &source)`
+
 ### Tpetra::CrsGraph
 
 Status | Command| Comment
