@@ -372,12 +372,15 @@ end type
   procedure :: release => swigf_delete_TpetraCrsMatrix
   procedure, private :: insertGlobalValues__SWIG_0 => swigf_TpetraCrsMatrix_insertGlobalValues__SWIG_0
   procedure, private :: insertGlobalValues__SWIG_1 => swigf_TpetraCrsMatrix_insertGlobalValues__SWIG_1
+  procedure, private :: insertGlobalValues__SWIG_2 => swigf_TpetraCrsMatrix_insertGlobalValues__SWIG_2
   procedure, private :: replaceGlobalValues__SWIG_1 => swigf_TpetraCrsMatrix_replaceGlobalValues__SWIG_1
   procedure, private :: replaceGlobalValues__SWIG_2 => swigf_TpetraCrsMatrix_replaceGlobalValues__SWIG_2
+  procedure, private :: replaceGlobalValues__SWIG_3 => swigf_TpetraCrsMatrix_replaceGlobalValues__SWIG_3
   procedure, private :: sumIntoGlobalValues__SWIG_0 => swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_0
   procedure, private :: sumIntoGlobalValues__SWIG_1 => swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_1
   procedure, private :: sumIntoGlobalValues__SWIG_2 => swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_2
   procedure, private :: sumIntoGlobalValues__SWIG_3 => swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3
+  procedure, private :: sumIntoGlobalValues__SWIG_4 => swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_4
   procedure :: setAllToScalar => swigf_TpetraCrsMatrix_setAllToScalar
   procedure :: scale => swigf_TpetraCrsMatrix_scale
   procedure :: globalAssemble => swigf_TpetraCrsMatrix_globalAssemble
@@ -456,10 +459,10 @@ end type
   generic :: reindexColumns => reindexColumns__SWIG_0, reindexColumns__SWIG_1, reindexColumns__SWIG_2
   generic :: apply => apply__SWIG_0, apply__SWIG_1, apply__SWIG_2, apply__SWIG_3
   generic :: resumeFill => resumeFill__SWIG_0, resumeFill__SWIG_1
-  generic :: insertGlobalValues => insertGlobalValues__SWIG_0, insertGlobalValues__SWIG_1
-  generic :: replaceGlobalValues => replaceGlobalValues__SWIG_1, replaceGlobalValues__SWIG_2
+  generic :: insertGlobalValues => insertGlobalValues__SWIG_0, insertGlobalValues__SWIG_1, insertGlobalValues__SWIG_2
+  generic :: replaceGlobalValues => replaceGlobalValues__SWIG_1, replaceGlobalValues__SWIG_2, replaceGlobalValues__SWIG_3
   generic :: sumIntoGlobalValues => sumIntoGlobalValues__SWIG_0, sumIntoGlobalValues__SWIG_1, sumIntoGlobalValues__SWIG_2, &
-    sumIntoGlobalValues__SWIG_3
+    sumIntoGlobalValues__SWIG_3, sumIntoGlobalValues__SWIG_4
   generic :: fillComplete => fillComplete__SWIG_0, fillComplete__SWIG_1, fillComplete__SWIG_2, fillComplete__SWIG_3
   generic :: expertStaticFillComplete => expertStaticFillComplete__SWIG_0, expertStaticFillComplete__SWIG_1, &
     expertStaticFillComplete__SWIG_2, expertStaticFillComplete__SWIG_3
@@ -5956,6 +5959,28 @@ call swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_1(farg1, farg2, farg3, farg4
 
 end subroutine
 
+subroutine swigf_TpetraCrsMatrix_insertGlobalValues__SWIG_2(self, globalrow, inds, vals)
+! TODO: implement this insertGlobalValue signature in SWIG
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: self
+integer(C_LONG_LONG), intent(in) :: globalrow
+integer(C_LONG_LONG), dimension(:), target, intent(in) :: inds
+real(C_DOUBLE), dimension(:), target, intent(in) :: vals
+type(C_PTR) :: farg1 
+integer(C_LONG_LONG) :: farg2 
+integer(C_INT) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+
+farg1 = self%swigptr
+farg2 = globalrow
+farg3 = size(vals)
+farg4 = c_loc(vals)
+farg5 = c_loc(inds)
+call swigc_TpetraCrsMatrix_insertGlobalValues__SWIG_1(farg1, farg2, farg3, farg4, farg5)
+
+end subroutine
+
 function swigf_TpetraCrsMatrix_replaceGlobalValues__SWIG_1(self, globalrow, cols, vals) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
@@ -5997,6 +6022,31 @@ type(C_PTR) :: farg5
 farg1 = self%swigptr
 farg2 = globalrow
 farg3 = nument
+farg4 = c_loc(vals)
+farg5 = c_loc(cols)
+fresult = swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_2(farg1, farg2, farg3, farg4, farg5)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_replaceGlobalValues__SWIG_3(self, globalrow, cols, vals) &
+! TODO: implement this replaceGlobalValues signature in SWIG
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_LONG_LONG), intent(in) :: globalrow
+real(C_DOUBLE), dimension(:), target, intent(in) :: vals
+integer(C_LONG_LONG), dimension(:), target, intent(in) :: cols
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_LONG_LONG) :: farg2 
+integer(C_INT) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+
+farg1 = self%swigptr
+farg2 = globalrow
+farg3 = size(vals)
 farg4 = c_loc(vals)
 farg5 = c_loc(cols)
 fresult = swigc_TpetraCrsMatrix_replaceGlobalValues__SWIG_2(farg1, farg2, farg3, farg4, farg5)
@@ -6097,6 +6147,30 @@ type(C_PTR) :: farg5
 farg1 = self%swigptr
 farg2 = globalrow
 farg3 = nument
+farg4 = c_loc(vals)
+farg5 = c_loc(cols)
+fresult = swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3(farg1, farg2, farg3, farg4, farg5)
+swigf_result = fresult
+end function
+
+function swigf_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_4(self, globalrow, cols, vals) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swigf_result
+class(TpetraCrsMatrix) :: self
+integer(C_LONG_LONG), intent(in) :: globalrow
+real(C_DOUBLE), dimension(:), target, intent(in) :: vals
+integer(C_LONG_LONG), dimension(:), target, intent(in) :: cols
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_LONG_LONG) :: farg2 
+integer(C_INT) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+
+farg1 = self%swigptr
+farg2 = globalrow
+farg3 = size(vals)
 farg4 = c_loc(vals)
 farg5 = c_loc(cols)
 fresult = swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_3(farg1, farg2, farg3, farg4, farg5)
