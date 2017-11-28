@@ -1,6 +1,13 @@
+/*
+ * Copyright 2017, UT-Battelle, LLC
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * License-Filename: LICENSE
+ */
 %module fortrilinos
 
-// Load Teuchos definitions
+%include "copyright.i"
+
 %import <forteuchos.i>
 %import <fortpetra.i>
 

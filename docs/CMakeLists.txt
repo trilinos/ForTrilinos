@@ -1,3 +1,7 @@
+## Copyright 2017, UT-Battelle, LLC
+##
+## SPDX-License-Identifier: BSD-3-Clause
+## License-Filename: LICENSE
 FIND_PACKAGE(Sphinx REQUIRED)
 
 ADD_CUSTOM_TARGET(docs ALL

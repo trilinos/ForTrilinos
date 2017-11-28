@@ -1,3 +1,7 @@
+!Copyright 2017, UT-Battelle, LLC
+!
+!SPDX-License-Identifier: BSD-3-Clause
+!License-Filename: LICENSE
 program main
 
 #include "FortranTestMacros.h"
@@ -40,7 +44,3 @@ contains
   end subroutine
 
 end program
-
-!-----------------------------------------------------------------------------!
-! end of parameterlist/test.f90
-!-----------------------------------------------------------------------------!
