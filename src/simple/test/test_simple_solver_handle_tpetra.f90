@@ -34,7 +34,6 @@ program main
   type(ParameterList) :: plist
   type(SolverHandle) :: tri_handle
 
-  type(TeuchosArrayViewDoubleConst) :: TA_rhs, TA_lhs
   real(scalar_type), dimension(:), allocatable :: lhs, rhs
   real(norm_type), dimension(:), allocatable :: norms
   integer(global_ordinal_type), dimension(:), allocatable :: cols
@@ -131,14 +130,9 @@ program main
     lhs(i) = offset + i-1
   end do
   lda = n
-  call TA_lhs%create(lhs)
-  call TA_rhs%create(rhs)
 
-  call Xtrue%create(map, TA_lhs, lda, num_vecs)
-  call B%create(map, TA_rhs, lda, num_vecs)
-
-  call TA_lhs%release()
-  call TA_rhs%release()
+  call Xtrue%create(map, lhs, lda, num_vecs)
+  call B%create(map, rhs, lda, num_vecs)
 
   ! Step 0.5: crate a handle
   call tri_handle%create()
