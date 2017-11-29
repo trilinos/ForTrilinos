@@ -9,6 +9,63 @@
 ! This header contains several `use` statements and, therefore, *must* be `use`d
 ! *inside* a `program` or `module`.  Otherwise, the compile will fail
 
+! Several macros are defined to ease writing tests in ForTrilinos.  Macros exist
+! for setting up a test, defining unit tests, tearing down tests, checking
+! variable equality, etc.  Creating a unit test involves several steps:
+!
+! - Declaring the main program
+! - Including this header file inside of the program
+! - Declaring program-wide variables used in the main program's program units
+! - Setting up the test globally.  Use the macro SETUP_TEST:
+!
+!      SETUP_TEST()
+!
+!   The SETUP_TEST macro initializes module variables in the fortest module and
+!   initializes MPI for MPI builds of ForTrilinos (meaning that MPI should not
+!   be initialized elsewhere in the test!)
+!
+! - Adding and running subtests.  Use the macro ADD_SUBTEST_AND_RUN:
+!
+!      ADD_SUBTEST_AND_RUN(TestName)
+!
+!   where TestName is the name of a test defined in the program unit.  The test
+!   should be defined using the FORTRILINOS_UNIT_TEST and
+!   END_FORTRILINOS_UNIT_TEST macros (after the program's "contains" directive):
+!
+!      FORTRILINOS_UNIT_TEST(TestName)
+!        ! Test definition
+!      END_FORTRILINOS_UNIT_TEST(TestName)
+!
+!   These macros define a subroutine named "TestName" and declare an in/out
+!   logical "SUCCESS" that can be set to .FALSE. if the test fails.
+!   FORTRILINOS_UNIT_TEST works directly with ADD_SUBTEST_AND_RUN, which calls
+!   the FORTRILINOS_UNIT_TEST, setting SUCCESS=.TRUE. on entry, and incrementing
+!   the count of tests run.
+!
+!   The macro END_FORTRILINOS_UNIT_TEST ends the subroutine and does a global
+!   reduction (for MPI builds of ForTrilinos) on SUCCESS to determine the test
+!   pass/fail result over all processors.  A test is considered to have failed
+!   if SUCCESS is .FALSE. on any processor.  Error states at the completion of
+!   a subtest are reset so that other subtests can be run.
+!
+! - Tearing down the test.  Use the macro TEARDOWN_TEST
+!
+!      TEARDOWN_TEST()
+!
+!   This macro prints any error diagnostics to the console, shuts down MPI (on
+!   MPI builds of ForTrilinos), and stops the program with an error flag if any
+!   of the subtests fail.  This, in turn, is communicated to CTest to get test
+!   failure/pass metrics.
+!
+! - Ending the test program
+!
+! Additionally, several macros for testing equality of objects, asserting
+! required conditionals, testing code, etc. are defined.  Look further down in
+! this file for macros starting "TEST_".
+!
+! See tests in src/tpetra/test for examples of creating unit tests and using the
+! TEST_* macros.
+
 #include "DBCF.h"
 use DBCF_M
 use fortest
