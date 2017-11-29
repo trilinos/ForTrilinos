@@ -98,7 +98,7 @@ contains
     ! Setup module variables for the test.
 
 #ifdef HAVE_MPI
-    integer ierror
+    integer :: ierror
 #endif
     ! ------------------------------------------------------------------------ !
 
@@ -109,8 +109,8 @@ contains
     total_tests = 0
 
     ! Initialize MPI
-    ierror = 0
 #ifdef HAVE_MPI
+    ierror = 0
     call MPI_Init(ierror); \
     call MPI_Comm_Rank(MPI_COMM_WORLD, comm_rank, ierror)
 #else
@@ -125,9 +125,9 @@ contains
   subroutine teardown_test2()
     ! ------------------------------------------------------------------------ !
 #ifdef HAVE_MPI
-    integer ierror
+    integer :: ierror
 #endif
-    character(len=45) str
+    character(len=45) :: str
     ! ------------------------------------------------------------------------ !
     if (failed_tests == 0) then
       write(str, '(A,I3,A)') "100% of ", total_tests, " tests PASSED"
@@ -158,7 +158,9 @@ contains
     ! ------------------------------------------------------------------------ !
     character(len=*), intent(in) :: test_name
     logical, intent(in) :: success
+#ifdef HAVE_MPI
     integer ierror
+#endif
     ! ------------------------------------------------------------------------ !
     local_error(1) = merge(0, 1, success)
 
