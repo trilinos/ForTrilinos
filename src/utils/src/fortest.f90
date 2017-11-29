@@ -9,10 +9,9 @@ module fortest
 ! debug when defined in this module and 2) they allow the code emitted from the
 ! macros to remain under the 132 character limit defined by the standard.
 
-! In some compilers, the kids c_size_t, c_long, and
-! c_long_long of ISO_C_BINDING are the same kind.  This causes problems when
-! overloading functions to accept one of these arguments.  For instance,
-! consider the procedure:
+! In some compilers, the kinds c_size_t, c_long, and c_long_long of
+! ISO_C_BINDING are the same.  This causes problems when overloading functions
+! to accept one of these arguments.  For instance, consider the procedure:
 !
 ! subroutine procedure(a)
 !   integer(c_size_t) :: a
@@ -44,8 +43,10 @@ use mpi
 
 implicit none
 
+! Private variables for tracking progress of tests
 integer, private :: local_error(1), global_error(1)
 integer, private :: comm_rank, failed_tests, total_tests
+logical, private :: setup_called = .false.
 
 interface fortest_array_equality
   module procedure fortest_array_equality_double1, &
@@ -117,12 +118,17 @@ contains
 
   subroutine setup_test2()
     ! ------------------------------------------------------------------------ !
-    ! Setup module variables for the test.
-
+    ! Setup module variables for the test.  This should be called once at the
+    ! beginning of a test program
+    ! ------------------------------------------------------------------------ !
 #ifdef HAVE_MPI
     integer :: ierror
 #endif
     ! ------------------------------------------------------------------------ !
+
+    if (setup_called) then
+      Insist(.FALSE., "SETUP_TEST can be called only once per test program")
+    end if
 
     ! Initialize module level variables
     local_error(1) = 0
@@ -139,12 +145,16 @@ contains
     comm_rank = 0
 #endif
 
+    setup_called = .true.
+
     return
   end subroutine setup_test2
 
   ! -------------------------------------------------------------------------- !
 
   subroutine teardown_test2()
+    ! ------------------------------------------------------------------------ !
+    ! Tears down the test program.  For MPI builds, MPI_Finalize is called.
     ! ------------------------------------------------------------------------ !
 #ifdef HAVE_MPI
     integer :: ierror
@@ -169,7 +179,12 @@ contains
   ! -------------------------------------------------------------------------- !
 
   subroutine setup_subtest(success)
+    ! ------------------------------------------------------------------------ !
+    ! Setup a subtest.  Sets success = .true. and increments the total number of
+    ! tests run
+    ! ------------------------------------------------------------------------ !
     logical, intent(inout) :: success
+    ! ------------------------------------------------------------------------ !
     success = .true.
     total_tests = total_tests + 1
   end subroutine setup_subtest
@@ -177,6 +192,9 @@ contains
   ! -------------------------------------------------------------------------- !
 
   subroutine teardown_subtest(test_name, success)
+    ! ------------------------------------------------------------------------ !
+    ! Tears down a subtest after completion.  For MPI builds, a reduction of the
+    ! error count is performed to determine global success or failure
     ! ------------------------------------------------------------------------ !
     character(len=*), intent(in) :: test_name
     logical, intent(in) :: success
@@ -207,6 +225,8 @@ contains
 
   subroutine write_error_diagnostics(filename, lineno, signature, errstr)
     ! ------------------------------------------------------------------------ !
+    ! Write error diagnostics to stderr (file unit 0)
+    ! ------------------------------------------------------------------------ !
     character(len=*), intent(in) :: filename
     integer, intent(in) :: lineno
     character(len=256), intent(in) :: signature
@@ -222,7 +242,11 @@ contains
   ! -------------------------------------------------------------------------- !
 
   subroutine write_to_proc0(string)
+    ! ------------------------------------------------------------------------ !
+    ! Write string to stderr (file unit 0) on process 0
+    ! ------------------------------------------------------------------------ !
     character(len=*), intent(in) :: string
+    ! ------------------------------------------------------------------------ !
     if (comm_rank == 0) write(0, '(A)') trim(string)
   end subroutine write_to_proc0
 

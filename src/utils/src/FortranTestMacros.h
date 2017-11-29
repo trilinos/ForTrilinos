@@ -6,7 +6,7 @@
 #ifndef FOTRANTESTMACROS_H
 #define FOTRANTESTMACROS_H
 
-! This header contains several `use` statements and, therfore, *must* be `use`d
+! This header contains several `use` statements and, therefore, *must* be `use`d
 ! *inside* a `program` or `module`.  Otherwise, the compile will fail
 
 #include "DBCF.h"
