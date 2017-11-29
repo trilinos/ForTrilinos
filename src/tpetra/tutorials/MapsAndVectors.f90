@@ -31,7 +31,6 @@ type(TpetraMultiVector) :: x, y, z
 integer(size_type) :: my_rank, num_procs, k
 integer(size_type) :: num_local_entries, num_elements_per_proc
 integer(global_size_type) :: num_global_entries, invalid
-integer(global_ordinal_type) :: index_base
 logical(bool_type) :: zero_out, x_test
 real(scalar_type) :: alpha, beta, gamma
 real(mag_type) :: the_norm
@@ -81,19 +80,13 @@ num_local_entries = 5
 ! of MPI processes and every process will still have at least one entry
 num_global_entries = num_procs * num_local_entries
 
-! Tpetra can index the entries of a Map starting with 0 (C style),
-! 1 (Fortran style), or any base you want.  1-based indexing is
-! handy when interfacing with Fortran.  We choose 1-based indexing
-! here.
-index_base = 1
-
 ! Create some Maps.  All Map constructors must be called as a collective over
 ! the input communicator.  Not all Map constructors necessarily require
 ! communication, but some do, so it's best to treat them all as collectives.
 !
 ! Create a Map that puts the same number of equations on each processor.  The
 ! resulting Map is "contiguous and uniform."
-call contig_map%create(num_global_entries, index_base, comm)
+call contig_map%create(num_global_entries, comm)
 
 ! contig_map is contiguous by construction.  Test this at run time.
 EXPECT_TRUE(contig_map%isContiguous())
@@ -104,7 +97,7 @@ EXPECT_TRUE(contig_map%isContiguous())
 ! since the numbers of entries on different MPI processes may differ.  In this
 ! case, the number of entries on each MPI process is the same, but that doesn't
 ! always have to be the case.
-call contig_map2%create(num_global_entries, num_local_entries, index_base, comm);
+call contig_map2%create(num_global_entries, num_local_entries, comm);
 
 ! Since contig_map and contig_map2 have the same communicators, and the same
 ! number of entries on all MPI processes in their communicators, they are "the
@@ -116,7 +109,7 @@ EXPECT_TRUE(contig_map%isSameAs(contig_map2))
 ! entries each MPI process has, but don't know the global number.  Instead of
 ! num_global_entries, we use -1
 invalid = -1
-call contig_map3%create(invalid, num_local_entries, index_base, comm)
+call contig_map3%create(invalid, num_local_entries, comm)
 
 ! Even though we made contig_map3 without specifying the global number of
 ! entries, it should still be the same as contig_map2.
@@ -136,7 +129,7 @@ allocate(element_list(num_elements_per_proc))
 do k = 1, num_elements_per_proc
   element_list(k) = int(my_rank + k * num_procs, kind=global_ordinal_type)
 end do
-call cyclic_map%create(num_global_entries, element_list, index_base, comm);
+call cyclic_map%create(num_global_entries, element_list, comm);
 deallocate(element_list)
 
 ! If there's more than one MPI process in the communicator, then cyclic_map is

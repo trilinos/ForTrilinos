@@ -40,7 +40,7 @@ integer(size_type) :: my_rank
 integer(size_type) :: num_entries_in_row, max_entries_per_row, i
 integer(local_ordinal_type) lcl_row, row_nnz, n
 integer(local_ordinal_type) num_my_elements, col, iconv
-integer(global_ordinal_type) gbl_row, index_base, id_of_first_row
+integer(global_ordinal_type) gbl_row, id_of_first_row
 
 ! -- Arrays
 integer(global_ordinal_type), allocatable :: cols(:)
@@ -64,11 +64,7 @@ my_rank = comm%getRank()
 ! The number of rows and columns in the matrix.
 num_gbl_indices = 50
 
-! Construct a Map that puts approximately the same number of equations on each
-! processor.
-index_base = 1  ! 1 = index base (Fortran)
-
-call map%create(num_gbl_indices, index_base, comm)
+call map%create(num_gbl_indices, comm)
 EXPECT_EQ(ierr, 0)
 
 ! Check that the map was created with the appropriate number of elements

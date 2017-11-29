@@ -19,7 +19,7 @@ program main
 
   integer(c_int) :: my_rank, num_procs
 
-  integer(c_long_long) :: i, cur_pos, offset, one_int
+  integer(c_long_long) :: i, cur_pos, offset
   real(c_double) :: norm, one
 
   type(TeuchosComm) :: comm
@@ -43,7 +43,6 @@ program main
   num_vecs = 1
 
   one = 1.0
-  one_int = 1
 
   my_rank = 0
   num_procs = 1
@@ -78,7 +77,7 @@ program main
   ! ------------------------------------------------------------------
   ! Step 0: Construct tri-diagonal matrix, and rhs
   n_global = -1
-  call map%create(n_global, n, one_int, comm) ! 1 = index base (Fortran)
+  call map%create(n_global, n, comm)
 
   max_entries_per_row = 3
   call A%create(map, max_entries_per_row, DynamicProfile)

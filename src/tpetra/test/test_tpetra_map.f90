@@ -12,7 +12,6 @@ program test_TpetraMap
 
   type(TeuchosComm) :: comm
   integer(global_size_type), parameter :: invalid=-1
-  integer(global_ordinal_type), parameter :: index_base=1
 
   SETUP_TEST()
 
@@ -25,7 +24,6 @@ program test_TpetraMap
   ADD_SUBTEST_AND_RUN(TpetraMap_isOneToOne)
   ADD_SUBTEST_AND_RUN(TpetraMap_getGlobalNumElements)
   ADD_SUBTEST_AND_RUN(TpetraMap_getNodeNumElements)
-  ADD_SUBTEST_AND_RUN(TpetraMap_getIndexBase)
   ADD_SUBTEST_AND_RUN(TpetraMap_getMinLocalIndex)
   ADD_SUBTEST_AND_RUN(TpetraMap_getMaxLocalIndex)
   ADD_SUBTEST_AND_RUN(TpetraMap_getMinGlobalIndex)
@@ -62,12 +60,12 @@ contains
     type(TpetraMap) :: Obj
     integer(global_ordinal_type) :: num_global, indices(4)
     num_global = 4*comm%getSize()
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, comm); TEST_IERR()
     TEST_ASSERT(Obj%isOneToOne())
     call Obj%release(); TEST_IERR()
     if (comm%getSize() > 1) then
       indices = [1, 2, 3, 4]
-      call Obj%create(num_global, indices, index_base, comm); TEST_IERR()
+      call Obj%create(num_global, indices, comm); TEST_IERR()
       TEST_ASSERT((.not. Obj%isOneToOne()))
       call Obj%release(); TEST_IERR()
     end if
@@ -78,7 +76,7 @@ contains
     type(TpetraMap) :: Obj
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, comm); TEST_IERR()
     TEST_ASSERT(Obj%getGlobalNumElements() == num_global)
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getGlobalNumElements)
@@ -88,31 +86,17 @@ contains
     type(TpetraMap) :: Obj
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, comm); TEST_IERR()
     TEST_EQUALITY(Obj%getNodeNumElements(), int(4, kind=size_type))
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getNodeNumElements)
-
-! --------------------------------getIndexBase-------------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraMap_getIndexBase)
-    type(TpetraMap) :: Obj
-    integer(global_ordinal_type) :: num_global, index_base_0
-    num_global = 4*comm%getSize()
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
-    TEST_EQUALITY(Obj%getIndexBase(), int(1, kind=global_size_type))
-    call Obj%release(); TEST_IERR()
-    index_base_0 = 0
-    call Obj%create(num_global, index_base_0, comm); TEST_IERR()
-    TEST_EQUALITY(Obj%getIndexBase(), int(0, kind=global_size_type))
-    call Obj%release(); TEST_IERR()
-  END_FORTRILINOS_UNIT_TEST(TpetraMap_getIndexBase)
 
 ! ------------------------------getMinLocalIndex------------------------------ !
   FORTRILINOS_UNIT_TEST(TpetraMap_getMinLocalIndex)
     type(TpetraMap) :: Obj
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, comm); TEST_IERR()
     TEST_EQUALITY(Obj%getMinLocalIndex(), int(1, kind=local_ordinal_type))
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getMinLocalIndex)
@@ -122,7 +106,7 @@ contains
     type(TpetraMap) :: Obj
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, comm); TEST_IERR()
     TEST_EQUALITY(Obj%getMaxLocalIndex(), int(4, kind=local_ordinal_type))
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getMaxLocalIndex)
@@ -133,7 +117,7 @@ contains
     integer(C_LONG_LONG) :: expected
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, comm); TEST_IERR()
     expected = comm%getRank() * 4 + 1
     TEST_EQUALITY(Obj%getMinGlobalIndex(), expected)
     call Obj%release(); TEST_IERR()
@@ -145,7 +129,7 @@ contains
     integer(C_LONG_LONG) :: expected
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, comm); TEST_IERR()
     expected = comm%getRank() * 4 + 4
     TEST_EQUALITY(Obj%getMaxGlobalIndex(), expected)
     call Obj%release(); TEST_IERR()
@@ -154,10 +138,11 @@ contains
 ! ----------------------------getMinAllGlobalIndex---------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMap_getMinAllGlobalIndex)
     type(TpetraMap) :: Obj
-    integer(global_ordinal_type) :: num_global
+    integer(global_ordinal_type) :: num_global, one
     num_global = 4*comm%getSize()
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
-    TEST_EQUALITY(Obj%getMinAllGlobalIndex(), index_base)
+    one = 1
+    call Obj%create(num_global, comm); TEST_IERR()
+    TEST_EQUALITY(Obj%getMinAllGlobalIndex(), one)
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getMinAllGlobalIndex)
 
@@ -166,7 +151,7 @@ contains
     type(TpetraMap) :: Obj
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, comm); TEST_IERR()
     TEST_EQUALITY(Obj%getMaxAllGlobalIndex(), num_global)
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getMaxAllGlobalIndex)
@@ -177,7 +162,7 @@ contains
     integer(C_LONG_LONG) :: globalindex
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, comm); TEST_IERR()
     globalindex = comm%getRank() * 4 + 1
     TEST_EQUALITY(Obj%getLocalElement(globalindex), 1)
     globalindex = comm%getRank() * 4 + 4
@@ -192,7 +177,7 @@ contains
     integer(C_LONG_LONG) :: expected
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, comm); TEST_IERR()
     localindex = 1
     expected = comm%getRank() * 4 + 1
     TEST_EQUALITY(Obj%getGlobalElement(localindex), expected)
@@ -210,7 +195,7 @@ contains
     num_global = 4*comm%getSize()
     allocate(element_list(4))
     ! TODO: The element list returned is junk
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, comm); TEST_IERR()
     call Obj%getNodeElementList(element_list)
     deallocate(element_list)
     call Obj%release(); TEST_IERR()
@@ -222,7 +207,7 @@ contains
     integer(C_INT) :: localindex
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, comm); TEST_IERR()
     localindex = 1
     TEST_ASSERT(Obj%isNodeLocalElement(localindex))
     localindex = 5
@@ -236,7 +221,7 @@ contains
     integer(C_LONG_LONG) :: globalindex
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, comm); TEST_IERR()
 
     globalindex = int(comm%getRank() * 4 + 1, kind=global_ordinal_type)
     TEST_ASSERT(Obj%isNodeGlobalElement(globalindex))
@@ -255,14 +240,14 @@ contains
     integer(global_ordinal_type) :: num_global, elements(4)
     num_global = 4*comm%getSize()
 
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, comm); TEST_IERR()
     TEST_ASSERT(Obj%isUniform())
     call Obj%release(); TEST_IERR()
 
     do k = 1, 4
       elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
     end do
-    call Obj%create(num_global, elements, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, elements, comm); TEST_IERR()
     TEST_ASSERT((.not. Obj%isUniform()))
     call Obj%release(); TEST_IERR()
 
@@ -275,14 +260,14 @@ contains
     integer(global_ordinal_type) :: num_global, elements(4)
     num_global = 4*comm%getSize()
 
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, comm); TEST_IERR()
     TEST_ASSERT(Obj%isContiguous())
     call Obj%release(); TEST_IERR()
 
     do k = 1, 4
       elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
     end do
-    call Obj%create(num_global, elements, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, elements, comm); TEST_IERR()
     TEST_ASSERT((.not. Obj%isContiguous()))
     call Obj%release(); TEST_IERR()
 
@@ -294,7 +279,7 @@ contains
     integer(global_ordinal_type) :: num_global, elements(4)
     num_global = 4*comm%getSize()
 
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, comm); TEST_IERR()
     if (comm%getSize() == 1) then
       TEST_ASSERT((.not. Obj%isDistributed()))
     else
@@ -306,7 +291,7 @@ contains
     ! not be distributed
     num_global = 4
     elements = [1, 2, 3, 4]
-    call Obj%create(num_global, elements, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, elements, comm); TEST_IERR()
     TEST_ASSERT((.not. Obj%isDistributed()))
     call Obj%release(); TEST_IERR()
 
@@ -320,12 +305,12 @@ contains
     integer :: k
     num_global = 4*comm%getSize()
 
-    call Obj1%create(num_global, index_base, comm); TEST_IERR()
+    call Obj1%create(num_global, comm); TEST_IERR()
 
     do k = 1, 4
       elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
     end do
-    call Obj2%create(num_global, elements, index_base, comm); TEST_IERR()
+    call Obj2%create(num_global, elements, comm); TEST_IERR()
 
     ! Cyclic map should be compatible
     TEST_ASSERT(Obj1%isCompatible(Obj2))
@@ -333,7 +318,7 @@ contains
     call Obj2%release(); TEST_IERR()
 
     num_global = num_global + 10
-    call Obj2%create(num_global, index_base, comm); TEST_IERR()
+    call Obj2%create(num_global, comm); TEST_IERR()
 
     TEST_ASSERT((.not. Obj1%isCompatible(Obj2)))
 
@@ -351,14 +336,14 @@ contains
     integer :: k
     num_global = 4*comm%getSize()
 
-    call Obj1%create(num_global, index_base, comm); TEST_IERR()
+    call Obj1%create(num_global, comm); TEST_IERR()
 
     if (comm%getSize() > 1) then
 
       do k = 1, 4
         elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
       end do
-      call Obj2%create(num_global, elements, index_base, comm); TEST_IERR()
+      call Obj2%create(num_global, elements, comm); TEST_IERR()
 
       ! Cyclic map should not be SameAs
       TEST_ASSERT((.not. Obj1%isSameAs(Obj2)))
@@ -368,7 +353,7 @@ contains
     end if
 
     num_local = 4
-    call Obj2%create(invalid, num_local, index_base, comm); TEST_IERR()
+    call Obj2%create(invalid, num_local, comm); TEST_IERR()
 
     TEST_ASSERT(Obj1%isSameAs(Obj2))
 
@@ -385,14 +370,14 @@ contains
     integer :: k
     num_global = 4*comm%getSize()
 
-    call Obj1%create(num_global, index_base, comm); TEST_IERR()
+    call Obj1%create(num_global, comm); TEST_IERR()
 
     if (comm%getSize() > 1) then
 
       do k = 1, 4
         elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
       end do
-      call Obj2%create(num_global, elements, index_base, comm); TEST_IERR()
+      call Obj2%create(num_global, elements, comm); TEST_IERR()
 
       ! Cyclic map should not be locallySameAs
       TEST_ASSERT((.not. Obj1%locallySameAs(Obj2)))
@@ -402,7 +387,7 @@ contains
     end if
 
     num_local = 4
-    call Obj2%create(invalid, num_local, index_base, comm); TEST_IERR()
+    call Obj2%create(invalid, num_local, comm); TEST_IERR()
     TEST_ASSERT(Obj1%locallySameAs(Obj2))
 
     call Obj1%release(); TEST_IERR()
@@ -417,7 +402,7 @@ contains
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
 
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, comm); TEST_IERR()
 
     ! We only test the comm returned has the same rank and size.  More
     ! comprehensive testing is (assumed to be) done in Teuchos itself.
@@ -435,7 +420,7 @@ contains
     type(string) :: desciption
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    call Obj%create(num_global, index_base, comm); TEST_IERR()
+    call Obj%create(num_global, comm); TEST_IERR()
     desciption = Obj%description(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_description)
 

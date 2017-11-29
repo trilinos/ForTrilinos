@@ -19,27 +19,10 @@
 // =======================================================================
 // Ignore permanently
 // =======================================================================
-%ignore Tpetra::Map::getNode;
-// Ignore the Node versions
-%ignore Tpetra::Map::Map(global_size_t numGlobalElements,
-         GlobalOrdinal indexBase,
-         const Teuchos::RCP<const Teuchos::Comm<int> > &comm,
-         LocalGlobal lg,
-         const Teuchos::RCP<Node> &node);
-%ignore Tpetra::Map::Map(global_size_t numGlobalElements,
-         size_t numLocalElements,
-         GlobalOrdinal indexBase,
-         const Teuchos::RCP<const Teuchos::Comm<int> > &comm,
-         const Teuchos::RCP<Node> &node);
-%ignore Tpetra::Map::Map(const global_size_t numGlobalElements,
-         const Teuchos::ArrayView<const GlobalOrdinal>& indexList,
-         const GlobalOrdinal indexBase,
-         const Teuchos::RCP<const Teuchos::Comm<int> >& comm,
-         const Teuchos::RCP<Node>& node);
-
 %ignore Tpetra::Map::Map(const global_size_t numGlobalElements, const GlobalOrdinal indexList[],
          const LocalOrdinal indexListSize, const GlobalOrdinal indexBase,
          const Teuchos::RCP< const Teuchos::Comm< int > > &comm);       // superseded by Teuchos::ArrayView version
+%ignore Tpetra::Map::getNode;
 
 // =======================================================================
 // Postpone temporarily
@@ -72,14 +55,22 @@
 // =======================================================================
 // Make interface more Fortran friendly
 // =======================================================================
-%ignore Tpetra::Map::Map(const global_size_t numGlobalElements, const Teuchos::ArrayView< const GlobalOrdinal > &indexList, const GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm);
+%ignore Tpetra::Map::Map(global_size_t numGlobalElements, GlobalOrdinal indexBase, const Teuchos::RCP<const Teuchos::Comm<int> > &comm, LocalGlobal lg=GloballyDistributed, const Teuchos::RCP<Node> &node=defaultArgNode<Node>());
+%ignore Tpetra::Map::Map(global_size_t numGlobalElements, size_t numLocalElements, GlobalOrdinal indexBase, const Teuchos::RCP<const Teuchos::Comm<int> > &comm, const Teuchos::RCP<Node> &node=defaultArgNode<Node>());
+%ignore Tpetra::Map::Map(const global_size_t numGlobalElements, const Teuchos::ArrayView< const GlobalOrdinal > &indexList, const GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm, const Teuchos::RCP< Node > &node=defaultArgNode< Node >());
 %ignore Tpetra::Map::getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList, const Teuchos::ArrayView< LocalOrdinal > &LIDList) const;
 %ignore Tpetra::Map::getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList) const;
 %ignore Tpetra::Map::getNodeElementList() const;
 %extend Tpetra::Map<int, long long, Kokkos::Compat::KokkosSerialWrapperNode> {
-    Map(const global_size_t numGlobalElements, std::pair<const GO*,size_t> indexList, const GO indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm) {
+    Map(global_size_t numGlobalElements, const Teuchos::RCP<const Teuchos::Comm<int> > &comm, LocalGlobal lg=GloballyDistributed) {
+      return new Tpetra::Map<LO,GO,NO>(numGlobalElements, 1/*indexBase*/, comm, lg);
+    }
+    Map(global_size_t numGlobalElements, size_t numLocalElements, const Teuchos::RCP<const Teuchos::Comm<int> > &comm) {
+      return new Tpetra::Map<LO,GO,NO>(numGlobalElements, numLocalElements, 1/*indexBase*/, comm);
+    }
+    Map(const global_size_t numGlobalElements, std::pair<const GO*,size_t> indexList, const Teuchos::RCP< const Teuchos::Comm< int > > &comm) {
       Teuchos::ArrayView<const GO> indexListView = Teuchos::arrayView(indexList.first, indexList.second);
-      return new Tpetra::Map<LO,GO,NO>(numGlobalElements, indexListView, indexBase, comm);
+      return new Tpetra::Map<LO,GO,NO>(numGlobalElements, indexListView, 1/*indexBase*/, comm);
     }
     LookupStatus getRemoteIndexList(std::pair<const GO*, size_t> GIDList, std::pair<int*, size_t> nodeIDList, std::pair<LO*, size_t> LIDList) const {
       Teuchos::ArrayView<const GO> GIDListView  = Teuchos::arrayView(GIDList.first, GIDList.second);
