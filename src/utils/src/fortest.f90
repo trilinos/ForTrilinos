@@ -9,6 +9,33 @@ module fortest
 ! debug when defined in this module and 2) they allow the code emitted from the
 ! macros to remain under the 132 character limit defined by the standard.
 
+! In some compilers, the kids c_size_t, c_long, and
+! c_long_long of ISO_C_BINDING are the same kind.  This causes problems when
+! overloading functions to accept one of these arguments.  For instance,
+! consider the procedure:
+!
+! subroutine procedure(a)
+!   integer(c_size_t) :: a
+!   ...
+! end subroutine procedure
+!
+! If c_size_t and c_long are the same kind, then the following would be seen by
+! the compiler as identical
+!
+! subroutine procedure(a)
+!   integer(c_long) :: a
+!   ...
+! end subroutine procedure
+!
+! Consequently, procedure could not be overloaded for these two kinds of
+! integers.  To circumvent this problem, macros <KIND>_IS_NOT_SAME_AS_LONG
+! protect interfaces from multiply defining functions.
+
+
+As a result, a function
+! overloaded to accept an argument of integer(c_size_t) is indistinguishable by
+! the compiler from its specialization for integer(c_long).
+
 #include "ForTrilinosUtils_config.hpp"
 #include "DBCF.h"
 
@@ -30,11 +57,11 @@ interface fortest_array_equality
                    fortest_array_equality_double2, &
                    fortest_array_equality_int1, &
                    fortest_array_equality_int2, &
-#ifdef SIZE_T_NOT_LONG
+#ifdef SIZE_T_IS_NOT_SAME_AS_LONG
                    fortest_array_equality_size_t1, &
                    fortest_array_equality_size_t2, &
 #endif
-#ifdef LONG_LONG_NOT_LONG
+#ifdef LONG_LONG_IS_NOT_SAME_AS_LONG
                    fortest_array_equality_long_long1, &
                    fortest_array_equality_long_long2, &
 #endif
@@ -47,11 +74,11 @@ interface fortest_array_inequality
                    fortest_array_inequality_double2, &
                    fortest_array_inequality_int1, &
                    fortest_array_inequality_int2, &
-#ifdef SIZE_T_NOT_LONG
+#ifdef SIZE_T_IS_NOT_SAME_AS_LONG
                    fortest_array_inequality_size_t1, &
                    fortest_array_inequality_size_t2, &
 #endif
-#ifdef LONG_LONG_NOT_LONG
+#ifdef LONG_LONG_IS_NOT_SAME_AS_LONG
                    fortest_array_inequality_long_long1, &
                    fortest_array_inequality_long_long2, &
 #endif
@@ -62,10 +89,10 @@ end interface
 interface fortest_equality
   module procedure fortest_equality_double1, &
                    fortest_equality_int1, &
-#ifdef SIZE_T_NOT_LONG
+#ifdef SIZE_T_IS_NOT_SAME_AS_LONG
                    fortest_equality_size_t1, &
 #endif
-#ifdef LONG_LONG_NOT_LONG
+#ifdef LONG_LONG_IS_NOT_SAME_AS_LONG
                    fortest_equality_long_long1, &
 #endif
                    fortest_equality_long1
@@ -74,10 +101,10 @@ end interface
 interface fortest_inequality
   module procedure fortest_inequality_double1, &
                    fortest_inequality_int1, &
-#ifdef SIZE_T_NOT_LONG
+#ifdef SIZE_T_IS_NOT_SAME_AS_LONG
                    fortest_inequality_size_t1, &
 #endif
-#ifdef LONG_LONG_NOT_LONG
+#ifdef LONG_LONG_IS_NOT_SAME_AS_LONG
                    fortest_inequality_long_long1, &
 #endif
                    fortest_inequality_long1
@@ -370,7 +397,7 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
-#ifdef LONG_LONG_NOT_LONG
+#ifdef LONG_LONG_IS_NOT_SAME_AS_LONG
   subroutine fortest_array_equality_long_long1(success, filename, lineno, &
                                                namea, a, nameb, b)
     ! ------------------------------------------------------------------------ !
@@ -396,7 +423,7 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
-#ifdef LONG_LONG_NOT_LONG
+#ifdef LONG_LONG_IS_NOT_SAME_AS_LONG
   subroutine fortest_array_equality_long_long2(success, filename, lineno, &
                                                namea, a, nameb, b)
     ! ------------------------------------------------------------------------ !
@@ -422,7 +449,7 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
-#ifdef SIZE_T_NOT_LONG
+#ifdef SIZE_T_IS_NOT_SAME_AS_LONG
   subroutine fortest_array_equality_size_t1(success, filename, lineno, &
                                             namea, a, nameb, b)
     ! ------------------------------------------------------------------------ !
@@ -448,7 +475,7 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
-#ifdef SIZE_T_NOT_LONG
+#ifdef SIZE_T_IS_NOT_SAME_AS_LONG
   subroutine fortest_array_equality_size_t2(success, filename, lineno, &
                                             namea, a, nameb, b)
     ! ------------------------------------------------------------------------ !
@@ -618,7 +645,7 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
-#ifdef LONG_LONG_NOT_LONG
+#ifdef LONG_LONG_IS_NOT_SAME_AS_LONG
   subroutine fortest_array_inequality_long_long1(success, filename, lineno, &
                                                namea, a, nameb, b)
     ! ------------------------------------------------------------------------ !
@@ -644,7 +671,7 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
-#ifdef LONG_LONG_NOT_LONG
+#ifdef LONG_LONG_IS_NOT_SAME_AS_LONG
   subroutine fortest_array_inequality_long_long2(success, filename, lineno, &
                                                namea, a, nameb, b)
     ! ------------------------------------------------------------------------ !
@@ -670,7 +697,7 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
-#ifdef SIZE_T_NOT_LONG
+#ifdef SIZE_T_IS_NOT_SAME_AS_LONG
   subroutine fortest_array_inequality_size_t1(success, filename, lineno, &
                                             namea, a, nameb, b)
     ! ------------------------------------------------------------------------ !
@@ -696,7 +723,7 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
-#ifdef SIZE_T_NOT_LONG
+#ifdef SIZE_T_IS_NOT_SAME_AS_LONG
   subroutine fortest_array_inequality_size_t2(success, filename, lineno, &
                                             namea, a, nameb, b)
     ! ------------------------------------------------------------------------ !
@@ -794,7 +821,7 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
-#ifdef LONG_LONG_NOT_LONG
+#ifdef LONG_LONG_IS_NOT_SAME_AS_LONG
   subroutine fortest_equality_long_long1(success, filename, lineno, &
                                          namea, a, nameb, b)
     ! ------------------------------------------------------------------------ !
@@ -820,7 +847,7 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
-#ifdef SIZE_T_NOT_LONG
+#ifdef SIZE_T_IS_NOT_SAME_AS_LONG
   subroutine fortest_equality_size_t1(success, filename, lineno, &
                                       namea, a, nameb, b)
     ! ------------------------------------------------------------------------ !
@@ -918,7 +945,7 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
-#ifdef LONG_LONG_NOT_LONG
+#ifdef LONG_LONG_IS_NOT_SAME_AS_LONG
   subroutine fortest_inequality_long_long1(success, filename, lineno, &
                                            namea, a, nameb, b)
     ! ------------------------------------------------------------------------ !
@@ -944,7 +971,7 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
-#ifdef SIZE_T_NOT_LONG
+#ifdef SIZE_T_IS_NOT_SAME_AS_LONG
   subroutine fortest_inequality_size_t1(success, filename, lineno, &
                                         namea, a, nameb, b)
     ! ------------------------------------------------------------------------ !
