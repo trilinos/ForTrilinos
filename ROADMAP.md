@@ -34,12 +34,12 @@ Now is the extensive list.
 
 Status | Command| Comment
 -------|--------|---------
-:white_check_mark: | `Map(numGlobalElements, indexBase, comm)`
-:white_check_mark: :star: | `Map (global_size_t numGlobalElements, GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm, LocalGlobal lg=GloballyDistributed, const Teuchos::RCP< Node > &node=defaultArgNode< Node >())` | No `Node` version
-:white_check_mark: :star: | `Map (global_size_t numGlobalElements, size_t numLocalElements, GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm, const Teuchos::RCP< Node > &node=defaultArgNode< Node >())` | No `Node` version
+:white_check_mark: | `Map(numGlobalElements, indexBase, comm)` | No `indexBase`
+:white_check_mark: :star: | `Map (global_size_t numGlobalElements, GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm, LocalGlobal lg=GloballyDistributed, const Teuchos::RCP< Node > &node=defaultArgNode< Node >())` | No `Node` version, no `indexBase`
+:white_check_mark: :star: | `Map (global_size_t numGlobalElements, size_t numLocalElements, GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm, const Teuchos::RCP< Node > &node=defaultArgNode< Node >())` | No `Node` version, no `indexBase`
 :arrow_down: | `Map (const global_size_t numGlobalElements, const Kokkos::View< const GlobalOrdinal *, device_type > &indexList, const GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm)` | `Kokkos::View` is planned in the future
 :x: | `Map (const global_size_t numGlobalElements, const GlobalOrdinal indexList[], const LocalOrdinal indexListSize, const GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm)` | The `ArrayView` version is used
-:white_check_mark: :star: | `Map (const global_size_t numGlobalElements, const Teuchos::ArrayView< const GlobalOrdinal > &indexList, const GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm, const Teuchos::RCP< Node > &node=defaultArgNode< Node >())` | No `Node` version. Takes in Fortran array instead of `ArrayView`
+:white_check_mark: :star: | `Map (const global_size_t numGlobalElements, const Teuchos::ArrayView< const GlobalOrdinal > &indexList, const GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm, const Teuchos::RCP< Node > &node=defaultArgNode< Node >())` | No `Node` version. Takes in Fortran array instead of `ArrayView`. No `indexBase`.
 :white_check_mark: | `Map ()`
 :white_check_mark: | `~Map ()`
 
@@ -92,7 +92,7 @@ Status | Command| Comment
 :white_check_mark: | `bool 	isOneToOne () const`
 :white_check_mark: | `global_size_t 	getGlobalNumElements () const`
 :white_check_mark: | `size_t 	getNodeNumElements () const`
-:white_check_mark: | `GlobalOrdinal 	getIndexBase () const`
+:x: | `GlobalOrdinal 	getIndexBase () const`
 :white_check_mark: :star: | `LocalOrdinal 	getMinLocalIndex () const` | Returns 1-based index
 :white_check_mark: :star: | `LocalOrdinal 	getMaxLocalIndex () const` | Returns 1-based index
 :white_check_mark: | `GlobalOrdinal 	getMinGlobalIndex () const`
@@ -441,7 +441,7 @@ Status | Command| Comment
 :white_check_mark: | `global_size_t 	getGlobalNumCols () const`
 :white_check_mark: | `size_t 	getNodeNumRows () const`
 :white_check_mark: | `size_t 	getNodeNumCols () const`
-:white_check_mark: | `GlobalOrdinal 	getIndexBase () const`
+:x: | `GlobalOrdinal 	getIndexBase () const`
 :white_check_mark: | `global_size_t 	getGlobalNumEntries () const`
 :white_check_mark: | `size_t 	getNodeNumEntries () const`
 :white_check_mark: | `size_t 	getNumEntriesInGlobalRow (GlobalOrdinal globalRow) const`

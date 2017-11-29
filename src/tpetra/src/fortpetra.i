@@ -88,6 +88,9 @@ namespace Kokkos {
 #define TPETRA_DEPRECATED
 #define KOKKOS_INLINE_FUNCTION
 
+// ignore indexBase
+%ignore getIndexBase;
+
 // Order matters!!!
 %include "Tpetra_Map.i"
 %include "Tpetra_Export.i"
