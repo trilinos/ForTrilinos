@@ -527,4 +527,241 @@ Status | Command| Comment
 
 ### Tpetra::CrsMatrix
 
+**Public Member Functions**
+
+Status | Command| Comment
+-------|--------|---------
+:x: | `local_matrix_type::values_type 	getLocalValuesView () const`
+:white_check_mark: | `void 	importAndFillComplete (Teuchos::RCP< CrsMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > &destMatrix, const import_type &importer, const Teuchos::RCP< const map_type > &domainMap, const Teuchos::RCP< const map_type > &rangeMap, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null) const`
+:white_check_mark: | `void 	importAndFillComplete (Teuchos::RCP< CrsMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > &destMatrix, const import_type &rowImporter, const import_type &domainImporter, const Teuchos::RCP< const map_type > &domainMap, const Teuchos::RCP< const map_type > &rangeMap, const Teuchos::RCP< Teuchos::ParameterList > &params) const`
+:white_check_mark: | `void 	exportAndFillComplete (Teuchos::RCP< CrsMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > &destMatrix, const export_type &exporter, const Teuchos::RCP< const map_type > &domainMap=Teuchos::null, const Teuchos::RCP< const map_type > &rangeMap=Teuchos::null, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null) const`
+:white_check_mark: | `void 	exportAndFillComplete (Teuchos::RCP< CrsMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > &destMatrix, const export_type &rowExporter, const export_type &domainExporter, const Teuchos::RCP< const map_type > &domainMap, const Teuchos::RCP< const map_type > &rangeMap, const Teuchos::RCP< Teuchos::ParameterList > &params) const`
+:white_check_mark: | `bool 	haveGlobalConstants () const`
+
+**Transformational methods**
+
+Status | Command| Comment
+-------|--------|---------
+:white_check_mark: | `void 	globalAssemble ()`
+:white_check_mark: | `void 	resumeFill (const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:white_check_mark: | `void 	fillComplete (const Teuchos::RCP< const map_type > &domainMap, const Teuchos::RCP< const map_type > &rangeMap, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:white_check_mark: | `void 	fillComplete (const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:white_check_mark: | `void 	expertStaticFillComplete (const Teuchos::RCP< const map_type > &domainMap, const Teuchos::RCP< const map_type > &rangeMap, const Teuchos::RCP< const import_type > &importer=Teuchos::null, const Teuchos::RCP< const export_type > &exporter=Teuchos::null, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:white_check_mark: | `void 	replaceColMap (const Teuchos::RCP< const map_type > &newColMap)`
+:white_check_mark: | `void 	reindexColumns (crs_graph_type *const graph, const Teuchos::RCP< const map_type > &newColMap, const Teuchos::RCP< const import_type > &newImport=Teuchos::null, const bool sortEachRow=true)`
+:white_check_mark: | `void 	replaceDomainMapAndImporter (const Teuchos::RCP< const map_type > &newDomainMap, Teuchos::RCP< const import_type > &newImporter)`
+:white_check_mark: | `virtual void 	removeEmptyProcessesInPlace (const Teuchos::RCP< const map_type > &newMap)`
+
+**Methods implementing Operator**
+
+Status | Command| Comment
+-------|--------|---------
+:running: | `void 	apply (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &X, MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &Y, Teuchos::ETransp mode=Teuchos::NO_TRANS, Scalar alpha=Teuchos::ScalarTraits< Scalar >::one(), Scalar beta=Teuchos::ScalarTraits< Scalar >::zero()) const`
+:white_check_mark: | `bool 	hasTransposeApply () const`
+:white_check_mark: | `Teuchos::RCP< const map_type > 	getDomainMap () const`
+:white_check_mark: | `Teuchos::RCP< const map_type > 	getRangeMap () const`
+
+**Other "apply"-like methods**
+
+Status | Command| Comment
+-------|--------|---------
+:running: | `void 	gaussSeidel (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &B, MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &X, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &D, const Scalar &dampingFactor, const ESweepDirection direction, const int numSweeps) const`
+:running: | `void 	reorderedGaussSeidel (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &B, MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &X, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &D, const Teuchos::ArrayView< LocalOrdinal > &rowIndices, const Scalar &dampingFactor, const ESweepDirection direction, const int numSweeps) const`
+:running: | `void 	gaussSeidelCopy (MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &X, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &B, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &D, const Scalar &dampingFactor, const ESweepDirection direction, const int numSweeps, const bool zeroInitialGuess) const`
+:running: | `void 	reorderedGaussSeidelCopy (MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &X, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &B, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &D, const Teuchos::ArrayView< LocalOrdinal > &rowIndices, const Scalar &dampingFactor, const ESweepDirection direction, const int numSweeps, const bool zeroInitialGuess) const`
+:arrow_down: | `virtual Teuchos::RCP < RowMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node > > 	add (const Scalar &alpha, const RowMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node > &A, const Scalar &beta, const Teuchos::RCP< const Map< LocalOrdinal, GlobalOrdinal, Node > > &domainMap, const Teuchos::RCP< const Map< LocalOrdinal, GlobalOrdinal, Node > > &rangeMap, const Teuchos::RCP< Teuchos::ParameterList > &params) const`
+
+**Implementation of Teuchos::Describable interface**
+
+Status | Command| Comment
+-------|--------|---------
+:running: | `std::string 	description () const`
+:x: | `void 	describe (Teuchos::FancyOStream &out, const Teuchos::EVerbosityLevel verbLevel=Teuchos::Describable::verbLevel_default) const`
+
+**Extraction Methods**
+
+Status | Command| Comment
+-------|--------|---------
+:x: | `virtual void 	getLocalDiagCopy (Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, Node::classic > &diag) const =0`
+
+**Mathematical methods**
+
+Status | Command| Comment
+-------|--------|---------
+:x: | `virtual void 	leftScale (const Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, Node::classic > &x)=0`
+:x: | `virtual void 	rightScale (const Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, Node::classic > &x)=0`
+
+**Pure virtual functions to be overridden by subclasses.**
+
+Status | Command| Comment
+-------|--------|---------
+:x: | `virtual void 	apply (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node > &X, MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node > &Y, Teuchos::ETransp mode=Teuchos::NO_TRANS, Scalar alpha=Teuchos::ScalarTraits< Scalar >::one(), Scalar beta=Teuchos::ScalarTraits< Scalar >::zero()) const =0`
+
+**Public methods for redistributing data**
+
+Status | Command| Comment
+-------|--------|---------
+:x: | `void 	doImport (const SrcDistObject &source, const Import< LocalOrdinal, GlobalOrdinal, Node > &importer, CombineMode CM)`
+:x: | `void 	doImport (const SrcDistObject &source, const Export< LocalOrdinal, GlobalOrdinal, Node > &exporter, CombineMode CM)`
+:x: | `void 	doExport (const SrcDistObject &source, const Export< LocalOrdinal, GlobalOrdinal, Node > &exporter, CombineMode CM)`
+:x: | `void 	doExport (const SrcDistObject &source, const Import< LocalOrdinal, GlobalOrdinal, Node > &importer, CombineMode CM)`
+
+**Attribute accessor methods**
+
+Status | Command| Comment
+-------|--------|---------
+:arrow_down: | `bool 	isDistributed () const`
+:x: | `virtual Teuchos::RCP< const map_type > 	getMap () const`
+
+**I/O methods**
+
+Status | Command| Comment
+-------|--------|---------
+:x: | `void 	print (std::ostream &os) const`
+
+**Methods for use only by experts**
+
+Status | Command| Comment
+-------|--------|---------
+:white_check_mark: | `virtual void 	removeEmptyProcessesInPlace (const Teuchos::RCP< const map_type > &newMap)`
+
+**Methods implemented by subclasses and used by doTransfer().**
+
+Status | Command| Comment
+-------|--------|---------
+:x: | `virtual bool 	useNewInterface ()`
+:x: | `virtual void 	copyAndPermuteNew (const SrcDistObject &source, const size_t numSameIDs, const Kokkos::DualView< const local_ordinal_type *, device_type > &permuteToLIDs, const Kokkos::DualView< const local_ordinal_type *, device_type > &permuteFromLIDs)`
+:x: | `virtual void 	packAndPrepare (const SrcDistObject &source, const Teuchos::ArrayView< const local_ordinal_type > &exportLIDs, Teuchos::Array< packet_type > &exports, const Teuchos::ArrayView< size_t > &numPacketsPerLID, size_t &constantNumPackets, Distributor &distor)`
+:x: | `virtual void 	packAndPrepareNew (const SrcDistObject &source, const Kokkos::DualView< const local_ordinal_type *, device_type > &exportLIDs, Kokkos::DualView< packet_type *, device_type > &exports, const Kokkos::DualView< size_t *, device_type > &numPacketsPerLID, size_t &constantNumPackets, Distributor &distor)`
+:x: | `virtual void 	unpackAndCombine (const Teuchos::ArrayView< const local_ordinal_type > &importLIDs, const Teuchos::ArrayView< const packet_type > &imports, const Teuchos::ArrayView< size_t > &numPacketsPerLID, size_t constantNumPackets, Distributor &distor, CombineMode CM)`
+:x: | `virtual void 	unpackAndCombineNew (const Kokkos::DualView< const local_ordinal_type *, device_type > &importLIDs, const Kokkos::DualView< const packet_type *, device_type > &imports, const Kokkos::DualView< const size_t *, device_type > &numPacketsPerLID, const size_t constantNumPackets, Distributor &distor, const CombineMode CM)`
+
+**Related Functions (non-member functions)**
+
+Status | Command| Comment
+-------|--------|---------
+:arrow_down: | `template<class Scalar , class LocalOrdinal , class GlobalOrdinal , class Node , const bool classic = Node::classic> Teuchos::RCP< CrsMatrix < Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > 	createCrsMatrix (const Teuchos::RCP< const Map< LocalOrdinal, GlobalOrdinal, Node > > &map, size_t maxNumEntriesPerRow=0, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:arrow_down: | `template<class CrsMatrixType > Teuchos::RCP< CrsMatrixType > 	importAndFillCompleteCrsMatrix (const Teuchos::RCP< const CrsMatrixType > &sourceMatrix, const Import< typename CrsMatrixType::local_ordinal_type, typename CrsMatrixType::global_ordinal_type, typename CrsMatrixType::node_type > &importer, const Teuchos::RCP< const Map< typename CrsMatrixType::local_ordinal_type, typename CrsMatrixType::global_ordinal_type, typename CrsMatrixType::node_type > > &domainMap=Teuchos::null, const Teuchos::RCP< const Map< typename CrsMatrixType::local_ordinal_type, typename CrsMatrixType::global_ordinal_type, typename CrsMatrixType::node_type > > &rangeMap=Teuchos::null, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:arrow_down: | `template<class CrsMatrixType > Teuchos::RCP< CrsMatrixType > 	importAndFillCompleteCrsMatrix (const Teuchos::RCP< const CrsMatrixType > &sourceMatrix, const Import< typename CrsMatrixType::local_ordinal_type, typename CrsMatrixType::global_ordinal_type, typename CrsMatrixType::node_type > &rowImporter, const Import< typename CrsMatrixType::local_ordinal_type, typename CrsMatrixType::global_ordinal_type, typename CrsMatrixType::node_type > &domainImporter, const Teuchos::RCP< const Map< typename CrsMatrixType::local_ordinal_type, typename CrsMatrixType::global_ordinal_type, typename CrsMatrixType::node_type > > &domainMap, const Teuchos::RCP< const Map< typename CrsMatrixType::local_ordinal_type, typename CrsMatrixType::global_ordinal_type, typename CrsMatrixType::node_type > > &rangeMap, const Teuchos::RCP< Teuchos::ParameterList > &params)`
+:arrow_down: | `template<class CrsMatrixType > Teuchos::RCP< CrsMatrixType > 	exportAndFillCompleteCrsMatrix (const Teuchos::RCP< const CrsMatrixType > &sourceMatrix, const Export< typename CrsMatrixType::local_ordinal_type, typename CrsMatrixType::global_ordinal_type, typename CrsMatrixType::node_type > &exporter, const Teuchos::RCP< const Map< typename CrsMatrixType::local_ordinal_type, typename CrsMatrixType::global_ordinal_type, typename CrsMatrixType::node_type > > &domainMap=Teuchos::null, const Teuchos::RCP< const Map< typename CrsMatrixType::local_ordinal_type, typename CrsMatrixType::global_ordinal_type, typename CrsMatrixType::node_type > > &rangeMap=Teuchos::null, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:arrow_down: | `template<class CrsMatrixType > Teuchos::RCP< CrsMatrixType > 	exportAndFillCompleteCrsMatrix (const Teuchos::RCP< const CrsMatrixType > &sourceMatrix, const Export< typename CrsMatrixType::local_ordinal_type, typename CrsMatrixType::global_ordinal_type, typename CrsMatrixType::node_type > &rowExporter, const Export< typename CrsMatrixType::local_ordinal_type, typename CrsMatrixType::global_ordinal_type, typename CrsMatrixType::node_type > &domainExporter, const Teuchos::RCP< const Map< typename CrsMatrixType::local_ordinal_type, typename CrsMatrixType::global_ordinal_type, typename CrsMatrixType::node_type > > &domainMap, const Teuchos::RCP< const Map< typename CrsMatrixType::local_ordinal_type, typename CrsMatrixType::global_ordinal_type, typename CrsMatrixType::node_type > > &rangeMap, const Teuchos::RCP< Teuchos::ParameterList > &params)`
+
+**Constructors and destructor**
+
+Status | Command| Comment
+-------|--------|---------
+:white_check_mark: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, size_t maxNumEntriesPerRow, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:running: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::ArrayRCP< const size_t > &NumEntriesPerRowToAlloc, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:white_check_mark: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, size_t maxNumEntriesPerRow, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:running: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const Teuchos::ArrayRCP< const size_t > &NumEntriesPerRowToAlloc, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:white_check_mark: | `CrsMatrix (const Teuchos::RCP< const crs_graph_type > &graph, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:x: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const typename local_matrix_type::row_map_type &rowPointers, const typename local_graph_type::entries_type::non_const_type &columnIndices, const typename local_matrix_type::values_type &values, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:running: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const Teuchos::ArrayRCP< size_t > &rowPointers, const Teuchos::ArrayRCP< LocalOrdinal > &columnIndices, const Teuchos::ArrayRCP< Scalar > &values, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:x: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const local_matrix_type &lclMatrix, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:x: | `template<class Node2 > Teuchos::RCP< CrsMatrix < Scalar, LocalOrdinal, GlobalOrdinal, Node2, Node2::classic > > 	clone (const Teuchos::RCP< Node2 > &node2, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null) const`
+:white_check_mark: | `virtual 	~CrsMatrix ()`
+
+**Methods for inserting, modifying, or removing entries**
+
+Status | Command| Comment
+-------|--------|---------
+:running: | `void 	insertGlobalValues (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals)`
+:running: | `void 	insertGlobalValues (const GlobalOrdinal globalRow, const LocalOrdinal numEnt, const Scalar vals[], const GlobalOrdinal inds[])`
+:running: | `void 	insertLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals)`
+:x: | `void 	insertLocalValues (const LocalOrdinal localRow, const LocalOrdinal numEnt, const Scalar vals[], const LocalOrdinal cols[])` | Prefer `ArrayView` variant
+:x: | `template<class GlobalIndicesViewType , class ImplScalarViewType > LocalOrdinal 	replaceGlobalValues (const GlobalOrdinal globalRow, const typename UnmanagedView< GlobalIndicesViewType >::type &inputInds, const typename UnmanagedView< ImplScalarViewType >::type &inputVals) const`
+:running: | `LocalOrdinal 	replaceGlobalValues (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals) const`
+:x: | `LocalOrdinal 	replaceGlobalValues (const GlobalOrdinal globalRow, const LocalOrdinal numEnt, const Scalar vals[], const GlobalOrdinal cols[]) const` | Prefer `ArrayView` variant
+:x: | `template<class LocalIndicesViewType , class ImplScalarViewType > LocalOrdinal 	replaceLocalValues (const LocalOrdinal localRow, const typename UnmanagedView< LocalIndicesViewType >::type &inputInds, const typename UnmanagedView< ImplScalarViewType >::type &inputVals) const`
+:running: | `LocalOrdinal 	replaceLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals) const`
+:x: | `LocalOrdinal 	replaceLocalValues (const LocalOrdinal localRow, const LocalOrdinal numEnt, const Scalar inputVals[], const LocalOrdinal inputCols[]) const` | Prefer `ArrayView` variant
+:running: | `LocalOrdinal 	sumIntoGlobalValues (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals, const bool atomic=useAtomicUpdatesByDefault)`
+:x: | `LocalOrdinal 	sumIntoGlobalValues (const GlobalOrdinal globalRow, const LocalOrdinal numEnt, const Scalar vals[], const GlobalOrdinal cols[], const bool atomic=useAtomicUpdatesByDefault)` | Prefer `ArrayView` variant
+:x: | `template<class LocalIndicesViewType , class ImplScalarViewType > LocalOrdinal 	sumIntoLocalValues (const LocalOrdinal localRow, const typename UnmanagedView< LocalIndicesViewType >::type &inputInds, const typename UnmanagedView< ImplScalarViewType >::type &inputVals, const bool atomic=useAtomicUpdatesByDefault) const`
+:running: | `LocalOrdinal 	sumIntoLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals, const bool atomic=useAtomicUpdatesByDefault) const`
+:x: | `LocalOrdinal 	sumIntoLocalValues (const LocalOrdinal localRow, const LocalOrdinal numEnt, const Scalar vals[], const LocalOrdinal cols[], const bool atomic=useAtomicUpdatesByDefault) const` | Prefer `ArrayView` variant
+:x: | `template<class LocalIndicesViewType , class ImplScalarViewType , class BinaryFunction > LocalOrdinal 	transformLocalValues (const LocalOrdinal localRow, const typename UnmanagedView< LocalIndicesViewType >::type &inputInds, const typename UnmanagedView< ImplScalarViewType >::type &inputVals, BinaryFunction f, const bool atomic=useAtomicUpdatesByDefault) const`
+:x: | `template<class BinaryFunction , class InputMemorySpace > LocalOrdinal 	transformGlobalValues (const GlobalOrdinal globalRow, const Kokkos::View< const GlobalOrdinal *, InputMemorySpace, Kokkos::MemoryUnmanaged > &inputInds, const Kokkos::View< const impl_scalar_type *, InputMemorySpace, Kokkos::MemoryUnmanaged > &inputVals, BinaryFunction f, const bool atomic=useAtomicUpdatesByDefault) const`
+:white_check_mark: | `void 	setAllToScalar (const Scalar &alpha)`
+:white_check_mark: | `void 	scale (const Scalar &alpha)`
+:x: | `void 	setAllValues (const typename local_matrix_type::row_map_type &ptr, const typename local_graph_type::entries_type::non_const_type &ind, const typename local_matrix_type::values_type &val)`
+:running: | `void 	setAllValues (const Teuchos::ArrayRCP< size_t > &ptr, const Teuchos::ArrayRCP< LocalOrdinal > &ind, const Teuchos::ArrayRCP< Scalar > &val)`
+:running: | `void 	getAllValues (Teuchos::ArrayRCP< const size_t > &rowPointers, Teuchos::ArrayRCP< const LocalOrdinal > &columnIndices, Teuchos::ArrayRCP< const Scalar > &values) const`
+
+**Methods implementing RowMatrix**
+
+Status | Command| Comment
+-------|--------|---------
+:white_check_mark: | `Teuchos::RCP< const Teuchos::Comm< int > > 	getComm () const`
+:x: | `Teuchos::RCP< node_type > 	getNode () const`
+:white_check_mark: | `Teuchos::RCP< const map_type > 	getRowMap () const`
+:white_check_mark: | `Teuchos::RCP< const map_type > 	getColMap () const`
+:x: | `Teuchos::RCP< const RowGraph < LocalOrdinal, GlobalOrdinal, Node > > 	getGraph () const`
+:white_check_mark: | `Teuchos::RCP< const crs_graph_type > 	getCrsGraph () const`
+:x: | `local_matrix_type 	getLocalMatrix () const`
+:white_check_mark: | `global_size_t 	getGlobalNumRows () const`
+:white_check_mark: | `global_size_t 	getGlobalNumCols () const`
+:white_check_mark: | `size_t 	getNodeNumRows () const`
+:white_check_mark: | `size_t 	getNodeNumCols () const`
+:white_check_mark:x: | `GlobalOrdinal 	getIndexBase () const`
+:white_check_mark:white_check_mark: | `global_size_t 	getGlobalNumEntries () const`
+:white_check_mark: | `size_t 	getNodeNumEntries () const`
+:white_check_mark: | `size_t 	getNumEntriesInGlobalRow (GlobalOrdinal globalRow) const`
+:running: | `size_t 	getNumEntriesInLocalRow (LocalOrdinal localRow) const`
+:white_check_mark: | `global_size_t 	getGlobalNumDiags () const`
+:white_check_mark: | `size_t 	getNodeNumDiags () const`
+:white_check_mark: | `size_t 	getGlobalMaxNumRowEntries () const`
+:white_check_mark: | `size_t 	getNodeMaxNumRowEntries () const`
+:white_check_mark: | `bool 	hasColMap () const`
+:white_check_mark: | `bool 	isLowerTriangular () const`
+:white_check_mark: | `bool 	isUpperTriangular () const`
+:white_check_mark: | `bool 	isLocallyIndexed () const`
+:white_check_mark: | `bool 	isGloballyIndexed () const`
+:white_check_mark: | `bool 	isFillComplete () const`
+:white_check_mark: | `bool 	isFillActive () const`
+:white_check_mark: | `bool 	isStorageOptimized () const`
+:white_check_mark: | `ProfileType 	getProfileType () const`
+:white_check_mark: | `bool 	isStaticGraph () const`
+:white_check_mark: | `mag_type 	getFrobeniusNorm () const`
+:white_check_mark: | `virtual bool 	supportsRowViews () const`
+:running: | `void 	getGlobalRowCopy (GlobalOrdinal GlobalRow, const Teuchos::ArrayView< GlobalOrdinal > &Indices, const Teuchos::ArrayView< Scalar > &Values, size_t &NumEntries) const`
+:running: | `void 	getLocalRowCopy (LocalOrdinal localRow, const Teuchos::ArrayView< LocalOrdinal > &colInds, const Teuchos::ArrayView< Scalar > &vals, size_t &numEntries) const`
+:running: | `void 	getGlobalRowView (GlobalOrdinal GlobalRow, Teuchos::ArrayView< const GlobalOrdinal > &indices, Teuchos::ArrayView< const Scalar > &values) const`
+:running: | `void 	getLocalRowView (LocalOrdinal LocalRow, Teuchos::ArrayView< const LocalOrdinal > &indices, Teuchos::ArrayView< const Scalar > &values) const`
+:x: | `LocalOrdinal 	getLocalRowViewRaw (const LocalOrdinal lclRow, LocalOrdinal &numEnt, const LocalOrdinal *&lclColInds, const Scalar *&vals) const` | Prefer `ArrayView` version
+:x: | `LocalOrdinal 	getLocalRowView (const LocalOrdinal lclRow, LocalOrdinal &numEnt, const impl_scalar_type *&val, const LocalOrdinal *&ind) const` | Prefer `ArrayView` version
+:x: | `template<class OutputScalarType > std::enable_if<!std::is_same < OutputScalarType, impl_scalar_type >::value &&std::is_convertible < impl_scalar_type, OutputScalarType >::value, LocalOrdinal >::type 	getLocalRowView (const LocalOrdinal lclRow, LocalOrdinal &numEnt, const OutputScalarType *&val, const LocalOrdinal *&ind) const` | Prefer `ArrayView` version
+:arrow_down: | `void 	getLocalDiagCopy (Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &diag) const`
+:arrow_down: | `void 	getLocalDiagOffsets (Teuchos::ArrayRCP< size_t > &offsets) const`
+:arrow_down: | `void 	getLocalDiagCopy (Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &diag, const Kokkos::View< const size_t *, device_type, Kokkos::MemoryUnmanaged > &offsets) const`
+:arrow_down: | `void 	getLocalDiagCopy (Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &diag, const Teuchos::ArrayView< const size_t > &offsets) const`
+:arrow_down: | `void 	leftScale (const Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &x)`
+:arrow_down: | `void 	rightScale (const Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &x)`
+
+**Advanced templated methods**
+
+Status | Command| Comment
+-------|--------|---------
+:x: | `template<class DomainScalar , class RangeScalar > void 	localMultiply (const MultiVector< DomainScalar, LocalOrdinal, GlobalOrdinal, Node, classic > &X, MultiVector< RangeScalar, LocalOrdinal, GlobalOrdinal, Node, classic > &Y, Teuchos::ETransp mode, RangeScalar alpha, RangeScalar beta) const`
+:x: | `template<class DomainScalar , class RangeScalar > void 	localGaussSeidel (const MultiVector< DomainScalar, LocalOrdinal, GlobalOrdinal, Node, classic > &B, MultiVector< RangeScalar, LocalOrdinal, GlobalOrdinal, Node, classic > &X, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &D, const RangeScalar &dampingFactor, const KokkosClassic::ESweepDirection direction) const`
+:x: | `template<class DomainScalar , class RangeScalar > void 	reorderedLocalGaussSeidel (const MultiVector< DomainScalar, LocalOrdinal, GlobalOrdinal, Node, classic > &B, MultiVector< RangeScalar, LocalOrdinal, GlobalOrdinal, Node, classic > &X, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &D, const Teuchos::ArrayView< LocalOrdinal > &rowIndices, const RangeScalar &dampingFactor, const KokkosClassic::ESweepDirection direction) const`
+:x: | `template<class DomainScalar , class RangeScalar > void 	localSolve (const MultiVector< RangeScalar, LocalOrdinal, GlobalOrdinal, Node, classic > &Y, MultiVector< DomainScalar, LocalOrdinal, GlobalOrdinal, Node, classic > &X, Teuchos::ETransp mode) const`
+:x: | `template<class T > Teuchos::RCP< CrsMatrix< T, LocalOrdinal, GlobalOrdinal, Node, classic > > 	convert () const`
+
+**Implementation of DistObject interface**
+
+Status | Command| Comment
+-------|--------|---------
+:x: | `virtual bool 	checkSizes (const SrcDistObject &source)`
+:x: | `virtual void 	copyAndPermute (const SrcDistObject &source, size_t numSameIDs, const Teuchos::ArrayView< const LocalOrdinal > &permuteToLIDs, const Teuchos::ArrayView< const LocalOrdinal > &permuteFromLIDs)`
+:x: | `virtual void 	packAndPrepare (const SrcDistObject &source, const Teuchos::ArrayView< const LocalOrdinal > &exportLIDs, Teuchos::Array< char > &exports, const Teuchos::ArrayView< size_t > &numPacketsPerLID, size_t &constantNumPackets, Distributor &distor)`
+:x: | `void 	unpackAndCombine (const Teuchos::ArrayView< const LocalOrdinal > &importLIDs, const Teuchos::ArrayView< const char > &imports, const Teuchos::ArrayView< size_t > &numPacketsPerLID, size_t constantNumPackets, Distributor &distor, CombineMode combineMode)`
+
+**Implementation of Packable interface**
+
+Status | Command| Comment
+-------|--------|---------
+:x: | `virtual void 	pack (const Teuchos::ArrayView< const LocalOrdinal > &exportLIDs, Teuchos::Array< char > &exports, const Teuchos::ArrayView< size_t > &numPacketsPerLID, size_t &constantNumPackets, Distributor &distor) const`
+:x: | `void 	packNonStatic (const Teuchos::ArrayView< const LocalOrdinal > &exportLIDs, Teuchos::Array< char > &exports, const Teuchos::ArrayView< size_t > &numPacketsPerLID, size_t &constantNumPackets, Distributor &distor) const`
+
 ## Belos
