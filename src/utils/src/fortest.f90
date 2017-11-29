@@ -31,11 +31,6 @@ module fortest
 ! integers.  To circumvent this problem, macros <KIND>_IS_NOT_SAME_AS_LONG
 ! protect interfaces from multiply defining functions.
 
-
-As a result, a function
-! overloaded to accept an argument of integer(c_size_t) is indistinguishable by
-! the compiler from its specialization for integer(c_long).
-
 #include "ForTrilinosUtils_config.hpp"
 #include "DBCF.h"
 
