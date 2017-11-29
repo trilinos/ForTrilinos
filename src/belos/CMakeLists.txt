@@ -1,11 +1,7 @@
-##---------------------------------------------------------------------------##
-## File  : teuchos/CMakeLists.txt
-## Author: Seth R Johnson
-## Date  : Tue Feb 21 14:30:37 2017
-## Brief : TriBITS package file for teuchos/
-## Copyright (c) 2017 Oak Ridge National Laboratory, UT-Battelle, LLC.
-##---------------------------------------------------------------------------##
-
+## Copyright 2017, UT-Battelle, LLC
+##
+## SPDX-License-Identifier: BSD-3-Clause
+## License-Filename: LICENSE
 TRIBITS_SUBPACKAGE(Belos)
 
 ##---------------------------------------------------------------------------##

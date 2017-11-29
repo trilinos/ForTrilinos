@@ -1,11 +1,9 @@
-//---------------------------------*-SWIG-*----------------------------------//
-/*!
- * \file   parameterlist/Teuchos_ParameterList.i
- * \author Seth R Johnson
- * \date   Tue Dec 06 17:59:15 2016
- * \note   Copyright (c) 2016 Oak Ridge National Laboratory, UT-Battelle, LLC.
+/*
+ * Copyright 2017, UT-Battelle, LLC
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * License-Filename: LICENSE
  */
-//---------------------------------------------------------------------------//
 %{
 #include "Teuchos_Comm.hpp"
 #ifdef HAVE_MPI

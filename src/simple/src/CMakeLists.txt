@@ -1,3 +1,7 @@
+## Copyright 2017, UT-Battelle, LLC
+##
+## SPDX-License-Identifier: BSD-3-Clause
+## License-Filename: LICENSE
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
@@ -17,6 +21,7 @@ IF (ForTrilinos_ENABLE_DeveloperMode)
     SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}")
   ENDIF()
 
+  LIST(APPEND CMAKE_SWIG_FLAGS -I${CMAKE_CURRENT_SOURCE_DIR}/../../utils/src/)
   MAKE_SWIG(MODULE fortrilinos
     SOURCE fortrilinos.i
     DEPLIBS ${Trilinos_LIBRARIES}

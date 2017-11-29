@@ -1,3 +1,10 @@
+/*
+ * Copyright 2017, UT-Battelle, LLC
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * License-Filename: LICENSE
+ */
+
 // Dependencies
 %include "Teuchos_RCP.i"
 

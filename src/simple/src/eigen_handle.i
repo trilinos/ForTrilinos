@@ -1,11 +1,9 @@
-//---------------------------------*-SWIG-*----------------------------------//
-/*!
- * \file   simple/eigen_handle.i
- * \author Seth R Johnson
- * \date   Mon Feb 27 10:43:39 2017
- * \note   Copyright (c) 2017 Oak Ridge National Laboratory, UT-Battelle, LLC.
+/*
+ * Copyright 2017, UT-Battelle, LLC
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * License-Filename: LICENSE
  */
-//---------------------------------------------------------------------------//
 %{
 #include "eigen_handle.hpp"
 %}
@@ -15,7 +13,3 @@
 
 %include "Teuchos_Comm.i"
 %include "eigen_handle.hpp"
-
-//---------------------------------------------------------------------------//
-// end of simple/eigen_handle.i
-//---------------------------------------------------------------------------//

@@ -1,3 +1,7 @@
+! Copyright 2017, UT-Battelle, LLC
+!
+! SPDX-License-Identifier: BSD-3-Clause
+! License-Filename: LICENSE
 program test_TpetraMap
 #include "ForTrilinosTpetra_config.hpp"
 #include "FortranTestMacros.h"
@@ -445,16 +449,17 @@ contains
   integer function test_getNodeElementList()
     integer :: jerr
     type(TpetraMap) :: Obj
-    type(TeuchosArrayViewLongLongConst) :: fresult
+    integer(local_ordinal_type), parameter :: num_local = 4
+    integer(global_ordinal_type) :: fresult(num_local)
     integer(global_ordinal_type) :: num_global, index_base
     jerr = 0
-    num_global = 4*comm%getSize()
+    num_global = num_local*comm%getSize()
     index_base = 1
 
     call Obj%create(num_global, index_base, comm)
     TEST_FOR_IERR(test_getNodeElementList)
 
-    fresult = Obj%getNodeElementList()
+    call Obj%getNodeElementList(fresult)
     TEST_FOR_IERR(test_getNodeElementList)
 
     ! TODO: getNodeElementList should be modified to be a subroutine that takes
@@ -463,7 +468,6 @@ contains
     if (comm%getRank() == 0) &
       write(*,*) "getNodeElementList: Test not yet implemented"
 
-    call fresult%release()
     TEST_FOR_IERR(test_getNodeElementList)
 
     call Obj%release()

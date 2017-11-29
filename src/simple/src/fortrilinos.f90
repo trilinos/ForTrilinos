@@ -3,6 +3,11 @@
 !
 ! Do not make changes to this file unless you know what you are doing--modify
 ! the SWIG interface file instead.
+
+! Copyright 2017, UT-Battelle, LLC
+!
+! SPDX-License-Identifier: BSD-3-Clause
+! License-Filename: LICENSE
 module fortrilinos
  use, intrinsic :: ISO_C_BINDING
  use forteuchos

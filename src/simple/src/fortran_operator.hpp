@@ -1,3 +1,9 @@
+/*
+ * Copyright 2017, UT-Battelle, LLC
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * License-Filename: LICENSE
+ */
 #ifndef FORTRILINOS_FORTRAN_OPERATOR_HPP
 #define FORTRILINOS_FORTRAN_OPERATOR_HPP
 

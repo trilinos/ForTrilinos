@@ -1,3 +1,7 @@
+## Copyright 2017, UT-Battelle, LLC
+##
+## SPDX-License-Identifier: BSD-3-Clause
+## License-Filename: LICENSE
 TRIBITS_COPY_FILES_TO_BINARY_DIR(Simple_cp
   SOURCE_FILES stratimikos.xml davidson.xml LHS_matrix.mat RHS_matrix.mat
  )

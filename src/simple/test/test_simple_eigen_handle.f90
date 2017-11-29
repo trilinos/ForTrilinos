@@ -1,3 +1,7 @@
+! Copyright 2017, UT-Battelle, LLC
+!
+! SPDX-License-Identifier: BSD-3-Clause
+! License-Filename: LICENSE
 module x_eigen_handle
   use iso_c_binding
   implicit none
