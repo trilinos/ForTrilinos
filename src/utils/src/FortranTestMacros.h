@@ -1,125 +1,133 @@
-! Copyright 2017, UT-Battelle, LLC
-!
-! SPDX-License-Identifier: BSD-3-Clause
-! License-Filename: LICENSE
+! vi: ft=fortran
 #ifndef FOTRANTESTMACROS_H
 #define FOTRANTESTMACROS_H
 
-#include "ForTrilinosUtils_config.hpp"
-/* Options */
-
 #include "DBCF.h"
+use DBCF_M
+use fortest
 
-#define ASSERT_C_ASSOC( X ) \
-    Insist( C_ASSOCIATED( X % instance_ptr ), "X not C_ASSOCIATED" )
-#define ASSERT_NOT_C_ASSOC( X ) \
-    Insist(.NOT.C_ASSOCIATED( X % instance_ptr ), "X C_ASSOCIATED" )
-#define ASSERT_C_ASSOC2( X, Y )                                 \
-    Insist( C_ASSOCIATED( X % instance_ptr, Y % instance_ptr ), \
-            "X not C_ASSOCIATED with Y" )
-#define ASSERT_NOT_C_ASSOC2( X, Y )                                 \
-    Insist(.NOT.C_ASSOCIATED( X % instance_ptr, Y % instance_ptr ), \
-           "X C_ASSOCIATED with Y" )
+#define FILENAME __FILE__
+#define LINENO __LINE__
+
+#define ASSERT_C_ASSOC(X) \
+ Insist(C_ASSOCIATED(X%instance_ptr), "X not C_ASSOCIATED")
+#define ASSERT_NOT_C_ASSOC(X) \
+ Insist(.NOT.C_ASSOCIATED(X%instance_ptr), "X C_ASSOCIATED")
+#define ASSERT_C_ASSOC2(X, Y) \
+ Insist(C_ASSOCIATED(X%instance_ptr, Y%instance_ptr), \
+        "X not C_ASSOCIATED with Y")
+#define ASSERT_NOT_C_ASSOC2(X, Y) \
+ Insist(.NOT.C_ASSOCIATED(X%instance_ptr, Y%instance_ptr), \
+        "X C_ASSOCIATED with Y")
 
 ! NOTE: GFortran doesn't support the '#' token to convert code to a string, so
 ! the given arguments MUST NOT have quotes in them
-#define EXPECT_EQ( REF, TEST )               \
-    if(.NOT. REF == TEST ) then;              \
-    WRITE( 0, * ) "Expected: ", REF;         \
-    WRITE( 0, * ) "Actual: ", TEST;          \
-    Insist(.false., "EXPECT_EQ(REF,TEST)" ); \
-    endif
+#define EXPECT_EQ(REF, TEST) \
+ IF(.NOT. REF == TEST) THEN; \
+ WRITE(0, *) "Expected: ", REF; \
+ WRITE(0, *) "Actual: ", TEST; \
+ Insist(.FALSE., "EXPECT_EQ(REF,TEST)"); \
+ ENDIF
 
-#define EXPECT_TRUE( TEST )                \
-    if(.NOT. TEST ) then;                   \
-    WRITE( 0, * ) "Expected: TRUE";        \
-    WRITE( 0, * ) "Actual: FALSE";         \
-    Insist(.false., "EXPECT_TRUE(TEST)" ); \
-    endif
+#define EXPECT_TRUE(TEST) \
+ IF(.NOT. TEST) THEN; \
+ WRITE(0, '(A)') "Expected: TRUE"; \
+ WRITE(0, '(A)') "Actual: FALSE"; \
+ Insist(.FALSE., "EXPECT_TRUE(TEST)"); \
+ ENDIF
 
-#define EXPECT_FALSE( TEST )                \
-    if( TEST ) then;                        \
-    WRITE( 0, * ) "Expected: FALSE";        \
-    WRITE( 0, * ) "Actual: TRUE";           \
-    Insist(.false., "EXPECT_FALSE(TEST)" ); \
-    endif
+#define EXPECT_FALSE(TEST) \
+ IF(TEST) THEN; \
+ WRITE(0, '(A)') "Expected: FALSE"; \
+ WRITE(0, '(A)') "Actual: TRUE"; \
+ Insist(.FALSE., "EXPECT_FALSE(TEST)"); \
+ ENDIF
 
-#define CHECK_IERR( ) \
-    if(.NOT. ierr == 0 ) then;                         \
-    WRITE( 0, * ) "Expected ierr = 0, but got ", ierr; \
-    Insist(.false., "Expected ierr = 0" );             \
-    endif
+#define CHECK_IERR() \
+ IF(IERR/=0) THEN; \
+ Insist(.FALSE.,'*** ForTrilinos exception caught!'//NEW_LINE('A')//TRIM(SERR)); \
+ ENDIF
 
-#define TEST_FOR_IERR( NAME ) \
-    if (ierr /= 0) then; \
-      NAME = ierr; \
-      ierr = 0; \
-      return; \
-    endif
+#define SETUP_TEST() \
+ LOGICAL :: SUCCESS; \
+ CALL SETUP_TEST2()
 
-#define SET_ERROR_COUNT_AND_RETURN(NAME, ERROR_COUNT) \
-    NAME = ERROR_COUNT + ierr; \
-    ierr = 0; \
-    return
+#define ADD_SUBTEST_AND_RUN(NAME) \
+ CALL SETUP_SUBTEST(SUCCESS); \
+ CALL NAME(SUCCESS); \
+ CALL TEARDOWN_SUBTEST("NAME", SUCCESS)
 
-use DBCF_M
+#define TEARDOWN_TEST() \
+ CHECK_IERR(); \
+ CALL TEARDOWN_TEST2()
 
-#ifdef HAVE_MPI
+#define FORTRILINOS_UNIT_TEST(NAME) \
+ SUBROUTINE NAME(SUCCESS); \
+ IMPLICIT NONE; \
+ LOGICAL :: SUCCESS
 
-#define DECLARE_TEST_VARIABLES() \
-  use mpi; \
-  implicit none; \
-  integer ERR1(1), ERR2(1), IERROR, COMM_RANK, ERROR_COUNTER
+#define END_FORTRILINOS_UNIT_TEST(NAME) \
+ SUCCESS = SUCCESS .AND. (IERR == 0); \
+ IERR = 0; \
+ RETURN; \
+ END SUBROUTINE NAME
 
-#define INITIALIZE_TEST() \
-  ERR1(1) = 0; ERR2(1) = 0; ERROR_COUNTER = 0; \
-  call MPI_INIT(ierr); \
-  call MPI_COMM_RANK(MPI_COMM_WORLD, COMM_RANK, IERROR)
+! The TEST_* macros to follow are intended to be called from within
+! a FORTRILINOS_UNIT_TEST.  Instead of stopping calculations at the first sign of
+! error, they set the variable "SUCCESS" to .FALSE. and return.  This informs the
+! ADD_SUBTEST_AND_RUN macro that the subtest failed.
 
-#define ADD_SUBTEST_AND_RUN(TEST_NAME) \
-    ERR1(1) = TEST_NAME(); \
-    call MPI_ALLREDUCE(ERR1, ERR2, 1, MPI_INTEGER, MPI_MAX, MPI_COMM_WORLD, IERROR); \
-    if ( ERR2(1) /= 0 ) then; \
-      if (COMM_RANK == 0) write(0, *) "Test FAILED!"; \
-      ERROR_COUNTER = ERROR_COUNTER + 1; \
-    endif
+#define TEST_IERR() \
+ CALL FORTEST_IERR(SUCCESS, FILENAME, LINENO, IERR, SERR); \
+ IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
 
-#define SHUTDOWN_TEST() \
-  if (ERROR_COUNTER == 0) then; \
-    if (COMM_RANK == 0) then; \
-      write(*,*) "Test PASSED"; \
-    end if; \
-  else; \
-    if (COMM_RANK == 0) then; \
-      write(*,*) "A total of ", ERROR_COUNTER, " tests FAILED"; \
-    end if; \
-    Insist(.false., "FAILED TESTS ENCOUNTERED" ); \
-  end if; \
-  call MPI_FINALIZE(ierr);
+#define TEST_EQUALITY(A, B) \
+ CALL FORTEST_EQUALITY(SUCCESS, FILENAME, LINENO, "A", int(A), "B", int(B)); \
+ IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
 
-#else
+#define TEST_INEQUALITY(A, B) \
+ CALL FORTEST_INEQUALITY(SUCCESS, FILENAME, LINENO, "A", int(A), "B", int(B)); \
+ IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
 
-#define DECLARE_TEST_VARIABLES() \
-  implicit none; \
-  integer ERROR_COUNTER
+#define TEST_ARRAY_EQUALITY(A, B) \
+ CALL FORTEST_ARRAY_EQUALITY(SUCCESS, FILENAME, LINENO, "A", A, "B", B); \
+ IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
 
-#define INITIALIZE_TEST() \
-  ERROR_COUNTER = 0;
+#define TEST_ARRAY_INEQUALITY(A, B) \
+ CALL FORTEST_ARRAY_INEQUALITY(SUCCESS, FILENAME, LINENO, "A", A, "B", B); \
+ IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
 
-#define ADD_SUBTEST_AND_RUN(TEST_NAME) \
-    if ( TEST_NAME() /= 0 ) then; \
-      write(0, *) "Test FAILED!"; \
-      ERROR_COUNTER = ERROR_COUNTER + 1; \
-    endif
+#define TEST_FLOATING_EQUALITY(A, B, T) \
+ CALL FORTEST_EQUALITY(SUCCESS, FILENAME, LINENO, "A", A, "B", B, T); \
+ IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
 
-#define SHUTDOWN_TEST() \
-  if (ERROR_COUNTER == 0) then; \
-    write(*,*) "Test PASSED"; \
-  else; \
-    write(*,*) "A total of ", ERROR_COUNTER, " tests FAILED"; \
-    Insist(.false., "FAILED TESTS ENCOUNTERED" ); \
-  end if
+#define TEST_FLOATING_INEQUALITY(A, B, T) \
+ CALL FORTEST_INEQUALITY(SUCCESS, FILENAME, LINENO, "A", A, "V", B, T); \
+ IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
 
-#endif
+#define TEST_FLOATING_ARRAY_EQUALITY(A, B, T) \
+ CALL FORTEST_ARRAY_EQUALITY(SUCCESS, FILENAME, LINENO, "A", A, "B", B, T); \
+ IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
+
+#define TEST_FLOATING_ARRAY_INEQUALITY(A, B, T) \
+ CALL FORTEST_ARRAY_INEQUALITY(SUCCESS, FILENAME, LINENO, "A", A, "B", B, T); \
+ IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
+
+#define TEST_ASSERT(C) \
+ CALL FORTEST_ASSERT(SUCCESS, FILENAME, LINENO, "C", C); \
+ IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
+
+#define TEST_THROW(CODE) \
+ CODE; \
+ CALL FORTEST_THROW(SUCCESS, FILENAME, LINENO, "CODE", IERR); \
+ IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
+
+#define TEST_NOTHROW(CODE) \
+ CODE; \
+ CALL FORTEST_NOTHROW(SUCCESS, FILENAME, LINENO, "CODE", IERR); \
+ IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
+
+#define OUT0(S) \
+ CALL WRITE_TO_PROC0(S)
 
 #endif /* FOTRANTESTMACROS_H */
