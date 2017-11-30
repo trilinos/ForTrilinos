@@ -67,3 +67,47 @@ TRIBITS_PACKAGE_POSTPROCESS()
 IF(ForTrilinos_ENABLE_ReadTheDocs)
     ADD_SUBDIRECTORY(docs)
 ENDIF()
+
+SET(ForTrilinos_PACKAGES "")
+SET(ForTrilinos_MODULES  "")
+
+
+#IF(ForTrilinos_ENABLE_Tpetra)
+  APPEND_SET(ForTrilinos_PACKAGES Tpetra)
+  APPEND_SET(ForTrilinos_MODULES  Tpetra)
+#ENDIF(ForTrilinos_ENABLE_Tpetra)
+
+#IF(ForTrilinos_ENABLE_Teuchos)
+  APPEND_SET(ForTrilinos_PACKAGES Teuchos)
+  APPEND_SET(ForTrilinos_MODULES  Teuchos)
+#ENDIF(ForTrilinos_ENABLE_Teuchos)
+
+# The default status for whether we build docstrings for ForTrilinos is
+# based on whether the user has doxygen installed.
+FIND_PACKAGE(Doxygen)
+IF(DOXYGEN_FOUND)
+  IF(${DOXYGEN_VERSION} VERSION_EQUAL 1.8.13 AND ForTrilinos_DOCSTRINGS)
+    MESSAGE(FATAL_ERROR 
+      "Doxygen version ${DOXYGEN_VERSION} has a bug that makes it incompatible with "
+      "ForTrilinos. To work around this, you may disable ForTrilinos docstrings by setting "
+      "ForTrilinos_DOCSTRINGS=OFF. "
+      "Alternatively, you may choose to use a different version of doxygen. If you "
+      "choose this route, be sure that the new version of doxygen is found first in "
+      "your environment path.")
+  ELSE(${DOXYGEN_VERSION} VERSION_EQUAL 1.8.13 AND ForTrilinos_DOCSTRINGS)
+    SET(ForTrilinos_DOCSTRINGS_DEFAULT ON)
+  ENDIF(${DOXYGEN_VERSION} VERSION_EQUAL 1.8.13 AND ForTrilinos_DOCSTRINGS)
+ELSE(DOXYGEN_FOUND)
+  SET(ForTrilinos_DOCSTRINGS_DEFAULT OFF)
+  MESSAGE(STATUS "doxygen not found!")
+ENDIF(DOXYGEN_FOUND)
+
+# Set the ForTrilinos docstrings flag
+SET(ForTrilinos_DOCSTRINGS ${ForTrilinos_DOCSTRINGS_DEFAULT} CACHE BOOL
+    "a flag that determines whether Python docstrings will be built using doxygen")
+IF(ForTrilinos_DOCSTRINGS AND NOT DOXYGEN_FOUND)
+  MESSAGE(ERROR "ForTrilinos docstrings enabled but doxygen not found")
+ENDIF(ForTrilinos_DOCSTRINGS AND NOT DOXYGEN_FOUND)
+
+ADD_SUBDIRECTORY(doc)
+
