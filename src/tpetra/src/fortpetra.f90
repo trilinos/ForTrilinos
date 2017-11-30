@@ -398,9 +398,6 @@ end type
   procedure, private :: expertStaticFillComplete__SWIG_2 => swigf_TpetraCrsMatrix_expertStaticFillComplete__SWIG_2
   procedure, private :: expertStaticFillComplete__SWIG_3 => swigf_TpetraCrsMatrix_expertStaticFillComplete__SWIG_3
   procedure :: replaceColMap => swigf_TpetraCrsMatrix_replaceColMap
-  procedure, private :: reindexColumns__SWIG_0 => swigf_TpetraCrsMatrix_reindexColumns__SWIG_0
-  procedure, private :: reindexColumns__SWIG_1 => swigf_TpetraCrsMatrix_reindexColumns__SWIG_1
-  procedure, private :: reindexColumns__SWIG_2 => swigf_TpetraCrsMatrix_reindexColumns__SWIG_2
   procedure :: replaceDomainMapAndImporter => swigf_TpetraCrsMatrix_replaceDomainMapAndImporter
   procedure :: removeEmptyProcessesInPlace => swigf_TpetraCrsMatrix_removeEmptyProcessesInPlace
   procedure :: getComm => swigf_TpetraCrsMatrix_getComm
@@ -439,10 +436,6 @@ end type
   procedure :: hasTransposeApply => swigf_TpetraCrsMatrix_hasTransposeApply
   procedure :: getDomainMap => swigf_TpetraCrsMatrix_getDomainMap
   procedure :: getRangeMap => swigf_TpetraCrsMatrix_getRangeMap
-  procedure :: gaussSeidel => swigf_TpetraCrsMatrix_gaussSeidel
-  procedure :: reorderedGaussSeidel => swigf_TpetraCrsMatrix_reorderedGaussSeidel
-  procedure :: gaussSeidelCopy => swigf_TpetraCrsMatrix_gaussSeidelCopy
-  procedure :: reorderedGaussSeidelCopy => swigf_TpetraCrsMatrix_reorderedGaussSeidelCopy
   procedure :: description => swigf_TpetraCrsMatrix_description
   procedure, private :: importAndFillComplete__SWIG_0 => swigf_TpetraCrsMatrix_importAndFillComplete__SWIG_0
   procedure, private :: importAndFillComplete__SWIG_1 => swigf_TpetraCrsMatrix_importAndFillComplete__SWIG_1
@@ -473,7 +466,6 @@ end type
     create__SWIG_6, create__SWIG_7, create__SWIG_8, create__SWIG_9, create__SWIG_10, create__SWIG_11, create__SWIG_12, &
     create__SWIG_13, create__SWIG_14, create__SWIG_15
   generic :: assignment(=) => swigf_assign_TpetraCrsMatrix
-  generic :: reindexColumns => reindexColumns__SWIG_0, reindexColumns__SWIG_1, reindexColumns__SWIG_2
   generic :: apply => apply__SWIG_0, apply__SWIG_1, apply__SWIG_2, apply__SWIG_3
   generic :: resumeFill => resumeFill__SWIG_0, resumeFill__SWIG_1
   generic :: fillComplete => fillComplete__SWIG_0, fillComplete__SWIG_1, fillComplete__SWIG_2, fillComplete__SWIG_3
@@ -2378,33 +2370,6 @@ type(C_PTR), value :: farg1
 type(C_PTR), value :: farg2
 end subroutine
 
-subroutine swigc_TpetraCrsMatrix_reindexColumns__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
-bind(C, name="swigc_TpetraCrsMatrix_reindexColumns__SWIG_0")
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR), value :: farg2
-type(C_PTR), value :: farg3
-type(C_PTR), value :: farg4
-logical(C_BOOL), intent(in) :: farg5
-end subroutine
-
-subroutine swigc_TpetraCrsMatrix_reindexColumns__SWIG_1(farg1, farg2, farg3, farg4) &
-bind(C, name="swigc_TpetraCrsMatrix_reindexColumns__SWIG_1")
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR), value :: farg2
-type(C_PTR), value :: farg3
-type(C_PTR), value :: farg4
-end subroutine
-
-subroutine swigc_TpetraCrsMatrix_reindexColumns__SWIG_2(farg1, farg2, farg3) &
-bind(C, name="swigc_TpetraCrsMatrix_reindexColumns__SWIG_2")
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR), value :: farg2
-type(C_PTR), value :: farg3
-end subroutine
-
 subroutine swigc_TpetraCrsMatrix_replaceDomainMapAndImporter(farg1, farg2, farg3) &
 bind(C, name="swigc_TpetraCrsMatrix_replaceDomainMapAndImporter")
 use, intrinsic :: ISO_C_BINDING
@@ -2719,58 +2684,6 @@ use, intrinsic :: ISO_C_BINDING
 type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 end function
-
-subroutine swigc_TpetraCrsMatrix_gaussSeidel(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
-bind(C, name="swigc_TpetraCrsMatrix_gaussSeidel")
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR), value :: farg2
-type(C_PTR), value :: farg3
-type(C_PTR), value :: farg4
-real(C_DOUBLE), intent(in) :: farg5
-integer(C_INT), intent(in) :: farg6
-integer(C_INT), intent(in) :: farg7
-end subroutine
-
-subroutine swigc_TpetraCrsMatrix_reorderedGaussSeidel(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8) &
-bind(C, name="swigc_TpetraCrsMatrix_reorderedGaussSeidel")
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR), value :: farg2
-type(C_PTR), value :: farg3
-type(C_PTR), value :: farg4
-type(C_PTR), value :: farg5
-real(C_DOUBLE), intent(in) :: farg6
-integer(C_INT), intent(in) :: farg7
-integer(C_INT), intent(in) :: farg8
-end subroutine
-
-subroutine swigc_TpetraCrsMatrix_gaussSeidelCopy(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8) &
-bind(C, name="swigc_TpetraCrsMatrix_gaussSeidelCopy")
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR), value :: farg2
-type(C_PTR), value :: farg3
-type(C_PTR), value :: farg4
-real(C_DOUBLE), intent(in) :: farg5
-integer(C_INT), intent(in) :: farg6
-integer(C_INT), intent(in) :: farg7
-logical(C_BOOL), intent(in) :: farg8
-end subroutine
-
-subroutine swigc_TpetraCrsMatrix_reorderedGaussSeidelCopy(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8, farg9) &
-bind(C, name="swigc_TpetraCrsMatrix_reorderedGaussSeidelCopy")
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR), value :: farg2
-type(C_PTR), value :: farg3
-type(C_PTR), value :: farg4
-type(C_PTR), value :: farg5
-real(C_DOUBLE), intent(in) :: farg6
-integer(C_INT), intent(in) :: farg7
-integer(C_INT), intent(in) :: farg8
-logical(C_BOOL), intent(in) :: farg9
-end subroutine
 
 function swigc_TpetraCrsMatrix_description(farg1) &
 bind(C, name="swigc_TpetraCrsMatrix_description") &
@@ -6495,63 +6408,6 @@ call swigc_TpetraCrsMatrix_replaceColMap(farg1, farg2)
 
 end subroutine
 
-subroutine swigf_TpetraCrsMatrix_reindexColumns__SWIG_0(self, graph, newcolmap, newimport, sorteachrow)
-use, intrinsic :: ISO_C_BINDING
-class(TpetraCrsMatrix) :: self
-class(TpetraCrsGraph) :: graph
-type(TpetraMap) :: newcolmap
-type(TpetraImport) :: newimport
-logical(C_BOOL), intent(in) :: sorteachrow
-type(C_PTR) :: farg1 
-type(C_PTR) :: farg2 
-type(C_PTR) :: farg3 
-type(C_PTR) :: farg4 
-logical(C_BOOL) :: farg5 
-
-farg1 = self%swigptr
-farg2 = graph%swigptr
-farg3 = newcolmap%swigptr
-farg4 = newimport%swigptr
-farg5 = sorteachrow
-call swigc_TpetraCrsMatrix_reindexColumns__SWIG_0(farg1, farg2, farg3, farg4, farg5)
-
-end subroutine
-
-subroutine swigf_TpetraCrsMatrix_reindexColumns__SWIG_1(self, graph, newcolmap, newimport)
-use, intrinsic :: ISO_C_BINDING
-class(TpetraCrsMatrix) :: self
-class(TpetraCrsGraph) :: graph
-type(TpetraMap) :: newcolmap
-type(TpetraImport) :: newimport
-type(C_PTR) :: farg1 
-type(C_PTR) :: farg2 
-type(C_PTR) :: farg3 
-type(C_PTR) :: farg4 
-
-farg1 = self%swigptr
-farg2 = graph%swigptr
-farg3 = newcolmap%swigptr
-farg4 = newimport%swigptr
-call swigc_TpetraCrsMatrix_reindexColumns__SWIG_1(farg1, farg2, farg3, farg4)
-
-end subroutine
-
-subroutine swigf_TpetraCrsMatrix_reindexColumns__SWIG_2(self, graph, newcolmap)
-use, intrinsic :: ISO_C_BINDING
-class(TpetraCrsMatrix) :: self
-class(TpetraCrsGraph) :: graph
-type(TpetraMap) :: newcolmap
-type(C_PTR) :: farg1 
-type(C_PTR) :: farg2 
-type(C_PTR) :: farg3 
-
-farg1 = self%swigptr
-farg2 = graph%swigptr
-farg3 = newcolmap%swigptr
-call swigc_TpetraCrsMatrix_reindexColumns__SWIG_2(farg1, farg2, farg3)
-
-end subroutine
-
 subroutine swigf_TpetraCrsMatrix_replaceDomainMapAndImporter(self, newdomainmap, newimporter)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsMatrix) :: self
@@ -7099,130 +6955,6 @@ farg1 = self%swigptr
 fresult = swigc_TpetraCrsMatrix_getRangeMap(farg1)
 swigf_result%swigptr = fresult
 end function
-
-subroutine swigf_TpetraCrsMatrix_gaussSeidel(self, b, x, d, dampingfactor, direction, numsweeps)
-use, intrinsic :: ISO_C_BINDING
-class(TpetraCrsMatrix) :: self
-class(TpetraMultiVector) :: b
-class(TpetraMultiVector) :: x
-class(TpetraMultiVector) :: d
-real(C_DOUBLE), intent(in) :: dampingfactor
-integer(kind(ESweepDirection)) :: direction
-integer(C_INT), intent(in) :: numsweeps
-type(C_PTR) :: farg1 
-type(C_PTR) :: farg2 
-type(C_PTR) :: farg3 
-type(C_PTR) :: farg4 
-real(C_DOUBLE) :: farg5 
-integer(C_INT) :: farg6 
-integer(C_INT) :: farg7 
-
-farg1 = self%swigptr
-farg2 = b%swigptr
-farg3 = x%swigptr
-farg4 = d%swigptr
-farg5 = dampingfactor
-farg6 = direction
-farg7 = numsweeps
-call swigc_TpetraCrsMatrix_gaussSeidel(farg1, farg2, farg3, farg4, farg5, farg6, farg7)
-
-end subroutine
-
-subroutine swigf_TpetraCrsMatrix_reorderedGaussSeidel(self, b, x, d, rowindices, dampingfactor, direction, numsweeps)
-use, intrinsic :: ISO_C_BINDING
-class(TpetraCrsMatrix) :: self
-class(TpetraMultiVector) :: b
-class(TpetraMultiVector) :: x
-class(TpetraMultiVector) :: d
-class(TeuchosArrayViewInt) :: rowindices
-real(C_DOUBLE), intent(in) :: dampingfactor
-integer(kind(ESweepDirection)) :: direction
-integer(C_INT), intent(in) :: numsweeps
-type(C_PTR) :: farg1 
-type(C_PTR) :: farg2 
-type(C_PTR) :: farg3 
-type(C_PTR) :: farg4 
-type(C_PTR) :: farg5 
-real(C_DOUBLE) :: farg6 
-integer(C_INT) :: farg7 
-integer(C_INT) :: farg8 
-
-farg1 = self%swigptr
-farg2 = b%swigptr
-farg3 = x%swigptr
-farg4 = d%swigptr
-farg5 = rowindices%swigptr
-farg6 = dampingfactor
-farg7 = direction
-farg8 = numsweeps
-call swigc_TpetraCrsMatrix_reorderedGaussSeidel(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8)
-
-end subroutine
-
-subroutine swigf_TpetraCrsMatrix_gaussSeidelCopy(self, x, b, d, dampingfactor, direction, numsweeps, zeroinitialguess)
-use, intrinsic :: ISO_C_BINDING
-class(TpetraCrsMatrix) :: self
-class(TpetraMultiVector) :: x
-class(TpetraMultiVector) :: b
-class(TpetraMultiVector) :: d
-real(C_DOUBLE), intent(in) :: dampingfactor
-integer(kind(ESweepDirection)) :: direction
-integer(C_INT), intent(in) :: numsweeps
-logical(C_BOOL), intent(in) :: zeroinitialguess
-type(C_PTR) :: farg1 
-type(C_PTR) :: farg2 
-type(C_PTR) :: farg3 
-type(C_PTR) :: farg4 
-real(C_DOUBLE) :: farg5 
-integer(C_INT) :: farg6 
-integer(C_INT) :: farg7 
-logical(C_BOOL) :: farg8 
-
-farg1 = self%swigptr
-farg2 = x%swigptr
-farg3 = b%swigptr
-farg4 = d%swigptr
-farg5 = dampingfactor
-farg6 = direction
-farg7 = numsweeps
-farg8 = zeroinitialguess
-call swigc_TpetraCrsMatrix_gaussSeidelCopy(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8)
-
-end subroutine
-
-subroutine swigf_TpetraCrsMatrix_reorderedGaussSeidelCopy(self, x, b, d, rowindices, dampingfactor, direction, numsweeps, zeroinitialguess)
-use, intrinsic :: ISO_C_BINDING
-class(TpetraCrsMatrix) :: self
-class(TpetraMultiVector) :: x
-class(TpetraMultiVector) :: b
-class(TpetraMultiVector) :: d
-class(TeuchosArrayViewInt) :: rowindices
-real(C_DOUBLE), intent(in) :: dampingfactor
-integer(kind(ESweepDirection)) :: direction
-integer(C_INT), intent(in) :: numsweeps
-logical(C_BOOL), intent(in) :: zeroinitialguess
-type(C_PTR) :: farg1 
-type(C_PTR) :: farg2 
-type(C_PTR) :: farg3 
-type(C_PTR) :: farg4 
-type(C_PTR) :: farg5 
-real(C_DOUBLE) :: farg6 
-integer(C_INT) :: farg7 
-integer(C_INT) :: farg8 
-logical(C_BOOL) :: farg9 
-
-farg1 = self%swigptr
-farg2 = x%swigptr
-farg3 = b%swigptr
-farg4 = d%swigptr
-farg5 = rowindices%swigptr
-farg6 = dampingfactor
-farg7 = direction
-farg8 = numsweeps
-farg9 = zeroinitialguess
-call swigc_TpetraCrsMatrix_reorderedGaussSeidelCopy(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8, farg9)
-
-end subroutine
 
 function swigf_TpetraCrsMatrix_description(self) &
 result(swigf_result)

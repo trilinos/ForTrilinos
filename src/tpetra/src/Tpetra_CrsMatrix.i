@@ -76,6 +76,12 @@
 %ignore Tpetra::CrsMatrix::getLocalValuesView;              // needs Kokkos::View
 %ignore Tpetra::CrsMatrix::leftScale;                       // needs Tpetra::Vector
 %ignore Tpetra::CrsMatrix::rightScale;                      // needs Tpetra::Vector
+%ignore Tpetra::CrsMatrix::gaussSeidel;
+%ignore Tpetra::CrsMatrix::reindexColumns;
+%ignore Tpetra::CrsMatrix::reorderedGaussSeidel;
+%ignore Tpetra::CrsMatrix::gaussSeidelCopy;
+%ignore Tpetra::CrsMatrix::reorderedGaussSeidelCopy;
+%ignore Tpetra::CrsMatrix::add;
 
 // =======================================================================
 // Fix ±1 issues
