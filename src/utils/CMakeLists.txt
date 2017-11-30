@@ -1,4 +1,10 @@
+## Copyright 2017, UT-Battelle, LLC
+##
+## SPDX-License-Identifier: BSD-3-Clause
+## License-Filename: LICENSE
 TRIBITS_SUBPACKAGE(Utils)
+
+TRIBITS_CONFIGURE_FILE(${PACKAGE_NAME}_config.hpp)
 
 ##---------------------------------------------------------------------------##
 ## Generate config file and add it to the list

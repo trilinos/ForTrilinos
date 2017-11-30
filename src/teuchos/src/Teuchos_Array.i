@@ -1,4 +1,9 @@
-%module forteuchos_array
+/*
+ * Copyright 2017, UT-Battelle, LLC
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * License-Filename: LICENSE
+ */
 
 // Dependencies
 %include "Teuchos_RCP.i"
@@ -72,9 +77,11 @@ Array(std::pair<TYPE*, size_t> view)
 // Include the real headers
 %include "Teuchos_Array.hpp"
 ADD_VIEW(int)
+ADD_VIEW(long long)
 ADD_VIEW(double)
 #undef ADD_VIEW
 
 // Make templates
 %template(TeuchosArrayInt)      Teuchos::Array<int>;
+%template(TeuchosArrayLongLong) Teuchos::Array<long long>;
 %template(TeuchosArrayDouble)   Teuchos::Array<double>;

@@ -1,11 +1,9 @@
-//---------------------------------*-SWIG-*----------------------------------//
-/*!
- * \file   Teuchos_Exceptions.i
- * \author Seth R Johnson
- * \date   Tue May 02 11:26:38 2017
- * \note   Copyright (c) 2017 Oak Ridge National Laboratory, UT-Battelle, LLC.
+/*
+ * Copyright 2017, UT-Battelle, LLC
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * License-Filename: LICENSE
  */
-//---------------------------------------------------------------------------//
 %include <std_except.i>
 
 %{
@@ -41,7 +39,3 @@ class ExceptionBase : public std::logic_error { /* * */ };
         SWIG_exception(SWIG_UnknownError, "An unknown exception occurred");
     }
 }
-
-//---------------------------------------------------------------------------//
-// end of Teuchos_Exceptions.i
-//---------------------------------------------------------------------------//

@@ -1,3 +1,9 @@
+/*
+ * Copyright 2017, UT-Battelle, LLC
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * License-Filename: LICENSE
+ */
 #ifndef FORTRILINOS_SOLVER_HANDLE_HPP
 #define FORTRILINOS_SOLVER_HANDLE_HPP
 
@@ -22,17 +28,17 @@ namespace ForTrilinos {
   public:
     typedef double                                  SC;
     typedef int                                     LO;
-    typedef int                                     GO;
+    typedef long long                               GO;
     typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
     typedef size_t                                  global_size_t;
 
-    typedef Tpetra::Map<LO,GO,NO>                   Map;
-    typedef Tpetra::Operator<SC,LO,GO,NO>           Operator;
-    typedef Tpetra::CrsMatrix<SC,LO,GO,NO,false>    Matrix;
-    typedef Tpetra::Vector<SC,LO,GO,NO,false>       Vector;
-    typedef Tpetra::MultiVector<SC,LO,GO,NO,false>  MultiVector;
     typedef Teuchos::ParameterList                  ParameterList;
     typedef Thyra::LinearOpWithSolveBase<SC>        LOWS;
+    typedef Tpetra::CrsMatrix<SC,LO,GO,NO,false>    Matrix;
+    typedef Tpetra::Map<LO,GO,NO>                   Map;
+    typedef Tpetra::MultiVector<SC,LO,GO,NO,false>  MultiVector;
+    typedef Tpetra::Operator<SC,LO,GO,NO>           Operator;
+    typedef Tpetra::Vector<SC,LO,GO,NO,false>       Vector;
 
   public:
 
@@ -47,18 +53,18 @@ namespace ForTrilinos {
     void init(const Teuchos::RCP<const Teuchos::Comm<int>>& comm);
 
     // Setup matrix
-    void setup_matrix(std::pair<const int*,size_t> rowInds, std::pair<const int*,size_t> rowPtrs,
-                      std::pair<const int*,size_t> colInds, std::pair<const double*,size_t> values);
+    void setup_matrix(std::pair<const GO*,size_t> rowInds, std::pair<const LO*,size_t> rowPtrs,
+                      std::pair<const GO*,size_t> colInds, std::pair<const SC*,size_t> values);
     void setup_matrix(Teuchos::RCP<Matrix> A);
 
     // Setup operator
-    void setup_operator(std::pair<const int*, size_t> rowInds, OperatorCallback callback);
+    void setup_operator(std::pair<const GO*, size_t> rowInds, OperatorCallback callback);
 
     // Setup solver based on the parameter list
     void setup_solver(const Teuchos::RCP<Teuchos::ParameterList> paramList);
 
     // Solve linear system given rhs
-    void solve(std::pair<const double*, size_t> rhs, std::pair<double*, size_t> lhs) const;
+    void solve(std::pair<const SC*, size_t> rhs, std::pair<SC*, size_t> lhs) const;
     void solve(const Teuchos::RCP<const MultiVector> rhs, Teuchos::RCP<MultiVector> lhs) const;
 
     // Free all data

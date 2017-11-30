@@ -1,11 +1,7 @@
-!-----------------------------------------------------------------------------!
-! \file   parameterlist/test.f90
-! \author Seth R Johnson
-! \date   Tue Dec 06 18:15:21 2016
-! \brief  test module
-! \note   Copyright (c) 2016 Oak Ridge National Laboratory, UT-Battelle, LLC.
-!-----------------------------------------------------------------------------!
-
+!Copyright 2017, UT-Battelle, LLC
+!
+!SPDX-License-Identifier: BSD-3-Clause
+!License-Filename: LICENSE
 program main
 
 #include "FortranTestMacros.h"
@@ -113,7 +109,3 @@ subroutine test_plist()
 end subroutine
 
 end program
-
-!-----------------------------------------------------------------------------!
-! end of parameterlist/test.f90
-!-----------------------------------------------------------------------------!

@@ -1,3 +1,7 @@
+! Copyright 2017, UT-Battelle, LLC
+!
+! SPDX-License-Identifier: BSD-3-Clause
+! License-Filename: LICENSE
 module x_eigen_handle
   use iso_c_binding
   implicit none
@@ -34,15 +38,16 @@ program main
 #endif
   implicit none
 
-  integer(c_int) :: i
-  integer(c_int) :: n, nnz;
-  integer(c_int) :: my_rank, num_procs
+  integer(int_type) :: i
+  integer(int_type) :: n, nnz;
+  integer(int_type) :: my_rank, num_procs
 
-  integer(c_int), dimension(:), allocatable :: row_inds, col_inds, row_ptrs
-  real(c_double), dimension(:), allocatable :: values, evalues, evectors
+  integer(local_ordinal_type), dimension(:), allocatable :: row_ptrs
+  integer(global_ordinal_type), dimension(:), allocatable :: row_inds, col_inds
+  real(scalar_type), dimension(:), allocatable :: values, evalues, evectors
 
-  integer(c_int) :: cur_pos, offset
-  real(c_double) :: norm
+  integer(global_ordinal_type) :: cur_pos, offset
+  real(norm_type) :: norm
 
   type(ParameterList) :: plist
   type(EigenHandle) :: tri_handle

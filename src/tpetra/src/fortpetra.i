@@ -1,4 +1,12 @@
+/*
+ * Copyright 2017, UT-Battelle, LLC
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * License-Filename: LICENSE
+ */
 %module fortpetra
+
+%include "copyright.i"
 
 %import <forteuchos.i>
 
@@ -7,14 +15,47 @@
 
 typedef double                                  SC;
 typedef int                                     LO;
-typedef int                                     GO;
+typedef long long                               GO;
 typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
 %}
 
 typedef double                                  SC;
 typedef int                                     LO;
-typedef int                                     GO;
+typedef long long                               GO;
 typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
+
+%fragment("TpetraTypes", "fimports") {
+ use, intrinsic :: iso_c_binding, only : &
+   c_bool, &
+   c_int, &
+   c_long, &
+   c_long_long, &
+   c_size_t, &
+   c_double, &
+   scalar_type => c_double, &
+   local_ordinal_type => c_int, &
+   global_ordinal_type => c_long_long, &
+   global_size_type => c_long, &
+   size_type => c_size_t, &
+   bool_type => c_bool, &
+   int_type => c_int, &
+   mag_type => c_double, &
+   norm_type => c_double
+}
+%fragment("TpetraTypesPublic", "fpublic") {
+public :: scalar_type
+public :: local_ordinal_type
+public :: global_ordinal_type
+public :: global_size_type
+public :: size_type
+public :: bool_type
+public :: int_type
+public :: mag_type
+public :: norm_type
+}
+// Insert fragment
+%fragment("TpetraTypes");
+%fragment("TpetraTypesPublic");
 
 // Helper
 namespace Kokkos {
@@ -46,6 +87,9 @@ namespace Kokkos {
 // ignore these defines
 #define TPETRA_DEPRECATED
 #define KOKKOS_INLINE_FUNCTION
+
+// ignore indexBase
+%ignore getIndexBase;
 
 // Order matters!!!
 %include "Tpetra_Map.i"

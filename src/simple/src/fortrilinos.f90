@@ -3,17 +3,56 @@
 !
 ! Do not make changes to this file unless you know what you are doing--modify
 ! the SWIG interface file instead.
+
+! Copyright 2017, UT-Battelle, LLC
+!
+! SPDX-License-Identifier: BSD-3-Clause
+! License-Filename: LICENSE
 module fortrilinos
  use, intrinsic :: ISO_C_BINDING
  use forteuchos
  use fortpetra
+
+ use, intrinsic :: iso_c_binding, only : &
+   c_bool, &
+   c_int, &
+   c_long, &
+   c_long_long, &
+   c_size_t, &
+   c_double, &
+   scalar_type => c_double, &
+   local_ordinal_type => c_int, &
+   global_ordinal_type => c_long_long, &
+   global_size_type => c_long, &
+   size_type => c_size_t, &
+   bool_type => c_bool, &
+   int_type => c_int, &
+   mag_type => c_double, &
+   norm_type => c_double
+
  implicit none
+ private
 
  ! PUBLIC METHODS AND TYPES
+
+public :: scalar_type
+public :: local_ordinal_type
+public :: global_ordinal_type
+public :: global_size_type
+public :: size_type
+public :: bool_type
+public :: int_type
+public :: mag_type
+public :: norm_type
+
  public :: SolverHandle
 
+type, bind(C) :: SwigfArrayWrapper
+  type(C_PTR), public :: data
+  integer(C_SIZE_T), public :: size
+end type
+
  public :: EigenHandle
- ! PARAMETERS
 
  ! TYPES
  type :: SolverHandle
@@ -53,8 +92,8 @@ module fortrilinos
   generic :: init => init__SWIG_0, init__SWIG_1
  end type
 
+
  ! WRAPPER DECLARATIONS
- private
  interface
 function swigc_new_SolverHandle() &
 bind(C, name="swigc_new_SolverHandle") &
@@ -229,8 +268,9 @@ end subroutine
 
  end interface
 
+
 contains
-  ! FORTRAN PROXY CODE
+ ! FORTRAN PROXY CODE
 subroutine swigf_new_SolverHandle(self)
 use, intrinsic :: ISO_C_BINDING
 class(SolverHandle) :: self
@@ -268,9 +308,9 @@ end subroutine
 subroutine swigf_SolverHandle_setup_matrix__SWIG_0(self, rowinds, rowptrs, colinds, values)
 use, intrinsic :: ISO_C_BINDING
 class(SolverHandle) :: self
-integer(C_INT), dimension(:), target, intent(inout) :: rowinds
+integer(C_LONG_LONG), dimension(:), target, intent(inout) :: rowinds
 integer(C_INT), dimension(:), target, intent(inout) :: rowptrs
-integer(C_INT), dimension(:), target, intent(inout) :: colinds
+integer(C_LONG_LONG), dimension(:), target, intent(inout) :: colinds
 real(C_DOUBLE), dimension(:), target, intent(inout) :: values
 type(C_PTR) :: farg1 
 type(SwigfArrayWrapper) :: farg2 
@@ -279,13 +319,13 @@ type(SwigfArrayWrapper) :: farg4
 type(SwigfArrayWrapper) :: farg5 
 
 farg1 = self%swigptr
-farg2%data = c_loc(rowinds)
+farg2%data = c_loc(rowinds(1))
 farg2%size = size(rowinds)
-farg3%data = c_loc(rowptrs)
+farg3%data = c_loc(rowptrs(1))
 farg3%size = size(rowptrs)
-farg4%data = c_loc(colinds)
+farg4%data = c_loc(colinds(1))
 farg4%size = size(colinds)
-farg5%data = c_loc(values)
+farg5%data = c_loc(values(1))
 farg5%size = size(values)
 call swigc_SolverHandle_setup_matrix__SWIG_0(farg1, farg2, farg3, farg4, farg5)
 
@@ -307,14 +347,14 @@ end subroutine
 subroutine swigf_SolverHandle_setup_operator(self, rowinds, callback)
 use, intrinsic :: ISO_C_BINDING
 class(SolverHandle) :: self
-integer(C_INT), dimension(:), target, intent(inout) :: rowinds
+integer(C_LONG_LONG), dimension(:), target, intent(inout) :: rowinds
 type(C_FUNPTR), intent(in), value :: callback
 type(C_PTR) :: farg1 
 type(SwigfArrayWrapper) :: farg2 
 type(C_FUNPTR) :: farg3 
 
 farg1 = self%swigptr
-farg2%data = c_loc(rowinds)
+farg2%data = c_loc(rowinds(1))
 farg2%size = size(rowinds)
 farg3 = callback
 call swigc_SolverHandle_setup_operator(farg1, farg2, farg3)
@@ -344,9 +384,9 @@ type(SwigfArrayWrapper) :: farg2
 type(SwigfArrayWrapper) :: farg3 
 
 farg1 = self%swigptr
-farg2%data = c_loc(rhs)
+farg2%data = c_loc(rhs(1))
 farg2%size = size(rhs)
-farg3%data = c_loc(lhs)
+farg3%data = c_loc(lhs(1))
 farg3%size = size(lhs)
 call swigc_SolverHandle_solve__SWIG_0(farg1, farg2, farg3)
 
@@ -427,9 +467,9 @@ end subroutine
 subroutine swigf_EigenHandle_setup_matrix(self, rowinds, rowptrs, colinds, values)
 use, intrinsic :: ISO_C_BINDING
 class(EigenHandle) :: self
-integer(C_INT), dimension(:), target, intent(inout) :: rowinds
+integer(C_LONG_LONG), dimension(:), target, intent(inout) :: rowinds
 integer(C_INT), dimension(:), target, intent(inout) :: rowptrs
-integer(C_INT), dimension(:), target, intent(inout) :: colinds
+integer(C_LONG_LONG), dimension(:), target, intent(inout) :: colinds
 real(C_DOUBLE), dimension(:), target, intent(inout) :: values
 type(C_PTR) :: farg1 
 type(SwigfArrayWrapper) :: farg2 
@@ -438,13 +478,13 @@ type(SwigfArrayWrapper) :: farg4
 type(SwigfArrayWrapper) :: farg5 
 
 farg1 = self%swigptr
-farg2%data = c_loc(rowinds)
+farg2%data = c_loc(rowinds(1))
 farg2%size = size(rowinds)
-farg3%data = c_loc(rowptrs)
+farg3%data = c_loc(rowptrs(1))
 farg3%size = size(rowptrs)
-farg4%data = c_loc(colinds)
+farg4%data = c_loc(colinds(1))
 farg4%size = size(colinds)
-farg5%data = c_loc(values)
+farg5%data = c_loc(values(1))
 farg5%size = size(values)
 call swigc_EigenHandle_setup_matrix(farg1, farg2, farg3, farg4, farg5)
 
@@ -453,9 +493,9 @@ end subroutine
 subroutine swigf_EigenHandle_setup_matrix_rhs(self, rowinds, rowptrs, colinds, values)
 use, intrinsic :: ISO_C_BINDING
 class(EigenHandle) :: self
-integer(C_INT), dimension(:), target, intent(inout) :: rowinds
+integer(C_LONG_LONG), dimension(:), target, intent(inout) :: rowinds
 integer(C_INT), dimension(:), target, intent(inout) :: rowptrs
-integer(C_INT), dimension(:), target, intent(inout) :: colinds
+integer(C_LONG_LONG), dimension(:), target, intent(inout) :: colinds
 real(C_DOUBLE), dimension(:), target, intent(inout) :: values
 type(C_PTR) :: farg1 
 type(SwigfArrayWrapper) :: farg2 
@@ -464,13 +504,13 @@ type(SwigfArrayWrapper) :: farg4
 type(SwigfArrayWrapper) :: farg5 
 
 farg1 = self%swigptr
-farg2%data = c_loc(rowinds)
+farg2%data = c_loc(rowinds(1))
 farg2%size = size(rowinds)
-farg3%data = c_loc(rowptrs)
+farg3%data = c_loc(rowptrs(1))
 farg3%size = size(rowptrs)
-farg4%data = c_loc(colinds)
+farg4%data = c_loc(colinds(1))
 farg4%size = size(colinds)
-farg5%data = c_loc(values)
+farg5%data = c_loc(values(1))
 farg5%size = size(values)
 call swigc_EigenHandle_setup_matrix_rhs(farg1, farg2, farg3, farg4, farg5)
 
@@ -479,14 +519,14 @@ end subroutine
 subroutine swigf_EigenHandle_setup_operator(self, rowinds, callback)
 use, intrinsic :: ISO_C_BINDING
 class(EigenHandle) :: self
-integer(C_INT), dimension(:), target, intent(inout) :: rowinds
+integer(C_LONG_LONG), dimension(:), target, intent(inout) :: rowinds
 type(C_FUNPTR), intent(in), value :: callback
 type(C_PTR) :: farg1 
 type(SwigfArrayWrapper) :: farg2 
 type(C_FUNPTR) :: farg3 
 
 farg1 = self%swigptr
-farg2%data = c_loc(rowinds)
+farg2%data = c_loc(rowinds(1))
 farg2%size = size(rowinds)
 farg3 = callback
 call swigc_EigenHandle_setup_operator(farg1, farg2, farg3)
@@ -496,14 +536,14 @@ end subroutine
 subroutine swigf_EigenHandle_setup_operator_rhs(self, rowinds, callback)
 use, intrinsic :: ISO_C_BINDING
 class(EigenHandle) :: self
-integer(C_INT), dimension(:), target, intent(inout) :: rowinds
+integer(C_LONG_LONG), dimension(:), target, intent(inout) :: rowinds
 type(C_FUNPTR), intent(in), value :: callback
 type(C_PTR) :: farg1 
 type(SwigfArrayWrapper) :: farg2 
 type(C_FUNPTR) :: farg3 
 
 farg1 = self%swigptr
-farg2%data = c_loc(rowinds)
+farg2%data = c_loc(rowinds(1))
 farg2%size = size(rowinds)
 farg3 = callback
 call swigc_EigenHandle_setup_operator_rhs(farg1, farg2, farg3)
@@ -533,9 +573,9 @@ type(SwigfArrayWrapper) :: farg2
 type(SwigfArrayWrapper) :: farg3 
 
 farg1 = self%swigptr
-farg2%data = c_loc(eigenvalues)
+farg2%data = c_loc(eigenvalues(1))
 farg2%size = size(eigenvalues)
-farg3%data = c_loc(eigenvectors)
+farg3%data = c_loc(eigenvectors(1))
 farg3%size = size(eigenvectors)
 call swigc_EigenHandle_solve(farg1, farg2, farg3)
 
@@ -562,5 +602,6 @@ call swigc_delete_EigenHandle(farg1)
 
 self%swigptr = C_NULL_PTR
 end subroutine
+
 
 end module fortrilinos

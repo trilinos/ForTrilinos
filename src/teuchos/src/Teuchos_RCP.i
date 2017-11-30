@@ -1,11 +1,9 @@
-//---------------------------------*-SWIG-*----------------------------------//
-/*!
- * \file   parameterlist/Teuchos_RCP.i
- * \author Seth R Johnson
- * \date   Thu Dec 08 10:40:21 2016
- * \note   Copyright (c) 2016 Oak Ridge National Laboratory, UT-Battelle, LLC.
+/*
+ * Copyright 2017, UT-Battelle, LLC
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * License-Filename: LICENSE
  */
-//---------------------------------------------------------------------------//
 %{
 #include "Teuchos_RCP.hpp"
 %}
@@ -43,7 +41,3 @@
 %ignore *(Teuchos::ENull);
 //%import "Teuchos_RCPNode.hpp"
 #endif
-
-//---------------------------------------------------------------------------//
-// end of parameterlist/Teuchos_RCP.i
-//---------------------------------------------------------------------------//

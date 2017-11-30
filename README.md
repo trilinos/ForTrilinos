@@ -6,7 +6,7 @@ ForTrilinos
 [![Documentation Status](http://readthedocs.org/projects/fortrilinos/badge/?version=latest)](http://fortrilinos.readthedocs.io/en/latest/?badge=latest)
 [![codecov](https://codecov.io/gh/trilinos/ForTrilinos/branch/develop/graph/badge.svg)](https://codecov.io/gh/trilinos/ForTrilinos/branch/develop)
 
-ForTrilinos provides object-oriented Fortran interfaces to [Trilinos](http://github.com/Trilinos/Trilinos) C++ packages.
+[ForTrilinos](http://trilinos.org/packages/fortrilinos) is an integrated part of the [Trilinos](http://trilinos.org) organization  and provides object-oriented Fortran interfaces to Trilinos C++ packages.
 
 **This code contains the new implementation of the ForTrilinos interfaces using SWIG code generation. At the moment, it is not ready for public consumption as the code and interfaces may change rapidly and backwards compatibility is not guaranteed.**
 
@@ -18,6 +18,46 @@ Documentation
 * [Website](http://trilinos.org/packages/fortrilinos)
 
 * [Documentation](http://fortrilinos.readthedocs.org)
+
+Obtaining ForTrilinos
+---------------------
+
+ForTrilinos is obtained by cloning the public repository from [GitHub](https://github.com/):
+
+```sh
+git clone https://github.com/trilinos/ForTrilinos
+```
+
+Installing ForTrilinos
+----------------------
+
+Installing ForTrilinos requires:
+
+- Cloning the [Trilinos repository](https://github.com/trilinos/Trilinos) and
+  checking out the correct branch:
+
+  ```sh
+  git clone git clone https://github.com/trilinos/Trilinos.git
+  git checkout trilinos-release-12.12-1
+  export TRILINOS_DIR=`pwd`/Trilinos
+  ```
+
+- Cloning the [ForTrilinos repository](https://github.com/trilinos/ForTrilinos):
+
+  ```sh
+  git clone git clone https://github.com/trilinos/ForTrilinos.git
+  export FORTRILINOS_DIR=`pwd`/ForTrilinos
+  ```
+
+- Symbolically linking the clone of ForTrilinos to the Trilinos `packages`
+  directory:
+
+  ```sh
+  ln -s $FORTRILINOS_DIR $TRILINOS_DIR/packages
+  ```
+
+- Installing Trilinos with the ForTrilinos package enabled.  See the
+  [Installation](http://fortrilinos.readthedocs.io/en/latest/install.html#installation) section of the [ForTrilinos documentation](http://fortrilinos.readthedocs.io/en/latest/index.html) for details on installing Trilinos with ForTrilinos enabled.
 
 Questions, Bug Reporting, and Issue Tracking
 --------------------------------------------

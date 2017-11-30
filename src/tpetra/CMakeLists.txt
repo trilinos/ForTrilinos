@@ -1,3 +1,8 @@
+## Copyright 2017, UT-Battelle, LLC
+##
+## SPDX-License-Identifier: BSD-3-Clause
+## License-Filename: LICENSE
+
 ##---------------------------------------------------------------------------##
 ## Define the package
 ##---------------------------------------------------------------------------##
@@ -17,6 +22,8 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 ADD_SUBDIRECTORY(src)
 
 TRIBITS_ADD_TEST_DIRECTORIES(test)
+
+TRIBITS_ADD_TEST_DIRECTORIES(tutorials)
 
 #TRIBITS_ADD_EXAMPLE_DIRECTORIES(example)
 

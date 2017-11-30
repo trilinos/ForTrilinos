@@ -1,3 +1,9 @@
+/*
+ * Copyright 2017, UT-Battelle, LLC
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * License-Filename: LICENSE
+ */
 #include "eigen_handle.hpp"
 #include "handle_helpers.hpp"
 
@@ -33,8 +39,8 @@ namespace ForTrilinos {
     status_ = INITIALIZED;
   }
 
-  void EigenHandle::setup_matrix(std::pair<const int*,size_t> rowInds, std::pair<const int*,size_t> rowPtrs,
-                                 std::pair<const int*,size_t> colInds, std::pair<const double*,size_t> values) {
+  void EigenHandle::setup_matrix(std::pair<const GO*,size_t> rowInds, std::pair<const LO*,size_t> rowPtrs,
+                                 std::pair<const GO*,size_t> colInds, std::pair<const SC*,size_t> values) {
     TEUCHOS_ASSERT(status_ == INITIALIZED);
     auto A = HandleHelpers::setup_matrix_gen(comm_, rowInds, rowPtrs, colInds, values);
     setup_matrix(A);
@@ -46,8 +52,8 @@ namespace ForTrilinos {
     status_ = MATRIX_SETUP;
   }
 
-  void EigenHandle::setup_matrix_rhs(std::pair<const int*,size_t> rowInds, std::pair<const int*,size_t> rowPtrs,
-                                     std::pair<const int*,size_t> colInds, std::pair<const double*,size_t> values) {
+  void EigenHandle::setup_matrix_rhs(std::pair<const GO*,size_t> rowInds, std::pair<const LO*,size_t> rowPtrs,
+                                     std::pair<const GO*,size_t> colInds, std::pair<const SC*,size_t> values) {
     TEUCHOS_ASSERT(status_ == INITIALIZED || status_ == MATRIX_SETUP);
     auto M = HandleHelpers::setup_matrix_gen(comm_, rowInds, rowPtrs, colInds, values);
     setup_matrix_rhs(M);
@@ -57,13 +63,13 @@ namespace ForTrilinos {
     M_ = Teuchos::rcp_dynamic_cast<Operator>(M);
   }
 
-  void EigenHandle::setup_operator(std::pair<const int*, size_t> rowInds, OperatorCallback callback) {
+  void EigenHandle::setup_operator(std::pair<const GO*, size_t> rowInds, OperatorCallback callback) {
     TEUCHOS_ASSERT(status_ == INITIALIZED);
     A_ = HandleHelpers::setup_operator_gen(comm_, rowInds, callback);
     status_ = MATRIX_SETUP;
   }
 
-  void EigenHandle::setup_operator_rhs(std::pair<const int*, size_t> rowInds, OperatorCallback callback) {
+  void EigenHandle::setup_operator_rhs(std::pair<const GO*, size_t> rowInds, OperatorCallback callback) {
     TEUCHOS_ASSERT(status_ == INITIALIZED || status_ == MATRIX_SETUP);
     M_ = HandleHelpers::setup_operator_gen(comm_, rowInds, callback);
   }
@@ -132,7 +138,7 @@ namespace ForTrilinos {
     status_ = SOLVER_SETUP;
   }
 
-  void EigenHandle::solve(std::pair<double*, size_t> eigenValues, std::pair<double*, size_t> eigenVectors) const {
+  void EigenHandle::solve(std::pair<SC*, size_t> eigenValues, std::pair<SC*, size_t> eigenVectors) const {
     using Teuchos::RCP;
     using Teuchos::ArrayRCP;
 

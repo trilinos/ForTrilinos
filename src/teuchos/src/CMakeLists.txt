@@ -1,11 +1,7 @@
-##---------------------------------------------------------------------------##
-## File  : teuchos/CMakeLists.txt
-## Author: Seth R Johnson
-## Date  : Tue Feb 21 14:30:37 2017
-## Brief : TriBITS package file for teuchos/
-## Copyright (c) 2017 Oak Ridge National Laboratory, UT-Battelle, LLC.
-##---------------------------------------------------------------------------##
-
+## Copyright 2017, UT-Battelle, LLC
+##
+## SPDX-License-Identifier: BSD-3-Clause
+## License-Filename: LICENSE
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
@@ -15,6 +11,7 @@ IF (ForTrilinos_ENABLE_DeveloperMode)
     SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}")
   ENDIF()
 
+  LIST(APPEND CMAKE_SWIG_FLAGS -I${CMAKE_CURRENT_SOURCE_DIR}/../../utils/src/)
   MAKE_SWIG(MODULE forteuchos
     SOURCE forteuchos.i
     EXTRASRC ${EXTRA_SOURCE}
@@ -32,7 +29,3 @@ ELSE()
 ENDIF()
 
 INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/forteuchos.mod DESTINATION include)
-
-##---------------------------------------------------------------------------##
-## end of teuchos/CMakeLists.txt
-##---------------------------------------------------------------------------##

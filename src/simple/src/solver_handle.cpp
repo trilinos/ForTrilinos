@@ -1,3 +1,9 @@
+/*
+ * Copyright 2017, UT-Battelle, LLC
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * License-Filename: LICENSE
+ */
 #include "fortran_operator.hpp"
 #include "solver_handle.hpp"
 #include "handle_helpers.hpp"
@@ -32,8 +38,8 @@ namespace ForTrilinos {
     status_ = INITIALIZED;
   }
 
-  void SolverHandle::setup_matrix(std::pair<const int*,size_t> rowInds, std::pair<const int*,size_t> rowPtrs,
-                                  std::pair<const int*,size_t> colInds, std::pair<const double*,size_t> values) {
+  void SolverHandle::setup_matrix(std::pair<const GO*,size_t> rowInds, std::pair<const LO*,size_t> rowPtrs,
+                                  std::pair<const GO*,size_t> colInds, std::pair<const SC*,size_t> values) {
     TEUCHOS_ASSERT(status_ == INITIALIZED);
     auto A = HandleHelpers::setup_matrix_gen(comm_, rowInds, rowPtrs, colInds, values);
     setup_matrix(A);
@@ -45,7 +51,7 @@ namespace ForTrilinos {
     status_ = MATRIX_SETUP;
   }
 
-  void SolverHandle::setup_operator(std::pair<const int*, size_t> rowInds, OperatorCallback callback) {
+  void SolverHandle::setup_operator(std::pair<const GO*, size_t> rowInds, OperatorCallback callback) {
     TEUCHOS_ASSERT(status_ == INITIALIZED);
     A_ = HandleHelpers::setup_operator_gen(comm_, rowInds, callback);
     status_ = MATRIX_SETUP;
@@ -91,7 +97,7 @@ namespace ForTrilinos {
     status_ = SOLVER_SETUP;
   }
 
-  void SolverHandle::solve(std::pair<const double*, size_t> rhs, std::pair<double*, size_t> lhs) const {
+  void SolverHandle::solve(std::pair<const SC*, size_t> rhs, std::pair<SC*, size_t> lhs) const {
     auto map = A_->getDomainMap();
     auto size = lhs.second;
 

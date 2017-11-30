@@ -8,6 +8,14 @@
  * interface file instead.
  * ----------------------------------------------------------------------------- */
 
+/*
+ * Copyright 2017, UT-Battelle, LLC
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * License-Filename: LICENSE
+ */
+
+
 #ifdef __cplusplus
 /* SwigValueWrapper is described in swig.swg */
 template<typename T> class SwigValueWrapper {
@@ -226,6 +234,14 @@ SWIGINTERN std::vector< double >::value_type std_vector_Sl_double_Sg__get(std::v
         // TODO: check range
         return (*self)[index];
     }
+SWIGINTERN void std_vector_Sl_long_SS_long_Sg__set(std::vector< long long > *self,std::vector< long long >::size_type index,std::vector< long long >::const_reference v){
+        // TODO: check range
+        (*self)[index] = v;
+    }
+SWIGINTERN std::vector< long long >::value_type std_vector_Sl_long_SS_long_Sg__get(std::vector< long long > *self,std::vector< long long >::size_type index){
+        // TODO: check range
+        return (*self)[index];
+    }
 
 #include <utility>
 
@@ -315,6 +331,13 @@ SWIGINTERN Teuchos::Array< int > *new_Teuchos_Array_Sl_int_Sg___SWIG_5(std::pair
 
   return arr;
 }
+SWIGINTERN Teuchos::Array< long long > *new_Teuchos_Array_Sl_long_SS_long_Sg___SWIG_5(std::pair< long long *,std::size_t > view){
+  Teuchos::Array<long long>* arr = new Teuchos::Array<long long>(view.second);
+  for (size_t i = 0; i < view.second; i++)
+    (*arr)[i] = view.first[i];
+
+  return arr;
+}
 SWIGINTERN Teuchos::Array< double > *new_Teuchos_Array_Sl_double_Sg___SWIG_5(std::pair< double *,std::size_t > view){
   Teuchos::Array<double>* arr = new Teuchos::Array<double>(view.second);
   for (size_t i = 0; i < view.second; i++)
@@ -330,6 +353,12 @@ SWIGINTERN Teuchos::ArrayView< int > *new_Teuchos_ArrayView_Sl_int_Sg___SWIG_2(s
 }
 SWIGINTERN Teuchos::ArrayView< int const > *new_Teuchos_ArrayView_Sl_int_SS_const_Sg___SWIG_2(std::pair< int const *,std::size_t > view){
   return new Teuchos::ArrayView<const int>(view.first, view.second);
+}
+SWIGINTERN Teuchos::ArrayView< long long > *new_Teuchos_ArrayView_Sl_long_SS_long_Sg___SWIG_2(std::pair< long long *,std::size_t > view){
+  return new Teuchos::ArrayView<long long>(view.first, view.second);
+}
+SWIGINTERN Teuchos::ArrayView< long long const > *new_Teuchos_ArrayView_Sl_long_SS_long_SS_const_Sg___SWIG_2(std::pair< long long const *,std::size_t > view){
+  return new Teuchos::ArrayView<const long long>(view.first, view.second);
 }
 SWIGINTERN Teuchos::ArrayView< double > *new_Teuchos_ArrayView_Sl_double_Sg___SWIG_2(std::pair< double *,std::size_t > view){
   return new Teuchos::ArrayView<double>(view.first, view.second);
@@ -912,6 +941,215 @@ SWIGEXPORT void swigc_delete_VectorDouble(void *farg1) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   
   arg1 = static_cast< std::vector< double > * >(farg1);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      delete arg1;
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void * swigc_new_VectorLongLong__SWIG_0() {
+  void * fresult ;
+  std::vector< long long > *result = 0 ;
+  
+  result = (std::vector< long long > *)new std::vector< long long >();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_new_VectorLongLong__SWIG_1(unsigned long const *farg1) {
+  void * fresult ;
+  std::vector< long long >::size_type arg1 ;
+  std::vector< long long > *result = 0 ;
+  
+  arg1 = *farg1;
+  result = (std::vector< long long > *)new std::vector< long long >(arg1);
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_new_VectorLongLong__SWIG_2(unsigned long const *farg1, long long const *farg2) {
+  void * fresult ;
+  std::vector< long long >::size_type arg1 ;
+  std::vector< long long >::value_type *arg2 = 0 ;
+  std::vector< long long > *result = 0 ;
+  
+  arg1 = *farg1;
+  arg2 = reinterpret_cast< std::vector< long long >::value_type * >(const_cast< long long* >(farg2));
+  result = (std::vector< long long > *)new std::vector< long long >(arg1,(std::vector< long long >::value_type const &)*arg2);
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT unsigned long swigc_VectorLongLong_size(void const *farg1) {
+  unsigned long fresult ;
+  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
+  std::vector< long long >::size_type result;
+  
+  arg1 = static_cast< std::vector< long long > * >(const_cast< void* >(farg1));
+  result = (std::vector< long long >::size_type)((std::vector< long long > const *)arg1)->size();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT unsigned long swigc_VectorLongLong_capacity(void const *farg1) {
+  unsigned long fresult ;
+  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
+  std::vector< long long >::size_type result;
+  
+  arg1 = static_cast< std::vector< long long > * >(const_cast< void* >(farg1));
+  result = (std::vector< long long >::size_type)((std::vector< long long > const *)arg1)->capacity();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT bool swigc_VectorLongLong_empty(void const *farg1) {
+  bool fresult ;
+  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
+  bool result;
+  
+  arg1 = static_cast< std::vector< long long > * >(const_cast< void* >(farg1));
+  result = (bool)((std::vector< long long > const *)arg1)->empty();
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_VectorLongLong_clear(void *farg1) {
+  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
+  
+  arg1 = static_cast< std::vector< long long > * >(farg1);
+  (arg1)->clear();
+  
+}
+
+
+SWIGEXPORT void swigc_VectorLongLong_reserve(void *farg1, unsigned long const *farg2) {
+  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
+  std::vector< long long >::size_type arg2 ;
+  
+  arg1 = static_cast< std::vector< long long > * >(farg1);
+  arg2 = *farg2;
+  (arg1)->reserve(arg2);
+  
+}
+
+
+SWIGEXPORT void swigc_VectorLongLong_resize__SWIG_0(void *farg1, unsigned long const *farg2) {
+  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
+  std::vector< long long >::size_type arg2 ;
+  
+  arg1 = static_cast< std::vector< long long > * >(farg1);
+  arg2 = *farg2;
+  (arg1)->resize(arg2);
+  
+}
+
+
+SWIGEXPORT void swigc_VectorLongLong_resize__SWIG_1(void *farg1, unsigned long const *farg2, long long const *farg3) {
+  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
+  std::vector< long long >::size_type arg2 ;
+  std::vector< long long >::value_type *arg3 = 0 ;
+  
+  arg1 = static_cast< std::vector< long long > * >(farg1);
+  arg2 = *farg2;
+  arg3 = reinterpret_cast< std::vector< long long >::value_type * >(const_cast< long long* >(farg3));
+  (arg1)->resize(arg2,(std::vector< long long >::value_type const &)*arg3);
+  
+}
+
+
+SWIGEXPORT void swigc_VectorLongLong_push_back(void *farg1, long long const *farg2) {
+  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
+  std::vector< long long >::value_type *arg2 = 0 ;
+  
+  arg1 = static_cast< std::vector< long long > * >(farg1);
+  arg2 = reinterpret_cast< std::vector< long long >::value_type * >(const_cast< long long* >(farg2));
+  (arg1)->push_back((std::vector< long long >::value_type const &)*arg2);
+  
+}
+
+
+SWIGEXPORT long long swigc_VectorLongLong_front(void const *farg1) {
+  long long fresult ;
+  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
+  long long *result = 0 ;
+  
+  arg1 = static_cast< std::vector< long long > * >(const_cast< void* >(farg1));
+  result = (long long *) &((std::vector< long long > const *)arg1)->front();
+  fresult = *result;
+  return fresult;
+}
+
+
+SWIGEXPORT long long swigc_VectorLongLong_back(void const *farg1) {
+  long long fresult ;
+  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
+  long long *result = 0 ;
+  
+  arg1 = static_cast< std::vector< long long > * >(const_cast< void* >(farg1));
+  result = (long long *) &((std::vector< long long > const *)arg1)->back();
+  fresult = *result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_VectorLongLong_set(void *farg1, unsigned long const *farg2, long long const *farg3) {
+  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
+  std::vector< long long >::size_type arg2 ;
+  long long *arg3 = 0 ;
+  
+  arg1 = static_cast< std::vector< long long > * >(farg1);
+  arg2 = *farg2;
+  arg3 = reinterpret_cast< long long * >(const_cast< long long* >(farg3));
+  std_vector_Sl_long_SS_long_Sg__set(arg1,arg2,(long long const &)*arg3);
+  
+}
+
+
+SWIGEXPORT long long swigc_VectorLongLong_get(void *farg1, unsigned long const *farg2) {
+  long long fresult ;
+  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
+  std::vector< long long >::size_type arg2 ;
+  std::vector< long long >::value_type result;
+  
+  arg1 = static_cast< std::vector< long long > * >(farg1);
+  arg2 = *farg2;
+  result = (std::vector< long long >::value_type)std_vector_Sl_long_SS_long_Sg__get(arg1,arg2);
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_VectorLongLong(void *farg1) {
+  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
+  
+  arg1 = static_cast< std::vector< long long > * >(farg1);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
@@ -1618,6 +1856,642 @@ SWIGEXPORT void * swigc_new_TeuchosArrayInt__SWIG_5(swig::SwigfArrayWrapper< int
 SWIGEXPORT void* swigc_spcopy_TeuchosArrayInt(void* farg1) {
   Teuchos::RCP< Teuchos::Array<int> >* arg1 = (Teuchos::RCP< Teuchos::Array<int> > *)farg1;
   return new Teuchos::RCP< Teuchos::Array<int> >(*arg1);
+}
+
+
+SWIGEXPORT void * swigc_new_TeuchosArrayLongLong__SWIG_0() {
+  void * fresult ;
+  Teuchos::Array< long long > *result = 0 ;
+  
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::Array< long long > *)new Teuchos::Array< long long >();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_new_TeuchosArrayLongLong__SWIG_1(int const *farg1, long long const *farg2) {
+  void * fresult ;
+  Teuchos::Array< long long >::size_type arg1 ;
+  Teuchos::Array< long long >::value_type *arg2 = 0 ;
+  Teuchos::Array< long long > *result = 0 ;
+  
+  arg1 = *farg1;
+  arg2 = reinterpret_cast< Teuchos::Array< long long >::value_type * >(const_cast< long long* >(farg2));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::Array< long long > *)new Teuchos::Array< long long >(arg1,(Teuchos::Array< long long >::value_type const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_new_TeuchosArrayLongLong__SWIG_2(int const *farg1) {
+  void * fresult ;
+  Teuchos::Array< long long >::size_type arg1 ;
+  Teuchos::Array< long long > *result = 0 ;
+  
+  arg1 = *farg1;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::Array< long long > *)new Teuchos::Array< long long >(arg1);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_new_TeuchosArrayLongLong__SWIG_3(void const *farg1) {
+  void * fresult ;
+  Teuchos::Array< long long > *arg1 = 0 ;
+  Teuchos::Array< long long > *result = 0 ;
+  
+  arg1 = static_cast< Teuchos::Array< long long > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::Array< long long > *)new Teuchos::Array< long long >((Teuchos::Array< long long > const &)*arg1);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_TeuchosArrayLongLong(void *farg1) {
+  Teuchos::Array< long long > *arg1 = (Teuchos::Array< long long > *) 0 ;
+  
+  arg1 = static_cast< Teuchos::Array< long long > * >(farg1);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      delete arg1;
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT int swigc_TeuchosArrayLongLong_size(void const *farg1) {
+  int fresult ;
+  Teuchos::Array< long long > *arg1 = (Teuchos::Array< long long > *) 0 ;
+  Teuchos::Array< long long >::size_type result;
+  
+  arg1 = static_cast< Teuchos::Array< long long > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::Array< long long >::size_type)((Teuchos::Array< long long > const *)arg1)->size();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_TeuchosArrayLongLong_max_size(void const *farg1) {
+  int fresult ;
+  Teuchos::Array< long long > *arg1 = (Teuchos::Array< long long > *) 0 ;
+  Teuchos::Array< long long >::size_type result;
+  
+  arg1 = static_cast< Teuchos::Array< long long > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::Array< long long >::size_type)((Teuchos::Array< long long > const *)arg1)->max_size();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_TeuchosArrayLongLong_resize__SWIG_0(void *farg1, int const *farg2, long long const *farg3) {
+  Teuchos::Array< long long > *arg1 = (Teuchos::Array< long long > *) 0 ;
+  Teuchos::Array< long long >::size_type arg2 ;
+  Teuchos::Array< long long >::value_type *arg3 = 0 ;
+  
+  arg1 = static_cast< Teuchos::Array< long long > * >(farg1);
+  arg2 = *farg2;
+  arg3 = reinterpret_cast< Teuchos::Array< long long >::value_type * >(const_cast< long long* >(farg3));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->resize(arg2,(Teuchos::Array< long long >::value_type const &)*arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TeuchosArrayLongLong_resize__SWIG_1(void *farg1, int const *farg2) {
+  Teuchos::Array< long long > *arg1 = (Teuchos::Array< long long > *) 0 ;
+  Teuchos::Array< long long >::size_type arg2 ;
+  
+  arg1 = static_cast< Teuchos::Array< long long > * >(farg1);
+  arg2 = *farg2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->resize(arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT int swigc_TeuchosArrayLongLong_capacity(void const *farg1) {
+  int fresult ;
+  Teuchos::Array< long long > *arg1 = (Teuchos::Array< long long > *) 0 ;
+  Teuchos::Array< long long >::size_type result;
+  
+  arg1 = static_cast< Teuchos::Array< long long > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::Array< long long >::size_type)((Teuchos::Array< long long > const *)arg1)->capacity();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT bool swigc_TeuchosArrayLongLong_empty(void const *farg1) {
+  bool fresult ;
+  Teuchos::Array< long long > *arg1 = (Teuchos::Array< long long > *) 0 ;
+  bool result;
+  
+  arg1 = static_cast< Teuchos::Array< long long > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (bool)((Teuchos::Array< long long > const *)arg1)->empty();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_TeuchosArrayLongLong_reserve(void *farg1, int const *farg2) {
+  Teuchos::Array< long long > *arg1 = (Teuchos::Array< long long > *) 0 ;
+  Teuchos::Array< long long >::size_type arg2 ;
+  
+  arg1 = static_cast< Teuchos::Array< long long > * >(farg1);
+  arg2 = *farg2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->reserve(arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TeuchosArrayLongLong_push_back(void *farg1, long long const *farg2) {
+  Teuchos::Array< long long > *arg1 = (Teuchos::Array< long long > *) 0 ;
+  Teuchos::Array< long long >::value_type *arg2 = 0 ;
+  
+  arg1 = static_cast< Teuchos::Array< long long > * >(farg1);
+  arg2 = reinterpret_cast< Teuchos::Array< long long >::value_type * >(const_cast< long long* >(farg2));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->push_back((Teuchos::Array< long long >::value_type const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TeuchosArrayLongLong_pop_back(void *farg1) {
+  Teuchos::Array< long long > *arg1 = (Teuchos::Array< long long > *) 0 ;
+  
+  arg1 = static_cast< Teuchos::Array< long long > * >(farg1);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->pop_back();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TeuchosArrayLongLong_swap(void *farg1, void *farg2) {
+  Teuchos::Array< long long > *arg1 = (Teuchos::Array< long long > *) 0 ;
+  Teuchos::Array< long long > *arg2 = 0 ;
+  
+  arg1 = static_cast< Teuchos::Array< long long > * >(farg1);
+  arg2 = static_cast< Teuchos::Array< long long > * >(farg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->swap(*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TeuchosArrayLongLong_clear(void *farg1) {
+  Teuchos::Array< long long > *arg1 = (Teuchos::Array< long long > *) 0 ;
+  
+  arg1 = static_cast< Teuchos::Array< long long > * >(farg1);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->clear();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT int swigc_TeuchosArrayLongLong_length(void const *farg1) {
+  int fresult ;
+  Teuchos::Array< long long > *arg1 = (Teuchos::Array< long long > *) 0 ;
+  int result;
+  
+  arg1 = static_cast< Teuchos::Array< long long > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (int)((Teuchos::Array< long long > const *)arg1)->length();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_new_TeuchosArrayLongLong__SWIG_4(void const *farg1) {
+  void * fresult ;
+  std::vector< long long,std::allocator< long long > > *arg1 = 0 ;
+  Teuchos::Array< long long > *result = 0 ;
+  
+  arg1 = static_cast< std::vector< long long,std::allocator< long long > > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::Array< long long > *)new Teuchos::Array< long long >((std::vector< long long,std::allocator< long long > > const &)*arg1);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_new_TeuchosArrayLongLong__SWIG_5(swig::SwigfArrayWrapper< long long > *farg1) {
+  void * fresult ;
+  std::pair< long long *,std::size_t > arg1 ;
+  Teuchos::Array< long long > *result = 0 ;
+  
+  arg1 = ::std::pair< long long*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::Array< long long > *)new_Teuchos_Array_Sl_long_SS_long_Sg___SWIG_5(arg1);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
 }
 
 
@@ -3196,6 +4070,840 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewIntConst__SWIG_2(swig::SwigfArrayWra
 SWIGEXPORT void* swigc_spcopy_TeuchosArrayViewIntConst(void* farg1) {
   Teuchos::RCP< Teuchos::ArrayView<const int> >* arg1 = (Teuchos::RCP< Teuchos::ArrayView<const int> > *)farg1;
   return new Teuchos::RCP< Teuchos::ArrayView<const int> >(*arg1);
+}
+
+
+SWIGEXPORT void * swigc_new_TeuchosArrayViewLongLong__SWIG_0(long long *farg1, int const *farg2) {
+  void * fresult ;
+  long long *arg1 = (long long *) 0 ;
+  Teuchos::ArrayView< long long >::size_type arg2 ;
+  Teuchos::ArrayView< long long > *result = 0 ;
+  
+  arg1 = reinterpret_cast< long long * >(farg1);
+  arg2 = *farg2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::ArrayView< long long > *)new Teuchos::ArrayView< long long >(arg1,arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_new_TeuchosArrayViewLongLong__SWIG_1(void const *farg1) {
+  void * fresult ;
+  Teuchos::ArrayView< long long > *arg1 = 0 ;
+  Teuchos::ArrayView< long long > *result = 0 ;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::ArrayView< long long > *)new Teuchos::ArrayView< long long >((Teuchos::ArrayView< long long > const &)*arg1);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_TeuchosArrayViewLongLong(void *farg1) {
+  Teuchos::ArrayView< long long > *arg1 = (Teuchos::ArrayView< long long > *) 0 ;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long > * >(farg1);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      delete arg1;
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT bool swigc_TeuchosArrayViewLongLong_is_null(void const *farg1) {
+  bool fresult ;
+  Teuchos::ArrayView< long long > *arg1 = (Teuchos::ArrayView< long long > *) 0 ;
+  bool result;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (bool)((Teuchos::ArrayView< long long > const *)arg1)->is_null();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_TeuchosArrayViewLongLong_size(void const *farg1) {
+  int fresult ;
+  Teuchos::ArrayView< long long > *arg1 = (Teuchos::ArrayView< long long > *) 0 ;
+  Teuchos::ArrayView< long long >::size_type result;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::ArrayView< long long >::size_type)((Teuchos::ArrayView< long long > const *)arg1)->size();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TeuchosArrayViewLongLong_toString(void const *farg1) {
+  void * fresult ;
+  Teuchos::ArrayView< long long > *arg1 = (Teuchos::ArrayView< long long > *) 0 ;
+  std::string result;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((Teuchos::ArrayView< long long > const *)arg1)->toString();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (new std::string(static_cast< const std::string& >(result)));
+  return fresult;
+}
+
+
+SWIGEXPORT long long * swigc_TeuchosArrayViewLongLong_front(void const *farg1) {
+  long long * fresult ;
+  Teuchos::ArrayView< long long > *arg1 = (Teuchos::ArrayView< long long > *) 0 ;
+  long long *result = 0 ;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (long long *) &((Teuchos::ArrayView< long long > const *)arg1)->front();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = reinterpret_cast< long long* >(result);
+  return fresult;
+}
+
+
+SWIGEXPORT long long * swigc_TeuchosArrayViewLongLong_back(void const *farg1) {
+  long long * fresult ;
+  Teuchos::ArrayView< long long > *arg1 = (Teuchos::ArrayView< long long > *) 0 ;
+  long long *result = 0 ;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (long long *) &((Teuchos::ArrayView< long long > const *)arg1)->back();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = reinterpret_cast< long long* >(result);
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TeuchosArrayViewLongLong_view(void const *farg1, int const *farg2, int const *farg3) {
+  void * fresult ;
+  Teuchos::ArrayView< long long > *arg1 = (Teuchos::ArrayView< long long > *) 0 ;
+  Teuchos::ArrayView< long long >::size_type arg2 ;
+  Teuchos::ArrayView< long long >::size_type arg3 ;
+  Teuchos::ArrayView< long long > result;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long > * >(const_cast< void* >(farg1));
+  arg2 = *farg2;
+  arg3 = *farg3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((Teuchos::ArrayView< long long > const *)arg1)->view(arg2,arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (new Teuchos::ArrayView< long long >(static_cast< const Teuchos::ArrayView< long long >& >(result)));
+  return fresult;
+}
+
+
+SWIGEXPORT void const * swigc_TeuchosArrayViewLongLong_assert_not_null(void const *farg1) {
+  void const * fresult ;
+  Teuchos::ArrayView< long long > *arg1 = (Teuchos::ArrayView< long long > *) 0 ;
+  Teuchos::ArrayView< long long > *result = 0 ;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::ArrayView< long long > *) &((Teuchos::ArrayView< long long > const *)arg1)->assert_not_null();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void const * swigc_TeuchosArrayViewLongLong_assert_in_range(void const *farg1, int const *farg2, int const *farg3) {
+  void const * fresult ;
+  Teuchos::ArrayView< long long > *arg1 = (Teuchos::ArrayView< long long > *) 0 ;
+  Teuchos::ArrayView< long long >::size_type arg2 ;
+  Teuchos::ArrayView< long long >::size_type arg3 ;
+  Teuchos::ArrayView< long long > *result = 0 ;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long > * >(const_cast< void* >(farg1));
+  arg2 = *farg2;
+  arg3 = *farg3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::ArrayView< long long > *) &((Teuchos::ArrayView< long long > const *)arg1)->assert_in_range(arg2,arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_new_TeuchosArrayViewLongLong__SWIG_2(swig::SwigfArrayWrapper< long long > *farg1) {
+  void * fresult ;
+  std::pair< long long *,std::size_t > arg1 ;
+  Teuchos::ArrayView< long long > *result = 0 ;
+  
+  arg1 = ::std::pair< long long*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::ArrayView< long long > *)new_Teuchos_ArrayView_Sl_long_SS_long_Sg___SWIG_2(arg1);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_new_TeuchosArrayViewLongLongConst__SWIG_0(long long *farg1, int const *farg2) {
+  void * fresult ;
+  long long *arg1 = (long long *) 0 ;
+  Teuchos::ArrayView< long long const >::size_type arg2 ;
+  Teuchos::ArrayView< long long const > *result = 0 ;
+  
+  arg1 = reinterpret_cast< long long * >(farg1);
+  arg2 = *farg2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::ArrayView< long long const > *)new Teuchos::ArrayView< long long const >((long long const *)arg1,arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_new_TeuchosArrayViewLongLongConst__SWIG_1(void const *farg1) {
+  void * fresult ;
+  Teuchos::ArrayView< long long const > *arg1 = 0 ;
+  Teuchos::ArrayView< long long const > *result = 0 ;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long const > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::ArrayView< long long const > *)new Teuchos::ArrayView< long long const >((Teuchos::ArrayView< long long const > const &)*arg1);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_TeuchosArrayViewLongLongConst(void *farg1) {
+  Teuchos::ArrayView< long long const > *arg1 = (Teuchos::ArrayView< long long const > *) 0 ;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long const > * >(farg1);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      delete arg1;
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT bool swigc_TeuchosArrayViewLongLongConst_is_null(void const *farg1) {
+  bool fresult ;
+  Teuchos::ArrayView< long long const > *arg1 = (Teuchos::ArrayView< long long const > *) 0 ;
+  bool result;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long const > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (bool)((Teuchos::ArrayView< long long const > const *)arg1)->is_null();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_TeuchosArrayViewLongLongConst_size(void const *farg1) {
+  int fresult ;
+  Teuchos::ArrayView< long long const > *arg1 = (Teuchos::ArrayView< long long const > *) 0 ;
+  Teuchos::ArrayView< long long const >::size_type result;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long const > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::ArrayView< long long const >::size_type)((Teuchos::ArrayView< long long const > const *)arg1)->size();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TeuchosArrayViewLongLongConst_toString(void const *farg1) {
+  void * fresult ;
+  Teuchos::ArrayView< long long const > *arg1 = (Teuchos::ArrayView< long long const > *) 0 ;
+  std::string result;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long const > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((Teuchos::ArrayView< long long const > const *)arg1)->toString();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (new std::string(static_cast< const std::string& >(result)));
+  return fresult;
+}
+
+
+SWIGEXPORT long long swigc_TeuchosArrayViewLongLongConst_front(void const *farg1) {
+  long long fresult ;
+  Teuchos::ArrayView< long long const > *arg1 = (Teuchos::ArrayView< long long const > *) 0 ;
+  long long *result = 0 ;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long const > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (long long *) &((Teuchos::ArrayView< long long const > const *)arg1)->front();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = *result;
+  return fresult;
+}
+
+
+SWIGEXPORT long long swigc_TeuchosArrayViewLongLongConst_back(void const *farg1) {
+  long long fresult ;
+  Teuchos::ArrayView< long long const > *arg1 = (Teuchos::ArrayView< long long const > *) 0 ;
+  long long *result = 0 ;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long const > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (long long *) &((Teuchos::ArrayView< long long const > const *)arg1)->back();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = *result;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TeuchosArrayViewLongLongConst_view(void const *farg1, int const *farg2, int const *farg3) {
+  void * fresult ;
+  Teuchos::ArrayView< long long const > *arg1 = (Teuchos::ArrayView< long long const > *) 0 ;
+  Teuchos::ArrayView< long long const >::size_type arg2 ;
+  Teuchos::ArrayView< long long const >::size_type arg3 ;
+  Teuchos::ArrayView< long long const > result;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long const > * >(const_cast< void* >(farg1));
+  arg2 = *farg2;
+  arg3 = *farg3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((Teuchos::ArrayView< long long const > const *)arg1)->view(arg2,arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (new Teuchos::ArrayView< long long const >(static_cast< const Teuchos::ArrayView< long long const >& >(result)));
+  return fresult;
+}
+
+
+SWIGEXPORT void const * swigc_TeuchosArrayViewLongLongConst_assert_not_null(void const *farg1) {
+  void const * fresult ;
+  Teuchos::ArrayView< long long const > *arg1 = (Teuchos::ArrayView< long long const > *) 0 ;
+  Teuchos::ArrayView< long long const > *result = 0 ;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long const > * >(const_cast< void* >(farg1));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::ArrayView< long long const > *) &((Teuchos::ArrayView< long long const > const *)arg1)->assert_not_null();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void const * swigc_TeuchosArrayViewLongLongConst_assert_in_range(void const *farg1, int const *farg2, int const *farg3) {
+  void const * fresult ;
+  Teuchos::ArrayView< long long const > *arg1 = (Teuchos::ArrayView< long long const > *) 0 ;
+  Teuchos::ArrayView< long long const >::size_type arg2 ;
+  Teuchos::ArrayView< long long const >::size_type arg3 ;
+  Teuchos::ArrayView< long long const > *result = 0 ;
+  
+  arg1 = static_cast< Teuchos::ArrayView< long long const > * >(const_cast< void* >(farg1));
+  arg2 = *farg2;
+  arg3 = *farg3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::ArrayView< long long const > *) &((Teuchos::ArrayView< long long const > const *)arg1)->assert_in_range(arg2,arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_new_TeuchosArrayViewLongLongConst__SWIG_2(swig::SwigfArrayWrapper< long long const > *farg1) {
+  void * fresult ;
+  std::pair< long long const *,std::size_t > arg1 ;
+  Teuchos::ArrayView< long long const > *result = 0 ;
+  
+  arg1 = ::std::pair< const long long*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::ArrayView< long long const > *)new_Teuchos_ArrayView_Sl_long_SS_long_SS_const_Sg___SWIG_2(arg1);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
 }
 
 

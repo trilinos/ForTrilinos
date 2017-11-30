@@ -1,3 +1,9 @@
+/*
+ * Copyright 2017, UT-Battelle, LLC
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * License-Filename: LICENSE
+ */
 #include <Teuchos_DefaultComm.hpp>
 #include <Teuchos_XMLParameterListHelpers.hpp>
 #include <Teuchos_StandardCatchMacros.hpp>
