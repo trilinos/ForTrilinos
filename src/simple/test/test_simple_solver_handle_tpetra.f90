@@ -101,7 +101,7 @@ program main
       row_nnz = row_nnz + 1
     end if
 
-    call A%insertGlobalValues(offset + i, row_nnz-1, vals, cols)
+    call A%insertGlobalValues(offset + i, cols(1:row_nnz-1), vals(1:row_nnz-1))
   end do
   ! Critical step: fill complete the matrix
   call A%fillComplete()

@@ -651,12 +651,12 @@ Status | Command| Comment
 Status | Command| Comment
 -------|--------|---------
 :white_check_mark: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, size_t maxNumEntriesPerRow, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
-:running: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::ArrayRCP< const size_t > &NumEntriesPerRowToAlloc, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:white_check_mark: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::ArrayRCP< const size_t > &NumEntriesPerRowToAlloc, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
 :white_check_mark: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, size_t maxNumEntriesPerRow, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
-:running: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const Teuchos::ArrayRCP< const size_t > &NumEntriesPerRowToAlloc, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:white_check_mark: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const Teuchos::ArrayRCP< const size_t > &NumEntriesPerRowToAlloc, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
 :white_check_mark: | `CrsMatrix (const Teuchos::RCP< const crs_graph_type > &graph, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
 :x: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const typename local_matrix_type::row_map_type &rowPointers, const typename local_graph_type::entries_type::non_const_type &columnIndices, const typename local_matrix_type::values_type &values, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
-:running: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const Teuchos::ArrayRCP< size_t > &rowPointers, const Teuchos::ArrayRCP< LocalOrdinal > &columnIndices, const Teuchos::ArrayRCP< Scalar > &values, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:white_check_mark: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const Teuchos::ArrayRCP< size_t > &rowPointers, const Teuchos::ArrayRCP< LocalOrdinal > &columnIndices, const Teuchos::ArrayRCP< Scalar > &values, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
 :x: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const local_matrix_type &lclMatrix, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
 :x: | `template<class Node2 > Teuchos::RCP< CrsMatrix < Scalar, LocalOrdinal, GlobalOrdinal, Node2, Node2::classic > > 	clone (const Teuchos::RCP< Node2 > &node2, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null) const`
 :white_check_mark: | `virtual 	~CrsMatrix ()`
@@ -665,27 +665,27 @@ Status | Command| Comment
 
 Status | Command| Comment
 -------|--------|---------
-:running: | `void 	insertGlobalValues (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals)`
-:running: | `void 	insertGlobalValues (const GlobalOrdinal globalRow, const LocalOrdinal numEnt, const Scalar vals[], const GlobalOrdinal inds[])`
-:running: | `void 	insertLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals)`
+:white_check_mark: :star: | `void 	insertGlobalValues (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals)` | Fortran array variant
+:x: | `void 	insertGlobalValues (const GlobalOrdinal globalRow, const LocalOrdinal numEnt, const Scalar vals[], const GlobalOrdinal inds[])` | Prefer `ArrayView` version
+:white_check_mark: :star: | `void 	insertLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals)` | Fortran array variant, 1-based indices
 :x: | `void 	insertLocalValues (const LocalOrdinal localRow, const LocalOrdinal numEnt, const Scalar vals[], const LocalOrdinal cols[])` | Prefer `ArrayView` variant
 :x: | `template<class GlobalIndicesViewType , class ImplScalarViewType > LocalOrdinal 	replaceGlobalValues (const GlobalOrdinal globalRow, const typename UnmanagedView< GlobalIndicesViewType >::type &inputInds, const typename UnmanagedView< ImplScalarViewType >::type &inputVals) const`
-:running: | `LocalOrdinal 	replaceGlobalValues (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals) const`
+:white_check_mark: :star: | `LocalOrdinal 	replaceGlobalValues (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals) const` | Fortran array variant
 :x: | `LocalOrdinal 	replaceGlobalValues (const GlobalOrdinal globalRow, const LocalOrdinal numEnt, const Scalar vals[], const GlobalOrdinal cols[]) const` | Prefer `ArrayView` variant
 :x: | `template<class LocalIndicesViewType , class ImplScalarViewType > LocalOrdinal 	replaceLocalValues (const LocalOrdinal localRow, const typename UnmanagedView< LocalIndicesViewType >::type &inputInds, const typename UnmanagedView< ImplScalarViewType >::type &inputVals) const`
-:running: | `LocalOrdinal 	replaceLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals) const`
+:white_check_mark: :star: | `LocalOrdinal 	replaceLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals) const` | Fortran array variant, 1-based indices
 :x: | `LocalOrdinal 	replaceLocalValues (const LocalOrdinal localRow, const LocalOrdinal numEnt, const Scalar inputVals[], const LocalOrdinal inputCols[]) const` | Prefer `ArrayView` variant
-:running: | `LocalOrdinal 	sumIntoGlobalValues (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals, const bool atomic=useAtomicUpdatesByDefault)`
+:white_check_mark: :star: | `LocalOrdinal 	sumIntoGlobalValues (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals, const bool atomic=useAtomicUpdatesByDefault)` | Fortran array variant, no atomic parameter
 :x: | `LocalOrdinal 	sumIntoGlobalValues (const GlobalOrdinal globalRow, const LocalOrdinal numEnt, const Scalar vals[], const GlobalOrdinal cols[], const bool atomic=useAtomicUpdatesByDefault)` | Prefer `ArrayView` variant
 :x: | `template<class LocalIndicesViewType , class ImplScalarViewType > LocalOrdinal 	sumIntoLocalValues (const LocalOrdinal localRow, const typename UnmanagedView< LocalIndicesViewType >::type &inputInds, const typename UnmanagedView< ImplScalarViewType >::type &inputVals, const bool atomic=useAtomicUpdatesByDefault) const`
-:running: | `LocalOrdinal 	sumIntoLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals, const bool atomic=useAtomicUpdatesByDefault) const`
+:white_check_mark: :star: | `LocalOrdinal 	sumIntoLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals, const bool atomic=useAtomicUpdatesByDefault) const` | Fortran array variant, 1-based indices, no atomic parameter
 :x: | `LocalOrdinal 	sumIntoLocalValues (const LocalOrdinal localRow, const LocalOrdinal numEnt, const Scalar vals[], const LocalOrdinal cols[], const bool atomic=useAtomicUpdatesByDefault) const` | Prefer `ArrayView` variant
 :x: | `template<class LocalIndicesViewType , class ImplScalarViewType , class BinaryFunction > LocalOrdinal 	transformLocalValues (const LocalOrdinal localRow, const typename UnmanagedView< LocalIndicesViewType >::type &inputInds, const typename UnmanagedView< ImplScalarViewType >::type &inputVals, BinaryFunction f, const bool atomic=useAtomicUpdatesByDefault) const`
 :x: | `template<class BinaryFunction , class InputMemorySpace > LocalOrdinal 	transformGlobalValues (const GlobalOrdinal globalRow, const Kokkos::View< const GlobalOrdinal *, InputMemorySpace, Kokkos::MemoryUnmanaged > &inputInds, const Kokkos::View< const impl_scalar_type *, InputMemorySpace, Kokkos::MemoryUnmanaged > &inputVals, BinaryFunction f, const bool atomic=useAtomicUpdatesByDefault) const`
 :white_check_mark: | `void 	setAllToScalar (const Scalar &alpha)`
 :white_check_mark: | `void 	scale (const Scalar &alpha)`
 :x: | `void 	setAllValues (const typename local_matrix_type::row_map_type &ptr, const typename local_graph_type::entries_type::non_const_type &ind, const typename local_matrix_type::values_type &val)`
-:running: | `void 	setAllValues (const Teuchos::ArrayRCP< size_t > &ptr, const Teuchos::ArrayRCP< LocalOrdinal > &ind, const Teuchos::ArrayRCP< Scalar > &val)`
+:white_check_mark: :star: | `void 	setAllValues (const Teuchos::ArrayRCP< size_t > &ptr, const Teuchos::ArrayRCP< LocalOrdinal > &ind, const Teuchos::ArrayRCP< Scalar > &val)` | Fortran array variant
 :running: | `void 	getAllValues (Teuchos::ArrayRCP< const size_t > &rowPointers, Teuchos::ArrayRCP< const LocalOrdinal > &columnIndices, Teuchos::ArrayRCP< const Scalar > &values) const`
 
 **Methods implementing RowMatrix**
@@ -707,7 +707,7 @@ Status | Command| Comment
 :white_check_mark:white_check_mark: | `global_size_t 	getGlobalNumEntries () const`
 :white_check_mark: | `size_t 	getNodeNumEntries () const`
 :white_check_mark: | `size_t 	getNumEntriesInGlobalRow (GlobalOrdinal globalRow) const`
-:running: | `size_t 	getNumEntriesInLocalRow (LocalOrdinal localRow) const`
+:white_check_mark: :star: | `size_t 	getNumEntriesInLocalRow (LocalOrdinal localRow) const` | 1-based index
 :white_check_mark: | `global_size_t 	getGlobalNumDiags () const`
 :white_check_mark: | `size_t 	getNodeNumDiags () const`
 :white_check_mark: | `size_t 	getGlobalMaxNumRowEntries () const`
