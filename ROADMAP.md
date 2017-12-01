@@ -736,16 +736,16 @@ TBD
 :white_check_mark: | `bool 	isStaticGraph () const`
 :white_check_mark: | `mag_type 	getFrobeniusNorm () const`
 :white_check_mark: | `virtual bool 	supportsRowViews () const`
-:running: | `void 	getGlobalRowCopy (GlobalOrdinal GlobalRow, const Teuchos::ArrayView< GlobalOrdinal > &Indices, const Teuchos::ArrayView< Scalar > &Values, size_t &NumEntries) const`
-:running: | `void 	getLocalRowCopy (LocalOrdinal localRow, const Teuchos::ArrayView< LocalOrdinal > &colInds, const Teuchos::ArrayView< Scalar > &vals, size_t &numEntries) const`
-:running: | `void 	getGlobalRowView (GlobalOrdinal GlobalRow, Teuchos::ArrayView< const GlobalOrdinal > &indices, Teuchos::ArrayView< const Scalar > &values) const`
+:white_check_mark: :star: | `void 	getGlobalRowCopy (GlobalOrdinal GlobalRow, const Teuchos::ArrayView< GlobalOrdinal > &Indices, const Teuchos::ArrayView< Scalar > &Values, size_t &NumEntries) const` | Fortran arrays
+:white_check_mark: :star: | `void 	getLocalRowCopy (LocalOrdinal localRow, const Teuchos::ArrayView< LocalOrdinal > &colInds, const Teuchos::ArrayView< Scalar > &vals, size_t &numEntries) const` | Fortran arrays
+:white_check_mark: :star: | `void 	getGlobalRowView (GlobalOrdinal GlobalRow, Teuchos::ArrayView< const GlobalOrdinal > &indices, Teuchos::ArrayView< const Scalar > &values) const` | Fortran arrays
 :running: | `void 	getLocalRowView (LocalOrdinal LocalRow, Teuchos::ArrayView< const LocalOrdinal > &indices, Teuchos::ArrayView< const Scalar > &values) const`
 :x: | `LocalOrdinal 	getLocalRowViewRaw (const LocalOrdinal lclRow, LocalOrdinal &numEnt, const LocalOrdinal *&lclColInds, const Scalar *&vals) const` | prefer `ArrayView` variant
 :x: | `LocalOrdinal 	getLocalRowView (const LocalOrdinal lclRow, LocalOrdinal &numEnt, const impl_scalar_type *&val, const LocalOrdinal *&ind) const` | prefer `ArrayView` variant
 :x: | `template<class OutputScalarType > std::enable_if<!std::is_same < OutputScalarType, impl_scalar_type >::value &&std::is_convertible < impl_scalar_type, OutputScalarType >::value, LocalOrdinal >::type 	getLocalRowView (const LocalOrdinal lclRow, LocalOrdinal &numEnt, const OutputScalarType *&val, const LocalOrdinal *&ind) const` | prefer `ArrayView` variant
 :arrow_down: | `void 	getLocalDiagCopy (Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &diag) const`
 :arrow_down: | `void 	getLocalDiagOffsets (Teuchos::ArrayRCP< size_t > &offsets) const`
-:arrow_down: | `void 	getLocalDiagCopy (Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &diag, const Kokkos::View< const size_t *, device_type, Kokkos::MemoryUnmanaged > &offsets) const`
+:x: | `void 	getLocalDiagCopy (Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &diag, const Kokkos::View< const size_t *, device_type, Kokkos::MemoryUnmanaged > &offsets) const`
 :arrow_down: | `void 	getLocalDiagCopy (Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &diag, const Teuchos::ArrayView< const size_t > &offsets) const`
 :arrow_down: | `void 	leftScale (const Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &x)`
 :arrow_down: | `void 	rightScale (const Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &x)`
