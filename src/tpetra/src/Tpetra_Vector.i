@@ -7,7 +7,6 @@
 
 // Dependencies
 %include "Teuchos_RCP.i"
-%import <Teuchos_ArrayView.i>
 %import <Teuchos_Comm.i>
 
 %{

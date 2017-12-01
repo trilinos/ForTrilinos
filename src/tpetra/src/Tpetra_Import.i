@@ -7,8 +7,6 @@
 
 // Dependencies
 %include "Teuchos_RCP.i"
-%import <Teuchos_ArrayView.i>
-%import <Teuchos_Array.i>
 
 %{
 #include "Tpetra_Import.hpp"

@@ -8,8 +8,6 @@
 ##---------------------------------------------------------------------------##
 
 SET(TESTS
-  test_teuchos_array.f90
-  test_teuchos_arrayview.f90
   test_teuchos_comm.f90
   test_teuchos_plist.f90
   )

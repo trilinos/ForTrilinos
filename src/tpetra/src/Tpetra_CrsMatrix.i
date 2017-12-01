@@ -7,7 +7,6 @@
 
 // Dependencies
 %include "Teuchos_RCP.i"
-%import <Teuchos_ArrayView.i>
 %import <Teuchos_Comm.i>
 
 %{
@@ -172,6 +171,24 @@
 
       self->getGlobalRowCopy(GlobalRow, IndicesView, ValuesView, NumIndices);
     }
+    void getLocalRowCopy(LO localRow, std::pair<LO*,size_t> colInds, std::pair<SC*, size_t> vals, size_t &NumIndices) const {
+      Teuchos::ArrayView<GO> colsIndsView = Teuchos::arrayView(colsInds.first, colsInds.second);
+      Teuchos::ArrayView<SC> valsView  = Teuchos::arrayView(vals.first, vals.second);
+
+      self->getLocalRowCopy(localRow, colIndsView, valsView, NumIndices);
+
+      for (int i = 0; i < colIndsView.size(); i++)
+        colIndsView[i]++;
+    }
+    void getGlobalRowView(GO GlobalRow, std::pair<const GO*,size_t> Indices, std::pair<const SC*, size_t> values) const {
+      Teuchos::ArrayView<const GO> IndicesView = Teuchos::arrayView(Indices.first, Indices.second);
+      Teuchos::ArrayView<const SC> valuesView  = Teuchos::arrayView(values.first, values.second);
+
+      self->getGlobalRowView(GlobalRow, IndicesView, valuesView);
+    }
+    void getLocalRowView(LO LocalRow, std::pair<const LO*,size_t> indices, std::pair<const SC*,size_t> values) const {
+      throw std::runtime_error("Not implemented");
+    }
 }
 %ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap, \
                const Teuchos::ArrayRCP<const size_t>& NumEntriesPerRowToAlloc, \
@@ -197,6 +214,11 @@
 %ignore Tpetra::CrsMatrix::sumIntoLocalValues(const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals, const bool atomic=useAtomicUpdatesByDefault) const;
 %ignore Tpetra::CrsMatrix::setAllValues(const Teuchos::ArrayRCP< size_t > &ptr, const Teuchos::ArrayRCP< LocalOrdinal > &ind, const Teuchos::ArrayRCP< Scalar > &val);
 %ignore Tpetra::CrsMatrix::getAllValues(Teuchos::ArrayRCP< const size_t > &rowPointers, Teuchos::ArrayRCP< const LocalOrdinal > &columnIndices, Teuchos::ArrayRCP< const Scalar > &values) const;
+%ignore Tpetra::CrsMatrix::getGlobalRowCopy(GlobalOrdinal GlobalRow, const Teuchos::ArrayView< GlobalOrdinal > &Indices, const Teuchos::ArrayView< Scalar > &Values, size_t &NumEntries) const;
+%ignore Tpetra::CrsMatrix::getLocalRowCopy(LocalOrdinal localRow, const Teuchos::ArrayView< LocalOrdinal > &colInds, const Teuchos::ArrayView< Scalar > &vals, size_t &numEntries) const;
+%ignore Tpetra::CrsMatrix::getGlobalRowView(GlobalOrdinal GlobalRow, Teuchos::ArrayView< const GlobalOrdinal > &indices, Teuchos::ArrayView< const Scalar > &values) const;
+%ignore Tpetra::CrsMatrix::getLocalRowView(LocalOrdinal LocalRow, Teuchos::ArrayView< const LocalOrdinal > &indices, Teuchos::ArrayView< const Scalar > &values) const;
+%ignore Tpetra::CrsMatrix::getLocalRowViewRaw(const LocalOrdinal lclRow, LocalOrdinal &numEnt, const LocalOrdinal *&lclColInds, const Scalar *&vals) const;
 
 
 %teuchos_rcp(Tpetra::CrsMatrix<SC,LO,GO,NO,false>)

@@ -536,7 +536,7 @@ contains
   FORTRILINOS_UNIT_TEST(TpetraMultiVector_normWeighted)
     type(TpetraMultiVector) :: Obj
     type(TpetraMultiVector) :: weights
-    type(TeuchosArrayViewDouble) :: norms
+    real(scalar_type) :: norms(1)
 
     success = .false.
 

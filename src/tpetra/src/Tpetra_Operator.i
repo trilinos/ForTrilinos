@@ -8,7 +8,6 @@
 // Dependencies
 %include "Teuchos_RCP.i"
 %import <std_string.i>
-%import <Teuchos_ArrayView.i>
 %import <Teuchos_Comm.i>
 
 %{
