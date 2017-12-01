@@ -66,6 +66,8 @@ void get_scalar(std::pair<const char*, size_t> name, T& value)
 %template(set) set_scalar<double>;
 %template(get) get_scalar<int>;
 %template(set) set_scalar<int>;
+%template(get) get_scalar<bool>;
+%template(set) set_scalar<bool>;
 
 // >>> STRING SET/GET
 

@@ -385,11 +385,17 @@ SWIGINTERN void Teuchos_ParameterList_get_scalar_Sl_int_Sg___SWIG_1(Teuchos::Par
 SWIGINTERN void Teuchos_ParameterList_set_scalar_Sl_int_Sg___SWIG_1(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,int const &value){
     self->set(std::string(name.first, name.second), value);
 }
-SWIGINTERN void Teuchos_ParameterList_set__SWIG_2(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,std::pair< char const *,std::size_t > value){
+SWIGINTERN void Teuchos_ParameterList_get_scalar_Sl_bool_Sg___SWIG_2(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,bool &value){
+    value = self->get<bool>(std::string(name.first, name.second));
+}
+SWIGINTERN void Teuchos_ParameterList_set_scalar_Sl_bool_Sg___SWIG_2(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,bool const &value){
+    self->set(std::string(name.first, name.second), value);
+}
+SWIGINTERN void Teuchos_ParameterList_set__SWIG_3(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,std::pair< char const *,std::size_t > value){
     self->set(std::string(name.first,  name.second),
                std::string(value.first, value.second));
 }
-SWIGINTERN void Teuchos_ParameterList_get__SWIG_2(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,std::pair< char *,std::size_t > value){
+SWIGINTERN void Teuchos_ParameterList_get__SWIG_3(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,std::pair< char *,std::size_t > value){
     const std::string& str
         = self->get<std::string>(std::string(name.first, name.second));
 
@@ -402,12 +408,12 @@ SWIGINTERN void Teuchos_ParameterList_get__SWIG_2(Teuchos::ParameterList *self,s
     std::copy(str.begin(), str.end(), value.first);
     std::fill_n(value.first+str.size(), value.second - str.size(), ' ');
 }
-SWIGINTERN void Teuchos_ParameterList_set_array_Sl_double_Sg___SWIG_3(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,std::pair< double const *,std::size_t > value){
+SWIGINTERN void Teuchos_ParameterList_set_array_Sl_double_Sg___SWIG_4(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,std::pair< double const *,std::size_t > value){
     typedef Teuchos::Array<double> ArrayT;
     self->set(std::string(name.first, name.second),
                ArrayT(value.first, value.first + value.second));
 }
-SWIGINTERN void Teuchos_ParameterList_get_array_Sl_double_Sg___SWIG_3(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,std::pair< double const *,std::size_t > value){
+SWIGINTERN void Teuchos_ParameterList_get_array_Sl_double_Sg___SWIG_4(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,std::pair< double const *,std::size_t > value){
     typedef Teuchos::Array<double> ArrayT;
     const ArrayT& arr
         = self->get<ArrayT>(std::string(name.first, name.second));
@@ -423,12 +429,12 @@ SWIGINTERN void Teuchos_ParameterList_get_array_Sl_double_Sg___SWIG_3(Teuchos::P
     value.first = arr.getRawPtr();
     value.second = arr.size();
 }
-SWIGINTERN void Teuchos_ParameterList_set_array_Sl_int_Sg___SWIG_4(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,std::pair< int const *,std::size_t > value){
+SWIGINTERN void Teuchos_ParameterList_set_array_Sl_int_Sg___SWIG_5(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,std::pair< int const *,std::size_t > value){
     typedef Teuchos::Array<int> ArrayT;
     self->set(std::string(name.first, name.second),
                ArrayT(value.first, value.first + value.second));
 }
-SWIGINTERN void Teuchos_ParameterList_get_array_Sl_int_Sg___SWIG_4(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,std::pair< int const *,std::size_t > value){
+SWIGINTERN void Teuchos_ParameterList_get_array_Sl_int_Sg___SWIG_5(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,std::pair< int const *,std::size_t > value){
     typedef Teuchos::Array<int> ArrayT;
     const ArrayT& arr
         = self->get<ArrayT>(std::string(name.first, name.second));
@@ -444,10 +450,10 @@ SWIGINTERN void Teuchos_ParameterList_get_array_Sl_int_Sg___SWIG_4(Teuchos::Para
     value.first = arr.getRawPtr();
     value.second = arr.size();
 }
-SWIGINTERN void Teuchos_ParameterList_set__SWIG_5(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,Teuchos::RCP< Teuchos::ParameterList > plist){
+SWIGINTERN void Teuchos_ParameterList_set__SWIG_6(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,Teuchos::RCP< Teuchos::ParameterList > plist){
     self->set(std::string(name.first, name.second), *plist);
 }
-SWIGINTERN void Teuchos_ParameterList_get__SWIG_5(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,Teuchos::RCP< Teuchos::ParameterList > &plist){
+SWIGINTERN void Teuchos_ParameterList_get__SWIG_6(Teuchos::ParameterList *self,std::pair< char const *,std::size_t > name,Teuchos::RCP< Teuchos::ParameterList > &plist){
     plist = Teuchos::sublist(
             Teuchos::rcpFromRef(*self),
             std::string(name.first, name.second),
@@ -1865,7 +1871,85 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_1(void *farg1, swig::SwigfArrayWra
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_2(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, swig::SwigfArrayWrapper< char const > *farg3) {
+SWIGEXPORT void swigc_ParameterList_get__SWIG_2(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, bool *farg3) {
+  Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
+  std::pair< char const *,std::size_t > arg2 ;
+  bool *arg3 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  
+  arg2 = ::std::pair< const char*, std::size_t >();
+  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
+  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
+  (&arg2)->first  = farg2->data;
+  (&arg2)->second = farg2->size;
+  arg3 = reinterpret_cast< bool * >(farg3);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Teuchos_ParameterList_get_scalar_Sl_bool_Sg___SWIG_2(arg1,arg2,*arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_ParameterList_set__SWIG_2(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, bool const *farg3) {
+  Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
+  std::pair< char const *,std::size_t > arg2 ;
+  bool *arg3 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  
+  arg2 = ::std::pair< const char*, std::size_t >();
+  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
+  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
+  (&arg2)->first  = farg2->data;
+  (&arg2)->second = farg2->size;
+  arg3 = reinterpret_cast< bool * >(const_cast< bool* >(farg3));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Teuchos_ParameterList_set_scalar_Sl_bool_Sg___SWIG_2(arg1,arg2,(bool const &)*arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_ParameterList_set__SWIG_3(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, swig::SwigfArrayWrapper< char const > *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   std::pair< char const *,std::size_t > arg3 ;
@@ -1885,7 +1969,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_2(void *farg1, swig::SwigfArrayWra
     try
     {
       // Attempt the wrapped function call
-      Teuchos_ParameterList_set__SWIG_2(arg1,arg2,arg3);
+      Teuchos_ParameterList_set__SWIG_3(arg1,arg2,arg3);
     }
     catch (const std::range_error& e)
     {
@@ -1906,7 +1990,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_2(void *farg1, swig::SwigfArrayWra
 }
 
 
-SWIGEXPORT void swigc_ParameterList_get__SWIG_2(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, swig::SwigfArrayWrapper< char > *farg3) {
+SWIGEXPORT void swigc_ParameterList_get__SWIG_3(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, swig::SwigfArrayWrapper< char > *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   std::pair< char *,std::size_t > arg3 ;
@@ -1926,7 +2010,7 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_2(void *farg1, swig::SwigfArrayWra
     try
     {
       // Attempt the wrapped function call
-      Teuchos_ParameterList_get__SWIG_2(arg1,arg2,arg3);
+      Teuchos_ParameterList_get__SWIG_3(arg1,arg2,arg3);
     }
     catch (const std::range_error& e)
     {
@@ -1947,7 +2031,7 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_2(void *farg1, swig::SwigfArrayWra
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_3(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, swig::SwigfArrayWrapper< double const > *farg3) {
+SWIGEXPORT void swigc_ParameterList_set__SWIG_4(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, swig::SwigfArrayWrapper< double const > *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   std::pair< double const *,std::size_t > arg3 ;
@@ -1967,7 +2051,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_3(void *farg1, swig::SwigfArrayWra
     try
     {
       // Attempt the wrapped function call
-      Teuchos_ParameterList_set_array_Sl_double_Sg___SWIG_3(arg1,arg2,arg3);
+      Teuchos_ParameterList_set_array_Sl_double_Sg___SWIG_4(arg1,arg2,arg3);
     }
     catch (const std::range_error& e)
     {
@@ -1988,7 +2072,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_3(void *farg1, swig::SwigfArrayWra
 }
 
 
-SWIGEXPORT void swigc_ParameterList_get__SWIG_3(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, swig::SwigfArrayWrapper< double const > *farg3) {
+SWIGEXPORT void swigc_ParameterList_get__SWIG_4(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, swig::SwigfArrayWrapper< double const > *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   std::pair< double const *,std::size_t > arg3 ;
@@ -2008,7 +2092,7 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_3(void *farg1, swig::SwigfArrayWra
     try
     {
       // Attempt the wrapped function call
-      Teuchos_ParameterList_get_array_Sl_double_Sg___SWIG_3(arg1,arg2,arg3);
+      Teuchos_ParameterList_get_array_Sl_double_Sg___SWIG_4(arg1,arg2,arg3);
     }
     catch (const std::range_error& e)
     {
@@ -2029,7 +2113,7 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_3(void *farg1, swig::SwigfArrayWra
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_4(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, swig::SwigfArrayWrapper< int const > *farg3) {
+SWIGEXPORT void swigc_ParameterList_set__SWIG_5(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, swig::SwigfArrayWrapper< int const > *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   std::pair< int const *,std::size_t > arg3 ;
@@ -2049,7 +2133,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_4(void *farg1, swig::SwigfArrayWra
     try
     {
       // Attempt the wrapped function call
-      Teuchos_ParameterList_set_array_Sl_int_Sg___SWIG_4(arg1,arg2,arg3);
+      Teuchos_ParameterList_set_array_Sl_int_Sg___SWIG_5(arg1,arg2,arg3);
     }
     catch (const std::range_error& e)
     {
@@ -2070,7 +2154,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_4(void *farg1, swig::SwigfArrayWra
 }
 
 
-SWIGEXPORT void swigc_ParameterList_get__SWIG_4(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, swig::SwigfArrayWrapper< int const > *farg3) {
+SWIGEXPORT void swigc_ParameterList_get__SWIG_5(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, swig::SwigfArrayWrapper< int const > *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   std::pair< int const *,std::size_t > arg3 ;
@@ -2090,7 +2174,7 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_4(void *farg1, swig::SwigfArrayWra
     try
     {
       // Attempt the wrapped function call
-      Teuchos_ParameterList_get_array_Sl_int_Sg___SWIG_4(arg1,arg2,arg3);
+      Teuchos_ParameterList_get_array_Sl_int_Sg___SWIG_5(arg1,arg2,arg3);
     }
     catch (const std::range_error& e)
     {
@@ -2111,7 +2195,7 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_4(void *farg1, swig::SwigfArrayWra
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_5(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, void *farg3) {
+SWIGEXPORT void swigc_ParameterList_set__SWIG_6(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, void *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   Teuchos::RCP< Teuchos::ParameterList > arg3 ;
@@ -2129,7 +2213,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_5(void *farg1, swig::SwigfArrayWra
     try
     {
       // Attempt the wrapped function call
-      Teuchos_ParameterList_set__SWIG_5(arg1,arg2,arg3);
+      Teuchos_ParameterList_set__SWIG_6(arg1,arg2,arg3);
     }
     catch (const std::range_error& e)
     {
@@ -2150,7 +2234,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_5(void *farg1, swig::SwigfArrayWra
 }
 
 
-SWIGEXPORT void swigc_ParameterList_get__SWIG_5(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, void *farg3) {
+SWIGEXPORT void swigc_ParameterList_get__SWIG_6(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, void *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg3 = 0 ;
@@ -2169,7 +2253,7 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_5(void *farg1, swig::SwigfArrayWra
     try
     {
       // Attempt the wrapped function call
-      Teuchos_ParameterList_get__SWIG_5(arg1,arg2,*arg3);
+      Teuchos_ParameterList_get__SWIG_6(arg1,arg2,*arg3);
     }
     catch (const std::range_error& e)
     {

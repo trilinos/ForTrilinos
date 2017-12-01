@@ -24,6 +24,7 @@ subroutine test_plist()
 
     integer :: ival
     real(C_DOUBLE) :: dval
+    logical(C_BOOL) :: bval, true = .true. ! FIXME: can we get rid of this true somethow?
     character(kind=C_CHAR, len=16) :: sval
 
     write(0, *) "Constructing..."
@@ -45,6 +46,11 @@ subroutine test_plist()
     call plist%set("mydbl", 1.25d0)
     call plist%get("mydbl", dval)
     EXPECT_EQ(1.25d0, dval)
+
+    bval = .false.
+    call plist%set("mybool", true)
+    call plist%get("mybool", bval)
+    EXPECT_TRUE(bval)
 
     call plist%set("intarr", test_int)
     call plist%set("dblarr", test_dbl)
