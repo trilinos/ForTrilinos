@@ -60,6 +60,11 @@ end type
 
  public :: TpetraExport
  public :: TpetraImport
+
+type :: SwigfUnknownClass
+  type(C_PTR), public :: swigptr
+end type
+
  public :: TpetraMultiVector
  public :: RowInfo
  public :: ELocalGlobal, LocalIndices, GlobalIndices
@@ -3710,7 +3715,7 @@ use, intrinsic :: ISO_C_BINDING
 class(TpetraImport) :: self
 type(TpetraMap) :: source
 type(TpetraMap) :: target
-class(TeuchosArrayInt) :: remotepids
+class(SwigfUnknownClass) :: remotepids
 type(C_PTR) :: fresult 
 type(C_PTR) :: farg1 
 type(C_PTR) :: farg2 

@@ -2262,14 +2262,7 @@ SWIGEXPORT void * swigc_new_TpetraImport__SWIG_2(void *farg1, void *farg2, void 
   
   arg1 = farg1 ? (Teuchos::RCP< Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *)farg1 : &tempnull1;
   arg2 = farg2 ? (Teuchos::RCP< Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *)farg2 : &tempnull2;
-  arg3 = (Teuchos::Array< int > *)(((Teuchos::RCP< Teuchos::Array<int> > *)farg3)
-    ? ((Teuchos::RCP< Teuchos::Array<int> > *)farg3)->get()
-    :0);
-  if (!arg3)
-  {
-    throw std::logic_error("Attempt to dereference null Teuchos::Array< int > &");
-    return NULL;
-  }
+  arg3 = static_cast< Teuchos::Array< int > * >(farg3);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swig::fortran_check_unhandled_exception();
