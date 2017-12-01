@@ -237,7 +237,7 @@ SWIGEXPORT void * swigc_new_string() {
 }
 
 
-SWIGEXPORT void swigc_string_resize(void *farg1, unsigned long const *farg2) {
+SWIGEXPORT void swigc_string_resize(void *farg1, long const *farg2) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
   
@@ -257,8 +257,8 @@ SWIGEXPORT void swigc_string_clear(void *farg1) {
 }
 
 
-SWIGEXPORT unsigned long swigc_string_size(void const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT long swigc_string_size(void const *farg1) {
+  long fresult ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type result;
   
@@ -269,8 +269,8 @@ SWIGEXPORT unsigned long swigc_string_size(void const *farg1) {
 }
 
 
-SWIGEXPORT unsigned long swigc_string_length(void const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT long swigc_string_length(void const *farg1) {
+  long fresult ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type result;
   
@@ -281,7 +281,7 @@ SWIGEXPORT unsigned long swigc_string_length(void const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_string_set(void *farg1, unsigned long const *farg2, char const *farg3) {
+SWIGEXPORT void swigc_string_set(void *farg1, long const *farg2, char const *farg3) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
   std::string::value_type arg3 ;
@@ -294,7 +294,7 @@ SWIGEXPORT void swigc_string_set(void *farg1, unsigned long const *farg2, char c
 }
 
 
-SWIGEXPORT char swigc_string_get(void *farg1, unsigned long const *farg2) {
+SWIGEXPORT char swigc_string_get(void *farg1, long const *farg2) {
   char fresult ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
@@ -338,7 +338,7 @@ SWIGEXPORT void swigc_delete_BelosError(void *farg1) {
 }
 
 
-SWIGEXPORT void * swigc_convertReturnTypeToString(int *farg1) {
+SWIGEXPORT void * swigc_convertReturnTypeToString(int const *farg1) {
   void * fresult ;
   Belos::ReturnType arg1 ;
   std::string result;
@@ -364,7 +364,7 @@ SWIGEXPORT SWIGEXTERN int const swigc_Problem = Belos::Problem;
 
 SWIGEXPORT SWIGEXTERN int const swigc_RecycleSubspace = Belos::RecycleSubspace;
 
-SWIGEXPORT void * swigc_convertStatusTypeToString(int *farg1) {
+SWIGEXPORT void * swigc_convertStatusTypeToString(int const *farg1) {
   void * fresult ;
   Belos::StatusType arg1 ;
   std::string result;
@@ -400,7 +400,7 @@ SWIGEXPORT int swigc_convertStringToScaleType(void const *farg1) {
 }
 
 
-SWIGEXPORT void * swigc_convertScaleTypeToString(int *farg1) {
+SWIGEXPORT void * swigc_convertScaleTypeToString(int const *farg1) {
   void * fresult ;
   Belos::ScaleType arg1 ;
   std::string result;
@@ -430,7 +430,7 @@ SWIGEXPORT SWIGEXTERN int const swigc_StatusTestDetails = Belos::StatusTestDetai
 
 SWIGEXPORT SWIGEXTERN int const swigc_Debug = Belos::Debug;
 
-SWIGEXPORT void * swigc_convertMsgTypeToString(int *farg1) {
+SWIGEXPORT void * swigc_convertMsgTypeToString(int const *farg1) {
   void * fresult ;
   Belos::MsgType arg1 ;
   std::string result;

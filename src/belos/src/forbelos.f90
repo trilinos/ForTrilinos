@@ -153,16 +153,16 @@ function swigc_string_size(farg1) &
 bind(C, name="swigc_string_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: fresult
 type(C_PTR), value :: farg1
+integer(C_LONG) :: fresult
 end function
 
 function swigc_string_length(farg1) &
 bind(C, name="swigc_string_length") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: fresult
 type(C_PTR), value :: farg1
+integer(C_LONG) :: fresult
 end function
 
 subroutine swigc_string_set(farg1, farg2, farg3) &
@@ -177,9 +177,9 @@ function swigc_string_get(farg1, farg2) &
 bind(C, name="swigc_string_get") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_SIGNED_CHAR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_LONG), intent(in) :: farg2
+integer(C_SIGNED_CHAR) :: fresult
 end function
 
 subroutine swigc_delete_string(farg1) &
@@ -192,8 +192,8 @@ function swigc_new_BelosError(farg1) &
 bind(C, name="swigc_new_BelosError") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 subroutine swigc_delete_BelosError(farg1) &
@@ -206,48 +206,48 @@ function swigc_convertReturnTypeToString(farg1) &
 bind(C, name="swigc_convertReturnTypeToString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_convertStatusTypeToString(farg1) &
 bind(C, name="swigc_convertStatusTypeToString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_convertStringToStatusType(farg1) &
 bind(C, name="swigc_convertStringToStatusType") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_convertStringToScaleType(farg1) &
 bind(C, name="swigc_convertStringToScaleType") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_convertScaleTypeToString(farg1) &
 bind(C, name="swigc_convertScaleTypeToString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_convertMsgTypeToString(farg1) &
 bind(C, name="swigc_convertMsgTypeToString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
  end interface
@@ -263,7 +263,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_string()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_string_resize(self, count)
@@ -276,7 +275,6 @@ integer(C_LONG) :: farg2
 farg1 = self%swigptr
 farg2 = count
 call swigc_string_resize(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_string_clear(self)
@@ -286,7 +284,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_string_clear(farg1)
-
 end subroutine
 
 function swigf_string_size(self) &
@@ -328,7 +325,6 @@ farg1 = self%swigptr
 farg2 = pos
 farg3 = v
 call swigc_string_set(farg1, farg2, farg3)
-
 end subroutine
 
 function swigf_string_get(self, pos) &
@@ -355,7 +351,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_string(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -370,7 +365,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = what_arg%swigptr
 fresult = swigc_new_BelosError(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_delete_BelosError(self)
@@ -381,7 +375,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_BelosError(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -389,7 +382,7 @@ function convertReturnTypeToString(result) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 type(string) :: swigf_result
-integer(kind(ReturnType)) :: result
+integer(kind(ReturnType)), intent(in) :: result
 type(C_PTR) :: fresult 
 integer(C_INT) :: farg1 
 
@@ -402,7 +395,7 @@ function convertStatusTypeToString(status) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 type(string) :: swigf_result
-integer(kind(StatusType)) :: status
+integer(kind(StatusType)), intent(in) :: status
 type(C_PTR) :: fresult 
 integer(C_INT) :: farg1 
 
@@ -441,7 +434,7 @@ function convertScaleTypeToString(scaletype0) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 type(string) :: swigf_result
-integer(kind(ScaleType)) :: scaletype0
+integer(kind(ScaleType)), intent(in) :: scaletype0
 type(C_PTR) :: fresult 
 integer(C_INT) :: farg1 
 
@@ -454,7 +447,7 @@ function convertMsgTypeToString(msgtype0) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 type(string) :: swigf_result
-integer(kind(MsgType)) :: msgtype0
+integer(kind(MsgType)), intent(in) :: msgtype0
 type(C_PTR) :: fresult 
 integer(C_INT) :: farg1 
 

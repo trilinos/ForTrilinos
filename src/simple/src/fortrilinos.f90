@@ -279,7 +279,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_SolverHandle()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_SolverHandle_init__SWIG_0(self)
@@ -289,7 +288,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_SolverHandle_init__SWIG_0(farg1)
-
 end subroutine
 
 subroutine swigf_SolverHandle_init__SWIG_1(self, comm)
@@ -302,7 +300,6 @@ type(C_PTR) :: farg2
 farg1 = self%swigptr
 farg2 = comm%swigptr
 call swigc_SolverHandle_init__SWIG_1(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_SolverHandle_setup_matrix__SWIG_0(self, rowinds, rowptrs, colinds, values)
@@ -328,7 +325,6 @@ farg4%size = size(colinds)
 farg5%data = c_loc(values(1))
 farg5%size = size(values)
 call swigc_SolverHandle_setup_matrix__SWIG_0(farg1, farg2, farg3, farg4, farg5)
-
 end subroutine
 
 subroutine swigf_SolverHandle_setup_matrix__SWIG_1(self, a)
@@ -341,7 +337,6 @@ type(C_PTR) :: farg2
 farg1 = self%swigptr
 farg2 = a%swigptr
 call swigc_SolverHandle_setup_matrix__SWIG_1(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_SolverHandle_setup_operator(self, rowinds, callback)
@@ -358,7 +353,6 @@ farg2%data = c_loc(rowinds(1))
 farg2%size = size(rowinds)
 farg3 = callback
 call swigc_SolverHandle_setup_operator(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_SolverHandle_setup_solver(self, paramlist)
@@ -371,7 +365,6 @@ type(C_PTR) :: farg2
 farg1 = self%swigptr
 farg2 = paramlist%swigptr
 call swigc_SolverHandle_setup_solver(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_SolverHandle_solve__SWIG_0(self, rhs, lhs)
@@ -389,7 +382,6 @@ farg2%size = size(rhs)
 farg3%data = c_loc(lhs(1))
 farg3%size = size(lhs)
 call swigc_SolverHandle_solve__SWIG_0(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_SolverHandle_solve__SWIG_1(self, rhs, lhs)
@@ -405,7 +397,6 @@ farg1 = self%swigptr
 farg2 = rhs%swigptr
 farg3 = lhs%swigptr
 call swigc_SolverHandle_solve__SWIG_1(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_SolverHandle_finalize(self)
@@ -415,7 +406,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_SolverHandle_finalize(farg1)
-
 end subroutine
 
 subroutine swigf_delete_SolverHandle(self)
@@ -426,7 +416,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_SolverHandle(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -438,7 +427,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_EigenHandle()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_EigenHandle_init__SWIG_0(self)
@@ -448,7 +436,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_EigenHandle_init__SWIG_0(farg1)
-
 end subroutine
 
 subroutine swigf_EigenHandle_init__SWIG_1(self, comm)
@@ -461,7 +448,6 @@ type(C_PTR) :: farg2
 farg1 = self%swigptr
 farg2 = comm%swigptr
 call swigc_EigenHandle_init__SWIG_1(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_EigenHandle_setup_matrix(self, rowinds, rowptrs, colinds, values)
@@ -487,7 +473,6 @@ farg4%size = size(colinds)
 farg5%data = c_loc(values(1))
 farg5%size = size(values)
 call swigc_EigenHandle_setup_matrix(farg1, farg2, farg3, farg4, farg5)
-
 end subroutine
 
 subroutine swigf_EigenHandle_setup_matrix_rhs(self, rowinds, rowptrs, colinds, values)
@@ -513,7 +498,6 @@ farg4%size = size(colinds)
 farg5%data = c_loc(values(1))
 farg5%size = size(values)
 call swigc_EigenHandle_setup_matrix_rhs(farg1, farg2, farg3, farg4, farg5)
-
 end subroutine
 
 subroutine swigf_EigenHandle_setup_operator(self, rowinds, callback)
@@ -530,7 +514,6 @@ farg2%data = c_loc(rowinds(1))
 farg2%size = size(rowinds)
 farg3 = callback
 call swigc_EigenHandle_setup_operator(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_EigenHandle_setup_operator_rhs(self, rowinds, callback)
@@ -547,7 +530,6 @@ farg2%data = c_loc(rowinds(1))
 farg2%size = size(rowinds)
 farg3 = callback
 call swigc_EigenHandle_setup_operator_rhs(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_EigenHandle_setup_solver(self, paramlist)
@@ -560,7 +542,6 @@ type(C_PTR) :: farg2
 farg1 = self%swigptr
 farg2 = paramlist%swigptr
 call swigc_EigenHandle_setup_solver(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_EigenHandle_solve(self, eigenvalues, eigenvectors)
@@ -578,7 +559,6 @@ farg2%size = size(eigenvalues)
 farg3%data = c_loc(eigenvectors(1))
 farg3%size = size(eigenvectors)
 call swigc_EigenHandle_solve(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_EigenHandle_finalize(self)
@@ -588,7 +568,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_EigenHandle_finalize(farg1)
-
 end subroutine
 
 subroutine swigf_delete_EigenHandle(self)
@@ -599,7 +578,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_EigenHandle(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
