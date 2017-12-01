@@ -560,7 +560,7 @@ SWIGEXPORT void * swigc_new_VectorInt__SWIG_0() {
 }
 
 
-SWIGEXPORT void * swigc_new_VectorInt__SWIG_1(unsigned long const *farg1) {
+SWIGEXPORT void * swigc_new_VectorInt__SWIG_1(long const *farg1) {
   void * fresult ;
   std::vector< int >::size_type arg1 ;
   std::vector< int > *result = 0 ;
@@ -572,7 +572,7 @@ SWIGEXPORT void * swigc_new_VectorInt__SWIG_1(unsigned long const *farg1) {
 }
 
 
-SWIGEXPORT void * swigc_new_VectorInt__SWIG_2(unsigned long const *farg1, int const *farg2) {
+SWIGEXPORT void * swigc_new_VectorInt__SWIG_2(long const *farg1, int const *farg2) {
   void * fresult ;
   std::vector< int >::size_type arg1 ;
   std::vector< int >::value_type *arg2 = 0 ;
@@ -586,8 +586,8 @@ SWIGEXPORT void * swigc_new_VectorInt__SWIG_2(unsigned long const *farg1, int co
 }
 
 
-SWIGEXPORT unsigned long swigc_VectorInt_size(void const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT long swigc_VectorInt_size(void const *farg1) {
+  long fresult ;
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::size_type result;
   
@@ -598,8 +598,8 @@ SWIGEXPORT unsigned long swigc_VectorInt_size(void const *farg1) {
 }
 
 
-SWIGEXPORT unsigned long swigc_VectorInt_capacity(void const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT long swigc_VectorInt_capacity(void const *farg1) {
+  long fresult ;
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::size_type result;
   
@@ -631,7 +631,7 @@ SWIGEXPORT void swigc_VectorInt_clear(void *farg1) {
 }
 
 
-SWIGEXPORT void swigc_VectorInt_reserve(void *farg1, unsigned long const *farg2) {
+SWIGEXPORT void swigc_VectorInt_reserve(void *farg1, long const *farg2) {
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::size_type arg2 ;
   
@@ -642,7 +642,7 @@ SWIGEXPORT void swigc_VectorInt_reserve(void *farg1, unsigned long const *farg2)
 }
 
 
-SWIGEXPORT void swigc_VectorInt_resize__SWIG_0(void *farg1, unsigned long const *farg2) {
+SWIGEXPORT void swigc_VectorInt_resize__SWIG_0(void *farg1, long const *farg2) {
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::size_type arg2 ;
   
@@ -653,7 +653,7 @@ SWIGEXPORT void swigc_VectorInt_resize__SWIG_0(void *farg1, unsigned long const 
 }
 
 
-SWIGEXPORT void swigc_VectorInt_resize__SWIG_1(void *farg1, unsigned long const *farg2, int const *farg3) {
+SWIGEXPORT void swigc_VectorInt_resize__SWIG_1(void *farg1, long const *farg2, int const *farg3) {
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::size_type arg2 ;
   std::vector< int >::value_type *arg3 = 0 ;
@@ -701,7 +701,7 @@ SWIGEXPORT int swigc_VectorInt_back(void const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_VectorInt_set(void *farg1, unsigned long const *farg2, int const *farg3) {
+SWIGEXPORT void swigc_VectorInt_set(void *farg1, long const *farg2, int const *farg3) {
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::size_type arg2 ;
   int *arg3 = 0 ;
@@ -714,7 +714,7 @@ SWIGEXPORT void swigc_VectorInt_set(void *farg1, unsigned long const *farg2, int
 }
 
 
-SWIGEXPORT int swigc_VectorInt_get(void *farg1, unsigned long const *farg2) {
+SWIGEXPORT int swigc_VectorInt_get(void *farg1, long const *farg2) {
   int fresult ;
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::size_type arg2 ;
@@ -769,7 +769,7 @@ SWIGEXPORT void * swigc_new_VectorDouble__SWIG_0() {
 }
 
 
-SWIGEXPORT void * swigc_new_VectorDouble__SWIG_1(unsigned long const *farg1) {
+SWIGEXPORT void * swigc_new_VectorDouble__SWIG_1(long const *farg1) {
   void * fresult ;
   std::vector< double >::size_type arg1 ;
   std::vector< double > *result = 0 ;
@@ -781,7 +781,7 @@ SWIGEXPORT void * swigc_new_VectorDouble__SWIG_1(unsigned long const *farg1) {
 }
 
 
-SWIGEXPORT void * swigc_new_VectorDouble__SWIG_2(unsigned long const *farg1, double const *farg2) {
+SWIGEXPORT void * swigc_new_VectorDouble__SWIG_2(long const *farg1, double const *farg2) {
   void * fresult ;
   std::vector< double >::size_type arg1 ;
   std::vector< double >::value_type *arg2 = 0 ;
@@ -795,8 +795,8 @@ SWIGEXPORT void * swigc_new_VectorDouble__SWIG_2(unsigned long const *farg1, dou
 }
 
 
-SWIGEXPORT unsigned long swigc_VectorDouble_size(void const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT long swigc_VectorDouble_size(void const *farg1) {
+  long fresult ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type result;
   
@@ -807,8 +807,8 @@ SWIGEXPORT unsigned long swigc_VectorDouble_size(void const *farg1) {
 }
 
 
-SWIGEXPORT unsigned long swigc_VectorDouble_capacity(void const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT long swigc_VectorDouble_capacity(void const *farg1) {
+  long fresult ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type result;
   
@@ -840,7 +840,7 @@ SWIGEXPORT void swigc_VectorDouble_clear(void *farg1) {
 }
 
 
-SWIGEXPORT void swigc_VectorDouble_reserve(void *farg1, unsigned long const *farg2) {
+SWIGEXPORT void swigc_VectorDouble_reserve(void *farg1, long const *farg2) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   
@@ -851,7 +851,7 @@ SWIGEXPORT void swigc_VectorDouble_reserve(void *farg1, unsigned long const *far
 }
 
 
-SWIGEXPORT void swigc_VectorDouble_resize__SWIG_0(void *farg1, unsigned long const *farg2) {
+SWIGEXPORT void swigc_VectorDouble_resize__SWIG_0(void *farg1, long const *farg2) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   
@@ -862,7 +862,7 @@ SWIGEXPORT void swigc_VectorDouble_resize__SWIG_0(void *farg1, unsigned long con
 }
 
 
-SWIGEXPORT void swigc_VectorDouble_resize__SWIG_1(void *farg1, unsigned long const *farg2, double const *farg3) {
+SWIGEXPORT void swigc_VectorDouble_resize__SWIG_1(void *farg1, long const *farg2, double const *farg3) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   std::vector< double >::value_type *arg3 = 0 ;
@@ -910,7 +910,7 @@ SWIGEXPORT double swigc_VectorDouble_back(void const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_VectorDouble_set(void *farg1, unsigned long const *farg2, double const *farg3) {
+SWIGEXPORT void swigc_VectorDouble_set(void *farg1, long const *farg2, double const *farg3) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   double *arg3 = 0 ;
@@ -923,7 +923,7 @@ SWIGEXPORT void swigc_VectorDouble_set(void *farg1, unsigned long const *farg2, 
 }
 
 
-SWIGEXPORT double swigc_VectorDouble_get(void *farg1, unsigned long const *farg2) {
+SWIGEXPORT double swigc_VectorDouble_get(void *farg1, long const *farg2) {
   double fresult ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
@@ -978,7 +978,7 @@ SWIGEXPORT void * swigc_new_VectorLongLong__SWIG_0() {
 }
 
 
-SWIGEXPORT void * swigc_new_VectorLongLong__SWIG_1(unsigned long const *farg1) {
+SWIGEXPORT void * swigc_new_VectorLongLong__SWIG_1(long const *farg1) {
   void * fresult ;
   std::vector< long long >::size_type arg1 ;
   std::vector< long long > *result = 0 ;
@@ -990,7 +990,7 @@ SWIGEXPORT void * swigc_new_VectorLongLong__SWIG_1(unsigned long const *farg1) {
 }
 
 
-SWIGEXPORT void * swigc_new_VectorLongLong__SWIG_2(unsigned long const *farg1, long long const *farg2) {
+SWIGEXPORT void * swigc_new_VectorLongLong__SWIG_2(long const *farg1, long long const *farg2) {
   void * fresult ;
   std::vector< long long >::size_type arg1 ;
   std::vector< long long >::value_type *arg2 = 0 ;
@@ -1004,8 +1004,8 @@ SWIGEXPORT void * swigc_new_VectorLongLong__SWIG_2(unsigned long const *farg1, l
 }
 
 
-SWIGEXPORT unsigned long swigc_VectorLongLong_size(void const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT long swigc_VectorLongLong_size(void const *farg1) {
+  long fresult ;
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   std::vector< long long >::size_type result;
   
@@ -1016,8 +1016,8 @@ SWIGEXPORT unsigned long swigc_VectorLongLong_size(void const *farg1) {
 }
 
 
-SWIGEXPORT unsigned long swigc_VectorLongLong_capacity(void const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT long swigc_VectorLongLong_capacity(void const *farg1) {
+  long fresult ;
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   std::vector< long long >::size_type result;
   
@@ -1049,7 +1049,7 @@ SWIGEXPORT void swigc_VectorLongLong_clear(void *farg1) {
 }
 
 
-SWIGEXPORT void swigc_VectorLongLong_reserve(void *farg1, unsigned long const *farg2) {
+SWIGEXPORT void swigc_VectorLongLong_reserve(void *farg1, long const *farg2) {
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   std::vector< long long >::size_type arg2 ;
   
@@ -1060,7 +1060,7 @@ SWIGEXPORT void swigc_VectorLongLong_reserve(void *farg1, unsigned long const *f
 }
 
 
-SWIGEXPORT void swigc_VectorLongLong_resize__SWIG_0(void *farg1, unsigned long const *farg2) {
+SWIGEXPORT void swigc_VectorLongLong_resize__SWIG_0(void *farg1, long const *farg2) {
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   std::vector< long long >::size_type arg2 ;
   
@@ -1071,7 +1071,7 @@ SWIGEXPORT void swigc_VectorLongLong_resize__SWIG_0(void *farg1, unsigned long c
 }
 
 
-SWIGEXPORT void swigc_VectorLongLong_resize__SWIG_1(void *farg1, unsigned long const *farg2, long long const *farg3) {
+SWIGEXPORT void swigc_VectorLongLong_resize__SWIG_1(void *farg1, long const *farg2, long long const *farg3) {
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   std::vector< long long >::size_type arg2 ;
   std::vector< long long >::value_type *arg3 = 0 ;
@@ -1119,7 +1119,7 @@ SWIGEXPORT long long swigc_VectorLongLong_back(void const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_VectorLongLong_set(void *farg1, unsigned long const *farg2, long long const *farg3) {
+SWIGEXPORT void swigc_VectorLongLong_set(void *farg1, long const *farg2, long long const *farg3) {
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   std::vector< long long >::size_type arg2 ;
   long long *arg3 = 0 ;
@@ -1132,7 +1132,7 @@ SWIGEXPORT void swigc_VectorLongLong_set(void *farg1, unsigned long const *farg2
 }
 
 
-SWIGEXPORT long long swigc_VectorLongLong_get(void *farg1, unsigned long const *farg2) {
+SWIGEXPORT long long swigc_VectorLongLong_get(void *farg1, long const *farg2) {
   long long fresult ;
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   std::vector< long long >::size_type arg2 ;
@@ -1192,16 +1192,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayInt__SWIG_0() {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -1228,16 +1228,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayInt__SWIG_1(int const *farg1, int const 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -1262,16 +1262,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayInt__SWIG_2(int const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -1290,7 +1290,7 @@ SWIGEXPORT void * swigc_new_TeuchosArrayInt__SWIG_3(void const *farg1) {
   if (!arg1)
   {
     throw std::logic_error("Attempt to dereference null Teuchos::Array< int > const &");
-    return 0;
+    return NULL;
   }
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -1303,16 +1303,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayInt__SWIG_3(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -1800,16 +1800,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayInt__SWIG_4(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -1836,16 +1836,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayInt__SWIG_5(swig::SwigfArrayWrapper< int
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::Array<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -1874,16 +1874,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayLongLong__SWIG_0() {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;
@@ -1910,16 +1910,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayLongLong__SWIG_1(int const *farg1, long 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;
@@ -1944,16 +1944,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayLongLong__SWIG_2(int const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;
@@ -1978,16 +1978,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayLongLong__SWIG_3(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;
@@ -2442,16 +2442,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayLongLong__SWIG_4(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;
@@ -2478,16 +2478,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayLongLong__SWIG_5(swig::SwigfArrayWrapper
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;
@@ -2510,16 +2510,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayDouble__SWIG_0() {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::Array<double> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -2546,16 +2546,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayDouble__SWIG_1(int const *farg1, double 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::Array<double> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -2580,16 +2580,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayDouble__SWIG_2(int const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::Array<double> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -2608,7 +2608,7 @@ SWIGEXPORT void * swigc_new_TeuchosArrayDouble__SWIG_3(void const *farg1) {
   if (!arg1)
   {
     throw std::logic_error("Attempt to dereference null Teuchos::Array< double > const &");
-    return 0;
+    return NULL;
   }
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -2621,16 +2621,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayDouble__SWIG_3(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::Array<double> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -3118,16 +3118,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayDouble__SWIG_4(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::Array<double> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -3154,16 +3154,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayDouble__SWIG_5(swig::SwigfArrayWrapper< 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::Array<double> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -3196,16 +3196,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewInt__SWIG_0(int *farg1, int const *f
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -3224,7 +3224,7 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewInt__SWIG_1(void const *farg1) {
   if (!arg1)
   {
     throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< int > const &");
-    return 0;
+    return NULL;
   }
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -3237,16 +3237,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewInt__SWIG_1(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -3378,16 +3378,16 @@ SWIGEXPORT void * swigc_TeuchosArrayViewInt_toString(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = (new std::string(static_cast< const std::string& >(result)));
@@ -3490,16 +3490,16 @@ SWIGEXPORT void * swigc_TeuchosArrayViewInt_view(void const *farg1, int const *f
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = new Teuchos::RCP< Teuchos::ArrayView<int> >(new Teuchos::ArrayView< int >((Teuchos::ArrayView< int > &)result));
@@ -3526,16 +3526,16 @@ SWIGEXPORT void const * swigc_TeuchosArrayViewInt_assert_not_null(void const *fa
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = new Teuchos::RCP<const Teuchos::ArrayView<int> >(result SWIG_NO_NULL_DELETER_0);
@@ -3566,16 +3566,16 @@ SWIGEXPORT void const * swigc_TeuchosArrayViewInt_assert_in_range(void const *fa
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = new Teuchos::RCP<const Teuchos::ArrayView<int> >(result SWIG_NO_NULL_DELETER_0);
@@ -3602,16 +3602,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewInt__SWIG_2(swig::SwigfArrayWrapper<
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -3644,16 +3644,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewIntConst__SWIG_0(int *farg1, int con
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const int> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -3672,7 +3672,7 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewIntConst__SWIG_1(void const *farg1) 
   if (!arg1)
   {
     throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< int const > const &");
-    return 0;
+    return NULL;
   }
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -3685,16 +3685,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewIntConst__SWIG_1(void const *farg1) 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const int> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -3826,16 +3826,16 @@ SWIGEXPORT void * swigc_TeuchosArrayViewIntConst_toString(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = (new std::string(static_cast< const std::string& >(result)));
@@ -3938,16 +3938,16 @@ SWIGEXPORT void * swigc_TeuchosArrayViewIntConst_view(void const *farg1, int con
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = new Teuchos::RCP< Teuchos::ArrayView<const int> >(new Teuchos::ArrayView< int const >((Teuchos::ArrayView< int const > &)result));
@@ -3974,16 +3974,16 @@ SWIGEXPORT void const * swigc_TeuchosArrayViewIntConst_assert_not_null(void cons
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = new Teuchos::RCP<const Teuchos::ArrayView<const int> >(result SWIG_NO_NULL_DELETER_0);
@@ -4014,16 +4014,16 @@ SWIGEXPORT void const * swigc_TeuchosArrayViewIntConst_assert_in_range(void cons
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = new Teuchos::RCP<const Teuchos::ArrayView<const int> >(result SWIG_NO_NULL_DELETER_0);
@@ -4050,16 +4050,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewIntConst__SWIG_2(swig::SwigfArrayWra
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const int> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -4092,16 +4092,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewLongLong__SWIG_0(long long *farg1, i
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;
@@ -4126,16 +4126,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewLongLong__SWIG_1(void const *farg1) 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;
@@ -4259,16 +4259,16 @@ SWIGEXPORT void * swigc_TeuchosArrayViewLongLong_toString(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = (new std::string(static_cast< const std::string& >(result)));
@@ -4365,16 +4365,16 @@ SWIGEXPORT void * swigc_TeuchosArrayViewLongLong_view(void const *farg1, int con
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = (new Teuchos::ArrayView< long long >(static_cast< const Teuchos::ArrayView< long long >& >(result)));
@@ -4399,16 +4399,16 @@ SWIGEXPORT void const * swigc_TeuchosArrayViewLongLong_assert_not_null(void cons
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;
@@ -4437,16 +4437,16 @@ SWIGEXPORT void const * swigc_TeuchosArrayViewLongLong_assert_in_range(void cons
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;
@@ -4473,16 +4473,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewLongLong__SWIG_2(swig::SwigfArrayWra
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;
@@ -4509,16 +4509,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewLongLongConst__SWIG_0(long long *far
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;
@@ -4543,16 +4543,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewLongLongConst__SWIG_1(void const *fa
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;
@@ -4676,16 +4676,16 @@ SWIGEXPORT void * swigc_TeuchosArrayViewLongLongConst_toString(void const *farg1
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = (new std::string(static_cast< const std::string& >(result)));
@@ -4782,16 +4782,16 @@ SWIGEXPORT void * swigc_TeuchosArrayViewLongLongConst_view(void const *farg1, in
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = (new Teuchos::ArrayView< long long const >(static_cast< const Teuchos::ArrayView< long long const >& >(result)));
@@ -4816,16 +4816,16 @@ SWIGEXPORT void const * swigc_TeuchosArrayViewLongLongConst_assert_not_null(void
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;
@@ -4854,16 +4854,16 @@ SWIGEXPORT void const * swigc_TeuchosArrayViewLongLongConst_assert_in_range(void
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;
@@ -4890,16 +4890,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewLongLongConst__SWIG_2(swig::SwigfArr
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;
@@ -4926,16 +4926,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewDouble__SWIG_0(double *farg1, int co
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<double> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -4954,7 +4954,7 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewDouble__SWIG_1(void const *farg1) {
   if (!arg1)
   {
     throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< double > const &");
-    return 0;
+    return NULL;
   }
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -4967,16 +4967,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewDouble__SWIG_1(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<double> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -5108,16 +5108,16 @@ SWIGEXPORT void * swigc_TeuchosArrayViewDouble_toString(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = (new std::string(static_cast< const std::string& >(result)));
@@ -5220,16 +5220,16 @@ SWIGEXPORT void * swigc_TeuchosArrayViewDouble_view(void const *farg1, int const
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = new Teuchos::RCP< Teuchos::ArrayView<double> >(new Teuchos::ArrayView< double >((Teuchos::ArrayView< double > &)result));
@@ -5256,16 +5256,16 @@ SWIGEXPORT void const * swigc_TeuchosArrayViewDouble_assert_not_null(void const 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = new Teuchos::RCP<const Teuchos::ArrayView<double> >(result SWIG_NO_NULL_DELETER_0);
@@ -5296,16 +5296,16 @@ SWIGEXPORT void const * swigc_TeuchosArrayViewDouble_assert_in_range(void const 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = new Teuchos::RCP<const Teuchos::ArrayView<double> >(result SWIG_NO_NULL_DELETER_0);
@@ -5332,16 +5332,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewDouble__SWIG_2(swig::SwigfArrayWrapp
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<double> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -5374,16 +5374,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewDoubleConst__SWIG_0(double *farg1, i
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const double> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -5402,7 +5402,7 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewDoubleConst__SWIG_1(void const *farg
   if (!arg1)
   {
     throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< double const > const &");
-    return 0;
+    return NULL;
   }
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -5415,16 +5415,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewDoubleConst__SWIG_1(void const *farg
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const double> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -5556,16 +5556,16 @@ SWIGEXPORT void * swigc_TeuchosArrayViewDoubleConst_toString(void const *farg1) 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = (new std::string(static_cast< const std::string& >(result)));
@@ -5668,16 +5668,16 @@ SWIGEXPORT void * swigc_TeuchosArrayViewDoubleConst_view(void const *farg1, int 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = new Teuchos::RCP< Teuchos::ArrayView<const double> >(new Teuchos::ArrayView< double const >((Teuchos::ArrayView< double const > &)result));
@@ -5704,16 +5704,16 @@ SWIGEXPORT void const * swigc_TeuchosArrayViewDoubleConst_assert_not_null(void c
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = new Teuchos::RCP<const Teuchos::ArrayView<const double> >(result SWIG_NO_NULL_DELETER_0);
@@ -5744,16 +5744,16 @@ SWIGEXPORT void const * swigc_TeuchosArrayViewDoubleConst_assert_in_range(void c
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = new Teuchos::RCP<const Teuchos::ArrayView<const double> >(result SWIG_NO_NULL_DELETER_0);
@@ -5780,16 +5780,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewDoubleConst__SWIG_2(swig::SwigfArray
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const double> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -5803,7 +5803,7 @@ SWIGEXPORT void* swigc_spcopy_TeuchosArrayViewDoubleConst(void* farg1) {
 }
 
 
-SWIGEXPORT void * swigc_new_TeuchosArrayViewSizeT__SWIG_0(unsigned long *farg1, int const *farg2) {
+SWIGEXPORT void * swigc_new_TeuchosArrayViewSizeT__SWIG_0(long *farg1, int const *farg2) {
   void * fresult ;
   unsigned long *arg1 = (unsigned long *) 0 ;
   Teuchos::ArrayView< unsigned long >::size_type arg2 ;
@@ -5822,16 +5822,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewSizeT__SWIG_0(unsigned long *farg1, 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<size_t> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -5850,7 +5850,7 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewSizeT__SWIG_1(void const *farg1) {
   if (!arg1)
   {
     throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< unsigned long > const &");
-    return 0;
+    return NULL;
   }
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -5863,16 +5863,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewSizeT__SWIG_1(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<size_t> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -6004,16 +6004,16 @@ SWIGEXPORT void * swigc_TeuchosArrayViewSizeT_toString(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = (new std::string(static_cast< const std::string& >(result)));
@@ -6021,8 +6021,8 @@ SWIGEXPORT void * swigc_TeuchosArrayViewSizeT_toString(void const *farg1) {
 }
 
 
-SWIGEXPORT unsigned long * swigc_TeuchosArrayViewSizeT_front(void const *farg1) {
-  unsigned long * fresult ;
+SWIGEXPORT long * swigc_TeuchosArrayViewSizeT_front(void const *farg1) {
+  long * fresult ;
   Teuchos::ArrayView< std::size_t > *arg1 = (Teuchos::ArrayView< std::size_t > *) 0 ;
   Teuchos::RCP< Teuchos::ArrayView< size_t > const > *smartarg1 = 0 ;
   unsigned long *result = 0 ;
@@ -6052,13 +6052,13 @@ SWIGEXPORT unsigned long * swigc_TeuchosArrayViewSizeT_front(void const *farg1) 
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = reinterpret_cast< unsigned long* >(result);
+  fresult = reinterpret_cast< long* >(result);
   return fresult;
 }
 
 
-SWIGEXPORT unsigned long * swigc_TeuchosArrayViewSizeT_back(void const *farg1) {
-  unsigned long * fresult ;
+SWIGEXPORT long * swigc_TeuchosArrayViewSizeT_back(void const *farg1) {
+  long * fresult ;
   Teuchos::ArrayView< std::size_t > *arg1 = (Teuchos::ArrayView< std::size_t > *) 0 ;
   Teuchos::RCP< Teuchos::ArrayView< size_t > const > *smartarg1 = 0 ;
   unsigned long *result = 0 ;
@@ -6088,7 +6088,7 @@ SWIGEXPORT unsigned long * swigc_TeuchosArrayViewSizeT_back(void const *farg1) {
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
     }
   }
-  fresult = reinterpret_cast< unsigned long* >(result);
+  fresult = reinterpret_cast< long* >(result);
   return fresult;
 }
 
@@ -6116,16 +6116,16 @@ SWIGEXPORT void * swigc_TeuchosArrayViewSizeT_view(void const *farg1, int const 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = new Teuchos::RCP< Teuchos::ArrayView<size_t> >(new Teuchos::ArrayView< unsigned long >((Teuchos::ArrayView< unsigned long > &)result));
@@ -6152,16 +6152,16 @@ SWIGEXPORT void const * swigc_TeuchosArrayViewSizeT_assert_not_null(void const *
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = new Teuchos::RCP<const Teuchos::ArrayView<size_t> >(result SWIG_NO_NULL_DELETER_0);
@@ -6192,16 +6192,16 @@ SWIGEXPORT void const * swigc_TeuchosArrayViewSizeT_assert_in_range(void const *
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = new Teuchos::RCP<const Teuchos::ArrayView<size_t> >(result SWIG_NO_NULL_DELETER_0);
@@ -6228,16 +6228,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewSizeT__SWIG_2(swig::SwigfArrayWrappe
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<size_t> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -6251,7 +6251,7 @@ SWIGEXPORT void* swigc_spcopy_TeuchosArrayViewSizeT(void* farg1) {
 }
 
 
-SWIGEXPORT void * swigc_new_TeuchosArrayViewSizeTConst__SWIG_0(unsigned long *farg1, int const *farg2) {
+SWIGEXPORT void * swigc_new_TeuchosArrayViewSizeTConst__SWIG_0(long *farg1, int const *farg2) {
   void * fresult ;
   unsigned long *arg1 = (unsigned long *) 0 ;
   Teuchos::ArrayView< unsigned long const >::size_type arg2 ;
@@ -6270,16 +6270,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewSizeTConst__SWIG_0(unsigned long *fa
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const size_t> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -6298,7 +6298,7 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewSizeTConst__SWIG_1(void const *farg1
   if (!arg1)
   {
     throw std::logic_error("Attempt to dereference null Teuchos::ArrayView< unsigned long const > const &");
-    return 0;
+    return NULL;
   }
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -6311,16 +6311,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewSizeTConst__SWIG_1(void const *farg1
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const size_t> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -6452,16 +6452,16 @@ SWIGEXPORT void * swigc_TeuchosArrayViewSizeTConst_toString(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = (new std::string(static_cast< const std::string& >(result)));
@@ -6469,8 +6469,8 @@ SWIGEXPORT void * swigc_TeuchosArrayViewSizeTConst_toString(void const *farg1) {
 }
 
 
-SWIGEXPORT unsigned long swigc_TeuchosArrayViewSizeTConst_front(void const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT long swigc_TeuchosArrayViewSizeTConst_front(void const *farg1) {
+  long fresult ;
   Teuchos::ArrayView< std::size_t const > *arg1 = (Teuchos::ArrayView< std::size_t const > *) 0 ;
   Teuchos::RCP< Teuchos::ArrayView< size_t const > const > *smartarg1 = 0 ;
   unsigned long *result = 0 ;
@@ -6505,8 +6505,8 @@ SWIGEXPORT unsigned long swigc_TeuchosArrayViewSizeTConst_front(void const *farg
 }
 
 
-SWIGEXPORT unsigned long swigc_TeuchosArrayViewSizeTConst_back(void const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT long swigc_TeuchosArrayViewSizeTConst_back(void const *farg1) {
+  long fresult ;
   Teuchos::ArrayView< std::size_t const > *arg1 = (Teuchos::ArrayView< std::size_t const > *) 0 ;
   Teuchos::RCP< Teuchos::ArrayView< size_t const > const > *smartarg1 = 0 ;
   unsigned long *result = 0 ;
@@ -6564,16 +6564,16 @@ SWIGEXPORT void * swigc_TeuchosArrayViewSizeTConst_view(void const *farg1, int c
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = new Teuchos::RCP< Teuchos::ArrayView<const size_t> >(new Teuchos::ArrayView< unsigned long const >((Teuchos::ArrayView< unsigned long const > &)result));
@@ -6600,16 +6600,16 @@ SWIGEXPORT void const * swigc_TeuchosArrayViewSizeTConst_assert_not_null(void co
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = new Teuchos::RCP<const Teuchos::ArrayView<const size_t> >(result SWIG_NO_NULL_DELETER_0);
@@ -6640,16 +6640,16 @@ SWIGEXPORT void const * swigc_TeuchosArrayViewSizeTConst_assert_in_range(void co
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = new Teuchos::RCP<const Teuchos::ArrayView<const size_t> >(result SWIG_NO_NULL_DELETER_0);
@@ -6676,16 +6676,16 @@ SWIGEXPORT void * swigc_new_TeuchosArrayViewSizeTConst__SWIG_2(swig::SwigfArrayW
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ArrayView<const size_t> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -6722,16 +6722,16 @@ SWIGEXPORT void * swigc_new_TeuchosComm__SWIG_0(int const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -6754,16 +6754,16 @@ SWIGEXPORT void * swigc_new_TeuchosComm__SWIG_1() {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -6930,16 +6930,16 @@ SWIGEXPORT void * swigc_new_string() {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;
@@ -6947,7 +6947,7 @@ SWIGEXPORT void * swigc_new_string() {
 }
 
 
-SWIGEXPORT void swigc_string_resize(void *farg1, unsigned long const *farg2) {
+SWIGEXPORT void swigc_string_resize(void *farg1, long const *farg2) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
   
@@ -7011,8 +7011,8 @@ SWIGEXPORT void swigc_string_clear(void *farg1) {
 }
 
 
-SWIGEXPORT unsigned long swigc_string_size(void const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT long swigc_string_size(void const *farg1) {
+  long fresult ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type result;
   
@@ -7045,8 +7045,8 @@ SWIGEXPORT unsigned long swigc_string_size(void const *farg1) {
 }
 
 
-SWIGEXPORT unsigned long swigc_string_length(void const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT long swigc_string_length(void const *farg1) {
+  long fresult ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type result;
   
@@ -7079,7 +7079,7 @@ SWIGEXPORT unsigned long swigc_string_length(void const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_string_set(void *farg1, unsigned long const *farg2, char const *farg3) {
+SWIGEXPORT void swigc_string_set(void *farg1, long const *farg2, char const *farg3) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
   std::string::value_type arg3 ;
@@ -7114,7 +7114,7 @@ SWIGEXPORT void swigc_string_set(void *farg1, unsigned long const *farg2, char c
 }
 
 
-SWIGEXPORT char swigc_string_get(void *farg1, unsigned long const *farg2) {
+SWIGEXPORT char swigc_string_get(void *farg1, long const *farg2) {
   char fresult ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
@@ -7229,16 +7229,16 @@ SWIGEXPORT void * swigc_new_ParameterList__SWIG_0() {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_1) : 0;
@@ -7265,16 +7265,16 @@ SWIGEXPORT void * swigc_new_ParameterList__SWIG_1(swig::SwigfArrayWrapper< char 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result ? new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_1) : 0;

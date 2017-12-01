@@ -26,6 +26,8 @@
 %ignore Tpetra::CrsGraph::unpackAndCombine;
 %ignore Tpetra::CrsGraph::SLocalGlobalViews;
 %ignore Tpetra::CrsGraph::SLocalGlobalNCViews;
+%ignore Tpetra::CrsGraph::getNodeRowPtrs;
+%ignore Tpetra::CrsGraph::getNodePackedIndices;
 
 // =======================================================================
 // Postpone temporarily
@@ -60,8 +62,6 @@
 %ignore Tpetra::CrsGraph::getLocalDiagOffsets (Teuchos::ArrayRCP< size_t > &offsets) const;     // needs Teuchos:ArrayRCP
 %ignore Tpetra::CrsGraph::getNumEntriesPerLocalRowUpperBound; // needs Teuchos::ArrayRCP
 %ignore Tpetra::CrsGraph::setAllIndices;                      // needs Teuchos::ArrayRCP, or Kokkos::View
-%ignore Tpetra::CrsGraph::getNodeRowPtrs;                     // needs Teuchos::RCP
-%ignore Tpetra::CrsGraph::getNodePackedIndices;               // needs Teuchos::RCP
 %ignore Tpetra::CrsGraph::getLocalGraph;                      // needs Kokkos::StaticCrsGraph
 %ignore Tpetra::CrsGraph::getLocalRowView;                    // ±1 issue
 

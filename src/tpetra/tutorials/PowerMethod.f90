@@ -105,7 +105,7 @@ fill: do lcl_row = 1, num_my_elements
     cols(1:3) = [gbl_row-1, gbl_row, gbl_row+1]
     vals(1:3) = [neg_one, two, neg_one]
   end if
-  call A%insertGlobalValues(gbl_row, row_nnz, vals, cols)
+  call A%insertGlobalValues(gbl_row, cols(1:row_nnz), vals(1:row_nnz))
 end do fill
 deallocate(vals)
 deallocate(cols)
@@ -165,7 +165,7 @@ if (map%isNodeGlobalElement(id_of_first_row)) then
   ! this row on this process, then this method throws an exception.  If you want
   ! to modify the structure(by adding new entries), you'll need to call
   ! insertGlobalValues().
-  i = A%replaceGlobalValues(id_of_first_row, n, vals, cols)
+  i = A%replaceGlobalValues(id_of_first_row, cols, vals)
 
   deallocate(vals)
   deallocate(cols)

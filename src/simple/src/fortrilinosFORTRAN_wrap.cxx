@@ -260,16 +260,16 @@ SWIGEXPORT void * swigc_new_SolverHandle() {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;
@@ -643,16 +643,16 @@ SWIGEXPORT void * swigc_new_EigenHandle() {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
     }
   }
   fresult = result;

@@ -474,41 +474,41 @@ function swigc_new_VectorInt__SWIG_1(farg1) &
 bind(C, name="swigc_new_VectorInt__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_LONG), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_VectorInt__SWIG_2(farg1, farg2) &
 bind(C, name="swigc_new_VectorInt__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_LONG), intent(in) :: farg1
 integer(C_INT), intent(in) :: farg2
+type(C_PTR) :: fresult
 end function
 
 function swigc_VectorInt_size(farg1) &
 bind(C, name="swigc_VectorInt_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: fresult
 type(C_PTR), value :: farg1
+integer(C_LONG) :: fresult
 end function
 
 function swigc_VectorInt_capacity(farg1) &
 bind(C, name="swigc_VectorInt_capacity") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: fresult
 type(C_PTR), value :: farg1
+integer(C_LONG) :: fresult
 end function
 
 function swigc_VectorInt_empty(farg1) &
 bind(C, name="swigc_VectorInt_empty") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
+logical(C_BOOL) :: fresult
 end function
 
 subroutine swigc_VectorInt_clear(farg1) &
@@ -550,16 +550,16 @@ function swigc_VectorInt_front(farg1) &
 bind(C, name="swigc_VectorInt_front") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_VectorInt_back(farg1) &
 bind(C, name="swigc_VectorInt_back") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_VectorInt_set(farg1, farg2, farg3) &
@@ -574,9 +574,9 @@ function swigc_VectorInt_get(farg1, farg2) &
 bind(C, name="swigc_VectorInt_get") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
 integer(C_LONG), intent(in) :: farg2
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_delete_VectorInt(farg1) &
@@ -596,41 +596,41 @@ function swigc_new_VectorDouble__SWIG_1(farg1) &
 bind(C, name="swigc_new_VectorDouble__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_LONG), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_VectorDouble__SWIG_2(farg1, farg2) &
 bind(C, name="swigc_new_VectorDouble__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_LONG), intent(in) :: farg1
 real(C_DOUBLE), intent(in) :: farg2
+type(C_PTR) :: fresult
 end function
 
 function swigc_VectorDouble_size(farg1) &
 bind(C, name="swigc_VectorDouble_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: fresult
 type(C_PTR), value :: farg1
+integer(C_LONG) :: fresult
 end function
 
 function swigc_VectorDouble_capacity(farg1) &
 bind(C, name="swigc_VectorDouble_capacity") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: fresult
 type(C_PTR), value :: farg1
+integer(C_LONG) :: fresult
 end function
 
 function swigc_VectorDouble_empty(farg1) &
 bind(C, name="swigc_VectorDouble_empty") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
+logical(C_BOOL) :: fresult
 end function
 
 subroutine swigc_VectorDouble_clear(farg1) &
@@ -672,16 +672,16 @@ function swigc_VectorDouble_front(farg1) &
 bind(C, name="swigc_VectorDouble_front") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 type(C_PTR), value :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 function swigc_VectorDouble_back(farg1) &
 bind(C, name="swigc_VectorDouble_back") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 type(C_PTR), value :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_VectorDouble_set(farg1, farg2, farg3) &
@@ -696,9 +696,9 @@ function swigc_VectorDouble_get(farg1, farg2) &
 bind(C, name="swigc_VectorDouble_get") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 type(C_PTR), value :: farg1
 integer(C_LONG), intent(in) :: farg2
+real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_delete_VectorDouble(farg1) &
@@ -718,41 +718,41 @@ function swigc_new_VectorLongLong__SWIG_1(farg1) &
 bind(C, name="swigc_new_VectorLongLong__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_LONG), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_VectorLongLong__SWIG_2(farg1, farg2) &
 bind(C, name="swigc_new_VectorLongLong__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_LONG), intent(in) :: farg1
 integer(C_LONG_LONG), intent(in) :: farg2
+type(C_PTR) :: fresult
 end function
 
 function swigc_VectorLongLong_size(farg1) &
 bind(C, name="swigc_VectorLongLong_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: fresult
 type(C_PTR), value :: farg1
+integer(C_LONG) :: fresult
 end function
 
 function swigc_VectorLongLong_capacity(farg1) &
 bind(C, name="swigc_VectorLongLong_capacity") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: fresult
 type(C_PTR), value :: farg1
+integer(C_LONG) :: fresult
 end function
 
 function swigc_VectorLongLong_empty(farg1) &
 bind(C, name="swigc_VectorLongLong_empty") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
+logical(C_BOOL) :: fresult
 end function
 
 subroutine swigc_VectorLongLong_clear(farg1) &
@@ -794,16 +794,16 @@ function swigc_VectorLongLong_front(farg1) &
 bind(C, name="swigc_VectorLongLong_front") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG_LONG) :: fresult
 type(C_PTR), value :: farg1
+integer(C_LONG_LONG) :: fresult
 end function
 
 function swigc_VectorLongLong_back(farg1) &
 bind(C, name="swigc_VectorLongLong_back") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG_LONG) :: fresult
 type(C_PTR), value :: farg1
+integer(C_LONG_LONG) :: fresult
 end function
 
 subroutine swigc_VectorLongLong_set(farg1, farg2, farg3) &
@@ -818,9 +818,9 @@ function swigc_VectorLongLong_get(farg1, farg2) &
 bind(C, name="swigc_VectorLongLong_get") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG_LONG) :: fresult
 type(C_PTR), value :: farg1
 integer(C_LONG), intent(in) :: farg2
+integer(C_LONG_LONG) :: fresult
 end function
 
 subroutine swigc_delete_VectorLongLong(farg1) &
@@ -840,25 +840,25 @@ function swigc_new_TeuchosArrayInt__SWIG_1(farg1, farg2) &
 bind(C, name="swigc_new_TeuchosArrayInt__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
 integer(C_INT), intent(in) :: farg2
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayInt__SWIG_2(farg1) &
 bind(C, name="swigc_new_TeuchosArrayInt__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayInt__SWIG_3(farg1) &
 bind(C, name="swigc_new_TeuchosArrayInt__SWIG_3") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 subroutine swigc_delete_TeuchosArrayInt(farg1) &
@@ -871,16 +871,16 @@ function swigc_TeuchosArrayInt_size(farg1) &
 bind(C, name="swigc_TeuchosArrayInt_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_TeuchosArrayInt_max_size(farg1) &
 bind(C, name="swigc_TeuchosArrayInt_max_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_TeuchosArrayInt_resize__SWIG_0(farg1, farg2, farg3) &
@@ -902,16 +902,16 @@ function swigc_TeuchosArrayInt_capacity(farg1) &
 bind(C, name="swigc_TeuchosArrayInt_capacity") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_TeuchosArrayInt_empty(farg1) &
 bind(C, name="swigc_TeuchosArrayInt_empty") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
+logical(C_BOOL) :: fresult
 end function
 
 subroutine swigc_TeuchosArrayInt_reserve(farg1, farg2) &
@@ -951,16 +951,16 @@ function swigc_TeuchosArrayInt_length(farg1) &
 bind(C, name="swigc_TeuchosArrayInt_length") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_new_TeuchosArrayInt__SWIG_4(farg1) &
 bind(C, name="swigc_new_TeuchosArrayInt__SWIG_4") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayInt__SWIG_5(farg1) &
@@ -968,8 +968,8 @@ bind(C, name="swigc_new_TeuchosArrayInt__SWIG_5") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(C_PTR) :: fresult
 type(SwigfArrayWrapper) :: farg1
+type(C_PTR) :: fresult
 end function
 
   function swigc_spcopy_TeuchosArrayInt(farg1) &
@@ -990,25 +990,25 @@ function swigc_new_TeuchosArrayLongLong__SWIG_1(farg1, farg2) &
 bind(C, name="swigc_new_TeuchosArrayLongLong__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
 integer(C_LONG_LONG), intent(in) :: farg2
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayLongLong__SWIG_2(farg1) &
 bind(C, name="swigc_new_TeuchosArrayLongLong__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayLongLong__SWIG_3(farg1) &
 bind(C, name="swigc_new_TeuchosArrayLongLong__SWIG_3") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 subroutine swigc_delete_TeuchosArrayLongLong(farg1) &
@@ -1021,16 +1021,16 @@ function swigc_TeuchosArrayLongLong_size(farg1) &
 bind(C, name="swigc_TeuchosArrayLongLong_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_TeuchosArrayLongLong_max_size(farg1) &
 bind(C, name="swigc_TeuchosArrayLongLong_max_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_TeuchosArrayLongLong_resize__SWIG_0(farg1, farg2, farg3) &
@@ -1052,16 +1052,16 @@ function swigc_TeuchosArrayLongLong_capacity(farg1) &
 bind(C, name="swigc_TeuchosArrayLongLong_capacity") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_TeuchosArrayLongLong_empty(farg1) &
 bind(C, name="swigc_TeuchosArrayLongLong_empty") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
+logical(C_BOOL) :: fresult
 end function
 
 subroutine swigc_TeuchosArrayLongLong_reserve(farg1, farg2) &
@@ -1101,16 +1101,16 @@ function swigc_TeuchosArrayLongLong_length(farg1) &
 bind(C, name="swigc_TeuchosArrayLongLong_length") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_new_TeuchosArrayLongLong__SWIG_4(farg1) &
 bind(C, name="swigc_new_TeuchosArrayLongLong__SWIG_4") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayLongLong__SWIG_5(farg1) &
@@ -1118,8 +1118,8 @@ bind(C, name="swigc_new_TeuchosArrayLongLong__SWIG_5") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(C_PTR) :: fresult
 type(SwigfArrayWrapper) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayDouble__SWIG_0() &
@@ -1133,25 +1133,25 @@ function swigc_new_TeuchosArrayDouble__SWIG_1(farg1, farg2) &
 bind(C, name="swigc_new_TeuchosArrayDouble__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
 real(C_DOUBLE), intent(in) :: farg2
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayDouble__SWIG_2(farg1) &
 bind(C, name="swigc_new_TeuchosArrayDouble__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayDouble__SWIG_3(farg1) &
 bind(C, name="swigc_new_TeuchosArrayDouble__SWIG_3") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 subroutine swigc_delete_TeuchosArrayDouble(farg1) &
@@ -1164,16 +1164,16 @@ function swigc_TeuchosArrayDouble_size(farg1) &
 bind(C, name="swigc_TeuchosArrayDouble_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_TeuchosArrayDouble_max_size(farg1) &
 bind(C, name="swigc_TeuchosArrayDouble_max_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_TeuchosArrayDouble_resize__SWIG_0(farg1, farg2, farg3) &
@@ -1195,16 +1195,16 @@ function swigc_TeuchosArrayDouble_capacity(farg1) &
 bind(C, name="swigc_TeuchosArrayDouble_capacity") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_TeuchosArrayDouble_empty(farg1) &
 bind(C, name="swigc_TeuchosArrayDouble_empty") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
+logical(C_BOOL) :: fresult
 end function
 
 subroutine swigc_TeuchosArrayDouble_reserve(farg1, farg2) &
@@ -1244,16 +1244,16 @@ function swigc_TeuchosArrayDouble_length(farg1) &
 bind(C, name="swigc_TeuchosArrayDouble_length") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_new_TeuchosArrayDouble__SWIG_4(farg1) &
 bind(C, name="swigc_new_TeuchosArrayDouble__SWIG_4") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayDouble__SWIG_5(farg1) &
@@ -1261,8 +1261,8 @@ bind(C, name="swigc_new_TeuchosArrayDouble__SWIG_5") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(C_PTR) :: fresult
 type(SwigfArrayWrapper) :: farg1
+type(C_PTR) :: fresult
 end function
 
   function swigc_spcopy_TeuchosArrayDouble(farg1) &
@@ -1276,17 +1276,17 @@ function swigc_new_TeuchosArrayViewInt__SWIG_0(farg1, farg2) &
 bind(C, name="swigc_new_TeuchosArrayViewInt__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayViewInt__SWIG_1(farg1) &
 bind(C, name="swigc_new_TeuchosArrayViewInt__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 subroutine swigc_delete_TeuchosArrayViewInt(farg1) &
@@ -1299,68 +1299,68 @@ function swigc_TeuchosArrayViewInt_is_null(farg1) &
 bind(C, name="swigc_TeuchosArrayViewInt_is_null") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
+logical(C_BOOL) :: fresult
 end function
 
 function swigc_TeuchosArrayViewInt_size(farg1) &
 bind(C, name="swigc_TeuchosArrayViewInt_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_TeuchosArrayViewInt_toString(farg1) &
 bind(C, name="swigc_TeuchosArrayViewInt_toString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewInt_front(farg1) &
 bind(C, name="swigc_TeuchosArrayViewInt_front") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewInt_back(farg1) &
 bind(C, name="swigc_TeuchosArrayViewInt_back") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewInt_view(farg1, farg2, farg3) &
 bind(C, name="swigc_TeuchosArrayViewInt_view") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewInt_assert_not_null(farg1) &
 bind(C, name="swigc_TeuchosArrayViewInt_assert_not_null") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewInt_assert_in_range(farg1, farg2, farg3) &
 bind(C, name="swigc_TeuchosArrayViewInt_assert_in_range") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayViewInt__SWIG_2(farg1) &
@@ -1368,8 +1368,8 @@ bind(C, name="swigc_new_TeuchosArrayViewInt__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(C_PTR) :: fresult
 type(SwigfArrayWrapper) :: farg1
+type(C_PTR) :: fresult
 end function
 
   function swigc_spcopy_TeuchosArrayViewInt(farg1) &
@@ -1383,17 +1383,17 @@ function swigc_new_TeuchosArrayViewIntConst__SWIG_0(farg1, farg2) &
 bind(C, name="swigc_new_TeuchosArrayViewIntConst__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayViewIntConst__SWIG_1(farg1) &
 bind(C, name="swigc_new_TeuchosArrayViewIntConst__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 subroutine swigc_delete_TeuchosArrayViewIntConst(farg1) &
@@ -1406,68 +1406,68 @@ function swigc_TeuchosArrayViewIntConst_is_null(farg1) &
 bind(C, name="swigc_TeuchosArrayViewIntConst_is_null") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
+logical(C_BOOL) :: fresult
 end function
 
 function swigc_TeuchosArrayViewIntConst_size(farg1) &
 bind(C, name="swigc_TeuchosArrayViewIntConst_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_TeuchosArrayViewIntConst_toString(farg1) &
 bind(C, name="swigc_TeuchosArrayViewIntConst_toString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewIntConst_front(farg1) &
 bind(C, name="swigc_TeuchosArrayViewIntConst_front") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_TeuchosArrayViewIntConst_back(farg1) &
 bind(C, name="swigc_TeuchosArrayViewIntConst_back") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_TeuchosArrayViewIntConst_view(farg1, farg2, farg3) &
 bind(C, name="swigc_TeuchosArrayViewIntConst_view") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewIntConst_assert_not_null(farg1) &
 bind(C, name="swigc_TeuchosArrayViewIntConst_assert_not_null") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewIntConst_assert_in_range(farg1, farg2, farg3) &
 bind(C, name="swigc_TeuchosArrayViewIntConst_assert_in_range") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayViewIntConst__SWIG_2(farg1) &
@@ -1475,8 +1475,8 @@ bind(C, name="swigc_new_TeuchosArrayViewIntConst__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(C_PTR) :: fresult
 type(SwigfArrayWrapper) :: farg1
+type(C_PTR) :: fresult
 end function
 
   function swigc_spcopy_TeuchosArrayViewIntConst(farg1) &
@@ -1490,17 +1490,17 @@ function swigc_new_TeuchosArrayViewLongLong__SWIG_0(farg1, farg2) &
 bind(C, name="swigc_new_TeuchosArrayViewLongLong__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayViewLongLong__SWIG_1(farg1) &
 bind(C, name="swigc_new_TeuchosArrayViewLongLong__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 subroutine swigc_delete_TeuchosArrayViewLongLong(farg1) &
@@ -1513,68 +1513,68 @@ function swigc_TeuchosArrayViewLongLong_is_null(farg1) &
 bind(C, name="swigc_TeuchosArrayViewLongLong_is_null") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
+logical(C_BOOL) :: fresult
 end function
 
 function swigc_TeuchosArrayViewLongLong_size(farg1) &
 bind(C, name="swigc_TeuchosArrayViewLongLong_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_TeuchosArrayViewLongLong_toString(farg1) &
 bind(C, name="swigc_TeuchosArrayViewLongLong_toString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewLongLong_front(farg1) &
 bind(C, name="swigc_TeuchosArrayViewLongLong_front") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewLongLong_back(farg1) &
 bind(C, name="swigc_TeuchosArrayViewLongLong_back") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewLongLong_view(farg1, farg2, farg3) &
 bind(C, name="swigc_TeuchosArrayViewLongLong_view") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewLongLong_assert_not_null(farg1) &
 bind(C, name="swigc_TeuchosArrayViewLongLong_assert_not_null") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewLongLong_assert_in_range(farg1, farg2, farg3) &
 bind(C, name="swigc_TeuchosArrayViewLongLong_assert_in_range") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayViewLongLong__SWIG_2(farg1) &
@@ -1582,25 +1582,25 @@ bind(C, name="swigc_new_TeuchosArrayViewLongLong__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(C_PTR) :: fresult
 type(SwigfArrayWrapper) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayViewLongLongConst__SWIG_0(farg1, farg2) &
 bind(C, name="swigc_new_TeuchosArrayViewLongLongConst__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayViewLongLongConst__SWIG_1(farg1) &
 bind(C, name="swigc_new_TeuchosArrayViewLongLongConst__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 subroutine swigc_delete_TeuchosArrayViewLongLongConst(farg1) &
@@ -1613,68 +1613,68 @@ function swigc_TeuchosArrayViewLongLongConst_is_null(farg1) &
 bind(C, name="swigc_TeuchosArrayViewLongLongConst_is_null") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
+logical(C_BOOL) :: fresult
 end function
 
 function swigc_TeuchosArrayViewLongLongConst_size(farg1) &
 bind(C, name="swigc_TeuchosArrayViewLongLongConst_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_TeuchosArrayViewLongLongConst_toString(farg1) &
 bind(C, name="swigc_TeuchosArrayViewLongLongConst_toString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewLongLongConst_front(farg1) &
 bind(C, name="swigc_TeuchosArrayViewLongLongConst_front") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG_LONG) :: fresult
 type(C_PTR), value :: farg1
+integer(C_LONG_LONG) :: fresult
 end function
 
 function swigc_TeuchosArrayViewLongLongConst_back(farg1) &
 bind(C, name="swigc_TeuchosArrayViewLongLongConst_back") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG_LONG) :: fresult
 type(C_PTR), value :: farg1
+integer(C_LONG_LONG) :: fresult
 end function
 
 function swigc_TeuchosArrayViewLongLongConst_view(farg1, farg2, farg3) &
 bind(C, name="swigc_TeuchosArrayViewLongLongConst_view") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewLongLongConst_assert_not_null(farg1) &
 bind(C, name="swigc_TeuchosArrayViewLongLongConst_assert_not_null") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewLongLongConst_assert_in_range(farg1, farg2, farg3) &
 bind(C, name="swigc_TeuchosArrayViewLongLongConst_assert_in_range") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayViewLongLongConst__SWIG_2(farg1) &
@@ -1682,25 +1682,25 @@ bind(C, name="swigc_new_TeuchosArrayViewLongLongConst__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(C_PTR) :: fresult
 type(SwigfArrayWrapper) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayViewDouble__SWIG_0(farg1, farg2) &
 bind(C, name="swigc_new_TeuchosArrayViewDouble__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayViewDouble__SWIG_1(farg1) &
 bind(C, name="swigc_new_TeuchosArrayViewDouble__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 subroutine swigc_delete_TeuchosArrayViewDouble(farg1) &
@@ -1713,68 +1713,68 @@ function swigc_TeuchosArrayViewDouble_is_null(farg1) &
 bind(C, name="swigc_TeuchosArrayViewDouble_is_null") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
+logical(C_BOOL) :: fresult
 end function
 
 function swigc_TeuchosArrayViewDouble_size(farg1) &
 bind(C, name="swigc_TeuchosArrayViewDouble_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_TeuchosArrayViewDouble_toString(farg1) &
 bind(C, name="swigc_TeuchosArrayViewDouble_toString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewDouble_front(farg1) &
 bind(C, name="swigc_TeuchosArrayViewDouble_front") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewDouble_back(farg1) &
 bind(C, name="swigc_TeuchosArrayViewDouble_back") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewDouble_view(farg1, farg2, farg3) &
 bind(C, name="swigc_TeuchosArrayViewDouble_view") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewDouble_assert_not_null(farg1) &
 bind(C, name="swigc_TeuchosArrayViewDouble_assert_not_null") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewDouble_assert_in_range(farg1, farg2, farg3) &
 bind(C, name="swigc_TeuchosArrayViewDouble_assert_in_range") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayViewDouble__SWIG_2(farg1) &
@@ -1782,8 +1782,8 @@ bind(C, name="swigc_new_TeuchosArrayViewDouble__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(C_PTR) :: fresult
 type(SwigfArrayWrapper) :: farg1
+type(C_PTR) :: fresult
 end function
 
   function swigc_spcopy_TeuchosArrayViewDouble(farg1) &
@@ -1797,17 +1797,17 @@ function swigc_new_TeuchosArrayViewDoubleConst__SWIG_0(farg1, farg2) &
 bind(C, name="swigc_new_TeuchosArrayViewDoubleConst__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayViewDoubleConst__SWIG_1(farg1) &
 bind(C, name="swigc_new_TeuchosArrayViewDoubleConst__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 subroutine swigc_delete_TeuchosArrayViewDoubleConst(farg1) &
@@ -1820,68 +1820,68 @@ function swigc_TeuchosArrayViewDoubleConst_is_null(farg1) &
 bind(C, name="swigc_TeuchosArrayViewDoubleConst_is_null") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
+logical(C_BOOL) :: fresult
 end function
 
 function swigc_TeuchosArrayViewDoubleConst_size(farg1) &
 bind(C, name="swigc_TeuchosArrayViewDoubleConst_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_TeuchosArrayViewDoubleConst_toString(farg1) &
 bind(C, name="swigc_TeuchosArrayViewDoubleConst_toString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewDoubleConst_front(farg1) &
 bind(C, name="swigc_TeuchosArrayViewDoubleConst_front") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 type(C_PTR), value :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 function swigc_TeuchosArrayViewDoubleConst_back(farg1) &
 bind(C, name="swigc_TeuchosArrayViewDoubleConst_back") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: fresult
 type(C_PTR), value :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 function swigc_TeuchosArrayViewDoubleConst_view(farg1, farg2, farg3) &
 bind(C, name="swigc_TeuchosArrayViewDoubleConst_view") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewDoubleConst_assert_not_null(farg1) &
 bind(C, name="swigc_TeuchosArrayViewDoubleConst_assert_not_null") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewDoubleConst_assert_in_range(farg1, farg2, farg3) &
 bind(C, name="swigc_TeuchosArrayViewDoubleConst_assert_in_range") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayViewDoubleConst__SWIG_2(farg1) &
@@ -1889,8 +1889,8 @@ bind(C, name="swigc_new_TeuchosArrayViewDoubleConst__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(C_PTR) :: fresult
 type(SwigfArrayWrapper) :: farg1
+type(C_PTR) :: fresult
 end function
 
   function swigc_spcopy_TeuchosArrayViewDoubleConst(farg1) &
@@ -1904,17 +1904,17 @@ function swigc_new_TeuchosArrayViewSizeT__SWIG_0(farg1, farg2) &
 bind(C, name="swigc_new_TeuchosArrayViewSizeT__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayViewSizeT__SWIG_1(farg1) &
 bind(C, name="swigc_new_TeuchosArrayViewSizeT__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 subroutine swigc_delete_TeuchosArrayViewSizeT(farg1) &
@@ -1927,68 +1927,68 @@ function swigc_TeuchosArrayViewSizeT_is_null(farg1) &
 bind(C, name="swigc_TeuchosArrayViewSizeT_is_null") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
+logical(C_BOOL) :: fresult
 end function
 
 function swigc_TeuchosArrayViewSizeT_size(farg1) &
 bind(C, name="swigc_TeuchosArrayViewSizeT_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_TeuchosArrayViewSizeT_toString(farg1) &
 bind(C, name="swigc_TeuchosArrayViewSizeT_toString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewSizeT_front(farg1) &
 bind(C, name="swigc_TeuchosArrayViewSizeT_front") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewSizeT_back(farg1) &
 bind(C, name="swigc_TeuchosArrayViewSizeT_back") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewSizeT_view(farg1, farg2, farg3) &
 bind(C, name="swigc_TeuchosArrayViewSizeT_view") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewSizeT_assert_not_null(farg1) &
 bind(C, name="swigc_TeuchosArrayViewSizeT_assert_not_null") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewSizeT_assert_in_range(farg1, farg2, farg3) &
 bind(C, name="swigc_TeuchosArrayViewSizeT_assert_in_range") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayViewSizeT__SWIG_2(farg1) &
@@ -1996,8 +1996,8 @@ bind(C, name="swigc_new_TeuchosArrayViewSizeT__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(C_PTR) :: fresult
 type(SwigfArrayWrapper) :: farg1
+type(C_PTR) :: fresult
 end function
 
   function swigc_spcopy_TeuchosArrayViewSizeT(farg1) &
@@ -2011,17 +2011,17 @@ function swigc_new_TeuchosArrayViewSizeTConst__SWIG_0(farg1, farg2) &
 bind(C, name="swigc_new_TeuchosArrayViewSizeTConst__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayViewSizeTConst__SWIG_1(farg1) &
 bind(C, name="swigc_new_TeuchosArrayViewSizeTConst__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 subroutine swigc_delete_TeuchosArrayViewSizeTConst(farg1) &
@@ -2034,68 +2034,68 @@ function swigc_TeuchosArrayViewSizeTConst_is_null(farg1) &
 bind(C, name="swigc_TeuchosArrayViewSizeTConst_is_null") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
+logical(C_BOOL) :: fresult
 end function
 
 function swigc_TeuchosArrayViewSizeTConst_size(farg1) &
 bind(C, name="swigc_TeuchosArrayViewSizeTConst_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_TeuchosArrayViewSizeTConst_toString(farg1) &
 bind(C, name="swigc_TeuchosArrayViewSizeTConst_toString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewSizeTConst_front(farg1) &
 bind(C, name="swigc_TeuchosArrayViewSizeTConst_front") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: fresult
 type(C_PTR), value :: farg1
+integer(C_LONG) :: fresult
 end function
 
 function swigc_TeuchosArrayViewSizeTConst_back(farg1) &
 bind(C, name="swigc_TeuchosArrayViewSizeTConst_back") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: fresult
 type(C_PTR), value :: farg1
+integer(C_LONG) :: fresult
 end function
 
 function swigc_TeuchosArrayViewSizeTConst_view(farg1, farg2, farg3) &
 bind(C, name="swigc_TeuchosArrayViewSizeTConst_view") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewSizeTConst_assert_not_null(farg1) &
 bind(C, name="swigc_TeuchosArrayViewSizeTConst_assert_not_null") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_TeuchosArrayViewSizeTConst_assert_in_range(farg1, farg2, farg3) &
 bind(C, name="swigc_TeuchosArrayViewSizeTConst_assert_in_range") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosArrayViewSizeTConst__SWIG_2(farg1) &
@@ -2103,8 +2103,8 @@ bind(C, name="swigc_new_TeuchosArrayViewSizeTConst__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(C_PTR) :: fresult
 type(SwigfArrayWrapper) :: farg1
+type(C_PTR) :: fresult
 end function
 
   function swigc_spcopy_TeuchosArrayViewSizeTConst(farg1) &
@@ -2118,8 +2118,8 @@ function swigc_new_TeuchosComm__SWIG_0(farg1) &
 bind(C, name="swigc_new_TeuchosComm__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
 integer(C_INT), intent(in) :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_new_TeuchosComm__SWIG_1() &
@@ -2133,16 +2133,16 @@ function swigc_TeuchosComm_getRank(farg1) &
 bind(C, name="swigc_TeuchosComm_getRank") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 function swigc_TeuchosComm_getSize(farg1) &
 bind(C, name="swigc_TeuchosComm_getSize") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_TeuchosComm_barrier(farg1) &
@@ -2188,16 +2188,16 @@ function swigc_string_size(farg1) &
 bind(C, name="swigc_string_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: fresult
 type(C_PTR), value :: farg1
+integer(C_LONG) :: fresult
 end function
 
 function swigc_string_length(farg1) &
 bind(C, name="swigc_string_length") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: fresult
 type(C_PTR), value :: farg1
+integer(C_LONG) :: fresult
 end function
 
 subroutine swigc_string_set(farg1, farg2, farg3) &
@@ -2212,9 +2212,9 @@ function swigc_string_get(farg1, farg2) &
 bind(C, name="swigc_string_get") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-integer(C_SIGNED_CHAR) :: fresult
 type(C_PTR), value :: farg1
 integer(C_LONG), intent(in) :: farg2
+integer(C_SIGNED_CHAR) :: fresult
 end function
 
 subroutine swigc_delete_string(farg1) &
@@ -2241,8 +2241,8 @@ bind(C, name="swigc_new_ParameterList__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(C_PTR) :: fresult
 type(SwigfArrayWrapper) :: farg1
+type(C_PTR) :: fresult
 end function
 
 subroutine swigc_ParameterList_get__SWIG_0(farg1, farg2, farg3) &
@@ -2358,9 +2358,9 @@ bind(C, name="swigc_ParameterList_sublist") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-type(C_PTR) :: fresult
 type(C_PTR), value :: farg1
 type(SwigfArrayWrapper) :: farg2
+type(C_PTR) :: fresult
 end function
 
 function swigc_ParameterList_get_length(farg1, farg2) &
@@ -2368,9 +2368,9 @@ bind(C, name="swigc_ParameterList_get_length") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-integer(C_INT) :: fresult
 type(C_PTR), value :: farg1
 type(SwigfArrayWrapper) :: farg2
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_ParameterList_remove(farg1, farg2) &
@@ -2386,9 +2386,9 @@ bind(C, name="swigc_ParameterList_is_parameter") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
-logical(C_BOOL) :: fresult
 type(C_PTR), value :: farg1
 type(SwigfArrayWrapper) :: farg2
+logical(C_BOOL) :: fresult
 end function
 
 subroutine swigc_delete_ParameterList(farg1) &
@@ -2433,7 +2433,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_VectorInt__SWIG_0()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_VectorInt__SWIG_1(self, count)
@@ -2447,7 +2446,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = count
 fresult = swigc_new_VectorInt__SWIG_1(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_VectorInt__SWIG_2(self, count, v)
@@ -2464,7 +2462,6 @@ farg1 = count
 farg2 = v
 fresult = swigc_new_VectorInt__SWIG_2(farg1, farg2)
 self%swigptr = fresult
-
 end subroutine
 
 function swigf_VectorInt_size(self) &
@@ -2513,7 +2510,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_VectorInt_clear(farg1)
-
 end subroutine
 
 subroutine swigf_VectorInt_reserve(self, count)
@@ -2526,7 +2522,6 @@ integer(C_LONG) :: farg2
 farg1 = self%swigptr
 farg2 = count
 call swigc_VectorInt_reserve(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_VectorInt_resize__SWIG_0(self, count)
@@ -2539,7 +2534,6 @@ integer(C_LONG) :: farg2
 farg1 = self%swigptr
 farg2 = count
 call swigc_VectorInt_resize__SWIG_0(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_VectorInt_resize__SWIG_1(self, count, v)
@@ -2555,7 +2549,6 @@ farg1 = self%swigptr
 farg2 = count
 farg3 = v
 call swigc_VectorInt_resize__SWIG_1(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_VectorInt_push_back(self, v)
@@ -2568,7 +2561,6 @@ integer(C_INT) :: farg2
 farg1 = self%swigptr
 farg2 = v
 call swigc_VectorInt_push_back(farg1, farg2)
-
 end subroutine
 
 function swigf_VectorInt_front(self) &
@@ -2610,7 +2602,6 @@ farg1 = self%swigptr
 farg2 = index
 farg3 = v
 call swigc_VectorInt_set(farg1, farg2, farg3)
-
 end subroutine
 
 function swigf_VectorInt_get(self, index) &
@@ -2637,7 +2628,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_VectorInt(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -2649,7 +2639,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_VectorDouble__SWIG_0()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_VectorDouble__SWIG_1(self, count)
@@ -2663,7 +2652,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = count
 fresult = swigc_new_VectorDouble__SWIG_1(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_VectorDouble__SWIG_2(self, count, v)
@@ -2680,7 +2668,6 @@ farg1 = count
 farg2 = v
 fresult = swigc_new_VectorDouble__SWIG_2(farg1, farg2)
 self%swigptr = fresult
-
 end subroutine
 
 function swigf_VectorDouble_size(self) &
@@ -2729,7 +2716,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_VectorDouble_clear(farg1)
-
 end subroutine
 
 subroutine swigf_VectorDouble_reserve(self, count)
@@ -2742,7 +2728,6 @@ integer(C_LONG) :: farg2
 farg1 = self%swigptr
 farg2 = count
 call swigc_VectorDouble_reserve(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_VectorDouble_resize__SWIG_0(self, count)
@@ -2755,7 +2740,6 @@ integer(C_LONG) :: farg2
 farg1 = self%swigptr
 farg2 = count
 call swigc_VectorDouble_resize__SWIG_0(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_VectorDouble_resize__SWIG_1(self, count, v)
@@ -2771,7 +2755,6 @@ farg1 = self%swigptr
 farg2 = count
 farg3 = v
 call swigc_VectorDouble_resize__SWIG_1(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_VectorDouble_push_back(self, v)
@@ -2784,7 +2767,6 @@ real(C_DOUBLE) :: farg2
 farg1 = self%swigptr
 farg2 = v
 call swigc_VectorDouble_push_back(farg1, farg2)
-
 end subroutine
 
 function swigf_VectorDouble_front(self) &
@@ -2826,7 +2808,6 @@ farg1 = self%swigptr
 farg2 = index
 farg3 = v
 call swigc_VectorDouble_set(farg1, farg2, farg3)
-
 end subroutine
 
 function swigf_VectorDouble_get(self, index) &
@@ -2853,7 +2834,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_VectorDouble(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -2865,7 +2845,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_VectorLongLong__SWIG_0()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_VectorLongLong__SWIG_1(self, count)
@@ -2879,7 +2858,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = count
 fresult = swigc_new_VectorLongLong__SWIG_1(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_VectorLongLong__SWIG_2(self, count, v)
@@ -2896,7 +2874,6 @@ farg1 = count
 farg2 = v
 fresult = swigc_new_VectorLongLong__SWIG_2(farg1, farg2)
 self%swigptr = fresult
-
 end subroutine
 
 function swigf_VectorLongLong_size(self) &
@@ -2945,7 +2922,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_VectorLongLong_clear(farg1)
-
 end subroutine
 
 subroutine swigf_VectorLongLong_reserve(self, count)
@@ -2958,7 +2934,6 @@ integer(C_LONG) :: farg2
 farg1 = self%swigptr
 farg2 = count
 call swigc_VectorLongLong_reserve(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_VectorLongLong_resize__SWIG_0(self, count)
@@ -2971,7 +2946,6 @@ integer(C_LONG) :: farg2
 farg1 = self%swigptr
 farg2 = count
 call swigc_VectorLongLong_resize__SWIG_0(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_VectorLongLong_resize__SWIG_1(self, count, v)
@@ -2987,7 +2961,6 @@ farg1 = self%swigptr
 farg2 = count
 farg3 = v
 call swigc_VectorLongLong_resize__SWIG_1(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_VectorLongLong_push_back(self, v)
@@ -3000,7 +2973,6 @@ integer(C_LONG_LONG) :: farg2
 farg1 = self%swigptr
 farg2 = v
 call swigc_VectorLongLong_push_back(farg1, farg2)
-
 end subroutine
 
 function swigf_VectorLongLong_front(self) &
@@ -3042,7 +3014,6 @@ farg1 = self%swigptr
 farg2 = index
 farg3 = v
 call swigc_VectorLongLong_set(farg1, farg2, farg3)
-
 end subroutine
 
 function swigf_VectorLongLong_get(self, index) &
@@ -3069,7 +3040,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_VectorLongLong(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -3081,7 +3051,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_TeuchosArrayInt__SWIG_0()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayInt__SWIG_1(self, n, value)
@@ -3098,7 +3067,6 @@ farg1 = n
 farg2 = value
 fresult = swigc_new_TeuchosArrayInt__SWIG_1(farg1, farg2)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayInt__SWIG_2(self, n)
@@ -3112,7 +3080,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = n
 fresult = swigc_new_TeuchosArrayInt__SWIG_2(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayInt__SWIG_3(self, x)
@@ -3126,7 +3093,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = x%swigptr
 fresult = swigc_new_TeuchosArrayInt__SWIG_3(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_delete_TeuchosArrayInt(self)
@@ -3137,7 +3103,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_TeuchosArrayInt(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -3180,7 +3145,6 @@ farg1 = self%swigptr
 farg2 = new_size
 farg3 = x
 call swigc_TeuchosArrayInt_resize__SWIG_0(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_TeuchosArrayInt_resize__SWIG_1(self, new_size)
@@ -3193,7 +3157,6 @@ integer(C_INT) :: farg2
 farg1 = self%swigptr
 farg2 = new_size
 call swigc_TeuchosArrayInt_resize__SWIG_1(farg1, farg2)
-
 end subroutine
 
 function swigf_TeuchosArrayInt_capacity(self) &
@@ -3232,7 +3195,6 @@ integer(C_INT) :: farg2
 farg1 = self%swigptr
 farg2 = n
 call swigc_TeuchosArrayInt_reserve(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_TeuchosArrayInt_push_back(self, x)
@@ -3245,7 +3207,6 @@ integer(C_INT) :: farg2
 farg1 = self%swigptr
 farg2 = x
 call swigc_TeuchosArrayInt_push_back(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_TeuchosArrayInt_pop_back(self)
@@ -3255,7 +3216,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_TeuchosArrayInt_pop_back(farg1)
-
 end subroutine
 
 subroutine swigf_TeuchosArrayInt_swap(self, x)
@@ -3268,7 +3228,6 @@ type(C_PTR) :: farg2
 farg1 = self%swigptr
 farg2 = x%swigptr
 call swigc_TeuchosArrayInt_swap(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_TeuchosArrayInt_clear(self)
@@ -3278,7 +3237,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_TeuchosArrayInt_clear(farg1)
-
 end subroutine
 
 function swigf_TeuchosArrayInt_length(self) &
@@ -3305,7 +3263,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = v%swigptr
 fresult = swigc_new_TeuchosArrayInt__SWIG_4(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayInt__SWIG_5(self, view0)
@@ -3320,7 +3277,6 @@ farg1%data = c_loc(view0(1))
 farg1%size = size(view0)
 fresult = swigc_new_TeuchosArrayInt__SWIG_5(farg1)
 self%swigptr = fresult
-
 end subroutine
 
   subroutine swigf_assign_TeuchosArrayInt(self, other)
@@ -3338,7 +3294,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_TeuchosArrayLongLong__SWIG_0()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayLongLong__SWIG_1(self, n, value)
@@ -3355,7 +3310,6 @@ farg1 = n
 farg2 = value
 fresult = swigc_new_TeuchosArrayLongLong__SWIG_1(farg1, farg2)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayLongLong__SWIG_2(self, n)
@@ -3369,7 +3323,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = n
 fresult = swigc_new_TeuchosArrayLongLong__SWIG_2(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayLongLong__SWIG_3(self, x)
@@ -3383,7 +3336,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = x%swigptr
 fresult = swigc_new_TeuchosArrayLongLong__SWIG_3(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_delete_TeuchosArrayLongLong(self)
@@ -3394,7 +3346,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_TeuchosArrayLongLong(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -3437,7 +3388,6 @@ farg1 = self%swigptr
 farg2 = new_size
 farg3 = x
 call swigc_TeuchosArrayLongLong_resize__SWIG_0(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_TeuchosArrayLongLong_resize__SWIG_1(self, new_size)
@@ -3450,7 +3400,6 @@ integer(C_INT) :: farg2
 farg1 = self%swigptr
 farg2 = new_size
 call swigc_TeuchosArrayLongLong_resize__SWIG_1(farg1, farg2)
-
 end subroutine
 
 function swigf_TeuchosArrayLongLong_capacity(self) &
@@ -3489,7 +3438,6 @@ integer(C_INT) :: farg2
 farg1 = self%swigptr
 farg2 = n
 call swigc_TeuchosArrayLongLong_reserve(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_TeuchosArrayLongLong_push_back(self, x)
@@ -3502,7 +3450,6 @@ integer(C_LONG_LONG) :: farg2
 farg1 = self%swigptr
 farg2 = x
 call swigc_TeuchosArrayLongLong_push_back(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_TeuchosArrayLongLong_pop_back(self)
@@ -3512,7 +3459,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_TeuchosArrayLongLong_pop_back(farg1)
-
 end subroutine
 
 subroutine swigf_TeuchosArrayLongLong_swap(self, x)
@@ -3525,7 +3471,6 @@ type(C_PTR) :: farg2
 farg1 = self%swigptr
 farg2 = x%swigptr
 call swigc_TeuchosArrayLongLong_swap(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_TeuchosArrayLongLong_clear(self)
@@ -3535,7 +3480,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_TeuchosArrayLongLong_clear(farg1)
-
 end subroutine
 
 function swigf_TeuchosArrayLongLong_length(self) &
@@ -3562,7 +3506,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = v%swigptr
 fresult = swigc_new_TeuchosArrayLongLong__SWIG_4(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayLongLong__SWIG_5(self, view0)
@@ -3577,7 +3520,6 @@ farg1%data = c_loc(view0(1))
 farg1%size = size(view0)
 fresult = swigc_new_TeuchosArrayLongLong__SWIG_5(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayDouble__SWIG_0(self)
@@ -3588,7 +3530,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_TeuchosArrayDouble__SWIG_0()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayDouble__SWIG_1(self, n, value)
@@ -3605,7 +3546,6 @@ farg1 = n
 farg2 = value
 fresult = swigc_new_TeuchosArrayDouble__SWIG_1(farg1, farg2)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayDouble__SWIG_2(self, n)
@@ -3619,7 +3559,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = n
 fresult = swigc_new_TeuchosArrayDouble__SWIG_2(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayDouble__SWIG_3(self, x)
@@ -3633,7 +3572,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = x%swigptr
 fresult = swigc_new_TeuchosArrayDouble__SWIG_3(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_delete_TeuchosArrayDouble(self)
@@ -3644,7 +3582,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_TeuchosArrayDouble(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -3687,7 +3624,6 @@ farg1 = self%swigptr
 farg2 = new_size
 farg3 = x
 call swigc_TeuchosArrayDouble_resize__SWIG_0(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_TeuchosArrayDouble_resize__SWIG_1(self, new_size)
@@ -3700,7 +3636,6 @@ integer(C_INT) :: farg2
 farg1 = self%swigptr
 farg2 = new_size
 call swigc_TeuchosArrayDouble_resize__SWIG_1(farg1, farg2)
-
 end subroutine
 
 function swigf_TeuchosArrayDouble_capacity(self) &
@@ -3739,7 +3674,6 @@ integer(C_INT) :: farg2
 farg1 = self%swigptr
 farg2 = n
 call swigc_TeuchosArrayDouble_reserve(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_TeuchosArrayDouble_push_back(self, x)
@@ -3752,7 +3686,6 @@ real(C_DOUBLE) :: farg2
 farg1 = self%swigptr
 farg2 = x
 call swigc_TeuchosArrayDouble_push_back(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_TeuchosArrayDouble_pop_back(self)
@@ -3762,7 +3695,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_TeuchosArrayDouble_pop_back(farg1)
-
 end subroutine
 
 subroutine swigf_TeuchosArrayDouble_swap(self, x)
@@ -3775,7 +3707,6 @@ type(C_PTR) :: farg2
 farg1 = self%swigptr
 farg2 = x%swigptr
 call swigc_TeuchosArrayDouble_swap(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_TeuchosArrayDouble_clear(self)
@@ -3785,7 +3716,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_TeuchosArrayDouble_clear(farg1)
-
 end subroutine
 
 function swigf_TeuchosArrayDouble_length(self) &
@@ -3812,7 +3742,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = v%swigptr
 fresult = swigc_new_TeuchosArrayDouble__SWIG_4(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayDouble__SWIG_5(self, view0)
@@ -3827,7 +3756,6 @@ farg1%data = c_loc(view0(1))
 farg1%size = size(view0)
 fresult = swigc_new_TeuchosArrayDouble__SWIG_5(farg1)
 self%swigptr = fresult
-
 end subroutine
 
   subroutine swigf_assign_TeuchosArrayDouble(self, other)
@@ -3851,7 +3779,6 @@ farg1 = c_loc(p)
 farg2 = size
 fresult = swigc_new_TeuchosArrayViewInt__SWIG_0(farg1, farg2)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayViewInt__SWIG_1(self, array)
@@ -3865,7 +3792,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = array%swigptr
 fresult = swigc_new_TeuchosArrayViewInt__SWIG_1(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_delete_TeuchosArrayViewInt(self)
@@ -3876,7 +3802,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_TeuchosArrayViewInt(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -4008,7 +3933,6 @@ farg1%data = c_loc(view0(1))
 farg1%size = size(view0)
 fresult = swigc_new_TeuchosArrayViewInt__SWIG_2(farg1)
 self%swigptr = fresult
-
 end subroutine
 
   subroutine swigf_assign_TeuchosArrayViewInt(self, other)
@@ -4032,7 +3956,6 @@ farg1 = c_loc(p)
 farg2 = size
 fresult = swigc_new_TeuchosArrayViewIntConst__SWIG_0(farg1, farg2)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayViewIntConst__SWIG_1(self, array)
@@ -4046,7 +3969,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = array%swigptr
 fresult = swigc_new_TeuchosArrayViewIntConst__SWIG_1(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_delete_TeuchosArrayViewIntConst(self)
@@ -4057,7 +3979,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_TeuchosArrayViewIntConst(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -4189,7 +4110,6 @@ farg1%data = c_loc(view0(1))
 farg1%size = size(view0)
 fresult = swigc_new_TeuchosArrayViewIntConst__SWIG_2(farg1)
 self%swigptr = fresult
-
 end subroutine
 
   subroutine swigf_assign_TeuchosArrayViewIntConst(self, other)
@@ -4213,7 +4133,6 @@ farg1 = c_loc(p)
 farg2 = size
 fresult = swigc_new_TeuchosArrayViewLongLong__SWIG_0(farg1, farg2)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayViewLongLong__SWIG_1(self, array)
@@ -4227,7 +4146,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = array%swigptr
 fresult = swigc_new_TeuchosArrayViewLongLong__SWIG_1(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_delete_TeuchosArrayViewLongLong(self)
@@ -4238,7 +4156,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_TeuchosArrayViewLongLong(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -4370,7 +4287,6 @@ farg1%data = c_loc(view0(1))
 farg1%size = size(view0)
 fresult = swigc_new_TeuchosArrayViewLongLong__SWIG_2(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayViewLongLongConst__SWIG_0(self, p, size)
@@ -4387,7 +4303,6 @@ farg1 = c_loc(p)
 farg2 = size
 fresult = swigc_new_TeuchosArrayViewLongLongConst__SWIG_0(farg1, farg2)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayViewLongLongConst__SWIG_1(self, array)
@@ -4401,7 +4316,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = array%swigptr
 fresult = swigc_new_TeuchosArrayViewLongLongConst__SWIG_1(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_delete_TeuchosArrayViewLongLongConst(self)
@@ -4412,7 +4326,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_TeuchosArrayViewLongLongConst(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -4544,7 +4457,6 @@ farg1%data = c_loc(view0(1))
 farg1%size = size(view0)
 fresult = swigc_new_TeuchosArrayViewLongLongConst__SWIG_2(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayViewDouble__SWIG_0(self, p, size)
@@ -4561,7 +4473,6 @@ farg1 = c_loc(p)
 farg2 = size
 fresult = swigc_new_TeuchosArrayViewDouble__SWIG_0(farg1, farg2)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayViewDouble__SWIG_1(self, array)
@@ -4575,7 +4486,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = array%swigptr
 fresult = swigc_new_TeuchosArrayViewDouble__SWIG_1(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_delete_TeuchosArrayViewDouble(self)
@@ -4586,7 +4496,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_TeuchosArrayViewDouble(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -4718,7 +4627,6 @@ farg1%data = c_loc(view0(1))
 farg1%size = size(view0)
 fresult = swigc_new_TeuchosArrayViewDouble__SWIG_2(farg1)
 self%swigptr = fresult
-
 end subroutine
 
   subroutine swigf_assign_TeuchosArrayViewDouble(self, other)
@@ -4742,7 +4650,6 @@ farg1 = c_loc(p)
 farg2 = size
 fresult = swigc_new_TeuchosArrayViewDoubleConst__SWIG_0(farg1, farg2)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayViewDoubleConst__SWIG_1(self, array)
@@ -4756,7 +4663,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = array%swigptr
 fresult = swigc_new_TeuchosArrayViewDoubleConst__SWIG_1(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_delete_TeuchosArrayViewDoubleConst(self)
@@ -4767,7 +4673,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_TeuchosArrayViewDoubleConst(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -4899,7 +4804,6 @@ farg1%data = c_loc(view0(1))
 farg1%size = size(view0)
 fresult = swigc_new_TeuchosArrayViewDoubleConst__SWIG_2(farg1)
 self%swigptr = fresult
-
 end subroutine
 
   subroutine swigf_assign_TeuchosArrayViewDoubleConst(self, other)
@@ -4923,7 +4827,6 @@ farg1 = c_loc(p)
 farg2 = size
 fresult = swigc_new_TeuchosArrayViewSizeT__SWIG_0(farg1, farg2)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayViewSizeT__SWIG_1(self, array)
@@ -4937,7 +4840,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = array%swigptr
 fresult = swigc_new_TeuchosArrayViewSizeT__SWIG_1(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_delete_TeuchosArrayViewSizeT(self)
@@ -4948,7 +4850,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_TeuchosArrayViewSizeT(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -5080,7 +4981,6 @@ farg1%data = c_loc(view0(1))
 farg1%size = size(view0)
 fresult = swigc_new_TeuchosArrayViewSizeT__SWIG_2(farg1)
 self%swigptr = fresult
-
 end subroutine
 
   subroutine swigf_assign_TeuchosArrayViewSizeT(self, other)
@@ -5104,7 +5004,6 @@ farg1 = c_loc(p)
 farg2 = size
 fresult = swigc_new_TeuchosArrayViewSizeTConst__SWIG_0(farg1, farg2)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosArrayViewSizeTConst__SWIG_1(self, array)
@@ -5118,7 +5017,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = array%swigptr
 fresult = swigc_new_TeuchosArrayViewSizeTConst__SWIG_1(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_delete_TeuchosArrayViewSizeTConst(self)
@@ -5129,7 +5027,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_TeuchosArrayViewSizeTConst(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -5261,7 +5158,6 @@ farg1%data = c_loc(view0(1))
 farg1%size = size(view0)
 fresult = swigc_new_TeuchosArrayViewSizeTConst__SWIG_2(farg1)
 self%swigptr = fresult
-
 end subroutine
 
   subroutine swigf_assign_TeuchosArrayViewSizeTConst(self, other)
@@ -5282,7 +5178,6 @@ if (c_associated(self%swigptr)) call self%release()
 farg1 = rawmpicomm
 fresult = swigc_new_TeuchosComm__SWIG_0(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_TeuchosComm__SWIG_1(self)
@@ -5293,7 +5188,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_TeuchosComm__SWIG_1()
 self%swigptr = fresult
-
 end subroutine
 
 function swigf_TeuchosComm_getRank(self) &
@@ -5329,7 +5223,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_TeuchosComm_barrier(farg1)
-
 end subroutine
 
 subroutine swigf_delete_TeuchosComm(self)
@@ -5340,7 +5233,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_TeuchosComm(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -5359,7 +5251,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_string()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_string_resize(self, count)
@@ -5372,7 +5263,6 @@ integer(C_LONG) :: farg2
 farg1 = self%swigptr
 farg2 = count
 call swigc_string_resize(farg1, farg2)
-
 end subroutine
 
 subroutine swigf_string_clear(self)
@@ -5382,7 +5272,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_string_clear(farg1)
-
 end subroutine
 
 function swigf_string_size(self) &
@@ -5424,7 +5313,6 @@ farg1 = self%swigptr
 farg2 = pos
 farg3 = v
 call swigc_string_set(farg1, farg2, farg3)
-
 end subroutine
 
 function swigf_string_get(self, pos) &
@@ -5451,7 +5339,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_string(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -5462,7 +5349,6 @@ type(C_PTR) :: farg1
 
 farg1 = self%swigptr
 call swigc_ParameterList_print(farg1)
-
 end subroutine
 
 subroutine swigf_new_ParameterList__SWIG_0(self)
@@ -5473,7 +5359,6 @@ type(C_PTR) :: fresult
 if (c_associated(self%swigptr)) call self%release()
 fresult = swigc_new_ParameterList__SWIG_0()
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_new_ParameterList__SWIG_1(self, name)
@@ -5488,7 +5373,6 @@ farg1%data = c_loc(name)
 farg1%size = len(name)
 fresult = swigc_new_ParameterList__SWIG_1(farg1)
 self%swigptr = fresult
-
 end subroutine
 
 subroutine swigf_ParameterList_get__SWIG_0(self, name, value)
@@ -5505,7 +5389,6 @@ farg2%data = c_loc(name)
 farg2%size = len(name)
 farg3 = c_loc(value)
 call swigc_ParameterList_get__SWIG_0(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_ParameterList_set__SWIG_0(self, name, value)
@@ -5522,7 +5405,6 @@ farg2%data = c_loc(name)
 farg2%size = len(name)
 farg3 = value
 call swigc_ParameterList_set__SWIG_0(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_ParameterList_get__SWIG_1(self, name, value)
@@ -5539,7 +5421,6 @@ farg2%data = c_loc(name)
 farg2%size = len(name)
 farg3 = c_loc(value)
 call swigc_ParameterList_get__SWIG_1(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_ParameterList_set__SWIG_1(self, name, value)
@@ -5556,7 +5437,6 @@ farg2%data = c_loc(name)
 farg2%size = len(name)
 farg3 = value
 call swigc_ParameterList_set__SWIG_1(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_ParameterList_set__SWIG_2(self, name, value)
@@ -5574,7 +5454,6 @@ farg2%size = len(name)
 farg3%data = c_loc(value)
 farg3%size = len(value)
 call swigc_ParameterList_set__SWIG_2(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_ParameterList_get__SWIG_2(self, name, value)
@@ -5592,7 +5471,6 @@ farg2%size = len(name)
 farg3%data = c_loc(value)
 farg3%size = len(value)
 call swigc_ParameterList_get__SWIG_2(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_ParameterList_set__SWIG_3(self, name, value)
@@ -5610,7 +5488,6 @@ farg2%size = len(name)
 farg3%data = c_loc(value(1))
 farg3%size = size(value)
 call swigc_ParameterList_set__SWIG_3(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_ParameterList_get__SWIG_3(self, name, value)
@@ -5628,7 +5505,6 @@ farg2%size = len(name)
 farg3%data = c_loc(value(1))
 farg3%size = size(value)
 call swigc_ParameterList_get__SWIG_3(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_ParameterList_set__SWIG_4(self, name, value)
@@ -5646,7 +5522,6 @@ farg2%size = len(name)
 farg3%data = c_loc(value(1))
 farg3%size = size(value)
 call swigc_ParameterList_set__SWIG_4(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_ParameterList_get__SWIG_4(self, name, value)
@@ -5664,7 +5539,6 @@ farg2%size = len(name)
 farg3%data = c_loc(value(1))
 farg3%size = size(value)
 call swigc_ParameterList_get__SWIG_4(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_ParameterList_set__SWIG_5(self, name, plist)
@@ -5681,7 +5555,6 @@ farg2%data = c_loc(name)
 farg2%size = len(name)
 farg3 = plist%swigptr
 call swigc_ParameterList_set__SWIG_5(farg1, farg2, farg3)
-
 end subroutine
 
 subroutine swigf_ParameterList_get__SWIG_5(self, name, plist)
@@ -5698,7 +5571,6 @@ farg2%data = c_loc(name)
 farg2%size = len(name)
 farg3 = plist%swigptr
 call swigc_ParameterList_get__SWIG_5(farg1, farg2, farg3)
-
 end subroutine
 
 function swigf_ParameterList_sublist(self, name) &
@@ -5746,7 +5618,6 @@ farg1 = self%swigptr
 farg2%data = c_loc(name)
 farg2%size = len(name)
 call swigc_ParameterList_remove(farg1, farg2)
-
 end subroutine
 
 function swigf_ParameterList_is_parameter(self, name) &
@@ -5774,7 +5645,6 @@ type(C_PTR) :: farg1
 if (.not. c_associated(self%swigptr)) return
 farg1 = self%swigptr
 call swigc_delete_ParameterList(farg1)
-
 self%swigptr = C_NULL_PTR
 end subroutine
 
@@ -5796,7 +5666,6 @@ farg1 = plist%swigptr
 farg2%data = c_loc(xml)
 farg2%size = len(xml)
 call swigc_load_from_xml(farg1, farg2)
-
 end subroutine
 
 subroutine save_to_xml(plist, xml)
@@ -5810,7 +5679,6 @@ farg1 = plist%swigptr
 farg2%data = c_loc(xml)
 farg2%size = len(xml)
 call swigc_save_to_xml(farg1, farg2)
-
 end subroutine
 
 

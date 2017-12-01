@@ -196,7 +196,7 @@ contains
     allocate(element_list(4))
     ! TODO: The element list returned is junk
     call Obj%create(num_global, comm); TEST_IERR()
-    call Obj%getNodeElementList(element_list)
+    element_list = Obj%getNodeElementList()
     deallocate(element_list)
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getNodeElementList)
