@@ -187,6 +187,9 @@
 
       self->getGlobalRowView(GlobalRow, IndicesView, valuesView);
     }
+    void getLocalRowView(LO LocalRow, std::pair<const LO*,size_t> indices, std::pair<const SC*,size_t> values) const {
+      throw std::runtime_error("Not implemented");
+    }
 }
 %ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap, \
                const Teuchos::ArrayRCP<const size_t>& NumEntriesPerRowToAlloc, \

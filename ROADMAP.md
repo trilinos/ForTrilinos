@@ -2,13 +2,14 @@
 
 ## Key
 
-| Emoji                   | Definition | Scope |
---------------------------| ---------- | ----- |
-:white_check_mark:        | done                    |
-:white_check_mark: :star: | done with modifications |
-:running:                 | work in progress        | current release
-:arrow_down:              | low priority            | current release
-:x:                       | ignored                 | future release/never
+| Emoji            | Definition | Scope |
+-------------------| ---------- | ----- |
+:white_check_mark: | done                                            |
+:star:             | done with modifications                         |
+:star2:            | done with modifications that affect performance (e.g., array copy) |
+:running:          | work in progress        | current release
+:arrow_down:       | low priority            | current release
+:x:                | ignored                 | future release/never
 
 ## Package status
 
@@ -41,12 +42,12 @@ Status | Class
 
 :grey_question: | Command| Comment
 -------|--------|---------
-:white_check_mark: :star: | `Map(numGlobalElements, indexBase, comm)` | no `indexBase`
-:white_check_mark: :star: | `Map (global_size_t numGlobalElements, GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm, LocalGlobal lg=GloballyDistributed, const Teuchos::RCP< Node > &node=defaultArgNode< Node >())` | no `indexBase`; no `node`
-:white_check_mark: :star: | `Map (global_size_t numGlobalElements, size_t numLocalElements, GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm, const Teuchos::RCP< Node > &node=defaultArgNode< Node >())` | no `indexBase`; no `node`
+:star: | `Map(numGlobalElements, indexBase, comm)` | no `indexBase`
+:star: | `Map (global_size_t numGlobalElements, GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm, LocalGlobal lg=GloballyDistributed, const Teuchos::RCP< Node > &node=defaultArgNode< Node >())` | no `indexBase`; no `node`
+:star: | `Map (global_size_t numGlobalElements, size_t numLocalElements, GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm, const Teuchos::RCP< Node > &node=defaultArgNode< Node >())` | no `indexBase`; no `node`
 :x: | `Map (const global_size_t numGlobalElements, const Kokkos::View< const GlobalOrdinal *, device_type > &indexList, const GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm)`
 :x: | `Map (const global_size_t numGlobalElements, const GlobalOrdinal indexList[], const LocalOrdinal indexListSize, const GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm)` | prefer `ArrayView` variant
-:white_check_mark: :star: | `Map (const global_size_t numGlobalElements, const Teuchos::ArrayView< const GlobalOrdinal > &indexList, const GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm, const Teuchos::RCP< Node > &node=defaultArgNode< Node >())` | no `node`; no `indexBase`; Fortran arrays
+:star: | `Map (const global_size_t numGlobalElements, const Teuchos::ArrayView< const GlobalOrdinal > &indexList, const GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm, const Teuchos::RCP< Node > &node=defaultArgNode< Node >())` | no `node`; no `indexBase`; Fortran arrays
 :white_check_mark: | `Map ()`
 :white_check_mark: | `~Map ()`
 
@@ -100,19 +101,19 @@ Status | Class
 :white_check_mark: | `global_size_t 	getGlobalNumElements () const`
 :white_check_mark: | `size_t 	getNodeNumElements () const`
 :x: | `GlobalOrdinal 	getIndexBase () const`
-:white_check_mark: :star: | `LocalOrdinal 	getMinLocalIndex () const` | 1-based indices
-:white_check_mark: :star: | `LocalOrdinal 	getMaxLocalIndex () const` | 1-based indices
+:star: | `LocalOrdinal 	getMinLocalIndex () const` | 1-based indices
+:star: | `LocalOrdinal 	getMaxLocalIndex () const` | 1-based indices
 :white_check_mark: | `GlobalOrdinal 	getMinGlobalIndex () const`
 :white_check_mark: | `GlobalOrdinal 	getMaxGlobalIndex () const`
 :white_check_mark: | `GlobalOrdinal 	getMinAllGlobalIndex () const`
 :white_check_mark: | `GlobalOrdinal 	getMaxAllGlobalIndex () const`
-:white_check_mark: :star: | `LocalOrdinal 	getLocalElement (GlobalOrdinal globalIndex) const` | 1-based indices
+:star: | `LocalOrdinal 	getLocalElement (GlobalOrdinal globalIndex) const` | 1-based indices
 :white_check_mark: | `GlobalOrdinal 	getGlobalElement (LocalOrdinal localIndex) const`
 :x: | `local_map_type 	getLocalMap () const`
-:white_check_mark: :star: | `LookupStatus 	getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList, const Teuchos::ArrayView< LocalOrdinal > &LIDList) const` | Fortran arrays; 1-based indices
-:white_check_mark: :star: | `LookupStatus 	getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList) const` | Fortran arrays; 1-based indices
+:star: | `LookupStatus 	getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList, const Teuchos::ArrayView< LocalOrdinal > &LIDList) const` | Fortran arrays; 1-based indices
+:star: | `LookupStatus 	getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList) const` | Fortran arrays; 1-based indices
 :x: | `global_indices_array_type 	getMyGlobalIndices () const`
-:white_check_mark: :star: | `Teuchos::ArrayView< const GlobalOrdinal > 	getNodeElementList () const` | Fortran arrays
+:star: | `Teuchos::ArrayView< const GlobalOrdinal > 	getNodeElementList () const` | Fortran arrays
 
 
 ### Tpetra::Export
@@ -232,7 +233,7 @@ Status | Class
 :white_check_mark: | `MultiVector (const Teuchos::RCP< const map_type > &map, const size_t numVecs, const bool zeroOut=true)`
 :white_check_mark: | `MultiVector (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &source)`
 :white_check_mark: | `MultiVector (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &source, const Teuchos::DataAccess copyOrView)`
-:white_check_mark: :star:| `MultiVector (const Teuchos::RCP< const map_type > &map, const Teuchos::ArrayView< const Scalar > &A, const size_t LDA, const size_t NumVectors)` | Fortran arrays
+:star:| `MultiVector (const Teuchos::RCP< const map_type > &map, const Teuchos::ArrayView< const Scalar > &A, const size_t LDA, const size_t NumVectors)` | Fortran arrays
 :arrow_down: | `MultiVector (const Teuchos::RCP< const map_type > &map, const Teuchos::ArrayView< const Teuchos::ArrayView< const Scalar > > &ArrayOfPtrs, const size_t NumVectors)`
 :x: | `MultiVector (const Teuchos::RCP< const map_type > &map, const dual_view_type &view)`
 :x: | `MultiVector (const Teuchos::RCP< const map_type > &map, const typename dual_view_type::t_dev &d_view)`
@@ -257,13 +258,13 @@ Status | Class
 :white_check_mark: | `Teuchos::RCP< MultiVector < Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > 	offsetViewNonConst (const Teuchos::RCP< const map_type > &subMap, const size_t offset)`
 :x: | `Teuchos::RCP< const Vector < Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > 	getVector (const size_t j) const`
 :x: | `Teuchos::RCP< Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > 	getVectorNonConst (const size_t j)`
-:white_check_mark: :star: | `Teuchos::ArrayRCP< const Scalar > 	getData (size_t j) const` | Fortran arrays; 1-based indices
-:white_check_mark: :star: | `Teuchos::ArrayRCP< Scalar > 	getDataNonConst (size_t j)` | Fortran arrays; 1-based indices
-:white_check_mark: :star: | `void 	get1dCopy (const Teuchos::ArrayView< Scalar > &A, const size_t LDA) const` | Fortran arrays
+:star: | `Teuchos::ArrayRCP< const Scalar > 	getData (size_t j) const` | Fortran arrays; 1-based indices
+:star: | `Teuchos::ArrayRCP< Scalar > 	getDataNonConst (size_t j)` | Fortran arrays; 1-based indices
+:star: | `void 	get1dCopy (const Teuchos::ArrayView< Scalar > &A, const size_t LDA) const` | Fortran arrays
 :arrow_down: | `void 	get2dCopy (const Teuchos::ArrayView< const Teuchos::ArrayView< Scalar > > &ArrayOfPtrs) const`
-:white_check_mark: :star: | `Teuchos::ArrayRCP< const Scalar > 	get1dView () const` | Fortran arrays
+:star: | `Teuchos::ArrayRCP< const Scalar > 	get1dView () const` | Fortran arrays
 :arrow_down: | `Teuchos::ArrayRCP < Teuchos::ArrayRCP< const Scalar > > 	get2dView () const`
-:white_check_mark: :star: | `Teuchos::ArrayRCP< Scalar > 	get1dViewNonConst ()` | Fortran arrays
+:star: | `Teuchos::ArrayRCP< Scalar > 	get1dViewNonConst ()` | Fortran arrays
 :arrow_down: | `Teuchos::ArrayRCP < Teuchos::ArrayRCP< Scalar > > 	get2dViewNonConst ()`
 :x: | `dual_view_type 	getDualView () const`
 :x: | `template<class TargetDeviceType > void 	sync ()`
@@ -275,7 +276,7 @@ Status | Class
 
 :grey_question: | Command| Comment
 -------|--------|---------
-:white_check_mark: :star: | `void 	dot (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const Teuchos::ArrayView< dot_type > &dots) const`
+:star: | `void 	dot (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const Teuchos::ArrayView< dot_type > &dots) const`
 :x: | `template<typename T > std::enable_if< !(std::is_same < dot_type, T >::value), void > ::type 	dot (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const Teuchos::ArrayView< T > &dots) const` | Fortran arrays
 :x: | `template<typename T > std::enable_if< !(std::is_same < dot_type, T >::value), void > ::type 	dot (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, std::vector< T > &dots) const`
 :x: | `void 	dot (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const Kokkos::View< dot_type *, device_type > &dots) const`
@@ -283,26 +284,26 @@ Status | Class
 :running: | `void 	abs (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A)`
 :running: | `void 	reciprocal (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A)`
 :white_check_mark: | `void 	scale (const Scalar &alpha)`
-:white_check_mark: :star: | `void 	scale (const Teuchos::ArrayView< const Scalar > &alpha)` | Fortran array
+:star: | `void 	scale (const Teuchos::ArrayView< const Scalar > &alpha)` | Fortran array
 :x: | `void 	scale (const Kokkos::View< const impl_scalar_type *, device_type > &alpha)`
 :running: | `void 	scale (const Scalar &alpha, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A)`
 :running: | `void 	update (const Scalar &alpha, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const Scalar &beta)`
 :running: | `void 	update (const Scalar &alpha, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const Scalar &beta, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &B, const Scalar &gamma)`
 :x: | `void 	norm1 (const Kokkos::View< mag_type *, device_type > &norms) const`
 :x: | `template<typename T > std::enable_if< !(std::is_same < mag_type, T >::value), void > ::type 	norm1 (const Kokkos::View< T *, device_type > &norms) const`
-:white_check_mark: :star: | `void 	norm1 (const Teuchos::ArrayView< mag_type > &norms) const` | Fortran arrays
+:star: | `void 	norm1 (const Teuchos::ArrayView< mag_type > &norms) const` | Fortran arrays
 :x: | `template<typename T > std::enable_if< !(std::is_same < mag_type, T >::value), void > ::type 	norm1 (const Teuchos::ArrayView< T > &norms) const`
 :x: | `void 	norm2 (const Kokkos::View< mag_type *, device_type > &norms) const`
 :x: | `template<typename T > std::enable_if< !(std::is_same < mag_type, T >::value), void > ::type 	norm2 (const Kokkos::View< T *, device_type > &norms) const`
-:white_check_mark: :star: | `void 	norm2 (const Teuchos::ArrayView< mag_type > &norms) const` | Fortran arrays
+:star: | `void 	norm2 (const Teuchos::ArrayView< mag_type > &norms) const` | Fortran arrays
 :x: | `template<typename T > std::enable_if< !(std::is_same < mag_type, T >::value), void > ::type 	norm2 (const Teuchos::ArrayView< T > &norms) const`
 :x: | `void 	normInf (const Kokkos::View< mag_type *, device_type > &norms) const`
 :x: | `template<typename T > std::enable_if< !(std::is_same < mag_type, T >::value), void > ::type 	normInf (const Kokkos::View< T *, device_type > &norms) const`
-:white_check_mark: :star: | `void 	normInf (const Teuchos::ArrayView< mag_type > &norms) const` | Fortran arrays
+:star: | `void 	normInf (const Teuchos::ArrayView< mag_type > &norms) const` | Fortran arrays
 :x: | `template<typename T > std::enable_if< !(std::is_same < mag_type, T >::value), void > ::type 	normInf (const Teuchos::ArrayView< T > &norms) const`
 :x: | `void TPETRA_DEPRECATED 	normWeighted (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &weights, const Teuchos::ArrayView< mag_type > &norms) const`
 :x: | `template<typename T > std::enable_if< !(std::is_same < mag_type, T >::value), void > ::type TPETRA_DEPRECATED 	normWeighted (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &weights, const Teuchos::ArrayView< T > &norms) const`
-:white_check_mark: :star: | `void 	meanValue (const Teuchos::ArrayView< impl_scalar_type > &means) const` | Fortran arrays
+:star: | `void 	meanValue (const Teuchos::ArrayView< impl_scalar_type > &means) const` | Fortran arrays
 :x: | `template<typename T > std::enable_if<!std::is_same < impl_scalar_type, T >::value, void >::type 	meanValue (const Teuchos::ArrayView< T > &means) const`
 :running: | `void 	multiply (Teuchos::ETransp transA, Teuchos::ETransp transB, const Scalar &alpha, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &B, const Scalar &beta)`
 :x: | `void 	elementWiseMultiply (Scalar scalarAB, const Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &B, Scalar scalarThis)`
@@ -370,13 +371,13 @@ Status | Class
 :grey_question: | Command| Comment
 -------|--------|---------
 :x: | `static const bool 	useAtomicUpdatesByDefault`
-:white_check_mark: :star: | `void 	replaceGlobalValue (const GlobalOrdinal gblRow, const size_t col, const impl_scalar_type &value) const` | 1-based indices
+:star: | `void 	replaceGlobalValue (const GlobalOrdinal gblRow, const size_t col, const impl_scalar_type &value) const` | 1-based indices
 :x: | `template<typename T > std::enable_if<!std::is_same < T, impl_scalar_type >::value &&std::is_convertible< T, impl_scalar_type >::value, void >::type 	replaceGlobalValue (GlobalOrdinal globalRow, size_t col, const T &value) const`
-:white_check_mark: :star:| `void 	sumIntoGlobalValue (const GlobalOrdinal gblRow, const size_t col, const impl_scalar_type &value, const bool atomic=useAtomicUpdatesByDefault) const` | 1-based indices
+:star:| `void 	sumIntoGlobalValue (const GlobalOrdinal gblRow, const size_t col, const impl_scalar_type &value, const bool atomic=useAtomicUpdatesByDefault) const` | 1-based indices
 :x: | `template<typename T > std::enable_if<!std::is_same < T, impl_scalar_type >::value &&std::is_convertible< T, impl_scalar_type >::value, void >::type 	sumIntoGlobalValue (const GlobalOrdinal gblRow, const size_t col, const T &val, const bool atomic=useAtomicUpdatesByDefault) const`
-:white_check_mark: :star:| `void 	replaceLocalValue (const LocalOrdinal lclRow, const size_t col, const impl_scalar_type &value) const` | 1-based indices
+:star:| `void 	replaceLocalValue (const LocalOrdinal lclRow, const size_t col, const impl_scalar_type &value) const` | 1-based indices
 :x: | `template<typename T > std::enable_if<!std::is_same < T, impl_scalar_type >::value &&std::is_convertible< T, impl_scalar_type >::value, void >::type 	replaceLocalValue (const LocalOrdinal lclRow, const size_t col, const T &val) const`
-:white_check_mark: :star: | `void 	sumIntoLocalValue (const LocalOrdinal lclRow, const size_t col, const impl_scalar_type &val, const bool atomic=useAtomicUpdatesByDefault) const` | 1-based indices
+:star: | `void 	sumIntoLocalValue (const LocalOrdinal lclRow, const size_t col, const impl_scalar_type &val, const bool atomic=useAtomicUpdatesByDefault) const` | 1-based indices
 :x: | `template<typename T > std::enable_if<!std::is_same < T, impl_scalar_type >::value &&std::is_convertible< T, impl_scalar_type >::value, void >::type 	sumIntoLocalValue (const LocalOrdinal lclRow, const size_t col, const T &val, const bool atomic=useAtomicUpdatesByDefault) const`
 :white_check_mark: | `void 	putScalar (const Scalar &value)`
 :x: | `template<typename T > std::enable_if<!std::is_same < T, impl_scalar_type >::value &&std::is_convertible< T, impl_scalar_type >::value, void >::type 	putScalar (const T &value)`
@@ -389,27 +390,24 @@ Status | Class
 
 ### Tpetra::CrsGraph
 
-TBD
-
-<!--
 :grey_question: | Command| Comment
 -------|--------|---------
 :white_check_mark: | `bool 	haveGlobalConstants () const`
 :white_check_mark: | `void 	computeGlobalConstants ()`
 :x: | `local_graph_type 	getLocalGraph () const`
- 
+
 **Constructor/Destructor Methods**
 
 :grey_question: | Command| Comment
 -------|--------|---------
 :white_check_mark: | `CrsGraph (const Teuchos::RCP< const map_type > &rowMap, size_t maxNumEntriesPerRow, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
 :x: | `CrsGraph (const Teuchos::RCP< const map_type > &rowMap, const Kokkos::DualView< const size_t *, execution_space > &numEntPerRow, const ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
-:white_check_mark: :star: | `CrsGraph (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::ArrayRCP< const size_t > &numEntPerRow, const ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)` | Fortran arrays
+:star: | `CrsGraph (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::ArrayRCP< const size_t > &numEntPerRow, const ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)` | Fortran arrays
 :white_check_mark: | `CrsGraph (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const size_t maxNumEntriesPerRow, const ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
 :x: | `CrsGraph (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const Kokkos::DualView< const size_t *, execution_space > &numEntPerRow, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
-:white_check_mark: :star: | `CrsGraph (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const Teuchos::ArrayRCP< const size_t > &numEntPerRow, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)` | Fortran arrays
+:star: | `CrsGraph (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const Teuchos::ArrayRCP< const size_t > &numEntPerRow, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)` | Fortran arrays
 :x: | `CrsGraph (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const typename local_graph_type::row_map_type &rowPointers, const typename local_graph_type::entries_type::non_const_type &columnIndices, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
-:white_check_mark: :star: | `CrsGraph (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const Teuchos::ArrayRCP< size_t > &rowPointers, const Teuchos::ArrayRCP< LocalOrdinal > &columnIndices, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)` | Fortran arrays; 1-based indices
+:star: | `CrsGraph (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const Teuchos::ArrayRCP< size_t > &rowPointers, const Teuchos::ArrayRCP< LocalOrdinal > &columnIndices, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)` | Fortran arrays; 1-based indices
 :x: | `CrsGraph (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const local_graph_type &lclGraph, const Teuchos::RCP< Teuchos::ParameterList > &params)`
 :x: | `template<class Node2 > Teuchos::RCP< CrsGraph < LocalOrdinal, GlobalOrdinal, Node2, Node2::classic > > 	clone (const Teuchos::RCP< Node2 > &node2, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null) const`
 :white_check_mark: | `virtual 	~CrsGraph ()`
@@ -420,9 +418,9 @@ TBD
 
 :grey_question: | Command| Comment
 -------|--------|---------
-:white_check_mark: | `void 	insertGlobalIndices (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &indices)`
-:white_check_mark: | `void 	insertGlobalIndices (const GlobalOrdinal globalRow, const LocalOrdinal numEnt, const GlobalOrdinal inds[])`
-:white_check_mark: | `void 	insertLocalIndices (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &indices)` | Fortran arrays; 1-based indices
+:star: | `void 	insertGlobalIndices (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &indices)` | Fortran arrays
+:x: | `void 	insertGlobalIndices (const GlobalOrdinal globalRow, const LocalOrdinal numEnt, const GlobalOrdinal inds[])` | prefer `ArrayView` variant
+:star: | `void 	insertLocalIndices (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &indices)` | Fortran arrays; 1-based indices
 :x: | `void 	insertLocalIndices (const LocalOrdinal localRow, const LocalOrdinal numEnt, const LocalOrdinal inds[])` | prefer `ArrayView` variant
 :white_check_mark: | `void 	removeLocalIndices (LocalOrdinal localRow)`
 
@@ -474,19 +472,19 @@ TBD
 :white_check_mark: | `bool 	isSorted () const`
 :white_check_mark: | `bool 	isStorageOptimized () const`
 :white_check_mark: | `ProfileType 	getProfileType () const`
-:white_check_mark: | `void 	getGlobalRowCopy (GlobalOrdinal GlobalRow, const Teuchos::ArrayView< GlobalOrdinal > &Indices, size_t &NumIndices) const`
-:running: | `void 	getLocalRowCopy (LocalOrdinal LocalRow, const Teuchos::ArrayView< LocalOrdinal > &indices, size_t &NumIndices) const`
-:white_check_mark: | `void 	getGlobalRowView (const GlobalOrdinal gblRow, Teuchos::ArrayView< const GlobalOrdinal > &gblColInds) const`
-:white_check_mark: | `bool 	supportsRowViews () const`
+:star: | `void 	getGlobalRowCopy (GlobalOrdinal GlobalRow, const Teuchos::ArrayView< GlobalOrdinal > &Indices, size_t &NumIndices) const` | Fortran arrays
+:star: | `void 	getLocalRowCopy (LocalOrdinal LocalRow, const Teuchos::ArrayView< LocalOrdinal > &indices, size_t &NumIndices) const` | Fortran arrays
+:star: | `void 	getGlobalRowView (const GlobalOrdinal gblRow, Teuchos::ArrayView< const GlobalOrdinal > &gblColInds) const` | Fortran arrays
 :running: | `void 	getLocalRowView (const LocalOrdinal lclRow, Teuchos::ArrayView< const LocalOrdinal > &lclColInds) const`
- 
+:white_check_mark: | `bool 	supportsRowViews () const`
+
 **Overridden from Teuchos::Describable**
 
 :grey_question: | Command| Comment
 -------|--------|---------
 :running: | `std::string 	description () const`
 :x: | `void 	describe (Teuchos::FancyOStream &out, const Teuchos::EVerbosityLevel verbLevel=Teuchos::Describable::verbLevel_default) const`
- 
+
 **Implementation of DistObject**
 
 :grey_question: | Command| Comment
@@ -502,12 +500,12 @@ TBD
 :grey_question: | Command| Comment
 -------|--------|---------
 :x: | `void 	getLocalDiagOffsets (const Kokkos::View< size_t *, device_type, Kokkos::MemoryUnmanaged > &offsets) const`
-:running: | `void 	getLocalDiagOffsets (Teuchos::ArrayRCP< size_t > &offsets) const`
-:running: | `void 	getNumEntriesPerLocalRowUpperBound (Teuchos::ArrayRCP< const size_t > &boundPerLocalRow, size_t &boundForAllLocalRows, bool &boundSameForAllLocalRows) const`
+:arrow_down: | `void 	getLocalDiagOffsets (Teuchos::ArrayRCP< size_t > &offsets) const`
+:arrow_down: | `void 	getNumEntriesPerLocalRowUpperBound (Teuchos::ArrayRCP< const size_t > &boundPerLocalRow, size_t &boundForAllLocalRows, bool &boundSameForAllLocalRows) const`
 :x: | `void 	setAllIndices (const typename local_graph_type::row_map_type &rowPointers, const typename local_graph_type::entries_type::non_const_type &columnIndices)`
-:running: | `void 	setAllIndices (const Teuchos::ArrayRCP< size_t > &rowPointers, const Teuchos::ArrayRCP< LocalOrdinal > &columnIndices)`
-:x: | `Teuchos::ArrayRCP< const size_t > 	getNodeRowPtrs () const`
-:x: | `Teuchos::ArrayRCP< const LocalOrdinal > 	getNodePackedIndices () const`
+:star2: | `void 	setAllIndices (const Teuchos::ArrayRCP< size_t > &rowPointers, const Teuchos::ArrayRCP< LocalOrdinal > &columnIndices)` | Fortran arrays
+:running: | `Teuchos::ArrayRCP< const size_t > 	getNodeRowPtrs () const`
+:running: | `Teuchos::ArrayRCP< const LocalOrdinal > 	getNodePackedIndices () const`
 :white_check_mark: | `void 	replaceColMap (const Teuchos::RCP< const map_type > &newColMap)`
 :white_check_mark: | `void 	reindexColumns (const Teuchos::RCP< const map_type > &newColMap, const Teuchos::RCP< const import_type > &newImport=Teuchos::null, const bool sortIndicesInEachRow=true)`
 :white_check_mark: | `void 	replaceDomainMapAndImporter (const Teuchos::RCP< const map_type > &newDomainMap, const Teuchos::RCP< const import_type > &newImporter)`
@@ -521,8 +519,8 @@ TBD
 
 :grey_question: | Command| Comment
 -------|--------|---------
-:white_check_mark: | `bool 	isDistributed () const`
-:arrow_down: | `virtual Teuchos::RCP< const map_type > 	getMap () const`
+:arrow_down: | `bool 	isDistributed () const`
+:x: | `virtual Teuchos::RCP< const map_type > 	getMap () const`
 
 **I/O methods**
 
@@ -535,7 +533,6 @@ TBD
 :grey_question: | Command| Comment
 -------|--------|---------
 :white_check_mark: | `virtual void 	removeEmptyProcessesInPlace (const Teuchos::RCP< const map_type > &newMap)`
--->
 
 ### Tpetra::CrsMatrix
 
@@ -663,12 +660,12 @@ TBD
 :grey_question: | Command| Comment
 -------|--------|---------
 :white_check_mark: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, size_t maxNumEntriesPerRow, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
-:white_check_mark: :star: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::ArrayRCP< const size_t > &NumEntriesPerRowToAlloc, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)` | Fortran arrays
-:white_check_mark: :star: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, size_t maxNumEntriesPerRow, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)` | Fortran arrays
-:white_check_mark: :star: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const Teuchos::ArrayRCP< const size_t > &NumEntriesPerRowToAlloc, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)` | Fortran arrays
+:star: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::ArrayRCP< const size_t > &NumEntriesPerRowToAlloc, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)` | Fortran arrays
+:star: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, size_t maxNumEntriesPerRow, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)` | Fortran arrays
+:star: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const Teuchos::ArrayRCP< const size_t > &NumEntriesPerRowToAlloc, ProfileType pftype=DynamicProfile, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)` | Fortran arrays
 :white_check_mark: | `CrsMatrix (const Teuchos::RCP< const crs_graph_type > &graph, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
 :x: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const typename local_matrix_type::row_map_type &rowPointers, const typename local_graph_type::entries_type::non_const_type &columnIndices, const typename local_matrix_type::values_type &values, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
-:white_check_mark: :star: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const Teuchos::ArrayRCP< size_t > &rowPointers, const Teuchos::ArrayRCP< LocalOrdinal > &columnIndices, const Teuchos::ArrayRCP< Scalar > &values, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)` | Fortran arrays
+:star: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const Teuchos::ArrayRCP< size_t > &rowPointers, const Teuchos::ArrayRCP< LocalOrdinal > &columnIndices, const Teuchos::ArrayRCP< Scalar > &values, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)` | Fortran arrays
 :x: | `CrsMatrix (const Teuchos::RCP< const map_type > &rowMap, const Teuchos::RCP< const map_type > &colMap, const local_matrix_type &lclMatrix, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
 :x: | `template<class Node2 > Teuchos::RCP< CrsMatrix < Scalar, LocalOrdinal, GlobalOrdinal, Node2, Node2::classic > > 	clone (const Teuchos::RCP< Node2 > &node2, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null) const`
 :white_check_mark: | `virtual 	~CrsMatrix ()`
@@ -677,27 +674,27 @@ TBD
 
 :grey_question: | Command| Comment
 -------|--------|---------
-:white_check_mark: :star: | `void 	insertGlobalValues (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals)` | Fortran arrays
+:star: | `void 	insertGlobalValues (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals)` | Fortran arrays
 :x: | `void 	insertGlobalValues (const GlobalOrdinal globalRow, const LocalOrdinal numEnt, const Scalar vals[], const GlobalOrdinal inds[])` | prefer `ArrayView` variant
-:white_check_mark: :star: | `void 	insertLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals)` | Fortran arrays; 1-based indices
+:star: | `void 	insertLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals)` | Fortran arrays; 1-based indices
 :x: | `void 	insertLocalValues (const LocalOrdinal localRow, const LocalOrdinal numEnt, const Scalar vals[], const LocalOrdinal cols[])` | prefer `ArrayView` variant
 :x: | `template<class GlobalIndicesViewType , class ImplScalarViewType > LocalOrdinal 	replaceGlobalValues (const GlobalOrdinal globalRow, const typename UnmanagedView< GlobalIndicesViewType >::type &inputInds, const typename UnmanagedView< ImplScalarViewType >::type &inputVals) const`
-:white_check_mark: :star: | `LocalOrdinal 	replaceGlobalValues (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals) const` | Fortran arrays
+:star: | `LocalOrdinal 	replaceGlobalValues (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals) const` | Fortran arrays
 :x: | `LocalOrdinal 	replaceGlobalValues (const GlobalOrdinal globalRow, const LocalOrdinal numEnt, const Scalar vals[], const GlobalOrdinal cols[]) const` | prefer `ArrayView` variant
 :x: | `template<class LocalIndicesViewType , class ImplScalarViewType > LocalOrdinal 	replaceLocalValues (const LocalOrdinal localRow, const typename UnmanagedView< LocalIndicesViewType >::type &inputInds, const typename UnmanagedView< ImplScalarViewType >::type &inputVals) const`
-:white_check_mark: :star: | `LocalOrdinal 	replaceLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals) const` | Fortran arrays; 1-based indices
+:star: | `LocalOrdinal 	replaceLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals) const` | Fortran arrays; 1-based indices
 :x: | `LocalOrdinal 	replaceLocalValues (const LocalOrdinal localRow, const LocalOrdinal numEnt, const Scalar inputVals[], const LocalOrdinal inputCols[]) const` | prefer `ArrayView` variant
-:white_check_mark: :star: | `LocalOrdinal 	sumIntoGlobalValues (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals, const bool atomic=useAtomicUpdatesByDefault)` | Fortran arrays; no `atomic`
+:star: | `LocalOrdinal 	sumIntoGlobalValues (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals, const bool atomic=useAtomicUpdatesByDefault)` | Fortran arrays; no `atomic`
 :x: | `LocalOrdinal 	sumIntoGlobalValues (const GlobalOrdinal globalRow, const LocalOrdinal numEnt, const Scalar vals[], const GlobalOrdinal cols[], const bool atomic=useAtomicUpdatesByDefault)` | prefer `ArrayView` variant
 :x: | `template<class LocalIndicesViewType , class ImplScalarViewType > LocalOrdinal 	sumIntoLocalValues (const LocalOrdinal localRow, const typename UnmanagedView< LocalIndicesViewType >::type &inputInds, const typename UnmanagedView< ImplScalarViewType >::type &inputVals, const bool atomic=useAtomicUpdatesByDefault) const`
-:white_check_mark: :star: | `LocalOrdinal 	sumIntoLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals, const bool atomic=useAtomicUpdatesByDefault) const` | Fortran arrays; 1-based indices; no `atomic`
+:star: | `LocalOrdinal 	sumIntoLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals, const bool atomic=useAtomicUpdatesByDefault) const` | Fortran arrays; 1-based indices; no `atomic`
 :x: | `LocalOrdinal 	sumIntoLocalValues (const LocalOrdinal localRow, const LocalOrdinal numEnt, const Scalar vals[], const LocalOrdinal cols[], const bool atomic=useAtomicUpdatesByDefault) const` | prefer `ArrayView` variant
 :x: | `template<class LocalIndicesViewType , class ImplScalarViewType , class BinaryFunction > LocalOrdinal 	transformLocalValues (const LocalOrdinal localRow, const typename UnmanagedView< LocalIndicesViewType >::type &inputInds, const typename UnmanagedView< ImplScalarViewType >::type &inputVals, BinaryFunction f, const bool atomic=useAtomicUpdatesByDefault) const`
 :x: | `template<class BinaryFunction , class InputMemorySpace > LocalOrdinal 	transformGlobalValues (const GlobalOrdinal globalRow, const Kokkos::View< const GlobalOrdinal *, InputMemorySpace, Kokkos::MemoryUnmanaged > &inputInds, const Kokkos::View< const impl_scalar_type *, InputMemorySpace, Kokkos::MemoryUnmanaged > &inputVals, BinaryFunction f, const bool atomic=useAtomicUpdatesByDefault) const`
 :white_check_mark: | `void 	setAllToScalar (const Scalar &alpha)`
 :white_check_mark: | `void 	scale (const Scalar &alpha)`
 :x: | `void 	setAllValues (const typename local_matrix_type::row_map_type &ptr, const typename local_graph_type::entries_type::non_const_type &ind, const typename local_matrix_type::values_type &val)`
-:white_check_mark: :star: | `void 	setAllValues (const Teuchos::ArrayRCP< size_t > &ptr, const Teuchos::ArrayRCP< LocalOrdinal > &ind, const Teuchos::ArrayRCP< Scalar > &val)` | Fortran arrays
+:star: | `void 	setAllValues (const Teuchos::ArrayRCP< size_t > &ptr, const Teuchos::ArrayRCP< LocalOrdinal > &ind, const Teuchos::ArrayRCP< Scalar > &val)` | Fortran arrays
 :running: | `void 	getAllValues (Teuchos::ArrayRCP< const size_t > &rowPointers, Teuchos::ArrayRCP< const LocalOrdinal > &columnIndices, Teuchos::ArrayRCP< const Scalar > &values) const` | Fortran arrays
 
 **Methods implementing RowMatrix**
@@ -719,7 +716,7 @@ TBD
 :white_check_mark: | `global_size_t 	getGlobalNumEntries () const`
 :white_check_mark: | `size_t 	getNodeNumEntries () const`
 :white_check_mark: | `size_t 	getNumEntriesInGlobalRow (GlobalOrdinal globalRow) const`
-:white_check_mark: :star: | `size_t 	getNumEntriesInLocalRow (LocalOrdinal localRow) const` | 1-based indices
+:star: | `size_t 	getNumEntriesInLocalRow (LocalOrdinal localRow) const` | 1-based indices
 :white_check_mark: | `global_size_t 	getGlobalNumDiags () const`
 :white_check_mark: | `size_t 	getNodeNumDiags () const`
 :white_check_mark: | `size_t 	getGlobalMaxNumRowEntries () const`
@@ -736,9 +733,9 @@ TBD
 :white_check_mark: | `bool 	isStaticGraph () const`
 :white_check_mark: | `mag_type 	getFrobeniusNorm () const`
 :white_check_mark: | `virtual bool 	supportsRowViews () const`
-:white_check_mark: :star: | `void 	getGlobalRowCopy (GlobalOrdinal GlobalRow, const Teuchos::ArrayView< GlobalOrdinal > &Indices, const Teuchos::ArrayView< Scalar > &Values, size_t &NumEntries) const` | Fortran arrays
-:white_check_mark: :star: | `void 	getLocalRowCopy (LocalOrdinal localRow, const Teuchos::ArrayView< LocalOrdinal > &colInds, const Teuchos::ArrayView< Scalar > &vals, size_t &numEntries) const` | Fortran arrays
-:white_check_mark: :star: | `void 	getGlobalRowView (GlobalOrdinal GlobalRow, Teuchos::ArrayView< const GlobalOrdinal > &indices, Teuchos::ArrayView< const Scalar > &values) const` | Fortran arrays
+:star: | `void 	getGlobalRowCopy (GlobalOrdinal GlobalRow, const Teuchos::ArrayView< GlobalOrdinal > &Indices, const Teuchos::ArrayView< Scalar > &Values, size_t &NumEntries) const` | Fortran arrays
+:star: | `void 	getLocalRowCopy (LocalOrdinal localRow, const Teuchos::ArrayView< LocalOrdinal > &colInds, const Teuchos::ArrayView< Scalar > &vals, size_t &numEntries) const` | Fortran arrays
+:star: | `void 	getGlobalRowView (GlobalOrdinal GlobalRow, Teuchos::ArrayView< const GlobalOrdinal > &indices, Teuchos::ArrayView< const Scalar > &values) const` | Fortran arrays
 :running: | `void 	getLocalRowView (LocalOrdinal LocalRow, Teuchos::ArrayView< const LocalOrdinal > &indices, Teuchos::ArrayView< const Scalar > &values) const`
 :x: | `LocalOrdinal 	getLocalRowViewRaw (const LocalOrdinal lclRow, LocalOrdinal &numEnt, const LocalOrdinal *&lclColInds, const Scalar *&vals) const` | prefer `ArrayView` variant
 :x: | `LocalOrdinal 	getLocalRowView (const LocalOrdinal lclRow, LocalOrdinal &numEnt, const impl_scalar_type *&val, const LocalOrdinal *&ind) const` | prefer `ArrayView` variant
