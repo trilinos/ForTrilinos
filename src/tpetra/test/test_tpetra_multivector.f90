@@ -491,7 +491,6 @@ contains
   FORTRILINOS_UNIT_TEST(TpetraMultiVector_Get1dCopy)
     type(TpetraMap) :: map
     type(TpetraMultiVector) :: Vec
-    type(TeuchosArrayViewDouble) :: AV
     integer(size_type) :: lda
     real(scalar_type), allocatable :: a(:)
     integer(size_type), parameter :: num_vecs=2, num_local=4
@@ -502,13 +501,13 @@ contains
     call Vec%putScalar(one); TEST_IERR()
     allocate(a(num_vecs*num_local*comm%getSize()))
     a = 0.
-    call AV%create(a); TEST_IERR()
     lda = num_local*comm%getSize()
-    call Vec%Get1dCopy(AV, lda); TEST_IERR() ! TODO: Get1dCopy to take fortran array
-    call AV%release(); TEST_IERR()
+    call Vec%Get1dCopy(a, lda); TEST_IERR()
     call Vec%release(); TEST_IERR()
 
     TEST_FLOATING_ARRAY_EQUALITY(a, one, epsilon(one))
+    deallocate(a)
+
     OUT0("Finished Get1dCopy!")
 
   END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_Get1dCopy)

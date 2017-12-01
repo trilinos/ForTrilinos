@@ -40,63 +40,46 @@
 %ignore Tpetra::MultiVector::assign;
 %ignore Tpetra::MultiVector::describe;              // needs Teuchos::FancyOStream
 %ignore Tpetra::MultiVector::elementWiseMultiply;   // needs Vector
-%ignore Tpetra::MultiVector::get1dView;             // needs Teuchos::ArrayRCP
-%ignore Tpetra::MultiVector::get1dViewNonConst;     // needs Teuchos::ArrayRCP
 %ignore Tpetra::MultiVector::get2dCopy;             // needs ArrayView<ArrayView>
 %ignore Tpetra::MultiVector::get2dView;             // needs ArrayRCP<ArrayRCP>
 %ignore Tpetra::MultiVector::get2dViewNonConst;     // needs ArrayRCP<ArrayRCP>
-%ignore Tpetra::MultiVector::getData;               // needs Teuchos::ArrayRCP
-%ignore Tpetra::MultiVector::getDataNonConst;       // needs Teuchos::ArrayRCP
 %ignore Tpetra::MultiVector::getDualView;           // needs Kokkos::DualView
 %ignore Tpetra::MultiVector::getLocalView;          // needs Kokkos::View
 %ignore Tpetra::MultiVector::getVector;             // needs Tpetra::Vector
 %ignore Tpetra::MultiVector::getVectorNonConst;     // needs Tpetra::Vector
 %ignore Tpetra::MultiVector::modify;                // templated on device type
 %ignore Tpetra::MultiVector::need_sync;             // templated on device type
+%ignore Tpetra::MultiVector::scale(const Kokkos::View<const impl_scalar_type*, device_type>& alpha);
 %ignore Tpetra::MultiVector::sync;                  // templated on device type
 %ignore Tpetra::MultiVector::operator=;
-%ignore Tpetra::MultiVector::scale(const Kokkos::View<const impl_scalar_type*, device_type>& alpha);    // needs Kokkos::View
 %ignore Tpetra::MultiVector::subCopy(const Teuchos::Range1D &colRng) const; // prefer ArrayView version
 %ignore Tpetra::MultiVector::subView(const Teuchos::Range1D &colRng) const; // prefer ArrayView version
 %ignore Tpetra::MultiVector::subViewNonConst(const Teuchos::Range1D &colRng); // prefer ArrayView version
 %ignore Tpetra::MultiVector::normWeighted;  // deprecated in Tpetra
+%ignore Tpetra::deep_copy;
 
 // =======================================================================
 // Fix ±1 issues
 // =======================================================================
-%typemap(in)  const size_t j %{$1 = *$input - 1;%}
+%typemap(in)  size_t j %{$1 = *$input - 1;%}
+%typemap(in)  size_t col %{$1 = *$input - 1;%}
+%typemap(in)  int lclRow %{$1 = *$input - 1;%} /* int = LocalOrdinal */
 
 // =======================================================================
 // Make interface more Fortran friendly
 // =======================================================================
-%ignore Tpetra::MultiVector::MultiVector (const Teuchos::RCP< const map_type > &map, const Teuchos::ArrayView< const Scalar > &A, const size_t LDA, const size_t NumVectors);
-%ignore Tpetra::MultiVector::subCopy(const Teuchos::ArrayView< const size_t > &cols) const;
-%ignore Tpetra::MultiVector::subView(const Teuchos::ArrayView< const size_t > &cols) const;
-%ignore Tpetra::MultiVector::subViewNonConst(const Teuchos::ArrayView< const size_t > &cols);
-%ignore Tpetra::MultiVector::dot(const MultiVector<Scalar, LocalOrdinal, GlobalOrdinal, Node, classic>& A, const Teuchos::ArrayView<dot_type>& dots) const;
-%ignore Tpetra::MultiVector::dot(const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, std::vector< T > &dots) const;
-%ignore Tpetra::MultiVector::dot(const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const Kokkos::View< dot_type *, device_type > &dots) const;
-%ignore Tpetra::MultiVector::norm1(const Kokkos::View<mag_type*, device_type>& norms) const;
-%ignore Tpetra::MultiVector::norm1(const Kokkos::View<mag_type*, Kokkos::HostSpace>& norms) const;
-%ignore Tpetra::MultiVector::norm1(const Kokkos::View<T*, device_type>& norms) const;
-%ignore Tpetra::MultiVector::norm1(const Teuchos::ArrayView<mag_type>& norms) const;
-%ignore Tpetra::MultiVector::norm1(const Teuchos::ArrayView<T>& norms) const;
-%ignore Tpetra::MultiVector::norm2(const Kokkos::View<mag_type*, device_type>& norms) const;
-%ignore Tpetra::MultiVector::norm2(const Kokkos::View<mag_type*, Kokkos::HostSpace>& norms) const;
-%ignore Tpetra::MultiVector::norm2(const Kokkos::View<T*, device_type>& norms) const;
-%ignore Tpetra::MultiVector::norm2(const Teuchos::ArrayView<mag_type>& norms) const;
-%ignore Tpetra::MultiVector::norm2(const Teuchos::ArrayView<T>& norms) const;
-%ignore Tpetra::MultiVector::normInf(const Kokkos::View<mag_type*, device_type>& norms) const;
-%ignore Tpetra::MultiVector::normInf(const Kokkos::View<mag_type*, Kokkos::HostSpace>& norms) const;
-%ignore Tpetra::MultiVector::normInf(const Kokkos::View<T*, device_type>& norms) const;
-%ignore Tpetra::MultiVector::normInf(const Teuchos::ArrayView<mag_type>& norms) const;
-%ignore Tpetra::MultiVector::normInf(const Teuchos::ArrayView<T>& norms) const;
-%ignore Tpetra::MultiVector::meanValue(const Teuchos::ArrayView< impl_scalar_type > &means) const;
-%ignore Tpetra::MultiVector::scale(const Teuchos::ArrayView< const Scalar > &alpha);
 %extend Tpetra::MultiVector<SC,LO,GO,NO,false> {
     MultiVector (const Teuchos::RCP< const map_type > &map, std::pair<const SC*,size_t> A, const size_t LDA, const size_t NumVectors) {
       Teuchos::ArrayView<const SC> AView = Teuchos::arrayView(A.first, A.second);
       return new Tpetra::MultiVector<SC,LO,GO,NO,false>(map, AView, LDA, NumVectors);
+    }
+    std::pair<const SC*,size_t> getData(size_t j) const {
+      Teuchos::ArrayRCP<const SC> a = self->getData(j);
+      return std::make_pair<const SC*,size_t>(a.get(), a.size());
+    }
+    std::pair<SC*,size_t> getDataNonConst(size_t j) {
+      Teuchos::ArrayRCP<SC> a = self->getDataNonConst(j);
+      return std::make_pair<SC*,size_t>(a.get(), a.size());
     }
     Teuchos::RCP<Tpetra::MultiVector<SC,LO,GO,NO,false> > subCopy(std::pair<const size_t*,size_t> cols) const {
       Teuchos::Array<size_t> colsArray(cols.second);
@@ -140,10 +123,34 @@
       Teuchos::ArrayView<SC> meansView = Teuchos::arrayView(means.first, means.second);
       self->meanValue(meansView);
     }
+    void get1dCopy(std::pair<SC*,size_t> A, const size_t LDA) const {
+      Teuchos::ArrayView<SC> AView = Teuchos::arrayView(A.first, A.second);
+      self->get1dCopy(AView, LDA);
+    }
+    std::pair<const SC*,size_t> get1dView() const {
+      auto a = self->get1dView();
+      return std::make_pair<const SC*,size_t>(a.getRawPtr(), a.size());
+    }
+    std::pair<SC*,size_t> get1dViewNonConst() {
+      auto a = self->get1dViewNonConst();
+      return std::make_pair<SC*,size_t>(a.getRawPtr(), a.size());
+    }
 }
-%typemap(in)  const size_t j %{$1 = *$input - 1;%}
-%typemap(in)  const size_t col %{$1 = *$input - 1;%}
-%typemap(in)  const int lclRow %{$1 = *$input - 1;%} /* int = LocalOrdinal */
+%ignore Tpetra::MultiVector::MultiVector (const Teuchos::RCP< const map_type > &map, const Teuchos::ArrayView< const Scalar > &A, const size_t LDA, const size_t NumVectors);
+%ignore Tpetra::MultiVector::subCopy(const Teuchos::ArrayView< const size_t > &cols) const;
+%ignore Tpetra::MultiVector::subView(const Teuchos::ArrayView< const size_t > &cols) const;
+%ignore Tpetra::MultiVector::subViewNonConst(const Teuchos::ArrayView< const size_t > &cols);
+%ignore Tpetra::MultiVector::dot;
+%ignore Tpetra::MultiVector::norm1;
+%ignore Tpetra::MultiVector::norm2;
+%ignore Tpetra::MultiVector::normInf;
+%ignore Tpetra::MultiVector::meanValue;
+%ignore Tpetra::MultiVector::scale(const Teuchos::ArrayView< const Scalar > &alpha);
+%ignore Tpetra::MultiVector::getData;
+%ignore Tpetra::MultiVector::getDataNonConst;
+%ignore Tpetra::MultiVector::get1dCopy;
+%ignore Tpetra::MultiVector::get1dView;
+%ignore Tpetra::MultiVector::get1dViewNonConst;
 
 
 %teuchos_rcp(Tpetra::MultiVector<SC,LO,GO,NO,false>)

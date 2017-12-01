@@ -112,7 +112,7 @@ Status | Class
 :white_check_mark: :star: | `LookupStatus 	getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList, const Teuchos::ArrayView< LocalOrdinal > &LIDList) const` | Fortran arrays; 1-based indices
 :white_check_mark: :star: | `LookupStatus 	getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList) const` | Fortran arrays; 1-based indices
 :x: | `global_indices_array_type 	getMyGlobalIndices () const`
-:white_check_mark: :star: | `Teuchos::ArrayView< const GlobalOrdinal > 	getNodeElementList () const` | converted to subroutine
+:white_check_mark: :star: | `Teuchos::ArrayView< const GlobalOrdinal > 	getNodeElementList () const` | Fortran arrays
 
 
 ### Tpetra::Export
@@ -257,13 +257,13 @@ Status | Class
 :white_check_mark: | `Teuchos::RCP< MultiVector < Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > 	offsetViewNonConst (const Teuchos::RCP< const map_type > &subMap, const size_t offset)`
 :x: | `Teuchos::RCP< const Vector < Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > 	getVector (const size_t j) const`
 :x: | `Teuchos::RCP< Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > > 	getVectorNonConst (const size_t j)`
-:running: | `Teuchos::ArrayRCP< const Scalar > 	getData (size_t j) const`
-:running: | `Teuchos::ArrayRCP< Scalar > 	getDataNonConst (size_t j)`
-:arrow_down: | `void 	get1dCopy (const Teuchos::ArrayView< Scalar > &A, const size_t LDA) const`
+:white_check_mark: :star: | `Teuchos::ArrayRCP< const Scalar > 	getData (size_t j) const` | Fortran arrays; 1-based indices
+:white_check_mark: :star: | `Teuchos::ArrayRCP< Scalar > 	getDataNonConst (size_t j)` | Fortran arrays; 1-based indices
+:white_check_mark: :star: | `void 	get1dCopy (const Teuchos::ArrayView< Scalar > &A, const size_t LDA) const` | Fortran arrays
 :arrow_down: | `void 	get2dCopy (const Teuchos::ArrayView< const Teuchos::ArrayView< Scalar > > &ArrayOfPtrs) const`
-:arrow_down: | `Teuchos::ArrayRCP< const Scalar > 	get1dView () const`
+:white_check_mark: :star: | `Teuchos::ArrayRCP< const Scalar > 	get1dView () const` | Fortran arrays
 :arrow_down: | `Teuchos::ArrayRCP < Teuchos::ArrayRCP< const Scalar > > 	get2dView () const`
-:arrow_down: | `Teuchos::ArrayRCP< Scalar > 	get1dViewNonConst ()`
+:white_check_mark: :star: | `Teuchos::ArrayRCP< Scalar > 	get1dViewNonConst ()` | Fortran arrays
 :arrow_down: | `Teuchos::ArrayRCP < Teuchos::ArrayRCP< Scalar > > 	get2dViewNonConst ()`
 :x: | `dual_view_type 	getDualView () const`
 :x: | `template<class TargetDeviceType > void 	sync ()`
@@ -304,7 +304,7 @@ Status | Class
 :x: | `template<typename T > std::enable_if< !(std::is_same < mag_type, T >::value), void > ::type TPETRA_DEPRECATED 	normWeighted (const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &weights, const Teuchos::ArrayView< T > &norms) const`
 :white_check_mark: :star: | `void 	meanValue (const Teuchos::ArrayView< impl_scalar_type > &means) const` | Fortran arrays
 :x: | `template<typename T > std::enable_if<!std::is_same < impl_scalar_type, T >::value, void >::type 	meanValue (const Teuchos::ArrayView< T > &means) const`
-:white_check_mark: | `void 	multiply (Teuchos::ETransp transA, Teuchos::ETransp transB, const Scalar &alpha, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &B, const Scalar &beta)`
+:running: | `void 	multiply (Teuchos::ETransp transA, Teuchos::ETransp transB, const Scalar &alpha, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &B, const Scalar &beta)`
 :x: | `void 	elementWiseMultiply (Scalar scalarAB, const Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &A, const MultiVector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &B, Scalar scalarThis)`
 
 **Attribute access functions**

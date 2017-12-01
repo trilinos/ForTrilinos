@@ -55,12 +55,6 @@
 // =======================================================================
 // Make interface more Fortran friendly
 // =======================================================================
-%ignore Tpetra::Map::Map(global_size_t numGlobalElements, GlobalOrdinal indexBase, const Teuchos::RCP<const Teuchos::Comm<int> > &comm, LocalGlobal lg=GloballyDistributed, const Teuchos::RCP<Node> &node=defaultArgNode<Node>());
-%ignore Tpetra::Map::Map(global_size_t numGlobalElements, size_t numLocalElements, GlobalOrdinal indexBase, const Teuchos::RCP<const Teuchos::Comm<int> > &comm, const Teuchos::RCP<Node> &node=defaultArgNode<Node>());
-%ignore Tpetra::Map::Map(const global_size_t numGlobalElements, const Teuchos::ArrayView< const GlobalOrdinal > &indexList, const GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm, const Teuchos::RCP< Node > &node=defaultArgNode< Node >());
-%ignore Tpetra::Map::getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList, const Teuchos::ArrayView< LocalOrdinal > &LIDList) const;
-%ignore Tpetra::Map::getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList) const;
-%ignore Tpetra::Map::getNodeElementList() const;
 %extend Tpetra::Map<int, long long, Kokkos::Compat::KokkosSerialWrapperNode> {
     Map(global_size_t numGlobalElements, const Teuchos::RCP<const Teuchos::Comm<int> > &comm, LocalGlobal lg=GloballyDistributed) {
       return new Tpetra::Map<LO,GO,NO>(numGlobalElements, 1/*indexBase*/, comm, lg);
@@ -85,12 +79,17 @@
 
       return self->getRemoteIndexList(GIDListView, nodeIDListView);
     }
-    void getNodeElementList(std::pair<const GO*,size_t> elementList) const {
+    std::pair<const GO*,size_t> getNodeElementList() const {
       auto view = self->getNodeElementList();
-      elementList.first  = view.getRawPtr();
-      elementList.second = view.size();
+      return std::make_pair<const GO*,size_t>(view.getRawPtr(), view.size());
     }
 }
+%ignore Tpetra::Map::Map(global_size_t numGlobalElements, GlobalOrdinal indexBase, const Teuchos::RCP<const Teuchos::Comm<int> > &comm, LocalGlobal lg=GloballyDistributed, const Teuchos::RCP<Node> &node=defaultArgNode<Node>());
+%ignore Tpetra::Map::Map(global_size_t numGlobalElements, size_t numLocalElements, GlobalOrdinal indexBase, const Teuchos::RCP<const Teuchos::Comm<int> > &comm, const Teuchos::RCP<Node> &node=defaultArgNode<Node>());
+%ignore Tpetra::Map::Map(const global_size_t numGlobalElements, const Teuchos::ArrayView< const GlobalOrdinal > &indexList, const GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm, const Teuchos::RCP< Node > &node=defaultArgNode< Node >());
+%ignore Tpetra::Map::getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList, const Teuchos::ArrayView< LocalOrdinal > &LIDList) const;
+%ignore Tpetra::Map::getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList) const;
+%ignore Tpetra::Map::getNodeElementList() const;
 
 // FIXME: figure out why the first verion does not work
 /* %teuchos_rcp(Tpetra::Map<LO,GO,NO>); */
