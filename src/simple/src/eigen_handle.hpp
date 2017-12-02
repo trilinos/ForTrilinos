@@ -24,7 +24,7 @@
 
 namespace ForTrilinos {
 
-  class EigenHandle {
+  class TrilinosEigenSolver {
   public:
     typedef double                                  SC;
     typedef int                                     LO;
@@ -33,43 +33,37 @@ namespace ForTrilinos {
     typedef size_t                                  global_size_t;
 
     typedef Teuchos::ParameterList                  ParameterList;
-    typedef Tpetra::CrsMatrix<SC,LO,GO,NO>          Matrix;
-    typedef Tpetra::MultiVector<SC,LO,GO,NO>        MultiVector;
+    typedef Tpetra::CrsMatrix<SC,LO,GO,NO,false>    Matrix;
+    typedef Tpetra::Map<LO,GO,NO>                   Map;
+    typedef Tpetra::MultiVector<SC,LO,GO,NO,false>  MultiVector;
     typedef Tpetra::Operator<SC,LO,GO,NO>           Operator;
-    typedef Tpetra::Vector<SC,LO,GO,NO>             Vector;
     typedef Anasazi::SolverManager<SC,MultiVector,Operator> SolverManager;
 
   public:
 
     // Constructors
-    EigenHandle() : status_(NOT_INITIALIZED) { }
+    TrilinosEigenSolver() : status_(NOT_INITIALIZED) { }
 
-    EigenHandle(const EigenHandle&) = delete;
-    void operator=(const EigenHandle&) = delete;
+    TrilinosEigenSolver(const TrilinosEigenSolver&) = delete;
+    void operator=(const TrilinosEigenSolver&) = delete;
 
     // Initialize
     void init();
     void init(const Teuchos::RCP<const Teuchos::Comm<int>>& comm);
 
     // Setup matrices by construction
-    void setup_matrix    (std::pair<const GO*,size_t> rowInds, std::pair<const LO*,size_t> rowPtrs,
-                          std::pair<const GO*,size_t> colInds, std::pair<const SC*,size_t> values);
-    void setup_matrix_rhs(std::pair<const GO*,size_t> rowInds, std::pair<const LO*,size_t> rowPtrs,
-                          std::pair<const GO*,size_t> colInds, std::pair<const SC*,size_t> values);
-
-    // Setup matrices by user provided data
-    void setup_matrix(Teuchos::RCP<Matrix> A);
-    void setup_matrix_rhs(Teuchos::RCP<Matrix> M);
+    void setup_matrix    (const Teuchos::RCP<Matrix>& A);
+    void setup_matrix_rhs(const Teuchos::RCP<Matrix>& M);
 
     // Setup operators
-    void setup_operator    (std::pair<const GO*, size_t> rowInds, OperatorCallback callback);
-    void setup_operator_rhs(std::pair<const GO*, size_t> rowInds, OperatorCallback callback);
+    void setup_operator    (OperatorCallback callback, const Teuchos::RCP<const Map>& domainMap, const Teuchos::RCP<const Map>& rangeMap = Teuchos::null);
+    void setup_operator_rhs(OperatorCallback callback, const Teuchos::RCP<const Map>& domainMap, const Teuchos::RCP<const Map>& rangeMap = Teuchos::null);
 
     // Setup solver based on the parameter list
     void setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList);
 
-    // Solve linear system given rhs
-    void solve(std::pair<SC*, size_t> eigenValues, std::pair<SC*, size_t> eigenVectors) const;
+    // Solve eigen system given rhs
+    void solve(std::pair<SC*, size_t> eigenValues, Teuchos::RCP<MultiVector>& lhs) const;
 
     // Free all data
     void finalize();

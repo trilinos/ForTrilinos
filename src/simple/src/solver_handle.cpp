@@ -6,7 +6,6 @@
  */
 #include "fortran_operator.hpp"
 #include "solver_handle.hpp"
-#include "handle_helpers.hpp"
 
 #include <Stratimikos_DefaultLinearSolverBuilder.hpp>
 #include <Teuchos_DefaultComm.hpp>
@@ -26,38 +25,31 @@
 
 namespace ForTrilinos {
 
-  void SolverHandle::init() {
+  void TrilinosSolver::init() {
     TEUCHOS_ASSERT(status_ == NOT_INITIALIZED);
     comm_ = Teuchos::DefaultComm<int>::getComm();
     status_ = INITIALIZED;
   }
 
-  void SolverHandle::init(const Teuchos::RCP<const Teuchos::Comm<int>>& comm) {
+  void TrilinosSolver::init(const Teuchos::RCP<const Teuchos::Comm<int>>& comm) {
     TEUCHOS_ASSERT(status_ == NOT_INITIALIZED);
     comm_ = comm;
     status_ = INITIALIZED;
   }
 
-  void SolverHandle::setup_matrix(std::pair<const GO*,size_t> rowInds, std::pair<const LO*,size_t> rowPtrs,
-                                  std::pair<const GO*,size_t> colInds, std::pair<const SC*,size_t> values) {
-    TEUCHOS_ASSERT(status_ == INITIALIZED);
-    auto A = HandleHelpers::setup_matrix_gen(comm_, rowInds, rowPtrs, colInds, values);
-    setup_matrix(A);
-  }
-
-  void SolverHandle::setup_matrix(const Teuchos::RCP<Matrix> A) {
+  void TrilinosSolver::setup_matrix(const Teuchos::RCP<Matrix>& A) {
     TEUCHOS_ASSERT(status_ == INITIALIZED);
     A_ = Teuchos::rcp_dynamic_cast<Operator>(A);
     status_ = MATRIX_SETUP;
   }
 
-  void SolverHandle::setup_operator(std::pair<const GO*, size_t> rowInds, OperatorCallback callback) {
+  void TrilinosSolver::setup_operator(OperatorCallback callback, const Teuchos::RCP<const Map>& domainMap, const Teuchos::RCP<const Map>& rangeMap) {
     TEUCHOS_ASSERT(status_ == INITIALIZED);
-    A_ = HandleHelpers::setup_operator_gen(comm_, rowInds, callback);
+    A_ = Teuchos::rcp(new FortranOperator(callback, domainMap, rangeMap));
     status_ = MATRIX_SETUP;
   }
 
-  void SolverHandle::setup_solver(const Teuchos::RCP<Teuchos::ParameterList> paramList) {
+  void TrilinosSolver::setup_solver(const Teuchos::RCP<Teuchos::ParameterList> paramList) {
     using Teuchos::RCP;
     using Teuchos::rcp;
     using Teuchos::rcp_implicit_cast;
@@ -97,37 +89,7 @@ namespace ForTrilinos {
     status_ = SOLVER_SETUP;
   }
 
-  void SolverHandle::solve(std::pair<const SC*, size_t> rhs, std::pair<SC*, size_t> lhs) const {
-    auto map = A_->getDomainMap();
-    auto size = lhs.second;
-
-    TEUCHOS_ASSERT(size >= 0);
-    TEUCHOS_ASSERT(lhs.second == size);
-    TEUCHOS_ASSERT((rhs.first != NULL && lhs.second != NULL) || size == 0);
-    TEUCHOS_ASSERT(map->getNodeNumElements() == size_t(size));
-
-    // NOTE: This is a major simplification
-    TEUCHOS_ASSERT(map->isSameAs(*(A_->getRangeMap())));
-
-    auto X = Teuchos::rcp(new MultiVector(map, 1));
-    auto B = Teuchos::rcp(new MultiVector(map, 1));
-
-    // FIXME: data copying
-    auto Xdata = X->getDataNonConst(0);
-    auto Bdata = B->getDataNonConst(0);
-    for (int i = 0; i < size; i++) {
-      Xdata[i] = lhs.first[i];
-      Bdata[i] = rhs.first[i];
-    }
-
-    solve(B, X);
-
-    // FIXME: fix data copying
-    for (int i = 0; i < size; i++)
-      lhs.first[i] = Xdata[i];
-  }
-
-  void SolverHandle::solve(const Teuchos::RCP<const MultiVector> B, Teuchos::RCP<MultiVector> X) const {
+  void TrilinosSolver::solve(const Teuchos::RCP<const MultiVector>& B, Teuchos::RCP<MultiVector>& X) const {
     TEUCHOS_ASSERT(status_ == SOLVER_SETUP);
 
     TEUCHOS_ASSERT(X->getMap()->isSameAs(*A_->getDomainMap()));
@@ -137,16 +99,15 @@ namespace ForTrilinos {
 
     auto thyraX = Thyra::createMultiVector(X);
     auto thyraB = Thyra::createConstMultiVector(B);
-    // auto thyraX = Thyra::tpetraMultiVector<SC,LO,GO,NO>(Thyra::tpetraVectorSpace<SC,LO,GO,NO>(map), X);
-    // auto thyraB = Thyra::tpetraMultiVector<SC,LO,GO,NO>(Thyra::tpetraVectorSpace<SC,LO,GO,NO>(map), B);
 
     auto status = Thyra::solve<SC>(*thyraInverseA_, Thyra::NOTRANS, *thyraB, thyraX.ptr());
 
+    // FIXME
     if (!map->getComm()->getRank())
       std::cout << status << std::endl;
   }
 
-  void SolverHandle::finalize() {
+  void TrilinosSolver::finalize() {
     // No need to check the status_, we can finalize() at any moment.
     comm_          = Teuchos::null;
     A_             = Teuchos::null;

@@ -12,27 +12,29 @@ program main
   use fortrilinos
   use forteuchos
   use fortpetra
+  use fortest
 #ifdef HAVE_MPI
   use mpi
 #endif
   implicit none
 
-  integer(c_int) :: my_rank, num_procs
-
-  integer(c_long_long) :: i, cur_pos, offset
-  real(c_double) :: norm, one
-
-  type(TeuchosComm) :: comm
+  integer(int_type) :: my_rank, num_procs
 
   integer(global_size_type) :: n_global
-  integer(size_type) :: n, max_entries_per_row, num_vecs, lda
-  integer(int_type) :: stupid_n, row_nnz, stupid_1
+  integer(size_type) :: n, max_entries_per_row, num_vecs = 1, lda
+  integer(int_type) :: row_nnz
+
+  integer(local_ordinal_type) :: i
+  integer(global_ordinal_type) :: offset
+  real(scalar_type) :: one = 1.0
+  real(norm_type) :: norm
+
+  type(TeuchosComm) :: comm
+  type(ParameterList) :: plist
+  type(TrilinosSolver) :: solver_handle
   type(TpetraMap) :: map
   type(TpetraCrsMatrix) :: A
   type(TpetraMultiVector) :: B, X, Xtrue
-
-  type(ParameterList) :: plist
-  type(SolverHandle) :: tri_handle
 
   real(scalar_type), dimension(:), allocatable :: lhs, rhs
   real(norm_type), dimension(:), allocatable :: norms
@@ -40,12 +42,6 @@ program main
   real(scalar_type), dimension(:), allocatable :: vals
 
   n = 50
-  num_vecs = 1
-
-  one = 1.0
-
-  my_rank = 0
-  num_procs = 1
 
 #ifdef HAVE_MPI
   ! Initialize MPI subsystem
@@ -66,18 +62,13 @@ program main
   write(*,*) "Processor ", my_rank, " of ", num_procs
 
   ! Read in the parameterList
-  call plist%create("Stratimikos")
-  call load_from_xml(plist, "stratimikos.xml")
-
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ":", trim(serr)
-    stop 1
-  endif
+  call plist%create("Stratimikos"); CHECK_IERR()
+  call load_from_xml(plist, "stratimikos.xml"); CHECK_IERR()
 
   ! ------------------------------------------------------------------
-  ! Step 0: Construct tri-diagonal matrix, and rhs
+  ! Step 0: Construct tri-diagonal matrix
   n_global = -1
-  call map%create(n_global, n, comm)
+  call map%create(n_global, n, comm); CHECK_IERR()
 
   max_entries_per_row = 3
   call A%create(map, max_entries_per_row, DynamicProfile)
@@ -101,13 +92,14 @@ program main
       row_nnz = row_nnz + 1
     end if
 
-    call A%insertGlobalValues(offset + i, cols(1:row_nnz-1), vals(1:row_nnz-1))
+    call A%insertGlobalValues(offset + i, cols(1:row_nnz-1), vals(1:row_nnz-1)); CHECK_IERR()
   end do
-  ! Critical step: fill complete the matrix
-  call A%fillComplete()
+  deallocate(cols)
+  deallocate(vals)
+  call A%fillComplete(); CHECK_IERR()
 
   ! This automatically zeroes out X
-  call X%create(map, num_vecs)
+  call X%create(map, num_vecs); CHECK_IERR()
 
   ! The solution X(i) = i-1
   allocate(lhs(n))
@@ -130,74 +122,40 @@ program main
   end do
   lda = n
 
-  call Xtrue%create(map, lhs, lda, num_vecs)
-  call B%create(map, rhs, lda, num_vecs)
+  call Xtrue%create(map, lhs, lda, num_vecs); CHECK_IERR()
+  call B%create(map, rhs, lda, num_vecs); CHECK_IERR()
 
-  ! Step 0.5: crate a handle
-  call tri_handle%create()
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ": ", trim(serr)
-    stop 1
-  endif
+  ! Step 0: create a handle
+  call solver_handle%create(); CHECK_IERR()
 
-  ! ------------------------------------------------------------------
-  ! Explicit setup and solve
-  ! ------------------------------------------------------------------
   ! Step 1: initialize a handle
-  call tri_handle%init(comm)
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ": ", trim(serr)
-    stop 1
-  endif
+  call solver_handle%init(comm); CHECK_IERR()
 
   ! Step 2: setup the problem
-  call tri_handle%setup_matrix(A)
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ": ", trim(serr)
-    stop 1
-  endif
+  call solver_handle%setup_matrix(A); CHECK_IERR()
 
   ! Step 3: setup the solver
-  call tri_handle%setup_solver(plist)
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ": ", trim(serr)
-    stop 1
-  endif
+  call solver_handle%setup_solver(plist); CHECK_IERR()
 
   ! Step 4: solve the system
-  call tri_handle%solve(B, X)
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ": ", trim(serr)
-    stop 1
-  endif
+  call solver_handle%solve(B, X); CHECK_IERR()
 
   ! Check the solution
   allocate(norms(1))
-  call X%update(-one, Xtrue, one)
-  call X%norm2(norms)
+  call X%update(-one, Xtrue, one); CHECK_IERR()
+  call X%norm2(norms); CHECK_IERR()
 
   ! TODO: Get the tolerance out of the parameter list
   EXPECT_TRUE(norms(1) < 1e-6)
 
   ! Step 5: clean up
-  call tri_handle%finalize()
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ": ", trim(serr)
-    stop 1
-  endif
-
-  call plist%release()
-  call tri_handle%release()
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ":", trim(serr)
-    stop 1
-  endif
-
-  call X%release()
-  call B%release()
-  call A%release()
-
-  call comm%release()
+  call solver_handle%finalize(); CHECK_IERR()
+  call plist%release(); CHECK_IERR()
+  call X%release(); CHECK_IERR()
+  call B%release(); CHECK_IERR()
+  call A%release(); CHECK_IERR()
+  call map%release(); CHECK_IERR()
+  call comm%release(); CHECK_IERR()
 
 #ifdef HAVE_MPI
   ! Finalize MPI must be called after releasing all handles

@@ -5,7 +5,6 @@
  * License-Filename: LICENSE
  */
 #include "eigen_handle.hpp"
-#include "handle_helpers.hpp"
 
 #include <Stratimikos_DefaultLinearSolverBuilder.hpp>
 #include <Teuchos_DefaultComm.hpp>
@@ -27,54 +26,39 @@
 
 namespace ForTrilinos {
 
-  void EigenHandle::init() {
+  void TrilinosEigenSolver::init() {
     TEUCHOS_ASSERT(status_ == NOT_INITIALIZED);
     comm_ = Teuchos::DefaultComm<int>::getComm();
     status_ = INITIALIZED;
   }
 
-  void EigenHandle::init(const Teuchos::RCP<const Teuchos::Comm<int>>& comm) {
+  void TrilinosEigenSolver::init(const Teuchos::RCP<const Teuchos::Comm<int>>& comm) {
     TEUCHOS_ASSERT(status_ == NOT_INITIALIZED);
     comm_ = comm;
     status_ = INITIALIZED;
   }
 
-  void EigenHandle::setup_matrix(std::pair<const GO*,size_t> rowInds, std::pair<const LO*,size_t> rowPtrs,
-                                 std::pair<const GO*,size_t> colInds, std::pair<const SC*,size_t> values) {
-    TEUCHOS_ASSERT(status_ == INITIALIZED);
-    auto A = HandleHelpers::setup_matrix_gen(comm_, rowInds, rowPtrs, colInds, values);
-    setup_matrix(A);
-  }
-
-  void EigenHandle::setup_matrix(const Teuchos::RCP<Matrix> A) {
+  void TrilinosEigenSolver::setup_matrix(const Teuchos::RCP<Matrix>& A) {
     TEUCHOS_ASSERT(status_ == INITIALIZED);
     A_ = Teuchos::rcp_dynamic_cast<Operator>(A);
     status_ = MATRIX_SETUP;
   }
-
-  void EigenHandle::setup_matrix_rhs(std::pair<const GO*,size_t> rowInds, std::pair<const LO*,size_t> rowPtrs,
-                                     std::pair<const GO*,size_t> colInds, std::pair<const SC*,size_t> values) {
-    TEUCHOS_ASSERT(status_ == INITIALIZED || status_ == MATRIX_SETUP);
-    auto M = HandleHelpers::setup_matrix_gen(comm_, rowInds, rowPtrs, colInds, values);
-    setup_matrix_rhs(M);
-  }
-  void EigenHandle::setup_matrix_rhs(const Teuchos::RCP<Matrix> M) {
+  void TrilinosEigenSolver::setup_matrix_rhs(const Teuchos::RCP<Matrix>& M) {
     TEUCHOS_ASSERT(status_ == INITIALIZED || status_ == MATRIX_SETUP);
     M_ = Teuchos::rcp_dynamic_cast<Operator>(M);
   }
 
-  void EigenHandle::setup_operator(std::pair<const GO*, size_t> rowInds, OperatorCallback callback) {
+  void TrilinosEigenSolver::setup_operator(OperatorCallback callback, const Teuchos::RCP<const Map>& domainMap, const Teuchos::RCP<const Map>& rangeMap) {
     TEUCHOS_ASSERT(status_ == INITIALIZED);
-    A_ = HandleHelpers::setup_operator_gen(comm_, rowInds, callback);
+    A_ = Teuchos::rcp(new FortranOperator(callback, domainMap, rangeMap));
     status_ = MATRIX_SETUP;
   }
-
-  void EigenHandle::setup_operator_rhs(std::pair<const GO*, size_t> rowInds, OperatorCallback callback) {
+  void TrilinosEigenSolver::setup_operator_rhs(OperatorCallback callback, const Teuchos::RCP<const Map>& domainMap, const Teuchos::RCP<const Map>& rangeMap) {
     TEUCHOS_ASSERT(status_ == INITIALIZED || status_ == MATRIX_SETUP);
-    M_ = HandleHelpers::setup_operator_gen(comm_, rowInds, callback);
+    M_ = Teuchos::rcp(new FortranOperator(callback, domainMap, rangeMap));
   }
 
-  void EigenHandle::setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList) {
+  void TrilinosEigenSolver::setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList) {
     using Teuchos::RCP;
     using Teuchos::rcp;
     using Teuchos::rcp_implicit_cast;
@@ -122,7 +106,6 @@ namespace ForTrilinos {
     }
 
     int numEV = paramList->get("NumEV", 1);
-    TEUCHOS_ASSERT(numEV == 1);  // FIXME later
     problem->setNEV(numEV);
 
     // set random initial guess
@@ -138,7 +121,7 @@ namespace ForTrilinos {
     status_ = SOLVER_SETUP;
   }
 
-  void EigenHandle::solve(std::pair<SC*, size_t> eigenValues, std::pair<SC*, size_t> eigenVectors) const {
+  void TrilinosEigenSolver::solve(std::pair<SC*, size_t> eigenValues, Teuchos::RCP<MultiVector>& eigenVectors) const {
     using Teuchos::RCP;
     using Teuchos::ArrayRCP;
 
@@ -151,14 +134,13 @@ namespace ForTrilinos {
     Anasazi::Eigensolution<SC,MultiVector> solution = solver_->getProblem().getSolution();
 
     std::vector<Anasazi::Value<SC>>& evalues = solution.Evals;
-    RCP<MultiVector>& evectors = solution.Evecs;
+    for (int i = 0; i < std::min(eigenValues.second, evalues.size()); i++)
+      eigenValues.first[i] = evalues[i].realpart; // FIXME: need to implement complex case
 
-    // FIXME: deal with multiple eigenvalues
-    eigenValues.first[0] = evalues[0].realpart;
-    memcpy(eigenVectors.first, evectors->getData(0).getRawPtr(), eigenVectors.second*sizeof(double));
+    eigenVectors = solution.Evecs;
   }
 
-  void EigenHandle::finalize() {
+  void TrilinosEigenSolver::finalize() {
     // No need to check the status_, we can finalize() at any moment.
     comm_          = Teuchos::null;
     A_             = Teuchos::null;
