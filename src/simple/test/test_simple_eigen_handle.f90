@@ -97,10 +97,7 @@ program main
 
     call A%insertGlobalValues(offset + i, cols(1:row_nnz-1), vals(1:row_nnz-1)); CHECK_IERR()
   end do
-  deallocate(cols)
-  deallocate(vals)
   call A%fillComplete(); CHECK_IERR()
-
 
   ! The solution
   allocate(evalues(num_eigen))
@@ -129,13 +126,17 @@ program main
   write(*,*) "Computed eigenvalues: ", evalues(1)
 
   ! Step 5: clean up
-  deallocate(evalues)
   call eigen_handle%finalize(); CHECK_IERR()
+
+  call eigen_handle%release(); CHECK_IERR()
   call plist%release(); CHECK_IERR()
   call X%release(); CHECK_IERR()
   call A%release(); CHECK_IERR()
   call map%release(); CHECK_IERR()
-  call comm%release()
+  call comm%release(); CHECK_IERR()
+  deallocate(evalues)
+  deallocate(cols)
+  deallocate(vals)
 
 #ifdef HAVE_MPI
   ! Finalize MPI must be called after releasing all handles
