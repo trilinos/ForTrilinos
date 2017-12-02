@@ -94,8 +94,6 @@ program main
 
     call A%insertGlobalValues(offset + i, cols(1:row_nnz-1), vals(1:row_nnz-1)); CHECK_IERR()
   end do
-  deallocate(cols)
-  deallocate(vals)
   call A%fillComplete(); CHECK_IERR()
 
   ! This automatically zeroes out X
@@ -150,12 +148,19 @@ program main
 
   ! Step 5: clean up
   call solver_handle%finalize(); CHECK_IERR()
+
+  call solver_handle%release(); CHECK_IERR()
   call plist%release(); CHECK_IERR()
   call X%release(); CHECK_IERR()
   call B%release(); CHECK_IERR()
   call A%release(); CHECK_IERR()
   call map%release(); CHECK_IERR()
   call comm%release(); CHECK_IERR()
+  deallocate(norms)
+  deallocate(cols)
+  deallocate(vals)
+  deallocate(lhs)
+  deallocate(rhs)
 
 #ifdef HAVE_MPI
   ! Finalize MPI must be called after releasing all handles
