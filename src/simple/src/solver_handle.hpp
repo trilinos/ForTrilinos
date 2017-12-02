@@ -24,7 +24,7 @@
 
 namespace ForTrilinos {
 
-  class SolverHandle {
+  class TrilinosSolver {
   public:
     typedef double                                  SC;
     typedef int                                     LO;
@@ -33,39 +33,35 @@ namespace ForTrilinos {
     typedef size_t                                  global_size_t;
 
     typedef Teuchos::ParameterList                  ParameterList;
-    typedef Thyra::LinearOpWithSolveBase<SC>        LOWS;
     typedef Tpetra::CrsMatrix<SC,LO,GO,NO,false>    Matrix;
     typedef Tpetra::Map<LO,GO,NO>                   Map;
     typedef Tpetra::MultiVector<SC,LO,GO,NO,false>  MultiVector;
     typedef Tpetra::Operator<SC,LO,GO,NO>           Operator;
-    typedef Tpetra::Vector<SC,LO,GO,NO,false>       Vector;
+    typedef Thyra::LinearOpWithSolveBase<SC>        LOWS;
 
   public:
 
     // Constructors
-    SolverHandle() : status_(NOT_INITIALIZED) { }
+    TrilinosSolver() : status_(NOT_INITIALIZED) { }
 
-    SolverHandle(const SolverHandle&) = delete;
-    void operator=(const SolverHandle&) = delete;
+    TrilinosSolver(const TrilinosSolver&) = delete;
+    void operator=(const TrilinosSolver&) = delete;
 
     // Initialize
     void init();
     void init(const Teuchos::RCP<const Teuchos::Comm<int>>& comm);
 
     // Setup matrix
-    void setup_matrix(std::pair<const GO*,size_t> rowInds, std::pair<const LO*,size_t> rowPtrs,
-                      std::pair<const GO*,size_t> colInds, std::pair<const SC*,size_t> values);
-    void setup_matrix(Teuchos::RCP<Matrix> A);
+    void setup_matrix(const Teuchos::RCP<Matrix>& A);
 
     // Setup operator
-    void setup_operator(std::pair<const GO*, size_t> rowInds, OperatorCallback callback);
+    void setup_operator(OperatorCallback callback, const Teuchos::RCP<const Map>& domainMap, const Teuchos::RCP<const Map>& rangeMap = Teuchos::null);
 
     // Setup solver based on the parameter list
     void setup_solver(const Teuchos::RCP<Teuchos::ParameterList> paramList);
 
     // Solve linear system given rhs
-    void solve(std::pair<const SC*, size_t> rhs, std::pair<SC*, size_t> lhs) const;
-    void solve(const Teuchos::RCP<const MultiVector> rhs, Teuchos::RCP<MultiVector> lhs) const;
+    void solve(const Teuchos::RCP<const MultiVector>& rhs, Teuchos::RCP<MultiVector>& lhs) const;
 
     // Free all data
     void finalize();

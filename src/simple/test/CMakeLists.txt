@@ -15,14 +15,8 @@ IF (${PACKAGE_NAME}_ENABLE_Belos AND ${PACKAGE_NAME}_ENABLE_Ifpack2)
   )
 
   TRIBITS_ADD_EXECUTABLE_AND_TEST(
-    test_simple_solver_handle_raw_test_fortran
-    SOURCES test_simple_solver_handle_raw.f90
-    COMM serial mpi
-  )
-
-  TRIBITS_ADD_EXECUTABLE_AND_TEST(
-    test_simple_solver_handle_tpetra_test_fortran
-    SOURCES test_simple_solver_handle_tpetra.f90
+    test_simple_solver_handle_test_fortran
+    SOURCES test_simple_solver_handle.f90
     COMM serial mpi
   )
 

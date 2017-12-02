@@ -7,6 +7,9 @@
 #include <Teuchos_DefaultComm.hpp>
 #include <Teuchos_XMLParameterListHelpers.hpp>
 #include <Teuchos_StandardCatchMacros.hpp>
+#include <Tpetra_Map.hpp>
+#include <Tpetra_CrsMatrix.hpp>
+#include <Tpetra_MultiVector.hpp>
 
 #include <iostream>
 
@@ -21,79 +24,77 @@ int main(int argc, char *argv[]) {
     using Teuchos::rcp;
     using Teuchos::rcp_dynamic_cast;
     using Teuchos::ParameterList;
+    using Teuchos::tuple;
+
+    typedef double                                  SC;
+    typedef int                                     LO;
+    typedef long long                               GO;
+    typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
+
+    using Map         = Tpetra::Map<LO,GO,NO>;
+    using MultiVector = Tpetra::MultiVector<SC,LO,GO,NO>;
+    using Matrix      = Tpetra::CrsMatrix<SC,LO,GO,NO>;
+
+    using STS = Teuchos::ScalarTraits<SC>;
 
     // Initialize MPI system
     Teuchos::GlobalMPISession mpiSession(&argc, &argv, NULL);
     RCP<const Teuchos::Comm<int> > comm = Teuchos::DefaultComm<int>::getComm();
-    int myRank   = comm->getRank();
-    int numProcs = comm->getSize();
 
     // Read in the parameter list
     ParameterList paramList;
     Teuchos::updateParametersFromXmlFileAndBroadcast("davidson.xml", Teuchos::Ptr<ParameterList>(&paramList), *comm);
 
     // Set parameters
-    const int n   = 50;
-    int       nnz = 3*n;
+    const int numMyElements = 50;
+    int numGlobalElements = numMyElements*comm->getSize();
 
     // Step 0: Construct tri-diagonal matrix
-    std::vector<int> rowPtrs(n+1);
-    std::vector<long long> rowInds(n), colInds(nnz);
-    std::vector<double> values(nnz);
+    RCP<Map>    rowMap = Teuchos::rcp(new Map(numGlobalElements, numMyElements, 0, comm));
+    RCP<Matrix> A = Teuchos::rcp(new Matrix(rowMap, 3));
+    for (LO lclRow = 0; lclRow < static_cast<LO>(numMyElements); ++lclRow) {
+      const GO gblRow = rowMap->getGlobalElement (lclRow);
 
-    rowPtrs[0] = 0;
-    int curPos = 0, offset = n * myRank;
-    for (int i = 0; i < n; i++) {
-#if 1
-      if (i || myRank) {
-        colInds[curPos] = offset + i-1;
-        values [curPos] = -1;
-        curPos++;
+      if (gblRow == 0) {
+        // A(0, 0:1) = [2, -1]
+        A->insertGlobalValues (gblRow,
+                               tuple<GO> (gblRow, gblRow + 1),
+                               tuple<SC> (2.0, -1.0));
+      } else if (static_cast<Tpetra::global_size_t> (gblRow) == numGlobalElements - 1) {
+        // A(N-1, N-2:N-1) = [-1, 2]
+        A->insertGlobalValues (gblRow,
+                               tuple<GO> (gblRow - 1, gblRow),
+                               tuple<SC> (-1.0, 2.0));
+      } else {
+        // A(i, i-1:i+1) = [-1, 2, -1]
+        A->insertGlobalValues (gblRow,
+                               tuple<GO> (gblRow - 1, gblRow, gblRow + 1),
+                               tuple<SC> (-1.0, 2.0, -1.0));
       }
-      colInds[curPos] = offset + i;
-      values [curPos] = 2;
-      curPos++;
-      if (i != n-1 || myRank != numProcs-1) {
-        colInds[curPos] = offset + i+1;
-        values [curPos] = -1;
-        curPos++;
-      }
-      rowPtrs[i+1] = curPos;
-
-      rowInds[i] = offset + i;
-#else
-      colInds[curPos] = offset + i;
-      values [curPos] = 1.0;
-      curPos++;
-#endif
     }
-    nnz = curPos;
-
-    colInds.resize(nnz);
-    values. resize(nnz);
+    A->fillComplete();
 
     // The eigen solution
-    std::vector<double> evectors(n);
     std::vector<double> evalues(1);
+    Teuchos::RCP<MultiVector> X = Teuchos::rcp(new MultiVector(rowMap, 1));
 
     // Step 1: initialize a handle
-    ForTrilinos::EigenHandle si;
-    si.init(comm);
+    ForTrilinos::TrilinosEigenSolver handle;
+    handle.init(comm);
 
     // Step 2: setup the problem
-    si.setup_matrix(std::make_pair(rowInds.data(), n), std::make_pair(rowPtrs.data(), n+1),
-                    std::make_pair(colInds.data(), nnz), std::make_pair(values.data(), nnz));
+    handle.setup_matrix(A);
 
     // Step 3: setup the solver
-    si.setup_solver(Teuchos::rcpFromRef(paramList));
+    handle.setup_solver(Teuchos::rcpFromRef(paramList));
 
     // Step 4: solve the system
-    si.solve(std::make_pair(evalues.data(), 1), std::make_pair(evectors.data(), n));
+    handle.solve(std::make_pair(evalues.data(), 1), X);
 
     // TODO: Check the solution
 
     // Step 5: clean up
-    si.finalize();
+    handle.finalize();
 
     success = true;
   }

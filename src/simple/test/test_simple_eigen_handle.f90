@@ -2,26 +2,6 @@
 !
 ! SPDX-License-Identifier: BSD-3-Clause
 ! License-Filename: LICENSE
-module x_eigen_handle
-  use iso_c_binding
-  implicit none
-contains
-  subroutine matvec(n, x, y) BIND(C)
-    use, intrinsic :: ISO_C_BINDING
-    integer(c_int), intent(in), value :: n
-    real(c_double), dimension(:), intent(in) :: x(*)
-    real(c_double), dimension(:), intent(out) :: y(*)
-
-    integer(c_int) :: i
-
-    ! dummy operator
-    do i = 1, n
-      y(i) = x(i)
-    end do
-
-  end subroutine
-end module x_eigen_handle
-
 program main
 
 #include "FortranTestMacros.h"
@@ -31,33 +11,37 @@ program main
   use ISO_FORTRAN_ENV
   use, intrinsic :: ISO_C_BINDING
   use fortrilinos
-  use x_eigen_handle
   use forteuchos
+  use fortpetra
+  use fortest
 #ifdef HAVE_MPI
   use mpi
 #endif
   implicit none
 
-  integer(int_type) :: i
-  integer(int_type) :: n, nnz;
   integer(int_type) :: my_rank, num_procs
 
-  integer(local_ordinal_type), dimension(:), allocatable :: row_ptrs
-  integer(global_ordinal_type), dimension(:), allocatable :: row_inds, col_inds
-  real(scalar_type), dimension(:), allocatable :: values, evalues, evectors
+  integer(global_size_type) :: n_global
+  integer(size_type) :: n, max_entries_per_row, lda, num_eigen = 1
+  integer(int_type) :: num_eigen_int
+  integer(int_type) :: row_nnz
 
-  integer(global_ordinal_type) :: cur_pos, offset
-  real(norm_type) :: norm
+  integer(local_ordinal_type) :: i
+  integer(global_ordinal_type) :: offset
+  real(scalar_type) :: one = 1.0
 
-  type(ParameterList) :: plist
-  type(EigenHandle) :: tri_handle
   type(TeuchosComm) :: comm
+  type(ParameterList) :: plist
+  type(TrilinosEigenSolver) :: eigen_handle
+  type(TpetraMap) :: map
+  type(TpetraCrsMatrix) :: A
+  type(TpetraMultiVector) :: X
+
+  real(scalar_type), dimension(:), allocatable :: evalues, evectors
+  integer(global_ordinal_type), dimension(:), allocatable :: cols
+  real(scalar_type), dimension(:), allocatable :: vals
 
   n = 50
-  nnz = 3*n
-
-  my_rank = 0
-  num_procs = 1
 
 #ifdef HAVE_MPI
   ! Initialize MPI subsystem
@@ -67,161 +51,90 @@ program main
     stop 1
   endif
 
-  call MPI_COMM_RANK(MPI_COMM_WORLD, my_rank, ierr)
-  call MPI_COMM_SIZE(MPI_COMM_WORLD, num_procs, ierr)
-  EXPECT_EQ(0, ierr)
-
   call comm%create(MPI_COMM_WORLD)
 #else
   call comm%create()
 #endif
 
-  ! Read in the parameterList
-  call plist%create("Anasazi")
-  call load_from_xml(plist, "davidson.xml")
+  my_rank = comm%getRank()
+  num_procs = comm%getSize()
 
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ":", trim(serr)
-    stop 1
-  endif
+  write(*,*) "Processor ", my_rank, " of ", num_procs
+
+  ! Read in the parameterList
+  call plist%create("Anasazi"); CHECK_IERR()
+  call load_from_xml(plist, "davidson.xml"); CHECK_IERR()
+
+  num_eigen_int = num_eigen
+  call plist%set("NumEV", num_eigen_int); CHECK_IERR()
 
   ! ------------------------------------------------------------------
   ! Step 0: Construct tri-diagonal matrix
-  allocate(row_inds(n))
-  allocate(row_ptrs(n+1))
-  allocate(col_inds(nnz))
-  allocate(values(nnz))
-  row_ptrs(1) = 0
-  cur_pos = 1
-  offset  = n * my_rank
-  do i = 1, n
-    ! Is logic evaluated the same way in fortran?
-    if (i .ne. 1 .or. my_rank > 0) then
-      col_inds(cur_pos) = offset + i-1
-      values  (cur_pos) = -1.0
-      cur_pos = cur_pos + 1
-    end if
-    col_inds(cur_pos) = offset + i
-    values  (cur_pos) = 2.0
-    cur_pos = cur_pos + 1
-    if (i .ne. n .or. my_rank .ne. num_procs-1) then
-      col_inds(cur_pos) = offset + i+1
-      values  (cur_pos) = -1.0
-      cur_pos = cur_pos + 1
-    end if
-    row_ptrs(i+1) = cur_pos-1;
+  n_global = -1
+  call map%create(n_global, n, comm); CHECK_IERR()
 
-    row_inds(i) = offset + i
+  max_entries_per_row = 3
+  call A%create(map, max_entries_per_row, DynamicProfile)
+
+  allocate(cols(max_entries_per_row))
+  allocate(vals(max_entries_per_row))
+  offset = n * my_rank
+  do i = 1, n
+    row_nnz = 1
+    if (i .ne. 1 .or. my_rank > 0) then
+      cols(row_nnz) = offset + i-1
+      vals(row_nnz) = -1.0
+      row_nnz = row_nnz + 1
+    end if
+    cols(row_nnz) = offset + i
+    vals(row_nnz) = 2.0
+    row_nnz = row_nnz + 1
+    if (i .ne. n .or. my_rank .ne. num_procs-1) then
+      cols(row_nnz) = offset + i+1
+      vals(row_nnz) = -1.0
+      row_nnz = row_nnz + 1
+    end if
+
+    call A%insertGlobalValues(offset + i, cols(1:row_nnz-1), vals(1:row_nnz-1)); CHECK_IERR()
   end do
-  nnz = cur_pos-1
+  deallocate(cols)
+  deallocate(vals)
+  call A%fillComplete(); CHECK_IERR()
+
 
   ! The solution
-  allocate(evalues(1))
-  allocate(evectors(n))
+  allocate(evalues(num_eigen))
+  call X%create(map, num_eigen)
 
-  ! Step 0.5: crate a handle
-  call tri_handle%create()
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ": ", trim(serr)
-    stop 1
-  endif
+  ! Step 0: crate a handle
+  call eigen_handle%create(); CHECK_IERR()
 
   ! ------------------------------------------------------------------
   ! Explicit setup and solve
   ! ------------------------------------------------------------------
   ! Step 1: initialize a handle
-  call tri_handle%init(comm)
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ": ", trim(serr)
-    stop 1
-  endif
+  call eigen_handle%init(comm); CHECK_IERR()
 
   ! Step 2: setup the problem
-  call tri_handle%setup_matrix(row_inds, row_ptrs, col_inds, values)
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ": ", trim(serr)
-    stop 1
-  endif
+  call eigen_handle%setup_matrix(A); CHECK_IERR()
 
   ! Step 3: setup the solver
-  call tri_handle%setup_solver(plist)
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ": ", trim(serr)
-    stop 1
-  endif
+  call eigen_handle%setup_solver(plist); CHECK_IERR()
 
   ! Step 4: solve the system
-  call tri_handle%solve(evalues, evectors)
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ": ", trim(serr)
-    stop 1
-  endif
+  call eigen_handle%solve(evalues, X); CHECK_IERR()
 
-  ! Check the solution
-
+  ! FIXME: Check the solution
+  EXPECT_TRUE(size(evalues) == num_eigen)
+  write(*,*) "Computed eigenvalues: ", evalues(1)
 
   ! Step 5: clean up
-  call tri_handle%finalize()
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ": ", trim(serr)
-    stop 1
-  endif
-
-#if 0
-  ! ------------------------------------------------------------------
-  ! Implicit (inversion-of-control) setup [ no solve ]
-  ! ------------------------------------------------------------------
-  ! Step 1: initialize a handle
-  call tri_handle%init(comm)
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ": ", trim(serr)
-    stop 1
-  endif
-
-  ! Step 2: setup the problem
-  ! Implicit (inversion-of-control) setup
-  call tri_handle%setup_operator(row_inds, C_FUNLOC(matvec))
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ": ", trim(serr)
-    stop 1
-  endif
-
-  ! Step 3: setup the solver
-  ! We cannot use most preconditioners without a matrix, so
-  ! we remove any from the parameter list
-  call plist%set("Preconditioner Type", "None")
-  call tri_handle%setup_solver(plist)
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ": ", trim(serr)
-    stop 1
-  endif
-
-  ! Step 4: solve the system
-  ! We only check that it runs, but do not check the result as
-  ! we are using a dummy operator
-  call tri_handle%solve(rhs, lhs)
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ":", trim(serr)
-    stop 1
-  endif
-
-  ! Step 5: clean up
-  call tri_handle%finalize()
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ":", trim(serr)
-    stop 1
-  endif
-
-  ! ------------------------------------------------------------------
-
-  call plist%release()
-  call tri_handle%release()
-  if (ierr /= 0) then
-    write(*,*) "Got error ", ierr, ":", trim(serr)
-    stop 1
-  endif
-#endif
-
+  deallocate(evalues)
+  call eigen_handle%finalize(); CHECK_IERR()
+  call plist%release(); CHECK_IERR()
+  call X%release(); CHECK_IERR()
+  call A%release(); CHECK_IERR()
+  call map%release(); CHECK_IERR()
   call comm%release()
 
 #ifdef HAVE_MPI

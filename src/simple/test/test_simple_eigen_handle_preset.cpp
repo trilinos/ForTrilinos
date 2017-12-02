@@ -23,45 +23,46 @@ int main(int argc, char *argv[]) {
     using Teuchos::rcp_dynamic_cast;
     using Teuchos::ParameterList;
 
+    using Matrix      = ForTrilinos::TrilinosEigenSolver::Matrix;
+    using MultiVector = ForTrilinos::TrilinosEigenSolver::MultiVector;
+
     // Initialize MPI system
     Teuchos::GlobalMPISession mpiSession(&argc, &argv, NULL);
     RCP<const Teuchos::Comm<int> > comm = Teuchos::DefaultComm<int>::getComm();
 
     // Read in the parameter list
-    Teuchos::RCP<ParameterList> paramList(new ParameterList());
-    Teuchos::updateParametersFromXmlFileAndBroadcast("davidson.xml", Teuchos::Ptr<ParameterList>(paramList.get()), *comm);
+    ParameterList paramList;
+    Teuchos::updateParametersFromXmlFileAndBroadcast("davidson.xml", Teuchos::Ptr<ParameterList>(&paramList), *comm);
 
     // For now, run without a preconditioner
-    paramList->remove("Preconditioner Type", false/*throwIfExists*/);
+    paramList.remove("Preconditioner Type", false/*throwIfExists*/);
 
     // Read in the matrices
-    auto A = Tpetra::MatrixMarket::Reader<ForTrilinos::EigenHandle::Matrix>::readSparseFile("LHS_matrix.mat", comm);
-    auto M = Tpetra::MatrixMarket::Reader<ForTrilinos::EigenHandle::Matrix>::readSparseFile("RHS_matrix.mat", comm);
-
-    int n = A->getNodeNumRows();
+    auto A = Tpetra::MatrixMarket::Reader<Matrix>::readSparseFile("LHS_matrix.mat", comm);
+    auto M = Tpetra::MatrixMarket::Reader<Matrix>::readSparseFile("RHS_matrix.mat", comm);
 
     // The eigen solution
-    std::vector<double> evectors(n);
     std::vector<double> evalues(1);
+    Teuchos::RCP<MultiVector> X = Teuchos::rcp(new MultiVector(A->getRowMap(), 1));
 
     // Step 1: initialize a handle
-    ForTrilinos::EigenHandle si;
-    si.init(comm);
+    ForTrilinos::TrilinosEigenSolver handle;
+    handle.init(comm);
 
     // Step 2: setup the problem
-    si.setup_matrix(A);
-    si.setup_matrix_rhs(M);
+    handle.setup_matrix(A);
+    handle.setup_matrix_rhs(M);
 
     // Step 3: setup the solver
-    si.setup_solver(paramList);
+    handle.setup_solver(Teuchos::rcpFromRef(paramList));
 
     // Step 4: solve the system
-    si.solve(std::make_pair(evalues.data(), 1), std::make_pair(evectors.data(), n));
+    handle.solve(std::make_pair(evalues.data(), 1), X);
 
     // TODO: Check the solution
 
     // Step 5: clean up
-    si.finalize();
+    handle.finalize();
 
     success = true;
   }

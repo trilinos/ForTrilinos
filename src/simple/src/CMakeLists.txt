@@ -8,7 +8,6 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 SET(EXTRA_SOURCE
   solver_handle.cpp
   fortran_operator.cpp
-  handle_helpers.cpp
   )
 
 IF (${PACKAGE_NAME}_ENABLE_Anasazi)
