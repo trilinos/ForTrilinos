@@ -34,8 +34,6 @@
 
 %teuchos_rcp(Tpetra::Vector<SC,LO,GO,NO,false>)
 
-#define HAVE_TPETRA_INST_INT_INT
-%include "Tpetra_ConfigDefs.hpp"
 %include "Tpetra_Vector_decl.hpp"
 
 %template(TpetraVector) Tpetra::Vector<SC,LO,GO,NO,false>;

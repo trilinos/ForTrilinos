@@ -32,8 +32,6 @@
 
 %teuchos_rcp(Tpetra::RowMatrix<SC,LO,GO,NO>)
 
-#define HAVE_TPETRA_INST_INT_INT
-%include "Tpetra_ConfigDefs.hpp"
 %include "Tpetra_RowMatrix_decl.hpp"
 
 %template(TpetraRowMatrix) Tpetra::RowMatrix<SC,LO,GO,NO>;

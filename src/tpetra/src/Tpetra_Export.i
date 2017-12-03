@@ -40,8 +40,6 @@
 
 %teuchos_rcp(Tpetra::Export<LO,GO,NO>)
 
-#define HAVE_TPETRA_INST_INT_INT
-%include "Tpetra_ConfigDefs.hpp"
 %include "Tpetra_Export_decl.hpp"
 
 %template(TpetraExport) Tpetra::Export<LO,GO,NO>;
