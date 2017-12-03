@@ -75,12 +75,8 @@
 %ignore Tpetra::CrsMatrix::getLocalValuesView;              // needs Kokkos::View
 %ignore Tpetra::CrsMatrix::leftScale;                       // needs Tpetra::Vector
 %ignore Tpetra::CrsMatrix::rightScale;                      // needs Tpetra::Vector
-%ignore Tpetra::CrsMatrix::gaussSeidel;
-%ignore Tpetra::CrsMatrix::reindexColumns;
 %ignore Tpetra::CrsMatrix::reorderedGaussSeidel;
-%ignore Tpetra::CrsMatrix::gaussSeidelCopy;
 %ignore Tpetra::CrsMatrix::reorderedGaussSeidelCopy;
-%ignore Tpetra::CrsMatrix::add;
 
 // =======================================================================
 // Fix ±1 issues
@@ -223,8 +219,6 @@
 
 %teuchos_rcp(Tpetra::CrsMatrix<SC,LO,GO,NO,false>)
 
-#define HAVE_TPETRA_INST_INT_INT
-%include "Tpetra_ConfigDefs.hpp"
 %include "Tpetra_CrsMatrix_decl.hpp"
 
 %template(TpetraCrsMatrix) Tpetra::CrsMatrix<SC,LO,GO,NO,false>;

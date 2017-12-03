@@ -20,6 +20,7 @@ typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
 typedef char                                    Packet;
 %}
 
+#define HAVE_TPETRA_INST_INT_LONG_LONG
 typedef double                                  SC;
 typedef int                                     LO;
 typedef long long                               GO;
@@ -92,6 +93,10 @@ namespace Kokkos {
 
 // ignore indexBase
 %ignore getIndexBase;
+
+// Some enums
+%include "Tpetra_ConfigDefs.hpp"
+/* %include "Tpetra_CombineMode.hpp" */
 
 // Order matters!!!
 %include "Tpetra_Map.i"

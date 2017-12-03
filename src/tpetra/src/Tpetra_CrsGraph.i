@@ -181,8 +181,6 @@
 
 %teuchos_rcp(Tpetra::CrsGraph<LO,GO,NO,false>)
 
-#define HAVE_TPETRA_INST_INT_INT
-%include "Tpetra_ConfigDefs.hpp"
 %include "Tpetra_CrsGraph_decl.hpp"
 
 %template(TpetraCrsGraph) Tpetra::CrsGraph<LO,GO,NO,false>;

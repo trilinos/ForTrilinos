@@ -27,6 +27,9 @@
         const Teuchos::RCP< const map_type > &target, \
         const Teuchos::RCP< Teuchos::FancyOStream > &out, \
         const Teuchos::RCP< Teuchos::ParameterList > &plist);   // needs Teuchos::FancyOStream
+%ignore Tpetra::Import::Import (const Teuchos::RCP<const map_type>& source,
+        const Teuchos::RCP<const map_type>& target,
+        Teuchos::Array<int> & remotePIDs);              // ±1 issue
 %ignore Tpetra::Import::Import( \
         const Teuchos::RCP< const Map< LocalOrdinal, GlobalOrdinal, Node > > &source, \
         const Teuchos::RCP< const Map< LocalOrdinal, GlobalOrdinal, Node > > &target, \
@@ -49,8 +52,6 @@
 
 %teuchos_rcp(Tpetra::Import<LO,GO,NO>)
 
-#define HAVE_TPETRA_INST_INT_INT
-%include "Tpetra_ConfigDefs.hpp"
 %include "Tpetra_Import_decl.hpp"
 
 %template(TpetraImport) Tpetra::Import<LO,GO,NO>;

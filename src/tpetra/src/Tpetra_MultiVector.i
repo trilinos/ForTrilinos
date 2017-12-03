@@ -154,8 +154,6 @@
 
 %teuchos_rcp(Tpetra::MultiVector<SC,LO,GO,NO,false>)
 
-#define HAVE_TPETRA_INST_INT_INT
-%include "Tpetra_ConfigDefs.hpp"
 %include "Tpetra_MultiVector_decl.hpp"
 
 %template(TpetraMultiVector) Tpetra::MultiVector<SC,LO,GO,NO,false>;
