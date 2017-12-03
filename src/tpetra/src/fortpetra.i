@@ -17,12 +17,14 @@ typedef double                                  SC;
 typedef int                                     LO;
 typedef long long                               GO;
 typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
+typedef char                                    Packet;
 %}
 
 typedef double                                  SC;
 typedef int                                     LO;
 typedef long long                               GO;
 typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
+typedef char                                    Packet;
 
 %fragment("TpetraTypes", "fimports") {
  use, intrinsic :: iso_c_binding, only : &
@@ -95,6 +97,7 @@ namespace Kokkos {
 %include "Tpetra_Map.i"
 %include "Tpetra_Export.i"
 %include "Tpetra_Import.i"
+/* %include "Tpetra_DistObject.i" */
 %include "Tpetra_MultiVector.i"
 /* %include "Tpetra_Vector.i" */        // needs better support for inheritance
 /* %include "Tpetra_Operator.i" */      // needs to understand that Tpetra::MultiVector<SC,LO,GO,NO,false> and Tpetra::MultiVector<SC,LO,GO,NO> are the same thing
