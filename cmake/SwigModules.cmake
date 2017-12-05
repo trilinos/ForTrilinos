@@ -36,7 +36,7 @@ ENDIF()
 
 # Define extra output files
 set(SWIG_FORTRAN_EXTRA_FILE_EXTENSION "f90") # old CMake
-set(SWIG_FORTRAN_EXTRA_FILE_EXTENSIONS "f90")# new CMake
+set(SWIG_FORTRAN_EXTRA_FILE_EXTENSIONS ".f90")# new CMake
 
 ##---------------------------------------------------------------------------##
 # Look through a header/SWIG file and find dependencies
