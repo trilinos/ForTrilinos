@@ -33,9 +33,9 @@ namespace ForTrilinos {
     typedef size_t                                  global_size_t;
 
     typedef Teuchos::ParameterList                  ParameterList;
-    typedef Tpetra::CrsMatrix<SC,LO,GO,NO,false>    Matrix;
+    typedef Tpetra::CrsMatrix<SC,LO,GO,NO>          Matrix;
     typedef Tpetra::Map<LO,GO,NO>                   Map;
-    typedef Tpetra::MultiVector<SC,LO,GO,NO,false>  MultiVector;
+    typedef Tpetra::MultiVector<SC,LO,GO,NO>        MultiVector;
     typedef Tpetra::Operator<SC,LO,GO,NO>           Operator;
     typedef Anasazi::SolverManager<SC,MultiVector,Operator> SolverManager;
 

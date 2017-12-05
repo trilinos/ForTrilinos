@@ -93,14 +93,14 @@
 // =======================================================================
 // Make interface more Fortran friendly
 // =======================================================================
-%extend Tpetra::CrsMatrix<SC,LO,GO,NO,false> {
+%extend Tpetra::CrsMatrix<SC,LO,GO,NO> {
     CrsMatrix(const Teuchos::RCP<const map_type>& rowMap, std::pair<const size_t*,size_t> NumEntriesPerRowToAlloc, ProfileType pftype = DynamicProfile, const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null) {
       Teuchos::ArrayRCP<const size_t> NumEntriesPerRowToAllocArrayRCP(NumEntriesPerRowToAlloc.first, 0, NumEntriesPerRowToAlloc.second, false/*has_ownership*/);
-      return new Tpetra::CrsMatrix<SC,LO,GO,NO,false>(rowMap, NumEntriesPerRowToAllocArrayRCP, pftype, params);
+      return new Tpetra::CrsMatrix<SC,LO,GO,NO>(rowMap, NumEntriesPerRowToAllocArrayRCP, pftype, params);
     }
     CrsMatrix(const Teuchos::RCP<const map_type>& rowMap, const Teuchos::RCP<const map_type>& colMap, std::pair<const size_t*,size_t> NumEntriesPerRowToAlloc, ProfileType pftype = DynamicProfile, const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null) {
       Teuchos::ArrayRCP<const size_t> NumEntriesPerRowToAllocArrayRCP(NumEntriesPerRowToAlloc.first, 0, NumEntriesPerRowToAlloc.second, false/*has_ownership*/);
-      return new Tpetra::CrsMatrix<SC,LO,GO,NO,false>(rowMap, colMap, NumEntriesPerRowToAllocArrayRCP, pftype, params);
+      return new Tpetra::CrsMatrix<SC,LO,GO,NO>(rowMap, colMap, NumEntriesPerRowToAllocArrayRCP, pftype, params);
     }
     CrsMatrix (const Teuchos::RCP<const map_type>& rowMap, const Teuchos::RCP<const map_type>& colMap, std::pair<size_t*,size_t> rowPointers, std::pair<LO*,size_t> columnIndices, std::pair<SC*,size_t> values, const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null) {
       Teuchos::ArrayRCP<size_t> rowPointersArrayRCP(rowPointers.second);
@@ -110,7 +110,7 @@
       for (int i = 0; i < columnIndicesArrayRCP.size(); i++)
         columnIndicesArrayRCP[i] = columnIndices.first[i]-1;
       Teuchos::ArrayRCP<SC> valuesArrayRCP(values.first, 0, values.second, false/*has_ownership*/);
-      return new Tpetra::CrsMatrix<SC,LO,GO,NO,false>(rowMap, colMap, rowPointersArrayRCP, columnIndicesArrayRCP, valuesArrayRCP, params);
+      return new Tpetra::CrsMatrix<SC,LO,GO,NO>(rowMap, colMap, rowPointersArrayRCP, columnIndicesArrayRCP, valuesArrayRCP, params);
     }
     void insertGlobalValues(const GO globalRow, std::pair<const GO*,size_t> cols, std::pair<const SC*,size_t> vals) {
       Teuchos::ArrayView<const GO> colsView = Teuchos::arrayView(cols.first, cols.second);
@@ -217,8 +217,8 @@
 %ignore Tpetra::CrsMatrix::getLocalRowViewRaw(const LocalOrdinal lclRow, LocalOrdinal &numEnt, const LocalOrdinal *&lclColInds, const Scalar *&vals) const;
 
 
-%teuchos_rcp(Tpetra::CrsMatrix<SC,LO,GO,NO,false>)
+%teuchos_rcp(Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>)
 
 %include "Tpetra_CrsMatrix_decl.hpp"
 
-%template(TpetraCrsMatrix) Tpetra::CrsMatrix<SC,LO,GO,NO,false>;
+%template(TpetraCrsMatrix) Tpetra::CrsMatrix<SC,LO,GO,NO>;

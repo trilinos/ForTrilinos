@@ -33,6 +33,7 @@ module fortpetra
  private
 
  ! PUBLIC METHODS AND TYPES
+ public :: KokkosSerialWrapperNode
 
 public :: scalar_type
 public :: local_ordinal_type
@@ -113,6 +114,14 @@ end type
  end enum
 
  ! TYPES
+ type :: KokkosSerialWrapperNode
+  ! These should be treated as PROTECTED data
+  type(C_PTR), public :: swigptr = C_NULL_PTR
+ contains
+  procedure, nopass :: get_classic => swigf_get_KokkosSerialWrapperNode_classic
+  procedure :: create => swigf_new_KokkosSerialWrapperNode
+  procedure :: release => swigf_delete_KokkosSerialWrapperNode
+ end type
  type :: TpetraMap
   ! These should be treated as PROTECTED data
   type(C_PTR), public :: swigptr = C_NULL_PTR
@@ -256,10 +265,8 @@ end type
   procedure :: get1dCopy => swigf_TpetraMultiVector_get1dCopy
   procedure :: get1dView => swigf_TpetraMultiVector_get1dView
   procedure :: get1dViewNonConst => swigf_TpetraMultiVector_get1dViewNonConst
-  procedure, private :: swigf_assign_TpetraMultiVector
   generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2, create__SWIG_3, create__SWIG_4, create__SWIG_5, &
     create__SWIG_6, create__SWIG_7
-  generic :: assignment(=) => swigf_assign_TpetraMultiVector
   generic :: randomize => randomize__SWIG_0, randomize__SWIG_1
   generic :: sumIntoGlobalValue => sumIntoGlobalValue__SWIG_0, sumIntoGlobalValue__SWIG_1
   generic :: sumIntoLocalValue => sumIntoLocalValue__SWIG_0, sumIntoLocalValue__SWIG_1
@@ -488,6 +495,26 @@ end type
 
  ! WRAPPER DECLARATIONS
  interface
+function swigc_get_KokkosSerialWrapperNode_classic() &
+bind(C, name="swigc_get_KokkosSerialWrapperNode_classic") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: fresult
+end function
+
+function swigc_new_KokkosSerialWrapperNode() &
+bind(C, name="swigc_new_KokkosSerialWrapperNode") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: fresult
+end function
+
+subroutine swigc_delete_KokkosSerialWrapperNode(farg1) &
+bind(C, name="swigc_delete_KokkosSerialWrapperNode")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+end subroutine
+
 function swigc_new_TpetraMap__SWIG_0() &
 bind(C, name="swigc_new_TpetraMap__SWIG_0") &
 result(fresult)
@@ -1467,13 +1494,6 @@ type(C_PTR), value :: farg1
 type(SwigfArrayWrapper) :: fresult
 end function
 
-  function swigc_spcopy_TpetraMultiVector(farg1) &
-     bind(C, name="swigc_spcopy_TpetraMultiVector") &
-     result(fresult)
-   use, intrinsic :: ISO_C_BINDING
-   type(C_PTR) :: fresult
-   type(C_PTR), value :: farg1
-  end function
 subroutine swigc_set_RowInfo_localRow(farg1, farg2) &
 bind(C, name="swigc_set_RowInfo_localRow")
 use, intrinsic :: ISO_C_BINDING
@@ -3050,6 +3070,37 @@ end subroutine
 
 contains
  ! FORTRAN PROXY CODE
+function swigf_get_KokkosSerialWrapperNode_classic() &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+logical(C_BOOL) :: swigf_result
+logical(C_BOOL) :: fresult 
+
+fresult = swigc_get_KokkosSerialWrapperNode_classic()
+swigf_result = fresult
+end function
+
+subroutine swigf_new_KokkosSerialWrapperNode(self)
+use, intrinsic :: ISO_C_BINDING
+class(KokkosSerialWrapperNode) :: self
+type(C_PTR) :: fresult 
+
+if (c_associated(self%swigptr)) call self%release()
+fresult = swigc_new_KokkosSerialWrapperNode()
+self%swigptr = fresult
+end subroutine
+
+subroutine swigf_delete_KokkosSerialWrapperNode(self)
+use, intrinsic :: ISO_C_BINDING
+class(KokkosSerialWrapperNode) :: self
+type(C_PTR) :: farg1 
+
+if (.not. c_associated(self%swigptr)) return
+farg1 = self%swigptr
+call swigc_delete_KokkosSerialWrapperNode(farg1)
+self%swigptr = C_NULL_PTR
+end subroutine
+
 subroutine swigf_new_TpetraMap__SWIG_0(self)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraMap) :: self
@@ -4741,13 +4792,6 @@ fresult = swigc_TpetraMultiVector_get1dViewNonConst(farg1)
 call c_f_pointer(fresult%data, swigf_result, [fresult%size])
 end function
 
-  subroutine swigf_assign_TpetraMultiVector(self, other)
-   use, intrinsic :: ISO_C_BINDING
-   class(TpetraMultiVector), intent(inout) :: self
-   type(TpetraMultiVector), intent(in) :: other
-if (c_associated(self%swigptr)) call self%release()
-   self%swigptr = swigc_spcopy_TpetraMultiVector(other%swigptr)
-  end subroutine
 subroutine swigf_set_RowInfo_localRow(self, localrow)
 use, intrinsic :: ISO_C_BINDING
 class(RowInfo) :: self
