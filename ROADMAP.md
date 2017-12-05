@@ -31,6 +31,7 @@ Status | Class
 :running: | [MultiVector](#tpetramultivector)
 :running: | [CrsGraph](#tpetracrsgraph)
 :running: | [CrsMatrix](#tpetracrsmatrix)
+:running: | [MatrixMatrix](#tpetramatrixmatrix)
 :arrow_down: | Vector
 :arrow_down: | RowMatrix
 :arrow_down: | Operator
@@ -772,5 +773,15 @@ Status | Class
 -------|--------|---------
 :x: | `virtual void 	pack (const Teuchos::ArrayView< const LocalOrdinal > &exportLIDs, Teuchos::Array< char > &exports, const Teuchos::ArrayView< size_t > &numPacketsPerLID, size_t &constantNumPackets, Distributor &distor) const`
 :x: | `void 	packNonStatic (const Teuchos::ArrayView< const LocalOrdinal > &exportLIDs, Teuchos::Array< char > &exports, const Teuchos::ArrayView< size_t > &numPacketsPerLID, size_t &constantNumPackets, Distributor &distor) const`
+
+### Tpetra::MatrixMatrix
+
+:grey_question: | Command | Comment
+-------|--------|---------
+:white_check_mark | `template<class Scalar , class LocalOrdinal , class GlobalOrdinal , class Node > void 	Multiply (const CrsMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node > &A, bool transposeA, const CrsMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node > &B, bool transposeB, CrsMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node > &C, bool call_FillComplete_on_result=true, const std::string &label=std::string(), const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:white_check_mark: | `template<class Scalar , class LocalOrdinal , class GlobalOrdinal , class Node > void 	Add (const CrsMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node > &A, bool transposeA, Scalar scalarA, CrsMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node > &B, Scalar scalarB)`
+x: | `template<class Scalar , class LocalOrdinal , class GlobalOrdinal , class Node > Teuchos::RCP< CrsMatrix < Scalar, LocalOrdinal, GlobalOrdinal, Node > > 	add (const Scalar &alpha, const bool transposeA, const CrsMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node > &A, const Scalar &beta, const bool transposeB, const CrsMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node > &B, const Teuchos::RCP< const Map< LocalOrdinal, GlobalOrdinal, Node > > &domainMap=Teuchos::null, const Teuchos::RCP< const Map< LocalOrdinal, GlobalOrdinal, Node > > &rangeMap=Teuchos::null, const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
+:white_check_mark: | `template<class Scalar , class LocalOrdinal , class GlobalOrdinal , class Node > void 	Add (const CrsMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node > &A, bool transposeA, Scalar scalarA, const CrsMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node > &B, bool transposeB, Scalar scalarB, Teuchos::RCP< CrsMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node > > C)`
+:arrow_down: | `template<class Scalar , class LocalOrdinal , class GlobalOrdinal , class Node > void 	Jacobi (Scalar omega, const Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node > &Dinv, const CrsMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node > &A, const CrsMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node > &B, CrsMatrix< Scalar, LocalOrdinal, GlobalOrdinal, Node > &C, bool call_FillComplete_on_result=true, const std::string &label=std::string(), const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null)`
 
 ## Belos

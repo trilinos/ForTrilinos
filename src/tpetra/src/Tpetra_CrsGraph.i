@@ -90,13 +90,13 @@
 // =======================================================================
 // Make interface more Fortran friendly
 // =======================================================================
-%extend Tpetra::CrsGraph<LO,GO,NO,false> {
+%extend Tpetra::CrsGraph<LO,GO,NO> {
     CrsGraph(const Teuchos::RCP< const map_type > &rowMap, \
         std::pair<const size_t*,size_t> numEntPerRow, \
         const ProfileType pftype=DynamicProfile, \
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null) {
       Teuchos::ArrayRCP<const size_t> numEntPerRowRCP(numEntPerRow.first, 0, numEntPerRow.second, false/*has_ownership*/);
-      return new Tpetra::CrsGraph<LO,GO,NO,false>(rowMap, numEntPerRowRCP, pftype, params);
+      return new Tpetra::CrsGraph<LO,GO,NO>(rowMap, numEntPerRowRCP, pftype, params);
     }
     CrsGraph(const Teuchos::RCP< const map_type > &rowMap, \
         const Teuchos::RCP< const map_type > &colMap, \
@@ -104,7 +104,7 @@
         const ProfileType pftype=DynamicProfile, \
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null) {
       Teuchos::ArrayRCP<const size_t> numEntPerRowRCP(numEntPerRow.first, 0, numEntPerRow.second, false/*has_ownership*/);
-      return new Tpetra::CrsGraph<LO,GO,NO,false>(rowMap, colMap, numEntPerRowRCP, pftype, params);
+      return new Tpetra::CrsGraph<LO,GO,NO>(rowMap, colMap, numEntPerRowRCP, pftype, params);
     }
     CrsGraph(const Teuchos::RCP< const map_type > &rowMap, \
         const Teuchos::RCP< const map_type > &colMap, \
@@ -117,7 +117,7 @@
       Teuchos::Array<LO> columnIndicesArray(columnIndices.second);
       for (size_t i = 0; i < columnIndices.second; i++)
         columnIndicesArray[i] = columnIndices.first[i]-1;
-      return new Tpetra::CrsGraph<LO,GO,NO,false>(rowMap, colMap,
+      return new Tpetra::CrsGraph<LO,GO,NO>(rowMap, colMap,
         Teuchos::arcpFromArray(rowPointersArray), Teuchos::arcpFromArray(columnIndicesArray), params);
     }
     void insertGlobalIndices(const GO globalRow, std::pair<const GO*,size_t> indices) {
@@ -179,8 +179,8 @@
 %ignore Tpetra::CrsGraph::getLocalRowView(const LocalOrdinal lclRow, Teuchos::ArrayView< const LocalOrdinal > &lclColInds) const;
 
 
-%teuchos_rcp(Tpetra::CrsGraph<LO,GO,NO,false>)
+%teuchos_rcp(Tpetra::CrsGraph<LO,GO,NO,NO::classic>)
 
 %include "Tpetra_CrsGraph_decl.hpp"
 
-%template(TpetraCrsGraph) Tpetra::CrsGraph<LO,GO,NO,false>;
+%template(TpetraCrsGraph) Tpetra::CrsGraph<LO,GO,NO>;

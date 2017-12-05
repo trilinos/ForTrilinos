@@ -67,10 +67,10 @@
 // =======================================================================
 // Make interface more Fortran friendly
 // =======================================================================
-%extend Tpetra::MultiVector<SC,LO,GO,NO,false> {
+%extend Tpetra::MultiVector<SC,LO,GO,NO> {
     MultiVector (const Teuchos::RCP< const map_type > &map, std::pair<const SC*,size_t> A, const size_t LDA, const size_t NumVectors) {
       Teuchos::ArrayView<const SC> AView = Teuchos::arrayView(A.first, A.second);
-      return new Tpetra::MultiVector<SC,LO,GO,NO,false>(map, AView, LDA, NumVectors);
+      return new Tpetra::MultiVector<SC,LO,GO,NO>(map, AView, LDA, NumVectors);
     }
     std::pair<const SC*,size_t> getData(size_t j) const {
       Teuchos::ArrayRCP<const SC> a = self->getData(j);
@@ -80,25 +80,25 @@
       Teuchos::ArrayRCP<SC> a = self->getDataNonConst(j);
       return std::make_pair<SC*,size_t>(a.get(), a.size());
     }
-    Teuchos::RCP<Tpetra::MultiVector<SC,LO,GO,NO,false> > subCopy(std::pair<const size_t*,size_t> cols) const {
+    Teuchos::RCP<Tpetra::MultiVector<SC,LO,GO,NO> > subCopy(std::pair<const size_t*,size_t> cols) const {
       Teuchos::Array<size_t> colsArray(cols.second);
       for (int i = 0; i < colsArray.size(); i++)
         colsArray[i] = cols.first[i]-1;
       return self->subCopy(colsArray);
     }
-    Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,false> > subView(std::pair<const size_t*,size_t> cols) const {
+    Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO> > subView(std::pair<const size_t*,size_t> cols) const {
       Teuchos::Array<size_t> colsArray(cols.second);
       for (int i = 0; i < colsArray.size(); i++)
         colsArray[i] = cols.first[i]-1;
       return self->subView(colsArray);
     }
-    Teuchos::RCP<Tpetra::MultiVector<SC,LO,GO,NO,false> > subViewNonConst(std::pair<const size_t*,size_t> cols) {
+    Teuchos::RCP<Tpetra::MultiVector<SC,LO,GO,NO> > subViewNonConst(std::pair<const size_t*,size_t> cols) {
       Teuchos::Array<size_t> colsArray(cols.second);
       for (int i = 0; i < colsArray.size(); i++)
         colsArray[i] = cols.first[i]-1;
       return self->subViewNonConst(colsArray);
     }
-    void dot( const Tpetra::MultiVector<SC,LO,GO,NO,false> &A, std::pair<SC*,size_t> dots) const {
+    void dot( const Tpetra::MultiVector<SC,LO,GO,NO> &A, std::pair<SC*,size_t> dots) const {
       Teuchos::ArrayView<SC> dotsView = Teuchos::arrayView(dots.first, dots.second);
       return self->dot(A, dotsView);
     }
@@ -152,8 +152,8 @@
 %ignore Tpetra::MultiVector::get1dViewNonConst;
 
 
-%teuchos_rcp(Tpetra::MultiVector<SC,LO,GO,NO,false>)
+%teuchos_rcp(Tpetra::MultiVector<SC,LO,GO,NO,NO::classic>)
 
 %include "Tpetra_MultiVector_decl.hpp"
 
-%template(TpetraMultiVector) Tpetra::MultiVector<SC,LO,GO,NO,false>;
+%template(TpetraMultiVector) Tpetra::MultiVector<SC,LO,GO,NO>;
