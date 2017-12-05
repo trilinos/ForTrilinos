@@ -109,3 +109,6 @@ namespace Kokkos {
 %include "Tpetra_CrsGraph.i"
 /* %include "Tpetra_RowMatrix.i" */     // needs better support for abstract classes
 %include "Tpetra_CrsMatrix.i"
+
+/* %include "Tpetra_InOut.i" */
+%include "Tpetra_MatrixMatrix.i"

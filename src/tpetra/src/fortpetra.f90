@@ -33,7 +33,6 @@ module fortpetra
  private
 
  ! PUBLIC METHODS AND TYPES
- public :: KokkosSerialWrapperNode
 
 public :: scalar_type
 public :: local_ordinal_type
@@ -66,6 +65,14 @@ end type
  public :: ELocalGlobal, LocalIndices, GlobalIndices
  public :: TpetraCrsGraph
  public :: TpetraCrsMatrix
+ public :: TpetraMatrixMatrixAdd
+ interface TpetraMatrixMatrixAdd
+  module procedure TpetraMatrixMatrixAdd__SWIG_0, TpetraMatrixMatrixAdd__SWIG_1
+ end interface
+ public :: TpetraMatrixMatrixMultiply
+ interface TpetraMatrixMatrixMultiply
+  module procedure TpetraMatrixMatrixMultiply__SWIG_0, TpetraMatrixMatrixMultiply__SWIG_1, TpetraMatrixMatrixMultiply__SWIG_2, TpetraMatrixMatrixMultiply__SWIG_3
+ end interface
 
  ! PARAMETERS
  integer(C_INT), parameter, public :: TPETRA_THROWS_EFFICIENCY_WARNINGS = 0_C_INT
@@ -114,14 +121,6 @@ end type
  end enum
 
  ! TYPES
- type :: KokkosSerialWrapperNode
-  ! These should be treated as PROTECTED data
-  type(C_PTR), public :: swigptr = C_NULL_PTR
- contains
-  procedure, nopass :: get_classic => swigf_get_KokkosSerialWrapperNode_classic
-  procedure :: create => swigf_new_KokkosSerialWrapperNode
-  procedure :: release => swigf_delete_KokkosSerialWrapperNode
- end type
  type :: TpetraMap
   ! These should be treated as PROTECTED data
   type(C_PTR), public :: swigptr = C_NULL_PTR
@@ -495,26 +494,6 @@ end type
 
  ! WRAPPER DECLARATIONS
  interface
-function swigc_get_KokkosSerialWrapperNode_classic() &
-bind(C, name="swigc_get_KokkosSerialWrapperNode_classic") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: fresult
-end function
-
-function swigc_new_KokkosSerialWrapperNode() &
-bind(C, name="swigc_new_KokkosSerialWrapperNode") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
-end function
-
-subroutine swigc_delete_KokkosSerialWrapperNode(farg1) &
-bind(C, name="swigc_delete_KokkosSerialWrapperNode")
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-end subroutine
-
 function swigc_new_TpetraMap__SWIG_0() &
 bind(C, name="swigc_new_TpetraMap__SWIG_0") &
 result(fresult)
@@ -3065,42 +3044,79 @@ end subroutine
    type(C_PTR) :: fresult
    type(C_PTR), value :: farg1
   end function
+subroutine swigc_TpetraMatrixMatrixMultiply__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8) &
+bind(C, name="swigc_TpetraMatrixMatrixMultiply__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+logical(C_BOOL), intent(in) :: farg2
+type(C_PTR), value :: farg3
+logical(C_BOOL), intent(in) :: farg4
+type(C_PTR), value :: farg5
+logical(C_BOOL), intent(in) :: farg6
+type(C_PTR), value :: farg7
+type(C_PTR), value :: farg8
+end subroutine
+
+subroutine swigc_TpetraMatrixMatrixMultiply__SWIG_1(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
+bind(C, name="swigc_TpetraMatrixMatrixMultiply__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+logical(C_BOOL), intent(in) :: farg2
+type(C_PTR), value :: farg3
+logical(C_BOOL), intent(in) :: farg4
+type(C_PTR), value :: farg5
+logical(C_BOOL), intent(in) :: farg6
+type(C_PTR), value :: farg7
+end subroutine
+
+subroutine swigc_TpetraMatrixMatrixMultiply__SWIG_2(farg1, farg2, farg3, farg4, farg5, farg6) &
+bind(C, name="swigc_TpetraMatrixMatrixMultiply__SWIG_2")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+logical(C_BOOL), intent(in) :: farg2
+type(C_PTR), value :: farg3
+logical(C_BOOL), intent(in) :: farg4
+type(C_PTR), value :: farg5
+logical(C_BOOL), intent(in) :: farg6
+end subroutine
+
+subroutine swigc_TpetraMatrixMatrixMultiply__SWIG_3(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_TpetraMatrixMatrixMultiply__SWIG_3")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+logical(C_BOOL), intent(in) :: farg2
+type(C_PTR), value :: farg3
+logical(C_BOOL), intent(in) :: farg4
+type(C_PTR), value :: farg5
+end subroutine
+
+subroutine swigc_TpetraMatrixMatrixAdd__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="swigc_TpetraMatrixMatrixAdd__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+logical(C_BOOL), intent(in) :: farg2
+real(C_DOUBLE), intent(in) :: farg3
+type(C_PTR), value :: farg4
+real(C_DOUBLE), intent(in) :: farg5
+end subroutine
+
+subroutine swigc_TpetraMatrixMatrixAdd__SWIG_1(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
+bind(C, name="swigc_TpetraMatrixMatrixAdd__SWIG_1")
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+logical(C_BOOL), intent(in) :: farg2
+real(C_DOUBLE), intent(in) :: farg3
+type(C_PTR), value :: farg4
+logical(C_BOOL), intent(in) :: farg5
+real(C_DOUBLE), intent(in) :: farg6
+type(C_PTR), value :: farg7
+end subroutine
+
  end interface
 
 
 contains
  ! FORTRAN PROXY CODE
-function swigf_get_KokkosSerialWrapperNode_classic() &
-result(swigf_result)
-use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swigf_result
-logical(C_BOOL) :: fresult 
-
-fresult = swigc_get_KokkosSerialWrapperNode_classic()
-swigf_result = fresult
-end function
-
-subroutine swigf_new_KokkosSerialWrapperNode(self)
-use, intrinsic :: ISO_C_BINDING
-class(KokkosSerialWrapperNode) :: self
-type(C_PTR) :: fresult 
-
-if (c_associated(self%swigptr)) call self%release()
-fresult = swigc_new_KokkosSerialWrapperNode()
-self%swigptr = fresult
-end subroutine
-
-subroutine swigf_delete_KokkosSerialWrapperNode(self)
-use, intrinsic :: ISO_C_BINDING
-class(KokkosSerialWrapperNode) :: self
-type(C_PTR) :: farg1 
-
-if (.not. c_associated(self%swigptr)) return
-farg1 = self%swigptr
-call swigc_delete_KokkosSerialWrapperNode(farg1)
-self%swigptr = C_NULL_PTR
-end subroutine
-
 subroutine swigf_new_TpetraMap__SWIG_0(self)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraMap) :: self
@@ -7638,5 +7654,155 @@ end subroutine
 if (c_associated(self%swigptr)) call self%release()
    self%swigptr = swigc_spcopy_TpetraCrsMatrix(other%swigptr)
   end subroutine
+subroutine TpetraMatrixMatrixMultiply__SWIG_0(a, transposea, b, transposeb, c, call_fillcomplete_on_result, label, params)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: a
+logical(C_BOOL), intent(in) :: transposea
+class(TpetraCrsMatrix) :: b
+logical(C_BOOL), intent(in) :: transposeb
+class(TpetraCrsMatrix) :: c
+logical(C_BOOL), intent(in) :: call_fillcomplete_on_result
+class(string) :: label
+type(ParameterList) :: params
+type(C_PTR) :: farg1 
+logical(C_BOOL) :: farg2 
+type(C_PTR) :: farg3 
+logical(C_BOOL) :: farg4 
+type(C_PTR) :: farg5 
+logical(C_BOOL) :: farg6 
+type(C_PTR) :: farg7 
+type(C_PTR) :: farg8 
+
+farg1 = a%swigptr
+farg2 = transposea
+farg3 = b%swigptr
+farg4 = transposeb
+farg5 = c%swigptr
+farg6 = call_fillcomplete_on_result
+farg7 = label%swigptr
+farg8 = params%swigptr
+call swigc_TpetraMatrixMatrixMultiply__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8)
+end subroutine
+
+subroutine TpetraMatrixMatrixMultiply__SWIG_1(a, transposea, b, transposeb, c, call_fillcomplete_on_result, label)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: a
+logical(C_BOOL), intent(in) :: transposea
+class(TpetraCrsMatrix) :: b
+logical(C_BOOL), intent(in) :: transposeb
+class(TpetraCrsMatrix) :: c
+logical(C_BOOL), intent(in) :: call_fillcomplete_on_result
+class(string) :: label
+type(C_PTR) :: farg1 
+logical(C_BOOL) :: farg2 
+type(C_PTR) :: farg3 
+logical(C_BOOL) :: farg4 
+type(C_PTR) :: farg5 
+logical(C_BOOL) :: farg6 
+type(C_PTR) :: farg7 
+
+farg1 = a%swigptr
+farg2 = transposea
+farg3 = b%swigptr
+farg4 = transposeb
+farg5 = c%swigptr
+farg6 = call_fillcomplete_on_result
+farg7 = label%swigptr
+call swigc_TpetraMatrixMatrixMultiply__SWIG_1(farg1, farg2, farg3, farg4, farg5, farg6, farg7)
+end subroutine
+
+subroutine TpetraMatrixMatrixMultiply__SWIG_2(a, transposea, b, transposeb, c, call_fillcomplete_on_result)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: a
+logical(C_BOOL), intent(in) :: transposea
+class(TpetraCrsMatrix) :: b
+logical(C_BOOL), intent(in) :: transposeb
+class(TpetraCrsMatrix) :: c
+logical(C_BOOL), intent(in) :: call_fillcomplete_on_result
+type(C_PTR) :: farg1 
+logical(C_BOOL) :: farg2 
+type(C_PTR) :: farg3 
+logical(C_BOOL) :: farg4 
+type(C_PTR) :: farg5 
+logical(C_BOOL) :: farg6 
+
+farg1 = a%swigptr
+farg2 = transposea
+farg3 = b%swigptr
+farg4 = transposeb
+farg5 = c%swigptr
+farg6 = call_fillcomplete_on_result
+call swigc_TpetraMatrixMatrixMultiply__SWIG_2(farg1, farg2, farg3, farg4, farg5, farg6)
+end subroutine
+
+subroutine TpetraMatrixMatrixMultiply__SWIG_3(a, transposea, b, transposeb, c)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: a
+logical(C_BOOL), intent(in) :: transposea
+class(TpetraCrsMatrix) :: b
+logical(C_BOOL), intent(in) :: transposeb
+class(TpetraCrsMatrix) :: c
+type(C_PTR) :: farg1 
+logical(C_BOOL) :: farg2 
+type(C_PTR) :: farg3 
+logical(C_BOOL) :: farg4 
+type(C_PTR) :: farg5 
+
+farg1 = a%swigptr
+farg2 = transposea
+farg3 = b%swigptr
+farg4 = transposeb
+farg5 = c%swigptr
+call swigc_TpetraMatrixMatrixMultiply__SWIG_3(farg1, farg2, farg3, farg4, farg5)
+end subroutine
+
+subroutine TpetraMatrixMatrixAdd__SWIG_0(a, transposea, scalara, b, scalarb)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: a
+logical(C_BOOL), intent(in) :: transposea
+real(C_DOUBLE), intent(in) :: scalara
+class(TpetraCrsMatrix) :: b
+real(C_DOUBLE), intent(in) :: scalarb
+type(C_PTR) :: farg1 
+logical(C_BOOL) :: farg2 
+real(C_DOUBLE) :: farg3 
+type(C_PTR) :: farg4 
+real(C_DOUBLE) :: farg5 
+
+farg1 = a%swigptr
+farg2 = transposea
+farg3 = scalara
+farg4 = b%swigptr
+farg5 = scalarb
+call swigc_TpetraMatrixMatrixAdd__SWIG_0(farg1, farg2, farg3, farg4, farg5)
+end subroutine
+
+subroutine TpetraMatrixMatrixAdd__SWIG_1(a, transposea, scalara, b, transposeb, scalarb, c)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix) :: a
+logical(C_BOOL), intent(in) :: transposea
+real(C_DOUBLE), intent(in) :: scalara
+class(TpetraCrsMatrix) :: b
+logical(C_BOOL), intent(in) :: transposeb
+real(C_DOUBLE), intent(in) :: scalarb
+type(TpetraCrsMatrix) :: c
+type(C_PTR) :: farg1 
+logical(C_BOOL) :: farg2 
+real(C_DOUBLE) :: farg3 
+type(C_PTR) :: farg4 
+logical(C_BOOL) :: farg5 
+real(C_DOUBLE) :: farg6 
+type(C_PTR) :: farg7 
+
+farg1 = a%swigptr
+farg2 = transposea
+farg3 = scalara
+farg4 = b%swigptr
+farg5 = transposeb
+farg6 = scalarb
+farg7 = c%swigptr
+call swigc_TpetraMatrixMatrixAdd__SWIG_1(farg1, farg2, farg3, farg4, farg5, farg6, farg7)
+end subroutine
+
 
 end module fortpetra
