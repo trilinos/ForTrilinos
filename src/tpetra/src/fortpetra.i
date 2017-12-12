@@ -27,7 +27,7 @@ typedef long long                               GO;
 typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
 typedef char                                    Packet;
 
-%fragment("TpetraTypes", "fimports") {
+%fragment("TpetraTypes", "fmodule") {
  use, intrinsic :: iso_c_binding, only : &
    c_bool, &
    c_int, &
