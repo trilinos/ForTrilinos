@@ -42,8 +42,8 @@ RUN mkdir -p ${PREFIX} && \
     mkdir install
 
 # download Trilinos
-RUN export TRILINOS_VERSION=12.12 && \
-    export TRILINOS_URL="https://github.com/trilinos/Trilinos/archive/root-of-trilinos-release-12-12-branch.tar.gz" && \
+RUN export TRILINOS_VERSION=12.12.1 && \
+    export TRILINOS_URL="https://github.com/trilinos/Trilinos/archive/trilinos-release-12-12-1.tar.gz" && \
     export TRILINOS_ARCHIVE="${PREFIX}/archive/trilinos-${TRILINOS_VERSION}.tar.xz" && \
     export TRILINOS_SOURCE_DIR="${PREFIX}/source/trilinos/${TRILINOS_VERSION}" && \
     export TRILINOS_BUILD_DIR="${PREFIX}/build/trilinos/${TRILINOS_VERSION}" && \
