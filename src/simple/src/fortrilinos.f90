@@ -8,6 +8,7 @@
 !
 ! SPDX-License-Identifier: BSD-3-Clause
 ! License-Filename: LICENSE
+
 module fortrilinos
  use, intrinsic :: ISO_C_BINDING
  use forteuchos
@@ -562,4 +563,4 @@ self%swigptr = C_NULL_PTR
 end subroutine
 
 
-end module fortrilinos
+end module

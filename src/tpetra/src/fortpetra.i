@@ -27,7 +27,7 @@ typedef long long                               GO;
 typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
 typedef char                                    Packet;
 
-%fragment("TpetraTypes", "fimports") {
+%fragment("TpetraTypes", "fmodule") {
  use, intrinsic :: iso_c_binding, only : &
    c_bool, &
    c_int, &
@@ -110,5 +110,5 @@ namespace Kokkos {
 /* %include "Tpetra_RowMatrix.i" */     // needs better support for abstract classes
 %include "Tpetra_CrsMatrix.i"
 
-/* %include "Tpetra_InOut.i" */
+%include "Tpetra_InOut.i"
 %include "Tpetra_MatrixMatrix.i"
