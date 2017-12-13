@@ -469,6 +469,73 @@ SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getGlobalRowView(Tp
     }
 
 #include "Teuchos_RCP.hpp"
+#include "MatrixMarket_Tpetra.hpp"
+
+
+  typedef Tpetra::CrsMatrix<SC,LO,GO,NO> CMT;
+
+SWIGINTERN Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_0(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Teuchos::Comm< int > const > const &pComm,bool const callFillComplete=true,bool const tolerant=false,bool const debug=false){
+      std::string filenameStr(filename.first, filename.second);
+      return Tpetra::MatrixMarket::Reader<CMT>::readSparseGraphFile(filenameStr, pComm, callFillComplete, tolerant, debug);
+    }
+SWIGINTERN Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_4(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Teuchos::Comm< int > const > const &pComm,Teuchos::RCP< Teuchos::ParameterList > const &constructorParams,Teuchos::RCP< Teuchos::ParameterList > const &fillCompleteParams,bool const tolerant=false,bool const debug=false){
+      std::string filenameStr(filename.first, filename.second);
+      return Tpetra::MatrixMarket::Reader<CMT>::readSparseGraphFile(filenameStr, pComm, constructorParams, fillCompleteParams, tolerant, debug);
+    }
+SWIGINTERN Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_7(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > const &rowMap,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > &colMap,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > const &domainMap,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > const &rangeMap,bool const callFillComplete=true,bool const tolerant=false,bool const debug=false){
+      std::string filenameStr(filename.first, filename.second);
+      return Tpetra::MatrixMarket::Reader<CMT>::readSparseGraphFile(filenameStr, rowMap, colMap, domainMap, rangeMap, callFillComplete, tolerant, debug);
+    }
+SWIGINTERN Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_0(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Teuchos::Comm< int > const > const &pComm,bool const callFillComplete=true,bool const tolerant=false,bool const debug=false){
+      std::string filenameStr(filename.first, filename.second);
+      return Tpetra::MatrixMarket::Reader<CMT>::readSparseFile(filenameStr, pComm, callFillComplete, tolerant, debug);
+    }
+SWIGINTERN Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_4(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Teuchos::Comm< int > const > const &pComm,Teuchos::RCP< Teuchos::ParameterList > const &constructorParams,Teuchos::RCP< Teuchos::ParameterList > const &fillCompleteParams,bool const tolerant=false,bool const debug=false){
+      std::string filenameStr(filename.first, filename.second);
+      return Tpetra::MatrixMarket::Reader<CMT>::readSparseFile(filenameStr, pComm, constructorParams, fillCompleteParams, tolerant, debug);
+    }
+SWIGINTERN Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_7(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > const &rowMap,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > &colMap,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > const &domainMap,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > const &rangeMap,bool const callFillComplete=true,bool const tolerant=false,bool const debug=false){
+      std::string filenameStr(filename.first, filename.second);
+      return Tpetra::MatrixMarket::Reader<CMT>::readSparseFile(filenameStr, rowMap, colMap, domainMap, rangeMap, callFillComplete, tolerant, debug);
+    }
+SWIGINTERN Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::multivector_type > Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readDenseFile__SWIG_0(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > const &comm,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > &map,bool const tolerant=false,bool const debug=false){
+      std::string filenameStr(filename.first, filename.second);
+      return Tpetra::MatrixMarket::Reader<CMT>::readDenseFile(filenameStr, comm, map, tolerant, debug);
+    }
+SWIGINTERN Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readMapFile__SWIG_0(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > const &comm,bool const tolerant=false,bool const debug=false){
+      std::string filenameStr(filename.first, filename.second);
+      return Tpetra::MatrixMarket::Reader<CMT>::readMapFile(filenameStr, comm, tolerant, debug);
+    }
+SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseFile__SWIG_0(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > const &pMatrix,std::string const &matrixName,std::string const &matrixDescription,bool const debug=false){
+      std::string filenameStr(filename.first, filename.second);
+      Tpetra::MatrixMarket::Writer<CMT>::writeSparseFile(filenameStr, pMatrix, matrixName, matrixDescription, debug);
+    }
+SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseFile__SWIG_2(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > const &pMatrix,bool const debug=false){
+      std::string filenameStr(filename.first, filename.second);
+      Tpetra::MatrixMarket::Writer<CMT>::writeSparseFile(filenameStr, pMatrix, debug);
+    }
+SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_0(std::pair< char const *,std::size_t > filename,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const &graph,std::string const &graphName,std::string const &graphDescription,bool const debug=false){
+      std::string filenameStr(filename.first, filename.second);
+      Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filenameStr, graph, graphName, graphDescription, debug);
+    }
+SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_2(std::pair< char const *,std::size_t > filename,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const &graph,bool const debug=false){
+      std::string filenameStr(filename.first, filename.second);
+      Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filenameStr, graph, debug);
+    }
+SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_4(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > const &pGraph,std::string const &graphName,std::string const &graphDescription,bool const debug=false){
+      std::string filenameStr(filename.first, filename.second);
+      Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filenameStr, pGraph, graphName, graphDescription, debug);
+    }
+SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_6(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > const &pGraph,bool const debug=false){
+      std::string filenameStr(filename.first, filename.second);
+      Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filenameStr, pGraph, debug);
+    }
+SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeMapFile__SWIG_1(std::pair< char const *,std::size_t > filename,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &map){
+      std::string filenameStr(filename.first, filename.second);
+      Tpetra::MatrixMarket::Writer<CMT>::writeMapFile(filenameStr, map);
+    }
+
+#include "Teuchos_RCP.hpp"
 #include "TpetraExt_MatrixMatrix.hpp"
 
 #ifdef __cplusplus
@@ -11667,6 +11734,2003 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowView(void const *farg1, long l
 SWIGEXPORT void* swigc_spcopy_TpetraCrsMatrix(void* farg1) {
   Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* arg1 = (Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> > *)farg1;
   return new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >(*arg1);
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseGraphFile__SWIG_0(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, bool const *farg3, bool const *farg4, bool const *farg5) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
+  bool arg3 ;
+  bool arg4 ;
+  bool arg5 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg2 : &tempnull2;
+  arg3 = *farg3;
+  arg4 = *farg4;
+  arg5 = *farg5;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3,arg4,arg5);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseGraphFile__SWIG_1(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, bool const *farg3, bool const *farg4) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
+  bool arg3 ;
+  bool arg4 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg2 : &tempnull2;
+  arg3 = *farg3;
+  arg4 = *farg4;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3,arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseGraphFile__SWIG_2(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, bool const *farg3) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
+  bool arg3 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg2 : &tempnull2;
+  arg3 = *farg3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseGraphFile__SWIG_3(swig::SwigfArrayWrapper< char const > *farg1, void *farg2) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg2 : &tempnull2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseGraphFile__SWIG_4(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void *farg3, void *farg4, bool const *farg5, bool const *farg6) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg3 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg4 = 0 ;
+  bool arg5 ;
+  bool arg6 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull3 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg4 : &tempnull4;
+  arg5 = *farg5;
+  arg6 = *farg6;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_4(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4,arg5,arg6);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseGraphFile__SWIG_5(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void *farg3, void *farg4, bool const *farg5) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg3 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg4 = 0 ;
+  bool arg5 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull3 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg4 : &tempnull4;
+  arg5 = *farg5;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_4(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4,arg5);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseGraphFile__SWIG_6(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void *farg3, void *farg4) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg3 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg4 = 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull3 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg4 : &tempnull4;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_4(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseGraphFile__SWIG_7(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void *farg3, void *farg4, void *farg5, bool const *farg6, bool const *farg7, bool const *farg8) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg5 = 0 ;
+  bool arg6 ;
+  bool arg7 ;
+  bool arg8 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg4 : &tempnull4;
+  arg5 = farg5 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg5 : &tempnull5;
+  arg6 = *farg6;
+  arg7 = *farg7;
+  arg8 = *farg8;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_7(arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5,arg6,arg7,arg8);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseGraphFile__SWIG_8(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void *farg3, void *farg4, void *farg5, bool const *farg6, bool const *farg7) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg5 = 0 ;
+  bool arg6 ;
+  bool arg7 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg4 : &tempnull4;
+  arg5 = farg5 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg5 : &tempnull5;
+  arg6 = *farg6;
+  arg7 = *farg7;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_7(arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5,arg6,arg7);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseGraphFile__SWIG_9(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void *farg3, void *farg4, void *farg5, bool const *farg6) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg5 = 0 ;
+  bool arg6 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg4 : &tempnull4;
+  arg5 = farg5 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg5 : &tempnull5;
+  arg6 = *farg6;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_7(arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5,arg6);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseGraphFile__SWIG_10(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void *farg3, void *farg4, void *farg5) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg5 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg4 : &tempnull4;
+  arg5 = farg5 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg5 : &tempnull5;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_7(arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseFile__SWIG_0(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, bool const *farg3, bool const *farg4, bool const *farg5) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
+  bool arg3 ;
+  bool arg4 ;
+  bool arg5 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg2 : &tempnull2;
+  arg3 = *farg3;
+  arg4 = *farg4;
+  arg5 = *farg5;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3,arg4,arg5);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseFile__SWIG_1(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, bool const *farg3, bool const *farg4) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
+  bool arg3 ;
+  bool arg4 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg2 : &tempnull2;
+  arg3 = *farg3;
+  arg4 = *farg4;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3,arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseFile__SWIG_2(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, bool const *farg3) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
+  bool arg3 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg2 : &tempnull2;
+  arg3 = *farg3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseFile__SWIG_3(swig::SwigfArrayWrapper< char const > *farg1, void *farg2) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg2 : &tempnull2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseFile__SWIG_4(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void *farg3, void *farg4, bool const *farg5, bool const *farg6) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg3 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg4 = 0 ;
+  bool arg5 ;
+  bool arg6 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull3 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg4 : &tempnull4;
+  arg5 = *farg5;
+  arg6 = *farg6;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_4(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4,arg5,arg6);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseFile__SWIG_5(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void *farg3, void *farg4, bool const *farg5) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg3 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg4 = 0 ;
+  bool arg5 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull3 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg4 : &tempnull4;
+  arg5 = *farg5;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_4(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4,arg5);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseFile__SWIG_6(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void *farg3, void *farg4) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg3 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg4 = 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull3 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Teuchos::Comm< int > const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg4 : &tempnull4;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_4(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseFile__SWIG_7(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void *farg3, void *farg4, void *farg5, bool const *farg6, bool const *farg7, bool const *farg8) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg5 = 0 ;
+  bool arg6 ;
+  bool arg7 ;
+  bool arg8 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg4 : &tempnull4;
+  arg5 = farg5 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg5 : &tempnull5;
+  arg6 = *farg6;
+  arg7 = *farg7;
+  arg8 = *farg8;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_7(arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5,arg6,arg7,arg8);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseFile__SWIG_8(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void *farg3, void *farg4, void *farg5, bool const *farg6, bool const *farg7) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg5 = 0 ;
+  bool arg6 ;
+  bool arg7 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg4 : &tempnull4;
+  arg5 = farg5 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg5 : &tempnull5;
+  arg6 = *farg6;
+  arg7 = *farg7;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_7(arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5,arg6,arg7);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseFile__SWIG_9(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void *farg3, void *farg4, void *farg5, bool const *farg6) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg5 = 0 ;
+  bool arg6 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg4 : &tempnull4;
+  arg5 = farg5 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg5 : &tempnull5;
+  arg6 = *farg6;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_7(arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5,arg6);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readSparseFile__SWIG_10(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void *farg3, void *farg4, void *farg5) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg5 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg3 : &tempnull3;
+  arg4 = farg4 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg4 : &tempnull4;
+  arg5 = farg5 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg5 : &tempnull5;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_7(arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readDenseFile__SWIG_0(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void *farg3, bool const *farg4, bool const *farg5) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
+  bool arg4 ;
+  bool arg5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::multivector_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg3 : &tempnull3;
+  arg4 = *farg4;
+  arg5 = *farg5;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readDenseFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,*arg3,arg4,arg5);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::multivector_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readDenseFile__SWIG_1(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void *farg3, bool const *farg4) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
+  bool arg4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::multivector_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg3 : &tempnull3;
+  arg4 = *farg4;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readDenseFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,*arg3,arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::multivector_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readDenseFile__SWIG_2(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void *farg3) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::multivector_type > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > *)farg2 : &tempnull2;
+  arg3 = farg3 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *)farg3 : &tempnull3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readDenseFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,*arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::multivector_type >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readMapFile__SWIG_0(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, bool const *farg3, bool const *farg4) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > *arg2 = 0 ;
+  bool arg3 ;
+  bool arg4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > *)farg2 : &tempnull2;
+  arg3 = *farg3;
+  arg4 = *farg4;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readMapFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3,arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readMapFile__SWIG_1(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, bool const *farg3) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > *arg2 = 0 ;
+  bool arg3 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > *)farg2 : &tempnull2;
+  arg3 = *farg3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readMapFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_TpetraReader_readMapFile__SWIG_2(swig::SwigfArrayWrapper< char const > *farg1, void *farg2) {
+  void * fresult ;
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > result;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > *)farg2 : &tempnull2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readMapFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const >(result) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void * swigc_new_TpetraReader() {
+  void * fresult ;
+  Tpetra::MatrixMarket::Reader< CMT > *result = 0 ;
+  
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::MatrixMarket::Reader< CMT > *)new Tpetra::MatrixMarket::Reader< CMT >();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
+    }
+  }
+  fresult = result ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader<CMT> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_TpetraReader(void *farg1) {
+  Tpetra::MatrixMarket::Reader< CMT > *arg1 = (Tpetra::MatrixMarket::Reader< CMT > *) 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< CMT > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::MatrixMarket::Reader<CMT> > *)farg1;
+  arg1 = (Tpetra::MatrixMarket::Reader<CMT> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (void)arg1; delete smartarg1; 
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void* swigc_spcopy_TpetraReader(void* farg1) {
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader<CMT> >* arg1 = (Teuchos::RCP< Tpetra::MatrixMarket::Reader<CMT> > *)farg1;
+  return new Teuchos::RCP< Tpetra::MatrixMarket::Reader<CMT> >(*arg1);
+}
+
+
+SWIGEXPORT void swigc_TpetraWriter_writeMapFile__SWIG_0(void const *farg1, void const *farg2) {
+  std::string *arg1 = 0 ;
+  Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type *arg2 = 0 ;
+  
+  arg1 = static_cast< std::string * >(const_cast< void* >(farg1));
+  arg2 = (Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type *)(((Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg2)
+    ? ((Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg2)->get()
+    :0);
+  if (!arg2)
+  {
+    throw std::logic_error("Attempt to dereference null Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &");
+    return ;
+  }
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra::MatrixMarket::Writer< CMT >::SWIGTEMPLATEDISAMBIGUATOR writeMapFile((std::string const &)*arg1,(Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_0(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void const *farg3, void const *farg4, bool const *farg5) {
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  bool arg5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > tempnull2 ;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > *)farg2 : &tempnull2;
+  arg3 = static_cast< std::string * >(const_cast< void* >(farg3));
+  arg4 = static_cast< std::string * >(const_cast< void* >(farg4));
+  arg5 = *farg5;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseFile__SWIG_0(arg1,(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > const > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_1(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void const *farg3, void const *farg4) {
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > tempnull2 ;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > *)farg2 : &tempnull2;
+  arg3 = static_cast< std::string * >(const_cast< void* >(farg3));
+  arg4 = static_cast< std::string * >(const_cast< void* >(farg4));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseFile__SWIG_0(arg1,(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > const > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_2(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, bool const *farg3) {
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > *arg2 = 0 ;
+  bool arg3 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > tempnull2 ;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > *)farg2 : &tempnull2;
+  arg3 = *farg3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseFile__SWIG_2(arg1,(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > const > const &)*arg2,arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_3(swig::SwigfArrayWrapper< char const > *farg1, void *farg2) {
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > tempnull2 ;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > *)farg2 : &tempnull2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseFile__SWIG_2(arg1,(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > const > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_0(swig::SwigfArrayWrapper< char const > *farg1, void const *farg2, void const *farg3, void const *farg4, bool const *farg5) {
+  std::pair< char const *,std::size_t > arg1 ;
+  Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  bool arg5 ;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = (Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type *)(((Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg2)
+    ? ((Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg2)->get()
+    :0);
+  if (!arg2)
+  {
+    throw std::logic_error("Attempt to dereference null Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const &");
+    return ;
+  }
+  arg3 = static_cast< std::string * >(const_cast< void* >(farg3));
+  arg4 = static_cast< std::string * >(const_cast< void* >(farg4));
+  arg5 = *farg5;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_0(arg1,(Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_1(swig::SwigfArrayWrapper< char const > *farg1, void const *farg2, void const *farg3, void const *farg4) {
+  std::pair< char const *,std::size_t > arg1 ;
+  Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = (Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type *)(((Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg2)
+    ? ((Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg2)->get()
+    :0);
+  if (!arg2)
+  {
+    throw std::logic_error("Attempt to dereference null Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const &");
+    return ;
+  }
+  arg3 = static_cast< std::string * >(const_cast< void* >(farg3));
+  arg4 = static_cast< std::string * >(const_cast< void* >(farg4));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_0(arg1,(Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_2(swig::SwigfArrayWrapper< char const > *farg1, void const *farg2, bool const *farg3) {
+  std::pair< char const *,std::size_t > arg1 ;
+  Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type *arg2 = 0 ;
+  bool arg3 ;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = (Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type *)(((Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg2)
+    ? ((Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg2)->get()
+    :0);
+  if (!arg2)
+  {
+    throw std::logic_error("Attempt to dereference null Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const &");
+    return ;
+  }
+  arg3 = *farg3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_2(arg1,(Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2,arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(swig::SwigfArrayWrapper< char const > *farg1, void const *farg2) {
+  std::pair< char const *,std::size_t > arg1 ;
+  Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type *arg2 = 0 ;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = (Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type *)(((Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg2)
+    ? ((Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg2)->get()
+    :0);
+  if (!arg2)
+  {
+    throw std::logic_error("Attempt to dereference null Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const &");
+    return ;
+  }
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_2(arg1,(Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_4(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void const *farg3, void const *farg4, bool const *farg5) {
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  bool arg5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > tempnull2 ;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > *)farg2 : &tempnull2;
+  arg3 = static_cast< std::string * >(const_cast< void* >(farg3));
+  arg4 = static_cast< std::string * >(const_cast< void* >(farg4));
+  arg5 = *farg5;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_4(arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_5(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void const *farg3, void const *farg4) {
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > tempnull2 ;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > *)farg2 : &tempnull2;
+  arg3 = static_cast< std::string * >(const_cast< void* >(farg3));
+  arg4 = static_cast< std::string * >(const_cast< void* >(farg4));
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_4(arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_6(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, bool const *farg3) {
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > *arg2 = 0 ;
+  bool arg3 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > tempnull2 ;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > *)farg2 : &tempnull2;
+  arg3 = *farg3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_6(arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_7(swig::SwigfArrayWrapper< char const > *farg1, void *farg2) {
+  std::pair< char const *,std::size_t > arg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > tempnull2 ;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = farg2 ? (Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > *)farg2 : &tempnull2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_6(arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraWriter_writeMapFile__SWIG_1(swig::SwigfArrayWrapper< char const > *farg1, void const *farg2) {
+  std::pair< char const *,std::size_t > arg1 ;
+  Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type *arg2 = 0 ;
+  
+  arg1 = ::std::pair< const char*, std::size_t >();
+  (&arg1)->first  = farg1->data;
+  (&arg1)->second = farg1->size;
+  arg2 = (Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type *)(((Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg2)
+    ? ((Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> > *)farg2)->get()
+    :0);
+  if (!arg2)
+  {
+    throw std::logic_error("Attempt to dereference null Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &");
+    return ;
+  }
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeMapFile__SWIG_1(arg1,(Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void * swigc_new_TpetraWriter() {
+  void * fresult ;
+  Tpetra::MatrixMarket::Writer< CMT > *result = 0 ;
+  
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::MatrixMarket::Writer< CMT > *)new Tpetra::MatrixMarket::Writer< CMT >();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
+    }
+  }
+  fresult = result ? new Teuchos::RCP< Tpetra::MatrixMarket::Writer<CMT> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_delete_TpetraWriter(void *farg1) {
+  Tpetra::MatrixMarket::Writer< CMT > *arg1 = (Tpetra::MatrixMarket::Writer< CMT > *) 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< CMT > > *smartarg1 = 0 ;
+  
+  smartarg1 = (Teuchos::RCP< Tpetra::MatrixMarket::Writer<CMT> > *)farg1;
+  arg1 = (Tpetra::MatrixMarket::Writer<CMT> *)(smartarg1 ? smartarg1->get() : 0);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      (void)arg1; delete smartarg1; 
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void* swigc_spcopy_TpetraWriter(void* farg1) {
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer<CMT> >* arg1 = (Teuchos::RCP< Tpetra::MatrixMarket::Writer<CMT> > *)farg1;
+  return new Teuchos::RCP< Tpetra::MatrixMarket::Writer<CMT> >(*arg1);
 }
 
 

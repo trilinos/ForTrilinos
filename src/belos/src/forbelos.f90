@@ -8,6 +8,7 @@
 !
 ! SPDX-License-Identifier: BSD-3-Clause
 ! License-Filename: LICENSE
+
 module forbelos
  use, intrinsic :: ISO_C_BINDING
  implicit none
@@ -457,4 +458,4 @@ swigf_result%swigptr = fresult
 end function
 
 
-end module forbelos
+end module

@@ -8,6 +8,7 @@
 !
 ! SPDX-License-Identifier: BSD-3-Clause
 ! License-Filename: LICENSE
+
 module forteuchos
  use, intrinsic :: ISO_C_BINDING
  implicit none
@@ -2076,4 +2077,4 @@ call swigc_save_to_xml(farg1, farg2)
 end subroutine
 
 
-end module forteuchos
+end module

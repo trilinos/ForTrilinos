@@ -29,10 +29,12 @@ Then to launch an interactive Bash session inside that container, do:
 
     [host]$ docker-compose exec fortrilinos_dev bash
 
-Configure, build, and test as you would usually do:
+Patch, configure, build, and test as you would usually do:
 
 .. code:: bash
 
+    [container]$ cd $TRILINOS_DIR
+    [container]$ ./packages/ForTrilinos/scripts/patches/apply-patches
     [container]$ cd $TRILINOS_DIR/packages/ForTrilinos
     [container]$ mkdir build && cd build
     [container]$ ../scripts/docker_cmake
