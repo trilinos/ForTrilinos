@@ -7,6 +7,9 @@ set -e
 # bind mount ForTrilinos source dir into Trilinos base dir
 mkdir ${TRILINOS_DIR}/packages/ForTrilinos
 mount --bind ${FORTRILINOS_DIR} ${TRILINOS_DIR}/packages/ForTrilinos
+# patch the source
+cd ${TRILINOS_DIR}
+packages/ForTrilinos/scripts/patches/apply-patches
 # cleanup workspace
 cd ${TRILINOS_DIR}/packages/ForTrilinos
 [ -d build ] && rm -rf build
@@ -15,6 +18,7 @@ mkdir build && cd build
 # not directly mounted into Trilinos base source dir. We build elsewhere and
 # move the build directory afterwards...
 # configure trilinos with fortrilinos
+
 
 if [ "${BUILD_TYPE}" == "gcc54-mpi" ]; then
   ../scripts/docker_cmake -D Trilinos_ENABLE_COVERAGE_TESTING=ON
