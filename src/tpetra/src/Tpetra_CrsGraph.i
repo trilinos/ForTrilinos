@@ -25,8 +25,6 @@
 %ignore Tpetra::CrsGraph::unpackAndCombine;
 %ignore Tpetra::CrsGraph::SLocalGlobalViews;
 %ignore Tpetra::CrsGraph::SLocalGlobalNCViews;
-%ignore Tpetra::CrsGraph::getNodeRowPtrs;
-%ignore Tpetra::CrsGraph::getNodePackedIndices;
 
 // =======================================================================
 // Postpone temporarily
@@ -58,9 +56,7 @@
 %ignore Tpetra::CrsGraph::insertLocalIndices(const LocalOrdinal localRow, const LocalOrdinal numEnt, const LocalOrdinal inds[]);    // prefer ArrayView variant
 %ignore Tpetra::CrsGraph::describe;                           // needs Teuchos::FancyOStream
 %ignore Tpetra::CrsGraph::getLocalDiagOffsets (const Kokkos::View< size_t *, device_type, Kokkos::MemoryUnmanaged > &offsets) const;    // needs Kokkos::View
-%ignore Tpetra::CrsGraph::getLocalDiagOffsets (Teuchos::ArrayRCP< size_t > &offsets) const;     // needs Teuchos:ArrayRCP
 %ignore Tpetra::CrsGraph::getNumEntriesPerLocalRowUpperBound; // needs Teuchos::ArrayRCP
-%ignore Tpetra::CrsGraph::setAllIndices;                      // needs Teuchos::ArrayRCP, or Kokkos::View
 %ignore Tpetra::CrsGraph::getLocalGraph;                      // needs Kokkos::StaticCrsGraph
 %ignore Tpetra::CrsGraph::getLocalRowView;                    // ±1 issue
 
@@ -144,9 +140,6 @@
       Teuchos::ArrayView<const GO> lclColIndsView = Teuchos::arrayView(lclColInds.first, lclColInds.second);
       self->getGlobalRowView(gblRow, lclColIndsView);
     }
-    void getLocalRowView(const LO lclRow, std::pair<const LO*,size_t> lclColInds) const {
-      throw std::runtime_error("Not implemented");
-    }
     void setAllIndices(std::pair<size_t*,size_t> rowPointers, std::pair<LO*,size_t> columnIndices, std::pair<SC*,size_t> val) {
       Teuchos::ArrayRCP<size_t> rowPointersArrayRCP(rowPointers.second);
       for (int i = 0; i < rowPointersArrayRCP.size(); i++)
@@ -154,7 +147,27 @@
       Teuchos::ArrayRCP<LO> columnIndicesArrayRCP(columnIndices.second);
       for (int i = 0; i < columnIndicesArrayRCP.size(); i++)
         columnIndicesArrayRCP[i] = columnIndices.first[i]-1;
-      self->setAllValues(rowPointersArrayRCP, columnIndicesArrayRCP);
+      self->setAllIndices(rowPointersArrayRCP, columnIndicesArrayRCP);
+    }
+    // NOTE: This is semantically different function from Tpetra. Here, we *require* that user already allocated the arrays to store the data
+    void getNodeRowPtrs(std::pair<size_t*,size_t> rowPointers) const {
+      auto rowPointersArrayRCP = self->getNodeRowPtrs();
+      TEUCHOS_TEST_FOR_EXCEPTION(rowPointersArrayRCP.size() != rowPointers.second, std::runtime_error, "Wrong rowPointers size");
+      auto n = rowPointers.second;
+      for (int i = 0; i < n; i++)
+        rowPointers.first[i] = rowPointersArrayRCP[i]+1;
+    }
+    void getNodePackedIndices(std::pair<size_t*,size_t> columnIndices) const {
+      auto columnIndicesArrayRCP = self->getNodeRowPtrs();
+      TEUCHOS_TEST_FOR_EXCEPTION(columnIndicesArrayRCP.size() != columnIndices.second, std::runtime_error, "Wrong columnIndices size");
+      auto nnz = columnIndices.second;
+      for (int i = 0; i < nnz; i++)
+        columnIndices.first[i] = columnIndicesArrayRCP[i]+1;
+    }
+    void getLocalDiagOffsets (std::pair<size_t*,size_t> offsets) const {
+      TEUCHOS_TEST_FOR_EXCEPTION(self->getNodeNumRows() != offsets.second, std::runtime_error, "Wrong offsets size");
+      Teuchos::ArrayRCP<size_t> offsetsArrayRCP(offsets.first, 0, offsets.second, false/*has_ownership*/);
+      self->getLocalDiagOffsets(offsetsArrayRCP);
     }
 }
 %ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap, \
@@ -177,6 +190,11 @@
 %ignore Tpetra::CrsGraph::getLocalRowCopy(LocalOrdinal LocalRow, const Teuchos::ArrayView< LocalOrdinal > &indices, size_t &NumIndices) const;
 %ignore Tpetra::CrsGraph::getGlobalRowView(const GlobalOrdinal gblRow, Teuchos::ArrayView< const GlobalOrdinal > &gblColInds) const;
 %ignore Tpetra::CrsGraph::getLocalRowView(const LocalOrdinal lclRow, Teuchos::ArrayView< const LocalOrdinal > &lclColInds) const;
+%ignore Tpetra::CrsGraph::getNodeRowPtrs() const;
+%ignore Tpetra::CrsGraph::getNodePackedIndices() const;
+%ignore Tpetra::CrsGraph::getLocalDiagOffsets (Teuchos::ArrayRCP< size_t > &offsets) const;
+%ignore Tpetra::CrsGraph::setAllIndices (const Teuchos::ArrayRCP< size_t > &rowPointers, const Teuchos::ArrayRCP< LocalOrdinal > &columnIndices);
+%ignore Tpetra::CrsGraph::setAllIndices (const typename local_graph_type::row_map_type &rowPointers, const typename local_graph_type::entries_type::non_const_type &columnIndices);
 
 
 %teuchos_rcp(Tpetra::CrsGraph<LO,GO,NO,NO::classic>)

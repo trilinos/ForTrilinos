@@ -399,6 +399,34 @@ SWIGINTERN void Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__getgblRowView(Tpetra::CrsG
       Teuchos::ArrayView<const GO> lclColIndsView = Teuchos::arrayView(lclColInds.first, lclColInds.second);
       self->getGlobalRowView(gblRow, lclColIndsView);
     }
+SWIGINTERN void Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__setAllIndices(Tpetra::CrsGraph< LO,GO,NO > *self,std::pair< std::size_t *,std::size_t > rowPointers,std::pair< LO *,std::size_t > columnIndices,std::pair< SC *,std::size_t > val){
+      Teuchos::ArrayRCP<size_t> rowPointersArrayRCP(rowPointers.second);
+      for (int i = 0; i < rowPointersArrayRCP.size(); i++)
+        rowPointersArrayRCP[i] = rowPointers.first[i]-1;
+      Teuchos::ArrayRCP<LO> columnIndicesArrayRCP(columnIndices.second);
+      for (int i = 0; i < columnIndicesArrayRCP.size(); i++)
+        columnIndicesArrayRCP[i] = columnIndices.first[i]-1;
+      self->setAllIndices(rowPointersArrayRCP, columnIndicesArrayRCP);
+    }
+SWIGINTERN void Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__getNodeRowPtrs(Tpetra::CrsGraph< LO,GO,NO > const *self,std::pair< std::size_t *,std::size_t > rowPointers){
+      auto rowPointersArrayRCP = self->getNodeRowPtrs();
+      TEUCHOS_TEST_FOR_EXCEPTION(rowPointersArrayRCP.size() != rowPointers.second, std::runtime_error, "Wrong rowPointers size");
+      auto n = rowPointers.second;
+      for (int i = 0; i < n; i++)
+        rowPointers.first[i] = rowPointersArrayRCP[i]+1;
+    }
+SWIGINTERN void Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__getNodePackedIndices(Tpetra::CrsGraph< LO,GO,NO > const *self,std::pair< std::size_t *,std::size_t > columnIndices){
+      auto columnIndicesArrayRCP = self->getNodeRowPtrs();
+      TEUCHOS_TEST_FOR_EXCEPTION(columnIndicesArrayRCP.size() != columnIndices.second, std::runtime_error, "Wrong columnIndices size");
+      auto nnz = columnIndices.second;
+      for (int i = 0; i < nnz; i++)
+        columnIndices.first[i] = columnIndicesArrayRCP[i]+1;
+    }
+SWIGINTERN void Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__getLocalDiagOffsets(Tpetra::CrsGraph< LO,GO,NO > const *self,std::pair< std::size_t *,std::size_t > offsets){
+      TEUCHOS_TEST_FOR_EXCEPTION(self->getNodeNumRows() != offsets.second, std::runtime_error, "Wrong offsets size");
+      Teuchos::ArrayRCP<size_t> offsetsArrayRCP(offsets.first, 0, offsets.second, false/*has_ownership*/);
+      self->getLocalDiagOffsets(offsetsArrayRCP);
+    }
 
 #include "Tpetra_CrsMatrix.hpp"
 
@@ -452,8 +480,22 @@ SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__setAllValues(Tpetra
       Teuchos::ArrayRCP<SC> valArrayRCP(val.first, 0, val.second, false/*has_ownership*/);
       self->setAllValues(ptrArrayRCP, indArrayRCP, valArrayRCP);
     }
-SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getAllValues(Tpetra::CrsMatrix< SC,LO,GO,NO > const *self,std::pair< std::size_t *,std::size_t > rowPointers,std::pair< LO *,std::size_t > columnIndices,std::pair< SC const *,std::size_t > values){
-      throw std::runtime_error("Not implemented");
+SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getAllValues(Tpetra::CrsMatrix< SC,LO,GO,NO > const *self,std::pair< std::size_t *,std::size_t > rowPointers,std::pair< LO *,std::size_t > columnIndices,std::pair< SC *,std::size_t > values){
+      Teuchos::ArrayRCP<const size_t> rowPointersArrayRCP;
+      Teuchos::ArrayRCP<const LO>     columnIndicesArrayRCP;
+      Teuchos::ArrayRCP<const SC>     valuesArrayRCP;
+      self->getAllValues(rowPointersArrayRCP, columnIndicesArrayRCP, valuesArrayRCP);
+      TEUCHOS_TEST_FOR_EXCEPTION(rowPointersArrayRCP.size()   != rowPointers.second,    std::runtime_error, "Wrong rowPointers size");
+      TEUCHOS_TEST_FOR_EXCEPTION(columnIndicesArrayRCP.size() != columnIndices.second,  std::runtime_error, "Wrong columnIndices size");
+      TEUCHOS_TEST_FOR_EXCEPTION(valuesArrayRCP.size()        != values.second,         std::runtime_error, "Wrong values size");
+      auto n = rowPointers.second;
+      for (int i = 0; i < n; i++)
+        rowPointers.first[i] = rowPointersArrayRCP[i]+1;
+      auto nnz = columnIndices.second;
+      for (int i = 0; i < nnz; i++) {
+        columnIndices.first[i] = columnIndicesArrayRCP[i]+1;
+        values       .first[i] = valuesArrayRCP[i];
+      }
     }
 SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getGlobalRowCopy(Tpetra::CrsMatrix< SC,LO,GO,NO > const *self,GO GlobalRow,std::pair< GO *,std::size_t > Indices,std::pair< SC *,std::size_t > Values,size_t &NumIndices){
       Teuchos::ArrayView<GO> IndicesView = Teuchos::arrayView(Indices.first, Indices.second);
@@ -461,11 +503,25 @@ SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getGlobalRowCopy(Tp
 
       self->getGlobalRowCopy(GlobalRow, IndicesView, ValuesView, NumIndices);
     }
+SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getLocalRowCopy(Tpetra::CrsMatrix< SC,LO,GO,NO > const *self,LO localRow,std::pair< LO *,std::size_t > colInds,std::pair< SC *,std::size_t > vals,size_t &NumIndices){
+      Teuchos::ArrayView<LO> colIndsView = Teuchos::arrayView(colInds.first, colInds.second);
+      Teuchos::ArrayView<SC> valsView  = Teuchos::arrayView(vals.first, vals.second);
+
+      self->getLocalRowCopy(localRow, colIndsView, valsView, NumIndices);
+
+      for (int i = 0; i < colIndsView.size(); i++)
+        colIndsView[i]++;
+    }
 SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getGlobalRowView(Tpetra::CrsMatrix< SC,LO,GO,NO > const *self,GO GlobalRow,std::pair< GO const *,std::size_t > Indices,std::pair< SC const *,std::size_t > values){
       Teuchos::ArrayView<const GO> IndicesView = Teuchos::arrayView(Indices.first, Indices.second);
       Teuchos::ArrayView<const SC> valuesView  = Teuchos::arrayView(values.first, values.second);
 
       self->getGlobalRowView(GlobalRow, IndicesView, valuesView);
+    }
+SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getLocalDiagOffsets(Tpetra::CrsMatrix< SC,LO,GO,NO > const *self,std::pair< std::size_t *,std::size_t > offsets){
+      TEUCHOS_TEST_FOR_EXCEPTION(self->getNodeNumRows() != offsets.second, std::runtime_error, "Wrong offsets size");
+      Teuchos::ArrayRCP<size_t> offsetsArrayRCP(offsets.first, 0, offsets.second, false/*has_ownership*/);
+      self->getLocalDiagOffsets(offsetsArrayRCP);
     }
 
 #include "Teuchos_RCP.hpp"
@@ -7990,6 +8046,162 @@ SWIGEXPORT void swigc_TpetraCrsGraph_getgblRowView(void const *farg1, long long 
 }
 
 
+SWIGEXPORT void swigc_TpetraCrsGraph_setAllIndices(void *farg1, swig::SwigfArrayWrapper< size_t > *farg2, swig::SwigfArrayWrapper< int > *farg3, swig::SwigfArrayWrapper< double > *farg4) {
+  Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
+  std::pair< std::size_t *,std::size_t > arg2 ;
+  std::pair< LO *,std::size_t > arg3 ;
+  std::pair< SC *,std::size_t > arg4 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > > *smartarg1 = 0 ;
+  
+  arg2 = ::std::pair< size_t*, std::size_t >();
+  arg3 = ::std::pair< int*, std::size_t >();
+  arg4 = ::std::pair< double*, std::size_t >();
+  smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,NO::classic> *)(smartarg1 ? smartarg1->get() : 0);
+  (&arg2)->first  = farg2->data;
+  (&arg2)->second = farg2->size;
+  (&arg3)->first  = farg3->data;
+  (&arg3)->second = farg3->size;
+  (&arg4)->first  = farg4->data;
+  (&arg4)->second = farg4->size;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__setAllIndices(arg1,arg2,arg3,arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_getNodeRowPtrs(void const *farg1, swig::SwigfArrayWrapper< size_t > *farg2) {
+  Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
+  std::pair< std::size_t *,std::size_t > arg2 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 = 0 ;
+  
+  arg2 = ::std::pair< size_t*, std::size_t >();
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,NO::classic> *)(smartarg1 ? smartarg1->get() : 0);
+  (&arg2)->first  = farg2->data;
+  (&arg2)->second = farg2->size;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__getNodeRowPtrs((Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1,arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_getNodePackedIndices(void const *farg1, swig::SwigfArrayWrapper< size_t > *farg2) {
+  Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
+  std::pair< std::size_t *,std::size_t > arg2 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 = 0 ;
+  
+  arg2 = ::std::pair< size_t*, std::size_t >();
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,NO::classic> *)(smartarg1 ? smartarg1->get() : 0);
+  (&arg2)->first  = farg2->data;
+  (&arg2)->second = farg2->size;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__getNodePackedIndices((Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1,arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsGraph_getLocalDiagOffsets(void const *farg1, swig::SwigfArrayWrapper< size_t > *farg2) {
+  Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
+  std::pair< std::size_t *,std::size_t > arg2 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 = 0 ;
+  
+  arg2 = ::std::pair< size_t*, std::size_t >();
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg1;
+  arg1 = (Tpetra::CrsGraph<LO,GO,NO,NO::classic> *)(smartarg1 ? smartarg1->get() : 0);
+  (&arg2)->first  = farg2->data;
+  (&arg2)->second = farg2->size;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__getLocalDiagOffsets((Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1,arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
 SWIGEXPORT void* swigc_spcopy_TpetraCrsGraph(void* farg1) {
   Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,NO::classic> >* arg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg1;
   return new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,NO::classic> >(*arg1);
@@ -9459,6 +9671,44 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNumEntriesInGlobalRow(void const *far
     {
       // Attempt the wrapped function call
       result = (size_t)((Tpetra::CrsMatrix< SC,LO,GO,NO > const *)arg1)->getNumEntriesInGlobalRow(arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNumEntriesInLocalRow(void const *farg1, int const *farg2) {
+  size_t fresult ;
+  Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
+  int arg2 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 = 0 ;
+  size_t result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> > *)farg1;
+  arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2 - 1;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (size_t)((Tpetra::CrsMatrix< SC,LO,GO,NO > const *)arg1)->getNumEntriesInLocalRow(arg2);
     }
     catch (const std::range_error& e)
     {
@@ -11598,16 +11848,16 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_setAllValues(void *farg1, swig::SwigfArray
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_getAllValues(void const *farg1, swig::SwigfArrayWrapper< size_t > *farg2, swig::SwigfArrayWrapper< int > *farg3, swig::SwigfArrayWrapper< double const > *farg4) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_getAllValues(void const *farg1, swig::SwigfArrayWrapper< size_t > *farg2, swig::SwigfArrayWrapper< int > *farg3, swig::SwigfArrayWrapper< double > *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   std::pair< std::size_t *,std::size_t > arg2 ;
   std::pair< LO *,std::size_t > arg3 ;
-  std::pair< SC const *,std::size_t > arg4 ;
+  std::pair< SC *,std::size_t > arg4 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 = 0 ;
   
   arg2 = ::std::pair< size_t*, std::size_t >();
   arg3 = ::std::pair< int*, std::size_t >();
-  arg4 = ::std::pair< const double*, std::size_t >();
+  arg4 = ::std::pair< double*, std::size_t >();
   smartarg1 = (Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> > *)farg1;
   arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> *)(smartarg1 ? smartarg1->get() : 0);
   (&arg2)->first  = farg2->data;
@@ -11688,6 +11938,51 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowCopy(void const *farg1, long l
 }
 
 
+SWIGEXPORT void swigc_TpetraCrsMatrix_getLocalRowCopy(void const *farg1, int const *farg2, swig::SwigfArrayWrapper< int > *farg3, swig::SwigfArrayWrapper< double > *farg4, size_t *farg5) {
+  Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
+  LO arg2 ;
+  std::pair< LO *,std::size_t > arg3 ;
+  std::pair< SC *,std::size_t > arg4 ;
+  size_t *arg5 = 0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 = 0 ;
+  
+  arg3 = ::std::pair< int*, std::size_t >();
+  arg4 = ::std::pair< double*, std::size_t >();
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> > *)farg1;
+  arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *farg2 - 1;
+  (&arg3)->first  = farg3->data;
+  (&arg3)->second = farg3->size;
+  (&arg4)->first  = farg4->data;
+  (&arg4)->second = farg4->size;
+  arg5 = reinterpret_cast< size_t * >(farg5);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getLocalRowCopy((Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1,arg2,arg3,arg4,*arg5);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
 SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowView(void const *farg1, long long const *farg2, swig::SwigfArrayWrapper< long long const > *farg3, swig::SwigfArrayWrapper< double const > *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   GO arg2 ;
@@ -11711,6 +12006,43 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowView(void const *farg1, long l
     {
       // Attempt the wrapped function call
       Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getGlobalRowView((Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1,arg2,arg3,arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_TpetraCrsMatrix_getLocalDiagOffsets(void const *farg1, swig::SwigfArrayWrapper< size_t > *farg2) {
+  Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
+  std::pair< std::size_t *,std::size_t > arg2 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 = 0 ;
+  
+  arg2 = ::std::pair< size_t*, std::size_t >();
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> > *)farg1;
+  arg1 = (Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> *)(smartarg1 ? smartarg1->get() : 0);
+  (&arg2)->first  = farg2->data;
+  (&arg2)->second = farg2->size;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swig::fortran_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getLocalDiagOffsets((Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1,arg2);
     }
     catch (const std::range_error& e)
     {
