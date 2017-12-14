@@ -72,7 +72,7 @@ Status | Class
 -------|--------|---------
 :white_check_mark: | `Teuchos::RCP< const Teuchos::Comm< int > > 	getComm () const`
 :x: | `Teuchos::RCP< Node > 	getNode () const`
-:running: | `std::string 	description () const`
+:arrow_down: | `std::string 	description () const`
 :x: | `void 	describe (Teuchos::FancyOStream &out, const Teuchos::EVerbosityLevel verbLevel=Teuchos::Describable::verbLevel_default) const`
 :x: | `template<class NodeOut > Teuchos::RCP< const Map < LocalOrdinal, GlobalOrdinal, NodeOut > > 	clone (const Teuchos::RCP< NodeOut > &nodeOut) const`
 :white_check_mark: | `Teuchos::RCP< const Map < LocalOrdinal, GlobalOrdinal, Node > > 	removeEmptyProcesses () const `
@@ -325,7 +325,7 @@ Status | Class
 
 :grey_question: | Command | Comment
 -------|--------|---------
-:running: | `virtual std::string 	description () const`
+:arrow_down: | `virtual std::string 	description () const`
 :x: | `virtual void 	describe (Teuchos::FancyOStream &out, const Teuchos::EVerbosityLevel verbLevel=Teuchos::Describable::verbLevel_default) const`
 
 **Public methods for redistributing data**
@@ -457,10 +457,10 @@ Status | Class
 :white_check_mark: | `global_size_t 	getGlobalNumEntries () const`
 :white_check_mark: | `size_t 	getNodeNumEntries () const`
 :white_check_mark: | `size_t 	getNumEntriesInGlobalRow (GlobalOrdinal globalRow) const`
-:white_check_mark: | `size_t 	getNumEntriesInLocalRow (LocalOrdinal localRow) const`
+:star: | `size_t 	getNumEntriesInLocalRow (LocalOrdinal localRow) const` | 1-based indices
 :white_check_mark: | `size_t 	getNodeAllocationSize () const`
 :white_check_mark: | `size_t 	getNumAllocatedEntriesInGlobalRow (GlobalOrdinal globalRow) const`
-:white_check_mark: | `size_t 	getNumAllocatedEntriesInLocalRow (LocalOrdinal localRow) const`
+:star: | `size_t 	getNumAllocatedEntriesInLocalRow (LocalOrdinal localRow) const`     | 1-based indices
 :white_check_mark: | `global_size_t 	getGlobalNumDiags () const`
 :white_check_mark: | `size_t 	getNodeNumDiags () const`
 :white_check_mark: | `size_t 	getGlobalMaxNumRowEntries () const`
@@ -478,14 +478,14 @@ Status | Class
 :star: | `void 	getGlobalRowCopy (GlobalOrdinal GlobalRow, const Teuchos::ArrayView< GlobalOrdinal > &Indices, size_t &NumIndices) const` | Fortran arrays
 :star2: | `void 	getLocalRowCopy (LocalOrdinal LocalRow, const Teuchos::ArrayView< LocalOrdinal > &indices, size_t &NumIndices) const` | Fortran arrays; 1-based indices
 :star: | `void 	getGlobalRowView (const GlobalOrdinal gblRow, Teuchos::ArrayView< const GlobalOrdinal > &gblColInds) const` | Fortran arrays
-:running: | `void 	getLocalRowView (const LocalOrdinal lclRow, Teuchos::ArrayView< const LocalOrdinal > &lclColInds) const`
+:x: | `void 	getLocalRowView (const LocalOrdinal lclRow, Teuchos::ArrayView< const LocalOrdinal > &lclColInds) const` | cannot maintain the semantics
 :white_check_mark: | `bool 	supportsRowViews () const`
 
 **Overridden from Teuchos::Describable**
 
 :grey_question: | Command | Comment
 -------|--------|---------
-:running: | `std::string 	description () const`
+:arrow_down: | `std::string 	description () const`
 :x: | `void 	describe (Teuchos::FancyOStream &out, const Teuchos::EVerbosityLevel verbLevel=Teuchos::Describable::verbLevel_default) const`
 
 **Implementation of DistObject**
@@ -503,12 +503,12 @@ Status | Class
 :grey_question: | Command | Comment
 -------|--------|---------
 :x: | `void 	getLocalDiagOffsets (const Kokkos::View< size_t *, device_type, Kokkos::MemoryUnmanaged > &offsets) const`
-:arrow_down: | `void 	getLocalDiagOffsets (Teuchos::ArrayRCP< size_t > &offsets) const`
+:star: | `void 	getLocalDiagOffsets (Teuchos::ArrayRCP< size_t > &offsets) const` | Fortran arrays
 :arrow_down: | `void 	getNumEntriesPerLocalRowUpperBound (Teuchos::ArrayRCP< const size_t > &boundPerLocalRow, size_t &boundForAllLocalRows, bool &boundSameForAllLocalRows) const`
 :x: | `void 	setAllIndices (const typename local_graph_type::row_map_type &rowPointers, const typename local_graph_type::entries_type::non_const_type &columnIndices)`
 :star2: | `void 	setAllIndices (const Teuchos::ArrayRCP< size_t > &rowPointers, const Teuchos::ArrayRCP< LocalOrdinal > &columnIndices)` | Fortran arrays; 1-based indices
-:running: | `Teuchos::ArrayRCP< const size_t > 	getNodeRowPtrs () const`
-:running: | `Teuchos::ArrayRCP< const LocalOrdinal > 	getNodePackedIndices () const`
+:star2: | `Teuchos::ArrayRCP< const size_t > 	getNodeRowPtrs () const` | Fortran arrays, different semantics
+:star2: | `Teuchos::ArrayRCP< const LocalOrdinal > 	getNodePackedIndices () const` | Fortran arrays, different semantics
 :white_check_mark: | `void 	replaceColMap (const Teuchos::RCP< const map_type > &newColMap)`
 :white_check_mark: | `void 	reindexColumns (const Teuchos::RCP< const map_type > &newColMap, const Teuchos::RCP< const import_type > &newImport=Teuchos::null, const bool sortIndicesInEachRow=true)`
 :white_check_mark: | `void 	replaceDomainMapAndImporter (const Teuchos::RCP< const map_type > &newDomainMap, const Teuchos::RCP< const import_type > &newImporter)`
@@ -587,7 +587,7 @@ Status | Class
 
 :grey_question: | Command | Comment
 -------|--------|---------
-:running: | `std::string 	description () const`
+:arrow_down: | `std::string 	description () const`
 :x: | `void 	describe (Teuchos::FancyOStream &out, const Teuchos::EVerbosityLevel verbLevel=Teuchos::Describable::verbLevel_default) const`
 
 **Extraction Methods**
@@ -698,7 +698,7 @@ Status | Class
 :white_check_mark: | `void 	scale (const Scalar &alpha)`
 :x: | `void 	setAllValues (const typename local_matrix_type::row_map_type &ptr, const typename local_graph_type::entries_type::non_const_type &ind, const typename local_matrix_type::values_type &val)`
 :star2: | `void 	setAllValues (const Teuchos::ArrayRCP< size_t > &ptr, const Teuchos::ArrayRCP< LocalOrdinal > &ind, const Teuchos::ArrayRCP< Scalar > &val)` | Fortran arrays; 1-based indices
-:running: | `void 	getAllValues (Teuchos::ArrayRCP< const size_t > &rowPointers, Teuchos::ArrayRCP< const LocalOrdinal > &columnIndices, Teuchos::ArrayRCP< const Scalar > &values) const` | Fortran arrays
+:star2: | `void 	getAllValues (Teuchos::ArrayRCP< const size_t > &rowPointers, Teuchos::ArrayRCP< const LocalOrdinal > &columnIndices, Teuchos::ArrayRCP< const Scalar > &values) const` | Fortran arrays, different semantics
 
 **Methods implementing RowMatrix**
 
@@ -739,12 +739,12 @@ Status | Class
 :star: | `void 	getGlobalRowCopy (GlobalOrdinal GlobalRow, const Teuchos::ArrayView< GlobalOrdinal > &Indices, const Teuchos::ArrayView< Scalar > &Values, size_t &NumEntries) const` | Fortran arrays
 :star2: | `void 	getLocalRowCopy (LocalOrdinal localRow, const Teuchos::ArrayView< LocalOrdinal > &colInds, const Teuchos::ArrayView< Scalar > &vals, size_t &numEntries) const` | Fortran arrays; 1-based indices
 :star: | `void 	getGlobalRowView (GlobalOrdinal GlobalRow, Teuchos::ArrayView< const GlobalOrdinal > &indices, Teuchos::ArrayView< const Scalar > &values) const` | Fortran arrays
-:running: | `void 	getLocalRowView (LocalOrdinal LocalRow, Teuchos::ArrayView< const LocalOrdinal > &indices, Teuchos::ArrayView< const Scalar > &values) const`
+:x: | `void 	getLocalRowView (LocalOrdinal LocalRow, Teuchos::ArrayView< const LocalOrdinal > &indices, Teuchos::ArrayView< const Scalar > &values) const` | use `getLocalRowCopy` as we cannot maintain the semantics
 :x: | `LocalOrdinal 	getLocalRowViewRaw (const LocalOrdinal lclRow, LocalOrdinal &numEnt, const LocalOrdinal *&lclColInds, const Scalar *&vals) const` | prefer `ArrayView` variant
 :x: | `LocalOrdinal 	getLocalRowView (const LocalOrdinal lclRow, LocalOrdinal &numEnt, const impl_scalar_type *&val, const LocalOrdinal *&ind) const` | prefer `ArrayView` variant
 :x: | `template<class OutputScalarType > std::enable_if<!std::is_same < OutputScalarType, impl_scalar_type >::value &&std::is_convertible < impl_scalar_type, OutputScalarType >::value, LocalOrdinal >::type 	getLocalRowView (const LocalOrdinal lclRow, LocalOrdinal &numEnt, const OutputScalarType *&val, const LocalOrdinal *&ind) const` | prefer `ArrayView` variant
 :arrow_down: | `void 	getLocalDiagCopy (Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &diag) const`
-:arrow_down: | `void 	getLocalDiagOffsets (Teuchos::ArrayRCP< size_t > &offsets) const`
+:star: | `void 	getLocalDiagOffsets (Teuchos::ArrayRCP< size_t > &offsets) const` | Fortran arrays
 :x: | `void 	getLocalDiagCopy (Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &diag, const Kokkos::View< const size_t *, device_type, Kokkos::MemoryUnmanaged > &offsets) const`
 :arrow_down: | `void 	getLocalDiagCopy (Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &diag, const Teuchos::ArrayView< const size_t > &offsets) const`
 :arrow_down: | `void 	leftScale (const Vector< Scalar, LocalOrdinal, GlobalOrdinal, Node, classic > &x)`
