@@ -37,7 +37,7 @@ Installing ForTrilinos requires:
 
   ```sh
   git clone git clone https://github.com/trilinos/Trilinos.git
-  git checkout trilinos-release-12.12-1
+  git checkout trilinos-release-12-12-1
   export TRILINOS_DIR=`pwd`/Trilinos
   ```
 
