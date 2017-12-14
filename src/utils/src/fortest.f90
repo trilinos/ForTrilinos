@@ -1140,7 +1140,7 @@ contains
     logical, intent(inout) :: success
     character(len=*), intent(in) :: filename, namec
     integer, intent(in) :: lineno
-    integer(c_int), intent(in) :: ierr
+    integer(c_int), intent(inout) :: ierr
     character(len=20) :: name
     character(len=256) :: signature
     logical :: lcl_success
@@ -1153,6 +1153,7 @@ contains
       lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
+    ierr = 0
     return
   end subroutine fortest_throw
 
@@ -1163,7 +1164,7 @@ contains
     logical, intent(inout) :: success
     character(len=*), intent(in) :: filename, namec
     integer, intent(in) :: lineno
-    integer(c_int), intent(in) :: ierr
+    integer(c_int), intent(inout) :: ierr
     character(len=20) :: name
     character(len=256) :: signature
     logical :: lcl_success

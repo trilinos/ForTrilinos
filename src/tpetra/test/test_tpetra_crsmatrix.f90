@@ -378,8 +378,7 @@ contains
     ! It's forbidden to call any of the *LocalValues methods if the
     ! matrix is fill complete (not fill active).
 
-    ! FIXME: The following line should set ierr/=0, but it just throws from Tpetra
-    ! TEST_THROW(call Mat%insertGlobalValues(row, cols, vals))
+    TEST_THROW(call Mat%insertGlobalValues(row, cols, vals))
 
     numvalid = Mat%replaceGlobalValues(row, cols, vals); TEST_IERR()
     TEST_ASSERT(numvalid==invalid)
@@ -387,11 +386,10 @@ contains
     numvalid = Mat%sumIntoGlobalValues(row, cols, vals); TEST_IERR()
     TEST_ASSERT(numvalid==invalid)
 
-    ! FIXME: The following should set ierr/=0, but instead throw from Tpetra
-    !TEST_THROW(call Mat%setAllToScalar(zero))
-    !TEST_THROW(call Mat%scale(zero))
-    !TEST_THROW(call Mat%globalAssemble())
-    !TEST_THROW(call Mat%fillComplete())
+    TEST_THROW(call Mat%setAllToScalar(zero))
+    TEST_THROW(call Mat%scale(zero))
+    TEST_THROW(call Mat%globalAssemble())
+    TEST_THROW(call Mat%fillComplete())
 
     call params%release()
     call Mat%release()
@@ -471,8 +469,7 @@ contains
     ! It's forbidden to call any of the *LocalValues methods if the
     ! matrix is fill complete (not fill active).
 
-    ! FIXME: The following line should set ierr/=0, but it just throws from Tpetra
-    ! TEST_THROW(call Mat%insertLocalValues(row, cols, vals))
+    TEST_THROW(call Mat%insertLocalValues(row, cols, vals))
 
     numvalid = Mat%replaceLocalValues(row, cols, vals); TEST_IERR()
     TEST_ASSERT(numvalid==invalid)
@@ -480,11 +477,10 @@ contains
     numvalid = Mat%sumIntoLocalValues(lcrow, cols, vals); TEST_IERR()
     TEST_ASSERT(numvalid==invalid)
 
-    ! FIXME: The following should set ierr/=0, but instead throw from Tpetra
-    !TEST_THROW(call Mat%setAllToScalar(zero))
-    !TEST_THROW(call Mat%scale(zero))
-    !TEST_THROW(call Mat%globalAssemble())
-    !TEST_THROW(call Mat%fillComplete())
+    TEST_THROW(call Mat%setAllToScalar(zero))
+    TEST_THROW(call Mat%scale(zero))
+    TEST_THROW(call Mat%globalAssemble())
+    TEST_THROW(call Mat%fillComplete())
 
     call params%release()
     call Mat%release()
