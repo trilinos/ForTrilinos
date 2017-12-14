@@ -33,7 +33,6 @@ module fortest
 #include "ForTrilinosUtils_config.hpp"
 #include "DBCF.h"
 
-use DBCF_M
 use iso_c_binding
 use iso_fortran_env
 
@@ -44,7 +43,6 @@ use mpi
 implicit none
 
 ! Private variables for tracking progress of tests
-integer, private :: local_error(1), global_error(1)
 integer, private :: comm_rank, failed_tests, total_tests
 logical, private :: setup_called = .false.
 
@@ -116,6 +114,47 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
+  subroutine fortest_stop(message)
+    implicit none
+    character(len=*), intent(in), optional :: message
+    integer, parameter :: stopcode=993299
+    flush(error_unit)
+    flush(output_unit)
+    if (present(message)) then
+      write(error_unit, '(A)') trim(message)
+    end if
+    stop stopcode
+  end subroutine fortest_stop
+
+  subroutine gather_success(local_success, global_success)
+    implicit none
+    logical, intent(in) :: local_success
+    logical, intent(out) :: global_success
+    integer :: local_error(1), global_error(1)
+#ifdef HAVE_MPI
+    integer ierror
+#endif
+    ! ------------------------------------------------------------------------ !
+
+    local_error(1) = merge(0, 1, local_success)
+
+#ifdef HAVE_MPI
+    call MPI_Allreduce(local_error, global_error, 1, &
+                       MPI_INTEGER, MPI_MAX, MPI_COMM_WORLD, ierror)
+#else
+    global_error(1) = local_error(1)
+#endif
+
+    if (global_error(1) /= 0) then
+      global_success = .false.
+    else
+      global_success = .true.
+    end if
+
+  end subroutine gather_success
+
+  ! -------------------------------------------------------------------------- !
+
   subroutine setup_test2()
     ! ------------------------------------------------------------------------ !
     ! Setup module variables for the test.  This should be called once at the
@@ -127,12 +166,10 @@ contains
     ! ------------------------------------------------------------------------ !
 
     if (setup_called) then
-      Insist(.FALSE., "SETUP_TEST can be called only once per test program")
+      call fortest_stop("SETUP_TEST can be called only once per test program")
     end if
 
     ! Initialize module level variables
-    local_error(1) = 0
-    global_error(1) = 0
     failed_tests = 0
     total_tests = 0
 
@@ -171,7 +208,7 @@ contains
     call MPI_Finalize(ierror)
 #endif
     if (failed_tests > 0) then
-      Insist(.FALSE., str)
+      call fortest_stop()
     end if
     return
   end subroutine teardown_test2
@@ -198,6 +235,7 @@ contains
     ! ------------------------------------------------------------------------ !
     character(len=*), intent(in) :: test_name
     logical, intent(in) :: success
+    integer :: local_error(1), global_error(1)
 #ifdef HAVE_MPI
     integer ierror
 #endif
@@ -232,10 +270,14 @@ contains
     character(len=256), intent(in) :: signature
     character(len=*), intent(in), optional :: errstr
     ! ------------------------------------------------------------------------ !
-    write(0, '(A,A,A,I6)') "File '", trim(filename), "', line ", lineno
-    write(0, '(A)') " " // trim(signature)
+    flush(error_unit)
+    flush(output_unit)
+    write(error_unit, '(A,I3)') "***ERROR: On Proc: ", comm_rank
+    write(error_unit, '(A,A,A,I6)') &
+      "*** ERROR: File: '", trim(filename), "', line ", lineno
+    write(error_unit, '(A)') "*** ERROR: " // trim(signature)
     if (present(errstr)) then
-      write(0, '(A)') "Error: " // trim(errstr)
+      write(error_unit, '(A)') "*** ERROR: " // trim(errstr)
     end if
   end subroutine write_error_diagnostics
 
@@ -247,7 +289,7 @@ contains
     ! ------------------------------------------------------------------------ !
     character(len=*), intent(in) :: string
     ! ------------------------------------------------------------------------ !
-    if (comm_rank == 0) write(0, '(A)') trim(string)
+    if (comm_rank == 0) write(output_unit, '(A)') trim(string)
   end subroutine write_to_proc0
 
   ! -------------------------------------------------------------------------- !
@@ -260,14 +302,16 @@ contains
     integer(c_int), intent(in) :: ierr
     character(len=1024), intent(in) :: serr
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
+    lcl_success = .true.
     if (ierr /= 0) then
-      if (comm_rank == 0) then
-        write(signature, '(A)') "TEST_IERR()"
-        call write_error_diagnostics(filename, lineno, signature, serr)
-      end if
-      success = .false.
+      write(signature, '(A)') "TEST_IERR()"
+      call write_error_diagnostics(filename, lineno, signature, serr)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
+    return
   end subroutine fortest_ierr
 
   ! -------------------------------------------------------------------------- !
@@ -282,15 +326,16 @@ contains
     real(c_double), intent(in) :: tolerance
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_FLOATING_ARRAY_EQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) > tolerance) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_equality_double1
 
@@ -306,15 +351,16 @@ contains
     real(c_double), intent(in) :: tolerance
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) > tolerance) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_equality_double2
 
@@ -330,15 +376,16 @@ contains
     integer(c_int), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) > zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_equality_int1
 
@@ -354,15 +401,16 @@ contains
     integer(c_int), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) > zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_equality_int2
 
@@ -378,15 +426,16 @@ contains
     integer(c_long), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) > zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_equality_long1
 
@@ -402,15 +451,16 @@ contains
     integer(c_long), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) > zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_equality_long2
 
@@ -427,15 +477,16 @@ contains
     integer(c_long_long), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) > zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_equality_long_long1
 #endif
@@ -453,15 +504,16 @@ contains
     integer(c_long_long), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) > zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_equality_long_long2
 #endif
@@ -479,15 +531,16 @@ contains
     integer(c_size_t), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) > zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_equality_size_t1
 #endif
@@ -505,15 +558,16 @@ contains
     integer(c_size_t), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) > zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_equality_size_t2
 #endif
@@ -530,15 +584,16 @@ contains
     real(c_double), intent(in) :: tolerance
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_FLOATING_ARRAY_INEQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) <= tolerance) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_inequality_double1
 
@@ -554,15 +609,16 @@ contains
     real(c_double), intent(in) :: tolerance
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) <= tolerance) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_inequality_double2
 
@@ -578,15 +634,16 @@ contains
     integer(c_int), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) <= zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_inequality_int1
 
@@ -602,14 +659,14 @@ contains
     integer(c_int), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) <= zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
     return
   end subroutine fortest_array_inequality_int2
@@ -626,15 +683,16 @@ contains
     integer(c_long), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) <= zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_inequality_long1
 
@@ -650,15 +708,16 @@ contains
     integer(c_long), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) <= zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_inequality_long2
 
@@ -675,15 +734,16 @@ contains
     integer(c_long_long), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) <= zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_inequality_long_long1
 #endif
@@ -701,15 +761,16 @@ contains
     integer(c_long_long), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) <= zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_inequality_long_long2
 #endif
@@ -727,15 +788,16 @@ contains
     integer(c_size_t), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) <= zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_inequality_size_t1
 #endif
@@ -753,15 +815,16 @@ contains
     integer(c_size_t), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
+    lcl_success = .true.
     if (abs(maxval(a - b)) <= zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_inequality_size_t2
 #endif
@@ -778,15 +841,16 @@ contains
     real(c_double), intent(in) :: tolerance
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_FLOATING_EQUALITY'
+    lcl_success = .true.
     if (abs(a - b) > tolerance) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_equality_double1
 
@@ -802,15 +866,16 @@ contains
     integer(c_int), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_EQUALITY'
+    lcl_success = .true.
     if (abs(a - b) > zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_equality_int1
 
@@ -826,15 +891,16 @@ contains
     integer(c_long), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_EQUALITY'
+    lcl_success = .true.
     if (abs(a - b) > zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_equality_long1
 
@@ -851,15 +917,16 @@ contains
     integer(c_long_long), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_EQUALITY'
+    lcl_success = .true.
     if (abs(a - b) > zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_equality_long_long1
 #endif
@@ -877,15 +944,16 @@ contains
     integer(c_size_t), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_EQUALITY'
+    lcl_success = .true.
     if (abs(a - b) > zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_equality_size_t1
 #endif
@@ -902,15 +970,16 @@ contains
     real(c_double), intent(in) :: tolerance
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_FLOATING_INEQUALITY'
+    lcl_success = .true.
     if (abs(a - b) <= tolerance) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_inequality_double1
 
@@ -926,15 +995,16 @@ contains
     integer(c_int), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_INEQUALITY'
+    lcl_success = .true.
     if (abs(a - b) <= zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_inequality_int1
 
@@ -950,15 +1020,16 @@ contains
     integer(c_long), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_INEQUALITY'
+    lcl_success = .true.
     if (abs(a - b) <= zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_inequality_long1
 
@@ -975,15 +1046,16 @@ contains
     integer(c_long_long), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_INEQUALITY'
+    lcl_success = .true.
     if (abs(a - b) <= zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_inequality_long_long1
 #endif
@@ -1001,15 +1073,16 @@ contains
     integer(c_size_t), parameter :: zero=0
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_INEQUALITY'
+    lcl_success = .true.
     if (abs(a - b) <= zero) then
-      if (comm_rank == 0) then
-        signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_inequality_size_t1
 #endif
@@ -1024,15 +1097,16 @@ contains
     logical, intent(in) :: c
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ASSERT'
+    lcl_success = .true.
     if (.not.(c)) then
-      if (comm_rank == 0) then
-        signature = name // '(' // trim(namec) // ')'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name) // '(' // trim(namec) // ')'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_assert1
 
@@ -1046,15 +1120,16 @@ contains
     logical(c_bool), intent(in) :: c
     character(len=30) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ASSERT'
+    lcl_success = .true.
     if (.not.(c)) then
-      if (comm_rank == 0) then
-        signature = name // '(' // trim(namec) // ')'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name) // '(' // trim(namec) // ')'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_assert2
 
@@ -1068,15 +1143,16 @@ contains
     integer(c_int), intent(in) :: ierr
     character(len=20) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_THROW'
+    lcl_success = .true.
     if (ierr == 0) then
-      if (comm_rank == 0) then
-        signature = trim(name) //  '(' // trim(namec) // ')'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name) //  '(' // trim(namec) // ')'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_throw
 
@@ -1090,15 +1166,16 @@ contains
     integer(c_int), intent(in) :: ierr
     character(len=20) :: name
     character(len=256) :: signature
+    logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_NOTHROW'
+    lcl_success = .true.
     if (ierr /= 0) then
-      if (comm_rank == 0) then
-        signature = trim(name) //  '(' // trim(namec) // ')'
-        call write_error_diagnostics(filename, lineno, signature)
-      end if
-      success = .false.
+      signature = trim(name) //  '(' // trim(namec) // ')'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_nothrow
 

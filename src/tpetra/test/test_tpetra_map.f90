@@ -4,14 +4,16 @@
 ! License-Filename: LICENSE
 program test_TpetraMap
 #include "ForTrilinosTpetra_config.hpp"
-#include "FortranTestMacros.h"
+#include "FortranTestUtilities.h"
   use iso_fortran_env
   use, intrinsic :: iso_c_binding
   use forteuchos
   use fortpetra
 
+  implicit none
   type(TeuchosComm) :: comm
   integer(global_size_type), parameter :: invalid=-1
+  character(len=256), parameter :: FILENAME="test_tpetra_map.f90"
 
   SETUP_TEST()
 

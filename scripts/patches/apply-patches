@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 
 import os
+import sys
 import glob
 from subprocess import Popen
+
+DRYRUN = False
 
 TRILINOS_DIR = os.getenv('TRILINOS_DIR')
 if TRILINOS_DIR is None:
@@ -10,10 +13,23 @@ if TRILINOS_DIR is None:
 if not os.path.isdir(TRILINOS_DIR):
     raise SystemExit('{0} is not a directory'.format(TRILINOS_DIR))
 
-this_dir = os.path.dirname(os.path.realpath(__file__))
-for filename in glob.glob(os.path.join(this_dir, '*.diff')):
-    diff_file = os.path.join(this_dir, filename)
-    print(diff_file)
-    command = 'patch -p 1 < {0}'.format(diff_file)
-    p = Popen(command, cwd=TRILINOS_DIR, shell=True)
+def apply_patch(patchfile, cwd=None):
+    command = 'patch -p 1 < {0}'.format(patchfile)
+    print(command)
+    if DRYRUN:
+        return 0
+    p = Popen(command, cwd=cwd, shell=True)
     p.wait()
+    return p.returncode
+
+# Look for user requested patches to apply
+patches = sys.argv[1:]
+if not patches:
+    # Apply all patches!
+    this_dir = os.path.dirname(os.path.realpath(__file__))
+    patches = glob.glob(os.path.join(this_dir, '*.diff'))
+
+for patchfile in patches:
+    patchfile = os.path.realpath(patchfile)
+    assert os.path.isfile(patchfile)
+    apply_patch(patchfile, cwd=TRILINOS_DIR)

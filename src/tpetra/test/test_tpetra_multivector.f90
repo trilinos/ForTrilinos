@@ -1,6 +1,6 @@
 program test_TpetraMultiVector
 #include "ForTrilinosTpetra_config.hpp"
-#include "FortranTestMacros.h"
+#include "FortranTestUtilities.h"
   use iso_fortran_env
   use, intrinsic :: iso_c_binding
   use forteuchos
@@ -9,6 +9,7 @@ program test_TpetraMultiVector
   implicit none
   type(TeuchosComm) :: comm
   integer(global_size_type), parameter :: invalid = -1
+  character(len=256), parameter :: FILENAME="test_tpetra_multivector.f90"
 
   SETUP_TEST()
 
