@@ -5,6 +5,8 @@ import sys
 import glob
 from subprocess import Popen
 
+DRYRUN = False
+
 TRILINOS_DIR = os.getenv('TRILINOS_DIR')
 if TRILINOS_DIR is None:
     raise SystemExit('TRILINOS_DIR environment variable must be defined')
@@ -14,7 +16,8 @@ if not os.path.isdir(TRILINOS_DIR):
 def apply_patch(patchfile, cwd=None):
     command = 'patch -p 1 < {0}'.format(patchfile)
     print(command)
-    return 0
+    if DRYRUN:
+        return 0
     p = Popen(command, cwd=cwd, shell=True)
     p.wait()
     return p.returncode
