@@ -10,6 +10,35 @@
 TRIBITS_SUBPACKAGE(Tpetra)
 
 ##---------------------------------------------------------------------------##
+## Assert that Tpetra has ETI on the required types
+##---------------------------------------------------------------------------##
+
+# Make sure that Tpetra actually defined these variables, even if they are
+# empty. This works even if ETI is off, as Tpetra defines these for running
+# tests. When ETI is off, the ForTrilinos' required combination is on.
+ASSERT_DEFINED(TpetraCore_ETI_SCALARS)
+ASSERT_DEFINED(TpetraCore_ETI_LORDS)
+ASSERT_DEFINED(TpetraCore_ETI_GORDS)
+ASSERT_DEFINED(TpetraCore_ETI_NODES)
+
+LIST (FIND TpetraCore_ETI_SCALARS "double" index)
+IF (-1 EQUAL index) # not in the list of integer types
+  MESSAGE(FATAL_ERROR "ForTrilinos requires Tpetra ETI for <double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode>")
+ENDIF ()
+LIST (FIND TpetraCore_ETI_LORDS "int" index)
+IF (-1 EQUAL index) # not in the list of integer types
+  MESSAGE(FATAL_ERROR "ForTrilinos requires Tpetra ETI for <double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode>")
+ENDIF ()
+LIST (FIND TpetraCore_ETI_GORDS "long long" index)
+IF (-1 EQUAL index) # not in the list of integer types
+  MESSAGE(FATAL_ERROR "ForTrilinos requires Tpetra ETI for <double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode>")
+ENDIF ()
+LIST (FIND TpetraCore_ETI_NODES "Kokkos::Compat::KokkosSerialWrapperNode" index)
+IF (-1 EQUAL index) # not in the list of integer types
+  MESSAGE(FATAL_ERROR "ForTrilinos requires Tpetra ETI for <double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode>")
+ENDIF ()
+
+##---------------------------------------------------------------------------##
 ## Generate config file and add it to the list
 ##---------------------------------------------------------------------------##
 TRIBITS_CONFIGURE_FILE(${PACKAGE_NAME}_config.hpp)
