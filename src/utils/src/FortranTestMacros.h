@@ -103,4 +103,9 @@ use DBCF_M
  Insist(.FALSE., "EXPECT_FALSE(TEST)"); \
  ENDIF
 
+#define CHECK_IERR() \
+ IF(IERR/=0) THEN; \
+ Insist(.FALSE., '*** ForTrilinos caught exception!'//NEW_LINE('A')//TRIM(SERR)); \
+ ENDIF
+
 #endif /* FOTRANTESTMACROS_H */
