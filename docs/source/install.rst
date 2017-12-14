@@ -43,7 +43,7 @@ required to build and install ForTrilinos:
 
       $ git clone https://github.com/trilinos/Trilinos.git $TRILINOS_DIR
       $ cd $TRILINOS_DIR
-      $ git checkout trilinos-release-12.12-1
+      $ git checkout trilinos-release-12-12-1
 
   Here, ``$TRILINOS_DIR`` is the name you want give to the repository.
 
