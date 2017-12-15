@@ -224,13 +224,13 @@ contains
     call A%create(map, num_vecs); TEST_IERR()
     call B%create(map, num_vecs); TEST_IERR()
     call A%putScalar(five); TEST_IERR()
-    call A%reciprocal(B); TEST_IERR()
+    call B%reciprocal(A); TEST_IERR()
 
     ! Take the dots, they should one
     call A%dot(B, dots)
 
     ! Check the answers
-    TEST_FLOATING_ARRAY_EQUALITY(dots, one, epsilon(one))
+    TEST_FLOATING_ARRAY_EQUALITY(dots, one*num_local*comm%getSize(), epsilon(one))
 
     call A%release()
     call B%release()
