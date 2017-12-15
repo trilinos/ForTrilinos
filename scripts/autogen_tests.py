@@ -1,22 +1,27 @@
+#!/usr/bin/env python
 #Copyright 2017, UT-Battelle, LLC
 #
 #SPDX-License-Identifier: BSD-3-Clause
 #License-Filename: LICENSE
+import os
 import re
 import sys
+from argparse import ArgumentParser
 
 """
-This script is a total hack that reads fortpetra.f90 and creates skeletons for
-unit tests for Tpetra objects.  It should be easily modified to write skeletons
-for unit tests for other packages.
-
+This script is a total hack that starting by reading fortpetra.f90 to create
+skeletons for unit tests for Tpetra objects.  I've since modified it a bit to
+work for other packages, but I am sure that it will have to be modified when
+working with a new package to remove any implicit assumptions from its origins
+with Tpetra
 """
 
 class NamespaceTestGenerator:
-    def __init__(self, namespace, procs, filename):
+    def __init__(self, namespace, procs, filename, f90_module):
         self.namespace = namespace
         self.procs = procs
         self.filename = filename
+        self.f90_module = f90_module
 
     def write(self, stream):
         if stream is None:
@@ -29,12 +34,12 @@ class NamespaceTestGenerator:
 !SPDX-License-Identifier: BSD-3-Clause
 !License-Filename: LICENSE
 program test_{0}
-#include "ForTrilinosTpetra_config.hpp"
+#include "<CONFIG_FILE>"
 #include "FortranTestUtilities.h"
   use iso_fortran_env
   use, intrinsic :: iso_c_binding
   use forteuchos
-  use fortpetra
+  use {3}
 
   implicit none
   type(TeuchosComm) :: comm
@@ -48,7 +53,7 @@ program test_{0}
   call comm%create()
 #endif
 
-""".format(self.namespace, len(self.filename)+2, self.filename))
+""".format(self.namespace, len(self.filename)+2, self.filename, self.f90_module))
 
         # Write call to each individual test
         for proc in self.procs:
@@ -177,10 +182,27 @@ class Procedure:
 
 
 
-
 def main():
-    filename = './fortpetra.f90'
+    p = ArgumentParser()
+    p.add_argument('filename')
+    p.add_argument('--package',
+                   help='Package name.  Inferred from filename if not give')
+    args = p.parse_args()
+
+    filename = args.filename
+    assert os.path.isfile(filename)
+    package = args.package
+    if package is None:
+        # Infer package from filename:
+        # for<name>.f90 => package = Name
+        root, ext = os.path.splitext(os.path.basename(filename))
+        package = re.sub(r'^for', '', root).title()
     contents = open(filename).read()
+
+    f90_module = re.search(r'\Wmodule\s+(?P<name>\w+)', contents)
+    if f90_module is None:
+        raise Exception('Unable to determine module name')
+    f90_module = f90_module.group('name').strip()
 
     # Find public procedures of the fortpetra module
     namespaces = {}
@@ -219,12 +241,10 @@ def main():
         namespaces.setdefault(namespace, []).append(theproc)
 
     for (namespace, procs) in namespaces.items():
-        if namespace in ('TpetraMap', 'TpetraMultiVector',):
-            continue
         filename = 'Test{0}_autogen.f90'.format(namespace)
-        s = namespace.lower().replace('tpetra', 'tpetra_')
+        s = namespace.lower().replace(package, package+'_')
         write_filename = 'test_{0}.f90'.format(s)
-        doc = NamespaceTestGenerator(namespace, procs, write_filename)
+        doc = NamespaceTestGenerator(namespace, procs, write_filename, f90_module)
         with open(filename, 'w') as fh:
             doc.write(fh)
 
