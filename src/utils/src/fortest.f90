@@ -358,7 +358,7 @@ contains
     character(len=256) :: signature
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
-    name = 'TEST_ARRAY_EQUALITY'
+    name = 'TEST_FLOATING_ARRAY_EQUALITY'
     lcl_success = .true.
     if (abs(maxval(a - b)) > tolerance) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
