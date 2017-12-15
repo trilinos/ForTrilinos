@@ -1,3 +1,7 @@
+! Copyright 2017, UT-Battelle, LLC
+!
+! SPDX-License-Identifier: BSD-3-Clause
+! License-Filename: LICENSE
 program test_TpetraMultiVector
 #include "ForTrilinosTpetra_config.hpp"
 #include "FortranTestUtilities.h"
