@@ -24,6 +24,10 @@ class NamespaceTestGenerator:
 
         # Write the preamble to the test suite
         stream.write("""\
+!Copyright 2017, UT-Battelle, LLC
+!
+!SPDX-License-Identifier: BSD-3-Clause
+!License-Filename: LICENSE
 program test_{0}
 #include "ForTrilinosTpetra_config.hpp"
 #include "FortranTestUtilities.h"
