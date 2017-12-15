@@ -856,6 +856,30 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
+  subroutine fortest_equality_const(success, filename, lineno, &
+                                    namea, a, nameb, b)
+    ! ------------------------------------------------------------------------ !
+    logical, intent(inout) :: success
+    character(len=*), intent(in) :: filename, namea, nameb
+    integer, intent(in) :: lineno
+    logical(c_bool), intent(in) :: a, b
+    character(len=30) :: name
+    character(len=256) :: signature
+    logical :: lcl_success
+    ! ------------------------------------------------------------------------ !
+    name = 'TEST_EQUALITY_CONST'
+    lcl_success = .true.
+    if (a .neqv. b) then
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
+    end if
+    call gather_success(lcl_success, success)
+    return
+  end subroutine fortest_equality_const
+
+  ! -------------------------------------------------------------------------- !
+
   subroutine fortest_equality_int1(success, filename, lineno, &
                                    namea, a, nameb, b)
     ! ------------------------------------------------------------------------ !
