@@ -46,6 +46,10 @@ implicit none
 integer, private :: comm_rank, failed_tests, total_tests
 logical, private :: setup_called = .false.
 
+interface fortest_equality_const
+  module procedure fortest_equality_const1, fortest_equality_const2
+end interface
+
 interface fortest_array_equality
   module procedure fortest_array_equality_double1, &
                    fortest_array_equality_double2, &
@@ -83,6 +87,7 @@ end interface
 interface fortest_equality
   module procedure fortest_equality_double1, &
                    fortest_equality_int1, &
+                   fortest_equality_char, &
 #ifdef SIZE_T_IS_NOT_SAME_AS_LONG
                    fortest_equality_size_t1, &
 #endif
@@ -856,8 +861,8 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
-  subroutine fortest_equality_const(success, filename, lineno, &
-                                    namea, a, nameb, b)
+  subroutine fortest_equality_const1(success, filename, lineno, &
+                                     namea, a, nameb, b)
     ! ------------------------------------------------------------------------ !
     logical, intent(inout) :: success
     character(len=*), intent(in) :: filename, namea, nameb
@@ -876,10 +881,33 @@ contains
     end if
     call gather_success(lcl_success, success)
     return
-  end subroutine fortest_equality_const
+  end subroutine fortest_equality_const1
 
   ! -------------------------------------------------------------------------- !
 
+  subroutine fortest_equality_const2(success, filename, lineno, &
+                                    namea, a, nameb, b)
+    ! ------------------------------------------------------------------------ !
+    logical, intent(inout) :: success
+    character(len=*), intent(in) :: filename, namea, nameb
+    integer, intent(in) :: lineno
+    logical, intent(in) :: a, b
+    character(len=30) :: name
+    character(len=256) :: signature
+    logical :: lcl_success
+    ! ------------------------------------------------------------------------ !
+    name = 'TEST_EQUALITY_CONST'
+    lcl_success = .true.
+    if (a .neqv. b) then
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
+    end if
+    call gather_success(lcl_success, success)
+    return
+  end subroutine fortest_equality_const2
+
+  ! -------------------------------------------------------------------------- !
   subroutine fortest_equality_int1(success, filename, lineno, &
                                    namea, a, nameb, b)
     ! ------------------------------------------------------------------------ !
@@ -895,7 +923,7 @@ contains
     name = 'TEST_EQUALITY'
     lcl_success = .true.
     if (abs(a - b) > zero) then
-      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
       call write_error_diagnostics(filename, lineno, signature)
       lcl_success = .false.
     end if
@@ -920,7 +948,7 @@ contains
     name = 'TEST_EQUALITY'
     lcl_success = .true.
     if (abs(a - b) > zero) then
-      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
       call write_error_diagnostics(filename, lineno, signature)
       lcl_success = .false.
     end if
@@ -946,7 +974,7 @@ contains
     name = 'TEST_EQUALITY'
     lcl_success = .true.
     if (abs(a - b) > zero) then
-      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
       call write_error_diagnostics(filename, lineno, signature)
       lcl_success = .false.
     end if
@@ -973,7 +1001,7 @@ contains
     name = 'TEST_EQUALITY'
     lcl_success = .true.
     if (abs(a - b) > zero) then
-      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
       call write_error_diagnostics(filename, lineno, signature)
       lcl_success = .false.
     end if
@@ -981,6 +1009,30 @@ contains
     return
   end subroutine fortest_equality_size_t1
 #endif
+
+  ! -------------------------------------------------------------------------- !
+
+  subroutine fortest_equality_char(success, filename, lineno, &
+                                   namea, a, nameb, b)
+    ! ------------------------------------------------------------------------ !
+    logical, intent(inout) :: success
+    character(len=*), intent(in) :: filename, namea, nameb
+    integer, intent(in) :: lineno
+    character(len=*), intent(in) :: a, b
+    character(len=30) :: name
+    character(len=256) :: signature
+    logical :: lcl_success
+    ! ------------------------------------------------------------------------ !
+    name = 'TEST_EQUALITY'
+    lcl_success = .true.
+    if (trim(a) /= trim(b)) then
+      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
+      call write_error_diagnostics(filename, lineno, signature)
+      lcl_success = .false.
+    end if
+    call gather_success(lcl_success, success)
+    return
+  end subroutine fortest_equality_char
 
   ! -------------------------------------------------------------------------- !
 
