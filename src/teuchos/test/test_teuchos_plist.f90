@@ -2,21 +2,24 @@
 !
 !SPDX-License-Identifier: BSD-3-Clause
 !License-Filename: LICENSE
-program main
+program test_TeuchosPList
+#include "FortranTestUtilities.h"
+#include "ForTrilinosTeuchos_config.hpp"
+  use iso_fortran_env
+  use, intrinsic :: iso_c_binding
+  use forteuchos
 
-#include "FortranTestMacros.h"
+  implicit none
+  character(len=26), parameter :: FILENAME='test_teuchos_plist.f90'
 
-    use ISO_FORTRAN_ENV
-    implicit none
+  SETUP_TEST()
 
-    call test_plist()
+  ADD_SUBTEST_AND_RUN(TeuchosPList_Basic)
+
+  TEARDOWN_TEST()
 contains
 
-subroutine test_plist()
-    use ISO_FORTRAN_ENV
-    use, intrinsic :: ISO_C_BINDING
-    use forteuchos
-    implicit none
+  FORTRILINOS_UNIT_TEST(TeuchosPList_Basic)
 
     type(ParameterList) :: plist, sublist, sublistref
     integer, dimension(6) :: test_int = (/ -1, 1, 3, 3, 5, 7 /)
@@ -24,94 +27,93 @@ subroutine test_plist()
 
     integer :: ival
     real(C_DOUBLE) :: dval
-    logical(C_BOOL) :: bval, true = .true. ! FIXME: can we get rid of this true somethow?
+    logical(C_BOOL) :: bval, true=.true., false=.false. ! FIXME: can we get rid of this true somethow?
     character(kind=C_CHAR, len=16) :: sval
 
-    write(0, *) "Constructing..."
-    call plist%create("myname")
-    EXPECT_EQ(0, ierr)
-    EXPECT_TRUE(c_associated(plist%swigptr))
+    OUT0('Starting TeuchosPList_Basic!')
+
+    call plist%create('myname'); TEST_IERR()
+    TEST_EQUALITY_CONST(c_associated(plist%swigptr), .true.)
 
     ! Test a function that raises an exception
-    call load_from_xml(plist, "nonexistent_path.xml")
-    EXPECT_EQ(-3, ierr)
-    EXPECT_TRUE(c_associated(plist%swigptr))
-    ierr = 0
+    TEST_THROW(call load_from_xml(plist, 'nonexistent_path.xml'))
+    TEST_EQUALITY_CONST(c_associated(plist%swigptr), .true.)
 
     ! Get and set a vlaue
-    call plist%set("myint", 4)
-    call plist%get("myint", ival)
-    EXPECT_EQ(4, ival)
+    call plist%set('myint', 4)
+    call plist%get('myint', ival)
+    TEST_EQUALITY(ival, 4)
 
-    call plist%set("mydbl", 1.25d0)
-    call plist%get("mydbl", dval)
-    EXPECT_EQ(1.25d0, dval)
+    call plist%set('mydbl', 1.25_C_DOUBLE)
+    call plist%get('mydbl', dval)
+    TEST_FLOATING_EQUALITY(dval, 1.25_C_DOUBLE, epsilon(1.0_C_DOUBLE))
 
     bval = .false.
-    call plist%set("mybool", true)
-    call plist%get("mybool", bval)
-    EXPECT_TRUE(bval)
+    call plist%set('mybool', true)
+    call plist%get('mybool', bval)
+    TEST_EQUALITY_CONST(bval, true)
 
-    call plist%set("intarr", test_int)
-    call plist%set("dblarr", test_dbl)
+    call plist%set('intarr', test_int)
+    call plist%set('dblarr', test_dbl)
 
-    EXPECT_EQ(6, plist%get_length('intarr'))
-    EXPECT_EQ(4, plist%get_length('dblarr'))
+    TEST_EQUALITY(6, plist%get_length('intarr'))
+    TEST_EQUALITY(4, plist%get_length('dblarr'))
 
     ! Wrong parameter type
-    call plist%get("intarr", test_dbl)
-    EXPECT_EQ(-3, ierr)
-    ierr = 0
+    TEST_THROW(call plist%get('intarr', test_dbl))
+
     ! Wrong array size
-    call plist%get("intarr", test_int(:4))
-    EXPECT_EQ(-4, ierr)
-    ierr = 0
+    TEST_THROW(call plist%get('intarr', test_int(:4)))
 
-    call plist%set("deleteme", 123)
-    EXPECT_TRUE(plist%is_parameter('deleteme'))
-    call plist%remove("deleteme")
-    EXPECT_FALSE(plist%is_parameter('deleteme'))
+    call plist%set('deleteme', 123)
+    TEST_EQUALITY_CONST(plist%is_parameter('deleteme'), true)
 
-    EXPECT_FALSE(c_associated(sublist%swigptr))
-    sublist = plist%sublist("sublist")
-    EXPECT_TRUE(c_associated(sublist%swigptr))
-    call sublist%set("anotherval", 4.0d0)
-    call sublist%set("stringval", "some string!")
-    EXPECT_EQ(12, sublist%get_length('stringval'))
-    call sublist%get("stringval", sval)
-    EXPECT_EQ('some string!', trim(sval))
+    call plist%remove('deleteme')
+    TEST_EQUALITY_CONST(plist%is_parameter('deleteme'), false)
+
+    TEST_EQUALITY_CONST(c_associated(sublist%swigptr), .false.)
+    sublist = plist%sublist('sublist')
+    TEST_EQUALITY_CONST(c_associated(sublist%swigptr), .true.)
+
+    call sublist%set('anotherval', 4.0d0)
+
+    call sublist%set('stringval', 'some string!')
+    TEST_EQUALITY(sublist%get_length('stringval'), 12)
+    call sublist%get('stringval', sval)
+    TEST_EQUALITY('some string!', sval)
 
     ! Set a string that's too long for sval
-    call sublist%set("stringval", "the string is too damn long!")
-    EXPECT_EQ(0, ierr)
-    call sublist%get("stringval", sval)
-    EXPECT_EQ(-4, ierr)
-    ierr = 0
+    TEST_NOTHROW(call sublist%set('stringval', 'the string is too damn long!'))
+    TEST_THROW(call sublist%get('stringval', sval))
 
-    call plist%set("sublist2", sublist)
+    call plist%set('sublist2', sublist)
 
     ! Add a sub-sublist
-    sublist = sublist%sublist("subsublist")
+    sublist = sublist%sublist('subsublist')
 
     ! Add another parameter on the original sublist
-    call sublist%set("late_arrival", 1.0d0)
+    call sublist%set('late_arrival', 1.0d0)
     call sublist%release()
 
     ! XXX: make this interface cleaner. Currently getting a reference to a
     ! sublist requires that another parameterlist is allocated first
     call sublistref%create()
-    call plist%get("sublist", sublistref)
-    call sublistref%set("added_to_copy", 1.0d0)
-    write(0, *) "Printing copy of sublist..."
+    call plist%get('sublist', sublistref)
+    call sublistref%set('added_to_copy', 1.0d0)
+    OUT0('Printing copy of sublist...')
     call sublistref%print()
     call sublistref%release()
 
-    write(0, *) "Printing..."
+    OUT0('Printing...')
     call plist%print()
-    write(0, *) "Saving to XML file"
-    call save_to_xml(plist, "myparams.xml")
+
+    OUT0('Saving to XML file')
+    call save_to_xml(plist, 'myparams.xml')
 
     call plist%release()
-end subroutine
 
-end program
+    OUT0('Finished TeuchosPList_Basic!')
+
+  END_FORTRILINOS_UNIT_TEST(TeuchosPList_Basic)
+
+end program test_TeuchosPList
