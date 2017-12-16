@@ -7,6 +7,6 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 TRIBITS_ADD_LIBRARY(
   forutils
-  HEADERS DBCF.h FortranTestMacros.h FortranTestUtilities.h
+  NOINSTALLHEADERS DBCF.h FortranTestMacros.h FortranTestUtilities.h
   SOURCES DBCF.f90 fortest.f90
 )
