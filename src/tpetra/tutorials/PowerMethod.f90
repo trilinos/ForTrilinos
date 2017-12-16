@@ -11,7 +11,6 @@ program main
 ! package provides them.  You should instead see this class as a surrogate
 ! for a ForTrilinos interface to the Tpetra package.
 ! --------------------------------------------------------------------------- !
-#include "FortranTestMacros.h"
 #include "ForTrilinosTpetra_config.hpp"
 
 use iso_fortran_env
@@ -65,10 +64,17 @@ my_rank = comm%getRank()
 num_gbl_indices = 50
 
 call map%create(num_gbl_indices, comm)
-EXPECT_EQ(ierr, 0)
+if (ierr /= 0) then
+  write(error_unit, '(A)') serr
+  stop 1
+end if
 
 ! Check that the map was created with the appropriate number of elements
-EXPECT_EQ(map%getGlobalNumElements(), num_gbl_indices)
+if (map%getGlobalNumElements() /= num_gbl_indices) then
+  write(error_unit, '(A,I3,A)') 'Expected ', num_gbl_indices, ' global indices'
+  stop 1
+end if
+
 
 if (my_rank == 0) &
   write(*, *) "Creating the sparse matrix"
@@ -118,7 +124,10 @@ call PowerMethod(A, lambda, iconv, comm)
 if (iconv > 0 .and. my_rank == 0) then
   write(*, *) "Estimated max eigenvalue: ", lambda
 end if
-EXPECT_TRUE(abs(lambda-3.99)/3.99 < .005)
+if (abs(lambda-3.99)/3.99 >= .005) then
+  write(error_unit, '(A)') 'Largest estimated eigenvalue is not correct!'
+  stop 1
+end if
 
 ! Now we're going to change values in the sparse matrix and run the power method
 ! again.  We'll increase the value of the (1,1) component of the matrix to make
@@ -181,7 +190,10 @@ call PowerMethod(A, lambda, iconv, comm)
 if (iconv > 0 .and. my_rank == 0) then
   write(*, *) "Estimated max eigenvalue: ", lambda
 end if
-EXPECT_TRUE(abs(lambda-20.05555)/20.05555 < .0001)
+if (abs(lambda-20.05555)/20.05555 >= .0001) then
+  write(error_unit, '(A)') 'Largest estimated eigenvalue is not correct!'
+  stop 1
+end if
 
 call A%release()
 call map%release()
@@ -190,7 +202,6 @@ call comm%release()
 #ifdef HAVE_MPI
 ! Finalize MPI must be called after releasing all handles
 call MPI_FINALIZE(ierr)
-EXPECT_EQ(0, ierr)
 #endif
 
 
