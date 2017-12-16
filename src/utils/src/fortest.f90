@@ -897,7 +897,7 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_EQUALITY_CONST'
-    !lcl_success = (a .neqv. b)
+    !lcl_success = (a .eqv. b)
     lcl_success = eqv1(a, b)
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
@@ -921,7 +921,7 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_EQUALITY_CONST'
-    !lcl_success = (a .neqv. b)
+    !lcl_success = (a .eqv. b)
     lcl_success = eqv2(a, b)
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
