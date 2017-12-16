@@ -46,18 +46,6 @@ implicit none
 integer, private :: comm_rank, failed_tests, total_tests
 logical, private :: setup_called = .false.
 
-interface fortest_equality_const
-  module procedure fortest_equality_const1, fortest_equality_const2
-end interface
-
-interface bool_to_int
-  module procedure bool_to_int1, bool_to_int2
-end interface
-
-interface fortest_eqv
-  module procedure fortest_eqv1, fortest_eqv2
-end interface
-
 interface fortest_array_equality
   module procedure fortest_array_equality_double1, &
                    fortest_array_equality_double2, &
@@ -316,48 +304,6 @@ contains
     ! ------------------------------------------------------------------------ !
     if (comm_rank == 0) write(output_unit, '(A)') trim(string)
   end subroutine write_to_proc0
-
-  ! -------------------------------------------------------------------------- !
-
-  integer function bool_to_int1(x)
-    logical(c_bool), intent(in) :: x
-    if (.not. x) then
-      bool_to_int1 = 0
-    else
-      bool_to_int1 = 1
-    endif
-  end function bool_to_int1
-
-  ! -------------------------------------------------------------------------- !
-
-  integer function bool_to_int2(x)
-    logical, intent(in) :: x
-    if (.not. x) then
-      bool_to_int2 = 0
-    else
-      bool_to_int2 = 1
-    endif
-  end function bool_to_int2
-
-  ! -------------------------------------------------------------------------- !
-
-  ! A bug in gfortran causes .neqv. to evaluate incorrectly, so we implement
-  ! a function to replace it
-  logical function fortest_eqv1(a, b)
-    logical(c_bool), intent(in) :: a, b
-    fortest_eqv1 = (bool_to_int(a) == bool_to_int(b))
-    return
-  end function fortest_eqv1
-
-  ! -------------------------------------------------------------------------- !
-
-  ! A bug in gfortran causes .neqv. to evaluate incorrectly, so we implement
-  ! a function to replace it
-  logical function fortest_eqv2(a, b)
-    logical, intent(in) :: a, b
-    fortest_eqv2 = (bool_to_int(a) == bool_to_int(b))
-    return
-  end function fortest_eqv2
 
   ! -------------------------------------------------------------------------- !
 
@@ -1213,54 +1159,6 @@ contains
     return
   end subroutine fortest_inequality_size_t1
 #endif
-
-  ! -------------------------------------------------------------------------- !
-
-  subroutine fortest_equality_const1(success, filename, lineno, &
-                                     namea, a, nameb, b)
-    ! ------------------------------------------------------------------------ !
-    logical, intent(inout) :: success
-    character(len=*), intent(in) :: filename, namea, nameb
-    integer, intent(in) :: lineno
-    logical(c_bool), intent(in) :: a, b
-    character(len=30) :: name
-    character(len=256) :: signature
-    logical :: lcl_success
-    ! ------------------------------------------------------------------------ !
-    name = 'TEST_EQUALITY_CONST'
-    !lcl_success = (a .eqv. b)
-    lcl_success = fortest_eqv(a, b)
-    if (.not. lcl_success) then
-      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
-      call write_error_diagnostics(filename, lineno, signature)
-    end if
-    call gather_success(lcl_success, success)
-    return
-  end subroutine fortest_equality_const1
-
-  ! -------------------------------------------------------------------------- !
-
-  subroutine fortest_equality_const2(success, filename, lineno, &
-                                    namea, a, nameb, b)
-    ! ------------------------------------------------------------------------ !
-    logical, intent(inout) :: success
-    character(len=*), intent(in) :: filename, namea, nameb
-    integer, intent(in) :: lineno
-    logical, intent(in) :: a, b
-    character(len=30) :: name
-    character(len=256) :: signature
-    logical :: lcl_success
-    ! ------------------------------------------------------------------------ !
-    name = 'TEST_EQUALITY_CONST'
-    !lcl_success = (a .eqv. b)
-    lcl_success = fortest_eqv(a, b)
-    if (.not. lcl_success) then
-      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
-      call write_error_diagnostics(filename, lineno, signature)
-    end if
-    call gather_success(lcl_success, success)
-    return
-  end subroutine fortest_equality_const2
 
   ! -------------------------------------------------------------------------- !
 

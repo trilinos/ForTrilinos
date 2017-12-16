@@ -171,12 +171,6 @@ use fortest
  CALL FORTEST_ASSERT(SUCCESS, FILENAME, __LINE__, "C", C); \
  IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
 
-! Checks that condition C is X and toggles success to .FALSE. if not.  If
-! the SUCCESS flag is toggled, the test is exited
-#define TEST_EQUALITY_CONST(C, X) \
- CALL FORTEST_EQUALITY_CONST(SUCCESS, FILENAME, __LINE__, "C", C, "X", X); \
- IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
-
 ! Checks that instruction CODE throws an exception toggles success to .FALSE. if
 ! not.  If the SUCCESS flag is toggled, the test is exited
 #define TEST_THROW(CODE) \
