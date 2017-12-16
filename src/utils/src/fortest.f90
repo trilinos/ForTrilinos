@@ -46,10 +46,6 @@ implicit none
 integer, private :: comm_rank, failed_tests, total_tests
 logical, private :: setup_called = .false.
 
-interface fortest_equality_const
-  module procedure fortest_equality_const1, fortest_equality_const2
-end interface
-
 interface fortest_array_equality
   module procedure fortest_array_equality_double1, &
                    fortest_array_equality_double2, &
@@ -95,6 +91,18 @@ interface fortest_equality
                    fortest_equality_long_long1, &
 #endif
                    fortest_equality_long1
+end interface
+
+interface isnan
+  module procedure isnan_double1, &
+                   isnan_int1, &
+#ifdef SIZE_T_IS_NOT_SAME_AS_LONG
+                   isnan_size_t1, &
+#endif
+#ifdef LONG_LONG_IS_NOT_SAME_AS_LONG
+                   isnan_long_long1, &
+#endif
+                   isnan_long1
 end interface
 
 interface fortest_inequality
@@ -309,11 +317,10 @@ contains
     character(len=256) :: signature
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
-    lcl_success = .true.
-    if (ierr /= 0) then
+    lcl_success = (ierr == 0)
+    if (.not. lcl_success) then
       write(signature, '(A)') "TEST_IERR()"
       call write_error_diagnostics(filename, lineno, signature, serr)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -334,11 +341,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_FLOATING_ARRAY_EQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) > tolerance) then
+    lcl_success = (abs(maxval(a - b)) <= tolerance)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -359,11 +366,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_FLOATING_ARRAY_EQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) > tolerance) then
+    lcl_success = (abs(maxval(a - b)) <= tolerance)
+    if (any(isnan(a)) .or. isnan(b)) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -384,11 +391,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) > zero) then
+    lcl_success = (abs(maxval(a - b)) <= zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -409,11 +416,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) > zero) then
+    lcl_success = (abs(maxval(a - b)) <= zero)
+    if (any(isnan(a)) .or. isnan(b)) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -434,11 +441,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) > zero) then
+    lcl_success = (abs(maxval(a - b)) <= zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -459,11 +466,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) > zero) then
+    lcl_success = (abs(maxval(a - b)) <= zero)
+    if (any(isnan(a)) .or. isnan(b)) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -485,11 +492,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) > zero) then
+    lcl_success = (abs(maxval(a - b)) <= zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -512,11 +519,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) > zero) then
+    lcl_success = (abs(maxval(a - b)) <= zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -539,11 +546,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) > zero) then
+    lcl_success = (abs(maxval(a - b)) <= zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -566,11 +573,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) > zero) then
+    lcl_success = (abs(maxval(a - b)) <= zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -592,11 +599,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_FLOATING_ARRAY_INEQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) <= tolerance) then
+    lcl_success = (abs(maxval(a - b)) > tolerance)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -617,11 +624,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) <= tolerance) then
+    lcl_success = (abs(maxval(a - b)) > tolerance)
+    if (any(isnan(a)) .or. isnan(b)) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -642,11 +649,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) <= zero) then
+    lcl_success = (abs(maxval(a - b)) > zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -667,11 +674,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) <= zero) then
+    lcl_success = (abs(maxval(a - b)) > zero)
+    if (any(isnan(a)) .or. isnan(b)) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     return
   end subroutine fortest_array_inequality_int2
@@ -691,11 +698,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) <= zero) then
+    lcl_success = (abs(maxval(a - b)) > zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -716,11 +723,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) <= zero) then
+    lcl_success = (abs(maxval(a - b)) > zero)
+    if (any(isnan(a)) .or. isnan(b)) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -742,11 +749,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) <= zero) then
+    lcl_success = (abs(maxval(a - b)) > zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -769,11 +776,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) <= zero) then
+    lcl_success = (abs(maxval(a - b)) > zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -796,11 +803,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) <= zero) then
+    lcl_success = (abs(maxval(a - b)) > zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -823,11 +830,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
-    lcl_success = .true.
-    if (abs(maxval(a - b)) <= zero) then
+    lcl_success = (abs(maxval(a - b)) > zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -849,11 +856,10 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_FLOATING_EQUALITY'
-    lcl_success = .true.
-    if (abs(a - b) > tolerance) then
+    lcl_success = (abs(a - b) <= tolerance)
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -861,53 +867,6 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
-  subroutine fortest_equality_const1(success, filename, lineno, &
-                                     namea, a, nameb, b)
-    ! ------------------------------------------------------------------------ !
-    logical, intent(inout) :: success
-    character(len=*), intent(in) :: filename, namea, nameb
-    integer, intent(in) :: lineno
-    logical(c_bool), intent(in) :: a, b
-    character(len=30) :: name
-    character(len=256) :: signature
-    logical :: lcl_success
-    ! ------------------------------------------------------------------------ !
-    name = 'TEST_EQUALITY_CONST'
-    lcl_success = .true.
-    if (a .neqv. b) then
-      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
-      call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
-    end if
-    call gather_success(lcl_success, success)
-    return
-  end subroutine fortest_equality_const1
-
-  ! -------------------------------------------------------------------------- !
-
-  subroutine fortest_equality_const2(success, filename, lineno, &
-                                    namea, a, nameb, b)
-    ! ------------------------------------------------------------------------ !
-    logical, intent(inout) :: success
-    character(len=*), intent(in) :: filename, namea, nameb
-    integer, intent(in) :: lineno
-    logical, intent(in) :: a, b
-    character(len=30) :: name
-    character(len=256) :: signature
-    logical :: lcl_success
-    ! ------------------------------------------------------------------------ !
-    name = 'TEST_EQUALITY_CONST'
-    lcl_success = .true.
-    if (a .neqv. b) then
-      signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
-      call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
-    end if
-    call gather_success(lcl_success, success)
-    return
-  end subroutine fortest_equality_const2
-
-  ! -------------------------------------------------------------------------- !
   subroutine fortest_equality_int1(success, filename, lineno, &
                                    namea, a, nameb, b)
     ! ------------------------------------------------------------------------ !
@@ -921,11 +880,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_EQUALITY'
-    lcl_success = .true.
-    if (abs(a - b) > zero) then
+    lcl_success = (abs(a - b) <= zero)
+    if (isnan(a) .or. isnan(b)) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -946,11 +905,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_EQUALITY'
-    lcl_success = .true.
-    if (abs(a - b) > zero) then
+    lcl_success = (abs(a - b) <= zero)
+    if (isnan(a) .or. isnan(b)) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -972,11 +931,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_EQUALITY'
-    lcl_success = .true.
-    if (abs(a - b) > zero) then
+    lcl_success = (abs(a - b) <= zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -999,11 +958,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_EQUALITY'
-    lcl_success = .true.
-    if (abs(a - b) > zero) then
+    lcl_success = (abs(a - b) <= zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -1024,15 +983,53 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_EQUALITY'
-    lcl_success = .true.
-    if (trim(a) /= trim(b)) then
+    lcl_success = (trim(a) == trim(b))
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
   end subroutine fortest_equality_char
+
+  ! -------------------------------------------------------------------------- !
+
+  elemental logical function isnan_double1(a)
+    real(c_double), intent(in) :: a
+    isnan_double1 = (a /= a)
+  end function isnan_double1
+
+  ! -------------------------------------------------------------------------- !
+
+  elemental logical function isnan_int1(a)
+    integer(c_int), intent(in) :: a
+    isnan_int1 = (a /= a)
+  end function isnan_int1
+
+  ! -------------------------------------------------------------------------- !
+
+  elemental logical function isnan_long1(a)
+    integer(c_long), intent(in) :: a
+    isnan_long1 = (a /= a)
+  end function isnan_long1
+
+  ! -------------------------------------------------------------------------- !
+
+#ifdef LONG_LONG_IS_NOT_SAME_AS_LONG
+  elemental logical function isnan_long_long1(a)
+    integer(c_long_long), intent(in) :: a
+    isnan_long_long1 = (a /= a)
+  end function isnan_long_long1
+#endif
+
+  ! -------------------------------------------------------------------------- !
+
+#ifdef SIZE_T_IS_NOT_SAME_AS_LONG
+  elemental logical function isnan_size_t1(a)
+    integer(c_size_t), intent(in) :: a
+    isnan_size_t1 = (a /= a)
+  end function isnan_size_t1
+#endif
 
   ! -------------------------------------------------------------------------- !
 
@@ -1049,11 +1046,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_FLOATING_INEQUALITY'
-    lcl_success = .true.
-    if (abs(a - b) <= tolerance) then
+    lcl_success = (abs(a - b) > tolerance)
+    if (isnan(a) .or. isnan(b)) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -1074,11 +1071,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_INEQUALITY'
-    lcl_success = .true.
-    if (abs(a - b) <= zero) then
+    lcl_success = (abs(a - b) > zero)
+    if (isnan(a) .or. isnan(b)) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -1099,11 +1096,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_INEQUALITY'
-    lcl_success = .true.
-    if (abs(a - b) <= zero) then
+    lcl_success = (abs(a - b) > zero)
+    if (isnan(a) .or. isnan(b)) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -1125,11 +1122,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_INEQUALITY'
-    lcl_success = .true.
-    if (abs(a - b) <= zero) then
+    lcl_success = (abs(a - b) > zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -1152,11 +1149,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_INEQUALITY'
-    lcl_success = .true.
-    if (abs(a - b) <= zero) then
+    lcl_success = (abs(a - b) > zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -1176,11 +1173,10 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ASSERT'
-    lcl_success = .true.
-    if (.not.(c)) then
+    lcl_success = c
+    if (.not. lcl_success) then
       signature = trim(name) // '(' // trim(namec) // ')'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -1199,11 +1195,10 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ASSERT'
-    lcl_success = .true.
-    if (.not.(c)) then
+    lcl_success = c
+    if (.not. lcl_success) then
       signature = trim(name) // '(' // trim(namec) // ')'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -1222,11 +1217,10 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_THROW'
-    lcl_success = .true.
-    if (ierr == 0) then
+    lcl_success = (ierr /= 0)
+    if (.not. lcl_success) then
       signature = trim(name) //  '(' // trim(namec) // ')'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     ierr = 0
@@ -1246,11 +1240,10 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_NOTHROW'
-    lcl_success = .true.
-    if (ierr /= 0) then
+    lcl_success = (ierr == 0)
+    if (.not. lcl_success) then
       signature = trim(name) //  '(' // trim(namec) // ')'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return

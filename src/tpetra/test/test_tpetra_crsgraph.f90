@@ -170,7 +170,7 @@ contains
     OUT0("Starting TpetraCrsGraph_WithColMap!")
 
     num_procs = comm%getSize()
-    !if (num_procs == 1) return
+    if (num_procs == 1) return
 
     num_local = 1
     call rmap%create(invalid, num_local, comm); TEST_IERR()
@@ -178,7 +178,7 @@ contains
     ! must allocate enough for all submitted indices.
     num_ent_per_row = 2
     call Graph%create(rmap, cmap, num_ent_per_row, StaticProfile)
-    TEST_EQUALITY_CONST(Graph%hasColMap(), true)
+    TEST_ASSERT(Graph%hasColMap())
     lclrow = 1
     myrowind = rmap%getGlobalElement(lclrow);
 
@@ -239,7 +239,7 @@ contains
     colind(1:2) = [1, 2]
 
     call Graph%create(rmap, rmap, rowptr, colind)
-    TEST_EQUALITY_CONST(Graph%hasColMap(), true)
+    TEST_ASSERT(Graph%hasColMap())
 
     TEST_NOTHROW(call Graph%expertStaticFillComplete(rmap, rmap))
 
@@ -286,7 +286,7 @@ contains
     call Graph%create(rmap, rmap, izero, StaticProfile)
 
     TEST_NOTHROW(call Graph%setAllIndices(rowptr, colind))
-    TEST_EQUALITY_CONST(Graph%hasColMap(), true )
+    TEST_ASSERT(Graph%hasColMap())
 
     TEST_NOTHROW(call Graph%expertStaticFillComplete(rmap,rmap))
 
@@ -330,7 +330,7 @@ contains
 
     nument = 4
     call Graph%create(map, map, nument);
-    TEST_EQUALITY_CONST(graph%isSorted(), true)
+    TEST_ASSERT(graph%isSorted())
 
     ! insert entries; shouldn't be sorted anymore
     jstart = map%getMinGlobalIndex()
@@ -349,7 +349,7 @@ contains
       end if
       call Graph%insertGlobalIndices(j, jinds(1:jj))
     end do
-    TEST_EQUALITY_CONST(Graph%isSorted(), false)
+    TEST_ASSERT((.not. Graph%isSorted()))
     deallocate(jinds)
 
     ! fill complete; should be sorted now
@@ -370,13 +370,13 @@ contains
           exit
         endif
       end do
-      TEST_EQUALITY_CONST(sorting_check, graph%isSorted())
+      TEST_ASSERT((sorting_check .eqv. graph%isSorted()))
       deallocate(kinds)
     end do
 
     ! resume fill; should still be sorted
     call Graph%resumeFill()
-    TEST_EQUALITY_CONST(graph%isSorted(), true)
+    TEST_ASSERT(graph%isSorted())
 
     sorting_check = true
     kstart = map%getMinLocalIndex()
@@ -391,7 +391,7 @@ contains
           exit
         endif
       end do
-      TEST_EQUALITY_CONST(sorting_check, graph%isSorted())
+      TEST_ASSERT((sorting_check .eqv. graph%isSorted()))
       deallocate(kinds)
     end do
 
@@ -401,7 +401,7 @@ contains
     allocate(kinds(1))
     kinds(1) = 1
     call Graph%insertLocalIndices(k, kinds)
-    TEST_EQUALITY_CONST(graph%isSorted(), false);
+    TEST_ASSERT((.not. graph%isSorted()))
     deallocate(kinds)
 
     ! fill complete, check one more time
@@ -421,7 +421,7 @@ contains
           exit
         endif
       end do
-      TEST_EQUALITY_CONST(sorting_check, graph%isSorted())
+      TEST_ASSERT((sorting_check .eqv. graph%isSorted()))
       deallocate(kinds)
     end do
 
@@ -478,7 +478,7 @@ contains
     OUT0("Starting TpetraCrsGraph_GetEntities!")
 
     num_procs = comm%getSize()
-    !if (num_procs == 1) return
+    if (num_procs == 1) return
 
     num_local = 1
     call rmap%create(invalid, num_local, comm); TEST_IERR()
@@ -486,7 +486,7 @@ contains
     ! must allocate enough for all submitted indices.
     num_ent_per_row = 2
     call Graph%create(rmap, cmap, num_ent_per_row, StaticProfile)
-    TEST_EQUALITY_CONST(Graph%hasColMap(), true)
+    TEST_ASSERT(Graph%hasColMap())
     lclrow = 1
     myrowind = rmap%getGlobalElement(lclrow);
 

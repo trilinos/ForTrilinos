@@ -33,11 +33,11 @@ contains
     OUT0('Starting TeuchosPList_Basic!')
 
     call plist%create('myname'); TEST_IERR()
-    TEST_EQUALITY_CONST(c_associated(plist%swigptr), .true.)
+    TEST_ASSERT(c_associated(plist%swigptr))
 
     ! Test a function that raises an exception
     TEST_THROW(call load_from_xml(plist, 'nonexistent_path.xml'))
-    TEST_EQUALITY_CONST(c_associated(plist%swigptr), .true.)
+    TEST_ASSERT(c_associated(plist%swigptr))
 
     ! Get and set a vlaue
     call plist%set('myint', 4)
@@ -51,7 +51,7 @@ contains
     bval = .false.
     call plist%set('mybool', true)
     call plist%get('mybool', bval)
-    TEST_EQUALITY_CONST(bval, true)
+    TEST_ASSERT(bval)
 
     call plist%set('intarr', test_int)
     call plist%set('dblarr', test_dbl)
@@ -66,14 +66,14 @@ contains
     TEST_THROW(call plist%get('intarr', test_int(:4)))
 
     call plist%set('deleteme', 123)
-    TEST_EQUALITY_CONST(plist%is_parameter('deleteme'), true)
+    TEST_ASSERT(plist%is_parameter('deleteme'))
 
     call plist%remove('deleteme')
-    TEST_EQUALITY_CONST(plist%is_parameter('deleteme'), false)
+    TEST_ASSERT((.not. plist%is_parameter('deleteme')))
 
-    TEST_EQUALITY_CONST(c_associated(sublist%swigptr), .false.)
+    TEST_ASSERT((.not. c_associated(sublist%swigptr)))
     sublist = plist%sublist('sublist')
-    TEST_EQUALITY_CONST(c_associated(sublist%swigptr), .true.)
+    TEST_ASSERT(c_associated(sublist%swigptr))
 
     call sublist%set('anotherval', 4.0d0)
 
