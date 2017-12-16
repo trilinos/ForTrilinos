@@ -10,13 +10,16 @@ program main
 
   use ISO_FORTRAN_ENV
   use, intrinsic :: ISO_C_BINDING
+
+#ifdef HAVE_MPI
+  use mpi
+#endif
+
+#include "ForTrilinos.h"
   use fortrilinos
   use forteuchos
   use fortpetra
   use fortest
-#ifdef HAVE_MPI
-  use mpi
-#endif
   implicit none
 
   integer(int_type) :: my_rank, num_procs
@@ -25,6 +28,7 @@ program main
   integer(size_type) :: n, max_entries_per_row, num_vecs = 1, lda
   integer(int_type) :: row_nnz
 
+  integer :: ierr
   integer(local_ordinal_type) :: i
   integer(global_ordinal_type) :: offset
   real(scalar_type) :: one = 1.0

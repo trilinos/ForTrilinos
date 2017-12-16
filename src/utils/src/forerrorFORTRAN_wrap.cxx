@@ -217,7 +217,7 @@ template <typename T> T SwigValueInit() {
 
 
 extern "C" {
-extern int ierr;
+extern int fortrilinos_ierr;
 }
 
 
@@ -235,7 +235,7 @@ std::string fortran_last_exception_msg;
 // Call this function before any new action
 void fortran_check_unhandled_exception()
 {
-    if (::ierr != 0)
+    if (::fortrilinos_ierr != 0)
     {
         throw std::runtime_error(
                 "An unhandled exception occurred in $symname: "
@@ -246,7 +246,7 @@ void fortran_check_unhandled_exception()
 // Save an exception to the fortran error code and string
 void fortran_store_exception(int code, const char *msg)
 {
-    ::ierr = code;
+    ::fortrilinos_ierr = code;
 
     // Save the message to a std::string first
     fortran_last_exception_msg = msg;
@@ -257,7 +257,7 @@ void fortran_store_exception(int code, const char *msg)
 typedef const std::string& Swig_Err_String;
 
 
-Swig_Err_String get_serr()
+Swig_Err_String fortrilinos_get_serr()
 {
     return swig::fortran_last_exception_msg;
 }
@@ -275,11 +275,11 @@ struct SwigfArrayWrapper
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT swig::SwigfArrayWrapper< char const > swigc_get_serr() {
+SWIGEXPORT swig::SwigfArrayWrapper< char const > swigc_fortrilinos_get_serr() {
   swig::SwigfArrayWrapper< char const > fresult ;
   std::string *result = 0 ;
   
-  result = (std::string *) &get_serr();
+  result = (std::string *) &fortrilinos_get_serr();
   fresult.data = (result->empty() ? NULL : &(*result->begin()));
   fresult.size = result->size();
   

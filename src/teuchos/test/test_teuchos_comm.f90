@@ -16,6 +16,7 @@ program test_TeuchosComm
 
   implicit none
   character(len=26), parameter :: FILENAME='test_teuchos_comm.f90'
+  integer :: ierr
 
 
   SETUP_TEST()

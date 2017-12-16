@@ -16,7 +16,7 @@ module forerror
 
  ! PUBLIC METHODS AND TYPES
 
- public :: ierr
+ public :: fortrilinos_ierr
 
 
 type, bind(C) :: SwigfArrayWrapper
@@ -24,17 +24,18 @@ type, bind(C) :: SwigfArrayWrapper
   integer(C_SIZE_T), public :: size
 end type
 
- public :: get_serr
+ public :: fortrilinos_get_serr
 
  ! PARAMETERS
+ integer(C_INT), parameter, public :: SWIG_FORTRAN_ERROR_STRLEN = 1024_C_INT
 
- integer(C_INT), bind(C) :: ierr = 0
+ integer(C_INT), bind(C) :: fortrilinos_ierr = 0
 
 
  ! WRAPPER DECLARATIONS
  interface
-function swigc_get_serr() &
-bind(C, name="swigc_get_serr") &
+function swigc_fortrilinos_get_serr() &
+bind(C, name="swigc_fortrilinos_get_serr") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
@@ -46,7 +47,7 @@ end function
 
 contains
  ! FORTRAN PROXY CODE
-function get_serr() &
+function fortrilinos_get_serr() &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=:), allocatable :: swigf_result
@@ -55,7 +56,7 @@ integer(kind=C_SIZE_T) :: fresult_i
 character(kind=C_CHAR), dimension(:), pointer :: fresult_chars
 type(SwigfArrayWrapper) :: fresult 
 
-fresult = swigc_get_serr()
+fresult = swigc_fortrilinos_get_serr()
 
 call c_f_pointer(fresult%data, fresult_chars, [fresult%size])
 allocate(character(kind=C_CHAR, len=fresult%size) :: swigf_result)

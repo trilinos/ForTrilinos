@@ -69,8 +69,8 @@
 use fortest
 
 #define CHECK_IERR() \
- IF(IERR/=0) THEN; \
- call FORTEST_STOP('*** ForTrilinos caught exception!'//NEW_LINE('A')//TRIM(GET_SERR())); \
+ IF(FORTRILINOS_IERR/=0) THEN; \
+ call FORTEST_STOP('*** ForTrilinos caught exception!'//NEW_LINE('A')//TRIM(FORTRILINOS_GET_SERR())); \
  ENDIF
 
 ! Setup the test.  This procedure should be called *once* after program
@@ -98,10 +98,10 @@ use fortest
  LOGICAL :: SUCCESS
 
 ! Macro defining the end of a ForTrilinos unit test.  Sets the value of SUCCESS
-! and resets IERR so that downstream tests can run.
+! and resets FORTRILINOS_IERR so that downstream tests can run.
 #define END_FORTRILINOS_UNIT_TEST(NAME) \
- SUCCESS = SUCCESS .AND. (IERR == 0); \
- IERR = 0; \
+ SUCCESS = SUCCESS .AND. (FORTRILINOS_IERR == 0); \
+ FORTRILINOS_IERR = 0; \
  RETURN; \
  END SUBROUTINE NAME
 
@@ -110,80 +110,80 @@ use fortest
 ! error, they set the variable "SUCCESS" to .FALSE. and return.  This informs the
 ! ADD_SUBTEST_AND_RUN macro that the subtest failed.
 
-! Checks for the value of IERR and toggles SUCCESS to .FALSE. if IERR /= 0.
+! Checks for the value of FORTRILINOS_IERR and toggles SUCCESS to .FALSE. if FORTRILINOS_IERR /= 0.
 ! If the SUCCESS flag is toggled, the test is exited
 #define TEST_IERR() \
- CALL FORTEST_IERR(SUCCESS, FILENAME, __LINE__, IERR, GET_SERR()); \
- IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
+ CALL FORTEST_IERR(SUCCESS, FILENAME, __LINE__, FORTRILINOS_IERR, FORTRILINOS_GET_SERR()); \
+ IF (.NOT.SUCCESS) THEN; FORTRILINOS_IERR = 0; RETURN; ENDIF
 
 ! Checks integers A and B are the same and toggles SUCCESS to .FALSE. if they
 ! are not. If the SUCCESS flag is toggled, the test is exited
 #define TEST_EQUALITY(A, B) \
  CALL FORTEST_EQUALITY(SUCCESS, FILENAME, __LINE__, "A", A, "B", B); \
- IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
+ IF (.NOT.SUCCESS) THEN; FORTRILINOS_IERR = 0; RETURN; ENDIF
 
 ! Checks integers A and B are not the same and toggles SUCCESS to .FALSE. if they
 ! are. If the SUCCESS flag is toggled, the test is exited
 #define TEST_INEQUALITY(A, B) \
  CALL FORTEST_INEQUALITY(SUCCESS, FILENAME, __LINE__, "A", A, "B", B); \
- IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
+ IF (.NOT.SUCCESS) THEN; FORTRILINOS_IERR = 0; RETURN; ENDIF
 
 ! Checks integer arrays A and B are the same and toggles SUCCESS to .FALSE.
 ! if they are not. If the SUCCESS flag is toggled, the test is exited
 #define TEST_ARRAY_EQUALITY(A, B) \
  CALL FORTEST_ARRAY_EQUALITY(SUCCESS, FILENAME, __LINE__, "A", A, "B", B); \
- IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
+ IF (.NOT.SUCCESS) THEN; FORTRILINOS_IERR = 0; RETURN; ENDIF
 
 ! Checks integer arrays A and B are not the same and toggles SUCCESS to .FALSE.
 ! if they are. If the SUCCESS flag is toggled, the test is exited
 #define TEST_ARRAY_INEQUALITY(A, B) \
  CALL FORTEST_ARRAY_INEQUALITY(SUCCESS, FILENAME, __LINE__, "A", A, "B", B); \
- IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
+ IF (.NOT.SUCCESS) THEN; FORTRILINOS_IERR = 0; RETURN; ENDIF
 
 ! Checks real numbers A and B are within tolerance and toggles SUCCESS to
 ! .FALSE. if they are not. If the SUCCESS flag is toggled, the test is exited
 #define TEST_FLOATING_EQUALITY(A, B, T) \
  CALL FORTEST_EQUALITY(SUCCESS, FILENAME, __LINE__, "A", A, "B", B, T); \
- IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
+ IF (.NOT.SUCCESS) THEN; FORTRILINOS_IERR = 0; RETURN; ENDIF
 
 ! Checks real numbers A and B are not within tolerance and toggles SUCCESS to
 ! .FALSE. if they are. If the SUCCESS flag is toggled, the test is exited
 #define TEST_FLOATING_INEQUALITY(A, B, T) \
  CALL FORTEST_INEQUALITY(SUCCESS, FILENAME, __LINE__, "A", A, "V", B, T); \
- IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
+ IF (.NOT.SUCCESS) THEN; FORTRILINOS_IERR = 0; RETURN; ENDIF
 
 ! Checks array of real numbers A and B are within tolerance and toggles SUCCESS
 ! to .FALSE. if they are not. If the SUCCESS flag is toggled, the test is exited
 #define TEST_FLOATING_ARRAY_EQUALITY(A, B, T) \
  CALL FORTEST_ARRAY_EQUALITY(SUCCESS, FILENAME, __LINE__, "A", A, "B", B, T); \
- IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
+ IF (.NOT.SUCCESS) THEN; FORTRILINOS_IERR = 0; RETURN; ENDIF
 
 ! Checks array of real numbers A and B are not within tolerance and toggles
 ! SUCCESS to .FALSE. if they are. If the SUCCESS flag is toggled, the test
 ! is exited
 #define TEST_FLOATING_ARRAY_INEQUALITY(A, B, T) \
  CALL FORTEST_ARRAY_INEQUALITY(SUCCESS, FILENAME, __LINE__, "A", A, "B", B, T); \
- IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
+ IF (.NOT.SUCCESS) THEN; FORTRILINOS_IERR = 0; RETURN; ENDIF
 
 ! Checks that condition C is .TRUE. and toggles success to .FALSE. if not.  If
 ! the SUCCESS flag is toggled, the test is exited
 #define TEST_ASSERT(C) \
  CALL FORTEST_ASSERT(SUCCESS, FILENAME, __LINE__, "C", C); \
- IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
+ IF (.NOT.SUCCESS) THEN; FORTRILINOS_IERR = 0; RETURN; ENDIF
 
 ! Checks that instruction CODE throws an exception toggles success to .FALSE. if
 ! not.  If the SUCCESS flag is toggled, the test is exited
 #define TEST_THROW(CODE) \
  CODE; \
- CALL FORTEST_THROW(SUCCESS, FILENAME, __LINE__, "CODE", IERR); \
- IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
+ CALL FORTEST_THROW(SUCCESS, FILENAME, __LINE__, "CODE", FORTRILINOS_IERR); \
+ IF (.NOT.SUCCESS) THEN; FORTRILINOS_IERR = 0; RETURN; ENDIF
 
 ! Checks that instruction CODE does not throw an exception toggles success to
 ! .FALSE. if not.  If the SUCCESS flag is toggled, the test is exited
 #define TEST_NOTHROW(CODE) \
  CODE; \
- CALL FORTEST_NOTHROW(SUCCESS, FILENAME, __LINE__, "CODE", IERR); \
- IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
+ CALL FORTEST_NOTHROW(SUCCESS, FILENAME, __LINE__, "CODE", FORTRILINOS_IERR); \
+ IF (.NOT.SUCCESS) THEN; FORTRILINOS_IERR = 0; RETURN; ENDIF
 
 ! Writes string S to stderr (file unit 0) on processor 0
 #define OUT0(S) \

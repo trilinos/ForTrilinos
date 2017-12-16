@@ -12,10 +12,11 @@ program main
 ! for a ForTrilinos interface to the Tpetra package.
 ! --------------------------------------------------------------------------- !
 #include "ForTrilinosTpetra_config.hpp"
-#include "ForTrilinos.h"
 
 use iso_fortran_env
 use, intrinsic :: iso_c_binding
+
+#include "ForTrilinos.h"
 use forteuchos
 use fortpetra
 
@@ -34,7 +35,8 @@ type(TpetraMap) :: map
 type(TpetraCrsMatrix) :: A
 
 ! -- Scalars
-real(scalar_type)  lambda
+integer :: ierr
+real(scalar_type) :: lambda
 integer(global_size_type) :: num_gbl_indices
 integer(size_type) :: my_rank
 integer(size_type) :: num_entries_in_row, max_entries_per_row, i
@@ -66,7 +68,7 @@ num_gbl_indices = 50
 
 call map%create(num_gbl_indices, comm)
 if (ierr /= 0) then
-  write(error_unit, '(A)') get_serr()
+  write(error_unit, '(A)') fortrilinos_get_serr()
   stop 1
 end if
 

@@ -28,6 +28,7 @@ type(TpetraMap) :: contig_map, contig_map2, contig_map3, cyclic_map
 type(TpetraMultiVector) :: x, y, z
 
 ! -- Scalars
+integer :: ierr
 integer(size_type) :: my_rank, num_procs, k
 integer(size_type) :: num_local_entries, num_elements_per_proc
 integer(global_size_type) :: num_global_entries, invalid
