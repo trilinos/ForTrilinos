@@ -396,6 +396,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_FLOATING_ARRAY_EQUALITY'
     lcl_success = (abs(maxval(a - b)) <= tolerance)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -420,6 +421,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_FLOATING_ARRAY_EQUALITY'
     lcl_success = (abs(maxval(a - b)) <= tolerance)
+    if (any(isnan(a)) .or. isnan(b)) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -444,6 +446,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
     lcl_success = (abs(maxval(a - b)) <= zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -468,6 +471,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
     lcl_success = (abs(maxval(a - b)) <= zero)
+    if (any(isnan(a)) .or. isnan(b)) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -492,6 +496,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
     lcl_success = (abs(maxval(a - b)) <= zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -516,6 +521,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
     lcl_success = (abs(maxval(a - b)) <= zero)
+    if (any(isnan(a)) .or. isnan(b)) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -541,6 +547,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
     lcl_success = (abs(maxval(a - b)) <= zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -567,6 +574,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
     lcl_success = (abs(maxval(a - b)) <= zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -593,6 +601,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
     lcl_success = (abs(maxval(a - b)) <= zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -619,6 +628,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_EQUALITY'
     lcl_success = (abs(maxval(a - b)) <= zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -644,6 +654,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_FLOATING_ARRAY_INEQUALITY'
     lcl_success = (abs(maxval(a - b)) > tolerance)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -668,6 +679,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
     lcl_success = (abs(maxval(a - b)) > tolerance)
+    if (any(isnan(a)) .or. isnan(b)) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -692,6 +704,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
     lcl_success = (abs(maxval(a - b)) > zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -716,6 +729,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
     lcl_success = (abs(maxval(a - b)) > zero)
+    if (any(isnan(a)) .or. isnan(b)) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -739,6 +753,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
     lcl_success = (abs(maxval(a - b)) > zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -763,6 +778,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
     lcl_success = (abs(maxval(a - b)) > zero)
+    if (any(isnan(a)) .or. isnan(b)) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -788,6 +804,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
     lcl_success = (abs(maxval(a - b)) > zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -814,6 +831,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
     lcl_success = (abs(maxval(a - b)) > zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -840,6 +858,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
     lcl_success = (abs(maxval(a - b)) > zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
@@ -866,6 +885,7 @@ contains
     ! ------------------------------------------------------------------------ !
     name = 'TEST_ARRAY_INEQUALITY'
     lcl_success = (abs(maxval(a - b)) > zero)
+    if (any(isnan(a)) .or. any(isnan(b))) lcl_success = .false.
     if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
