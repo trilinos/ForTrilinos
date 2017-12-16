@@ -4,7 +4,6 @@
 ! License-Filename: LICENSE
 program main
 
-#include "FortranTestMacros.h"
 #include "ForTrilinosTpetra_config.hpp"
 
 use iso_fortran_env
@@ -31,7 +30,7 @@ type(TpetraMultiVector) :: x, y, z
 integer(size_type) :: my_rank, num_procs, k
 integer(size_type) :: num_local_entries, num_elements_per_proc
 integer(global_size_type) :: num_global_entries, invalid
-logical(bool_type) :: zero_out, x_test
+logical(bool_type) :: zero_out
 real(scalar_type) :: alpha, beta, gamma
 real(mag_type) :: the_norm
 real(mag_type), allocatable :: norms(:)
@@ -89,7 +88,10 @@ num_global_entries = num_procs * num_local_entries
 call contig_map%create(num_global_entries, comm)
 
 ! contig_map is contiguous by construction.  Test this at run time.
-EXPECT_TRUE(contig_map%isContiguous())
+if (.not. contig_map%isContiguous()) then
+  write(error_unit, '(A)') 'Expected contiguous map!'
+  stop 1
+end if
 
 ! contig_map2: Create a Map which is the same as contig_map, but uses
 ! a different Map constructor.  This one asks for the number of entries on each
@@ -102,7 +104,10 @@ call contig_map2%create(num_global_entries, num_local_entries, comm);
 ! Since contig_map and contig_map2 have the same communicators, and the same
 ! number of entries on all MPI processes in their communicators, they are "the
 ! same."
-EXPECT_TRUE(contig_map%isSameAs(contig_map2))
+if (.not. contig_map%isSameAs(contig_map2)) then
+  write(error_unit, '(A)') 'Expected conti_map and contig_map2 to be the same!'
+  stop 1
+end if
 
 ! contig_map3: Use the same Map constructor as contig_map3, but don't specify
 ! the global number of entries.  This is helpful if you only know how many
@@ -113,7 +118,10 @@ call contig_map3%create(invalid, num_local_entries, comm)
 
 ! Even though we made contig_map3 without specifying the global number of
 ! entries, it should still be the same as contig_map2.
-EXPECT_TRUE(contig_map2%isSameAs(contig_map3))
+if (.not. contig_map2%isSameAs(contig_map3)) then
+  write(error_unit, '(A)') 'Expected conti_map2 and contig_map3 to be the same!'
+  stop 1
+end if
 
 ! Create a Map which has the same number of global entries per process as
 ! contig_map, but distributes them differently, in round-robin (1-D cyclic)
@@ -134,19 +142,22 @@ deallocate(element_list)
 
 ! If there's more than one MPI process in the communicator, then cyclic_map is
 ! definitely NOT contiguous.
-if (num_procs > 1) then
-  x_test = .not. cyclic_map%isContiguous()
-  EXPECT_TRUE(x_test)
+if (num_procs > 1 .and.  cyclic_map%isContiguous()) then
+  write(error_unit, '(A)') 'cyclic map should NOT be contiguous!'
+  stop 1
 end if
 
 ! contig_map and cyclic_map should always be compatible.  However, if the
 ! communicator contains more than 1 process, then contig_map and cyclic_map are
 ! NOT the same.
-EXPECT_TRUE(contig_map%isCompatible(cyclic_map))
+if (.not. contig_map%isCompatible(cyclic_map)) then
+  write(error_unit, '(A)') 'Expected contig_map to be compatible with cyclic_map!'
+  stop 1
+end if
 
-if (num_procs > 1) then
-  x_test = .not. contig_map%isSameAs(cyclic_map)
-  EXPECT_TRUE(x_test)
+if (num_procs > 1 .and.  contig_map%isSameAs(cyclic_map)) then
+  write(error_unit, '(A)') 'contig_map should not be same as cyclic_map!'
+  stop 1
 end if
 
 ! We have maps now, so we can create vectors.
@@ -216,7 +227,6 @@ deallocate(norms)
 #ifdef HAVE_MPI
 ! Finalize MPI must be called after releasing all handles
 call MPI_FINALIZE(ierr)
-EXPECT_EQ(0, ierr)
 #endif
 
 end program main
