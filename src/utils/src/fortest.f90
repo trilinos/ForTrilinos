@@ -299,6 +299,30 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
+  ! A bug in gfortran causes .neqv. to evaluate incorrectly, so we implement
+  ! a function to replace it
+  logical function eqv1(a, b)
+    logical(c_bool), intent(in) :: a, b
+    integer :: ia, ib
+    ia = merge(0, 1, a); ib = merge(0, 1, b)
+    eqv1 = (ia == ib)
+    return
+  end function eqv1
+
+  ! -------------------------------------------------------------------------- !
+
+  ! A bug in gfortran causes .neqv. to evaluate incorrectly, so we implement
+  ! a function to replace it
+  logical function eqv2(a, b)
+    logical, intent(in) :: a, b
+    integer :: ia, ib
+    ia = merge(0, 1, a); ib = merge(0, 1, b)
+    eqv2 = (ia == ib)
+    return
+  end function eqv2
+
+  ! -------------------------------------------------------------------------- !
+
   subroutine fortest_ierr(success, filename, lineno, ierr, serr)
     ! ------------------------------------------------------------------------ !
     logical, intent(inout) :: success
@@ -873,11 +897,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_EQUALITY_CONST'
-    lcl_success = .true.
-    if (a .neqv. b) then
+    !lcl_success = (a .neqv. b)
+    lcl_success = eqv1(a, b)
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
@@ -897,11 +921,11 @@ contains
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_EQUALITY_CONST'
-    lcl_success = .true.
-    if (a .neqv. b) then
+    !lcl_success = (a .neqv. b)
+    lcl_success = eqv2(a, b)
+    if (.not. lcl_success) then
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//')'
       call write_error_diagnostics(filename, lineno, signature)
-      lcl_success = .false.
     end if
     call gather_success(lcl_success, success)
     return
