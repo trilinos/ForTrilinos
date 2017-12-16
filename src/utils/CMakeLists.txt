@@ -4,11 +4,10 @@
 ## License-Filename: LICENSE
 TRIBITS_SUBPACKAGE(Utils)
 
-TRIBITS_CONFIGURE_FILE(${PACKAGE_NAME}_config.hpp)
-
 ##---------------------------------------------------------------------------##
 ## Generate config file and add it to the list
 ##---------------------------------------------------------------------------##
+TRIBITS_CONFIGURE_FILE(${PACKAGE_NAME}_config.hpp)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 ##---------------------------------------------------------------------------##

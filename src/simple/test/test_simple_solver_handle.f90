@@ -6,6 +6,7 @@ program main
 
 #include "ForTrilinosSimpleInterface_config.hpp"
 #include "FortranTestUtilities.h"
+#include "ForTrilinos.h"
 
   use ISO_FORTRAN_ENV
   use, intrinsic :: ISO_C_BINDING

@@ -7,10 +7,13 @@ program test_TeuchosPList
 #include "ForTrilinosTeuchos_config.hpp"
   use iso_fortran_env
   use, intrinsic :: iso_c_binding
+
+#include "ForTrilinos.h"
   use forteuchos
 
   implicit none
   character(len=26), parameter :: FILENAME='test_teuchos_plist.f90'
+
 
   SETUP_TEST()
 

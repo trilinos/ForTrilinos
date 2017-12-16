@@ -70,7 +70,7 @@ use fortest
 
 #define CHECK_IERR() \
  IF(IERR/=0) THEN; \
- call FORTEST_STOP('*** ForTrilinos caught exception!'//NEW_LINE('A')//TRIM(SERR)); \
+ call FORTEST_STOP('*** ForTrilinos caught exception!'//NEW_LINE('A')//TRIM(GET_SERR())); \
  ENDIF
 
 ! Setup the test.  This procedure should be called *once* after program
@@ -113,7 +113,7 @@ use fortest
 ! Checks for the value of IERR and toggles SUCCESS to .FALSE. if IERR /= 0.
 ! If the SUCCESS flag is toggled, the test is exited
 #define TEST_IERR() \
- CALL FORTEST_IERR(SUCCESS, FILENAME, __LINE__, IERR, SERR); \
+ CALL FORTEST_IERR(SUCCESS, FILENAME, __LINE__, IERR, GET_SERR()); \
  IF (.NOT.SUCCESS) THEN; IERR = 0; RETURN; ENDIF
 
 ! Checks integers A and B are the same and toggles SUCCESS to .FALSE. if they

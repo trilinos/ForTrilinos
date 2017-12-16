@@ -8,6 +8,7 @@
 
 %include "copyright.i"
 
+%import <forerror.i>
 %import <forteuchos.i>
 
 %{

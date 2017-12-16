@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
  */
-%include <std_except.i>
-
 %{
 #include "Teuchos_Exceptions.hpp"
 %}

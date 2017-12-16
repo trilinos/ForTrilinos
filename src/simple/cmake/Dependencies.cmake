@@ -8,12 +8,11 @@ TRIBITS_PACKAGE_DEFINE_DEPENDENCIES(
     Tpetra
     ForTrilinosTeuchos
     ForTrilinosTpetra
+    ForTrilinosUtils
   LIB_OPTIONAL_PACKAGES
     Anasazi
     Ifpack2
     MueLu
-  TEST_REQUIRED_PACKAGES # Needed to pass, not to build
-    ForTrilinosUtils
   TEST_OPTIONAL_PACKAGES
     Anasazi
     Belos

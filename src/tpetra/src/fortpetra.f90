@@ -11,6 +11,7 @@
 
 module fortpetra
  use, intrinsic :: ISO_C_BINDING
+ use forerror
  use forteuchos
 
  use, intrinsic :: iso_c_binding, only : &

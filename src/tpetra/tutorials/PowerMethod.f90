@@ -12,6 +12,7 @@ program main
 ! for a ForTrilinos interface to the Tpetra package.
 ! --------------------------------------------------------------------------- !
 #include "ForTrilinosTpetra_config.hpp"
+#include "ForTrilinos.h"
 
 use iso_fortran_env
 use, intrinsic :: iso_c_binding
@@ -65,7 +66,7 @@ num_gbl_indices = 50
 
 call map%create(num_gbl_indices, comm)
 if (ierr /= 0) then
-  write(error_unit, '(A)') serr
+  write(error_unit, '(A)') get_serr()
   stop 1
 end if
 

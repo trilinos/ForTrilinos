@@ -14,6 +14,7 @@ IF (ForTrilinos_ENABLE_DeveloperMode)
   LIST(APPEND CMAKE_SWIG_FLAGS -I${CMAKE_CURRENT_SOURCE_DIR}/../../utils/src/)
   MAKE_SWIG(MODULE forteuchos
     SOURCE forteuchos.i
+    DEPLIBS ${Trilinos_LIBRARIES}
     EXTRASRC ${EXTRA_SOURCE}
     )
 

@@ -216,6 +216,14 @@ template <typename T> T SwigValueInit() {
 #include <stdexcept>
 
 
+namespace swig
+{
+// Functions are defined in an imported module
+void fortran_check_unhandled_exception();
+void fortran_store_exception(int code, const char *msg);
+} // end namespace swig
+
+
 #include <vector>
 
 SWIGINTERN void std_vector_Sl_int_Sg__set(std::vector< int > *self,std::vector< int >::size_type index,std::vector< int >::const_reference v){
@@ -248,56 +256,6 @@ SWIGINTERN std::vector< long long >::value_type std_vector_Sl_long_SS_long_Sg__g
 
 #include "Teuchos_BLAS_types.hpp"
 #include "Teuchos_DataAccess.hpp"
-
-
-extern "C" {
-extern int ierr;
-extern char serr[1024];
-}
-
-
-#include <string>
-
-
-#include <algorithm>
-
-
-namespace swig
-{
-// Stored exception message
-std::string fortran_last_exception_msg;
-
-// Call this function before any new action
-void fortran_check_unhandled_exception()
-{
-    if (::ierr != 0)
-    {
-        throw std::runtime_error(
-                "An unhandled exception occurred in $symname: "
-                + fortran_last_exception_msg);
-    }
-}
-
-// Save an exception to the fortran error code and string
-void fortran_store_exception(int code, const char *msg)
-{
-    ::ierr = code;
-
-    // Save the message to a std::string first
-    fortran_last_exception_msg = msg;
-
-    std::size_t msg_size = std::min<std::size_t>(
-            fortran_last_exception_msg.size(),
-            1024);
-
-    // Copy to space-padded Fortran string
-    char* dst = serr;
-    dst = std::copy(fortran_last_exception_msg.begin(),
-                    fortran_last_exception_msg.begin() + msg_size,
-                    dst);
-    std::fill(dst, serr + 1024, ' ');
-}
-} // end namespace swig
 
 
 #include "Teuchos_Exceptions.hpp"
