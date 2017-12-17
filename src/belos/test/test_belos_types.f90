@@ -21,8 +21,8 @@ contains
 
     integer :: status, output_detail
 
-    status = Passed
-    output_detail = Errors + Warnings + FinalSummary
+    status = BelosPassed
+    output_detail = BelosErrors + BelosWarnings + BelosFinalSummary
 
   end subroutine
 

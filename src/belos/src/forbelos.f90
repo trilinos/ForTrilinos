@@ -17,93 +17,93 @@ module forbelos
  ! PUBLIC METHODS AND TYPES
  public :: string
  public :: BelosError
- public :: ETrans, NOTRANS, TRANS, CONJTRANS
- public :: NormType, OneNorm, TwoNorm, InfNorm
- public :: ScaleType, NormOfRHS, NormOfInitRes, NormOfPrecInitRes, None, UserProvided, NormOfFullInitRes, &
-    NormOfFullPrecInitRes, NormOfFullScaledInitRes, NormOfFullScaledPrecInitRes
- public :: OutputType, General, Brief, User
- public :: ReturnType, Converged, Unconverged
+ public :: BelosETrans, BelosNOTRANS, BelosTRANS, BelosCONJTRANS
+ public :: BelosNormType, BelosOneNorm, BelosTwoNorm, BelosInfNorm
+ public :: BelosScaleType, BelosNormOfRHS, BelosNormOfInitRes, BelosNormOfPrecInitRes, BelosNone, BelosUserProvided, &
+    BelosNormOfFullInitRes, BelosNormOfFullPrecInitRes, BelosNormOfFullScaledInitRes, BelosNormOfFullScaledPrecInitRes
+ public :: BelosOutputType, BelosGeneral, BelosBrief, BelosUser
+ public :: BelosReturnType, BelosConverged, BelosUnconverged
  public :: convertReturnTypeToString
  public :: convertStatusTypeToString
  public :: convertStringToStatusType
  public :: convertStringToScaleType
  public :: convertScaleTypeToString
- public :: ConjType, NO_CONJ, CONJ
+ public :: BelosConjType, BelosNO_CONJ, BelosCONJ
  public :: convertMsgTypeToString
 
  ! PARAMETERS
  enum, bind(c)
-  enumerator :: ETrans = -1
-  enumerator :: NOTRANS = 0
-  enumerator :: TRANS = 1
-  enumerator :: CONJTRANS = 2
+  enumerator :: BelosETrans = -1
+  enumerator :: BelosNOTRANS = 0
+  enumerator :: BelosTRANS = 1
+  enumerator :: BelosCONJTRANS = 2
  end enum
  enum, bind(c)
-  enumerator :: NormType = -1
-  enumerator :: OneNorm = 0
-  enumerator :: TwoNorm = OneNorm + 1
-  enumerator :: InfNorm = TwoNorm + 1
+  enumerator :: BelosNormType = -1
+  enumerator :: BelosOneNorm = 0
+  enumerator :: BelosTwoNorm = BelosOneNorm + 1
+  enumerator :: BelosInfNorm = BelosTwoNorm + 1
  end enum
  enum, bind(c)
-  enumerator :: ScaleType = -1
-  enumerator :: NormOfRHS = 0
-  enumerator :: NormOfInitRes = NormOfRHS + 1
-  enumerator :: NormOfPrecInitRes = NormOfInitRes + 1
-  enumerator :: None = NormOfPrecInitRes + 1
-  enumerator :: UserProvided = None + 1
-  enumerator :: NormOfFullInitRes = UserProvided + 1
-  enumerator :: NormOfFullPrecInitRes = NormOfFullInitRes + 1
-  enumerator :: NormOfFullScaledInitRes = NormOfFullPrecInitRes + 1
-  enumerator :: NormOfFullScaledPrecInitRes = NormOfFullScaledInitRes + 1
+  enumerator :: BelosScaleType = -1
+  enumerator :: BelosNormOfRHS = 0
+  enumerator :: BelosNormOfInitRes = BelosNormOfRHS + 1
+  enumerator :: BelosNormOfPrecInitRes = BelosNormOfInitRes + 1
+  enumerator :: BelosNone = BelosNormOfPrecInitRes + 1
+  enumerator :: BelosUserProvided = BelosNone + 1
+  enumerator :: BelosNormOfFullInitRes = BelosUserProvided + 1
+  enumerator :: BelosNormOfFullPrecInitRes = BelosNormOfFullInitRes + 1
+  enumerator :: BelosNormOfFullScaledInitRes = BelosNormOfFullPrecInitRes + 1
+  enumerator :: BelosNormOfFullScaledPrecInitRes = BelosNormOfFullScaledInitRes + 1
  end enum
  enum, bind(c)
-  enumerator :: OutputType = -1
-  enumerator :: General = 0
-  enumerator :: Brief = General + 1
-  enumerator :: User = Brief + 1
+  enumerator :: BelosOutputType = -1
+  enumerator :: BelosGeneral = 0
+  enumerator :: BelosBrief = BelosGeneral + 1
+  enumerator :: BelosUser = BelosBrief + 1
  end enum
  enum, bind(c)
-  enumerator :: ReturnType = -1
-  enumerator :: Converged = 0
-  enumerator :: Unconverged = Converged + 1
+  enumerator :: BelosReturnType = -1
+  enumerator :: BelosConverged = 0
+  enumerator :: BelosUnconverged = BelosConverged + 1
  end enum
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_StatusType") :: StatusType
+   bind(C, name="swigc_BelosStatusType") :: BelosStatusType
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_Passed") :: Passed
+   bind(C, name="swigc_BelosPassed") :: BelosPassed
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_Failed") :: Failed
+   bind(C, name="swigc_BelosFailed") :: BelosFailed
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_Undefined") :: Undefined
+   bind(C, name="swigc_BelosUndefined") :: BelosUndefined
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_ResetType") :: ResetType
+   bind(C, name="swigc_BelosResetType") :: BelosResetType
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_Problem") :: Problem
+   bind(C, name="swigc_BelosProblem") :: BelosProblem
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_RecycleSubspace") :: RecycleSubspace
+   bind(C, name="swigc_BelosRecycleSubspace") :: BelosRecycleSubspace
  enum, bind(c)
-  enumerator :: ConjType = -1
-  enumerator :: NO_CONJ = 0
-  enumerator :: CONJ = NO_CONJ + 1
+  enumerator :: BelosConjType = -1
+  enumerator :: BelosNO_CONJ = 0
+  enumerator :: BelosCONJ = BelosNO_CONJ + 1
  end enum
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_MsgType") :: MsgType
+   bind(C, name="swigc_BelosMsgType") :: BelosMsgType
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_Errors") :: Errors
+   bind(C, name="swigc_BelosErrors") :: BelosErrors
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_Warnings") :: Warnings
+   bind(C, name="swigc_BelosWarnings") :: BelosWarnings
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_IterationDetails") :: IterationDetails
+   bind(C, name="swigc_BelosIterationDetails") :: BelosIterationDetails
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_OrthoDetails") :: OrthoDetails
+   bind(C, name="swigc_BelosOrthoDetails") :: BelosOrthoDetails
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_FinalSummary") :: FinalSummary
+   bind(C, name="swigc_BelosFinalSummary") :: BelosFinalSummary
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_TimingDetails") :: TimingDetails
+   bind(C, name="swigc_BelosTimingDetails") :: BelosTimingDetails
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_StatusTestDetails") :: StatusTestDetails
+   bind(C, name="swigc_BelosStatusTestDetails") :: BelosStatusTestDetails
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_Debug") :: Debug
+   bind(C, name="swigc_BelosDebug") :: BelosDebug
 
  ! TYPES
  type :: string
@@ -383,7 +383,7 @@ function convertReturnTypeToString(result) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 type(string) :: swigf_result
-integer(kind(ReturnType)), intent(in) :: result
+integer(kind(BelosReturnType)), intent(in) :: result
 type(C_PTR) :: fresult 
 integer(C_INT) :: farg1 
 
@@ -396,7 +396,7 @@ function convertStatusTypeToString(status) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 type(string) :: swigf_result
-integer(kind(StatusType)), intent(in) :: status
+integer(kind(BelosStatusType)), intent(in) :: status
 type(C_PTR) :: fresult 
 integer(C_INT) :: farg1 
 
@@ -408,7 +408,7 @@ end function
 function convertStringToStatusType(status) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
-integer(kind(StatusType)) :: swigf_result
+integer(kind(BelosStatusType)) :: swigf_result
 class(string) :: status
 integer(C_INT) :: fresult 
 type(C_PTR) :: farg1 
@@ -418,41 +418,41 @@ fresult = swigc_convertStringToStatusType(farg1)
 swigf_result = fresult
 end function
 
-function convertStringToScaleType(scaletype0) &
+function convertStringToScaleType(scaletype) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
-integer(kind(ScaleType)) :: swigf_result
-class(string) :: scaletype0
+integer(kind(BelosScaleType)) :: swigf_result
+class(string) :: scaletype
 integer(C_INT) :: fresult 
 type(C_PTR) :: farg1 
 
-farg1 = scaletype0%swigptr
+farg1 = scaletype%swigptr
 fresult = swigc_convertStringToScaleType(farg1)
 swigf_result = fresult
 end function
 
-function convertScaleTypeToString(scaletype0) &
+function convertScaleTypeToString(scaletype) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 type(string) :: swigf_result
-integer(kind(ScaleType)), intent(in) :: scaletype0
+integer(kind(BelosScaleType)), intent(in) :: scaletype
 type(C_PTR) :: fresult 
 integer(C_INT) :: farg1 
 
-farg1 = scaletype0
+farg1 = scaletype
 fresult = swigc_convertScaleTypeToString(farg1)
 swigf_result%swigptr = fresult
 end function
 
-function convertMsgTypeToString(msgtype0) &
+function convertMsgTypeToString(msgtype) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 type(string) :: swigf_result
-integer(kind(MsgType)), intent(in) :: msgtype0
+integer(kind(BelosMsgType)), intent(in) :: msgtype
 type(C_PTR) :: fresult 
 integer(C_INT) :: farg1 
 
-farg1 = msgtype0
+farg1 = msgtype
 fresult = swigc_convertMsgTypeToString(farg1)
 swigf_result%swigptr = fresult
 end function

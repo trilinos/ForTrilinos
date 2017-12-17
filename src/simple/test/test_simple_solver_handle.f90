@@ -71,7 +71,7 @@ program main
   call map%create(n_global, n, comm); CHECK_IERR()
 
   max_entries_per_row = 3
-  call A%create(map, max_entries_per_row, DynamicProfile)
+  call A%create(map, max_entries_per_row, TpetraDynamicProfile)
 
   allocate(cols(max_entries_per_row))
   allocate(vals(max_entries_per_row))
