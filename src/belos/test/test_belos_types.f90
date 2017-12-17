@@ -4,7 +4,6 @@
 ! License-Filename: LICENSE
 program main
 
-#include "FortranTestMacros.h"
 #include "ForTrilinosBelos_config.hpp"
 
   use ISO_FORTRAN_ENV
