@@ -82,7 +82,7 @@ contains
 
     ! create the identity matrix
     base = num_local * my_image_id;
-    call Mat%create(Map, ione, DynamicProfile)
+    call Mat%create(Map, ione, TpetraDynamicProfile)
     do irow = 1, num_local
       gblrow = base + int(irow, kind=global_ordinal_type)
       cols(1) = gblrow
@@ -92,7 +92,7 @@ contains
 
     TEST_ASSERT(Mat%isGloballyIndexed())
     TEST_ASSERT((.not. Mat%isLocallyIndexed()))
-    TEST_ASSERT(Mat%getProfileType() == DynamicProfile)
+    TEST_ASSERT(Mat%getProfileType() == TpetraDynamicProfile)
     call Mat%fillComplete(); TEST_IERR()
     row_map = Mat%getRowMap()
 
@@ -216,7 +216,7 @@ contains
     !  [           1 2]
     ! this matrix has an eigenvalue lambda=3, with eigenvector v = [1 ... 1]
 
-    call A%create(map, izero, DynamicProfile); TEST_IERR()
+    call A%create(map, izero, TpetraDynamicProfile); TEST_IERR()
     gblrow = my_image_id + 1
     if (gblrow == 1) then
       nnz = 2
@@ -309,7 +309,7 @@ contains
 
     ! Create the identity matrix, three rows per proc
     base = 3 * my_image_id;
-    call Mat%create(Map, ione, DynamicProfile); TEST_IERR()
+    call Mat%create(Map, ione, TpetraDynamicProfile); TEST_IERR()
     do i = 1, 3
       gblrow = base + i
       cols(1) = gblrow
@@ -331,7 +331,7 @@ contains
     call Z%update(alpha, X, beta, Y, zero)
 
     ! test the action: Y = alpha*I*X + beta*Y = alpha*X + beta*Y = Z
-    call Mat%apply(X, Y, NO_TRANS, alpha, beta)
+    call Mat%apply(X, Y, TEUCHOSNO_TRANS, alpha, beta)
     !
     call Z%norm1(normz)
     call Y%norm1(normy)
@@ -363,7 +363,7 @@ contains
     ! create Map
     call Map%create(invalid, ione, comm); TEST_IERR()
 
-    call Mat%create(map, map, izero, DynamicProfile); TEST_IERR()
+    call Mat%create(map, map, izero, TpetraDynamicProfile); TEST_IERR()
     TEST_ASSERT(Mat%isFillActive())
     TEST_ASSERT((.not. Mat%isFillComplete()))
     lclrow = 1
@@ -398,7 +398,7 @@ contains
     call params%release()
     call Mat%release()
 
-    call Mat%create(map, map, izero, DynamicProfile); TEST_IERR()
+    call Mat%create(map, map, izero, TpetraDynamicProfile); TEST_IERR()
     TEST_ASSERT(Mat%isFillActive())
     TEST_ASSERT((.not. Mat%isFillComplete()))
     lclrow = 1
@@ -456,7 +456,7 @@ contains
     ! create Map
     call Map%create(invalid, ione, comm); TEST_IERR()
 
-    call Mat%create(map, map, izero, DynamicProfile); TEST_IERR()
+    call Mat%create(map, map, izero, TpetraDynamicProfile); TEST_IERR()
     TEST_ASSERT(Mat%isFillActive())
     TEST_ASSERT((.not. Mat%isFillComplete()))
     row = 1; cols(1) = 1; vals(1) = 0.
@@ -489,7 +489,7 @@ contains
     call params%release()
     call Mat%release()
 
-    call Mat%create(map, map, izero, DynamicProfile); TEST_IERR()
+    call Mat%create(map, map, izero, TpetraDynamicProfile); TEST_IERR()
     TEST_ASSERT(Mat%isFillActive())
     TEST_ASSERT((.not. Mat%isFillComplete()))
     row = 1; cols(1) = 1; vals(1) = zero;
@@ -659,7 +659,7 @@ contains
     type(TpetraMultiVector) :: x
     type(TpetraMultiVector) :: d
     real(scalar_type) :: dampingfactor
-    integer(kind(ESweepDirection)) :: direction
+    integer(kind(TpetraESweepDirection)) :: direction
     integer(C_INT) :: numsweeps
     OUT0("Starting TpetraCrsMatrix_gaussSeidel")
 
@@ -693,7 +693,7 @@ contains
     type(TpetraMultiVector) :: d
     !type(TeuchosArrayViewInt) :: rowindices
     real(scalar_type) :: dampingfactor
-    integer(kind(ESweepDirection)) :: direction
+    integer(kind(TpetraESweepDirection)) :: direction
     integer(C_INT) :: numsweeps
     OUT0("Starting TpetraCrsMatrix_reorderedGaussSeidel")
 
@@ -728,7 +728,7 @@ contains
     type(TpetraMultiVector) :: b
     type(TpetraMultiVector) :: d
     real(scalar_type) :: dampingfactor
-    integer(kind(ESweepDirection)) :: direction
+    integer(kind(TpetraESweepDirection)) :: direction
     integer(C_INT) :: numsweeps
     logical(C_BOOL) :: zeroinitialguess
     OUT0("Starting TpetraCrsMatrix_gaussSeidelCopy")
@@ -764,7 +764,7 @@ contains
     type(TpetraMultiVector) :: d
     !type(TeuchosArrayViewInt) :: rowindices
     real(scalar_type) :: dampingfactor
-    integer(kind(ESweepDirection)) :: direction
+    integer(kind(TpetraESweepDirection)) :: direction
     integer(C_INT) :: numsweeps
     logical(C_BOOL) :: zeroinitialguess
     OUT0("Starting TpetraCrsMatrix_reorderedGaussSeidelCopy")

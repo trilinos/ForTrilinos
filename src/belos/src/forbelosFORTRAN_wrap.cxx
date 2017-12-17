@@ -350,19 +350,19 @@ SWIGEXPORT void * swigc_convertReturnTypeToString(int const *farg1) {
 }
 
 
-SWIGEXPORT SWIGEXTERN int const swigc_StatusType = -1;
+SWIGEXPORT SWIGEXTERN int const swigc_BelosStatusType = -1;
 
-SWIGEXPORT SWIGEXTERN int const swigc_Passed = Belos::Passed;
+SWIGEXPORT SWIGEXTERN int const swigc_BelosPassed = Belos::Passed;
 
-SWIGEXPORT SWIGEXTERN int const swigc_Failed = Belos::Failed;
+SWIGEXPORT SWIGEXTERN int const swigc_BelosFailed = Belos::Failed;
 
-SWIGEXPORT SWIGEXTERN int const swigc_Undefined = Belos::Undefined;
+SWIGEXPORT SWIGEXTERN int const swigc_BelosUndefined = Belos::Undefined;
 
-SWIGEXPORT SWIGEXTERN int const swigc_ResetType = -1;
+SWIGEXPORT SWIGEXTERN int const swigc_BelosResetType = -1;
 
-SWIGEXPORT SWIGEXTERN int const swigc_Problem = Belos::Problem;
+SWIGEXPORT SWIGEXTERN int const swigc_BelosProblem = Belos::Problem;
 
-SWIGEXPORT SWIGEXTERN int const swigc_RecycleSubspace = Belos::RecycleSubspace;
+SWIGEXPORT SWIGEXTERN int const swigc_BelosRecycleSubspace = Belos::RecycleSubspace;
 
 SWIGEXPORT void * swigc_convertStatusTypeToString(int const *farg1) {
   void * fresult ;
@@ -412,23 +412,23 @@ SWIGEXPORT void * swigc_convertScaleTypeToString(int const *farg1) {
 }
 
 
-SWIGEXPORT SWIGEXTERN int const swigc_MsgType = -1;
+SWIGEXPORT SWIGEXTERN int const swigc_BelosMsgType = -1;
 
-SWIGEXPORT SWIGEXTERN int const swigc_Errors = Belos::Errors;
+SWIGEXPORT SWIGEXTERN int const swigc_BelosErrors = Belos::Errors;
 
-SWIGEXPORT SWIGEXTERN int const swigc_Warnings = Belos::Warnings;
+SWIGEXPORT SWIGEXTERN int const swigc_BelosWarnings = Belos::Warnings;
 
-SWIGEXPORT SWIGEXTERN int const swigc_IterationDetails = Belos::IterationDetails;
+SWIGEXPORT SWIGEXTERN int const swigc_BelosIterationDetails = Belos::IterationDetails;
 
-SWIGEXPORT SWIGEXTERN int const swigc_OrthoDetails = Belos::OrthoDetails;
+SWIGEXPORT SWIGEXTERN int const swigc_BelosOrthoDetails = Belos::OrthoDetails;
 
-SWIGEXPORT SWIGEXTERN int const swigc_FinalSummary = Belos::FinalSummary;
+SWIGEXPORT SWIGEXTERN int const swigc_BelosFinalSummary = Belos::FinalSummary;
 
-SWIGEXPORT SWIGEXTERN int const swigc_TimingDetails = Belos::TimingDetails;
+SWIGEXPORT SWIGEXTERN int const swigc_BelosTimingDetails = Belos::TimingDetails;
 
-SWIGEXPORT SWIGEXTERN int const swigc_StatusTestDetails = Belos::StatusTestDetails;
+SWIGEXPORT SWIGEXTERN int const swigc_BelosStatusTestDetails = Belos::StatusTestDetails;
 
-SWIGEXPORT SWIGEXTERN int const swigc_Debug = Belos::Debug;
+SWIGEXPORT SWIGEXTERN int const swigc_BelosDebug = Belos::Debug;
 
 SWIGEXPORT void * swigc_convertMsgTypeToString(int const *farg1) {
   void * fresult ;

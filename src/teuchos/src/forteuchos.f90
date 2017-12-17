@@ -18,12 +18,13 @@ module forteuchos
  public :: VectorInt
  public :: VectorDouble
  public :: VectorLongLong
- public :: ESide, LEFT_SIDE, RIGHT_SIDE
- public :: ETransp, NO_TRANS, TRANS, CONJ_TRANS
- public :: EUplo, UPPER_TRI, LOWER_TRI, UNDEF_TRI
- public :: EDiag, UNIT_DIAG, NON_UNIT_DIAG
- public :: EType, FULL, LOWER, UPPER, HESSENBERG, SYM_BAND_L, SYM_BAND_U, BAND
- public :: DataAccess, Copy, View
+ public :: TeuchosESide, TeuchosLEFT_SIDE, TeuchosRIGHT_SIDE
+ public :: TeuchosETransp, TeuchosNO_TRANS, TeuchosTRANS, TeuchosCONJ_TRANS
+ public :: TeuchosEUplo, TeuchosUPPER_TRI, TeuchosLOWER_TRI, TeuchosUNDEF_TRI
+ public :: TeuchosEDiag, TeuchosUNIT_DIAG, TeuchosNON_UNIT_DIAG
+ public :: TeuchosEType, TeuchosFULL, TeuchosLOWER, TeuchosUPPER, TeuchosHESSENBERG, TeuchosSYM_BAND_L, TeuchosSYM_BAND_U, &
+    TeuchosBAND
+ public :: TeuchosDataAccess, TeuchosCopy, TeuchosView
 
  public :: ierr
  public :: serr
@@ -42,41 +43,41 @@ end type
 
  ! PARAMETERS
  enum, bind(c)
-  enumerator :: ESide = -1
-  enumerator :: LEFT_SIDE = 0
-  enumerator :: RIGHT_SIDE = LEFT_SIDE + 1
+  enumerator :: TeuchosESide = -1
+  enumerator :: TeuchosLEFT_SIDE = 0
+  enumerator :: TeuchosRIGHT_SIDE = TeuchosLEFT_SIDE + 1
  end enum
  enum, bind(c)
-  enumerator :: ETransp = -1
-  enumerator :: NO_TRANS = 0
-  enumerator :: TRANS = NO_TRANS + 1
-  enumerator :: CONJ_TRANS = TRANS + 1
+  enumerator :: TeuchosETransp = -1
+  enumerator :: TeuchosNO_TRANS = 0
+  enumerator :: TeuchosTRANS = TeuchosNO_TRANS + 1
+  enumerator :: TeuchosCONJ_TRANS = TeuchosTRANS + 1
  end enum
  enum, bind(c)
-  enumerator :: EUplo = -1
-  enumerator :: UPPER_TRI = 0
-  enumerator :: LOWER_TRI = UPPER_TRI + 1
-  enumerator :: UNDEF_TRI = LOWER_TRI + 1
+  enumerator :: TeuchosEUplo = -1
+  enumerator :: TeuchosUPPER_TRI = 0
+  enumerator :: TeuchosLOWER_TRI = TeuchosUPPER_TRI + 1
+  enumerator :: TeuchosUNDEF_TRI = TeuchosLOWER_TRI + 1
  end enum
  enum, bind(c)
-  enumerator :: EDiag = -1
-  enumerator :: UNIT_DIAG = 0
-  enumerator :: NON_UNIT_DIAG = UNIT_DIAG + 1
+  enumerator :: TeuchosEDiag = -1
+  enumerator :: TeuchosUNIT_DIAG = 0
+  enumerator :: TeuchosNON_UNIT_DIAG = TeuchosUNIT_DIAG + 1
  end enum
  enum, bind(c)
-  enumerator :: EType = -1
-  enumerator :: FULL = 0
-  enumerator :: LOWER = FULL + 1
-  enumerator :: UPPER = LOWER + 1
-  enumerator :: HESSENBERG = UPPER + 1
-  enumerator :: SYM_BAND_L = HESSENBERG + 1
-  enumerator :: SYM_BAND_U = SYM_BAND_L + 1
-  enumerator :: BAND = SYM_BAND_U + 1
+  enumerator :: TeuchosEType = -1
+  enumerator :: TeuchosFULL = 0
+  enumerator :: TeuchosLOWER = TeuchosFULL + 1
+  enumerator :: TeuchosUPPER = TeuchosLOWER + 1
+  enumerator :: TeuchosHESSENBERG = TeuchosUPPER + 1
+  enumerator :: TeuchosSYM_BAND_L = TeuchosHESSENBERG + 1
+  enumerator :: TeuchosSYM_BAND_U = TeuchosSYM_BAND_L + 1
+  enumerator :: TeuchosBAND = TeuchosSYM_BAND_U + 1
  end enum
  enum, bind(c)
-  enumerator :: DataAccess = -1
-  enumerator :: Copy = 0
-  enumerator :: View = Copy + 1
+  enumerator :: TeuchosDataAccess = -1
+  enumerator :: TeuchosCopy = 0
+  enumerator :: TeuchosView = TeuchosCopy + 1
  end enum
  integer(C_INT), parameter, public :: SWIG_FORTRAN_ERROR_STRLEN = 1024_C_INT
 

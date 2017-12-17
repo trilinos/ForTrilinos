@@ -84,6 +84,35 @@ namespace Kokkos {
 
 %ignore Teuchos::SerializationTraits;
 
+// enum workaround
+#define RENAME_ENUM(X) %rename(Tpetra##X) X;
+RENAME_ENUM(LocalGlobal)
+RENAME_ENUM(LocallyReplicated)
+RENAME_ENUM(GloballyDistributed)
+RENAME_ENUM(LookupStatus)
+RENAME_ENUM(AllIDsPresent)
+RENAME_ENUM(IDNotPresent)
+RENAME_ENUM(ProfileType)
+RENAME_ENUM(StaticProfile)
+RENAME_ENUM(DynamicProfile)
+RENAME_ENUM(OptimizeOption)
+RENAME_ENUM(DoOptimizeStorage)
+RENAME_ENUM(DoNotOptimizeStorage)
+RENAME_ENUM(ESweepDirection)
+RENAME_ENUM(Forward)
+RENAME_ENUM(Backward)
+RENAME_ENUM(Symmetric)
+RENAME_ENUM(CombineMode)
+RENAME_ENUM(ADD)
+RENAME_ENUM(INSERT)
+RENAME_ENUM(REPLACE)
+RENAME_ENUM(ABSMAX)
+RENAME_ENUM(ZERO)
+RENAME_ENUM(ELocalGlobal)
+RENAME_ENUM(LocalIndices)
+RENAME_ENUM(GlobalIndices)
+#undef RENAME_ENUM
+
 // ignore Details namespace
 %ignore Tpetra::Details;
 
@@ -95,6 +124,8 @@ namespace Kokkos {
 %ignore getIndexBase;
 
 // Some enums
+%ignore EPrivateComputeViewConstructor;
+%ignore EPrivateHostViewConstructor;
 %include "Tpetra_ConfigDefs.hpp"
 %include "Tpetra_CombineMode.hpp"
 
