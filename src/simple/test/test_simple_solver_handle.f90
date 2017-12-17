@@ -4,8 +4,8 @@
 ! License-Filename: LICENSE
 program main
 
-#include "FortranTestMacros.h"
 #include "ForTrilinosSimpleInterface_config.hpp"
+#include "FortranTestUtilities.h"
 
   use ISO_FORTRAN_ENV
   use, intrinsic :: ISO_C_BINDING
@@ -144,7 +144,10 @@ program main
   call X%norm2(norms); CHECK_IERR()
 
   ! TODO: Get the tolerance out of the parameter list
-  EXPECT_TRUE(norms(1) < 1e-6)
+  if (norms(1) > 1e-6) then
+    write(error_unit, '(A)') 'The solver did not converge to the specified residual!'
+    stop 1
+  end if
 
   ! Step 5: clean up
   call solver_handle%finalize(); CHECK_IERR()
@@ -165,7 +168,6 @@ program main
 #ifdef HAVE_MPI
   ! Finalize MPI must be called after releasing all handles
   call MPI_FINALIZE(ierr)
-  EXPECT_EQ(0, ierr)
 #endif
 
 

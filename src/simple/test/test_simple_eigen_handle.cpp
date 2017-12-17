@@ -35,8 +35,6 @@ int main(int argc, char *argv[]) {
     using MultiVector = Tpetra::MultiVector<SC,LO,GO,NO>;
     using Matrix      = Tpetra::CrsMatrix<SC,LO,GO,NO>;
 
-    using STS = Teuchos::ScalarTraits<SC>;
-
     // Initialize MPI system
     Teuchos::GlobalMPISession mpiSession(&argc, &argv, NULL);
     RCP<const Teuchos::Comm<int> > comm = Teuchos::DefaultComm<int>::getComm();
