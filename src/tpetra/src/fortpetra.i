@@ -96,7 +96,7 @@ namespace Kokkos {
 
 // Some enums
 %include "Tpetra_ConfigDefs.hpp"
-/* %include "Tpetra_CombineMode.hpp" */
+%include "Tpetra_CombineMode.hpp"
 
 // Order matters!!!
 %include "Tpetra_Map.i"

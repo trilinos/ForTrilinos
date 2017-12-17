@@ -134,6 +134,18 @@
       auto a = self->get1dViewNonConst();
       return std::make_pair<SC*,size_t>(a.getRawPtr(), a.size());
     }
+    void doImport (const Tpetra::MultiVector<SC,LO,GO,NO> &source, const Tpetra::Import< LO, GO, NO > &importer, CombineMode CM) {
+      self->doImport(source, importer, CM);
+    }
+    void doImport (const Tpetra::MultiVector<SC,LO,GO,NO> &source, const Tpetra::Export< LO, GO, NO > &exporter, CombineMode CM) {
+      self->doImport(source, exporter, CM);
+    }
+    void doExport (const Tpetra::MultiVector<SC,LO,GO,NO> &source, const Tpetra::Export< LO, GO, NO > &exporter, CombineMode CM) {
+      self->doExport(source, exporter, CM);
+    }
+    void doExport (const Tpetra::MultiVector<SC,LO,GO,NO> &source, const Tpetra::Import< LO, GO, NO > &importer, CombineMode CM) {
+      self->doExport(source, importer, CM);
+    }
 }
 %ignore Tpetra::MultiVector::MultiVector (const Teuchos::RCP< const map_type > &map, const Teuchos::ArrayView< const Scalar > &A, const size_t LDA, const size_t NumVectors);
 %ignore Tpetra::MultiVector::subCopy(const Teuchos::ArrayView< const size_t > &cols) const;
