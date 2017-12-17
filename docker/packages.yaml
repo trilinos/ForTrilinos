@@ -1,0 +1,14 @@
+packages:
+    all:
+
+    llvm:
+        variants: ~lldb ~gold
+    cmake:
+        paths:
+            cmake@3.5.1: /usr
+        buildable: False
+    python:
+        paths:
+            python@2.7.12: /usr
+        buildable:
+            False
