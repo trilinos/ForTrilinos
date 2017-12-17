@@ -15,6 +15,9 @@
 
 #include "eigen_handle.hpp"
 
+// FIXME: this is a workaround for ierr linkage errors
+int ierr = 0;
+
 int main(int argc, char *argv[]) {
   bool success = false;
   bool verbose = true;
@@ -34,8 +37,6 @@ int main(int argc, char *argv[]) {
     using Map         = Tpetra::Map<LO,GO,NO>;
     using MultiVector = Tpetra::MultiVector<SC,LO,GO,NO>;
     using Matrix      = Tpetra::CrsMatrix<SC,LO,GO,NO>;
-
-    using STS = Teuchos::ScalarTraits<SC>;
 
     // Initialize MPI system
     Teuchos::GlobalMPISession mpiSession(&argc, &argv, NULL);

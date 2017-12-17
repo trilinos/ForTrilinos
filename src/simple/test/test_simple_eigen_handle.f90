@@ -4,9 +4,8 @@
 ! License-Filename: LICENSE
 program main
 
-#include "FortranTestMacros.h"
 #include "ForTrilinosSimpleInterface_config.hpp"
-
+#include "FortranTestUtilities.h"
 
   use ISO_FORTRAN_ENV
   use, intrinsic :: ISO_C_BINDING
@@ -122,7 +121,10 @@ program main
   call eigen_handle%solve(evalues, X); CHECK_IERR()
 
   ! FIXME: Check the solution
-  EXPECT_TRUE(size(evalues) == num_eigen)
+  if (size(evalues) /= num_eigen) then
+    write(error_unit, '(A)') 'The number of returned eigenvalues does not match!'
+    stop 1
+  end if
   write(*,*) "Computed eigenvalues: ", evalues(1)
 
   ! Step 5: clean up
@@ -141,7 +143,6 @@ program main
 #ifdef HAVE_MPI
   ! Finalize MPI must be called after releasing all handles
   call MPI_FINALIZE(ierr)
-  EXPECT_EQ(0, ierr)
 #endif
 
 

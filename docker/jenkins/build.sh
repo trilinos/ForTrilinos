@@ -24,6 +24,11 @@ if [ "${BUILD_TYPE}" == "gcc54-mpi" ]; then
   ../scripts/docker_cmake -D Trilinos_ENABLE_COVERAGE_TESTING=ON
 elif [ "${BUILD_TYPE}" == "gcc54-serial" ]; then
   ../scripts/docker_cmake_serial
+elif [ "${BUILD_TYPE}" == "flang50-mpi" ]; then
+  source ../scripts/docker_flang50_env.sh ${SPACK_ROOT}
+  # For now, we don't have openmpi installation using flang. The system
+  # installation of openmpi produces incompatible .mod files.
+  ../scripts/docker_cmake_serial
 else
     echo "Unknown BUILD_TYPE"
     exit 1

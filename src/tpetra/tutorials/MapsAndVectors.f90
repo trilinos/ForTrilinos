@@ -5,6 +5,10 @@
 program main
 
 #include "ForTrilinosTpetra_config.hpp"
+! FIXME: this header inclusion is a workaround for ierr linkage.
+! Without including this line and calling CHECK_IERR()
+! we get undefined references to `ierr` and `serr`
+#include "FortranTestUtilities.h"
 
 use iso_fortran_env
 use, intrinsic :: iso_c_binding
@@ -49,6 +53,11 @@ call comm%create(MPI_COMM_WORLD)
 #else
 call comm%create()
 #endif
+
+! FIXME: this call is a workaround of ierr linkage.
+! Without including this line and calling CHECK_IERR()
+! we get undefined references to `ierr` and `serr`
+CHECK_IERR()
 
 my_rank = comm%getRank()
 num_procs = comm%getSize()

@@ -4,7 +4,7 @@
 ! License-Filename: LICENSE
 module fortest
 
-! Provides procedures to be called from macros defined in FortranTestMacros.h.
+! Provides procedures to be called from macros defined in FortranTestUtilities.h.
 ! These procedures serve a twofold purpose: 1) they are clearer and easier to
 ! debug when defined in this module and 2) they allow the code emitted from the
 ! macros to remain under the 132 character limit defined by the standard.
