@@ -31,7 +31,6 @@ module fortest
 ! protect interfaces from multiply defining functions.
 
 #include "ForTrilinosUtils_config.hpp"
-#include "DBCF.h"
 
 use iso_c_binding
 use iso_fortran_env
@@ -130,7 +129,7 @@ contains
   subroutine fortest_stop(message)
     implicit none
     character(len=*), intent(in), optional :: message
-    integer, parameter :: stopcode=993299
+    integer, parameter :: stopcode=99329
     flush(error_unit)
     flush(output_unit)
     if (present(message)) then
