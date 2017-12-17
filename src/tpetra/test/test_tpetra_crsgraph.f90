@@ -73,7 +73,7 @@ contains
     call Map%create(invalid, ione, comm); TEST_IERR()
 
     call params%create("ANONYMOUS")
-    call Graph%create(Map, Map, izero, DynamicProfile)
+    call Graph%create(Map, Map, izero, TpetraDynamicProfile)
     TEST_ASSERT(Graph%isFillActive())
     TEST_ASSERT((.not. Graph%isFillComplete()))
 
@@ -95,7 +95,7 @@ contains
     call params%release()
 
     call params%create("ANONYMOUS")
-    call Graph%create(Map, Map, izero, DynamicProfile)
+    call Graph%create(Map, Map, izero, TpetraDynamicProfile)
 
     TEST_ASSERT(Graph%isFillActive())
     TEST_ASSERT((.not. Graph%isFillComplete()))
@@ -110,7 +110,7 @@ contains
     call Graph%resumeFill()
     TEST_ASSERT(graph%isFillActive())
     TEST_ASSERT((.not. graph%isFillComplete()))
-    TEST_ASSERT(graph%getProfileType() == DynamicProfile)
+    TEST_ASSERT(graph%getProfileType() == TpetraDynamicProfile)
     TEST_NOTHROW(call graph%insertLocalIndices(row, indices))
 
     TEST_NOTHROW(call graph%fillComplete())
@@ -139,7 +139,7 @@ contains
     call Map%create(invalid, ione, comm); TEST_IERR()
 
     call params%create("ANONYMOUS")
-    call Graph%create(Map, Map, izero, DynamicProfile)
+    call Graph%create(Map, Map, izero, TpetraDynamicProfile)
     params = Graph%getValidParameters()
     call Graph%setParameterList(params)
 
@@ -177,7 +177,7 @@ contains
     call cmap%create(invalid, num_local, comm); TEST_IERR()
     ! must allocate enough for all submitted indices.
     num_ent_per_row = 2
-    call Graph%create(rmap, cmap, num_ent_per_row, StaticProfile)
+    call Graph%create(rmap, cmap, num_ent_per_row, TpetraStaticProfile)
     TEST_ASSERT(Graph%hasColMap())
     lclrow = 1
     myrowind = rmap%getGlobalElement(lclrow);
@@ -283,7 +283,7 @@ contains
     rowptr(1:3) = [1, 2, 3]
     colind(1:2) = [1, 2]
 
-    call Graph%create(rmap, rmap, izero, StaticProfile)
+    call Graph%create(rmap, rmap, izero, TpetraStaticProfile)
 
     TEST_NOTHROW(call Graph%setAllIndices(rowptr, colind))
     TEST_ASSERT(Graph%hasColMap())
@@ -447,13 +447,13 @@ contains
 
     ! create static-profile graph, fill-complete without inserting
     ! (and therefore, without allocating)
-    call Graph%create(map, ione, StaticProfile)
+    call Graph%create(map, ione, TpetraStaticProfile)
     call Graph%fillComplete()
     call Graph%release()
 
-    ! create dynamic-profile graph, fill-complete without inserting
+    ! create TpetraDynamic-profile graph, fill-complete without inserting
     ! (and therefore, without allocating)
-    call Graph%create(map, ione, DynamicProfile)
+    call Graph%create(map, ione, TpetraDynamicProfile)
     call Graph%fillComplete()
     call Graph%release()
 
@@ -485,7 +485,7 @@ contains
     call cmap%create(invalid, num_local, comm); TEST_IERR()
     ! must allocate enough for all submitted indices.
     num_ent_per_row = 2
-    call Graph%create(rmap, cmap, num_ent_per_row, StaticProfile)
+    call Graph%create(rmap, cmap, num_ent_per_row, TpetraStaticProfile)
     TEST_ASSERT(Graph%hasColMap())
     lclrow = 1
     myrowind = rmap%getGlobalElement(lclrow);

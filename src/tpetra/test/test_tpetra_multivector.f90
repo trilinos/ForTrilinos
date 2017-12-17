@@ -98,7 +98,7 @@ contains
     !   set A2 = A
     !   scale it by 2 in situ
     !   check that it equals B: subtraction in situ
-    call A2%create(A, Copy); TEST_IERR()
+    call A2%create(A, TeuchosCopy); TEST_IERR()
     call A2%scale(two)
     call A2%update(negone, B, one)
     call A2%norm1(norms)
@@ -107,7 +107,7 @@ contains
 
     ! set A2 = A
     ! check that it equals B: scale, subtraction in situ
-    call A2%create(A, Copy); TEST_IERR()
+    call A2%create(A, TeuchosCopy); TEST_IERR()
     call A2%update(negone, B, two)
     call A2%norm1(norms)
     TEST_FLOATING_ARRAY_EQUALITY(norms, zeros, epsilon(zero))
@@ -289,7 +289,7 @@ contains
     !   set A2 = A
     !   scale it by 2 in situ
     !   check that it equals B: subtraction in situ
-    call A2%create(A, Copy); TEST_IERR()
+    call A2%create(A, TeuchosCopy); TEST_IERR()
     call A2%update(one, B, one)
     call A2%norm1(norms)
     TEST_FLOATING_ARRAY_EQUALITY(norms, zero, epsilon(zero))
@@ -362,14 +362,14 @@ contains
     check = 3 * num_images
 
     num_global = n2 * comm%getSize()
-    call map2%create(num_global, comm, LocallyReplicated); TEST_IERR()
+    call map2%create(num_global, comm, TpetraLocallyReplicated); TEST_IERR()
     call map3%create(invalid, n3, comm); TEST_IERR()
 
     call Vec2x2%create(map2, n2); TEST_IERR()
     call Vec3x2%create(map3, n2); TEST_IERR()
     call Vec3x2%putScalar(one); TEST_IERR()
 
-    call Vec2x2%multiply(CONJ_TRANS, NO_TRANS, one, Vec3x2, Vec3x2, zero)
+    call Vec2x2%multiply(TEUCHOSCONJ_TRANS, TEUCHOSNO_TRANS, one, Vec3x2, Vec3x2, zero)
     TEST_IERR()
 
     !a = fortran array view of the data
@@ -407,7 +407,7 @@ contains
     real(scalar_type), parameter :: two=2.
     OUT0("Starting Reduce")
     num_global = num_local * comm%getSize()
-    call map%create(num_global, comm, LocallyReplicated); TEST_IERR()
+    call map%create(num_global, comm, TpetraLocallyReplicated); TEST_IERR()
     call Vec%create(map, num_vecs); TEST_IERR()
     call Vec%putScalar(two); TEST_IERR()
     call Vec%reduce(); TEST_IERR()
@@ -577,11 +577,11 @@ contains
   ! ------------------------------setCopyOrView------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMultiVector_setCopyOrView)
     type(TpetraMultiVector) :: Obj
-    integer(kind(DataAccess)) :: copyorview
+    integer(kind(TeuchosDataAccess)) :: copyorview
 
     success = .false.
 
-    copyorview = Copy
+    copyorview = TeuchosCopy
     !call Obj%create(); TEST_IERR()
     !call Obj%setCopyOrView(copyorview); TEST_IERR()
     !call Obj%release(); TEST_IERR()

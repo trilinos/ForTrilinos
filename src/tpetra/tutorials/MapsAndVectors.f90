@@ -169,7 +169,7 @@ call x%create(contig_map, num_vecs)
 ! The two-argument copy constructor with second argument Teuchos::Copy performs
 ! a deep copy.  x and y have the same Map.  The one-argument copy constructor
 ! does a _shallow_ copy.
-call y%create(x, Copy)
+call y%create(x, TeuchosCopy)
 
 ! Create a Vector with the 1-D cyclic Map.  Calling the constructor
 ! with false for the second argument leaves the data uninitialized,
