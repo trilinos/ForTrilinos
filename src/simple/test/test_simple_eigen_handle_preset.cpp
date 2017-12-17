@@ -13,6 +13,9 @@
 
 #include "eigen_handle.hpp"
 
+// FIXME: this is a workaround for ierr linkage errors
+int ierr = 0;
+
 int main(int argc, char *argv[]) {
   bool success = false;
   bool verbose = true;
