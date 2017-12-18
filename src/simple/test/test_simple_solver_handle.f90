@@ -5,7 +5,6 @@
 program main
 
 #include "ForTrilinosSimpleInterface_config.hpp"
-#include "FortranTestUtilities.h"
 #include "ForTrilinos.h"
 
   use ISO_FORTRAN_ENV
@@ -67,13 +66,13 @@ program main
   write(*,*) "Processor ", my_rank, " of ", num_procs
 
   ! Read in the parameterList
-  call plist%create("Stratimikos"); CHECK_IERR()
-  call load_from_xml(plist, "stratimikos.xml"); CHECK_IERR()
+  call plist%create("Stratimikos"); FORTRILINOS_CHECK_IERR()
+  call load_from_xml(plist, "stratimikos.xml"); FORTRILINOS_CHECK_IERR()
 
   ! ------------------------------------------------------------------
   ! Step 0: Construct tri-diagonal matrix
   n_global = -1
-  call map%create(n_global, n, comm); CHECK_IERR()
+  call map%create(n_global, n, comm); FORTRILINOS_CHECK_IERR()
 
   max_entries_per_row = 3
   call A%create(map, max_entries_per_row, TpetraDynamicProfile)
@@ -97,12 +96,12 @@ program main
       row_nnz = row_nnz + 1
     end if
 
-    call A%insertGlobalValues(offset + i, cols(1:row_nnz-1), vals(1:row_nnz-1)); CHECK_IERR()
+    call A%insertGlobalValues(offset + i, cols(1:row_nnz-1), vals(1:row_nnz-1)); FORTRILINOS_CHECK_IERR()
   end do
-  call A%fillComplete(); CHECK_IERR()
+  call A%fillComplete(); FORTRILINOS_CHECK_IERR()
 
   ! This automatically zeroes out X
-  call X%create(map, num_vecs); CHECK_IERR()
+  call X%create(map, num_vecs); FORTRILINOS_CHECK_IERR()
 
   ! The solution X(i) = i-1
   allocate(lhs(n))
@@ -125,28 +124,28 @@ program main
   end do
   lda = n
 
-  call Xtrue%create(map, lhs, lda, num_vecs); CHECK_IERR()
-  call B%create(map, rhs, lda, num_vecs); CHECK_IERR()
+  call Xtrue%create(map, lhs, lda, num_vecs); FORTRILINOS_CHECK_IERR()
+  call B%create(map, rhs, lda, num_vecs); FORTRILINOS_CHECK_IERR()
 
   ! Step 0: create a handle
-  call solver_handle%create(); CHECK_IERR()
+  call solver_handle%create(); FORTRILINOS_CHECK_IERR()
 
   ! Step 1: initialize a handle
-  call solver_handle%init(comm); CHECK_IERR()
+  call solver_handle%init(comm); FORTRILINOS_CHECK_IERR()
 
   ! Step 2: setup the problem
-  call solver_handle%setup_matrix(A); CHECK_IERR()
+  call solver_handle%setup_matrix(A); FORTRILINOS_CHECK_IERR()
 
   ! Step 3: setup the solver
-  call solver_handle%setup_solver(plist); CHECK_IERR()
+  call solver_handle%setup_solver(plist); FORTRILINOS_CHECK_IERR()
 
   ! Step 4: solve the system
-  call solver_handle%solve(B, X); CHECK_IERR()
+  call solver_handle%solve(B, X); FORTRILINOS_CHECK_IERR()
 
   ! Check the solution
   allocate(norms(1))
-  call X%update(-one, Xtrue, one); CHECK_IERR()
-  call X%norm2(norms); CHECK_IERR()
+  call X%update(-one, Xtrue, one); FORTRILINOS_CHECK_IERR()
+  call X%norm2(norms); FORTRILINOS_CHECK_IERR()
 
   ! TODO: Get the tolerance out of the parameter list
   if (norms(1) > 1e-6) then
@@ -155,15 +154,15 @@ program main
   end if
 
   ! Step 5: clean up
-  call solver_handle%finalize(); CHECK_IERR()
+  call solver_handle%finalize(); FORTRILINOS_CHECK_IERR()
 
-  call solver_handle%release(); CHECK_IERR()
-  call plist%release(); CHECK_IERR()
-  call X%release(); CHECK_IERR()
-  call B%release(); CHECK_IERR()
-  call A%release(); CHECK_IERR()
-  call map%release(); CHECK_IERR()
-  call comm%release(); CHECK_IERR()
+  call solver_handle%release(); FORTRILINOS_CHECK_IERR()
+  call plist%release(); FORTRILINOS_CHECK_IERR()
+  call X%release(); FORTRILINOS_CHECK_IERR()
+  call B%release(); FORTRILINOS_CHECK_IERR()
+  call A%release(); FORTRILINOS_CHECK_IERR()
+  call map%release(); FORTRILINOS_CHECK_IERR()
+  call comm%release(); FORTRILINOS_CHECK_IERR()
   deallocate(norms)
   deallocate(cols)
   deallocate(vals)

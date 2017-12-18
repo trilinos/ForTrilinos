@@ -68,11 +68,6 @@
 
 use fortest
 
-#define CHECK_IERR() \
- IF(FORTRILINOS_IERR/=0) THEN; \
- call FORTEST_STOP('*** ForTrilinos caught exception!'//NEW_LINE('A')//TRIM(FORTRILINOS_GET_SERR())); \
- ENDIF
-
 ! Setup the test.  This procedure should be called *once* after program
 ! declarations are made.
 #define SETUP_TEST() \
@@ -87,7 +82,7 @@ use fortest
 
 ! Teardown the test.  No subtests should be added and ran after teardown
 #define TEARDOWN_TEST() \
- CHECK_IERR(); \
+ FORTRILINOS_CHECK_IERR(); \
  CALL TEARDOWN_TEST2()
 
 ! Macro defining a ForTrilinos unit test.  Defines subroutine signature and
