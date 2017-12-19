@@ -5,7 +5,6 @@
 program test_TpetraMap
 #include "ForTrilinosTpetra_config.hpp"
 #include "FortranTestUtilities.h"
-#include "ForTrilinos.h"
   use iso_fortran_env
   use, intrinsic :: iso_c_binding
   use forteuchos

@@ -30,6 +30,7 @@ TRIBITS_ADD_LIBRARY(
   forutils
   NOINSTALLHEADERS FortranTestUtilities.h
   SOURCES fortest.f90
+  DEPLIBS forerror
 )
 
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/ForTrilinos.h DESTINATION include)

@@ -31,6 +31,7 @@ module fortest
 ! protect interfaces from multiply defining functions.
 
 #include "ForTrilinosUtils_config.hpp"
+use forerror
 
 use iso_c_binding
 use iso_fortran_env
@@ -306,20 +307,18 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
-  subroutine fortest_ierr(success, filename, lineno, ierr, serr)
+  subroutine fortest_ierr(success, filename, lineno)
     ! ------------------------------------------------------------------------ !
     logical, intent(inout) :: success
     character(len=*), intent(in) :: filename
     integer, intent(in) :: lineno
-    integer(c_int), intent(in) :: ierr
-    character(len=1024), intent(in) :: serr
     character(len=256) :: signature
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
-    lcl_success = (ierr == 0)
+    lcl_success = (fortrilinos_ierr == 0)
     if (.not. lcl_success) then
       write(signature, '(A)') "TEST_IERR()"
-      call write_error_diagnostics(filename, lineno, signature, serr)
+      call write_error_diagnostics(filename, lineno, signature, fortrilinos_get_serr())
     end if
     call gather_success(lcl_success, success)
     return
@@ -1205,41 +1204,39 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
-  subroutine fortest_throw(success, filename, lineno, namec, ierr)
+  subroutine fortest_throw(success, filename, lineno, namec)
     ! ------------------------------------------------------------------------ !
     logical, intent(inout) :: success
     character(len=*), intent(in) :: filename, namec
     integer, intent(in) :: lineno
-    integer(c_int), intent(inout) :: ierr
     character(len=20) :: name
     character(len=256) :: signature
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_THROW'
-    lcl_success = (ierr /= 0)
+    lcl_success = (fortrilinos_ierr /= 0)
     if (.not. lcl_success) then
       signature = trim(name) //  '(' // trim(namec) // ')'
       call write_error_diagnostics(filename, lineno, signature)
     end if
     call gather_success(lcl_success, success)
-    ierr = 0
+    fortrilinos_ierr = 0
     return
   end subroutine fortest_throw
 
   ! -------------------------------------------------------------------------- !
 
-  subroutine fortest_nothrow(success, filename, lineno, namec, ierr)
+  subroutine fortest_nothrow(success, filename, lineno, namec)
     ! ------------------------------------------------------------------------ !
     logical, intent(inout) :: success
     character(len=*), intent(in) :: filename, namec
     integer, intent(in) :: lineno
-    integer(c_int), intent(inout) :: ierr
     character(len=20) :: name
     character(len=256) :: signature
     logical :: lcl_success
     ! ------------------------------------------------------------------------ !
     name = 'TEST_NOTHROW'
-    lcl_success = (ierr == 0)
+    lcl_success = (fortrilinos_ierr == 0)
     if (.not. lcl_success) then
       signature = trim(name) //  '(' // trim(namec) // ')'
       call write_error_diagnostics(filename, lineno, signature)

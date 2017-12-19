@@ -66,6 +66,7 @@
 ! See tests in src/tpetra/test for examples of creating unit tests and using the
 ! TEST_* macros.
 
+#include "ForTrilinos.h"
 use fortest
 
 ! Setup the test.  This procedure should be called *once* after program
@@ -108,7 +109,7 @@ use fortest
 ! Checks for the value of FORTRILINOS_IERR and toggles SUCCESS to .FALSE. if FORTRILINOS_IERR /= 0.
 ! If the SUCCESS flag is toggled, the test is exited
 #define TEST_IERR() \
- CALL FORTEST_IERR(SUCCESS, FILENAME, __LINE__, FORTRILINOS_IERR, FORTRILINOS_GET_SERR()); \
+ CALL FORTEST_IERR(SUCCESS, FILENAME, __LINE__); \
  IF (.NOT.SUCCESS) THEN; FORTRILINOS_IERR = 0; RETURN; ENDIF
 
 ! Checks integers A and B are the same and toggles SUCCESS to .FALSE. if they
@@ -170,14 +171,14 @@ use fortest
 ! not.  If the SUCCESS flag is toggled, the test is exited
 #define TEST_THROW(CODE) \
  CODE; \
- CALL FORTEST_THROW(SUCCESS, FILENAME, __LINE__, "CODE", FORTRILINOS_IERR); \
+ CALL FORTEST_THROW(SUCCESS, FILENAME, __LINE__, "CODE"); \
  IF (.NOT.SUCCESS) THEN; FORTRILINOS_IERR = 0; RETURN; ENDIF
 
 ! Checks that instruction CODE does not throw an exception toggles success to
 ! .FALSE. if not.  If the SUCCESS flag is toggled, the test is exited
 #define TEST_NOTHROW(CODE) \
  CODE; \
- CALL FORTEST_NOTHROW(SUCCESS, FILENAME, __LINE__, "CODE", FORTRILINOS_IERR); \
+ CALL FORTEST_NOTHROW(SUCCESS, FILENAME, __LINE__, "CODE"); \
  IF (.NOT.SUCCESS) THEN; FORTRILINOS_IERR = 0; RETURN; ENDIF
 
 ! Writes string S to stderr (file unit 0) on processor 0
