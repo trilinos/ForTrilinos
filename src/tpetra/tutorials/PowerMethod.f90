@@ -67,10 +67,7 @@ my_rank = comm%getRank()
 num_gbl_indices = 50
 
 call map%create(num_gbl_indices, comm)
-if (ierr /= 0) then
-  write(error_unit, '(A)') fortrilinos_get_serr()
-  stop 1
-end if
+FORTRILINOS_CHECK_IERR()
 
 ! Check that the map was created with the appropriate number of elements
 if (map%getGlobalNumElements() /= num_gbl_indices) then
