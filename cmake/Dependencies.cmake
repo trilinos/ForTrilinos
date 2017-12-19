@@ -1,8 +1,8 @@
-SET(LIB_REQUIRED_DEP_PACKAGES CTrilinos Epetra Teuchos)
-SET(LIB_OPTIONAL_DEP_PACKAGES Amesos AztecOO Galeri Ifpack Pliris)
-SET(TEST_REQUIRED_DEP_PACKAGES CTrilinos Epetra Teuchos)
-SET(TEST_OPTIONAL_DEP_PACKAGES Amesos AztecOO Galeri Ifpack Pliris)
-SET(LIB_REQUIRED_DEP_TPLS)
-SET(LIB_OPTIONAL_DEP_TPLS)
-SET(TEST_REQUIRED_DEP_TPLS)
-SET(TEST_OPTIONAL_DEP_TPLS)
+TRIBITS_PACKAGE_DEFINE_DEPENDENCIES(
+  SUBPACKAGES_DIRS_CLASSIFICATIONS_OPTREQS
+  Utils             src/utils       SS OPTIONAL
+  Teuchos           src/teuchos     SS OPTIONAL
+  Tpetra            src/tpetra      SS OPTIONAL
+  Belos             src/belos       SS OPTIONAL
+  SimpleInterface   src/simple      SS OPTIONAL
+)

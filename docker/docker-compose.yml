@@ -3,12 +3,10 @@ services:
   fortrilinos_dev:
     image: aprokop/fortrilinos-stack:latest
     volumes:
-      - ..:/scratch/source/trilinos/release/packages/ForTrilinos
+      - ..:/scratch/source/trilinos/release/packages/ForTrilinos:rw,z
+    working_dir: /scratch/source/trilinos/release/packages/ForTrilinos
     environment:
       - TERM=xterm
-    # Append user name to the container name.  Specifying a container name
-    # implies that there can only be one instance running at the same time on
-    # the Docker daemon (per user).
     command: tail -f /dev/null
     # Turn off seccomp confinement to work with gdb.
     #

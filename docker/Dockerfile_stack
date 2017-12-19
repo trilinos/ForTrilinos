@@ -1,6 +1,6 @@
 FROM ubuntu:16.04
 
-ARG NPROC=4
+ARG NPROC=14
 
 RUN apt-get update && apt-get install -y \
         build-essential \
@@ -23,13 +23,13 @@ RUN apt-get update && apt-get install -y \
         libatlas-base-dev \
         zlib1g-dev \
         python2.7-dev \
+        tmux \
+        unzip \
+        environment-modules \
         && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
-# Set up time zone
-RUN echo "America/New_York" > /etc/timezone && \
-    dpkg-reconfigure --frontend noninteractive tzdata
+    rm -rf /var/lib/apt/lists/* && \
+    ln -s /usr/bin/python2.7 /usr/bin/python
 
 ENV PREFIX=/scratch
 RUN mkdir -p ${PREFIX} && \
@@ -40,8 +40,8 @@ RUN mkdir -p ${PREFIX} && \
     mkdir install
 
 # download Trilinos
-RUN export TRILINOS_VERSION=12.10.1 && \
-    export TRILINOS_URL="https://github.com/trilinos/Trilinos/archive/trilinos-release-12-10-1.tar.gz" && \
+RUN export TRILINOS_VERSION=12.12.1 && \
+    export TRILINOS_URL="https://github.com/trilinos/Trilinos/archive/trilinos-release-12-12-1.tar.gz" && \
     export TRILINOS_ARCHIVE="${PREFIX}/archive/trilinos-${TRILINOS_VERSION}.tar.xz" && \
     export TRILINOS_SOURCE_DIR="${PREFIX}/source/trilinos/${TRILINOS_VERSION}" && \
     export TRILINOS_BUILD_DIR="${PREFIX}/build/trilinos/${TRILINOS_VERSION}" && \
@@ -54,18 +54,33 @@ RUN export TRILINOS_VERSION=12.10.1 && \
 
 ENV TRILINOS_DIR=/scratch/source/trilinos/release
 
-# download CTrilinos
-RUN export CTRILINOS_VERSION=12.10.1 && \
-    export CTRILINOS_URL="https://github.com/trilinos/CTrilinos/archive/trilinos-release-12-10-1.tar.gz" && \
-    export CTRILINOS_ARCHIVE="${PREFIX}/archive/ctrilinos-${TRILINOS_VERSION}.tar.xz" && \
-    export CTRILINOS_SOURCE_DIR="${PREFIX}/source/ctrilinos/${TRILINOS_VERSION}" && \
-    wget --quiet ${CTRILINOS_URL} --output-document=${CTRILINOS_ARCHIVE} && \
-    mkdir -p ${CTRILINOS_SOURCE_DIR} && \
-    tar -xf ${CTRILINOS_ARCHIVE} -C ${CTRILINOS_SOURCE_DIR} --strip-components=1 && \
-    ln -s ${CTRILINOS_SOURCE_DIR} ${TRILINOS_DIR}/packages/CTrilinos && \
-    rm -rf ${CTRILINOS_ARCHIVE}
-
 # append the option flag --allow-run-as-root to mpiexec
 RUN echo '#!/usr/bin/env bash' > /usr/local/bin/mpiexec && \
     echo '/usr/bin/mpiexec --allow-run-as-root "$@"' >> /usr/local/bin/mpiexec && \
     chmod +x /usr/local/bin/mpiexec
+
+ENV HOME=/root
+
+ENV SPACK_ROOT=${PREFIX}/spack
+
+# Install Spack (specific hash)
+RUN export SPACK_HASH=176b518d4b9e91c6b4c05f2fd6242945456a847a && \
+    export SPACK_URL="https://github.com/spack/spack/archive/${SPACK_HASH}.tar.gz" && \
+    export SPACK_INSTALL_DIR="${SPACK_ROOT}" && \
+    export SPACK_ARCHIVE="${PREFIX}/archive/spack-${SPACK_HASH}.tar.gz" && \
+    wget --quiet ${SPACK_URL} --output-document=${SPACK_ARCHIVE} && \
+    mkdir -p ${SPACK_INSTALL_DIR} && \
+    tar -xf ${SPACK_ARCHIVE} -C ${SPACK_INSTALL_DIR} --strip-components=1 && \
+    rm -rf ${SPACK_ARCHIVE} && \
+    mkdir -p ${HOME}/.spack
+
+# Load Spack
+ENV PATH="${SPACK_ROOT}/bin:${PATH}"
+RUN echo "source $SPACK_ROOT/share/spack/setup-env.sh" >> ${HOME}/.bashrc
+RUN echo "source /usr/share/modules/init/bash"         >> ${HOME}/.bashrc
+
+# Copy Spack package configuration
+COPY packages.yaml ${HOME}/.spack/
+
+# Install flang
+RUN spack spec -I flang && spack install flang && spack clean -a

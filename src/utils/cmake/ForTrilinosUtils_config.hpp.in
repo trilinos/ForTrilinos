@@ -1,0 +1,14 @@
+/*
+ * Copyright 2017, UT-Battelle, LLC
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * License-Filename: LICENSE
+ */
+#ifndef FORTRILINOSUTILS_CONFIG_H
+#define FORTRILINOSUTILS_CONFIG_H
+
+/* Options */
+
+#cmakedefine HAVE_MPI
+
+#endif /* FORTRILINOSUTILS_CONFIG_H */

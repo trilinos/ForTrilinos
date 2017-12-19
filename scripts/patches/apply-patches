@@ -1,0 +1,35 @@
+#!/usr/bin/env python
+
+import os
+import sys
+import glob
+from subprocess import Popen
+
+DRYRUN = False
+
+TRILINOS_DIR = os.getenv('TRILINOS_DIR')
+if TRILINOS_DIR is None:
+    raise SystemExit('TRILINOS_DIR environment variable must be defined')
+if not os.path.isdir(TRILINOS_DIR):
+    raise SystemExit('{0} is not a directory'.format(TRILINOS_DIR))
+
+def apply_patch(patchfile, cwd=None):
+    command = 'patch -p 1 < {0}'.format(patchfile)
+    print(command)
+    if DRYRUN:
+        return 0
+    p = Popen(command, cwd=cwd, shell=True)
+    p.wait()
+    return p.returncode
+
+# Look for user requested patches to apply
+patches = sys.argv[1:]
+if not patches:
+    # Apply all patches!
+    this_dir = os.path.dirname(os.path.realpath(__file__))
+    patches = glob.glob(os.path.join(this_dir, '*.diff'))
+
+for patchfile in patches:
+    patchfile = os.path.realpath(patchfile)
+    assert os.path.isfile(patchfile)
+    apply_patch(patchfile, cwd=TRILINOS_DIR)
