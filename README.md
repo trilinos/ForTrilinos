@@ -1,7 +1,7 @@
 ForTrilinos
 ===========
 
-[![Build Status](https://cloud.cees.ornl.gov/jenkins-ci/buildStatus/icon?job=ForTrilinos-continuous)](https://cloud.cees.ornl.gov/jenkins-ci/job/ForTrilinos-continuous)
+[![Build Status](https://cloud.cees.ornl.gov/jenkins-ci/buildStatus/icon?job=ForTrilinos-experimental)](https://cloud.cees.ornl.gov/jenkins-ci/job/ForTrilinos-experimental)
 [![Documentation Status](http://readthedocs.org/projects/fortrilinos/badge/?version=latest)](http://fortrilinos.readthedocs.io/en/latest/?badge=latest)
 [![codecov](https://codecov.io/gh/trilinos/ForTrilinos/branch/develop/graph/badge.svg)](https://codecov.io/gh/trilinos/ForTrilinos/branch/develop)
 
