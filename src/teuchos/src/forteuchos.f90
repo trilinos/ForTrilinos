@@ -11,6 +11,7 @@
 
 module forteuchos
  use, intrinsic :: ISO_C_BINDING
+ use forerror
  implicit none
  private
 
@@ -25,10 +26,6 @@ module forteuchos
  public :: TeuchosEType, TeuchosFULL, TeuchosLOWER, TeuchosUPPER, TeuchosHESSENBERG, TeuchosSYM_BAND_L, TeuchosSYM_BAND_U, &
     TeuchosBAND
  public :: TeuchosDataAccess, TeuchosCopy, TeuchosView
-
- public :: ierr
- public :: serr
-
  public :: TeuchosComm
  public :: string
  public :: ParameterList
@@ -79,11 +76,6 @@ end type
   enumerator :: TeuchosCopy = 0
   enumerator :: TeuchosView = TeuchosCopy + 1
  end enum
- integer(C_INT), parameter, public :: SWIG_FORTRAN_ERROR_STRLEN = 1024_C_INT
-
- integer(C_INT), bind(C) :: ierr = 0
- character(kind=C_CHAR, len=1024), bind(C) :: serr = ""
-
 
  ! TYPES
  type :: VectorInt

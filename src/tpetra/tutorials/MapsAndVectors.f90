@@ -5,10 +5,7 @@
 program main
 
 #include "ForTrilinosTpetra_config.hpp"
-! FIXME: this header inclusion is a workaround for ierr linkage.
-! Without including this line and calling CHECK_IERR()
-! we get undefined references to `ierr` and `serr`
-#include "FortranTestUtilities.h"
+#include "ForTrilinos.h"
 
 use iso_fortran_env
 use, intrinsic :: iso_c_binding
@@ -31,6 +28,7 @@ type(TpetraMap) :: contig_map, contig_map2, contig_map3, cyclic_map
 type(TpetraMultiVector) :: x, y, z
 
 ! -- Scalars
+integer :: ierr
 integer(size_type) :: my_rank, num_procs, k
 integer(size_type) :: num_local_entries, num_elements_per_proc
 integer(global_size_type) :: num_global_entries, invalid
@@ -49,15 +47,12 @@ call MPI_INIT(ierr)
 if (ierr /= 0) then
   stop "MPI failed to init"
 endif
+write(*,*) 'Herre!'
 call comm%create(MPI_COMM_WORLD)
 #else
+write(*,*) 'There!'
 call comm%create()
 #endif
-
-! FIXME: this call is a workaround of ierr linkage.
-! Without including this line and calling CHECK_IERR()
-! we get undefined references to `ierr` and `serr`
-CHECK_IERR()
 
 my_rank = comm%getRank()
 num_procs = comm%getSize()

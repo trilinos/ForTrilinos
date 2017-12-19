@@ -2,6 +2,5 @@ TRIBITS_PACKAGE_DEFINE_DEPENDENCIES(
   LIB_REQUIRED_PACKAGES
     Tpetra
     ForTrilinosTeuchos
-  TEST_REQUIRED_PACKAGES
     ForTrilinosUtils
   )

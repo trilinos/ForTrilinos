@@ -7,13 +7,17 @@ program test_TeuchosComm
 #include "ForTrilinosTeuchos_config.hpp"
   use iso_fortran_env
   use, intrinsic :: iso_c_binding
-  use forteuchos
 #ifdef HAVE_MPI
     use mpi
 #endif
 
+#include "ForTrilinos.h"
+  use forteuchos
+
   implicit none
   character(len=26), parameter :: FILENAME='test_teuchos_comm.f90'
+  integer :: ierr
+
 
   SETUP_TEST()
 

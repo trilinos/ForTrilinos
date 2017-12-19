@@ -8,6 +8,8 @@
 
 %include "copyright.i"
 
+%import <forerror.i>
+
 %include "ForTrilinosTeuchos_config.hpp"
 
 %include <std_vector.i>

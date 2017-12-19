@@ -18,9 +18,9 @@ program test_TpetraMultiVector
   SETUP_TEST()
 
 #ifdef HAVE_MPI
-  call comm%create(MPI_COMM_WORLD); CHECK_IERR()
+  call comm%create(MPI_COMM_WORLD); FORTRILINOS_CHECK_IERR()
 #else
-  call comm%create(); CHECK_IERR()
+  call comm%create(); FORTRILINOS_CHECK_IERR()
 #endif
 
   ADD_SUBTEST_AND_RUN(TpetraMultiVector_ZeroScaleUpdate)

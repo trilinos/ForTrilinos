@@ -5,17 +5,21 @@
 program main
 
 #include "ForTrilinosSimpleInterface_config.hpp"
-#include "FortranTestUtilities.h"
+#include "ForTrilinos.h"
 
   use ISO_FORTRAN_ENV
   use, intrinsic :: ISO_C_BINDING
+
+#ifdef HAVE_MPI
+  use mpi
+#endif
+
+#include "ForTrilinos.h"
   use fortrilinos
   use forteuchos
   use fortpetra
   use fortest
-#ifdef HAVE_MPI
-  use mpi
-#endif
+
   implicit none
 
   integer(int_type) :: my_rank, num_procs
@@ -25,6 +29,7 @@ program main
   integer(int_type) :: num_eigen_int
   integer(int_type) :: row_nnz
 
+  integer :: ierr
   integer(local_ordinal_type) :: i
   integer(global_ordinal_type) :: offset
   real(scalar_type) :: one = 1.0
@@ -61,16 +66,16 @@ program main
   write(*,*) "Processor ", my_rank, " of ", num_procs
 
   ! Read in the parameterList
-  call plist%create("Anasazi"); CHECK_IERR()
-  call load_from_xml(plist, "davidson.xml"); CHECK_IERR()
+  call plist%create("Anasazi"); FORTRILINOS_CHECK_IERR()
+  call load_from_xml(plist, "davidson.xml"); FORTRILINOS_CHECK_IERR()
 
   num_eigen_int = num_eigen
-  call plist%set("NumEV", num_eigen_int); CHECK_IERR()
+  call plist%set("NumEV", num_eigen_int); FORTRILINOS_CHECK_IERR()
 
   ! ------------------------------------------------------------------
   ! Step 0: Construct tri-diagonal matrix
   n_global = -1
-  call map%create(n_global, n, comm); CHECK_IERR()
+  call map%create(n_global, n, comm); FORTRILINOS_CHECK_IERR()
 
   max_entries_per_row = 3
   call A%create(map, max_entries_per_row, TpetraDynamicProfile)
@@ -94,31 +99,31 @@ program main
       row_nnz = row_nnz + 1
     end if
 
-    call A%insertGlobalValues(offset + i, cols(1:row_nnz-1), vals(1:row_nnz-1)); CHECK_IERR()
+    call A%insertGlobalValues(offset + i, cols(1:row_nnz-1), vals(1:row_nnz-1)); FORTRILINOS_CHECK_IERR()
   end do
-  call A%fillComplete(); CHECK_IERR()
+  call A%fillComplete(); FORTRILINOS_CHECK_IERR()
 
   ! The solution
   allocate(evalues(num_eigen))
   call X%create(map, num_eigen)
 
   ! Step 0: crate a handle
-  call eigen_handle%create(); CHECK_IERR()
+  call eigen_handle%create(); FORTRILINOS_CHECK_IERR()
 
   ! ------------------------------------------------------------------
   ! Explicit setup and solve
   ! ------------------------------------------------------------------
   ! Step 1: initialize a handle
-  call eigen_handle%init(comm); CHECK_IERR()
+  call eigen_handle%init(comm); FORTRILINOS_CHECK_IERR()
 
   ! Step 2: setup the problem
-  call eigen_handle%setup_matrix(A); CHECK_IERR()
+  call eigen_handle%setup_matrix(A); FORTRILINOS_CHECK_IERR()
 
   ! Step 3: setup the solver
-  call eigen_handle%setup_solver(plist); CHECK_IERR()
+  call eigen_handle%setup_solver(plist); FORTRILINOS_CHECK_IERR()
 
   ! Step 4: solve the system
-  call eigen_handle%solve(evalues, X); CHECK_IERR()
+  call eigen_handle%solve(evalues, X); FORTRILINOS_CHECK_IERR()
 
   ! FIXME: Check the solution
   if (size(evalues) /= num_eigen) then
@@ -128,14 +133,14 @@ program main
   write(*,*) "Computed eigenvalues: ", evalues(1)
 
   ! Step 5: clean up
-  call eigen_handle%finalize(); CHECK_IERR()
+  call eigen_handle%finalize(); FORTRILINOS_CHECK_IERR()
 
-  call eigen_handle%release(); CHECK_IERR()
-  call plist%release(); CHECK_IERR()
-  call X%release(); CHECK_IERR()
-  call A%release(); CHECK_IERR()
-  call map%release(); CHECK_IERR()
-  call comm%release(); CHECK_IERR()
+  call eigen_handle%release(); FORTRILINOS_CHECK_IERR()
+  call plist%release(); FORTRILINOS_CHECK_IERR()
+  call X%release(); FORTRILINOS_CHECK_IERR()
+  call A%release(); FORTRILINOS_CHECK_IERR()
+  call map%release(); FORTRILINOS_CHECK_IERR()
+  call comm%release(); FORTRILINOS_CHECK_IERR()
   deallocate(evalues)
   deallocate(cols)
   deallocate(vals)
