@@ -1,7 +1,32 @@
------------------------------------------------
-Release Notes for Trilinos Package ForTrilinos 
------------------------------------------------
+----------------------------------------------
+Release Notes for Trilinos Package ForTrilinos
+----------------------------------------------
 
+Trilinos 12.12
+--------------
+
+* First ForTrilinos v2 release
+
+This marks the release of the new version of ForTrilinos. This version was
+written from scratch and has no common code with the old ForTrilinos. It is
+still in its early development and should be considered experimental, however it
+provides a wide variety of features desired by users.
+
+The new version of ForTrilinos specifically targets the new software stack of
+Trilinos to allow for MPI+X hybrid programming model.
+
+ForTrilinos provides Fortran interfaces for the following capabilities:
+- Parameter lists and XML parsers (through Teuchos);
+- Distributed linear algebra object including sparse graphs, sparse matrices, and dense vectors (through Tpetra);
+- Linear solvers and preconditioners (through Stratimikos, Ifpack2, Belos, MueLu);
+- Eigen solvers (through Anasazi).
+
+ForTrilinos requires Fortran2003 capable compiler. It has been tested with
+gfortran and flang.
+
+The developement is being done on github.com/Trilinos/ForTrilinos. If you have
+any questions, requests for new features, or would like to report a bug, please
+file an issue there.
 
 Trilinos 10.4.1:
 ----------------

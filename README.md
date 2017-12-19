@@ -1,16 +1,35 @@
 ForTrilinos
 ===========
 
-[![Stories in Ready](https://badge.waffle.io/Trilinos/ForTrilinos.svg?label=ready&title=Ready)](http://waffle.io/Trilinos/ForTrilinos)
+[![Build Status](https://cloud.cees.ornl.gov/jenkins-ci/buildStatus/icon?job=ForTrilinos-continuous)](https://cloud.cees.ornl.gov/jenkins-ci/job/ForTrilinos-continuous)
+[![Documentation Status](http://readthedocs.org/projects/fortrilinos/badge/?version=latest)](http://fortrilinos.readthedocs.io/en/latest/?badge=latest)
+[![codecov](https://codecov.io/gh/trilinos/ForTrilinos/branch/develop/graph/badge.svg)](https://codecov.io/gh/trilinos/ForTrilinos/branch/develop)
 
-ForTrilinos provides object-oriented Fortran interfaces to [Trilinos](http://github.com/Trilinos/Trilinos) C++ packages.
+[ForTrilinos](http://trilinos.org/packages/fortrilinos) is a part of the [Trilinos](http://trilinos.org) project and provides object-oriented Fortran interfaces to Trilinos C++ packages.
 
-**This code contains the original implementation of the ForTrilinos interfaces developed prior to 2012. This code is no longer developed or maintained. The new ForTrilinos implementation using SWIG code generation procedures will be released later. The active development is currently done in the `develop` branch of the [repository](https://github.com/Trilinos/ForTrilinos).**
+This is the new effort to provide Fortran interfaces to Trilinos through
+automatic code generation using SWIG. The previous effort (ca. 2008-2012) can
+be obtained by downloading Trilinos releases prior to 12.12.
+
+Provided functionality
+----------------------
+ForTrilinos provides Fortran interfaces for the following capabilities:
+- Parameter lists and XML parsers (through Teuchos);
+- Distributed linear algebra object including sparse graphs, sparse matrices, and dense vectors (through Tpetra);
+- Linear solvers and preconditioners (through Stratimikos, Ifpack2, Belos, MueLu);
+- Eigen solvers (through Anasazi).
 
 Documentation
 -------------
 
 * [Website](http://trilinos.org/packages/fortrilinos)
+
+* [Documentation](http://fortrilinos.readthedocs.org)
+
+Installing ForTrilinos
+----------------------
+
+Please consult the documentation available [here](https://fortrilinos.readthedocs.io/en/latest/install.html).
 
 Questions, Bug Reporting, and Issue Tracking
 --------------------------------------------

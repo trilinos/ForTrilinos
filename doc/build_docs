@@ -1,5 +1,17 @@
 #!/bin/sh
 
+# Remove the directories to make sure that we don't have rebuild problems
+# that can sometimes happen with doxygen
+
+rm -r html
+
+# Create new directories manually since the doxygen exe under windows
+# seems to be messing this up.
+
+mkdir html
+
+# Build the documentation
+
 if [ $TRILINOS_HOME ]; then
   echo "TRILINOS_HOME has already been set!"
 else
@@ -8,7 +20,7 @@ else
 fi
 
 echo
-echo "Generating main ForTrilinos doxygen documentation ..."
+echo "Generating main documentation paget for ForTrilinos ..."
 echo
 
 doxygen Doxyfile

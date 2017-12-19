@@ -1,0 +1,24 @@
+/*
+ * Copyright 2017, UT-Battelle, LLC
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * License-Filename: LICENSE
+ */
+#ifndef FORBELOS_CONFIG_HPP
+#define FORBELOS_CONFIG_HPP
+
+/* Options */
+
+/* Optional Dependencies */
+
+/* Optional TPL */
+
+
+/*
+ If deprecated warnings are on, and the compiler supports them, then
+ define FORBELOS_DEPRECATED to emit deprecated warnings.  Otherwise,
+ give it an empty definition.
+*/
+@FORTRILINOS_DEPRECATED_DECLARATIONS@
+
+#endif /* FORBELOS_CONFIG_HPP */
