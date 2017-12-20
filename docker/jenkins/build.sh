@@ -5,17 +5,16 @@ set -e
 # number of processes with default value
 : ${NPROC:=8}
 # bind mount ForTrilinos source dir into Trilinos base dir
-mkdir ${TRILINOS_DIR}/packages/ForTrilinos
-mount --bind ${FORTRILINOS_DIR} ${TRILINOS_DIR}/packages/ForTrilinos
+mkdir ${TRILINOS_DIR}/ForTrilinos
+mount --bind ${FORTRILINOS_DIR} ${TRILINOS_DIR}/ForTrilinos
 # cleanup workspace
-cd ${TRILINOS_DIR}/packages/ForTrilinos
+cd ${TRILINOS_DIR}/ForTrilinos
 [ -d build ] && rm -rf build
 mkdir build && cd build
 # NOTE: relative paths are invalid after configuration when ForTrilinos source dir is
 # not directly mounted into Trilinos base source dir. We build elsewhere and
 # move the build directory afterwards...
 # configure trilinos with fortrilinos
-
 
 if [ "${BUILD_TYPE}" == "gcc54-mpi" ]; then
   ../scripts/docker_cmake -D Trilinos_ENABLE_COVERAGE_TESTING=ON
@@ -39,7 +38,7 @@ ctest -j${NPROC} --no-compress-output -T Test
 if [ "${BUILD_TYPE}" == "gcc54-mpi"  ]
 then
   # collect coverage data
-  lcov --capture --directory packages/ForTrilinos --output-file lcov.info
+  lcov --capture --directory ForTrilinos --output-file lcov.info
   # upload it to codecov
   curl -s https://codecov.io/bash -o codecov_bash_uploader
   chmod +x codecov_bash_uploader
