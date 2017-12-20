@@ -25,6 +25,6 @@ ci_env=`bash <(curl -s https://codecov.io/env)`
 test ! -z $BUILD_TAG # exit with non zero status if env variable is not defined
 
 # Cleanup regardless of the status of the build
-trap "docker-compose -p $BUILD_TAG down" EXIT
+trap "docker-compose -p $BUILD_TAG down" EXIT INT TERM
 
 docker-compose -p $BUILD_TAG run --rm $ci_env ci
