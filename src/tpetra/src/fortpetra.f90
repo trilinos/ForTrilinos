@@ -577,18 +577,13 @@ end type
   procedure, private, nopass :: writeSparseGraphFile__SWIG_1 => swigf_TpetraWriter_writeSparseGraphFile__SWIG_1
   procedure, private, nopass :: writeSparseGraphFile__SWIG_2 => swigf_TpetraWriter_writeSparseGraphFile__SWIG_2
   procedure, private, nopass :: writeSparseGraphFile__SWIG_3 => swigf_TpetraWriter_writeSparseGraphFile__SWIG_3
-  procedure, private, nopass :: writeSparseGraphFile__SWIG_4 => swigf_TpetraWriter_writeSparseGraphFile__SWIG_4
-  procedure, private, nopass :: writeSparseGraphFile__SWIG_5 => swigf_TpetraWriter_writeSparseGraphFile__SWIG_5
-  procedure, private, nopass :: writeSparseGraphFile__SWIG_6 => swigf_TpetraWriter_writeSparseGraphFile__SWIG_6
-  procedure, private, nopass :: writeSparseGraphFile__SWIG_7 => swigf_TpetraWriter_writeSparseGraphFile__SWIG_7
   procedure, private, nopass :: writeMapFile__SWIG_1 => swigf_TpetraWriter_writeMapFile__SWIG_1
   procedure :: create => swigf_new_TpetraWriter
   procedure :: release => swigf_delete_TpetraWriter
   procedure, private :: swigf_assign_TpetraWriter
   generic :: assignment(=) => swigf_assign_TpetraWriter
   generic :: writeSparseGraphFile => writeSparseGraphFile__SWIG_0, writeSparseGraphFile__SWIG_1, writeSparseGraphFile__SWIG_2, &
-    writeSparseGraphFile__SWIG_3, writeSparseGraphFile__SWIG_4, writeSparseGraphFile__SWIG_5, writeSparseGraphFile__SWIG_6, &
-    writeSparseGraphFile__SWIG_7
+    writeSparseGraphFile__SWIG_3
   generic :: writeMapFile => writeMapFile__SWIG_0, writeMapFile__SWIG_1
   generic :: writeSparseFile => writeSparseFile__SWIG_0, writeSparseFile__SWIG_1, writeSparseFile__SWIG_2, &
     writeSparseFile__SWIG_3
@@ -3776,44 +3771,6 @@ end subroutine
 
 subroutine swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(farg1, farg2) &
 bind(C, name="swigc_TpetraWriter_writeSparseGraphFile__SWIG_3")
-use, intrinsic :: ISO_C_BINDING
-import :: SwigfArrayWrapper
-type(SwigfArrayWrapper) :: farg1
-type(C_PTR), value :: farg2
-end subroutine
-
-subroutine swigc_TpetraWriter_writeSparseGraphFile__SWIG_4(farg1, farg2, farg3, farg4, farg5) &
-bind(C, name="swigc_TpetraWriter_writeSparseGraphFile__SWIG_4")
-use, intrinsic :: ISO_C_BINDING
-import :: SwigfArrayWrapper
-type(SwigfArrayWrapper) :: farg1
-type(C_PTR), value :: farg2
-type(C_PTR), value :: farg3
-type(C_PTR), value :: farg4
-logical(C_BOOL), intent(in) :: farg5
-end subroutine
-
-subroutine swigc_TpetraWriter_writeSparseGraphFile__SWIG_5(farg1, farg2, farg3, farg4) &
-bind(C, name="swigc_TpetraWriter_writeSparseGraphFile__SWIG_5")
-use, intrinsic :: ISO_C_BINDING
-import :: SwigfArrayWrapper
-type(SwigfArrayWrapper) :: farg1
-type(C_PTR), value :: farg2
-type(C_PTR), value :: farg3
-type(C_PTR), value :: farg4
-end subroutine
-
-subroutine swigc_TpetraWriter_writeSparseGraphFile__SWIG_6(farg1, farg2, farg3) &
-bind(C, name="swigc_TpetraWriter_writeSparseGraphFile__SWIG_6")
-use, intrinsic :: ISO_C_BINDING
-import :: SwigfArrayWrapper
-type(SwigfArrayWrapper) :: farg1
-type(C_PTR), value :: farg2
-logical(C_BOOL), intent(in) :: farg3
-end subroutine
-
-subroutine swigc_TpetraWriter_writeSparseGraphFile__SWIG_7(farg1, farg2) &
-bind(C, name="swigc_TpetraWriter_writeSparseGraphFile__SWIG_7")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
 type(SwigfArrayWrapper) :: farg1
@@ -9609,10 +9566,10 @@ farg2 = pmatrix%swigptr
 call swigc_TpetraWriter_writeSparseFile__SWIG_3(farg1, farg2)
 end subroutine
 
-subroutine swigf_TpetraWriter_writeSparseGraphFile__SWIG_0(filename, graph, graphname, graphdescription, debug)
+subroutine swigf_TpetraWriter_writeSparseGraphFile__SWIG_0(filename, pgraph, graphname, graphdescription, debug)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=*), target :: filename
-class(TpetraCrsGraph) :: graph
+type(TpetraCrsGraph) :: pgraph
 class(string) :: graphname
 class(string) :: graphdescription
 logical(C_BOOL), intent(in) :: debug
@@ -9624,17 +9581,17 @@ logical(C_BOOL) :: farg5
 
 farg1%data = c_loc(filename)
 farg1%size = len(filename)
-farg2 = graph%swigptr
+farg2 = pgraph%swigptr
 farg3 = graphname%swigptr
 farg4 = graphdescription%swigptr
 farg5 = debug
 call swigc_TpetraWriter_writeSparseGraphFile__SWIG_0(farg1, farg2, farg3, farg4, farg5)
 end subroutine
 
-subroutine swigf_TpetraWriter_writeSparseGraphFile__SWIG_1(filename, graph, graphname, graphdescription)
+subroutine swigf_TpetraWriter_writeSparseGraphFile__SWIG_1(filename, pgraph, graphname, graphdescription)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=*), target :: filename
-class(TpetraCrsGraph) :: graph
+type(TpetraCrsGraph) :: pgraph
 class(string) :: graphname
 class(string) :: graphdescription
 type(SwigfArrayWrapper) :: farg1 
@@ -9644,16 +9601,16 @@ type(C_PTR) :: farg4
 
 farg1%data = c_loc(filename)
 farg1%size = len(filename)
-farg2 = graph%swigptr
+farg2 = pgraph%swigptr
 farg3 = graphname%swigptr
 farg4 = graphdescription%swigptr
 call swigc_TpetraWriter_writeSparseGraphFile__SWIG_1(farg1, farg2, farg3, farg4)
 end subroutine
 
-subroutine swigf_TpetraWriter_writeSparseGraphFile__SWIG_2(filename, graph, debug)
+subroutine swigf_TpetraWriter_writeSparseGraphFile__SWIG_2(filename, pgraph, debug)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=*), target :: filename
-class(TpetraCrsGraph) :: graph
+type(TpetraCrsGraph) :: pgraph
 logical(C_BOOL), intent(in) :: debug
 type(SwigfArrayWrapper) :: farg1 
 type(C_PTR) :: farg2 
@@ -9661,92 +9618,22 @@ logical(C_BOOL) :: farg3
 
 farg1%data = c_loc(filename)
 farg1%size = len(filename)
-farg2 = graph%swigptr
+farg2 = pgraph%swigptr
 farg3 = debug
 call swigc_TpetraWriter_writeSparseGraphFile__SWIG_2(farg1, farg2, farg3)
 end subroutine
 
-subroutine swigf_TpetraWriter_writeSparseGraphFile__SWIG_3(filename, graph)
+subroutine swigf_TpetraWriter_writeSparseGraphFile__SWIG_3(filename, pgraph)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=*), target :: filename
-class(TpetraCrsGraph) :: graph
+type(TpetraCrsGraph) :: pgraph
 type(SwigfArrayWrapper) :: farg1 
 type(C_PTR) :: farg2 
 
 farg1%data = c_loc(filename)
 farg1%size = len(filename)
-farg2 = graph%swigptr
+farg2 = pgraph%swigptr
 call swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(farg1, farg2)
-end subroutine
-
-subroutine swigf_TpetraWriter_writeSparseGraphFile__SWIG_4(filename, pgraph, graphname, graphdescription, debug)
-use, intrinsic :: ISO_C_BINDING
-character(kind=C_CHAR, len=*), target :: filename
-type(TpetraCrsGraph) :: pgraph
-class(string) :: graphname
-class(string) :: graphdescription
-logical(C_BOOL), intent(in) :: debug
-type(SwigfArrayWrapper) :: farg1 
-type(C_PTR) :: farg2 
-type(C_PTR) :: farg3 
-type(C_PTR) :: farg4 
-logical(C_BOOL) :: farg5 
-
-farg1%data = c_loc(filename)
-farg1%size = len(filename)
-farg2 = pgraph%swigptr
-farg3 = graphname%swigptr
-farg4 = graphdescription%swigptr
-farg5 = debug
-call swigc_TpetraWriter_writeSparseGraphFile__SWIG_4(farg1, farg2, farg3, farg4, farg5)
-end subroutine
-
-subroutine swigf_TpetraWriter_writeSparseGraphFile__SWIG_5(filename, pgraph, graphname, graphdescription)
-use, intrinsic :: ISO_C_BINDING
-character(kind=C_CHAR, len=*), target :: filename
-type(TpetraCrsGraph) :: pgraph
-class(string) :: graphname
-class(string) :: graphdescription
-type(SwigfArrayWrapper) :: farg1 
-type(C_PTR) :: farg2 
-type(C_PTR) :: farg3 
-type(C_PTR) :: farg4 
-
-farg1%data = c_loc(filename)
-farg1%size = len(filename)
-farg2 = pgraph%swigptr
-farg3 = graphname%swigptr
-farg4 = graphdescription%swigptr
-call swigc_TpetraWriter_writeSparseGraphFile__SWIG_5(farg1, farg2, farg3, farg4)
-end subroutine
-
-subroutine swigf_TpetraWriter_writeSparseGraphFile__SWIG_6(filename, pgraph, debug)
-use, intrinsic :: ISO_C_BINDING
-character(kind=C_CHAR, len=*), target :: filename
-type(TpetraCrsGraph) :: pgraph
-logical(C_BOOL), intent(in) :: debug
-type(SwigfArrayWrapper) :: farg1 
-type(C_PTR) :: farg2 
-logical(C_BOOL) :: farg3 
-
-farg1%data = c_loc(filename)
-farg1%size = len(filename)
-farg2 = pgraph%swigptr
-farg3 = debug
-call swigc_TpetraWriter_writeSparseGraphFile__SWIG_6(farg1, farg2, farg3)
-end subroutine
-
-subroutine swigf_TpetraWriter_writeSparseGraphFile__SWIG_7(filename, pgraph)
-use, intrinsic :: ISO_C_BINDING
-character(kind=C_CHAR, len=*), target :: filename
-type(TpetraCrsGraph) :: pgraph
-type(SwigfArrayWrapper) :: farg1 
-type(C_PTR) :: farg2 
-
-farg1%data = c_loc(filename)
-farg1%size = len(filename)
-farg2 = pgraph%swigptr
-call swigc_TpetraWriter_writeSparseGraphFile__SWIG_7(farg1, farg2)
 end subroutine
 
 subroutine swigf_TpetraWriter_writeMapFile__SWIG_1(filename, map)

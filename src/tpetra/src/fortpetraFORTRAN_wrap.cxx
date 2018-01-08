@@ -606,19 +606,11 @@ SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseFile__SWIG_2(st
       std::string filenameStr(filename.first, filename.second);
       Tpetra::MatrixMarket::Writer<CMT>::writeSparseFile(filenameStr, pMatrix, debug);
     }
-SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_0(std::pair< char const *,std::size_t > filename,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const &graph,std::string const &graphName,std::string const &graphDescription,bool const debug=false){
-      std::string filenameStr(filename.first, filename.second);
-      Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filenameStr, graph, graphName, graphDescription, debug);
-    }
-SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_2(std::pair< char const *,std::size_t > filename,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const &graph,bool const debug=false){
-      std::string filenameStr(filename.first, filename.second);
-      Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filenameStr, graph, debug);
-    }
-SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_4(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > const &pGraph,std::string const &graphName,std::string const &graphDescription,bool const debug=false){
+SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_0(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > const &pGraph,std::string const &graphName,std::string const &graphDescription,bool const debug=false){
       std::string filenameStr(filename.first, filename.second);
       Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filenameStr, pGraph, graphName, graphDescription, debug);
     }
-SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_6(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > const &pGraph,bool const debug=false){
+SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_2(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > const &pGraph,bool const debug=false){
       std::string filenameStr(filename.first, filename.second);
       Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filenameStr, pGraph, debug);
     }
@@ -14329,187 +14321,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_3(swig::SwigfArrayWrapp
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_0(swig::SwigfArrayWrapper< char const > *farg1, void const *farg2, void const *farg3, void const *farg4, bool const *farg5) {
-  std::pair< char const *,std::size_t > arg1 ;
-  Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type *arg2 = 0 ;
-  std::string *arg3 = 0 ;
-  std::string *arg4 = 0 ;
-  bool arg5 ;
-  
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = farg1->data;
-  (&arg1)->second = farg1->size;
-  arg2 = (Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type *)(((Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg2)
-    ? ((Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg2)->get()
-    :0);
-  if (!arg2)
-  {
-    throw std::logic_error("Attempt to dereference null Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const &");
-    return ;
-  }
-  arg3 = static_cast< std::string * >(const_cast< void* >(farg3));
-  arg4 = static_cast< std::string * >(const_cast< void* >(farg4));
-  arg5 = *farg5;
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
-    try
-    {
-      // Attempt the wrapped function call
-      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_0(arg1,(Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
-    }
-  }
-  
-}
-
-
-SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_1(swig::SwigfArrayWrapper< char const > *farg1, void const *farg2, void const *farg3, void const *farg4) {
-  std::pair< char const *,std::size_t > arg1 ;
-  Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type *arg2 = 0 ;
-  std::string *arg3 = 0 ;
-  std::string *arg4 = 0 ;
-  
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = farg1->data;
-  (&arg1)->second = farg1->size;
-  arg2 = (Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type *)(((Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg2)
-    ? ((Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg2)->get()
-    :0);
-  if (!arg2)
-  {
-    throw std::logic_error("Attempt to dereference null Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const &");
-    return ;
-  }
-  arg3 = static_cast< std::string * >(const_cast< void* >(farg3));
-  arg4 = static_cast< std::string * >(const_cast< void* >(farg4));
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
-    try
-    {
-      // Attempt the wrapped function call
-      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_0(arg1,(Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
-    }
-  }
-  
-}
-
-
-SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_2(swig::SwigfArrayWrapper< char const > *farg1, void const *farg2, bool const *farg3) {
-  std::pair< char const *,std::size_t > arg1 ;
-  Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type *arg2 = 0 ;
-  bool arg3 ;
-  
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = farg1->data;
-  (&arg1)->second = farg1->size;
-  arg2 = (Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type *)(((Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg2)
-    ? ((Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg2)->get()
-    :0);
-  if (!arg2)
-  {
-    throw std::logic_error("Attempt to dereference null Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const &");
-    return ;
-  }
-  arg3 = *farg3;
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
-    try
-    {
-      // Attempt the wrapped function call
-      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_2(arg1,(Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2,arg3);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
-    }
-  }
-  
-}
-
-
-SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(swig::SwigfArrayWrapper< char const > *farg1, void const *farg2) {
-  std::pair< char const *,std::size_t > arg1 ;
-  Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type *arg2 = 0 ;
-  
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = farg1->data;
-  (&arg1)->second = farg1->size;
-  arg2 = (Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type *)(((Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg2)
-    ? ((Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> > *)farg2)->get()
-    :0);
-  if (!arg2)
-  {
-    throw std::logic_error("Attempt to dereference null Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const &");
-    return ;
-  }
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
-    try
-    {
-      // Attempt the wrapped function call
-      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_2(arg1,(Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
-    }
-  }
-  
-}
-
-
-SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_4(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void const *farg3, void const *farg4, bool const *farg5) {
+SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_0(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void const *farg3, void const *farg4, bool const *farg5) {
   std::pair< char const *,std::size_t > arg1 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -14530,7 +14342,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_4(swig::SwigfArray
     try
     {
       // Attempt the wrapped function call
-      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_4(arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_0(arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
     }
     catch (const std::range_error& e)
     {
@@ -14551,7 +14363,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_4(swig::SwigfArray
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_5(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void const *farg3, void const *farg4) {
+SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_1(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, void const *farg3, void const *farg4) {
   std::pair< char const *,std::size_t > arg1 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -14570,7 +14382,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_5(swig::SwigfArray
     try
     {
       // Attempt the wrapped function call
-      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_4(arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_0(arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
     }
     catch (const std::range_error& e)
     {
@@ -14591,7 +14403,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_5(swig::SwigfArray
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_6(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, bool const *farg3) {
+SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_2(swig::SwigfArrayWrapper< char const > *farg1, void *farg2, bool const *farg3) {
   std::pair< char const *,std::size_t > arg1 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > *arg2 = 0 ;
   bool arg3 ;
@@ -14608,7 +14420,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_6(swig::SwigfArray
     try
     {
       // Attempt the wrapped function call
-      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_6(arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,arg3);
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_2(arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,arg3);
     }
     catch (const std::range_error& e)
     {
@@ -14629,7 +14441,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_6(swig::SwigfArray
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_7(swig::SwigfArrayWrapper< char const > *farg1, void *farg2) {
+SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(swig::SwigfArrayWrapper< char const > *farg1, void *farg2) {
   std::pair< char const *,std::size_t > arg1 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > tempnull2 ;
@@ -14644,7 +14456,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_7(swig::SwigfArray
     try
     {
       // Attempt the wrapped function call
-      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_6(arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2);
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_2(arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2);
     }
     catch (const std::range_error& e)
     {
