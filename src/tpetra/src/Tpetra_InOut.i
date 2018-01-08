@@ -79,14 +79,6 @@
       std::string filenameStr(filename.first, filename.second);
       Tpetra::MatrixMarket::Writer<CMT>::writeSparseFile(filenameStr, pMatrix, debug);
     }
-    static void writeSparseGraphFile (std::pair<const char*, size_t> filename, const crs_graph_type &graph, const std::string &graphName, const std::string &graphDescription, const bool debug=false) {
-      std::string filenameStr(filename.first, filename.second);
-      Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filenameStr, graph, graphName, graphDescription, debug);
-    }
-    static void writeSparseGraphFile (std::pair<const char*, size_t> filename, const crs_graph_type &graph, const bool debug=false) {
-      std::string filenameStr(filename.first, filename.second);
-      Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filenameStr, graph, debug);
-    }
     static void writeSparseGraphFile (std::pair<const char*, size_t> filename, const Teuchos::RCP< const crs_graph_type > &pGraph, const std::string &graphName, const std::string &graphDescription, const bool debug=false) {
       std::string filenameStr(filename.first, filename.second);
       Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filenameStr, pGraph, graphName, graphDescription, debug);
