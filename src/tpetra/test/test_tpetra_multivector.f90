@@ -348,9 +348,9 @@ contains
 
   ! ---------------------------------Multiply--------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMultiVector_Multiply)
-    type(TpetraMap) :: map2, map3
-    type(TpetraMultiVector) :: Vec2x2, Vec3x2
-    real(scalar_type), parameter :: zero=0., one=1.
+    type(TpetraMap) :: map2n, map3n, lmap2, lmap3
+    type(TpetraMultiVector) :: mv3nx2, mv3nx3, mv2x2, mv2x3, mv3x2, mv3x3
+    real(scalar_type), parameter :: S0=0., S1=1.
     integer(size_type), parameter :: n2=2, n3=3
     integer(int_type) :: num_images
     integer(global_size_type) :: num_global
@@ -358,19 +358,27 @@ contains
 
     OUT0("Starting Multiply")
 
+    call map2n%create(invalid, n2, comm); TEST_IERR()
+    call map3n%create(invalid, n3, comm); TEST_IERR()
+
+    call lmap2%create(n2, comm, TpetraLocallyReplicated); TEST_IERR()
+    call lmap3%create(n3, comm, TpetraLocallyReplicated); TEST_IERR()
+
+    call mv3nx2%create(map3n, n2)
+    call mv3nx3%create(map3n, n3)
+
+    call mv2x2%create(lmap2, n2)
+    call mv2x3%create(lmap2, n3)
+    call mv3x2%create(lmap3, n2)
+    call mv3x3%create(lmap3, n3)
+
     num_images = comm%getSize()
     check = 3 * num_images
 
-    num_global = n2 * comm%getSize()
-    call map2%create(num_global, comm, TpetraLocallyReplicated); TEST_IERR()
-    call map3%create(invalid, n3, comm); TEST_IERR()
-
-    call Vec2x2%create(map2, n2); TEST_IERR()
-    call Vec3x2%create(map3, n2); TEST_IERR()
-    call Vec3x2%putScalar(one); TEST_IERR()
-
-    call Vec2x2%multiply(TEUCHOSCONJ_TRANS, TEUCHOSNO_TRANS, one, Vec3x2, Vec3x2, zero)
-    TEST_IERR()
+    call mv2x2%multiply(TEUCHOSCONJ_TRANS,TEUCHOSNO_TRANS,S1,mv3nx2,mv3nx2,S0); TEST_IERR()
+    call mv2x3%multiply(TEUCHOSCONJ_TRANS,TEUCHOSNO_TRANS,S1,mv3nx2,mv3nx3,S0); TEST_IERR()
+    call mv3x2%multiply(TEUCHOSCONJ_TRANS,TEUCHOSNO_TRANS,S1,mv3nx3,mv3nx2,S0); TEST_IERR()
+    call mv3x3%multiply(TEUCHOSCONJ_TRANS,TEUCHOSNO_TRANS,S1,mv3nx3,mv3nx3,S0); TEST_IERR()
 
     !a = fortran array view of the data
     !n = size of a

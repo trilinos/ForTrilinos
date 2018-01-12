@@ -347,7 +347,7 @@ contains
       if (map%isNodeGlobalElement(lastind)) then
         jinds(jj) = lastind; jj = jj + 1
       end if
-      call Graph%insertGlobalIndices(j, jinds(1:jj))
+      call Graph%insertGlobalIndices(j, jinds(1:jj-1))
     end do
     TEST_ASSERT((.not. Graph%isSorted()))
     deallocate(jinds)
