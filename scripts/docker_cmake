@@ -42,6 +42,7 @@ ARGS=(
     -D Trilinos_ENABLE_MueLu=ON
     -D Trilinos_ENABLE_Stratimikos=ON
     -D Trilinos_ENABLE_Tpetra=ON
+        -D Tpetra_ENABLE_DEBUG=ON
     -D Trilinos_ENABLE_Thyra=ON
 
     ### FORTRILINOS ###
