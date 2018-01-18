@@ -17,7 +17,7 @@ TRIBITS_ADD_DEBUG_OPTION()
 TRIBITS_ADD_SHOW_DEPRECATED_WARNINGS_OPTION()
 
 # Enable unlimited-length lines and C-like preprocessing
-SET(CMAKE_Fortran_FLAGS "-ffree-line-length-none -cpp ${CMAKE_Fortran_FLAGS}")
+SET(CMAKE_Fortran_FLAGS "-ffree-line-length-132 -cpp ${CMAKE_Fortran_FLAGS}")
 
 IF (${PACKAGE_NAME}_ENABLE_DeveloperMode)
     # SWIG setup
