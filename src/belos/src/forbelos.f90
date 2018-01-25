@@ -16,6 +16,22 @@ module forbelos
 
  ! PUBLIC METHODS AND TYPES
  public :: string
+
+ enum, bind(c)
+  enumerator :: SwigfMemState = -1
+  enumerator :: SWIGF_NULL = 0
+  enumerator :: SWIGF_OWN
+  enumerator :: SWIGF_MOVE
+  enumerator :: SWIGF_REF
+  enumerator :: SWIGF_CREF
+ end enum
+
+
+type, bind(C) :: SwigfClassWrapper
+  type(C_PTR), public :: ptr = C_NULL_PTR
+  integer(C_INT), public :: mem = SWIGF_NULL
+end type
+
  public :: BelosError
  public :: BelosETrans, BelosNOTRANS, BelosTRANS, BelosCONJTRANS
  public :: BelosNormType, BelosOneNorm, BelosTwoNorm, BelosInfNorm
@@ -108,7 +124,7 @@ module forbelos
  ! TYPES
  type :: string
   ! These should be treated as PROTECTED data
-  type(C_PTR), public :: swigptr = C_NULL_PTR
+  type(SwigfClassWrapper), public :: swigdata
  contains
   procedure :: create => swigf_new_string
   procedure :: resize => swigf_string_resize
@@ -118,13 +134,17 @@ module forbelos
   procedure :: set => swigf_string_set
   procedure :: get => swigf_string_get
   procedure :: release => swigf_delete_string
+  procedure, private :: swigf_assignment_string
+  generic :: assignment(=) => swigf_assignment_string
  end type
  type :: BelosError
   ! These should be treated as PROTECTED data
-  type(C_PTR), public :: swigptr = C_NULL_PTR
+  type(SwigfClassWrapper), public :: swigdata
  contains
   procedure :: create => swigf_new_BelosError
   procedure :: release => swigf_delete_BelosError
+  procedure, private :: swigf_assignment_BelosError
+  generic :: assignment(=) => swigf_assignment_BelosError
  end type
 
 
@@ -134,27 +154,31 @@ function swigc_new_string() &
 bind(C, name="swigc_new_string") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: fresult
 end function
 
 subroutine swigc_string_resize(farg1, farg2) &
 bind(C, name="swigc_string_resize")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 end subroutine
 
 subroutine swigc_string_clear(farg1) &
 bind(C, name="swigc_string_clear")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 end subroutine
 
 function swigc_string_size(farg1) &
 bind(C, name="swigc_string_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 integer(C_LONG) :: fresult
 end function
 
@@ -162,14 +186,16 @@ function swigc_string_length(farg1) &
 bind(C, name="swigc_string_length") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 integer(C_LONG) :: fresult
 end function
 
 subroutine swigc_string_set(farg1, farg2, farg3) &
 bind(C, name="swigc_string_set")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 integer(C_SIGNED_CHAR), intent(in) :: farg3
 end subroutine
@@ -178,7 +204,8 @@ function swigc_string_get(farg1, farg2) &
 bind(C, name="swigc_string_get") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 integer(C_SIGNED_CHAR) :: fresult
 end function
@@ -186,44 +213,64 @@ end function
 subroutine swigc_delete_string(farg1) &
 bind(C, name="swigc_delete_string")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 end subroutine
 
+  subroutine swigc_assignment_string(self, other) &
+     bind(C, name="swigc_assignment_string")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigfClassWrapper
+   type(SwigfClassWrapper), intent(inout) :: self
+   type(SwigfClassWrapper), intent(in) :: other
+  end subroutine
 function swigc_new_BelosError(farg1) &
 bind(C, name="swigc_new_BelosError") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR) :: fresult
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(SwigfClassWrapper) :: fresult
 end function
 
 subroutine swigc_delete_BelosError(farg1) &
 bind(C, name="swigc_delete_BelosError")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 end subroutine
 
+  subroutine swigc_assignment_BelosError(self, other) &
+     bind(C, name="swigc_assignment_BelosError")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigfClassWrapper
+   type(SwigfClassWrapper), intent(inout) :: self
+   type(SwigfClassWrapper), intent(in) :: other
+  end subroutine
 function swigc_convertReturnTypeToString(farg1) &
 bind(C, name="swigc_convertReturnTypeToString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
+import :: SwigfClassWrapper
 integer(C_INT), intent(in) :: farg1
-type(C_PTR) :: fresult
+type(SwigfClassWrapper) :: fresult
 end function
 
 function swigc_convertStatusTypeToString(farg1) &
 bind(C, name="swigc_convertStatusTypeToString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
+import :: SwigfClassWrapper
 integer(C_INT), intent(in) :: farg1
-type(C_PTR) :: fresult
+type(SwigfClassWrapper) :: fresult
 end function
 
 function swigc_convertStringToStatusType(farg1) &
 bind(C, name="swigc_convertStringToStatusType") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
 
@@ -231,7 +278,8 @@ function swigc_convertStringToScaleType(farg1) &
 bind(C, name="swigc_convertStringToScaleType") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
 
@@ -239,16 +287,18 @@ function swigc_convertScaleTypeToString(farg1) &
 bind(C, name="swigc_convertScaleTypeToString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
+import :: SwigfClassWrapper
 integer(C_INT), intent(in) :: farg1
-type(C_PTR) :: fresult
+type(SwigfClassWrapper) :: fresult
 end function
 
 function swigc_convertMsgTypeToString(farg1) &
 bind(C, name="swigc_convertMsgTypeToString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
+import :: SwigfClassWrapper
 integer(C_INT), intent(in) :: farg1
-type(C_PTR) :: fresult
+type(SwigfClassWrapper) :: fresult
 end function
 
  end interface
@@ -258,32 +308,33 @@ contains
  ! FORTRAN PROXY CODE
 subroutine swigf_new_string(self)
 use, intrinsic :: ISO_C_BINDING
-class(string) :: self
-type(C_PTR) :: fresult 
+class(string), intent(inout) :: self
+type(SwigfClassWrapper) :: fresult 
 
-if (c_associated(self%swigptr)) call self%release()
+call self%release()
 fresult = swigc_new_string()
-self%swigptr = fresult
+self%swigdata = fresult
+self%swigdata%mem = SWIGF_OWN
 end subroutine
 
 subroutine swigf_string_resize(self, count)
 use, intrinsic :: ISO_C_BINDING
-class(string) :: self
+class(string), intent(inout) :: self
 integer(C_LONG), intent(in) :: count
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 farg2 = count
 call swigc_string_resize(farg1, farg2)
 end subroutine
 
 subroutine swigf_string_clear(self)
 use, intrinsic :: ISO_C_BINDING
-class(string) :: self
-type(C_PTR) :: farg1 
+class(string), intent(inout) :: self
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 call swigc_string_clear(farg1)
 end subroutine
 
@@ -291,11 +342,11 @@ function swigf_string_size(self) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 integer(C_LONG) :: swigf_result
-class(string) :: self
+class(string), intent(in) :: self
 integer(C_LONG) :: fresult 
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 fresult = swigc_string_size(farg1)
 swigf_result = fresult
 end function
@@ -304,25 +355,25 @@ function swigf_string_length(self) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 integer(C_LONG) :: swigf_result
-class(string) :: self
+class(string), intent(in) :: self
 integer(C_LONG) :: fresult 
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 fresult = swigc_string_length(farg1)
 swigf_result = fresult
 end function
 
 subroutine swigf_string_set(self, pos, v)
 use, intrinsic :: ISO_C_BINDING
-class(string) :: self
+class(string), intent(inout) :: self
 integer(C_LONG), intent(in) :: pos
 integer(C_SIGNED_CHAR), intent(in) :: v
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 integer(C_SIGNED_CHAR) :: farg3 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 farg2 = pos
 farg3 = v
 call swigc_string_set(farg1, farg2, farg3)
@@ -332,13 +383,13 @@ function swigf_string_get(self, pos) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 integer(C_SIGNED_CHAR) :: swigf_result
-class(string) :: self
+class(string), intent(inout) :: self
 integer(C_LONG), intent(in) :: pos
 integer(C_SIGNED_CHAR) :: fresult 
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 farg2 = pos
 fresult = swigc_string_get(farg1, farg2)
 swigf_result = fresult
@@ -346,50 +397,67 @@ end function
 
 subroutine swigf_delete_string(self)
 use, intrinsic :: ISO_C_BINDING
-class(string) :: self
-type(C_PTR) :: farg1 
+class(string), intent(inout) :: self
+type(SwigfClassWrapper) :: farg1 
 
-if (.not. c_associated(self%swigptr)) return
-farg1 = self%swigptr
+farg1 = self%swigdata
+if (self%swigdata%mem == SWIGF_OWN) then
 call swigc_delete_string(farg1)
-self%swigptr = C_NULL_PTR
+end if
+self%swigdata%ptr = C_NULL_PTR
+self%swigdata%mem = SWIGF_NULL
 end subroutine
 
+  subroutine swigf_assignment_string(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(string), intent(inout) :: self
+   type(string), intent(in) :: other
+   call swigc_assignment_string(self%swigdata, other%swigdata)
+  end subroutine
 subroutine swigf_new_BelosError(self, what_arg)
 use, intrinsic :: ISO_C_BINDING
-class(BelosError) :: self
-class(string) :: what_arg
-type(C_PTR) :: fresult 
-type(C_PTR) :: farg1 
+class(BelosError), intent(inout) :: self
+class(string), intent(in) :: what_arg
+type(SwigfClassWrapper) :: fresult 
+type(SwigfClassWrapper) :: farg1 
 
-if (c_associated(self%swigptr)) call self%release()
-farg1 = what_arg%swigptr
+call self%release()
+farg1 = what_arg%swigdata
 fresult = swigc_new_BelosError(farg1)
-self%swigptr = fresult
+self%swigdata = fresult
+self%swigdata%mem = SWIGF_OWN
 end subroutine
 
 subroutine swigf_delete_BelosError(self)
 use, intrinsic :: ISO_C_BINDING
-class(BelosError) :: self
-type(C_PTR) :: farg1 
+class(BelosError), intent(inout) :: self
+type(SwigfClassWrapper) :: farg1 
 
-if (.not. c_associated(self%swigptr)) return
-farg1 = self%swigptr
+farg1 = self%swigdata
+if (self%swigdata%mem == SWIGF_OWN) then
 call swigc_delete_BelosError(farg1)
-self%swigptr = C_NULL_PTR
+end if
+self%swigdata%ptr = C_NULL_PTR
+self%swigdata%mem = SWIGF_NULL
 end subroutine
 
+  subroutine swigf_assignment_BelosError(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(BelosError), intent(inout) :: self
+   type(BelosError), intent(in) :: other
+   call swigc_assignment_BelosError(self%swigdata, other%swigdata)
+  end subroutine
 function convertReturnTypeToString(result) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 type(string) :: swigf_result
 integer(kind(BelosReturnType)), intent(in) :: result
-type(C_PTR) :: fresult 
+type(SwigfClassWrapper) :: fresult 
 integer(C_INT) :: farg1 
 
 farg1 = result
 fresult = swigc_convertReturnTypeToString(farg1)
-swigf_result%swigptr = fresult
+swigf_result%swigdata = fresult
 end function
 
 function convertStatusTypeToString(status) &
@@ -397,23 +465,23 @@ result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 type(string) :: swigf_result
 integer(kind(BelosStatusType)), intent(in) :: status
-type(C_PTR) :: fresult 
+type(SwigfClassWrapper) :: fresult 
 integer(C_INT) :: farg1 
 
 farg1 = status
 fresult = swigc_convertStatusTypeToString(farg1)
-swigf_result%swigptr = fresult
+swigf_result%swigdata = fresult
 end function
 
 function convertStringToStatusType(status) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 integer(kind(BelosStatusType)) :: swigf_result
-class(string) :: status
+class(string), intent(in) :: status
 integer(C_INT) :: fresult 
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = status%swigptr
+farg1 = status%swigdata
 fresult = swigc_convertStringToStatusType(farg1)
 swigf_result = fresult
 end function
@@ -422,11 +490,11 @@ function convertStringToScaleType(scaletype) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 integer(kind(BelosScaleType)) :: swigf_result
-class(string) :: scaletype
+class(string), intent(in) :: scaletype
 integer(C_INT) :: fresult 
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = scaletype%swigptr
+farg1 = scaletype%swigdata
 fresult = swigc_convertStringToScaleType(farg1)
 swigf_result = fresult
 end function
@@ -436,12 +504,12 @@ result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 type(string) :: swigf_result
 integer(kind(BelosScaleType)), intent(in) :: scaletype
-type(C_PTR) :: fresult 
+type(SwigfClassWrapper) :: fresult 
 integer(C_INT) :: farg1 
 
 farg1 = scaletype
 fresult = swigc_convertScaleTypeToString(farg1)
-swigf_result%swigptr = fresult
+swigf_result%swigdata = fresult
 end function
 
 function convertMsgTypeToString(msgtype) &
@@ -449,12 +517,12 @@ result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 type(string) :: swigf_result
 integer(kind(BelosMsgType)), intent(in) :: msgtype
-type(C_PTR) :: fresult 
+type(SwigfClassWrapper) :: fresult 
 integer(C_INT) :: farg1 
 
 farg1 = msgtype
 fresult = swigc_convertMsgTypeToString(farg1)
-swigf_result%swigptr = fresult
+swigf_result%swigdata = fresult
 end function
 
 
