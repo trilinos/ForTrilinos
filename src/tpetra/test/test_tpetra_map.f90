@@ -192,14 +192,11 @@ contains
 ! -----------------------------getNodeElementList----------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMap_getNodeElementList)
     type(TpetraMap) :: Obj
-    integer(global_ordinal_type), allocatable :: element_list(:)
+    integer(global_ordinal_type), pointer :: element_list(:)
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    allocate(element_list(4))
-    ! TODO: The element list returned is junk
     call Obj%create(num_global, comm); TEST_IERR()
-    element_list = Obj%getNodeElementList()
-    deallocate(element_list)
+    element_list => Obj%getNodeElementList()
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getNodeElementList)
 

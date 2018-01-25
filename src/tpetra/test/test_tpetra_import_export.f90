@@ -70,7 +70,8 @@ contains
     type(TpetraExport) :: exporter
     type(TpetraMultiVector) :: mv_mine, mv_with_neighbors
     type(TpetraMultiVector) :: mine_parent, neigh_parent
-    real(scalar_type), allocatable :: a(:), val(:)
+    real(scalar_type), allocatable :: val(:)
+    real(scalar_type), pointer :: a(:)
     real(scalar_type), parameter :: zero=0
     integer(size_type), parameter :: ten=10, five=5
     integer(size_type) :: num_images, my_image_id, num_local, num_vecs
@@ -170,7 +171,7 @@ contains
       !                     [n-1  2n-1  3n-1  4n-1  5n-1]
       call mv_with_neighbors%doImport(mv_mine, importer, TpetraREPLACE)
       do j = 1, num_vecs
-        a = mv_with_neighbors%getData(j)
+        a => mv_with_neighbors%getData(j)
         if (my_image_id == 0) then
           val(1) = real(my_image_id+j*num_images,kind=scalar_type)
           val(2) = real(j*num_images+1, kind=scalar_type)
@@ -190,7 +191,7 @@ contains
       call mv_mine%putScalar(zero)
       call mv_mine%doExport(mv_with_neighbors, exporter, TpetraADD)
       do j = 1, num_vecs
-        a = mv_mine%getData(j)
+        a => mv_mine%getData(j)
         if (my_image_id == 0 .or. my_image_id == num_images-1) then
           ! contribution from me and one neighbor: double original value
           val(1) = real(2.0*(my_image_id+j*num_images), kind=scalar_type)
@@ -202,7 +203,7 @@ contains
 
     end do
 
-    deallocate(neighbors, a, val)
+    deallocate(neighbors, val)
     call src%release()
     call tgt%release()
     call mv_mine%release()
@@ -223,7 +224,7 @@ contains
     type(TpetraExport) :: exporter
     type(TpetraMultiVector) :: svec, dvec
     integer(size_type) :: num_images
-    real(scalar_type) :: a(2)
+    real(scalar_type), pointer :: a(:)
     integer(local_ordinal_type) :: lclrow
     integer(global_ordinal_type) :: my_only_gid, cols(2)
     integer(size_type), parameter :: one=1
@@ -260,7 +261,7 @@ contains
     call importer%create(smap, dmap)
     call dvec%doImport(svec, importer, TpetraABSMAX)
 
-    a = dvec%get1dView()
+    a => dvec%get1dView()
     TEST_FLOATING_EQUALITY(a(1), -1.0_scalar_type, epsilon(a(1)))
     TEST_FLOATING_EQUALITY(a(2), 3.0_scalar_type, epsilon(a(1)))
 
