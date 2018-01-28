@@ -12,6 +12,9 @@
 
 %include "ForTrilinosTeuchos_config.hpp"
 
+// Replace vector indices type with standard Fortran integer
+%apply int { std::size_t };
+
 %include <std_vector.i>
 %template(VectorInt)    std::vector<int>;
 %template(VectorDouble) std::vector<double>;
@@ -20,13 +23,22 @@
 // Typedefs
 typedef int Teuchos_Ordinal;
 
+// Typemaps
 %include <typemaps.i>
 %fortran_view(int)
 %fortran_view(long long)
 %fortran_view(double)
 %fortran_view(size_t)
 
+// Convert all const std::string references to and from Fortran strings
+%ignore std::string;
+%include <std_string.i>
+%apply const std::string& NATIVE { const std::string& };
+
 // enum workaround
+// XXX: should be able to do something like
+// %rename("Teuchos%s", %$innamespace="Teuchos", %$isenumitem) "";
+// %rename("Teuchos%s", %$innamespace="Teuchos", %$isenum) "";
 #define RENAME_ENUM(X) %rename(Teuchos##X) X;
 RENAME_ENUM(ESide)
 RENAME_ENUM(LEFT_SIDE)
@@ -60,5 +72,6 @@ RENAME_ENUM(View)
 %include "Teuchos_RCP.i"
 
 %include "Teuchos_Comm.i"
+%include "Teuchos_Array.i"
 %include "Teuchos_ParameterList.i"
 %include "Teuchos_XML.i"
