@@ -62,6 +62,7 @@ class ParameterList
 %template(set) set<std::string>;
 %template(set) set<Teuchos::Array<double> >;
 %template(set) set<Teuchos::Array<int> >;
+%template(set) set<Teuchos::ParameterList >;
 
 %template(get_real    ) get<double>;
 %template(get_integer ) get<int>;

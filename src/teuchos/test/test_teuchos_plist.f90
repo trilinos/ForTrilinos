@@ -78,7 +78,6 @@ contains
     call sublist%set('anotherval', 4.0d0)
 
     call sublist%set('stringval', 'some string!')
-    TEST_EQUALITY(sublist%get_length('stringval'), 12)
     sval = sublist%get_string('stringval')
     TEST_EQUALITY('some string!', sval)
 
