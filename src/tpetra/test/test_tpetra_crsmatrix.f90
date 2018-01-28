@@ -55,7 +55,7 @@ contains
     type(TeuchosComm) :: tcomm
     type(TpetraCrsMatrix) :: Mat
     type(TpetraMultiVector) :: mvrand, mvres
-    type(string) :: description
+    character(kind=C_CHAR, len=:), allocatable :: description
     logical(c_bool), parameter :: false=.false., true=.true.
     integer(size_type) :: num_images, my_image_id
     integer(size_type), parameter :: num_local=10, num_vecs=5
