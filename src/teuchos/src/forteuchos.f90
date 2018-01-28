@@ -190,7 +190,8 @@ end type
   procedure, private :: create__SWIG_1 => swigf_new_ParameterList__SWIG_1
   procedure :: print => swigf_ParameterList_print
   procedure :: remove => swigf_ParameterList_remove
-  procedure :: isParameter => swigf_ParameterList_isParameter
+  procedure :: is_parameter => swigf_ParameterList_is_parameter
+  procedure :: sublist => swigf_ParameterList_sublist
   procedure, private :: set__SWIG_1 => swigf_ParameterList_set__SWIG_1
   procedure, private :: set__SWIG_2 => swigf_ParameterList_set__SWIG_2
   procedure, private :: set__SWIG_3 => swigf_ParameterList_set__SWIG_3
@@ -741,8 +742,8 @@ type(SwigfClassWrapper) :: farg1
 type(SwigfArrayWrapper) :: farg2
 end subroutine
 
-function swigc_ParameterList_isParameter(farg1, farg2) &
-bind(C, name="swigc_ParameterList_isParameter") &
+function swigc_ParameterList_is_parameter(farg1, farg2) &
+bind(C, name="swigc_ParameterList_is_parameter") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfClassWrapper
@@ -750,6 +751,17 @@ import :: SwigfArrayWrapper
 type(SwigfClassWrapper) :: farg1
 type(SwigfArrayWrapper) :: farg2
 logical(C_BOOL) :: fresult
+end function
+
+function swigc_ParameterList_sublist(farg1, farg2) &
+bind(C, name="swigc_ParameterList_sublist") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigfClassWrapper
+import :: SwigfArrayWrapper
+type(SwigfClassWrapper) :: farg1
+type(SwigfArrayWrapper) :: farg2
+type(SwigfClassWrapper) :: fresult
 end function
 
 subroutine swigc_ParameterList_set__SWIG_1(farg1, farg2, farg3) &
@@ -1747,7 +1759,7 @@ call swigf_string_to_chararray(name, farg2_chars, farg2)
 call swigc_ParameterList_remove(farg1, farg2)
 end subroutine
 
-function swigf_ParameterList_isParameter(self, name) &
+function swigf_ParameterList_is_parameter(self, name) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
 logical(C_BOOL) :: swigf_result
@@ -1763,8 +1775,28 @@ farg1 = self%swigdata
 
 call swigf_string_to_chararray(name, farg2_chars, farg2)
 
-fresult = swigc_ParameterList_isParameter(farg1, farg2)
+fresult = swigc_ParameterList_is_parameter(farg1, farg2)
 swigf_result = fresult
+end function
+
+function swigf_ParameterList_sublist(self, name) &
+result(swigf_result)
+use, intrinsic :: ISO_C_BINDING
+type(ParameterList) :: swigf_result
+class(ParameterList), intent(inout) :: self
+character(kind=C_CHAR, len=*), target :: name
+
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
+type(SwigfClassWrapper) :: fresult 
+type(SwigfClassWrapper) :: farg1 
+type(SwigfArrayWrapper) :: farg2 
+
+farg1 = self%swigdata
+
+call swigf_string_to_chararray(name, farg2_chars, farg2)
+
+fresult = swigc_ParameterList_sublist(farg1, farg2)
+swigf_result%swigdata = fresult
 end function
 
 subroutine swigf_ParameterList_set__SWIG_1(self, name, value)

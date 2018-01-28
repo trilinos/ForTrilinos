@@ -23,6 +23,10 @@
 // Make the Plist an RCP
 %teuchos_rcp(Teuchos::ParameterList)
 
+// Un-camelcase the accessors
+%rename(is_parameter) Teuchos::ParameterList::isParameter;
+%rename(is_type) Teuchos::ParameterList::isType;
+
 namespace Teuchos
 {
 
@@ -47,6 +51,8 @@ class ParameterList
     void remove(const std::string& name);
 
     bool isParameter(const std::string& name) const;
+
+    ParameterList& sublist(const std::string& name);
 
 // Instantiate get/set
 %template(set) set<double>;

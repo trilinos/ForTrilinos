@@ -1719,7 +1719,7 @@ SWIGEXPORT void swigc_ParameterList_remove(SwigfClassWrapper const *farg1, Swigf
 }
 
 
-SWIGEXPORT bool swigc_ParameterList_isParameter(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2) {
+SWIGEXPORT bool swigc_ParameterList_is_parameter(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2) {
   bool fresult ;
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
@@ -1756,6 +1756,50 @@ SWIGEXPORT bool swigc_ParameterList_isParameter(SwigfClassWrapper const *farg1, 
     }
   }
   fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT SwigfClassWrapper swigc_ParameterList_sublist(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2) {
+  SwigfClassWrapper fresult ;
+  Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
+  std::string *arg2 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
+  std::string tempstr2 ;
+  Teuchos::ParameterList *result = 0 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  tempstr2 = std::string(static_cast<const char*>(farg2->data), farg2->size);
+  arg2 = &tempstr2;
+  
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    swigf_check_unhandled_exception();
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Teuchos::ParameterList *) &(arg1)->sublist((std::string const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return SwigfClassWrapper_uninitialized());
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigfClassWrapper_uninitialized());
+    }
+    catch (...)
+    {
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return SwigfClassWrapper_uninitialized());
+    }
+  }
+  {
+    fresult.ptr = new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_0);
+    fresult.mem = SWIGF_MOVE;
+  }
   return fresult;
 }
 
