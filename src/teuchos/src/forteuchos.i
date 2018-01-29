@@ -30,9 +30,10 @@ typedef int Teuchos_Ordinal;
 %fortran_view(double)
 %fortran_view(size_t)
 
-// Convert all const std::string references to and from Fortran strings
+// Convert all const std::string references/values to and from Fortran strings
 %ignore std::string;
 %include <std_string.i>
+%apply std::string NATIVE { std::string };
 %apply const std::string& NATIVE { const std::string& };
 
 // enum workaround

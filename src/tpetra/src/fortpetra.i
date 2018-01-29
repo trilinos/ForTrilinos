@@ -127,6 +127,7 @@ RENAME_ENUM(GlobalIndices)
 // Some enums
 %ignore EPrivateComputeViewConstructor;
 %ignore EPrivateHostViewConstructor;
+%ignore Teuchos::SerializationTraits;
 %include "Tpetra_ConfigDefs.hpp"
 %include "Tpetra_CombineMode.hpp"
 

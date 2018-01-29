@@ -20,6 +20,7 @@
 
 // =======================================================================
 // Postpone temporarily
+// TODO: write typemap for Teuchos::ArrayView
 // =======================================================================
 %ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
         const Teuchos::ArrayView<const Teuchos::ArrayView<const Scalar> >&ArrayOfPtrs, \

@@ -55,11 +55,10 @@ contains
     type(TeuchosComm) :: tcomm
     type(TpetraCrsMatrix) :: Mat
     type(TpetraMultiVector) :: mvrand, mvres
-    type(string) :: description
-    logical(c_bool), parameter :: false=.false., true=.true.
-    integer(size_type) :: num_images, my_image_id
-    integer(size_type), parameter :: num_local=10, num_vecs=5
-    integer(size_type), parameter :: ione=1
+    character(len=:), allocatable :: description
+    integer :: num_images, my_image_id
+    integer, parameter :: num_local=10, num_vecs=5
+    integer, parameter :: ione=1
     integer(local_ordinal_type) :: irow
     integer(global_ordinal_type) :: base, gblrow, cols(1)
     real(mag_type) :: vals(1)=[1.], norms(num_vecs), zeros(num_vecs), fnorm
@@ -76,8 +75,8 @@ contains
 
     ! create a Map
     call Map%create(invalid, num_local, comm); TEST_IERR()
-    call mvrand%create(Map, num_vecs, false); TEST_IERR()
-    call mvres%create(Map, num_vecs, false); TEST_IERR()
+    call mvrand%create(Map, num_vecs, .false.); TEST_IERR()
+    call mvres%create(Map, num_vecs, .false.); TEST_IERR()
     call mvrand%randomize(); TEST_IERR()
 
     ! create the identity matrix
@@ -184,7 +183,6 @@ contains
     integer(size_type), parameter :: izero=0, ione=1, ithree=3
     integer(size_type) :: num_images, my_image_id, numindices
     integer(local_ordinal_type) :: nnz
-    logical(c_bool), parameter :: false=.false., true=.true.
     real(scalar_type), parameter :: zero=0., one=1., two=2., negthree=-3.
     real(norm_type) :: norms(1)
     integer(global_ordinal_type) :: gblrow
@@ -201,8 +199,8 @@ contains
     call Map%create(invalid, ione, comm); TEST_IERR()
 
     ! create a multivector ones(n,1)
-    call ones%create(map, ione, false); TEST_IERR()
-    call threes%create(map, ione, false); TEST_IERR()
+    call ones%create(map, ione, .false.); TEST_IERR()
+    call threes%create(map, ione, .false.); TEST_IERR()
     call ones%putScalar(one)
 
     !  create the following matrix:
@@ -352,7 +350,6 @@ contains
     type(ParameterList) :: params
     type(TpetraCrsMatrix) :: Mat
     integer(size_type), parameter :: izero=0, ione=1
-    logical(c_bool), parameter :: true=.true., false=.false.
     integer(local_ordinal_type) :: lclrow, numvalid
     integer(global_ordinal_type) :: row, cols(1)
     real(scalar_type), parameter :: zero=0.
@@ -372,7 +369,7 @@ contains
     call Mat%insertGlobalValues(row, cols, zeros); TEST_IERR()
 
     call params%create("ANONOMOUS")
-    ! call params%set("Optimize Storage", false) ! FIXME: boolean parameters
+    ! call params%set("Optimize Storage", .false.) ! FIXME: boolean parameters
     call Mat%fillComplete(params);
     TEST_ASSERT((.not. Mat%isFillActive()))
     TEST_ASSERT(Mat%isFillComplete())
@@ -446,7 +443,6 @@ contains
     type(ParameterList) :: params
     type(TpetraCrsMatrix) :: Mat
     integer(size_type), parameter :: izero=0, ione=1
-    logical(c_bool), parameter :: true=.true., false=.false.
     integer(local_ordinal_type) :: row, cols(1), numvalid
     real(scalar_type), parameter :: zero=0.
     real(scalar_type) :: vals(1), zeros(1)=[zero]
@@ -463,7 +459,7 @@ contains
     call Mat%insertLocalValues(row, cols, tuple<Scalar>(0)); TEST_IERR()
 
     call params%create("ANONOMOUS")
-    ! call params%set("Optimize Storage", false) ! FIXME: boolean parameters
+    ! call params%set("Optimize Storage", .false.) ! FIXME: boolean parameters
     call Mat%fillComplete(params);
     TEST_ASSERT((.not. Mat%isFillActive()))
     TEST_ASSERT(Mat%isFillComplete())

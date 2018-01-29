@@ -217,14 +217,6 @@ void swigf_store_exception(int code, const char *msg);
     }
 
 
-#define SWIGF_check_nonnull(SWIGF_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
-    if ((SWIGF_CLASS_WRAPPER).mem == SWIGF_NULL) { \
-        SWIG_exception_impl(SWIG_TypeError, \
-            "Cannot pass null " TYPENAME " (class " FNAME ") " \
-            "to function (" FUNCNAME ")", RETURNNULL); \
-    }
-
-
 
 #if __cplusplus >= 201103L
 #define SWIGF_assign(LEFTTYPE, LEFT, RIGHTTYPE, RIGHT, FLAGS) \
@@ -235,6 +227,14 @@ void swigf_store_exception(int code, const char *msg);
     SwigfAssign<LEFTTYPE , RIGHTTYPE, FLAGS >(LEFT, RIGHT);
 #endif
 
+
+
+#define SWIGF_check_nonnull(SWIGF_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
+    if ((SWIGF_CLASS_WRAPPER).mem == SWIGF_NULL) { \
+        SWIG_exception_impl(SWIG_TypeError, \
+            "Cannot pass null " TYPENAME " (class " FNAME ") " \
+            "to function (" FUNCNAME ")", RETURNNULL); \
+    }
 
 
 #define SWIGF_check_mutable(SWIGF_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
@@ -319,22 +319,6 @@ SwigfClassWrapper SwigfClassWrapper_uninitialized()
 }
 
 
-#include "Teuchos_RCP.hpp"
-#include "Tpetra_Map.hpp"
-
-
-#define SWIG_NO_NULL_DELETER_0 , Teuchos::RCP_WEAK_NO_DEALLOC
-#define SWIG_NO_NULL_DELETER_1
-#define SWIG_NO_NULL_DELETER_SWIG_POINTER_NEW
-#define SWIG_NO_NULL_DELETER_SWIG_POINTER_OWN
-
-SWIGINTERN Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *new_Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg___SWIG_1(Tpetra::global_size_t numGlobalElements,Teuchos::RCP< Teuchos::Comm< int > const > const &comm,Tpetra::LocalGlobal lg=Tpetra::GloballyDistributed){
-      return new Tpetra::Map<LO,GO,NO>(numGlobalElements, 1/*indexBase*/, comm, lg);
-    }
-SWIGINTERN Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *new_Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg___SWIG_3(Tpetra::global_size_t numGlobalElements,size_t numLocalElements,Teuchos::RCP< Teuchos::Comm< int > const > const &comm){
-      return new Tpetra::Map<LO,GO,NO>(numGlobalElements, numLocalElements, 1/*indexBase*/, comm);
-    }
-
 struct SwigfArrayWrapper
 {
     void* data;
@@ -349,6 +333,54 @@ SwigfArrayWrapper SwigfArrayWrapper_uninitialized()
     return result;
 }
 
+
+#include "Teuchos_RCP.hpp"
+#include "Tpetra_Map.hpp"
+
+
+#define SWIG_NO_NULL_DELETER_0 , Teuchos::RCP_WEAK_NO_DEALLOC
+#define SWIG_NO_NULL_DELETER_1
+#define SWIG_NO_NULL_DELETER_SWIG_POINTER_NEW
+#define SWIG_NO_NULL_DELETER_SWIG_POINTER_OWN
+
+
+
+namespace swigf {
+SwigfArrayWrapper store_string(const std::string& str)
+{
+    static std::string* temp = NULL;
+    SwigfArrayWrapper result;
+    if (str.empty())
+    {
+        // Result is empty
+        result.data = NULL;
+        result.size = 0;
+    }
+    else
+    {
+        if (!temp)
+        {
+            // Allocate a new temporary string
+            temp = new std::string(str);
+        }
+        else
+        {
+            // Assign the string
+            *temp = str;
+        }
+        result.data = &(*(temp->begin()));
+        result.size = temp->size();
+    }
+    return result;
+}
+} // end namespace swigf
+
+SWIGINTERN Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *new_Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg___SWIG_1(Tpetra::global_size_t numGlobalElements,Teuchos::RCP< Teuchos::Comm< int > const > const &comm,Tpetra::LocalGlobal lg=Tpetra::GloballyDistributed){
+      return new Tpetra::Map<LO,GO,NO>(numGlobalElements, 1/*indexBase*/, comm, lg);
+    }
+SWIGINTERN Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *new_Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg___SWIG_3(Tpetra::global_size_t numGlobalElements,size_t numLocalElements,Teuchos::RCP< Teuchos::Comm< int > const > const &comm){
+      return new Tpetra::Map<LO,GO,NO>(numGlobalElements, numLocalElements, 1/*indexBase*/, comm);
+    }
 SWIGINTERN Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *new_Tpetra_Map_Sl_int_Sc_long_SS_long_Sc_Kokkos_Compat_KokkosSerialWrapperNode_Sg___SWIG_4(Tpetra::global_size_t const numGlobalElements,std::pair< GO const *,std::size_t > indexList,Teuchos::RCP< Teuchos::Comm< int > const > const &comm){
       Teuchos::ArrayView<const GO> indexListView = Teuchos::arrayView(indexList.first, indexList.second);
       return new Tpetra::Map<LO,GO,NO>(numGlobalElements, indexListView, 1/*indexBase*/, comm);
@@ -506,7 +538,7 @@ struct AssignmentTraits
 #endif
 };
 
-} // end namespace swigf    
+} // end namespace swigf
 
 
 
@@ -891,58 +923,6 @@ SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__doExport__SWIG_1(Tp
 
   typedef Tpetra::CrsMatrix<SC,LO,GO,NO> CMT;
 
-SWIGINTERN Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_0(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Teuchos::Comm< int > const > const &pComm,bool const callFillComplete=true,bool const tolerant=false,bool const debug=false){
-      std::string filenameStr(filename.first, filename.second);
-      return Tpetra::MatrixMarket::Reader<CMT>::readSparseGraphFile(filenameStr, pComm, callFillComplete, tolerant, debug);
-    }
-SWIGINTERN Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_4(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Teuchos::Comm< int > const > const &pComm,Teuchos::RCP< Teuchos::ParameterList > const &constructorParams,Teuchos::RCP< Teuchos::ParameterList > const &fillCompleteParams,bool const tolerant=false,bool const debug=false){
-      std::string filenameStr(filename.first, filename.second);
-      return Tpetra::MatrixMarket::Reader<CMT>::readSparseGraphFile(filenameStr, pComm, constructorParams, fillCompleteParams, tolerant, debug);
-    }
-SWIGINTERN Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_7(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > const &rowMap,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > &colMap,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > const &domainMap,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > const &rangeMap,bool const callFillComplete=true,bool const tolerant=false,bool const debug=false){
-      std::string filenameStr(filename.first, filename.second);
-      return Tpetra::MatrixMarket::Reader<CMT>::readSparseGraphFile(filenameStr, rowMap, colMap, domainMap, rangeMap, callFillComplete, tolerant, debug);
-    }
-SWIGINTERN Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_0(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Teuchos::Comm< int > const > const &pComm,bool const callFillComplete=true,bool const tolerant=false,bool const debug=false){
-      std::string filenameStr(filename.first, filename.second);
-      return Tpetra::MatrixMarket::Reader<CMT>::readSparseFile(filenameStr, pComm, callFillComplete, tolerant, debug);
-    }
-SWIGINTERN Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_4(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Teuchos::Comm< int > const > const &pComm,Teuchos::RCP< Teuchos::ParameterList > const &constructorParams,Teuchos::RCP< Teuchos::ParameterList > const &fillCompleteParams,bool const tolerant=false,bool const debug=false){
-      std::string filenameStr(filename.first, filename.second);
-      return Tpetra::MatrixMarket::Reader<CMT>::readSparseFile(filenameStr, pComm, constructorParams, fillCompleteParams, tolerant, debug);
-    }
-SWIGINTERN Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_7(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > const &rowMap,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > &colMap,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > const &domainMap,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > const &rangeMap,bool const callFillComplete=true,bool const tolerant=false,bool const debug=false){
-      std::string filenameStr(filename.first, filename.second);
-      return Tpetra::MatrixMarket::Reader<CMT>::readSparseFile(filenameStr, rowMap, colMap, domainMap, rangeMap, callFillComplete, tolerant, debug);
-    }
-SWIGINTERN Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::multivector_type > Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readDenseFile__SWIG_0(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > const &comm,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > &map,bool const tolerant=false,bool const debug=false){
-      std::string filenameStr(filename.first, filename.second);
-      return Tpetra::MatrixMarket::Reader<CMT>::readDenseFile(filenameStr, comm, map, tolerant, debug);
-    }
-SWIGINTERN Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readMapFile__SWIG_0(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > const &comm,bool const tolerant=false,bool const debug=false){
-      std::string filenameStr(filename.first, filename.second);
-      return Tpetra::MatrixMarket::Reader<CMT>::readMapFile(filenameStr, comm, tolerant, debug);
-    }
-SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseFile__SWIG_0(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > const &pMatrix,std::string const &matrixName,std::string const &matrixDescription,bool const debug=false){
-      std::string filenameStr(filename.first, filename.second);
-      Tpetra::MatrixMarket::Writer<CMT>::writeSparseFile(filenameStr, pMatrix, matrixName, matrixDescription, debug);
-    }
-SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseFile__SWIG_2(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > const &pMatrix,bool const debug=false){
-      std::string filenameStr(filename.first, filename.second);
-      Tpetra::MatrixMarket::Writer<CMT>::writeSparseFile(filenameStr, pMatrix, debug);
-    }
-SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_0(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > const &pGraph,std::string const &graphName,std::string const &graphDescription,bool const debug=false){
-      std::string filenameStr(filename.first, filename.second);
-      Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filenameStr, pGraph, graphName, graphDescription, debug);
-    }
-SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_2(std::pair< char const *,std::size_t > filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > const &pGraph,bool const debug=false){
-      std::string filenameStr(filename.first, filename.second);
-      Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filenameStr, pGraph, debug);
-    }
-SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeMapFile__SWIG_1(std::pair< char const *,std::size_t > filename,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &map){
-      std::string filenameStr(filename.first, filename.second);
-      Tpetra::MatrixMarket::Writer<CMT>::writeMapFile(filenameStr, map);
-    }
 
 #include "Teuchos_RCP.hpp"
 #include "TpetraExt_MatrixMatrix.hpp"
@@ -950,17 +930,19 @@ SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeMapFile__SWIG_1(std::
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_setCombineModeParameter(SwigfClassWrapper const *farg1, SwigfClassWrapper const *farg2) {
+SWIGEXPORT void swigc_setCombineModeParameter(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2) {
   Teuchos::ParameterList *arg1 = 0 ;
   std::string *arg2 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
+  std::string tempstr2 ;
   
   SWIGF_check_sp_nonnull(farg1,
     "Teuchos::ParameterList *", "ParameterList", "Tpetra::setCombineModeParameter(Teuchos::ParameterList &,std::string const &)", return )
   smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
   arg1 = smartarg1->get();
-  SWIGF_check_nonnull(*farg2, "std::string const &", "string", "Tpetra::setCombineModeParameter(Teuchos::ParameterList &,std::string const &)", return );
-  arg2 = static_cast< std::string * >(farg2->ptr);
+  tempstr2 = std::string(static_cast<const char*>(farg2->data), farg2->size);
+  arg2 = &tempstr2;
+  
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
@@ -1054,8 +1036,8 @@ SWIGEXPORT void swigc_delete_TpetraMap(SwigfClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isOneToOne(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraMap_isOneToOne(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
   Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 ;
   bool result;
@@ -1085,13 +1067,13 @@ SWIGEXPORT bool swigc_TpetraMap_isOneToOne(SwigfClassWrapper const *farg1) {
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraMap_getGlobalNumElements(SwigfClassWrapper const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT int swigc_TpetraMap_getGlobalNumElements(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
   Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 ;
   Tpetra::global_size_t result;
@@ -1454,8 +1436,8 @@ SWIGEXPORT long long swigc_TpetraMap_getGlobalElement(SwigfClassWrapper const *f
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isNodeLocalElement(SwigfClassWrapper const *farg1, int const *farg2) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraMap_isNodeLocalElement(SwigfClassWrapper const *farg1, int const *farg2) {
+  int fresult ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
   int arg2 ;
   Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 ;
@@ -1487,13 +1469,13 @@ SWIGEXPORT bool swigc_TpetraMap_isNodeLocalElement(SwigfClassWrapper const *farg
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isNodeGlobalElement(SwigfClassWrapper const *farg1, long long const *farg2) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraMap_isNodeGlobalElement(SwigfClassWrapper const *farg1, long long const *farg2) {
+  int fresult ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
   long long arg2 ;
   Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 ;
@@ -1525,13 +1507,13 @@ SWIGEXPORT bool swigc_TpetraMap_isNodeGlobalElement(SwigfClassWrapper const *far
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isUniform(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraMap_isUniform(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
   Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 ;
   bool result;
@@ -1561,13 +1543,13 @@ SWIGEXPORT bool swigc_TpetraMap_isUniform(SwigfClassWrapper const *farg1) {
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isContiguous(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraMap_isContiguous(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
   Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 ;
   bool result;
@@ -1597,13 +1579,13 @@ SWIGEXPORT bool swigc_TpetraMap_isContiguous(SwigfClassWrapper const *farg1) {
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isDistributed(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraMap_isDistributed(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
   Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 ;
   bool result;
@@ -1633,13 +1615,13 @@ SWIGEXPORT bool swigc_TpetraMap_isDistributed(SwigfClassWrapper const *farg1) {
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isCompatible(SwigfClassWrapper const *farg1, SwigfClassWrapper const *farg2) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraMap_isCompatible(SwigfClassWrapper const *farg1, SwigfClassWrapper const *farg2) {
+  int fresult ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 ;
@@ -1675,13 +1657,13 @@ SWIGEXPORT bool swigc_TpetraMap_isCompatible(SwigfClassWrapper const *farg1, Swi
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isSameAs(SwigfClassWrapper const *farg1, SwigfClassWrapper const *farg2) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraMap_isSameAs(SwigfClassWrapper const *farg1, SwigfClassWrapper const *farg2) {
+  int fresult ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 ;
@@ -1717,13 +1699,13 @@ SWIGEXPORT bool swigc_TpetraMap_isSameAs(SwigfClassWrapper const *farg1, SwigfCl
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_locallySameAs(SwigfClassWrapper const *farg1, SwigfClassWrapper const *farg2) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraMap_locallySameAs(SwigfClassWrapper const *farg1, SwigfClassWrapper const *farg2) {
+  int fresult ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
   Tpetra::Map< int,long long,Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::node_type > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 ;
@@ -1759,7 +1741,7 @@ SWIGEXPORT bool swigc_TpetraMap_locallySameAs(SwigfClassWrapper const *farg1, Sw
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
@@ -1801,8 +1783,8 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraMap_getComm(SwigfClassWrapper const *fa
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraMap_description(SwigfClassWrapper const *farg1) {
-  SwigfClassWrapper fresult ;
+SWIGEXPORT SwigfArrayWrapper swigc_TpetraMap_description(SwigfClassWrapper const *farg1) {
+  SwigfArrayWrapper fresult ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = (Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *) 0 ;
   Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 ;
   std::string result;
@@ -1820,20 +1802,21 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraMap_description(SwigfClassWrapper const
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), return SwigfClassWrapper_uninitialized());
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return SwigfArrayWrapper_uninitialized());
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigfClassWrapper_uninitialized());
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigfArrayWrapper_uninitialized());
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return SwigfClassWrapper_uninitialized());
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return SwigfArrayWrapper_uninitialized());
     }
   }
-  fresult.ptr = (new std::string(static_cast< const std::string& >(result)));
-  fresult.mem = SWIGF_MOVE;
+  
+  fresult = swigf::store_string(result);
+  
   return fresult;
 }
 
@@ -1915,7 +1898,7 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraMap_replaceCommWithSubset(SwigfClassWra
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_new_TpetraMap__SWIG_1(unsigned long const *farg1, SwigfClassWrapper const *farg2, int const *farg3) {
+SWIGEXPORT SwigfClassWrapper swigc_new_TpetraMap__SWIG_1(int const *farg1, SwigfClassWrapper const *farg2, int const *farg3) {
   SwigfClassWrapper fresult ;
   Tpetra::global_size_t arg1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -1955,7 +1938,7 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraMap__SWIG_1(unsigned long const *fa
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_new_TpetraMap__SWIG_2(unsigned long const *farg1, SwigfClassWrapper const *farg2) {
+SWIGEXPORT SwigfClassWrapper swigc_new_TpetraMap__SWIG_2(int const *farg1, SwigfClassWrapper const *farg2) {
   SwigfClassWrapper fresult ;
   Tpetra::global_size_t arg1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -1993,7 +1976,7 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraMap__SWIG_2(unsigned long const *fa
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_new_TpetraMap__SWIG_3(unsigned long const *farg1, unsigned long const *farg2, SwigfClassWrapper const *farg3) {
+SWIGEXPORT SwigfClassWrapper swigc_new_TpetraMap__SWIG_3(int const *farg1, unsigned long const *farg2, SwigfClassWrapper const *farg3) {
   SwigfClassWrapper fresult ;
   Tpetra::global_size_t arg1 ;
   size_t arg2 ;
@@ -2033,7 +2016,7 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraMap__SWIG_3(unsigned long const *fa
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_new_TpetraMap__SWIG_4(unsigned long const *farg1, SwigfArrayWrapper *farg2, SwigfClassWrapper const *farg3) {
+SWIGEXPORT SwigfClassWrapper swigc_new_TpetraMap__SWIG_4(int const *farg1, SwigfArrayWrapper *farg2, SwigfClassWrapper const *farg3) {
   SwigfClassWrapper fresult ;
   Tpetra::global_size_t arg1 ;
   std::pair< GO const *,std::size_t > arg2 ;
@@ -2041,7 +2024,6 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraMap__SWIG_4(unsigned long const *fa
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull3 ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *result = 0 ;
   
-  arg2 = ::std::pair< const long long*, std::size_t >();
   arg1 = *farg1;
   (&arg2)->first  = static_cast<const long long*>(farg2->data);
   (&arg2)->second = farg2->size;
@@ -2084,9 +2066,6 @@ SWIGEXPORT int swigc_TpetraMap_getRemoteIndexList__SWIG_0(SwigfClassWrapper cons
   Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 ;
   Tpetra::LookupStatus result;
   
-  arg2 = ::std::pair< const long long*, std::size_t >();
-  arg3 = ::std::pair< int*, std::size_t >();
-  arg4 = ::std::pair< int*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode>*>(smartarg1->get()) : NULL;
   (&arg2)->first  = static_cast<const long long*>(farg2->data);
@@ -2131,8 +2110,6 @@ SWIGEXPORT int swigc_TpetraMap_getRemoteIndexList__SWIG_1(SwigfClassWrapper cons
   Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg1 ;
   Tpetra::LookupStatus result;
   
-  arg2 = ::std::pair< const long long*, std::size_t >();
-  arg3 = ::std::pair< int*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode>*>(smartarg1->get()) : NULL;
   (&arg2)->first  = static_cast<const long long*>(farg2->data);
@@ -2655,8 +2632,8 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraExport_getTargetMap(SwigfClassWrapper c
 }
 
 
-SWIGEXPORT bool swigc_TpetraExport_isLocallyComplete(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraExport_isLocallyComplete(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
   bool result;
@@ -2686,7 +2663,7 @@ SWIGEXPORT bool swigc_TpetraExport_isLocallyComplete(SwigfClassWrapper const *fa
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
@@ -3145,8 +3122,8 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraImport_getTargetMap(SwigfClassWrapper c
 }
 
 
-SWIGEXPORT bool swigc_TpetraImport_isLocallyComplete(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraImport_isLocallyComplete(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 ;
   bool result;
@@ -3176,7 +3153,7 @@ SWIGEXPORT bool swigc_TpetraImport_isLocallyComplete(SwigfClassWrapper const *fa
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
@@ -3342,7 +3319,7 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraMultiVector__SWIG_0() {
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_new_TpetraMultiVector__SWIG_1(SwigfClassWrapper const *farg1, unsigned long const *farg2, bool const *farg3) {
+SWIGEXPORT SwigfClassWrapper swigc_new_TpetraMultiVector__SWIG_1(SwigfClassWrapper const *farg1, unsigned long const *farg2, int const *farg3) {
   SwigfClassWrapper fresult ;
   Teuchos::RCP< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   size_t arg2 ;
@@ -3352,7 +3329,7 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraMultiVector__SWIG_1(SwigfClassWrapp
   
   arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > * >(farg1->ptr) : &tempnull1;
   arg2 = *farg2;
-  arg3 = *farg3;
+  arg3 = (*farg3 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
@@ -3664,7 +3641,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_replaceGlobalValue(SwigfClassWrapper con
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(SwigfClassWrapper const *farg1, long long const *farg2, unsigned long const *farg3, double const *farg4, bool const *farg5) {
+SWIGEXPORT void swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(SwigfClassWrapper const *farg1, long long const *farg2, unsigned long const *farg3, double const *farg4, int const *farg5) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   long long arg2 ;
   size_t arg3 ;
@@ -3677,7 +3654,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(SwigfClassWra
   arg2 = *farg2;
   arg3 = *farg3 - 1;
   arg4 = reinterpret_cast< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::impl_scalar_type * >(const_cast< double* >(farg4));
-  arg5 = *farg5;
+  arg5 = (*farg5 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
@@ -3783,7 +3760,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_replaceLocalValue(SwigfClassWrapper cons
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0(SwigfClassWrapper const *farg1, int const *farg2, unsigned long const *farg3, double const *farg4, bool const *farg5) {
+SWIGEXPORT void swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0(SwigfClassWrapper const *farg1, int const *farg2, unsigned long const *farg3, double const *farg4, int const *farg5) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   int arg2 ;
   size_t arg3 ;
@@ -3796,7 +3773,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0(SwigfClassWrap
   arg2 = *farg2 - 1;
   arg3 = *farg3 - 1;
   arg4 = reinterpret_cast< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::impl_scalar_type * >(const_cast< double* >(farg4));
-  arg5 = *farg5;
+  arg5 = (*farg5 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
@@ -4494,8 +4471,8 @@ SWIGEXPORT unsigned long swigc_TpetraMultiVector_getLocalLength(SwigfClassWrappe
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraMultiVector_getGlobalLength(SwigfClassWrapper const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT int swigc_TpetraMultiVector_getGlobalLength(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   Tpetra::global_size_t result;
@@ -4566,8 +4543,8 @@ SWIGEXPORT unsigned long swigc_TpetraMultiVector_getStride(SwigfClassWrapper con
 }
 
 
-SWIGEXPORT bool swigc_TpetraMultiVector_isConstantStride(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraMultiVector_isConstantStride(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -4597,13 +4574,13 @@ SWIGEXPORT bool swigc_TpetraMultiVector_isConstantStride(SwigfClassWrapper const
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraMultiVector_description(SwigfClassWrapper const *farg1) {
-  SwigfClassWrapper fresult ;
+SWIGEXPORT SwigfArrayWrapper swigc_TpetraMultiVector_description(SwigfClassWrapper const *farg1) {
+  SwigfArrayWrapper fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   std::string result;
@@ -4621,20 +4598,21 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraMultiVector_description(SwigfClassWrapp
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), return SwigfClassWrapper_uninitialized());
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return SwigfArrayWrapper_uninitialized());
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigfClassWrapper_uninitialized());
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigfArrayWrapper_uninitialized());
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return SwigfClassWrapper_uninitialized());
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return SwigfArrayWrapper_uninitialized());
     }
   }
-  fresult.ptr = (new std::string(static_cast< const std::string& >(result)));
-  fresult.mem = SWIGF_MOVE;
+  
+  fresult = swigf::store_string(result);
+  
   return fresult;
 }
 
@@ -4755,7 +4733,6 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraMultiVector__SWIG_7(SwigfClassWrapp
   Teuchos::RCP< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > tempnull1 ;
   Tpetra::MultiVector< SC,LO,GO,NO > *result = 0 ;
   
-  arg2 = ::std::pair< const double*, std::size_t >();
   arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg1->ptr) : &tempnull1;
   (&arg2)->first  = static_cast<const double*>(farg2->data);
   (&arg2)->second = farg2->size;
@@ -4875,7 +4852,6 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraMultiVector_subCopy(SwigfClassWrapper c
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,NO::classic > > result;
   
-  arg2 = ::std::pair< const size_t*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::MultiVector<SC,LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   (&arg2)->first  = static_cast<const size_t*>(farg2->data);
@@ -4916,7 +4892,6 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraMultiVector_subView(SwigfClassWrapper c
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,NO::classic > const > result;
   
-  arg2 = ::std::pair< const size_t*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::MultiVector<SC,LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   (&arg2)->first  = static_cast<const size_t*>(farg2->data);
@@ -4957,7 +4932,6 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraMultiVector_subViewNonConst(SwigfClassW
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,NO::classic > > *smartarg1 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,NO::classic > > result;
   
-  arg2 = ::std::pair< const size_t*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? smartarg1->get() : NULL;
   (&arg2)->first  = static_cast<const size_t*>(farg2->data);
@@ -4998,7 +4972,6 @@ SWIGEXPORT void swigc_TpetraMultiVector_dot(SwigfClassWrapper const *farg1, Swig
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,NO::classic > const > *smartarg2 ;
   
-  arg3 = ::std::pair< double*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::MultiVector<SC,LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   SWIGF_check_sp_nonnull(farg2,
@@ -5039,7 +5012,6 @@ SWIGEXPORT void swigc_TpetraMultiVector_norm1(SwigfClassWrapper const *farg1, Sw
   std::pair< SC *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   
-  arg2 = ::std::pair< double*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::MultiVector<SC,LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   (&arg2)->first  = static_cast<double*>(farg2->data);
@@ -5076,7 +5048,6 @@ SWIGEXPORT void swigc_TpetraMultiVector_norm2(SwigfClassWrapper const *farg1, Sw
   std::pair< SC *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   
-  arg2 = ::std::pair< double*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::MultiVector<SC,LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   (&arg2)->first  = static_cast<double*>(farg2->data);
@@ -5113,7 +5084,6 @@ SWIGEXPORT void swigc_TpetraMultiVector_normInf(SwigfClassWrapper const *farg1, 
   std::pair< SC *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   
-  arg2 = ::std::pair< double*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::MultiVector<SC,LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   (&arg2)->first  = static_cast<double*>(farg2->data);
@@ -5150,7 +5120,6 @@ SWIGEXPORT void swigc_TpetraMultiVector_scale__SWIG_2(SwigfClassWrapper const *f
   std::pair< SC const *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,NO::classic > > *smartarg1 ;
   
-  arg2 = ::std::pair< const double*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? smartarg1->get() : NULL;
   (&arg2)->first  = static_cast<const double*>(farg2->data);
@@ -5187,7 +5156,6 @@ SWIGEXPORT void swigc_TpetraMultiVector_meanValue(SwigfClassWrapper const *farg1
   std::pair< SC *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   
-  arg2 = ::std::pair< double*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::MultiVector<SC,LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   (&arg2)->first  = static_cast<double*>(farg2->data);
@@ -5225,7 +5193,6 @@ SWIGEXPORT void swigc_TpetraMultiVector_get1dCopy(SwigfClassWrapper const *farg1
   size_t arg3 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   
-  arg2 = ::std::pair< double*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::MultiVector<SC,LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   (&arg2)->first  = static_cast<double*>(farg2->data);
@@ -6817,8 +6784,8 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraCrsGraph_getExporter(SwigfClassWrapper 
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumRows(SwigfClassWrapper const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT int swigc_TpetraCrsGraph_getGlobalNumRows(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   Tpetra::global_size_t result;
@@ -6853,8 +6820,8 @@ SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumRows(SwigfClassWrapper
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumCols(SwigfClassWrapper const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT int swigc_TpetraCrsGraph_getGlobalNumCols(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   Tpetra::global_size_t result;
@@ -6961,8 +6928,8 @@ SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getNodeNumCols(SwigfClassWrapper c
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumEntries(SwigfClassWrapper const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT int swigc_TpetraCrsGraph_getGlobalNumEntries(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   Tpetra::global_size_t result;
@@ -7221,8 +7188,8 @@ SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getNumAllocatedEntriesInLocalRow(S
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumDiags(SwigfClassWrapper const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT int swigc_TpetraCrsGraph_getGlobalNumDiags(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   Tpetra::global_size_t result;
@@ -7365,8 +7332,8 @@ SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getNodeMaxNumRowEntries(SwigfClass
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_hasColMap(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsGraph_hasColMap(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -7396,13 +7363,13 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_hasColMap(SwigfClassWrapper const *farg1) {
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isLowerTriangular(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsGraph_isLowerTriangular(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -7432,13 +7399,13 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isLowerTriangular(SwigfClassWrapper const *
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isUpperTriangular(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsGraph_isUpperTriangular(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -7468,13 +7435,13 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isUpperTriangular(SwigfClassWrapper const *
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isLocallyIndexed(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsGraph_isLocallyIndexed(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -7504,13 +7471,13 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isLocallyIndexed(SwigfClassWrapper const *f
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isGloballyIndexed(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsGraph_isGloballyIndexed(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -7540,13 +7507,13 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isGloballyIndexed(SwigfClassWrapper const *
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isFillComplete(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsGraph_isFillComplete(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -7576,13 +7543,13 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isFillComplete(SwigfClassWrapper const *far
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isFillActive(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsGraph_isFillActive(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -7612,13 +7579,13 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isFillActive(SwigfClassWrapper const *farg1
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isSorted(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsGraph_isSorted(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -7648,13 +7615,13 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isSorted(SwigfClassWrapper const *farg1) {
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isStorageOptimized(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsGraph_isStorageOptimized(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -7684,7 +7651,7 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isStorageOptimized(SwigfClassWrapper const 
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
@@ -7725,8 +7692,8 @@ SWIGEXPORT int swigc_TpetraCrsGraph_getProfileType(SwigfClassWrapper const *farg
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_supportsRowViews(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsGraph_supportsRowViews(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -7756,13 +7723,13 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_supportsRowViews(SwigfClassWrapper const *f
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraCrsGraph_description(SwigfClassWrapper const *farg1) {
-  SwigfClassWrapper fresult ;
+SWIGEXPORT SwigfArrayWrapper swigc_TpetraCrsGraph_description(SwigfClassWrapper const *farg1) {
+  SwigfArrayWrapper fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   std::string result;
@@ -7780,20 +7747,21 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraCrsGraph_description(SwigfClassWrapper 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), return SwigfClassWrapper_uninitialized());
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return SwigfArrayWrapper_uninitialized());
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigfClassWrapper_uninitialized());
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigfArrayWrapper_uninitialized());
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return SwigfClassWrapper_uninitialized());
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return SwigfArrayWrapper_uninitialized());
     }
   }
-  fresult.ptr = (new std::string(static_cast< const std::string& >(result)));
-  fresult.mem = SWIGF_MOVE;
+  
+  fresult = swigf::store_string(result);
+  
   return fresult;
 }
 
@@ -7834,7 +7802,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_replaceColMap(SwigfClassWrapper const *farg
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_0(SwigfClassWrapper const *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, bool const *farg4) {
+SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_0(SwigfClassWrapper const *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, int const *farg4) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const > *arg3 = 0 ;
@@ -7847,7 +7815,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_0(SwigfClassWrapper co
   arg1 = smartarg1 ? smartarg1->get() : NULL;
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg2->ptr) : &tempnull2;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const > * >(farg3->ptr) : &tempnull3;
-  arg4 = *farg4;
+  arg4 = (*farg4 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
@@ -8025,8 +7993,8 @@ SWIGEXPORT void swigc_TpetraCrsGraph_removeEmptyProcessesInPlace(SwigfClassWrapp
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_haveGlobalConstants(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsGraph_haveGlobalConstants(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -8056,7 +8024,7 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_haveGlobalConstants(SwigfClassWrapper const
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
@@ -8104,7 +8072,6 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraCrsGraph__SWIG_6(SwigfClassWrapper 
   Teuchos::RCP< Teuchos::ParameterList > tempnull4 ;
   Tpetra::CrsGraph< LO,GO,NO > *result = 0 ;
   
-  arg2 = ::std::pair< const size_t*, std::size_t >();
   arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg1->ptr) : &tempnull1;
   (&arg2)->first  = static_cast<const size_t*>(farg2->data);
   (&arg2)->second = farg2->size;
@@ -8147,7 +8114,6 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraCrsGraph__SWIG_7(SwigfClassWrapper 
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > tempnull1 ;
   Tpetra::CrsGraph< LO,GO,NO > *result = 0 ;
   
-  arg2 = ::std::pair< const size_t*, std::size_t >();
   arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg1->ptr) : &tempnull1;
   (&arg2)->first  = static_cast<const size_t*>(farg2->data);
   (&arg2)->second = farg2->size;
@@ -8188,7 +8154,6 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraCrsGraph__SWIG_8(SwigfClassWrapper 
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > tempnull1 ;
   Tpetra::CrsGraph< LO,GO,NO > *result = 0 ;
   
-  arg2 = ::std::pair< const size_t*, std::size_t >();
   arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg1->ptr) : &tempnull1;
   (&arg2)->first  = static_cast<const size_t*>(farg2->data);
   (&arg2)->second = farg2->size;
@@ -8233,7 +8198,6 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraCrsGraph__SWIG_9(SwigfClassWrapper 
   Teuchos::RCP< Teuchos::ParameterList > tempnull5 ;
   Tpetra::CrsGraph< LO,GO,NO > *result = 0 ;
   
-  arg3 = ::std::pair< const size_t*, std::size_t >();
   arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg1->ptr) : &tempnull1;
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg2->ptr) : &tempnull2;
   (&arg3)->first  = static_cast<const size_t*>(farg3->data);
@@ -8279,7 +8243,6 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraCrsGraph__SWIG_10(SwigfClassWrapper
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > tempnull2 ;
   Tpetra::CrsGraph< LO,GO,NO > *result = 0 ;
   
-  arg3 = ::std::pair< const size_t*, std::size_t >();
   arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg1->ptr) : &tempnull1;
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg2->ptr) : &tempnull2;
   (&arg3)->first  = static_cast<const size_t*>(farg3->data);
@@ -8323,7 +8286,6 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraCrsGraph__SWIG_11(SwigfClassWrapper
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > tempnull2 ;
   Tpetra::CrsGraph< LO,GO,NO > *result = 0 ;
   
-  arg3 = ::std::pair< const size_t*, std::size_t >();
   arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg1->ptr) : &tempnull1;
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg2->ptr) : &tempnull2;
   (&arg3)->first  = static_cast<const size_t*>(farg3->data);
@@ -8369,8 +8331,6 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraCrsGraph__SWIG_12(SwigfClassWrapper
   Teuchos::RCP< Teuchos::ParameterList > tempnull5 ;
   Tpetra::CrsGraph< LO,GO,NO > *result = 0 ;
   
-  arg3 = ::std::pair< size_t*, std::size_t >();
-  arg4 = ::std::pair< int*, std::size_t >();
   arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg1->ptr) : &tempnull1;
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg2->ptr) : &tempnull2;
   (&arg3)->first  = static_cast<size_t*>(farg3->data);
@@ -8417,8 +8377,6 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraCrsGraph__SWIG_13(SwigfClassWrapper
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > tempnull2 ;
   Tpetra::CrsGraph< LO,GO,NO > *result = 0 ;
   
-  arg3 = ::std::pair< size_t*, std::size_t >();
-  arg4 = ::std::pair< int*, std::size_t >();
   arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg1->ptr) : &tempnull1;
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg2->ptr) : &tempnull2;
   (&arg3)->first  = static_cast<size_t*>(farg3->data);
@@ -8460,7 +8418,6 @@ SWIGEXPORT void swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_1(SwigfClassWrapp
   std::pair< GO const *,std::size_t > arg3 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > > *smartarg1 ;
   
-  arg3 = ::std::pair< const long long*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? smartarg1->get() : NULL;
   arg2 = *farg2;
@@ -8499,7 +8456,6 @@ SWIGEXPORT void swigc_TpetraCrsGraph_insertLocalIndices(SwigfClassWrapper const 
   std::pair< LO const *,std::size_t > arg3 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > > *smartarg1 ;
   
-  arg3 = ::std::pair< const int*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? smartarg1->get() : NULL;
   arg2 = *farg2 - 1;
@@ -8539,7 +8495,6 @@ SWIGEXPORT void swigc_TpetraCrsGraph_getGlobalRowCopy(SwigfClassWrapper const *f
   size_t *arg4 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   
-  arg3 = ::std::pair< long long*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::CrsGraph<LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   arg2 = *farg2;
@@ -8580,7 +8535,6 @@ SWIGEXPORT void swigc_TpetraCrsGraph_getLocalRowCopy(SwigfClassWrapper const *fa
   size_t *arg4 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   
-  arg3 = ::std::pair< int*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::CrsGraph<LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   arg2 = *farg2 - 1;
@@ -8620,7 +8574,6 @@ SWIGEXPORT void swigc_TpetraCrsGraph_getgblRowView(SwigfClassWrapper const *farg
   std::pair< GO const *,std::size_t > arg3 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   
-  arg3 = ::std::pair< const long long*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::CrsGraph<LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   arg2 = *farg2;
@@ -8660,9 +8613,6 @@ SWIGEXPORT void swigc_TpetraCrsGraph_setAllIndices(SwigfClassWrapper const *farg
   std::pair< SC *,std::size_t > arg4 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > > *smartarg1 ;
   
-  arg2 = ::std::pair< size_t*, std::size_t >();
-  arg3 = ::std::pair< int*, std::size_t >();
-  arg4 = ::std::pair< double*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? smartarg1->get() : NULL;
   (&arg2)->first  = static_cast<size_t*>(farg2->data);
@@ -8703,7 +8653,6 @@ SWIGEXPORT void swigc_TpetraCrsGraph_getNodeRowPtrs(SwigfClassWrapper const *far
   std::pair< std::size_t *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   
-  arg2 = ::std::pair< size_t*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::CrsGraph<LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   (&arg2)->first  = static_cast<size_t*>(farg2->data);
@@ -8740,7 +8689,6 @@ SWIGEXPORT void swigc_TpetraCrsGraph_getNodePackedIndices(SwigfClassWrapper cons
   std::pair< std::size_t *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   
-  arg2 = ::std::pair< size_t*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::CrsGraph<LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   (&arg2)->first  = static_cast<size_t*>(farg2->data);
@@ -8777,7 +8725,6 @@ SWIGEXPORT void swigc_TpetraCrsGraph_getLocalDiagOffsets(SwigfClassWrapper const
   std::pair< std::size_t *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO,NO::classic > const > *smartarg1 ;
   
-  arg2 = ::std::pair< size_t*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::CrsGraph<LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   (&arg2)->first  = static_cast<size_t*>(farg2->data);
@@ -9896,7 +9843,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_replaceColMap(SwigfClassWrapper const *far
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_0(SwigfClassWrapper const *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, bool const *farg5) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_0(SwigfClassWrapper const *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, int const *farg5) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::crs_graph_type *arg2 = (Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::crs_graph_type *) (Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::crs_graph_type *)0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > *arg3 = 0 ;
@@ -9913,7 +9860,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_0(SwigfClassWrapper c
   arg2 = smartarg2 ? smartarg2->get() : NULL;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg3->ptr) : &tempnull3;
   arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const > * >(farg4->ptr) : &tempnull4;
-  arg5 = *farg5;
+  arg5 = (*farg5 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
@@ -10247,8 +10194,8 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraCrsMatrix_getCrsGraph(SwigfClassWrapper
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumRows(SwigfClassWrapper const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_getGlobalNumRows(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   Tpetra::global_size_t result;
@@ -10283,8 +10230,8 @@ SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumRows(SwigfClassWrappe
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumCols(SwigfClassWrapper const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_getGlobalNumCols(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   Tpetra::global_size_t result;
@@ -10391,8 +10338,8 @@ SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getNodeNumCols(SwigfClassWrapper 
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumEntries(SwigfClassWrapper const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_getGlobalNumEntries(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   Tpetra::global_size_t result;
@@ -10539,8 +10486,8 @@ SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getNumEntriesInLocalRow(SwigfClas
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumDiags(SwigfClassWrapper const *farg1) {
-  unsigned long fresult ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_getGlobalNumDiags(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   Tpetra::global_size_t result;
@@ -10683,8 +10630,8 @@ SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getNodeMaxNumRowEntries(SwigfClas
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_hasColMap(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_hasColMap(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -10714,13 +10661,13 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_hasColMap(SwigfClassWrapper const *farg1) 
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isLowerTriangular(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_isLowerTriangular(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -10750,13 +10697,13 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isLowerTriangular(SwigfClassWrapper const 
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isUpperTriangular(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_isUpperTriangular(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -10786,13 +10733,13 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isUpperTriangular(SwigfClassWrapper const 
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isLocallyIndexed(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_isLocallyIndexed(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -10822,13 +10769,13 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isLocallyIndexed(SwigfClassWrapper const *
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isGloballyIndexed(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_isGloballyIndexed(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -10858,13 +10805,13 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isGloballyIndexed(SwigfClassWrapper const 
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isFillComplete(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_isFillComplete(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -10894,13 +10841,13 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isFillComplete(SwigfClassWrapper const *fa
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isFillActive(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_isFillActive(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -10930,13 +10877,13 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isFillActive(SwigfClassWrapper const *farg
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isStorageOptimized(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_isStorageOptimized(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -10966,7 +10913,7 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isStorageOptimized(SwigfClassWrapper const
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
@@ -11007,8 +10954,8 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_getProfileType(SwigfClassWrapper const *far
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isStaticGraph(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_isStaticGraph(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -11038,7 +10985,7 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isStaticGraph(SwigfClassWrapper const *far
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
@@ -11079,8 +11026,8 @@ SWIGEXPORT double swigc_TpetraCrsMatrix_getFrobeniusNorm(SwigfClassWrapper const
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_supportsRowViews(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_supportsRowViews(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -11110,7 +11057,7 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_supportsRowViews(SwigfClassWrapper const *
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
@@ -11307,8 +11254,8 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_3(SwigfClassWrapper const *far
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_hasTransposeApply(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_hasTransposeApply(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -11338,7 +11285,7 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_hasTransposeApply(SwigfClassWrapper const 
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
@@ -11474,7 +11421,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_gaussSeidel(SwigfClassWrapper const *farg1
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_gaussSeidelCopy(SwigfClassWrapper const *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, double const *farg5, int const *farg6, int const *farg7, bool const *farg8) {
+SWIGEXPORT void swigc_TpetraCrsMatrix_gaussSeidelCopy(SwigfClassWrapper const *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, double const *farg5, int const *farg6, int const *farg7, int const *farg8) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,NO::classic > *arg2 = 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,NO::classic > *arg3 = 0 ;
@@ -11505,7 +11452,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_gaussSeidelCopy(SwigfClassWrapper const *f
   arg5 = reinterpret_cast< double * >(const_cast< double* >(farg5));
   arg6 = static_cast< Tpetra::ESweepDirection >(*farg6);
   arg7 = *farg7;
-  arg8 = *farg8;
+  arg8 = (*farg8 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
@@ -11533,8 +11480,8 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_gaussSeidelCopy(SwigfClassWrapper const *f
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraCrsMatrix_description(SwigfClassWrapper const *farg1) {
-  SwigfClassWrapper fresult ;
+SWIGEXPORT SwigfArrayWrapper swigc_TpetraCrsMatrix_description(SwigfClassWrapper const *farg1) {
+  SwigfArrayWrapper fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   std::string result;
@@ -11552,20 +11499,21 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraCrsMatrix_description(SwigfClassWrapper
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), return SwigfClassWrapper_uninitialized());
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return SwigfArrayWrapper_uninitialized());
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigfClassWrapper_uninitialized());
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigfArrayWrapper_uninitialized());
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return SwigfClassWrapper_uninitialized());
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return SwigfArrayWrapper_uninitialized());
     }
   }
-  fresult.ptr = (new std::string(static_cast< const std::string& >(result)));
-  fresult.mem = SWIGF_MOVE;
+  
+  fresult = swigf::store_string(result);
+  
   return fresult;
 }
 
@@ -11969,8 +11917,8 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_4(SwigfClassWr
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_haveGlobalConstants(SwigfClassWrapper const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_TpetraCrsMatrix_haveGlobalConstants(SwigfClassWrapper const *farg1) {
+  int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   bool result;
@@ -12000,7 +11948,7 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_haveGlobalConstants(SwigfClassWrapper cons
       SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
@@ -12015,7 +11963,6 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraCrsMatrix__SWIG_8(SwigfClassWrapper
   Teuchos::RCP< Teuchos::ParameterList > tempnull4 ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *result = 0 ;
   
-  arg2 = ::std::pair< const size_t*, std::size_t >();
   arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg1->ptr) : &tempnull1;
   (&arg2)->first  = static_cast<const size_t*>(farg2->data);
   (&arg2)->second = farg2->size;
@@ -12058,7 +12005,6 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraCrsMatrix__SWIG_9(SwigfClassWrapper
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > tempnull1 ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *result = 0 ;
   
-  arg2 = ::std::pair< const size_t*, std::size_t >();
   arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg1->ptr) : &tempnull1;
   (&arg2)->first  = static_cast<const size_t*>(farg2->data);
   (&arg2)->second = farg2->size;
@@ -12099,7 +12045,6 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraCrsMatrix__SWIG_10(SwigfClassWrappe
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > tempnull1 ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *result = 0 ;
   
-  arg2 = ::std::pair< const size_t*, std::size_t >();
   arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg1->ptr) : &tempnull1;
   (&arg2)->first  = static_cast<const size_t*>(farg2->data);
   (&arg2)->second = farg2->size;
@@ -12144,7 +12089,6 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraCrsMatrix__SWIG_11(SwigfClassWrappe
   Teuchos::RCP< Teuchos::ParameterList > tempnull5 ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *result = 0 ;
   
-  arg3 = ::std::pair< const size_t*, std::size_t >();
   arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg1->ptr) : &tempnull1;
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg2->ptr) : &tempnull2;
   (&arg3)->first  = static_cast<const size_t*>(farg3->data);
@@ -12190,7 +12134,6 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraCrsMatrix__SWIG_12(SwigfClassWrappe
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > tempnull2 ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *result = 0 ;
   
-  arg3 = ::std::pair< const size_t*, std::size_t >();
   arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg1->ptr) : &tempnull1;
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg2->ptr) : &tempnull2;
   (&arg3)->first  = static_cast<const size_t*>(farg3->data);
@@ -12234,7 +12177,6 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraCrsMatrix__SWIG_13(SwigfClassWrappe
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > tempnull2 ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *result = 0 ;
   
-  arg3 = ::std::pair< const size_t*, std::size_t >();
   arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg1->ptr) : &tempnull1;
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg2->ptr) : &tempnull2;
   (&arg3)->first  = static_cast<const size_t*>(farg3->data);
@@ -12281,9 +12223,6 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraCrsMatrix__SWIG_14(SwigfClassWrappe
   Teuchos::RCP< Teuchos::ParameterList > tempnull6 ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *result = 0 ;
   
-  arg3 = ::std::pair< size_t*, std::size_t >();
-  arg4 = ::std::pair< int*, std::size_t >();
-  arg5 = ::std::pair< double*, std::size_t >();
   arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg1->ptr) : &tempnull1;
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg2->ptr) : &tempnull2;
   (&arg3)->first  = static_cast<size_t*>(farg3->data);
@@ -12333,9 +12272,6 @@ SWIGEXPORT SwigfClassWrapper swigc_new_TpetraCrsMatrix__SWIG_15(SwigfClassWrappe
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > tempnull2 ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *result = 0 ;
   
-  arg3 = ::std::pair< size_t*, std::size_t >();
-  arg4 = ::std::pair< int*, std::size_t >();
-  arg5 = ::std::pair< double*, std::size_t >();
   arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg1->ptr) : &tempnull1;
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic >::map_type const > * >(farg2->ptr) : &tempnull2;
   (&arg3)->first  = static_cast<size_t*>(farg3->data);
@@ -12380,8 +12316,6 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_insertGlobalValues(SwigfClassWrapper const
   std::pair< SC const *,std::size_t > arg4 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > > *smartarg1 ;
   
-  arg3 = ::std::pair< const long long*, std::size_t >();
-  arg4 = ::std::pair< const double*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? smartarg1->get() : NULL;
   arg2 = *farg2;
@@ -12423,8 +12357,6 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_insertLocalValues(SwigfClassWrapper const 
   std::pair< SC const *,std::size_t > arg4 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > > *smartarg1 ;
   
-  arg3 = ::std::pair< const int*, std::size_t >();
-  arg4 = ::std::pair< const double*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? smartarg1->get() : NULL;
   arg2 = *farg2 - 1;
@@ -12468,8 +12400,6 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_replaceGlobalValues(SwigfClassWrapper const
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   LO result;
   
-  arg3 = ::std::pair< const long long*, std::size_t >();
-  arg4 = ::std::pair< const double*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   arg2 = *farg2;
@@ -12514,8 +12444,6 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues(SwigfClassWrapper const
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > > *smartarg1 ;
   LO result;
   
-  arg3 = ::std::pair< const long long*, std::size_t >();
-  arg4 = ::std::pair< const double*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? smartarg1->get() : NULL;
   arg2 = *farg2;
@@ -12558,9 +12486,6 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_setAllValues(SwigfClassWrapper const *farg
   std::pair< SC *,std::size_t > arg4 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > > *smartarg1 ;
   
-  arg2 = ::std::pair< size_t*, std::size_t >();
-  arg3 = ::std::pair< int*, std::size_t >();
-  arg4 = ::std::pair< double*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? smartarg1->get() : NULL;
   (&arg2)->first  = static_cast<size_t*>(farg2->data);
@@ -12603,9 +12528,6 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_getAllValues(SwigfClassWrapper const *farg
   std::pair< SC *,std::size_t > arg4 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   
-  arg2 = ::std::pair< size_t*, std::size_t >();
-  arg3 = ::std::pair< int*, std::size_t >();
-  arg4 = ::std::pair< double*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   (&arg2)->first  = static_cast<size_t*>(farg2->data);
@@ -12649,8 +12571,6 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowCopy(SwigfClassWrapper const *
   size_t *arg5 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   
-  arg3 = ::std::pair< long long*, std::size_t >();
-  arg4 = ::std::pair< double*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   arg2 = *farg2;
@@ -12694,8 +12614,6 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_getLocalRowCopy(SwigfClassWrapper const *f
   size_t *arg5 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   
-  arg3 = ::std::pair< int*, std::size_t >();
-  arg4 = ::std::pair< double*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   arg2 = *farg2 - 1;
@@ -12738,8 +12656,6 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowView(SwigfClassWrapper const *
   std::pair< SC const *,std::size_t > arg4 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   
-  arg3 = ::std::pair< const long long*, std::size_t >();
-  arg4 = ::std::pair< const double*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   arg2 = *farg2;
@@ -12779,7 +12695,6 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_getLocalDiagOffsets(SwigfClassWrapper cons
   std::pair< std::size_t *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   
-  arg2 = ::std::pair< size_t*, std::size_t >();
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = smartarg1 ? const_cast<Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>*>(smartarg1->get()) : NULL;
   (&arg2)->first  = static_cast<size_t*>(farg2->data);
@@ -13007,30 +12922,31 @@ SWIGEXPORT void swigc_assignment_TpetraCrsMatrix(SwigfClassWrapper * self, Swigf
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_0(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, bool const *farg3, bool const *farg4, bool const *farg5) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_0(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, int const *farg3, int const *farg4, int const *farg5) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
   bool arg3 ;
   bool arg4 ;
   bool arg5 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_graph_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::Comm< int > const > * >(farg2->ptr) : &tempnull2;
-  arg3 = *farg3;
-  arg4 = *farg4;
-  arg5 = *farg5;
+  arg3 = (*farg3 ? true : false);
+  arg4 = (*farg4 ? true : false);
+  arg5 = (*farg5 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3,arg4,arg5);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseGraphFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3,arg4,arg5);
     }
     catch (const std::range_error& e)
     {
@@ -13053,28 +12969,29 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_0(Swig
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_1(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, bool const *farg3, bool const *farg4) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_1(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, int const *farg3, int const *farg4) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
   bool arg3 ;
   bool arg4 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_graph_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::Comm< int > const > * >(farg2->ptr) : &tempnull2;
-  arg3 = *farg3;
-  arg4 = *farg4;
+  arg3 = (*farg3 ? true : false);
+  arg4 = (*farg4 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3,arg4);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseGraphFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3,arg4);
     }
     catch (const std::range_error& e)
     {
@@ -13097,26 +13014,27 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_1(Swig
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_2(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, bool const *farg3) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_2(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, int const *farg3) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
   bool arg3 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_graph_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::Comm< int > const > * >(farg2->ptr) : &tempnull2;
-  arg3 = *farg3;
+  arg3 = (*farg3 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseGraphFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3);
     }
     catch (const std::range_error& e)
     {
@@ -13141,14 +13059,15 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_2(Swig
 
 SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_3(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_graph_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::Comm< int > const > * >(farg2->ptr) : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -13156,7 +13075,7 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_3(Swig
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseGraphFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2);
     }
     catch (const std::range_error& e)
     {
@@ -13179,34 +13098,35 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_3(Swig
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_4(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, bool const *farg5, bool const *farg6) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_4(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, int const *farg5, int const *farg6) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg3 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg4 = 0 ;
   bool arg5 ;
   bool arg6 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull3 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull4 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_graph_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::Comm< int > const > * >(farg2->ptr) : &tempnull2;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg3->ptr) : &tempnull3;
   arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg4->ptr) : &tempnull4;
-  arg5 = *farg5;
-  arg6 = *farg6;
+  arg5 = (*farg5 ? true : false);
+  arg6 = (*farg6 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_4(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4,arg5,arg6);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseGraphFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4,arg5,arg6);
     }
     catch (const std::range_error& e)
     {
@@ -13229,32 +13149,33 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_4(Swig
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_5(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, bool const *farg5) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_5(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, int const *farg5) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg3 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg4 = 0 ;
   bool arg5 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull3 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull4 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_graph_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::Comm< int > const > * >(farg2->ptr) : &tempnull2;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg3->ptr) : &tempnull3;
   arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg4->ptr) : &tempnull4;
-  arg5 = *farg5;
+  arg5 = (*farg5 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_4(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4,arg5);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseGraphFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4,arg5);
     }
     catch (const std::range_error& e)
     {
@@ -13279,18 +13200,19 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_5(Swig
 
 SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_6(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg3 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg4 = 0 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull3 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull4 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_graph_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::Comm< int > const > * >(farg2->ptr) : &tempnull2;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg3->ptr) : &tempnull3;
   arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg4->ptr) : &tempnull4;
@@ -13300,7 +13222,7 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_6(Swig
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_4(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseGraphFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4);
     }
     catch (const std::range_error& e)
     {
@@ -13323,39 +13245,40 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_6(Swig
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_7(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, SwigfClassWrapper const *farg5, bool const *farg6, bool const *farg7, bool const *farg8) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_7(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, SwigfClassWrapper const *farg5, int const *farg6, int const *farg7, int const *farg8) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg2 = 0 ;
+  std::string *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg4 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg5 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg5 = 0 ;
   bool arg6 ;
   bool arg7 ;
   bool arg8 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull2 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull2 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull4 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull5 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_graph_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg2->ptr) : &tempnull2;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
+  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg2->ptr) : &tempnull2;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg3->ptr) : &tempnull3;
-  arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg4->ptr) : &tempnull4;
-  arg5 = farg5->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg5->ptr) : &tempnull5;
-  arg6 = *farg6;
-  arg7 = *farg7;
-  arg8 = *farg8;
+  arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg4->ptr) : &tempnull4;
+  arg5 = farg5->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg5->ptr) : &tempnull5;
+  arg6 = (*farg6 ? true : false);
+  arg7 = (*farg7 ? true : false);
+  arg8 = (*farg8 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_7(arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5,arg6,arg7,arg8);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseGraphFile((std::string const &)*arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5,arg6,arg7,arg8);
     }
     catch (const std::range_error& e)
     {
@@ -13378,37 +13301,38 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_7(Swig
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_8(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, SwigfClassWrapper const *farg5, bool const *farg6, bool const *farg7) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_8(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, SwigfClassWrapper const *farg5, int const *farg6, int const *farg7) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg2 = 0 ;
+  std::string *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg4 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg5 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg5 = 0 ;
   bool arg6 ;
   bool arg7 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull2 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull2 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull4 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull5 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_graph_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg2->ptr) : &tempnull2;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
+  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg2->ptr) : &tempnull2;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg3->ptr) : &tempnull3;
-  arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg4->ptr) : &tempnull4;
-  arg5 = farg5->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg5->ptr) : &tempnull5;
-  arg6 = *farg6;
-  arg7 = *farg7;
+  arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg4->ptr) : &tempnull4;
+  arg5 = farg5->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg5->ptr) : &tempnull5;
+  arg6 = (*farg6 ? true : false);
+  arg7 = (*farg7 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_7(arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5,arg6,arg7);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseGraphFile((std::string const &)*arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5,arg6,arg7);
     }
     catch (const std::range_error& e)
     {
@@ -13431,35 +13355,36 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_8(Swig
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_9(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, SwigfClassWrapper const *farg5, bool const *farg6) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_9(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, SwigfClassWrapper const *farg5, int const *farg6) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg2 = 0 ;
+  std::string *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg4 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg5 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg5 = 0 ;
   bool arg6 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull2 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull2 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull4 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull5 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_graph_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg2->ptr) : &tempnull2;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
+  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg2->ptr) : &tempnull2;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg3->ptr) : &tempnull3;
-  arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg4->ptr) : &tempnull4;
-  arg5 = farg5->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg5->ptr) : &tempnull5;
-  arg6 = *farg6;
+  arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg4->ptr) : &tempnull4;
+  arg5 = farg5->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg5->ptr) : &tempnull5;
+  arg6 = (*farg6 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_7(arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5,arg6);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseGraphFile((std::string const &)*arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5,arg6);
     }
     catch (const std::range_error& e)
     {
@@ -13484,31 +13409,32 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_9(Swig
 
 SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_10(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, SwigfClassWrapper const *farg5) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg2 = 0 ;
+  std::string *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg4 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg5 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg5 = 0 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull2 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull4 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull5 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_graph_type > result;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_graph_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg2->ptr) : &tempnull2;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
+  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg2->ptr) : &tempnull2;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg3->ptr) : &tempnull3;
-  arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg4->ptr) : &tempnull4;
-  arg5 = farg5->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg5->ptr) : &tempnull5;
+  arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg4->ptr) : &tempnull4;
+  arg5 = farg5->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg5->ptr) : &tempnull5;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseGraphFile__SWIG_7(arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseGraphFile((std::string const &)*arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5);
     }
     catch (const std::range_error& e)
     {
@@ -13531,30 +13457,31 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_10(Swi
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_0(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, bool const *farg3, bool const *farg4, bool const *farg5) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_0(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, int const *farg3, int const *farg4, int const *farg5) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
   bool arg3 ;
   bool arg4 ;
   bool arg5 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::Comm< int > const > * >(farg2->ptr) : &tempnull2;
-  arg3 = *farg3;
-  arg4 = *farg4;
-  arg5 = *farg5;
+  arg3 = (*farg3 ? true : false);
+  arg4 = (*farg4 ? true : false);
+  arg5 = (*farg5 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3,arg4,arg5);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3,arg4,arg5);
     }
     catch (const std::range_error& e)
     {
@@ -13577,28 +13504,29 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_0(SwigfArra
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_1(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, bool const *farg3, bool const *farg4) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_1(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, int const *farg3, int const *farg4) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
   bool arg3 ;
   bool arg4 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::Comm< int > const > * >(farg2->ptr) : &tempnull2;
-  arg3 = *farg3;
-  arg4 = *farg4;
+  arg3 = (*farg3 ? true : false);
+  arg4 = (*farg4 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3,arg4);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3,arg4);
     }
     catch (const std::range_error& e)
     {
@@ -13621,26 +13549,27 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_1(SwigfArra
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_2(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, bool const *farg3) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_2(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, int const *farg3) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
   bool arg3 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::Comm< int > const > * >(farg2->ptr) : &tempnull2;
-  arg3 = *farg3;
+  arg3 = (*farg3 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3);
     }
     catch (const std::range_error& e)
     {
@@ -13665,14 +13594,15 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_2(SwigfArra
 
 SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_3(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::Comm< int > const > * >(farg2->ptr) : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -13680,7 +13610,7 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_3(SwigfArra
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2);
     }
     catch (const std::range_error& e)
     {
@@ -13703,34 +13633,35 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_3(SwigfArra
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_4(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, bool const *farg5, bool const *farg6) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_4(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, int const *farg5, int const *farg6) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg3 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg4 = 0 ;
   bool arg5 ;
   bool arg6 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull3 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull4 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::Comm< int > const > * >(farg2->ptr) : &tempnull2;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg3->ptr) : &tempnull3;
   arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg4->ptr) : &tempnull4;
-  arg5 = *farg5;
-  arg6 = *farg6;
+  arg5 = (*farg5 ? true : false);
+  arg6 = (*farg6 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_4(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4,arg5,arg6);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4,arg5,arg6);
     }
     catch (const std::range_error& e)
     {
@@ -13753,32 +13684,33 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_4(SwigfArra
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_5(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, bool const *farg5) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_5(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, int const *farg5) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg3 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg4 = 0 ;
   bool arg5 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull3 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull4 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::Comm< int > const > * >(farg2->ptr) : &tempnull2;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg3->ptr) : &tempnull3;
   arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg4->ptr) : &tempnull4;
-  arg5 = *farg5;
+  arg5 = (*farg5 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_4(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4,arg5);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4,arg5);
     }
     catch (const std::range_error& e)
     {
@@ -13803,18 +13735,19 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_5(SwigfArra
 
 SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_6(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg3 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg4 = 0 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull3 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull4 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::Comm< int > const > * >(farg2->ptr) : &tempnull2;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg3->ptr) : &tempnull3;
   arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg4->ptr) : &tempnull4;
@@ -13824,7 +13757,7 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_6(SwigfArra
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_4(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg4);
     }
     catch (const std::range_error& e)
     {
@@ -13847,39 +13780,40 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_6(SwigfArra
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_7(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, SwigfClassWrapper const *farg5, bool const *farg6, bool const *farg7, bool const *farg8) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_7(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, SwigfClassWrapper const *farg5, int const *farg6, int const *farg7, int const *farg8) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg2 = 0 ;
+  std::string *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg4 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg5 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg5 = 0 ;
   bool arg6 ;
   bool arg7 ;
   bool arg8 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull2 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull2 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull4 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull5 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg2->ptr) : &tempnull2;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
+  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg2->ptr) : &tempnull2;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg3->ptr) : &tempnull3;
-  arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg4->ptr) : &tempnull4;
-  arg5 = farg5->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg5->ptr) : &tempnull5;
-  arg6 = *farg6;
-  arg7 = *farg7;
-  arg8 = *farg8;
+  arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg4->ptr) : &tempnull4;
+  arg5 = farg5->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg5->ptr) : &tempnull5;
+  arg6 = (*farg6 ? true : false);
+  arg7 = (*farg7 ? true : false);
+  arg8 = (*farg8 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_7(arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5,arg6,arg7,arg8);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseFile((std::string const &)*arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5,arg6,arg7,arg8);
     }
     catch (const std::range_error& e)
     {
@@ -13902,37 +13836,38 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_7(SwigfArra
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_8(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, SwigfClassWrapper const *farg5, bool const *farg6, bool const *farg7) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_8(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, SwigfClassWrapper const *farg5, int const *farg6, int const *farg7) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg2 = 0 ;
+  std::string *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg4 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg5 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg5 = 0 ;
   bool arg6 ;
   bool arg7 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull2 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull2 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull4 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull5 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg2->ptr) : &tempnull2;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
+  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg2->ptr) : &tempnull2;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg3->ptr) : &tempnull3;
-  arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg4->ptr) : &tempnull4;
-  arg5 = farg5->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg5->ptr) : &tempnull5;
-  arg6 = *farg6;
-  arg7 = *farg7;
+  arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg4->ptr) : &tempnull4;
+  arg5 = farg5->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg5->ptr) : &tempnull5;
+  arg6 = (*farg6 ? true : false);
+  arg7 = (*farg7 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_7(arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5,arg6,arg7);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseFile((std::string const &)*arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5,arg6,arg7);
     }
     catch (const std::range_error& e)
     {
@@ -13955,35 +13890,36 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_8(SwigfArra
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_9(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, SwigfClassWrapper const *farg5, bool const *farg6) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_9(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, SwigfClassWrapper const *farg5, int const *farg6) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg2 = 0 ;
+  std::string *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg4 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg5 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg5 = 0 ;
   bool arg6 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull2 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull2 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull4 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull5 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg2->ptr) : &tempnull2;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
+  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg2->ptr) : &tempnull2;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg3->ptr) : &tempnull3;
-  arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg4->ptr) : &tempnull4;
-  arg5 = farg5->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg5->ptr) : &tempnull5;
-  arg6 = *farg6;
+  arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg4->ptr) : &tempnull4;
+  arg5 = farg5->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg5->ptr) : &tempnull5;
+  arg6 = (*farg6 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_7(arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5,arg6);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseFile((std::string const &)*arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5,arg6);
     }
     catch (const std::range_error& e)
     {
@@ -14008,31 +13944,32 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_9(SwigfArra
 
 SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_10(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, SwigfClassWrapper const *farg5) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg2 = 0 ;
+  std::string *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg4 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg5 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull2 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg4 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > *arg5 = 0 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull2 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull4 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull5 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull4 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > tempnull5 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::sparse_matrix_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg2->ptr) : &tempnull2;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
+  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg2->ptr) : &tempnull2;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg3->ptr) : &tempnull3;
-  arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg4->ptr) : &tempnull4;
-  arg5 = farg5->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg5->ptr) : &tempnull5;
+  arg4 = farg4->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg4->ptr) : &tempnull4;
+  arg5 = farg5->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const > * >(farg5->ptr) : &tempnull5;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readSparseFile__SWIG_7(arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readSparseFile((std::string const &)*arg1,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,*arg3,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg4,(Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg5);
     }
     catch (const std::range_error& e)
     {
@@ -14055,31 +13992,32 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readSparseFile__SWIG_10(SwigfArr
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readDenseFile__SWIG_0(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, bool const *farg4, bool const *farg5) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readDenseFile__SWIG_0(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, int const *farg4, int const *farg5) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > *arg2 = 0 ;
+  std::string *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::comm_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
   bool arg4 ;
   bool arg5 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > tempnull2 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::comm_type const > tempnull2 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::multivector_type > result;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::multivector_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > * >(farg2->ptr) : &tempnull2;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
+  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::comm_type const > * >(farg2->ptr) : &tempnull2;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg3->ptr) : &tempnull3;
-  arg4 = *farg4;
-  arg5 = *farg5;
+  arg4 = (*farg4 ? true : false);
+  arg5 = (*farg5 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readDenseFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,*arg3,arg4,arg5);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readDenseFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,*arg3,arg4,arg5);
     }
     catch (const std::range_error& e)
     {
@@ -14102,29 +14040,30 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readDenseFile__SWIG_0(SwigfArray
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readDenseFile__SWIG_1(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, bool const *farg4) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readDenseFile__SWIG_1(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, int const *farg4) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > *arg2 = 0 ;
+  std::string *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::comm_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
   bool arg4 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > tempnull2 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::comm_type const > tempnull2 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::multivector_type > result;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::multivector_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > * >(farg2->ptr) : &tempnull2;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
+  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::comm_type const > * >(farg2->ptr) : &tempnull2;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg3->ptr) : &tempnull3;
-  arg4 = *farg4;
+  arg4 = (*farg4 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readDenseFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,*arg3,arg4);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readDenseFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,*arg3,arg4);
     }
     catch (const std::range_error& e)
     {
@@ -14149,17 +14088,18 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readDenseFile__SWIG_1(SwigfArray
 
 SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readDenseFile__SWIG_2(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > *arg2 = 0 ;
+  std::string *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::comm_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > *arg3 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > tempnull2 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::comm_type const > tempnull2 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > tempnull3 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::multivector_type > result;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::multivector_type > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > * >(farg2->ptr) : &tempnull2;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
+  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::comm_type const > * >(farg2->ptr) : &tempnull2;
   arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > * >(farg3->ptr) : &tempnull3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -14167,7 +14107,7 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readDenseFile__SWIG_2(SwigfArray
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readDenseFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,*arg3);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readDenseFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,*arg3);
     }
     catch (const std::range_error& e)
     {
@@ -14190,28 +14130,29 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readDenseFile__SWIG_2(SwigfArray
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readMapFile__SWIG_0(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, bool const *farg3, bool const *farg4) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readMapFile__SWIG_0(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, int const *farg3, int const *farg4) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > *arg2 = 0 ;
+  std::string *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::comm_type const > *arg2 = 0 ;
   bool arg3 ;
   bool arg4 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > tempnull2 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::comm_type const > tempnull2 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > * >(farg2->ptr) : &tempnull2;
-  arg3 = *farg3;
-  arg4 = *farg4;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
+  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::comm_type const > * >(farg2->ptr) : &tempnull2;
+  arg3 = (*farg3 ? true : false);
+  arg4 = (*farg4 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readMapFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3,arg4);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readMapFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3,arg4);
     }
     catch (const std::range_error& e)
     {
@@ -14234,26 +14175,27 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readMapFile__SWIG_0(SwigfArrayWr
 }
 
 
-SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readMapFile__SWIG_1(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, bool const *farg3) {
+SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readMapFile__SWIG_1(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, int const *farg3) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > *arg2 = 0 ;
+  std::string *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::comm_type const > *arg2 = 0 ;
   bool arg3 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > tempnull2 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::comm_type const > tempnull2 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > * >(farg2->ptr) : &tempnull2;
-  arg3 = *farg3;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
+  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::comm_type const > * >(farg2->ptr) : &tempnull2;
+  arg3 = (*farg3 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readMapFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readMapFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2,arg3);
     }
     catch (const std::range_error& e)
     {
@@ -14278,22 +14220,23 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readMapFile__SWIG_1(SwigfArrayWr
 
 SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readMapFile__SWIG_2(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2) {
   SwigfClassWrapper fresult ;
-  std::pair< char const *,std::size_t > arg1 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > *arg2 = 0 ;
-  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > tempnull2 ;
+  std::string *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::comm_type const > *arg2 = 0 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::comm_type const > tempnull2 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::map_type const > result;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > >::comm_type const > * >(farg2->ptr) : &tempnull2;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
+  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::comm_type const > * >(farg2->ptr) : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_MatrixMarket_Reader_Sl_CMT_Sg__readMapFile__SWIG_0(arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2);
+      result = Tpetra::MatrixMarket::Reader< CMT >::SWIGTEMPLATEDISAMBIGUATOR readMapFile((std::string const &)*arg1,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg2);
     }
     catch (const std::range_error& e)
     {
@@ -14311,39 +14254,6 @@ SWIGEXPORT SwigfClassWrapper swigc_TpetraReader_readMapFile__SWIG_2(SwigfArrayWr
     }
   }
   fresult.ptr = (new Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> >(static_cast< const Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> >& >(result)));
-  fresult.mem = SWIGF_MOVE;
-  return fresult;
-}
-
-
-SWIGEXPORT SwigfClassWrapper swigc_new_TpetraReader() {
-  SwigfClassWrapper fresult ;
-  Tpetra::MatrixMarket::Reader< CMT > *result = 0 ;
-  
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    swigf_check_unhandled_exception();
-    try
-    {
-      // Attempt the wrapped function call
-      result = (Tpetra::MatrixMarket::Reader< CMT > *)new Tpetra::MatrixMarket::Reader< CMT >();
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), return SwigfClassWrapper_uninitialized());
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigfClassWrapper_uninitialized());
-    }
-    catch (...)
-    {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return SwigfClassWrapper_uninitialized());
-    }
-  }
-  fresult.ptr = result ? new Teuchos::RCP< Tpetra::MatrixMarket::Reader<CMT> >(result SWIG_NO_NULL_DELETER_1) : NULL;
   fresult.mem = SWIGF_MOVE;
   return fresult;
 }
@@ -14390,68 +14300,35 @@ SWIGEXPORT void swigc_assignment_TpetraReader(SwigfClassWrapper * self, SwigfCla
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeMapFile__SWIG_0(SwigfClassWrapper const *farg1, SwigfClassWrapper const *farg2) {
+SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_0(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfArrayWrapper *farg3, SwigfArrayWrapper *farg4, int const *farg5) {
   std::string *arg1 = 0 ;
-  Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type *arg2 = 0 ;
-  Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg2 ;
-  
-  SWIGF_check_nonnull(*farg1, "std::string const &", "string", "Tpetra::MatrixMarket::Writer< CMT >::writeMapFile(std::string const &,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &)", return );
-  arg1 = static_cast< std::string * >(farg1->ptr);
-  SWIGF_check_sp_nonnull(farg2,
-    "Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type *", "TpetraMap", "Tpetra::MatrixMarket::Writer< CMT >::writeMapFile(std::string const &,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &)", return )
-  smartarg2 = static_cast< Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> >* >(farg2->ptr);
-  arg2 = const_cast<Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode>*>(smartarg2->get());
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    swigf_check_unhandled_exception();
-    try
-    {
-      // Attempt the wrapped function call
-      Tpetra::MatrixMarket::Writer< CMT >::SWIGTEMPLATEDISAMBIGUATOR writeMapFile((std::string const &)*arg1,(Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
-  
-}
-
-
-SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_0(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, bool const *farg5) {
-  std::pair< char const *,std::size_t > arg1 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
   bool arg5 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > tempnull2 ;
+  std::string tempstr3 ;
+  std::string tempstr4 ;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > * >(farg2->ptr) : &tempnull2;
-  SWIGF_check_nonnull(*farg3, "std::string const &", "string", "Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseFile__SWIG_0(std::pair< char const *,std::size_t >,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > const &,std::string const &,std::string const &,bool const)", return );
-  arg3 = static_cast< std::string * >(farg3->ptr);
-  SWIGF_check_nonnull(*farg4, "std::string const &", "string", "Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseFile__SWIG_0(std::pair< char const *,std::size_t >,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > const &,std::string const &,std::string const &,bool const)", return );
-  arg4 = static_cast< std::string * >(farg4->ptr);
-  arg5 = *farg5;
+  tempstr3 = std::string(static_cast<const char*>(farg3->data), farg3->size);
+  arg3 = &tempstr3;
+  
+  tempstr4 = std::string(static_cast<const char*>(farg4->data), farg4->size);
+  arg4 = &tempstr4;
+  
+  arg5 = (*farg5 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseFile__SWIG_0(arg1,(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > const > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+      Tpetra::MatrixMarket::Writer< CMT >::SWIGTEMPLATEDISAMBIGUATOR writeSparseFile((std::string const &)*arg1,(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > const > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
     }
     catch (const std::range_error& e)
     {
@@ -14472,28 +14349,33 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_0(SwigfArrayWrapper *fa
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_1(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4) {
-  std::pair< char const *,std::size_t > arg1 ;
+SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_1(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfArrayWrapper *farg3, SwigfArrayWrapper *farg4) {
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > tempnull2 ;
+  std::string tempstr3 ;
+  std::string tempstr4 ;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > * >(farg2->ptr) : &tempnull2;
-  SWIGF_check_nonnull(*farg3, "std::string const &", "string", "Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseFile__SWIG_0(std::pair< char const *,std::size_t >,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > const &,std::string const &,std::string const &)", return );
-  arg3 = static_cast< std::string * >(farg3->ptr);
-  SWIGF_check_nonnull(*farg4, "std::string const &", "string", "Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseFile__SWIG_0(std::pair< char const *,std::size_t >,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > const &,std::string const &,std::string const &)", return );
-  arg4 = static_cast< std::string * >(farg4->ptr);
+  tempstr3 = std::string(static_cast<const char*>(farg3->data), farg3->size);
+  arg3 = &tempstr3;
+  
+  tempstr4 = std::string(static_cast<const char*>(farg4->data), farg4->size);
+  arg4 = &tempstr4;
+  
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseFile__SWIG_0(arg1,(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > const > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+      Tpetra::MatrixMarket::Writer< CMT >::SWIGTEMPLATEDISAMBIGUATOR writeSparseFile((std::string const &)*arg1,(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > const > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
     }
     catch (const std::range_error& e)
     {
@@ -14514,24 +14396,25 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_1(SwigfArrayWrapper *fa
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_2(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, bool const *farg3) {
-  std::pair< char const *,std::size_t > arg1 ;
+SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_2(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, int const *farg3) {
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > *arg2 = 0 ;
   bool arg3 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > tempnull2 ;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > * >(farg2->ptr) : &tempnull2;
-  arg3 = *farg3;
+  arg3 = (*farg3 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseFile__SWIG_2(arg1,(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > const > const &)*arg2,arg3);
+      Tpetra::MatrixMarket::Writer< CMT >::SWIGTEMPLATEDISAMBIGUATOR writeSparseFile((std::string const &)*arg1,(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > const > const &)*arg2,arg3);
     }
     catch (const std::range_error& e)
     {
@@ -14553,13 +14436,14 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_2(SwigfArrayWrapper *fa
 
 
 SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_3(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2) {
-  std::pair< char const *,std::size_t > arg1 ;
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > *arg2 = 0 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > tempnull2 ;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > * >(farg2->ptr) : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -14567,7 +14451,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_3(SwigfArrayWrapper *fa
     try
     {
       // Attempt the wrapped function call
-      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseFile__SWIG_2(arg1,(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > const > const &)*arg2);
+      Tpetra::MatrixMarket::Writer< CMT >::SWIGTEMPLATEDISAMBIGUATOR writeSparseFile((std::string const &)*arg1,(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > const > const &)*arg2);
     }
     catch (const std::range_error& e)
     {
@@ -14588,30 +14472,35 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_3(SwigfArrayWrapper *fa
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_0(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4, bool const *farg5) {
-  std::pair< char const *,std::size_t > arg1 ;
+SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_0(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfArrayWrapper *farg3, SwigfArrayWrapper *farg4, int const *farg5) {
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
   bool arg5 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > tempnull2 ;
+  std::string tempstr3 ;
+  std::string tempstr4 ;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > * >(farg2->ptr) : &tempnull2;
-  SWIGF_check_nonnull(*farg3, "std::string const &", "string", "Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_0(std::pair< char const *,std::size_t >,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > const &,std::string const &,std::string const &,bool const)", return );
-  arg3 = static_cast< std::string * >(farg3->ptr);
-  SWIGF_check_nonnull(*farg4, "std::string const &", "string", "Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_0(std::pair< char const *,std::size_t >,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > const &,std::string const &,std::string const &,bool const)", return );
-  arg4 = static_cast< std::string * >(farg4->ptr);
-  arg5 = *farg5;
+  tempstr3 = std::string(static_cast<const char*>(farg3->data), farg3->size);
+  arg3 = &tempstr3;
+  
+  tempstr4 = std::string(static_cast<const char*>(farg4->data), farg4->size);
+  arg4 = &tempstr4;
+  
+  arg5 = (*farg5 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_0(arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+      Tpetra::MatrixMarket::Writer< CMT >::SWIGTEMPLATEDISAMBIGUATOR writeSparseGraphFile((std::string const &)*arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
     }
     catch (const std::range_error& e)
     {
@@ -14632,28 +14521,33 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_0(SwigfArrayWrappe
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_1(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfClassWrapper const *farg3, SwigfClassWrapper const *farg4) {
-  std::pair< char const *,std::size_t > arg1 ;
+SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_1(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, SwigfArrayWrapper *farg3, SwigfArrayWrapper *farg4) {
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > tempnull2 ;
+  std::string tempstr3 ;
+  std::string tempstr4 ;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > * >(farg2->ptr) : &tempnull2;
-  SWIGF_check_nonnull(*farg3, "std::string const &", "string", "Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_0(std::pair< char const *,std::size_t >,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > const &,std::string const &,std::string const &)", return );
-  arg3 = static_cast< std::string * >(farg3->ptr);
-  SWIGF_check_nonnull(*farg4, "std::string const &", "string", "Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_0(std::pair< char const *,std::size_t >,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > const &,std::string const &,std::string const &)", return );
-  arg4 = static_cast< std::string * >(farg4->ptr);
+  tempstr3 = std::string(static_cast<const char*>(farg3->data), farg3->size);
+  arg3 = &tempstr3;
+  
+  tempstr4 = std::string(static_cast<const char*>(farg4->data), farg4->size);
+  arg4 = &tempstr4;
+  
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_0(arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+      Tpetra::MatrixMarket::Writer< CMT >::SWIGTEMPLATEDISAMBIGUATOR writeSparseGraphFile((std::string const &)*arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
     }
     catch (const std::range_error& e)
     {
@@ -14674,24 +14568,25 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_1(SwigfArrayWrappe
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_2(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, bool const *farg3) {
-  std::pair< char const *,std::size_t > arg1 ;
+SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_2(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2, int const *farg3) {
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > *arg2 = 0 ;
   bool arg3 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > tempnull2 ;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > * >(farg2->ptr) : &tempnull2;
-  arg3 = *farg3;
+  arg3 = (*farg3 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_2(arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,arg3);
+      Tpetra::MatrixMarket::Writer< CMT >::SWIGTEMPLATEDISAMBIGUATOR writeSparseGraphFile((std::string const &)*arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,arg3);
     }
     catch (const std::range_error& e)
     {
@@ -14713,13 +14608,14 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_2(SwigfArrayWrappe
 
 
 SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2) {
-  std::pair< char const *,std::size_t > arg1 ;
+  std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > *arg2 = 0 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > tempnull2 ;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > * >(farg2->ptr) : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -14727,7 +14623,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(SwigfArrayWrappe
     try
     {
       // Attempt the wrapped function call
-      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_2(arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2);
+      Tpetra::MatrixMarket::Writer< CMT >::SWIGTEMPLATEDISAMBIGUATOR writeSparseGraphFile((std::string const &)*arg1,(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2);
     }
     catch (const std::range_error& e)
     {
@@ -14748,16 +14644,17 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(SwigfArrayWrappe
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeMapFile__SWIG_1(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2) {
-  std::pair< char const *,std::size_t > arg1 ;
+SWIGEXPORT void swigc_TpetraWriter_writeMapFile(SwigfArrayWrapper *farg1, SwigfClassWrapper const *farg2) {
+  std::string *arg1 = 0 ;
   Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type *arg2 = 0 ;
+  std::string tempstr1 ;
   Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg2 ;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = static_cast<const char*>(farg1->data);
-  (&arg1)->second = farg1->size;
+  tempstr1 = std::string(static_cast<const char*>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  
   SWIGF_check_sp_nonnull(farg2,
-    "Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type *", "TpetraMap", "Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeMapFile__SWIG_1(std::pair< char const *,std::size_t >,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &)", return )
+    "Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type *", "TpetraMap", "Tpetra::MatrixMarket::Writer< CMT >::writeMapFile(std::string const &,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &)", return )
   smartarg2 = static_cast< Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> >* >(farg2->ptr);
   arg2 = const_cast<Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode>*>(smartarg2->get());
   {
@@ -14766,7 +14663,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeMapFile__SWIG_1(SwigfArrayWrapper *farg1
     try
     {
       // Attempt the wrapped function call
-      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeMapFile__SWIG_1(arg1,(Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2);
+      Tpetra::MatrixMarket::Writer< CMT >::SWIGTEMPLATEDISAMBIGUATOR writeMapFile((std::string const &)*arg1,(Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2);
     }
     catch (const std::range_error& e)
     {
@@ -14861,7 +14758,7 @@ SWIGEXPORT void swigc_assignment_TpetraWriter(SwigfClassWrapper * self, SwigfCla
 }
 
 
-SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_0(SwigfClassWrapper const *farg1, bool const *farg2, SwigfClassWrapper const *farg3, bool const *farg4, SwigfClassWrapper const *farg5, bool const *farg6, SwigfClassWrapper const *farg7, SwigfClassWrapper const *farg8) {
+SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_0(SwigfClassWrapper const *farg1, int const *farg2, SwigfClassWrapper const *farg3, int const *farg4, SwigfClassWrapper const *farg5, int const *farg6, SwigfArrayWrapper *farg7, SwigfClassWrapper const *farg8) {
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   bool arg2 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg3 = 0 ;
@@ -14873,25 +14770,27 @@ SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_0(SwigfClassWrapper const
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg3 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > > *smartarg5 ;
+  std::string tempstr7 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull8 ;
   
   SWIGF_check_sp_nonnull(farg1,
     "Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraCrsMatrix", "Tpetra::MatrixMatrix::Multiply< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,bool,std::string const &,Teuchos::RCP< Teuchos::ParameterList > const &)", return )
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = const_cast<Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>*>(smartarg1->get());
-  arg2 = *farg2;
+  arg2 = (*farg2 ? true : false);
   SWIGF_check_sp_nonnull(farg3,
     "Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraCrsMatrix", "Tpetra::MatrixMatrix::Multiply< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,bool,std::string const &,Teuchos::RCP< Teuchos::ParameterList > const &)", return )
   smartarg3 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg3->ptr);
   arg3 = const_cast<Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>*>(smartarg3->get());
-  arg4 = *farg4;
+  arg4 = (*farg4 ? true : false);
   SWIGF_check_sp_nonnull(farg5,
     "Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraCrsMatrix", "Tpetra::MatrixMatrix::Multiply< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,bool,std::string const &,Teuchos::RCP< Teuchos::ParameterList > const &)", return )
   smartarg5 = static_cast< Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg5->ptr);
   arg5 = smartarg5->get();
-  arg6 = *farg6;
-  SWIGF_check_nonnull(*farg7, "std::string const &", "string", "Tpetra::MatrixMatrix::Multiply< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,bool,std::string const &,Teuchos::RCP< Teuchos::ParameterList > const &)", return );
-  arg7 = static_cast< std::string * >(farg7->ptr);
+  arg6 = (*farg6 ? true : false);
+  tempstr7 = std::string(static_cast<const char*>(farg7->data), farg7->size);
+  arg7 = &tempstr7;
+  
   arg8 = farg8->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg8->ptr) : &tempnull8;
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -14920,7 +14819,7 @@ SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_0(SwigfClassWrapper const
 }
 
 
-SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_1(SwigfClassWrapper const *farg1, bool const *farg2, SwigfClassWrapper const *farg3, bool const *farg4, SwigfClassWrapper const *farg5, bool const *farg6, SwigfClassWrapper const *farg7) {
+SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_1(SwigfClassWrapper const *farg1, int const *farg2, SwigfClassWrapper const *farg3, int const *farg4, SwigfClassWrapper const *farg5, int const *farg6, SwigfArrayWrapper *farg7) {
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   bool arg2 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg3 = 0 ;
@@ -14931,24 +14830,26 @@ SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_1(SwigfClassWrapper const
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg1 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > const > *smartarg3 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO,NO::classic > > *smartarg5 ;
+  std::string tempstr7 ;
   
   SWIGF_check_sp_nonnull(farg1,
     "Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraCrsMatrix", "Tpetra::MatrixMatrix::Multiply< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,bool,std::string const &)", return )
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = const_cast<Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>*>(smartarg1->get());
-  arg2 = *farg2;
+  arg2 = (*farg2 ? true : false);
   SWIGF_check_sp_nonnull(farg3,
     "Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraCrsMatrix", "Tpetra::MatrixMatrix::Multiply< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,bool,std::string const &)", return )
   smartarg3 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg3->ptr);
   arg3 = const_cast<Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>*>(smartarg3->get());
-  arg4 = *farg4;
+  arg4 = (*farg4 ? true : false);
   SWIGF_check_sp_nonnull(farg5,
     "Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraCrsMatrix", "Tpetra::MatrixMatrix::Multiply< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,bool,std::string const &)", return )
   smartarg5 = static_cast< Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg5->ptr);
   arg5 = smartarg5->get();
-  arg6 = *farg6;
-  SWIGF_check_nonnull(*farg7, "std::string const &", "string", "Tpetra::MatrixMatrix::Multiply< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,bool,std::string const &)", return );
-  arg7 = static_cast< std::string * >(farg7->ptr);
+  arg6 = (*farg6 ? true : false);
+  tempstr7 = std::string(static_cast<const char*>(farg7->data), farg7->size);
+  arg7 = &tempstr7;
+  
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
@@ -14976,7 +14877,7 @@ SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_1(SwigfClassWrapper const
 }
 
 
-SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_2(SwigfClassWrapper const *farg1, bool const *farg2, SwigfClassWrapper const *farg3, bool const *farg4, SwigfClassWrapper const *farg5, bool const *farg6) {
+SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_2(SwigfClassWrapper const *farg1, int const *farg2, SwigfClassWrapper const *farg3, int const *farg4, SwigfClassWrapper const *farg5, int const *farg6) {
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   bool arg2 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg3 = 0 ;
@@ -14991,17 +14892,17 @@ SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_2(SwigfClassWrapper const
     "Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraCrsMatrix", "Tpetra::MatrixMatrix::Multiply< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,bool)", return )
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = const_cast<Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>*>(smartarg1->get());
-  arg2 = *farg2;
+  arg2 = (*farg2 ? true : false);
   SWIGF_check_sp_nonnull(farg3,
     "Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraCrsMatrix", "Tpetra::MatrixMatrix::Multiply< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,bool)", return )
   smartarg3 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg3->ptr);
   arg3 = const_cast<Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>*>(smartarg3->get());
-  arg4 = *farg4;
+  arg4 = (*farg4 ? true : false);
   SWIGF_check_sp_nonnull(farg5,
     "Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraCrsMatrix", "Tpetra::MatrixMatrix::Multiply< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,bool)", return )
   smartarg5 = static_cast< Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg5->ptr);
   arg5 = smartarg5->get();
-  arg6 = *farg6;
+  arg6 = (*farg6 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     swigf_check_unhandled_exception();
@@ -15029,7 +14930,7 @@ SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_2(SwigfClassWrapper const
 }
 
 
-SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_3(SwigfClassWrapper const *farg1, bool const *farg2, SwigfClassWrapper const *farg3, bool const *farg4, SwigfClassWrapper const *farg5) {
+SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_3(SwigfClassWrapper const *farg1, int const *farg2, SwigfClassWrapper const *farg3, int const *farg4, SwigfClassWrapper const *farg5) {
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   bool arg2 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg3 = 0 ;
@@ -15043,12 +14944,12 @@ SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_3(SwigfClassWrapper const
     "Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraCrsMatrix", "Tpetra::MatrixMatrix::Multiply< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &)", return )
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = const_cast<Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>*>(smartarg1->get());
-  arg2 = *farg2;
+  arg2 = (*farg2 ? true : false);
   SWIGF_check_sp_nonnull(farg3,
     "Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraCrsMatrix", "Tpetra::MatrixMatrix::Multiply< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &)", return )
   smartarg3 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg3->ptr);
   arg3 = const_cast<Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>*>(smartarg3->get());
-  arg4 = *farg4;
+  arg4 = (*farg4 ? true : false);
   SWIGF_check_sp_nonnull(farg5,
     "Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraCrsMatrix", "Tpetra::MatrixMatrix::Multiply< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &)", return )
   smartarg5 = static_cast< Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg5->ptr);
@@ -15080,7 +14981,7 @@ SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_3(SwigfClassWrapper const
 }
 
 
-SWIGEXPORT void swigc_TpetraMatrixMatrixAdd__SWIG_0(SwigfClassWrapper const *farg1, bool const *farg2, double const *farg3, SwigfClassWrapper const *farg4, double const *farg5) {
+SWIGEXPORT void swigc_TpetraMatrixMatrixAdd__SWIG_0(SwigfClassWrapper const *farg1, int const *farg2, double const *farg3, SwigfClassWrapper const *farg4, double const *farg5) {
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   bool arg2 ;
   double arg3 ;
@@ -15093,7 +14994,7 @@ SWIGEXPORT void swigc_TpetraMatrixMatrixAdd__SWIG_0(SwigfClassWrapper const *far
     "Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraCrsMatrix", "Tpetra::MatrixMatrix::Add< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,double,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,double)", return )
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = const_cast<Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>*>(smartarg1->get());
-  arg2 = *farg2;
+  arg2 = (*farg2 ? true : false);
   arg3 = *farg3;
   SWIGF_check_sp_nonnull(farg4,
     "Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraCrsMatrix", "Tpetra::MatrixMatrix::Add< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,double,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,double)", return )
@@ -15127,7 +15028,7 @@ SWIGEXPORT void swigc_TpetraMatrixMatrixAdd__SWIG_0(SwigfClassWrapper const *far
 }
 
 
-SWIGEXPORT void swigc_TpetraMatrixMatrixAdd__SWIG_1(SwigfClassWrapper const *farg1, bool const *farg2, double const *farg3, SwigfClassWrapper const *farg4, bool const *farg5, double const *farg6, SwigfClassWrapper const *farg7) {
+SWIGEXPORT void swigc_TpetraMatrixMatrixAdd__SWIG_1(SwigfClassWrapper const *farg1, int const *farg2, double const *farg3, SwigfClassWrapper const *farg4, int const *farg5, double const *farg6, SwigfClassWrapper const *farg7) {
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   bool arg2 ;
   double arg3 ;
@@ -15142,13 +15043,13 @@ SWIGEXPORT void swigc_TpetraMatrixMatrixAdd__SWIG_1(SwigfClassWrapper const *far
     "Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraCrsMatrix", "Tpetra::MatrixMatrix::Add< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,double,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,double,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > >)", return )
   smartarg1 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg1->ptr);
   arg1 = const_cast<Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>*>(smartarg1->get());
-  arg2 = *farg2;
+  arg2 = (*farg2 ? true : false);
   arg3 = *farg3;
   SWIGF_check_sp_nonnull(farg4,
     "Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraCrsMatrix", "Tpetra::MatrixMatrix::Add< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,double,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,double,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > >)", return )
   smartarg4 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg4->ptr);
   arg4 = const_cast<Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>*>(smartarg4->get());
-  arg5 = *farg5;
+  arg5 = (*farg5 ? true : false);
   arg6 = *farg6;
   if (farg7->ptr) arg7 = *static_cast< Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic> >* >(farg7->ptr);
   {
