@@ -48,18 +48,34 @@ public :: mag_type
 public :: norm_type
 
  public :: TrilinosSolver
+
+ enum, bind(c)
+  enumerator :: SwigfMemState = -1
+  enumerator :: SWIGF_NULL = 0
+  enumerator :: SWIGF_OWN
+  enumerator :: SWIGF_MOVE
+  enumerator :: SWIGF_REF
+  enumerator :: SWIGF_CREF
+ end enum
+
+
+type, bind(C) :: SwigfClassWrapper
+  type(C_PTR), public :: ptr = C_NULL_PTR
+  integer(C_INT), public :: mem = SWIGF_NULL
+end type
+
  public :: TrilinosEigenSolver
 
 type, bind(C) :: SwigfArrayWrapper
-  type(C_PTR), public :: data
-  integer(C_SIZE_T), public :: size
+  type(C_PTR), public :: data = C_NULL_PTR
+  integer(C_SIZE_T), public :: size = 0
 end type
 
 
  ! TYPES
  type :: TrilinosSolver
   ! These should be treated as PROTECTED data
-  type(C_PTR), public :: swigptr = C_NULL_PTR
+  type(SwigfClassWrapper), public :: swigdata
  contains
   procedure :: create => swigf_new_TrilinosSolver
   procedure, private :: init__SWIG_0 => swigf_TrilinosSolver_init__SWIG_0
@@ -71,12 +87,14 @@ end type
   procedure :: solve => swigf_TrilinosSolver_solve
   procedure :: finalize => swigf_TrilinosSolver_finalize
   procedure :: release => swigf_delete_TrilinosSolver
+  procedure, private :: swigf_assignment_TrilinosSolver
   generic :: init => init__SWIG_0, init__SWIG_1
+  generic :: assignment(=) => swigf_assignment_TrilinosSolver
   generic :: setup_operator => setup_operator__SWIG_0, setup_operator__SWIG_1
  end type
  type :: TrilinosEigenSolver
   ! These should be treated as PROTECTED data
-  type(C_PTR), public :: swigptr = C_NULL_PTR
+  type(SwigfClassWrapper), public :: swigdata
  contains
   procedure :: create => swigf_new_TrilinosEigenSolver
   procedure, private :: init__SWIG_0 => swigf_TrilinosEigenSolver_init__SWIG_0
@@ -91,7 +109,9 @@ end type
   procedure :: solve => swigf_TrilinosEigenSolver_solve
   procedure :: finalize => swigf_TrilinosEigenSolver_finalize
   procedure :: release => swigf_delete_TrilinosEigenSolver
+  procedure, private :: swigf_assignment_TrilinosEigenSolver
   generic :: init => init__SWIG_0, init__SWIG_1
+  generic :: assignment(=) => swigf_assignment_TrilinosEigenSolver
   generic :: setup_operator => setup_operator__SWIG_0, setup_operator__SWIG_1
   generic :: setup_operator_rhs => setup_operator_rhs__SWIG_0, setup_operator_rhs__SWIG_1
  end type
@@ -103,169 +123,206 @@ function swigc_new_TrilinosSolver() &
 bind(C, name="swigc_new_TrilinosSolver") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: fresult
 end function
 
 subroutine swigc_TrilinosSolver_init__SWIG_0(farg1) &
 bind(C, name="swigc_TrilinosSolver_init__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_TrilinosSolver_init__SWIG_1(farg1, farg2) &
 bind(C, name="swigc_TrilinosSolver_init__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR), value :: farg2
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(SwigfClassWrapper) :: farg2
 end subroutine
 
 subroutine swigc_TrilinosSolver_setup_matrix(farg1, farg2) &
 bind(C, name="swigc_TrilinosSolver_setup_matrix")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR), value :: farg2
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(SwigfClassWrapper) :: farg2
 end subroutine
 
 subroutine swigc_TrilinosSolver_setup_operator__SWIG_0(farg1, farg2, farg3, farg4) &
 bind(C, name="swigc_TrilinosSolver_setup_operator__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_FUNPTR), intent(in), value :: farg2
-type(C_PTR), value :: farg3
-type(C_PTR), value :: farg4
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(C_FUNPTR), value :: farg2
+type(SwigfClassWrapper) :: farg3
+type(SwigfClassWrapper) :: farg4
 end subroutine
 
 subroutine swigc_TrilinosSolver_setup_operator__SWIG_1(farg1, farg2, farg3) &
 bind(C, name="swigc_TrilinosSolver_setup_operator__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_FUNPTR), intent(in), value :: farg2
-type(C_PTR), value :: farg3
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(C_FUNPTR), value :: farg2
+type(SwigfClassWrapper) :: farg3
 end subroutine
 
 subroutine swigc_TrilinosSolver_setup_solver(farg1, farg2) &
 bind(C, name="swigc_TrilinosSolver_setup_solver")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR), value :: farg2
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(SwigfClassWrapper) :: farg2
 end subroutine
 
 subroutine swigc_TrilinosSolver_solve(farg1, farg2, farg3) &
 bind(C, name="swigc_TrilinosSolver_solve")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR), value :: farg2
-type(C_PTR), value :: farg3
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(SwigfClassWrapper) :: farg2
+type(SwigfClassWrapper) :: farg3
 end subroutine
 
 subroutine swigc_TrilinosSolver_finalize(farg1) &
 bind(C, name="swigc_TrilinosSolver_finalize")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_delete_TrilinosSolver(farg1) &
 bind(C, name="swigc_delete_TrilinosSolver")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 end subroutine
 
+  subroutine swigc_assignment_TrilinosSolver(self, other) &
+     bind(C, name="swigc_assignment_TrilinosSolver")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigfClassWrapper
+   type(SwigfClassWrapper), intent(inout) :: self
+   type(SwigfClassWrapper), intent(in) :: other
+  end subroutine
 function swigc_new_TrilinosEigenSolver() &
 bind(C, name="swigc_new_TrilinosEigenSolver") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR) :: fresult
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: fresult
 end function
 
 subroutine swigc_TrilinosEigenSolver_init__SWIG_0(farg1) &
 bind(C, name="swigc_TrilinosEigenSolver_init__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_init__SWIG_1(farg1, farg2) &
 bind(C, name="swigc_TrilinosEigenSolver_init__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR), value :: farg2
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(SwigfClassWrapper) :: farg2
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_setup_matrix(farg1, farg2) &
 bind(C, name="swigc_TrilinosEigenSolver_setup_matrix")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR), value :: farg2
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(SwigfClassWrapper) :: farg2
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_setup_matrix_rhs(farg1, farg2) &
 bind(C, name="swigc_TrilinosEigenSolver_setup_matrix_rhs")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR), value :: farg2
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(SwigfClassWrapper) :: farg2
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_setup_operator__SWIG_0(farg1, farg2, farg3, farg4) &
 bind(C, name="swigc_TrilinosEigenSolver_setup_operator__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_FUNPTR), intent(in), value :: farg2
-type(C_PTR), value :: farg3
-type(C_PTR), value :: farg4
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(C_FUNPTR), value :: farg2
+type(SwigfClassWrapper) :: farg3
+type(SwigfClassWrapper) :: farg4
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_setup_operator__SWIG_1(farg1, farg2, farg3) &
 bind(C, name="swigc_TrilinosEigenSolver_setup_operator__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_FUNPTR), intent(in), value :: farg2
-type(C_PTR), value :: farg3
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(C_FUNPTR), value :: farg2
+type(SwigfClassWrapper) :: farg3
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_setup_operator_rhs__SWIG_0(farg1, farg2, farg3, farg4) &
 bind(C, name="swigc_TrilinosEigenSolver_setup_operator_rhs__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_FUNPTR), intent(in), value :: farg2
-type(C_PTR), value :: farg3
-type(C_PTR), value :: farg4
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(C_FUNPTR), value :: farg2
+type(SwigfClassWrapper) :: farg3
+type(SwigfClassWrapper) :: farg4
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_setup_operator_rhs__SWIG_1(farg1, farg2, farg3) &
 bind(C, name="swigc_TrilinosEigenSolver_setup_operator_rhs__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_FUNPTR), intent(in), value :: farg2
-type(C_PTR), value :: farg3
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(C_FUNPTR), value :: farg2
+type(SwigfClassWrapper) :: farg3
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_setup_solver(farg1, farg2) &
 bind(C, name="swigc_TrilinosEigenSolver_setup_solver")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR), value :: farg2
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
+type(SwigfClassWrapper) :: farg2
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_solve(farg1, farg2, farg3) &
 bind(C, name="swigc_TrilinosEigenSolver_solve")
 use, intrinsic :: ISO_C_BINDING
+import :: SwigfClassWrapper
 import :: SwigfArrayWrapper
-type(C_PTR), value :: farg1
+type(SwigfClassWrapper) :: farg1
 type(SwigfArrayWrapper) :: farg2
-type(C_PTR), value :: farg3
+type(SwigfClassWrapper) :: farg3
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_finalize(farg1) &
 bind(C, name="swigc_TrilinosEigenSolver_finalize")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_delete_TrilinosEigenSolver(farg1) &
 bind(C, name="swigc_delete_TrilinosEigenSolver")
 use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
+import :: SwigfClassWrapper
+type(SwigfClassWrapper) :: farg1
 end subroutine
 
+  subroutine swigc_assignment_TrilinosEigenSolver(self, other) &
+     bind(C, name="swigc_assignment_TrilinosEigenSolver")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigfClassWrapper
+   type(SwigfClassWrapper), intent(inout) :: self
+   type(SwigfClassWrapper), intent(in) :: other
+  end subroutine
  end interface
 
 
@@ -273,295 +330,315 @@ contains
  ! FORTRAN PROXY CODE
 subroutine swigf_new_TrilinosSolver(self)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosSolver) :: self
-type(C_PTR) :: fresult 
+class(TrilinosSolver), intent(inout) :: self
+type(SwigfClassWrapper) :: fresult 
 
-if (c_associated(self%swigptr)) call self%release()
+call self%release()
 fresult = swigc_new_TrilinosSolver()
-self%swigptr = fresult
+self%swigdata = fresult
+self%swigdata%mem = SWIGF_OWN
 end subroutine
 
 subroutine swigf_TrilinosSolver_init__SWIG_0(self)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosSolver) :: self
-type(C_PTR) :: farg1 
+class(TrilinosSolver), intent(inout) :: self
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 call swigc_TrilinosSolver_init__SWIG_0(farg1)
 end subroutine
 
 subroutine swigf_TrilinosSolver_init__SWIG_1(self, comm)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosSolver) :: self
+class(TrilinosSolver), intent(inout) :: self
 type(TeuchosComm) :: comm
-type(C_PTR) :: farg1 
-type(C_PTR) :: farg2 
+type(SwigfClassWrapper) :: farg1 
+type(SwigfClassWrapper) :: farg2 
 
-farg1 = self%swigptr
-farg2 = comm%swigptr
+farg1 = self%swigdata
+farg2 = comm%swigdata
 call swigc_TrilinosSolver_init__SWIG_1(farg1, farg2)
 end subroutine
 
 subroutine swigf_TrilinosSolver_setup_matrix(self, a)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosSolver) :: self
+class(TrilinosSolver), intent(inout) :: self
 type(TpetraCrsMatrix) :: a
-type(C_PTR) :: farg1 
-type(C_PTR) :: farg2 
+type(SwigfClassWrapper) :: farg1 
+type(SwigfClassWrapper) :: farg2 
 
-farg1 = self%swigptr
-farg2 = a%swigptr
+farg1 = self%swigdata
+farg2 = a%swigdata
 call swigc_TrilinosSolver_setup_matrix(farg1, farg2)
 end subroutine
 
 subroutine swigf_TrilinosSolver_setup_operator__SWIG_0(self, callback, domainmap, rangemap)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosSolver) :: self
+class(TrilinosSolver), intent(inout) :: self
 type(C_FUNPTR), intent(in), value :: callback
 type(TpetraMap) :: domainmap
 type(TpetraMap) :: rangemap
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 type(C_FUNPTR) :: farg2 
-type(C_PTR) :: farg3 
-type(C_PTR) :: farg4 
+type(SwigfClassWrapper) :: farg3 
+type(SwigfClassWrapper) :: farg4 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 farg2 = callback
-farg3 = domainmap%swigptr
-farg4 = rangemap%swigptr
+farg3 = domainmap%swigdata
+farg4 = rangemap%swigdata
 call swigc_TrilinosSolver_setup_operator__SWIG_0(farg1, farg2, farg3, farg4)
 end subroutine
 
 subroutine swigf_TrilinosSolver_setup_operator__SWIG_1(self, callback, domainmap)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosSolver) :: self
+class(TrilinosSolver), intent(inout) :: self
 type(C_FUNPTR), intent(in), value :: callback
 type(TpetraMap) :: domainmap
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 type(C_FUNPTR) :: farg2 
-type(C_PTR) :: farg3 
+type(SwigfClassWrapper) :: farg3 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 farg2 = callback
-farg3 = domainmap%swigptr
+farg3 = domainmap%swigdata
 call swigc_TrilinosSolver_setup_operator__SWIG_1(farg1, farg2, farg3)
 end subroutine
 
 subroutine swigf_TrilinosSolver_setup_solver(self, paramlist)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosSolver) :: self
+class(TrilinosSolver), intent(inout) :: self
 type(ParameterList) :: paramlist
-type(C_PTR) :: farg1 
-type(C_PTR) :: farg2 
+type(SwigfClassWrapper) :: farg1 
+type(SwigfClassWrapper) :: farg2 
 
-farg1 = self%swigptr
-farg2 = paramlist%swigptr
+farg1 = self%swigdata
+farg2 = paramlist%swigdata
 call swigc_TrilinosSolver_setup_solver(farg1, farg2)
 end subroutine
 
 subroutine swigf_TrilinosSolver_solve(self, rhs, lhs)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosSolver) :: self
+class(TrilinosSolver), intent(in) :: self
 type(TpetraMultiVector) :: rhs
 type(TpetraMultiVector) :: lhs
-type(C_PTR) :: farg1 
-type(C_PTR) :: farg2 
-type(C_PTR) :: farg3 
+type(SwigfClassWrapper) :: farg1 
+type(SwigfClassWrapper) :: farg2 
+type(SwigfClassWrapper) :: farg3 
 
-farg1 = self%swigptr
-farg2 = rhs%swigptr
-farg3 = lhs%swigptr
+farg1 = self%swigdata
+farg2 = rhs%swigdata
+farg3 = lhs%swigdata
 call swigc_TrilinosSolver_solve(farg1, farg2, farg3)
 end subroutine
 
 subroutine swigf_TrilinosSolver_finalize(self)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosSolver) :: self
-type(C_PTR) :: farg1 
+class(TrilinosSolver), intent(inout) :: self
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 call swigc_TrilinosSolver_finalize(farg1)
 end subroutine
 
 subroutine swigf_delete_TrilinosSolver(self)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosSolver) :: self
-type(C_PTR) :: farg1 
+class(TrilinosSolver), intent(inout) :: self
+type(SwigfClassWrapper) :: farg1 
 
-if (.not. c_associated(self%swigptr)) return
-farg1 = self%swigptr
+farg1 = self%swigdata
+if (self%swigdata%mem == SWIGF_OWN) then
 call swigc_delete_TrilinosSolver(farg1)
-self%swigptr = C_NULL_PTR
+end if
+self%swigdata%ptr = C_NULL_PTR
+self%swigdata%mem = SWIGF_NULL
 end subroutine
 
+  subroutine swigf_assignment_TrilinosSolver(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(TrilinosSolver), intent(inout) :: self
+   type(TrilinosSolver), intent(in) :: other
+   call swigc_assignment_TrilinosSolver(self%swigdata, other%swigdata)
+  end subroutine
 subroutine swigf_new_TrilinosEigenSolver(self)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver) :: self
-type(C_PTR) :: fresult 
+class(TrilinosEigenSolver), intent(inout) :: self
+type(SwigfClassWrapper) :: fresult 
 
-if (c_associated(self%swigptr)) call self%release()
+call self%release()
 fresult = swigc_new_TrilinosEigenSolver()
-self%swigptr = fresult
+self%swigdata = fresult
+self%swigdata%mem = SWIGF_OWN
 end subroutine
 
 subroutine swigf_TrilinosEigenSolver_init__SWIG_0(self)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver) :: self
-type(C_PTR) :: farg1 
+class(TrilinosEigenSolver), intent(inout) :: self
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 call swigc_TrilinosEigenSolver_init__SWIG_0(farg1)
 end subroutine
 
 subroutine swigf_TrilinosEigenSolver_init__SWIG_1(self, comm)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver) :: self
+class(TrilinosEigenSolver), intent(inout) :: self
 type(TeuchosComm) :: comm
-type(C_PTR) :: farg1 
-type(C_PTR) :: farg2 
+type(SwigfClassWrapper) :: farg1 
+type(SwigfClassWrapper) :: farg2 
 
-farg1 = self%swigptr
-farg2 = comm%swigptr
+farg1 = self%swigdata
+farg2 = comm%swigdata
 call swigc_TrilinosEigenSolver_init__SWIG_1(farg1, farg2)
 end subroutine
 
 subroutine swigf_TrilinosEigenSolver_setup_matrix(self, a)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver) :: self
+class(TrilinosEigenSolver), intent(inout) :: self
 type(TpetraCrsMatrix) :: a
-type(C_PTR) :: farg1 
-type(C_PTR) :: farg2 
+type(SwigfClassWrapper) :: farg1 
+type(SwigfClassWrapper) :: farg2 
 
-farg1 = self%swigptr
-farg2 = a%swigptr
+farg1 = self%swigdata
+farg2 = a%swigdata
 call swigc_TrilinosEigenSolver_setup_matrix(farg1, farg2)
 end subroutine
 
 subroutine swigf_TrilinosEigenSolver_setup_matrix_rhs(self, m)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver) :: self
+class(TrilinosEigenSolver), intent(inout) :: self
 type(TpetraCrsMatrix) :: m
-type(C_PTR) :: farg1 
-type(C_PTR) :: farg2 
+type(SwigfClassWrapper) :: farg1 
+type(SwigfClassWrapper) :: farg2 
 
-farg1 = self%swigptr
-farg2 = m%swigptr
+farg1 = self%swigdata
+farg2 = m%swigdata
 call swigc_TrilinosEigenSolver_setup_matrix_rhs(farg1, farg2)
 end subroutine
 
 subroutine swigf_TrilinosEigenSolver_setup_operator__SWIG_0(self, callback, domainmap, rangemap)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver) :: self
+class(TrilinosEigenSolver), intent(inout) :: self
 type(C_FUNPTR), intent(in), value :: callback
 type(TpetraMap) :: domainmap
 type(TpetraMap) :: rangemap
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 type(C_FUNPTR) :: farg2 
-type(C_PTR) :: farg3 
-type(C_PTR) :: farg4 
+type(SwigfClassWrapper) :: farg3 
+type(SwigfClassWrapper) :: farg4 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 farg2 = callback
-farg3 = domainmap%swigptr
-farg4 = rangemap%swigptr
+farg3 = domainmap%swigdata
+farg4 = rangemap%swigdata
 call swigc_TrilinosEigenSolver_setup_operator__SWIG_0(farg1, farg2, farg3, farg4)
 end subroutine
 
 subroutine swigf_TrilinosEigenSolver_setup_operator__SWIG_1(self, callback, domainmap)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver) :: self
+class(TrilinosEigenSolver), intent(inout) :: self
 type(C_FUNPTR), intent(in), value :: callback
 type(TpetraMap) :: domainmap
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 type(C_FUNPTR) :: farg2 
-type(C_PTR) :: farg3 
+type(SwigfClassWrapper) :: farg3 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 farg2 = callback
-farg3 = domainmap%swigptr
+farg3 = domainmap%swigdata
 call swigc_TrilinosEigenSolver_setup_operator__SWIG_1(farg1, farg2, farg3)
 end subroutine
 
 subroutine swigf_TrilinosEigenSolver_setup_operator_rhs__SWIG_0(self, callback, domainmap, rangemap)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver) :: self
+class(TrilinosEigenSolver), intent(inout) :: self
 type(C_FUNPTR), intent(in), value :: callback
 type(TpetraMap) :: domainmap
 type(TpetraMap) :: rangemap
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 type(C_FUNPTR) :: farg2 
-type(C_PTR) :: farg3 
-type(C_PTR) :: farg4 
+type(SwigfClassWrapper) :: farg3 
+type(SwigfClassWrapper) :: farg4 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 farg2 = callback
-farg3 = domainmap%swigptr
-farg4 = rangemap%swigptr
+farg3 = domainmap%swigdata
+farg4 = rangemap%swigdata
 call swigc_TrilinosEigenSolver_setup_operator_rhs__SWIG_0(farg1, farg2, farg3, farg4)
 end subroutine
 
 subroutine swigf_TrilinosEigenSolver_setup_operator_rhs__SWIG_1(self, callback, domainmap)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver) :: self
+class(TrilinosEigenSolver), intent(inout) :: self
 type(C_FUNPTR), intent(in), value :: callback
 type(TpetraMap) :: domainmap
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 type(C_FUNPTR) :: farg2 
-type(C_PTR) :: farg3 
+type(SwigfClassWrapper) :: farg3 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 farg2 = callback
-farg3 = domainmap%swigptr
+farg3 = domainmap%swigdata
 call swigc_TrilinosEigenSolver_setup_operator_rhs__SWIG_1(farg1, farg2, farg3)
 end subroutine
 
 subroutine swigf_TrilinosEigenSolver_setup_solver(self, paramlist)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver) :: self
+class(TrilinosEigenSolver), intent(inout) :: self
 type(ParameterList) :: paramlist
-type(C_PTR) :: farg1 
-type(C_PTR) :: farg2 
+type(SwigfClassWrapper) :: farg1 
+type(SwigfClassWrapper) :: farg2 
 
-farg1 = self%swigptr
-farg2 = paramlist%swigptr
+farg1 = self%swigdata
+farg2 = paramlist%swigdata
 call swigc_TrilinosEigenSolver_setup_solver(farg1, farg2)
 end subroutine
 
 subroutine swigf_TrilinosEigenSolver_solve(self, eigenvalues, lhs)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver) :: self
+class(TrilinosEigenSolver), intent(in) :: self
 real(C_DOUBLE), dimension(:), target, intent(inout) :: eigenvalues
+real(C_DOUBLE), pointer :: farg2_view
 type(TpetraMultiVector) :: lhs
-type(C_PTR) :: farg1 
+type(SwigfClassWrapper) :: farg1 
 type(SwigfArrayWrapper) :: farg2 
-type(C_PTR) :: farg3 
+type(SwigfClassWrapper) :: farg3 
 
-farg1 = self%swigptr
-farg2%data = c_loc(eigenvalues(1))
+farg1 = self%swigdata
+farg2_view => eigenvalues(1)
+farg2%data = c_loc(farg2_view)
 farg2%size = size(eigenvalues)
-farg3 = lhs%swigptr
+farg3 = lhs%swigdata
 call swigc_TrilinosEigenSolver_solve(farg1, farg2, farg3)
 end subroutine
 
 subroutine swigf_TrilinosEigenSolver_finalize(self)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver) :: self
-type(C_PTR) :: farg1 
+class(TrilinosEigenSolver), intent(inout) :: self
+type(SwigfClassWrapper) :: farg1 
 
-farg1 = self%swigptr
+farg1 = self%swigdata
 call swigc_TrilinosEigenSolver_finalize(farg1)
 end subroutine
 
 subroutine swigf_delete_TrilinosEigenSolver(self)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver) :: self
-type(C_PTR) :: farg1 
+class(TrilinosEigenSolver), intent(inout) :: self
+type(SwigfClassWrapper) :: farg1 
 
-if (.not. c_associated(self%swigptr)) return
-farg1 = self%swigptr
+farg1 = self%swigdata
+if (self%swigdata%mem == SWIGF_OWN) then
 call swigc_delete_TrilinosEigenSolver(farg1)
-self%swigptr = C_NULL_PTR
+end if
+self%swigdata%ptr = C_NULL_PTR
+self%swigdata%mem = SWIGF_NULL
 end subroutine
 
+  subroutine swigf_assignment_TrilinosEigenSolver(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(TrilinosEigenSolver), intent(inout) :: self
+   type(TrilinosEigenSolver), intent(in) :: other
+   call swigc_assignment_TrilinosEigenSolver(self%swigdata, other%swigdata)
+  end subroutine
 
 end module

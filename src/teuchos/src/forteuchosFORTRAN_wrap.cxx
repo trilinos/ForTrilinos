@@ -191,18 +191,64 @@ template <typename T> T SwigValueInit() {
 
 
 // Default exception handler
-#define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
-    throw std::logic_error(MSG); return NULLRETURN;
+#define SWIG_exception_impl(CODE, MSG, RETURNNULL) \
+    throw std::logic_error(MSG); RETURNNULL;
 
 
 /* Contract support */
-#define SWIG_contract_assert(NULLRETURN, EXPR, MSG) \
-    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, NULLRETURN); }
+#define SWIG_contract_assert(RETURNNULL, EXPR, MSG) \
+    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, RETURNNULL); }
 
 
 #undef SWIG_exception_impl
-#define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
-    swig::fortran_store_exception(CODE, MSG); return NULLRETURN;
+#define SWIG_exception_impl(CODE, MSG, RETURNNULL) \
+    swigf_store_exception(CODE, MSG); RETURNNULL;
+
+
+void swigf_check_unhandled_exception();
+void swigf_store_exception(int code, const char *msg);
+
+
+#define SWIGF_check_nonnull(SWIGF_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
+    if ((SWIGF_CLASS_WRAPPER).mem == SWIGF_NULL) { \
+        SWIG_exception_impl(SWIG_TypeError, \
+            "Cannot pass null " TYPENAME " (class " FNAME ") " \
+            "to function (" FUNCNAME ")", RETURNNULL); \
+    }
+
+
+#define SWIGF_check_mutable(SWIGF_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
+    if ((SWIGF_CLASS_WRAPPER).mem == SWIGF_CREF) { \
+        SWIG_exception_impl(SWIG_TypeError, \
+            "Cannot pass const " TYPENAME " (class " FNAME ") " \
+            "to a function (" FUNCNAME ") that requires a mutable reference", \
+            RETURNNULL); \
+    }
+
+
+#define SWIGF_check_mutable_nonnull(SWIGF_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
+    SWIGF_check_nonnull(SWIGF_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL); \
+    SWIGF_check_mutable(SWIGF_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL);
+
+
+
+#if __cplusplus >= 201103L
+#define SWIGF_assign(LEFTTYPE, LEFT, RIGHTTYPE, RIGHT, FLAGS) \
+    SwigfAssign<LEFTTYPE , RIGHTTYPE, swigf::assignment_flags<LEFTTYPE >() >( \
+            LEFT, RIGHT);
+#else
+#define SWIGF_assign(LEFTTYPE, LEFT, RIGHTTYPE, RIGHT, FLAGS) \
+    SwigfAssign<LEFTTYPE , RIGHTTYPE, FLAGS >(LEFT, RIGHT);
+#endif
+
+
+
+#define SWIGF_check_sp_nonnull(INPUT, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
+    if (!(INPUT)) { \
+        SWIG_exception_impl(SWIG_TypeError, \
+            "Cannot pass null " TYPENAME " (class " FNAME ") " \
+            "to function (" FUNCNAME ")", RETURNNULL); \
+    }
 
 
 #define SWIGVERSION 0x040000 
@@ -216,15 +262,49 @@ template <typename T> T SwigValueInit() {
 #include <stdexcept>
 
 
+// DEPRECATED: use swigf_check_unhandled_exception instead
 namespace swig
 {
-// Functions are defined in an imported module
-void fortran_check_unhandled_exception();
-void fortran_store_exception(int code, const char *msg);
+#ifdef __GNUC__
+__attribute__((deprecated))
+#endif
+inline void fortran_check_unhandled_exception()
+{
+    swigf_check_unhandled_exception();
+}
 } // end namespace swig
 
 
 #include <vector>
+
+
+
+enum SwigfMemState {
+    SWIGF_NULL = 0,
+    SWIGF_OWN,
+    SWIGF_MOVE,
+    SWIGF_REF,
+    SWIGF_CREF
+};
+
+const char* const swigf_mem_state_strings[]
+  = {"NULL", "OWN", "MOVE", "REF", "CREF"};
+
+
+
+struct SwigfClassWrapper
+{
+    void* ptr;
+    SwigfMemState mem;
+};
+
+SwigfClassWrapper SwigfClassWrapper_uninitialized()
+{
+    SwigfClassWrapper result;
+    result.ptr = NULL;
+    result.mem = SWIGF_NULL;
+    return result;
+}
 
 SWIGINTERN void std_vector_Sl_int_Sg__set(std::vector< int > *self,std::vector< int >::size_type index,std::vector< int >::const_reference v){
         // TODO: check range
@@ -234,6 +314,243 @@ SWIGINTERN std::vector< int >::value_type std_vector_Sl_int_Sg__get(std::vector<
         // TODO: check range
         return (*self)[index];
     }
+
+#include <utility>
+
+
+namespace swigf {
+
+enum AssignmentFlags {
+  IS_DESTR       = 0x01,
+  IS_COPY_CONSTR = 0x02,
+  IS_COPY_ASSIGN = 0x04,
+  IS_MOVE_CONSTR = 0x08,
+  IS_MOVE_ASSIGN = 0x10
+};
+
+// Define our own switching struct to support pre-c++11 builds
+template<bool Val>
+struct bool_constant {};
+typedef bool_constant<true>  true_type;
+typedef bool_constant<false> false_type;
+
+// Deletion
+template<class T>
+void destruct_impl(T* self, true_type) {
+  delete self;
+}
+template<class T>
+T* destruct_impl(T* , false_type) {
+  SWIG_exception_impl(SWIG_TypeError,
+                      "Invalid assignment: class type has no destructor",
+                      return NULL);
+}
+
+// Copy construction and assignment
+template<class T, class U>
+T* copy_construct_impl(const U* other, true_type) {
+  return new T(*other);
+}
+template<class T, class U>
+void copy_assign_impl(T* self, const U* other, true_type) {
+  *self = *other;
+}
+
+// Disabled construction and assignment
+template<class T, class U>
+T* copy_construct_impl(const U* , false_type) {
+  SWIG_exception_impl(SWIG_TypeError,
+                      "Invalid assignment: class type has no copy constructor",
+                      return NULL);
+}
+template<class T, class U>
+void copy_assign_impl(T* , const U* , false_type) {
+  SWIG_exception_impl(SWIG_TypeError,
+                      "Invalid assignment: class type has no copy assignment",
+                      return);
+}
+
+#if __cplusplus >= 201103L
+#include <utility>
+#include <type_traits>
+
+// Move construction and assignment
+template<class T, class U>
+T* move_construct_impl(U* other, true_type) {
+  return new T(std::move(*other));
+}
+template<class T, class U>
+void move_assign_impl(T* self, U* other, true_type) {
+  *self = std::move(*other);
+}
+
+// Disabled move construction and assignment
+template<class T, class U>
+T* move_construct_impl(U*, false_type) {
+  SWIG_exception_impl(SWIG_TypeError,
+                      "Invalid assignment: class type has no move constructor",
+                      return NULL);
+}
+template<class T, class U>
+void move_assign_impl(T*, U*, false_type) {
+  SWIG_exception_impl(SWIG_TypeError,
+                      "Invalid assignment: class type has no move assignment",
+                      return);
+}
+
+template<class T>
+constexpr int assignment_flags() {
+  return   (std::is_destructible<T>::value       ? IS_DESTR       : 0)
+         | (std::is_copy_constructible<T>::value ? IS_COPY_CONSTR : 0)
+         | (std::is_copy_assignable<T>::value    ? IS_COPY_ASSIGN : 0)
+         | (std::is_move_constructible<T>::value ? IS_MOVE_CONSTR : 0)
+         | (std::is_move_assignable<T>::value    ? IS_MOVE_ASSIGN : 0);
+}
+#endif
+
+template<class T, int Flags>
+struct AssignmentTraits
+{
+  static void destruct(T* self)
+  {
+    destruct_impl<T>(self, bool_constant<Flags & IS_DESTR>());
+  }
+
+  template<class U>
+  static T* copy_construct(const U* other)
+  {
+    return copy_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_COPY_CONSTR)>());
+  }
+
+  template<class U>
+  static void copy_assign(T* self, const U* other)
+  {
+    copy_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_COPY_ASSIGN)>());
+  }
+
+#if __cplusplus >= 201103L
+  template<class U>
+  static T* move_construct(U* other)
+  {
+    return move_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_MOVE_CONSTR)>());
+  }
+  template<class U>
+  static void move_assign(T* self, U* other)
+  {
+    move_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_MOVE_ASSIGN)>());
+  }
+#else
+  template<class U>
+  static T* move_construct(U* other)
+  {
+    return copy_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_COPY_CONSTR)>());
+  }
+  template<class U>
+  static void move_assign(T* self, U* other)
+  {
+    copy_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_COPY_ASSIGN)>());
+  }
+#endif
+};
+
+} // end namespace swigf
+
+
+
+template<class T1, class T2, int AFlags>
+void SwigfAssign(SwigfClassWrapper* self, SwigfClassWrapper* other) {
+  typedef swigf::AssignmentTraits<T1, AFlags> Traits_t;
+  T1* pself  = static_cast<T1*>(self->ptr);
+  T2* pother = static_cast<T2*>(other->ptr);
+
+  switch (self->mem) {
+    case SWIGF_NULL:
+      /* LHS is unassigned */
+      switch (other->mem) {
+        case SWIGF_NULL: /* null op */ break;
+        case SWIGF_MOVE: /* capture pointer from RHS */
+          self->ptr = other->ptr;
+          other->ptr = NULL;
+          self->mem = SWIGF_OWN;
+          other->mem = SWIGF_NULL;
+          break;
+        case SWIGF_OWN: /* copy from RHS */
+          self->ptr = Traits_t::copy_construct(pother);
+          self->mem = SWIGF_OWN;
+          break;
+        case SWIGF_REF: /* pointer to RHS */
+        case SWIGF_CREF:
+          self->ptr = other->ptr;
+          self->mem = other->mem;
+          break;
+      }
+      break;
+    case SWIGF_OWN:
+      /* LHS owns memory */
+      switch (other->mem) {
+        case SWIGF_NULL:
+          /* Delete LHS */
+          Traits_t::destruct(pself);
+          self->ptr = NULL;
+          self->mem = SWIGF_NULL;
+          break;
+        case SWIGF_MOVE:
+          /* Move RHS into LHS; delete RHS */
+          Traits_t::move_assign(pself, pother);
+          Traits_t::destruct(pother);
+          other->ptr = NULL;
+          other->mem = SWIGF_NULL;
+          break;
+        case SWIGF_OWN:
+        case SWIGF_REF:
+        case SWIGF_CREF:
+          /* Copy RHS to LHS */
+          Traits_t::copy_assign(pself, pother);
+          break;
+      }
+      break;
+    case SWIGF_MOVE:
+      SWIG_exception_impl(SWIG_RuntimeError,
+        "Left-hand side of assignment should never be in a 'MOVE' state",
+        return);
+      break;
+    case SWIGF_REF:
+      /* LHS is a reference */
+      switch (other->mem) {
+        case SWIGF_NULL:
+          /* Remove LHS reference */
+          self->ptr = NULL;
+          self->mem = SWIGF_NULL;
+          break;
+        case SWIGF_MOVE:
+          /* Move RHS into LHS; delete RHS. The original ownership stays the
+           * same. */
+          Traits_t::move_assign(pself, pother);
+          Traits_t::destruct(pother);
+          other->ptr = NULL;
+          other->mem = SWIGF_NULL;
+          break;
+        case SWIGF_OWN:
+        case SWIGF_REF:
+        case SWIGF_CREF:
+          /* Copy RHS to LHS */
+          Traits_t::copy_assign(pself, pother);
+          break;
+      }
+    case SWIGF_CREF:
+      switch (other->mem) {
+        case SWIGF_NULL:
+          /* Remove LHS reference */
+          self->ptr = NULL;
+          self->mem = SWIGF_NULL;
+        default:
+          SWIG_exception_impl(SWIG_RuntimeError,
+              "Cannot assign to a const reference", return);
+          break;
+      }
+  }
+}
+
 SWIGINTERN void std_vector_Sl_double_Sg__set(std::vector< double > *self,std::vector< double >::size_type index,std::vector< double >::const_reference v){
         // TODO: check range
         (*self)[index] = v;
@@ -250,9 +567,6 @@ SWIGINTERN std::vector< long long >::value_type std_vector_Sl_long_SS_long_Sg__g
         // TODO: check range
         return (*self)[index];
     }
-
-#include <utility>
-
 
 #include "Teuchos_BLAS_types.hpp"
 #include "Teuchos_DataAccess.hpp"
@@ -307,27 +621,27 @@ SWIGINTERN void Teuchos_Comm_Sl_int_Sg__barrier(Teuchos::Comm< int > const *self
 
 #include <string>
 
-SWIGINTERN void std_string_set(std::string *self,std::string::size_type pos,std::string::value_type v){
-        // TODO: check range
-        (*self)[pos] = v;
-    }
-SWIGINTERN std::string::value_type std_string_get(std::string *self,std::string::size_type pos){
-        // TODO: check range
-        return (*self)[pos];
+
+struct SwigfArrayWrapper
+{
+    void* data;
+    std::size_t size;
+};
+
+SwigfArrayWrapper SwigfArrayWrapper_uninitialized()
+{
+    SwigfArrayWrapper result;
+    result.data = NULL;
+    result.size = 0;
+    return result;
+}
+
+SWIGINTERN std::string const &std_string_str(std::string *self){
+        return *self;
     }
 SWIGINTERN Teuchos::ParameterList *new_Teuchos_ParameterList__SWIG_0(){
     return new Teuchos::ParameterList();
 }
-
-namespace swig {
-template<class T>
-struct SwigfArrayWrapper
-{
-    T* data;
-    std::size_t size;
-};
-}
-
 SWIGINTERN Teuchos::ParameterList *new_Teuchos_ParameterList__SWIG_1(std::pair< char const *,std::size_t > name){
     return new Teuchos::ParameterList(std::string(name.first, name.second));
 }
@@ -463,30 +777,32 @@ void save_to_xml(const Teuchos::ParameterList& plist,
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void * swigc_new_VectorInt__SWIG_0() {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_new_VectorInt__SWIG_0() {
+  SwigfClassWrapper fresult ;
   std::vector< int > *result = 0 ;
   
   result = (std::vector< int > *)new std::vector< int >();
-  fresult = result;
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIGF_MOVE : SWIGF_REF);
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_new_VectorInt__SWIG_1(long const *farg1) {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_new_VectorInt__SWIG_1(unsigned long const *farg1) {
+  SwigfClassWrapper fresult ;
   std::vector< int >::size_type arg1 ;
   std::vector< int > *result = 0 ;
   
   arg1 = *farg1;
   result = (std::vector< int > *)new std::vector< int >(arg1);
-  fresult = result;
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIGF_MOVE : SWIGF_REF);
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_new_VectorInt__SWIG_2(long const *farg1, int const *farg2) {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_new_VectorInt__SWIG_2(unsigned long const *farg1, int const *farg2) {
+  SwigfClassWrapper fresult ;
   std::vector< int >::size_type arg1 ;
   std::vector< int >::value_type *arg2 = 0 ;
   std::vector< int > *result = 0 ;
@@ -494,84 +810,92 @@ SWIGEXPORT void * swigc_new_VectorInt__SWIG_2(long const *farg1, int const *farg
   arg1 = *farg1;
   arg2 = reinterpret_cast< std::vector< int >::value_type * >(const_cast< int* >(farg2));
   result = (std::vector< int > *)new std::vector< int >(arg1,(std::vector< int >::value_type const &)*arg2);
-  fresult = result;
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIGF_MOVE : SWIGF_REF);
   return fresult;
 }
 
 
-SWIGEXPORT long swigc_VectorInt_size(void const *farg1) {
-  long fresult ;
+SWIGEXPORT unsigned long swigc_VectorInt_size(SwigfClassWrapper const *farg1) {
+  unsigned long fresult ;
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::size_type result;
   
-  arg1 = static_cast< std::vector< int > * >(const_cast< void* >(farg1));
+  SWIGF_check_nonnull(*farg1, "std::vector< int > const *", "VectorInt", "std::vector< int >::size() const", return 0);
+  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
   result = (std::vector< int >::size_type)((std::vector< int > const *)arg1)->size();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT long swigc_VectorInt_capacity(void const *farg1) {
-  long fresult ;
+SWIGEXPORT unsigned long swigc_VectorInt_capacity(SwigfClassWrapper const *farg1) {
+  unsigned long fresult ;
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::size_type result;
   
-  arg1 = static_cast< std::vector< int > * >(const_cast< void* >(farg1));
+  SWIGF_check_nonnull(*farg1, "std::vector< int > const *", "VectorInt", "std::vector< int >::capacity() const", return 0);
+  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
   result = (std::vector< int >::size_type)((std::vector< int > const *)arg1)->capacity();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_VectorInt_empty(void const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_VectorInt_empty(SwigfClassWrapper const *farg1) {
+  int fresult ;
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   bool result;
   
-  arg1 = static_cast< std::vector< int > * >(const_cast< void* >(farg1));
+  SWIGF_check_nonnull(*farg1, "std::vector< int > const *", "VectorInt", "std::vector< int >::empty() const", return 0);
+  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
   result = (bool)((std::vector< int > const *)arg1)->empty();
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_VectorInt_clear(void *farg1) {
+SWIGEXPORT void swigc_VectorInt_clear(SwigfClassWrapper const *farg1) {
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   
-  arg1 = static_cast< std::vector< int > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< int > *", "VectorInt", "std::vector< int >::clear()", return );
+  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
   (arg1)->clear();
   
 }
 
 
-SWIGEXPORT void swigc_VectorInt_reserve(void *farg1, long const *farg2) {
+SWIGEXPORT void swigc_VectorInt_reserve(SwigfClassWrapper const *farg1, unsigned long const *farg2) {
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::size_type arg2 ;
   
-  arg1 = static_cast< std::vector< int > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< int > *", "VectorInt", "std::vector< int >::reserve(std::vector< int >::size_type)", return );
+  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
   arg2 = *farg2;
   (arg1)->reserve(arg2);
   
 }
 
 
-SWIGEXPORT void swigc_VectorInt_resize__SWIG_0(void *farg1, long const *farg2) {
+SWIGEXPORT void swigc_VectorInt_resize__SWIG_0(SwigfClassWrapper const *farg1, unsigned long const *farg2) {
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::size_type arg2 ;
   
-  arg1 = static_cast< std::vector< int > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< int > *", "VectorInt", "std::vector< int >::resize(std::vector< int >::size_type)", return );
+  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
   arg2 = *farg2;
   (arg1)->resize(arg2);
   
 }
 
 
-SWIGEXPORT void swigc_VectorInt_resize__SWIG_1(void *farg1, long const *farg2, int const *farg3) {
+SWIGEXPORT void swigc_VectorInt_resize__SWIG_1(SwigfClassWrapper const *farg1, unsigned long const *farg2, int const *farg3) {
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::size_type arg2 ;
   std::vector< int >::value_type *arg3 = 0 ;
   
-  arg1 = static_cast< std::vector< int > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< int > *", "VectorInt", "std::vector< int >::resize(std::vector< int >::size_type,std::vector< int >::value_type const &)", return );
+  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
   arg2 = *farg2;
   arg3 = reinterpret_cast< std::vector< int >::value_type * >(const_cast< int* >(farg3));
   (arg1)->resize(arg2,(std::vector< int >::value_type const &)*arg3);
@@ -579,47 +903,51 @@ SWIGEXPORT void swigc_VectorInt_resize__SWIG_1(void *farg1, long const *farg2, i
 }
 
 
-SWIGEXPORT void swigc_VectorInt_push_back(void *farg1, int const *farg2) {
+SWIGEXPORT void swigc_VectorInt_push_back(SwigfClassWrapper const *farg1, int const *farg2) {
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::value_type *arg2 = 0 ;
   
-  arg1 = static_cast< std::vector< int > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< int > *", "VectorInt", "std::vector< int >::push_back(std::vector< int >::value_type const &)", return );
+  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
   arg2 = reinterpret_cast< std::vector< int >::value_type * >(const_cast< int* >(farg2));
   (arg1)->push_back((std::vector< int >::value_type const &)*arg2);
   
 }
 
 
-SWIGEXPORT int swigc_VectorInt_front(void const *farg1) {
+SWIGEXPORT int swigc_VectorInt_front(SwigfClassWrapper const *farg1) {
   int fresult ;
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   int *result = 0 ;
   
-  arg1 = static_cast< std::vector< int > * >(const_cast< void* >(farg1));
+  SWIGF_check_nonnull(*farg1, "std::vector< int > const *", "VectorInt", "std::vector< int >::front() const", return 0);
+  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
   result = (int *) &((std::vector< int > const *)arg1)->front();
   fresult = *result;
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_VectorInt_back(void const *farg1) {
+SWIGEXPORT int swigc_VectorInt_back(SwigfClassWrapper const *farg1) {
   int fresult ;
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   int *result = 0 ;
   
-  arg1 = static_cast< std::vector< int > * >(const_cast< void* >(farg1));
+  SWIGF_check_nonnull(*farg1, "std::vector< int > const *", "VectorInt", "std::vector< int >::back() const", return 0);
+  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
   result = (int *) &((std::vector< int > const *)arg1)->back();
   fresult = *result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_VectorInt_set(void *farg1, long const *farg2, int const *farg3) {
+SWIGEXPORT void swigc_VectorInt_set(SwigfClassWrapper const *farg1, unsigned long const *farg2, int const *farg3) {
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::size_type arg2 ;
   int *arg3 = 0 ;
   
-  arg1 = static_cast< std::vector< int > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< int > *", "VectorInt", "std::vector< int >::set(std::vector< int >::size_type,std::vector< int >::const_reference)", return );
+  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
   arg2 = *farg2;
   arg3 = reinterpret_cast< int * >(const_cast< int* >(farg3));
   std_vector_Sl_int_Sg__set(arg1,arg2,(int const &)*arg3);
@@ -627,13 +955,14 @@ SWIGEXPORT void swigc_VectorInt_set(void *farg1, long const *farg2, int const *f
 }
 
 
-SWIGEXPORT int swigc_VectorInt_get(void *farg1, long const *farg2) {
+SWIGEXPORT int swigc_VectorInt_get(SwigfClassWrapper const *farg1, unsigned long const *farg2) {
   int fresult ;
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   std::vector< int >::size_type arg2 ;
   std::vector< int >::value_type result;
   
-  arg1 = static_cast< std::vector< int > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< int > *", "VectorInt", "std::vector< int >::get(std::vector< int >::size_type)", return 0);
+  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
   arg2 = *farg2;
   result = (std::vector< int >::value_type)std_vector_Sl_int_Sg__get(arg1,arg2);
   fresult = result;
@@ -641,13 +970,14 @@ SWIGEXPORT int swigc_VectorInt_get(void *farg1, long const *farg2) {
 }
 
 
-SWIGEXPORT void swigc_delete_VectorInt(void *farg1) {
+SWIGEXPORT void swigc_delete_VectorInt(SwigfClassWrapper const *farg1) {
   std::vector< int > *arg1 = (std::vector< int > *) 0 ;
   
-  arg1 = static_cast< std::vector< int > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< int > *", "VectorInt", "std::vector< int >::~vector()", return );
+  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -656,46 +986,56 @@ SWIGEXPORT void swigc_delete_VectorInt(void *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void * swigc_new_VectorDouble__SWIG_0() {
-  void * fresult ;
+SWIGEXPORT void swigc_assignment_VectorInt(SwigfClassWrapper * self, SwigfClassWrapper const * other) {
+  typedef std::vector< int > swigf_lhs_classtype;
+  SWIGF_assign(swigf_lhs_classtype, self,
+    swigf_lhs_classtype, const_cast<SwigfClassWrapper*>(other),
+    0 | swigf::IS_COPY_CONSTR);
+}
+
+
+SWIGEXPORT SwigfClassWrapper swigc_new_VectorDouble__SWIG_0() {
+  SwigfClassWrapper fresult ;
   std::vector< double > *result = 0 ;
   
   result = (std::vector< double > *)new std::vector< double >();
-  fresult = result;
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIGF_MOVE : SWIGF_REF);
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_new_VectorDouble__SWIG_1(long const *farg1) {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_new_VectorDouble__SWIG_1(unsigned long const *farg1) {
+  SwigfClassWrapper fresult ;
   std::vector< double >::size_type arg1 ;
   std::vector< double > *result = 0 ;
   
   arg1 = *farg1;
   result = (std::vector< double > *)new std::vector< double >(arg1);
-  fresult = result;
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIGF_MOVE : SWIGF_REF);
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_new_VectorDouble__SWIG_2(long const *farg1, double const *farg2) {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_new_VectorDouble__SWIG_2(unsigned long const *farg1, double const *farg2) {
+  SwigfClassWrapper fresult ;
   std::vector< double >::size_type arg1 ;
   std::vector< double >::value_type *arg2 = 0 ;
   std::vector< double > *result = 0 ;
@@ -703,84 +1043,92 @@ SWIGEXPORT void * swigc_new_VectorDouble__SWIG_2(long const *farg1, double const
   arg1 = *farg1;
   arg2 = reinterpret_cast< std::vector< double >::value_type * >(const_cast< double* >(farg2));
   result = (std::vector< double > *)new std::vector< double >(arg1,(std::vector< double >::value_type const &)*arg2);
-  fresult = result;
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIGF_MOVE : SWIGF_REF);
   return fresult;
 }
 
 
-SWIGEXPORT long swigc_VectorDouble_size(void const *farg1) {
-  long fresult ;
+SWIGEXPORT unsigned long swigc_VectorDouble_size(SwigfClassWrapper const *farg1) {
+  unsigned long fresult ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type result;
   
-  arg1 = static_cast< std::vector< double > * >(const_cast< void* >(farg1));
+  SWIGF_check_nonnull(*farg1, "std::vector< double > const *", "VectorDouble", "std::vector< double >::size() const", return 0);
+  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
   result = (std::vector< double >::size_type)((std::vector< double > const *)arg1)->size();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT long swigc_VectorDouble_capacity(void const *farg1) {
-  long fresult ;
+SWIGEXPORT unsigned long swigc_VectorDouble_capacity(SwigfClassWrapper const *farg1) {
+  unsigned long fresult ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type result;
   
-  arg1 = static_cast< std::vector< double > * >(const_cast< void* >(farg1));
+  SWIGF_check_nonnull(*farg1, "std::vector< double > const *", "VectorDouble", "std::vector< double >::capacity() const", return 0);
+  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
   result = (std::vector< double >::size_type)((std::vector< double > const *)arg1)->capacity();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_VectorDouble_empty(void const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_VectorDouble_empty(SwigfClassWrapper const *farg1) {
+  int fresult ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   bool result;
   
-  arg1 = static_cast< std::vector< double > * >(const_cast< void* >(farg1));
+  SWIGF_check_nonnull(*farg1, "std::vector< double > const *", "VectorDouble", "std::vector< double >::empty() const", return 0);
+  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
   result = (bool)((std::vector< double > const *)arg1)->empty();
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_VectorDouble_clear(void *farg1) {
+SWIGEXPORT void swigc_VectorDouble_clear(SwigfClassWrapper const *farg1) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   
-  arg1 = static_cast< std::vector< double > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< double > *", "VectorDouble", "std::vector< double >::clear()", return );
+  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
   (arg1)->clear();
   
 }
 
 
-SWIGEXPORT void swigc_VectorDouble_reserve(void *farg1, long const *farg2) {
+SWIGEXPORT void swigc_VectorDouble_reserve(SwigfClassWrapper const *farg1, unsigned long const *farg2) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   
-  arg1 = static_cast< std::vector< double > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< double > *", "VectorDouble", "std::vector< double >::reserve(std::vector< double >::size_type)", return );
+  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
   arg2 = *farg2;
   (arg1)->reserve(arg2);
   
 }
 
 
-SWIGEXPORT void swigc_VectorDouble_resize__SWIG_0(void *farg1, long const *farg2) {
+SWIGEXPORT void swigc_VectorDouble_resize__SWIG_0(SwigfClassWrapper const *farg1, unsigned long const *farg2) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   
-  arg1 = static_cast< std::vector< double > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< double > *", "VectorDouble", "std::vector< double >::resize(std::vector< double >::size_type)", return );
+  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
   arg2 = *farg2;
   (arg1)->resize(arg2);
   
 }
 
 
-SWIGEXPORT void swigc_VectorDouble_resize__SWIG_1(void *farg1, long const *farg2, double const *farg3) {
+SWIGEXPORT void swigc_VectorDouble_resize__SWIG_1(SwigfClassWrapper const *farg1, unsigned long const *farg2, double const *farg3) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   std::vector< double >::value_type *arg3 = 0 ;
   
-  arg1 = static_cast< std::vector< double > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< double > *", "VectorDouble", "std::vector< double >::resize(std::vector< double >::size_type,std::vector< double >::value_type const &)", return );
+  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
   arg2 = *farg2;
   arg3 = reinterpret_cast< std::vector< double >::value_type * >(const_cast< double* >(farg3));
   (arg1)->resize(arg2,(std::vector< double >::value_type const &)*arg3);
@@ -788,47 +1136,51 @@ SWIGEXPORT void swigc_VectorDouble_resize__SWIG_1(void *farg1, long const *farg2
 }
 
 
-SWIGEXPORT void swigc_VectorDouble_push_back(void *farg1, double const *farg2) {
+SWIGEXPORT void swigc_VectorDouble_push_back(SwigfClassWrapper const *farg1, double const *farg2) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::value_type *arg2 = 0 ;
   
-  arg1 = static_cast< std::vector< double > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< double > *", "VectorDouble", "std::vector< double >::push_back(std::vector< double >::value_type const &)", return );
+  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
   arg2 = reinterpret_cast< std::vector< double >::value_type * >(const_cast< double* >(farg2));
   (arg1)->push_back((std::vector< double >::value_type const &)*arg2);
   
 }
 
 
-SWIGEXPORT double swigc_VectorDouble_front(void const *farg1) {
+SWIGEXPORT double swigc_VectorDouble_front(SwigfClassWrapper const *farg1) {
   double fresult ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   double *result = 0 ;
   
-  arg1 = static_cast< std::vector< double > * >(const_cast< void* >(farg1));
+  SWIGF_check_nonnull(*farg1, "std::vector< double > const *", "VectorDouble", "std::vector< double >::front() const", return 0);
+  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
   result = (double *) &((std::vector< double > const *)arg1)->front();
   fresult = *result;
   return fresult;
 }
 
 
-SWIGEXPORT double swigc_VectorDouble_back(void const *farg1) {
+SWIGEXPORT double swigc_VectorDouble_back(SwigfClassWrapper const *farg1) {
   double fresult ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   double *result = 0 ;
   
-  arg1 = static_cast< std::vector< double > * >(const_cast< void* >(farg1));
+  SWIGF_check_nonnull(*farg1, "std::vector< double > const *", "VectorDouble", "std::vector< double >::back() const", return 0);
+  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
   result = (double *) &((std::vector< double > const *)arg1)->back();
   fresult = *result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_VectorDouble_set(void *farg1, long const *farg2, double const *farg3) {
+SWIGEXPORT void swigc_VectorDouble_set(SwigfClassWrapper const *farg1, unsigned long const *farg2, double const *farg3) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   double *arg3 = 0 ;
   
-  arg1 = static_cast< std::vector< double > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< double > *", "VectorDouble", "std::vector< double >::set(std::vector< double >::size_type,std::vector< double >::const_reference)", return );
+  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
   arg2 = *farg2;
   arg3 = reinterpret_cast< double * >(const_cast< double* >(farg3));
   std_vector_Sl_double_Sg__set(arg1,arg2,(double const &)*arg3);
@@ -836,13 +1188,14 @@ SWIGEXPORT void swigc_VectorDouble_set(void *farg1, long const *farg2, double co
 }
 
 
-SWIGEXPORT double swigc_VectorDouble_get(void *farg1, long const *farg2) {
+SWIGEXPORT double swigc_VectorDouble_get(SwigfClassWrapper const *farg1, unsigned long const *farg2) {
   double fresult ;
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   std::vector< double >::size_type arg2 ;
   std::vector< double >::value_type result;
   
-  arg1 = static_cast< std::vector< double > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< double > *", "VectorDouble", "std::vector< double >::get(std::vector< double >::size_type)", return 0);
+  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
   arg2 = *farg2;
   result = (std::vector< double >::value_type)std_vector_Sl_double_Sg__get(arg1,arg2);
   fresult = result;
@@ -850,13 +1203,14 @@ SWIGEXPORT double swigc_VectorDouble_get(void *farg1, long const *farg2) {
 }
 
 
-SWIGEXPORT void swigc_delete_VectorDouble(void *farg1) {
+SWIGEXPORT void swigc_delete_VectorDouble(SwigfClassWrapper const *farg1) {
   std::vector< double > *arg1 = (std::vector< double > *) 0 ;
   
-  arg1 = static_cast< std::vector< double > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< double > *", "VectorDouble", "std::vector< double >::~vector()", return );
+  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -865,46 +1219,56 @@ SWIGEXPORT void swigc_delete_VectorDouble(void *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void * swigc_new_VectorLongLong__SWIG_0() {
-  void * fresult ;
+SWIGEXPORT void swigc_assignment_VectorDouble(SwigfClassWrapper * self, SwigfClassWrapper const * other) {
+  typedef std::vector< double > swigf_lhs_classtype;
+  SWIGF_assign(swigf_lhs_classtype, self,
+    swigf_lhs_classtype, const_cast<SwigfClassWrapper*>(other),
+    0 | swigf::IS_COPY_CONSTR);
+}
+
+
+SWIGEXPORT SwigfClassWrapper swigc_new_VectorLongLong__SWIG_0() {
+  SwigfClassWrapper fresult ;
   std::vector< long long > *result = 0 ;
   
   result = (std::vector< long long > *)new std::vector< long long >();
-  fresult = result;
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIGF_MOVE : SWIGF_REF);
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_new_VectorLongLong__SWIG_1(long const *farg1) {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_new_VectorLongLong__SWIG_1(unsigned long const *farg1) {
+  SwigfClassWrapper fresult ;
   std::vector< long long >::size_type arg1 ;
   std::vector< long long > *result = 0 ;
   
   arg1 = *farg1;
   result = (std::vector< long long > *)new std::vector< long long >(arg1);
-  fresult = result;
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIGF_MOVE : SWIGF_REF);
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_new_VectorLongLong__SWIG_2(long const *farg1, long long const *farg2) {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_new_VectorLongLong__SWIG_2(unsigned long const *farg1, long long const *farg2) {
+  SwigfClassWrapper fresult ;
   std::vector< long long >::size_type arg1 ;
   std::vector< long long >::value_type *arg2 = 0 ;
   std::vector< long long > *result = 0 ;
@@ -912,84 +1276,92 @@ SWIGEXPORT void * swigc_new_VectorLongLong__SWIG_2(long const *farg1, long long 
   arg1 = *farg1;
   arg2 = reinterpret_cast< std::vector< long long >::value_type * >(const_cast< long long* >(farg2));
   result = (std::vector< long long > *)new std::vector< long long >(arg1,(std::vector< long long >::value_type const &)*arg2);
-  fresult = result;
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIGF_MOVE : SWIGF_REF);
   return fresult;
 }
 
 
-SWIGEXPORT long swigc_VectorLongLong_size(void const *farg1) {
-  long fresult ;
+SWIGEXPORT unsigned long swigc_VectorLongLong_size(SwigfClassWrapper const *farg1) {
+  unsigned long fresult ;
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   std::vector< long long >::size_type result;
   
-  arg1 = static_cast< std::vector< long long > * >(const_cast< void* >(farg1));
+  SWIGF_check_nonnull(*farg1, "std::vector< long long > const *", "VectorLongLong", "std::vector< long long >::size() const", return 0);
+  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
   result = (std::vector< long long >::size_type)((std::vector< long long > const *)arg1)->size();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT long swigc_VectorLongLong_capacity(void const *farg1) {
-  long fresult ;
+SWIGEXPORT unsigned long swigc_VectorLongLong_capacity(SwigfClassWrapper const *farg1) {
+  unsigned long fresult ;
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   std::vector< long long >::size_type result;
   
-  arg1 = static_cast< std::vector< long long > * >(const_cast< void* >(farg1));
+  SWIGF_check_nonnull(*farg1, "std::vector< long long > const *", "VectorLongLong", "std::vector< long long >::capacity() const", return 0);
+  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
   result = (std::vector< long long >::size_type)((std::vector< long long > const *)arg1)->capacity();
   fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT bool swigc_VectorLongLong_empty(void const *farg1) {
-  bool fresult ;
+SWIGEXPORT int swigc_VectorLongLong_empty(SwigfClassWrapper const *farg1) {
+  int fresult ;
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   bool result;
   
-  arg1 = static_cast< std::vector< long long > * >(const_cast< void* >(farg1));
+  SWIGF_check_nonnull(*farg1, "std::vector< long long > const *", "VectorLongLong", "std::vector< long long >::empty() const", return 0);
+  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
   result = (bool)((std::vector< long long > const *)arg1)->empty();
-  fresult = result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_VectorLongLong_clear(void *farg1) {
+SWIGEXPORT void swigc_VectorLongLong_clear(SwigfClassWrapper const *farg1) {
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   
-  arg1 = static_cast< std::vector< long long > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< long long > *", "VectorLongLong", "std::vector< long long >::clear()", return );
+  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
   (arg1)->clear();
   
 }
 
 
-SWIGEXPORT void swigc_VectorLongLong_reserve(void *farg1, long const *farg2) {
+SWIGEXPORT void swigc_VectorLongLong_reserve(SwigfClassWrapper const *farg1, unsigned long const *farg2) {
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   std::vector< long long >::size_type arg2 ;
   
-  arg1 = static_cast< std::vector< long long > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< long long > *", "VectorLongLong", "std::vector< long long >::reserve(std::vector< long long >::size_type)", return );
+  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
   arg2 = *farg2;
   (arg1)->reserve(arg2);
   
 }
 
 
-SWIGEXPORT void swigc_VectorLongLong_resize__SWIG_0(void *farg1, long const *farg2) {
+SWIGEXPORT void swigc_VectorLongLong_resize__SWIG_0(SwigfClassWrapper const *farg1, unsigned long const *farg2) {
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   std::vector< long long >::size_type arg2 ;
   
-  arg1 = static_cast< std::vector< long long > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< long long > *", "VectorLongLong", "std::vector< long long >::resize(std::vector< long long >::size_type)", return );
+  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
   arg2 = *farg2;
   (arg1)->resize(arg2);
   
 }
 
 
-SWIGEXPORT void swigc_VectorLongLong_resize__SWIG_1(void *farg1, long const *farg2, long long const *farg3) {
+SWIGEXPORT void swigc_VectorLongLong_resize__SWIG_1(SwigfClassWrapper const *farg1, unsigned long const *farg2, long long const *farg3) {
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   std::vector< long long >::size_type arg2 ;
   std::vector< long long >::value_type *arg3 = 0 ;
   
-  arg1 = static_cast< std::vector< long long > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< long long > *", "VectorLongLong", "std::vector< long long >::resize(std::vector< long long >::size_type,std::vector< long long >::value_type const &)", return );
+  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
   arg2 = *farg2;
   arg3 = reinterpret_cast< std::vector< long long >::value_type * >(const_cast< long long* >(farg3));
   (arg1)->resize(arg2,(std::vector< long long >::value_type const &)*arg3);
@@ -997,47 +1369,51 @@ SWIGEXPORT void swigc_VectorLongLong_resize__SWIG_1(void *farg1, long const *far
 }
 
 
-SWIGEXPORT void swigc_VectorLongLong_push_back(void *farg1, long long const *farg2) {
+SWIGEXPORT void swigc_VectorLongLong_push_back(SwigfClassWrapper const *farg1, long long const *farg2) {
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   std::vector< long long >::value_type *arg2 = 0 ;
   
-  arg1 = static_cast< std::vector< long long > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< long long > *", "VectorLongLong", "std::vector< long long >::push_back(std::vector< long long >::value_type const &)", return );
+  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
   arg2 = reinterpret_cast< std::vector< long long >::value_type * >(const_cast< long long* >(farg2));
   (arg1)->push_back((std::vector< long long >::value_type const &)*arg2);
   
 }
 
 
-SWIGEXPORT long long swigc_VectorLongLong_front(void const *farg1) {
+SWIGEXPORT long long swigc_VectorLongLong_front(SwigfClassWrapper const *farg1) {
   long long fresult ;
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   long long *result = 0 ;
   
-  arg1 = static_cast< std::vector< long long > * >(const_cast< void* >(farg1));
+  SWIGF_check_nonnull(*farg1, "std::vector< long long > const *", "VectorLongLong", "std::vector< long long >::front() const", return 0);
+  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
   result = (long long *) &((std::vector< long long > const *)arg1)->front();
   fresult = *result;
   return fresult;
 }
 
 
-SWIGEXPORT long long swigc_VectorLongLong_back(void const *farg1) {
+SWIGEXPORT long long swigc_VectorLongLong_back(SwigfClassWrapper const *farg1) {
   long long fresult ;
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   long long *result = 0 ;
   
-  arg1 = static_cast< std::vector< long long > * >(const_cast< void* >(farg1));
+  SWIGF_check_nonnull(*farg1, "std::vector< long long > const *", "VectorLongLong", "std::vector< long long >::back() const", return 0);
+  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
   result = (long long *) &((std::vector< long long > const *)arg1)->back();
   fresult = *result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_VectorLongLong_set(void *farg1, long const *farg2, long long const *farg3) {
+SWIGEXPORT void swigc_VectorLongLong_set(SwigfClassWrapper const *farg1, unsigned long const *farg2, long long const *farg3) {
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   std::vector< long long >::size_type arg2 ;
   long long *arg3 = 0 ;
   
-  arg1 = static_cast< std::vector< long long > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< long long > *", "VectorLongLong", "std::vector< long long >::set(std::vector< long long >::size_type,std::vector< long long >::const_reference)", return );
+  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
   arg2 = *farg2;
   arg3 = reinterpret_cast< long long * >(const_cast< long long* >(farg3));
   std_vector_Sl_long_SS_long_Sg__set(arg1,arg2,(long long const &)*arg3);
@@ -1045,13 +1421,14 @@ SWIGEXPORT void swigc_VectorLongLong_set(void *farg1, long const *farg2, long lo
 }
 
 
-SWIGEXPORT long long swigc_VectorLongLong_get(void *farg1, long const *farg2) {
+SWIGEXPORT long long swigc_VectorLongLong_get(SwigfClassWrapper const *farg1, unsigned long const *farg2) {
   long long fresult ;
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   std::vector< long long >::size_type arg2 ;
   std::vector< long long >::value_type result;
   
-  arg1 = static_cast< std::vector< long long > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< long long > *", "VectorLongLong", "std::vector< long long >::get(std::vector< long long >::size_type)", return 0);
+  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
   arg2 = *farg2;
   result = (std::vector< long long >::value_type)std_vector_Sl_long_SS_long_Sg__get(arg1,arg2);
   fresult = result;
@@ -1059,13 +1436,14 @@ SWIGEXPORT long long swigc_VectorLongLong_get(void *farg1, long const *farg2) {
 }
 
 
-SWIGEXPORT void swigc_delete_VectorLongLong(void *farg1) {
+SWIGEXPORT void swigc_delete_VectorLongLong(SwigfClassWrapper const *farg1) {
   std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
   
-  arg1 = static_cast< std::vector< long long > * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::vector< long long > *", "VectorLongLong", "std::vector< long long >::~vector()", return );
+  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1074,24 +1452,32 @@ SWIGEXPORT void swigc_delete_VectorLongLong(void *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void * swigc_new_TeuchosComm__SWIG_0(int const *farg1) {
-  void * fresult ;
+SWIGEXPORT void swigc_assignment_VectorLongLong(SwigfClassWrapper * self, SwigfClassWrapper const * other) {
+  typedef std::vector< long long > swigf_lhs_classtype;
+  SWIGF_assign(swigf_lhs_classtype, self,
+    swigf_lhs_classtype, const_cast<SwigfClassWrapper*>(other),
+    0 | swigf::IS_COPY_CONSTR);
+}
+
+
+SWIGEXPORT SwigfClassWrapper swigc_new_TeuchosComm__SWIG_0(int const *farg1) {
+  SwigfClassWrapper fresult ;
   MPI_Comm arg1 ;
   Teuchos::Comm< int > *result = 0 ;
   
@@ -1104,7 +1490,7 @@ SWIGEXPORT void * swigc_new_TeuchosComm__SWIG_0(int const *farg1) {
   
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1113,30 +1499,31 @@ SWIGEXPORT void * swigc_new_TeuchosComm__SWIG_0(int const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return SwigfClassWrapper_uninitialized());
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigfClassWrapper_uninitialized());
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return SwigfClassWrapper_uninitialized());
     }
   }
-  fresult = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult.ptr = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : NULL;
+  fresult.mem = SWIGF_MOVE;
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_new_TeuchosComm__SWIG_1() {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_new_TeuchosComm__SWIG_1() {
+  SwigfClassWrapper fresult ;
   Teuchos::Comm< int > *result = 0 ;
   
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1145,34 +1532,35 @@ SWIGEXPORT void * swigc_new_TeuchosComm__SWIG_1() {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return SwigfClassWrapper_uninitialized());
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigfClassWrapper_uninitialized());
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return SwigfClassWrapper_uninitialized());
     }
   }
-  fresult = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult.ptr = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : NULL;
+  fresult.mem = SWIGF_MOVE;
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_TeuchosComm_getRank(void const *farg1) {
+SWIGEXPORT int swigc_TeuchosComm_getRank(SwigfClassWrapper const *farg1) {
   int fresult ;
   Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
-  Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 ;
   int result;
   
-  smartarg1 = (Teuchos::RCP<const Teuchos::Comm<int> > *)farg1;
-  arg1 = (Teuchos::Comm<int> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::Comm<int> >* >(farg1->ptr);
+  arg1 = smartarg1 ? const_cast<Teuchos::Comm<int>*>(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1181,16 +1569,16 @@ SWIGEXPORT int swigc_TeuchosComm_getRank(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return 0);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
   fresult = result;
@@ -1198,17 +1586,17 @@ SWIGEXPORT int swigc_TeuchosComm_getRank(void const *farg1) {
 }
 
 
-SWIGEXPORT int swigc_TeuchosComm_getSize(void const *farg1) {
+SWIGEXPORT int swigc_TeuchosComm_getSize(SwigfClassWrapper const *farg1) {
   int fresult ;
   Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
-  Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 ;
   int result;
   
-  smartarg1 = (Teuchos::RCP<const Teuchos::Comm<int> > *)farg1;
-  arg1 = (Teuchos::Comm<int> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::Comm<int> >* >(farg1->ptr);
+  arg1 = smartarg1 ? const_cast<Teuchos::Comm<int>*>(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1217,16 +1605,16 @@ SWIGEXPORT int swigc_TeuchosComm_getSize(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return 0);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
   fresult = result;
@@ -1234,15 +1622,15 @@ SWIGEXPORT int swigc_TeuchosComm_getSize(void const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_TeuchosComm_barrier(void const *farg1) {
+SWIGEXPORT void swigc_TeuchosComm_barrier(SwigfClassWrapper const *farg1) {
   Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
-  Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 ;
   
-  smartarg1 = (Teuchos::RCP<const Teuchos::Comm<int> > *)farg1;
-  arg1 = (Teuchos::Comm<int> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::Comm<int> >* >(farg1->ptr);
+  arg1 = smartarg1 ? const_cast<Teuchos::Comm<int>*>(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1251,31 +1639,31 @@ SWIGEXPORT void swigc_TeuchosComm_barrier(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void swigc_delete_TeuchosComm(void *farg1) {
+SWIGEXPORT void swigc_delete_TeuchosComm(SwigfClassWrapper const *farg1) {
   Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
-  Teuchos::RCP< Teuchos::Comm< int > > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > > *smartarg1 ;
   
-  smartarg1 = (Teuchos::RCP< Teuchos::Comm<int> > *)farg1;
-  arg1 = (Teuchos::Comm<int> *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::Comm<int> >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1284,35 +1672,37 @@ SWIGEXPORT void swigc_delete_TeuchosComm(void *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void* swigc_spcopy_TeuchosComm(void* farg1) {
-  Teuchos::RCP< Teuchos::Comm<int> >* arg1 = (Teuchos::RCP< Teuchos::Comm<int> > *)farg1;
-  return new Teuchos::RCP< Teuchos::Comm<int> >(*arg1);
+SWIGEXPORT void swigc_assignment_TeuchosComm(SwigfClassWrapper * self, SwigfClassWrapper const * other) {
+  typedef Teuchos::RCP< Teuchos::Comm<int> > swigf_lhs_classtype;
+  SWIGF_assign(swigf_lhs_classtype, self,
+    swigf_lhs_classtype, const_cast<SwigfClassWrapper*>(other),
+    0 | swigf::IS_COPY_CONSTR);
 }
 
 
-SWIGEXPORT void * swigc_new_string() {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_new_string() {
+  SwigfClassWrapper fresult ;
   std::string *result = 0 ;
   
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1321,32 +1711,34 @@ SWIGEXPORT void * swigc_new_string() {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return SwigfClassWrapper_uninitialized());
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigfClassWrapper_uninitialized());
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return SwigfClassWrapper_uninitialized());
     }
   }
-  fresult = result;
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIGF_MOVE : SWIGF_REF);
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_string_resize(void *farg1, long const *farg2) {
+SWIGEXPORT void swigc_string_resize(SwigfClassWrapper const *farg1, unsigned long const *farg2) {
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type arg2 ;
   
-  arg1 = static_cast< std::string * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::string *", "string", "std::string::resize(std::string::size_type)", return );
+  arg1 = static_cast< std::string * >(farg1->ptr);
   arg2 = *farg2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1355,29 +1747,30 @@ SWIGEXPORT void swigc_string_resize(void *farg1, long const *farg2) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void swigc_string_clear(void *farg1) {
+SWIGEXPORT void swigc_string_clear(SwigfClassWrapper const *farg1) {
   std::string *arg1 = (std::string *) 0 ;
   
-  arg1 = static_cast< std::string * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::string *", "string", "std::string::clear()", return );
+  arg1 = static_cast< std::string * >(farg1->ptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1386,31 +1779,32 @@ SWIGEXPORT void swigc_string_clear(void *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT long swigc_string_size(void const *farg1) {
-  long fresult ;
+SWIGEXPORT unsigned long swigc_string_size(SwigfClassWrapper const *farg1) {
+  unsigned long fresult ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type result;
   
-  arg1 = static_cast< std::string * >(const_cast< void* >(farg1));
+  SWIGF_check_nonnull(*farg1, "std::string const *", "string", "std::string::size() const", return 0);
+  arg1 = static_cast< std::string * >(farg1->ptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1419,16 +1813,16 @@ SWIGEXPORT long swigc_string_size(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return 0);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
   fresult = result;
@@ -1436,15 +1830,16 @@ SWIGEXPORT long swigc_string_size(void const *farg1) {
 }
 
 
-SWIGEXPORT long swigc_string_length(void const *farg1) {
-  long fresult ;
+SWIGEXPORT unsigned long swigc_string_length(SwigfClassWrapper const *farg1) {
+  unsigned long fresult ;
   std::string *arg1 = (std::string *) 0 ;
   std::string::size_type result;
   
-  arg1 = static_cast< std::string * >(const_cast< void* >(farg1));
+  SWIGF_check_nonnull(*farg1, "std::string const *", "string", "std::string::length() const", return 0);
+  arg1 = static_cast< std::string * >(farg1->ptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1453,16 +1848,16 @@ SWIGEXPORT long swigc_string_length(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return 0);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
   fresult = result;
@@ -1470,84 +1865,51 @@ SWIGEXPORT long swigc_string_length(void const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_string_set(void *farg1, long const *farg2, char const *farg3) {
+SWIGEXPORT SwigfArrayWrapper swigc_string_str(SwigfClassWrapper const *farg1) {
+  SwigfArrayWrapper fresult ;
   std::string *arg1 = (std::string *) 0 ;
-  std::string::size_type arg2 ;
-  std::string::value_type arg3 ;
+  std::string *result = 0 ;
   
-  arg1 = static_cast< std::string * >(farg1);
-  arg2 = *farg2;
-  arg3 = *farg3;
+  SWIGF_check_mutable_nonnull(*farg1, "std::string *", "string", "std::string::str()", return SwigfArrayWrapper_uninitialized());
+  arg1 = static_cast< std::string * >(farg1->ptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
-      std_string_set(arg1,arg2,arg3);
+      result = (std::string *) &std_string_str(arg1);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return SwigfArrayWrapper_uninitialized());
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigfArrayWrapper_uninitialized());
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return SwigfArrayWrapper_uninitialized());
     }
   }
+  fresult.data = (result->empty() ? NULL : &(*result->begin()));
+  fresult.size = result->size();
   
-}
-
-
-SWIGEXPORT char swigc_string_get(void *farg1, long const *farg2) {
-  char fresult ;
-  std::string *arg1 = (std::string *) 0 ;
-  std::string::size_type arg2 ;
-  std::string::value_type result;
-  
-  arg1 = static_cast< std::string * >(farg1);
-  arg2 = *farg2;
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
-    try
-    {
-      // Attempt the wrapped function call
-      result = (std::string::value_type)std_string_get(arg1,arg2);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
-    }
-    catch (...)
-    {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
-    }
-  }
-  fresult = result;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_delete_string(void *farg1) {
+SWIGEXPORT void swigc_delete_string(SwigfClassWrapper const *farg1) {
   std::string *arg1 = (std::string *) 0 ;
   
-  arg1 = static_cast< std::string * >(farg1);
+  SWIGF_check_mutable_nonnull(*farg1, "std::string *", "string", "std::string::~string()", return );
+  arg1 = static_cast< std::string * >(farg1->ptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1556,31 +1918,39 @@ SWIGEXPORT void swigc_delete_string(void *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void swigc_ParameterList_print(void const *farg1) {
+SWIGEXPORT void swigc_assignment_string(SwigfClassWrapper * self, SwigfClassWrapper const * other) {
+  typedef std::string swigf_lhs_classtype;
+  SWIGF_assign(swigf_lhs_classtype, self,
+    swigf_lhs_classtype, const_cast<SwigfClassWrapper*>(other),
+    0 | swigf::IS_COPY_CONSTR);
+}
+
+
+SWIGEXPORT void swigc_ParameterList_print(SwigfClassWrapper const *farg1) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
-  Teuchos::RCP< Teuchos::ParameterList const > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList const > *smartarg1 ;
   
-  smartarg1 = (Teuchos::RCP<const Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? const_cast<Teuchos::ParameterList*>(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1589,29 +1959,29 @@ SWIGEXPORT void swigc_ParameterList_print(void const *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void * swigc_new_ParameterList__SWIG_0() {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_new_ParameterList__SWIG_0() {
+  SwigfClassWrapper fresult ;
   Teuchos::ParameterList *result = 0 ;
   
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1620,34 +1990,34 @@ SWIGEXPORT void * swigc_new_ParameterList__SWIG_0() {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return SwigfClassWrapper_uninitialized());
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigfClassWrapper_uninitialized());
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return SwigfClassWrapper_uninitialized());
     }
   }
-  fresult = result ? new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult.ptr = result ? new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_1) : NULL;
+  fresult.mem = SWIGF_MOVE;
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_new_ParameterList__SWIG_1(swig::SwigfArrayWrapper< char const > *farg1) {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_new_ParameterList__SWIG_1(SwigfArrayWrapper *farg1) {
+  SwigfClassWrapper fresult ;
   std::pair< char const *,std::size_t > arg1 ;
   Teuchos::ParameterList *result = 0 ;
   
-  arg1 = ::std::pair< const char*, std::size_t >();
-  (&arg1)->first  = farg1->data;
+  (&arg1)->first  = static_cast<const char*>(farg1->data);
   (&arg1)->second = farg1->size;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1656,38 +2026,38 @@ SWIGEXPORT void * swigc_new_ParameterList__SWIG_1(swig::SwigfArrayWrapper< char 
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), NULL);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return SwigfClassWrapper_uninitialized());
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), NULL);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigfClassWrapper_uninitialized());
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", NULL);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return SwigfClassWrapper_uninitialized());
     }
   }
-  fresult = result ? new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_1) : 0;
+  fresult.ptr = result ? new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_1) : NULL;
+  fresult.mem = SWIGF_MOVE;
   return fresult;
 }
 
 
-SWIGEXPORT void swigc_ParameterList_get__SWIG_0(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, double *farg3) {
+SWIGEXPORT void swigc_ParameterList_get__SWIG_0(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2, double *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   double *arg3 = 0 ;
-  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (&arg2)->first  = farg2->data;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
   arg3 = reinterpret_cast< double * >(farg3);
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1696,37 +2066,36 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_0(void *farg1, swig::SwigfArrayWra
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_0(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, double const *farg3) {
+SWIGEXPORT void swigc_ParameterList_set__SWIG_0(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2, double const *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   double *arg3 = 0 ;
-  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (&arg2)->first  = farg2->data;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
   arg3 = reinterpret_cast< double * >(const_cast< double* >(farg3));
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1735,37 +2104,36 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_0(void *farg1, swig::SwigfArrayWra
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void swigc_ParameterList_get__SWIG_1(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, int *farg3) {
+SWIGEXPORT void swigc_ParameterList_get__SWIG_1(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2, int *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   int *arg3 = 0 ;
-  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (&arg2)->first  = farg2->data;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
   arg3 = reinterpret_cast< int * >(farg3);
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1774,37 +2142,36 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_1(void *farg1, swig::SwigfArrayWra
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_1(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, int const *farg3) {
+SWIGEXPORT void swigc_ParameterList_set__SWIG_1(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2, int const *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   int *arg3 = 0 ;
-  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (&arg2)->first  = farg2->data;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
   arg3 = reinterpret_cast< int * >(const_cast< int* >(farg3));
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1813,37 +2180,36 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_1(void *farg1, swig::SwigfArrayWra
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void swigc_ParameterList_get__SWIG_2(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, bool *farg3) {
+SWIGEXPORT void swigc_ParameterList_get__SWIG_2(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2, bool *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   bool *arg3 = 0 ;
-  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (&arg2)->first  = farg2->data;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
   arg3 = reinterpret_cast< bool * >(farg3);
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1852,37 +2218,36 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_2(void *farg1, swig::SwigfArrayWra
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_2(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, bool const *farg3) {
+SWIGEXPORT void swigc_ParameterList_set__SWIG_2(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2, bool const *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   bool *arg3 = 0 ;
-  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (&arg2)->first  = farg2->data;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
   arg3 = reinterpret_cast< bool * >(const_cast< bool* >(farg3));
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1891,39 +2256,37 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_2(void *farg1, swig::SwigfArrayWra
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_3(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, swig::SwigfArrayWrapper< char const > *farg3) {
+SWIGEXPORT void swigc_ParameterList_set__SWIG_3(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2, SwigfArrayWrapper *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   std::pair< char const *,std::size_t > arg3 ;
-  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  arg3 = ::std::pair< const char*, std::size_t >();
-  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (&arg2)->first  = farg2->data;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
-  (&arg3)->first  = farg3->data;
+  (&arg3)->first  = static_cast<const char*>(farg3->data);
   (&arg3)->second = farg3->size;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1932,39 +2295,37 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_3(void *farg1, swig::SwigfArrayWra
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void swigc_ParameterList_get__SWIG_3(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, swig::SwigfArrayWrapper< char > *farg3) {
+SWIGEXPORT void swigc_ParameterList_get__SWIG_3(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2, SwigfArrayWrapper *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   std::pair< char *,std::size_t > arg3 ;
-  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  arg3 = ::std::pair< char*, std::size_t >();
-  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (&arg2)->first  = farg2->data;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
-  (&arg3)->first  = farg3->data;
+  (&arg3)->first  = static_cast<char*>(farg3->data);
   (&arg3)->second = farg3->size;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -1973,39 +2334,37 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_3(void *farg1, swig::SwigfArrayWra
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_4(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, swig::SwigfArrayWrapper< double const > *farg3) {
+SWIGEXPORT void swigc_ParameterList_set__SWIG_4(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2, SwigfArrayWrapper *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   std::pair< double const *,std::size_t > arg3 ;
-  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  arg3 = ::std::pair< const double*, std::size_t >();
-  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (&arg2)->first  = farg2->data;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
-  (&arg3)->first  = farg3->data;
+  (&arg3)->first  = static_cast<const double*>(farg3->data);
   (&arg3)->second = farg3->size;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -2014,39 +2373,37 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_4(void *farg1, swig::SwigfArrayWra
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void swigc_ParameterList_get__SWIG_4(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, swig::SwigfArrayWrapper< double const > *farg3) {
+SWIGEXPORT void swigc_ParameterList_get__SWIG_4(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2, SwigfArrayWrapper *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   std::pair< double const *,std::size_t > arg3 ;
-  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  arg3 = ::std::pair< const double*, std::size_t >();
-  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (&arg2)->first  = farg2->data;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
-  (&arg3)->first  = farg3->data;
+  (&arg3)->first  = static_cast<const double*>(farg3->data);
   (&arg3)->second = farg3->size;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -2055,39 +2412,37 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_4(void *farg1, swig::SwigfArrayWra
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_5(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, swig::SwigfArrayWrapper< int const > *farg3) {
+SWIGEXPORT void swigc_ParameterList_set__SWIG_5(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2, SwigfArrayWrapper *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   std::pair< int const *,std::size_t > arg3 ;
-  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  arg3 = ::std::pair< const int*, std::size_t >();
-  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (&arg2)->first  = farg2->data;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
-  (&arg3)->first  = farg3->data;
+  (&arg3)->first  = static_cast<const int*>(farg3->data);
   (&arg3)->second = farg3->size;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -2096,39 +2451,37 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_5(void *farg1, swig::SwigfArrayWra
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void swigc_ParameterList_get__SWIG_5(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, swig::SwigfArrayWrapper< int const > *farg3) {
+SWIGEXPORT void swigc_ParameterList_get__SWIG_5(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2, SwigfArrayWrapper *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   std::pair< int const *,std::size_t > arg3 ;
-  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  arg3 = ::std::pair< const int*, std::size_t >();
-  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (&arg2)->first  = farg2->data;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
-  (&arg3)->first  = farg3->data;
+  (&arg3)->first  = static_cast<const int*>(farg3->data);
   (&arg3)->second = farg3->size;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -2137,37 +2490,36 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_5(void *farg1, swig::SwigfArrayWra
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_6(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, void *farg3) {
+SWIGEXPORT void swigc_ParameterList_set__SWIG_6(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2, SwigfClassWrapper const *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   Teuchos::RCP< Teuchos::ParameterList > arg3 ;
-  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (&arg2)->first  = farg2->data;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
-  if (farg3) arg3 = *(Teuchos::RCP< Teuchos::ParameterList > *)farg3;
+  if (farg3->ptr) arg3 = *static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg3->ptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -2176,38 +2528,37 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_6(void *farg1, swig::SwigfArrayWra
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void swigc_ParameterList_get__SWIG_6(void *farg1, swig::SwigfArrayWrapper< char const > *farg2, void *farg3) {
+SWIGEXPORT void swigc_ParameterList_get__SWIG_6(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2, SwigfClassWrapper const *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg3 = 0 ;
-  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull3 ;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (&arg2)->first  = farg2->data;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
-  arg3 = farg3 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg3 : &tempnull3;
+  arg3 = farg3->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg3->ptr) : &tempnull3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -2216,37 +2567,36 @@ SWIGEXPORT void swigc_ParameterList_get__SWIG_6(void *farg1, swig::SwigfArrayWra
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void * swigc_ParameterList_sublist(void *farg1, swig::SwigfArrayWrapper< char const > *farg2) {
-  void * fresult ;
+SWIGEXPORT SwigfClassWrapper swigc_ParameterList_sublist(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2) {
+  SwigfClassWrapper fresult ;
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
-  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   Teuchos::RCP< Teuchos::ParameterList > result;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (&arg2)->first  = farg2->data;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -2255,38 +2605,38 @@ SWIGEXPORT void * swigc_ParameterList_sublist(void *farg1, swig::SwigfArrayWrapp
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return SwigfClassWrapper_uninitialized());
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return SwigfClassWrapper_uninitialized());
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return SwigfClassWrapper_uninitialized());
     }
   }
-  fresult = (!Teuchos::is_null(result)) ? new Teuchos::RCP< Teuchos::ParameterList >(result) : 0;
+  fresult.ptr = (new Teuchos::RCP< Teuchos::ParameterList >(static_cast< const Teuchos::RCP< Teuchos::ParameterList >& >(result)));
+  fresult.mem = SWIGF_MOVE;
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_ParameterList_get_length(void *farg1, swig::SwigfArrayWrapper< char const > *farg2) {
+SWIGEXPORT int swigc_ParameterList_get_length(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2) {
   int fresult ;
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
-  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   int result;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (&arg2)->first  = farg2->data;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -2295,16 +2645,16 @@ SWIGEXPORT int swigc_ParameterList_get_length(void *farg1, swig::SwigfArrayWrapp
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return 0);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
   fresult = result;
@@ -2312,19 +2662,18 @@ SWIGEXPORT int swigc_ParameterList_get_length(void *farg1, swig::SwigfArrayWrapp
 }
 
 
-SWIGEXPORT void swigc_ParameterList_remove(void *farg1, swig::SwigfArrayWrapper< char const > *farg2) {
+SWIGEXPORT void swigc_ParameterList_remove(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
-  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (&arg2)->first  = farg2->data;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -2333,37 +2682,36 @@ SWIGEXPORT void swigc_ParameterList_remove(void *farg1, swig::SwigfArrayWrapper<
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT bool swigc_ParameterList_is_parameter(void const *farg1, swig::SwigfArrayWrapper< char const > *farg2) {
+SWIGEXPORT bool swigc_ParameterList_is_parameter(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2) {
   bool fresult ;
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::pair< char const *,std::size_t > arg2 ;
-  Teuchos::RCP< Teuchos::ParameterList const > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList const > *smartarg1 ;
   bool result;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  smartarg1 = (Teuchos::RCP<const Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
-  (&arg2)->first  = farg2->data;
+  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? const_cast<Teuchos::ParameterList*>(smartarg1->get()) : NULL;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -2372,16 +2720,16 @@ SWIGEXPORT bool swigc_ParameterList_is_parameter(void const *farg1, swig::SwigfA
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), 0);
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), 0);
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return 0);
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", 0);
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
   fresult = result;
@@ -2389,15 +2737,15 @@ SWIGEXPORT bool swigc_ParameterList_is_parameter(void const *farg1, swig::SwigfA
 }
 
 
-SWIGEXPORT void swigc_delete_ParameterList(void *farg1) {
+SWIGEXPORT void swigc_delete_ParameterList(SwigfClassWrapper const *farg1) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
-  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   
-  smartarg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  arg1 = (Teuchos::ParameterList *)(smartarg1 ? smartarg1->get() : 0);
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -2406,40 +2754,41 @@ SWIGEXPORT void swigc_delete_ParameterList(void *farg1) {
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void* swigc_spcopy_ParameterList(void* farg1) {
-  Teuchos::RCP< Teuchos::ParameterList >* arg1 = (Teuchos::RCP< Teuchos::ParameterList > *)farg1;
-  return new Teuchos::RCP< Teuchos::ParameterList >(*arg1);
+SWIGEXPORT void swigc_assignment_ParameterList(SwigfClassWrapper * self, SwigfClassWrapper const * other) {
+  typedef Teuchos::RCP< Teuchos::ParameterList > swigf_lhs_classtype;
+  SWIGF_assign(swigf_lhs_classtype, self,
+    swigf_lhs_classtype, const_cast<SwigfClassWrapper*>(other),
+    0 | swigf::IS_COPY_CONSTR);
 }
 
 
-SWIGEXPORT void swigc_load_from_xml(void *farg1, swig::SwigfArrayWrapper< char const > *farg2) {
+SWIGEXPORT void swigc_load_from_xml(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2) {
   Teuchos::RCP< Teuchos::ParameterList > *arg1 = 0 ;
   std::pair< char const *,std::size_t > arg2 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull1 ;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  arg1 = farg1 ? (Teuchos::RCP< Teuchos::ParameterList > *)farg1 : &tempnull1;
-  (&arg2)->first  = farg2->data;
+  arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg1->ptr) : &tempnull1;
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -2448,40 +2797,36 @@ SWIGEXPORT void swigc_load_from_xml(void *farg1, swig::SwigfArrayWrapper< char c
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
 }
 
 
-SWIGEXPORT void swigc_save_to_xml(void const *farg1, swig::SwigfArrayWrapper< char const > *farg2) {
+SWIGEXPORT void swigc_save_to_xml(SwigfClassWrapper const *farg1, SwigfArrayWrapper *farg2) {
   Teuchos::ParameterList *arg1 = 0 ;
   std::pair< char const *,std::size_t > arg2 ;
+  Teuchos::RCP< Teuchos::ParameterList const > *smartarg1 ;
   
-  arg2 = ::std::pair< const char*, std::size_t >();
-  arg1 = (Teuchos::ParameterList *)(((Teuchos::RCP<const Teuchos::ParameterList > *)farg1)
-    ? ((Teuchos::RCP<const Teuchos::ParameterList > *)farg1)->get()
-    :0);
-  if (!arg1)
-  {
-    throw std::logic_error("Attempt to dereference null Teuchos::ParameterList const &");
-    return ;
-  }
-  (&arg2)->first  = farg2->data;
+  SWIGF_check_sp_nonnull(farg1,
+    "Teuchos::ParameterList *", "ParameterList", "save_to_xml(Teuchos::ParameterList const &,std::pair< char const *,std::size_t >)", return )
+  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::ParameterList >* >(farg1->ptr);
+  arg1 = const_cast<Teuchos::ParameterList*>(smartarg1->get());
+  (&arg2)->first  = static_cast<const char*>(farg2->data);
   (&arg2)->second = farg2->size;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
       // Attempt the wrapped function call
@@ -2490,16 +2835,16 @@ SWIGEXPORT void swigc_save_to_xml(void const *farg1, swig::SwigfArrayWrapper< ch
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_IndexError, e.what(), );
+      SWIG_exception_impl(SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl(SWIG_RuntimeError, e.what(), );
+      SWIG_exception_impl(SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", );
+      SWIG_exception_impl(SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   

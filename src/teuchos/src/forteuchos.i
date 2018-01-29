@@ -26,6 +26,9 @@ typedef int Teuchos_Ordinal;
 %fortran_view(double)
 %fortran_view(size_t)
 
+// FIXME: Restore previous bool behaviour
+FORT_FUND_TYPEMAP(bool, "logical(C_BOOL)")
+
 // enum workaround
 #define RENAME_ENUM(X) %rename(Teuchos##X) X;
 RENAME_ENUM(ESide)
