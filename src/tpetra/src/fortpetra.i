@@ -28,6 +28,10 @@ typedef long long                               GO;
 typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
 typedef char                                    Packet;
 
+
+// FIXME: Restore previous bool behaviour
+FORT_FUND_TYPEMAP(bool, "logical(C_BOOL)")
+
 %fragment("TpetraTypes", "fmodule") {
  use, intrinsic :: iso_c_binding, only : &
    c_bool, &

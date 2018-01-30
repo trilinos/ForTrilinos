@@ -16,7 +16,7 @@ class ExceptionBase : public std::logic_error { /* * */ };
 
 %exception {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    swigf_check_unhandled_exception();
     try
     {
         // Attempt the wrapped function call
