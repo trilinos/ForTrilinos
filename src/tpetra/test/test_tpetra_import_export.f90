@@ -124,8 +124,6 @@ contains
         call mine_parent%create(src, num_vecs+2)
         call neigh_parent%create(tgt, num_vecs+2)
         TEST_ASSERT((num_vecs == 5))
-        call mv_mine%create()
-        call mv_with_neighbors%create()
         mv_mine = mine_parent%subViewNonConst(cols)
         mv_with_neighbors = neigh_parent%subViewNonConst(cols)
       end if
@@ -201,17 +199,18 @@ contains
         TEST_FLOATING_EQUALITY(a(1), val(1), epsilon(val(1)))
       end do
 
+      call mv_mine%release()
+      call mv_with_neighbors%release()
+      call mine_parent%release()
+      call neigh_parent%release()
+      call importer%release()
+      call exporter%release()
+
     end do
 
     deallocate(neighbors, val)
     call src%release()
     call tgt%release()
-    call mv_mine%release()
-    call mv_with_neighbors%release()
-    call mine_parent%release()
-    call neigh_parent%release()
-    call importer%release()
-    call exporter%release()
 
     OUT0("Finished TpetraImportExport_GetNeighborsForward!")
 
