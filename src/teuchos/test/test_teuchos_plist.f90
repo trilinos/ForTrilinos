@@ -24,12 +24,12 @@ contains
   FORTRILINOS_UNIT_TEST(TeuchosPList_Basic)
 
     type(ParameterList) :: plist, sublist, sublistref
-    integer, dimension(6) :: test_int = (/ -1, 1, 3, 3, 5, 7 /)
+    integer(C_INT), dimension(6) :: test_int = (/ -1, 1, 3, 3, 5, 7 /)
     real(C_DOUBLE), dimension(4) :: test_dbl = (/ 0.1d0, 1.9d0, -2.0d0, 4.0d0 /)
 
-    integer, allocatable :: iarr(:)
+    integer(C_INT), allocatable :: iarr(:)
     real(C_DOUBLE), allocatable :: darr(:)
-    integer :: ival
+    integer(C_INT) :: ival
     real(C_DOUBLE) :: dval
     logical(C_BOOL) :: bval, true=.true. ! FIXME: can we get rid of this true somethow?
     character(kind=C_CHAR, len=:), allocatable :: sval
@@ -60,6 +60,11 @@ contains
     call plist%set('intarr', test_int)
     call plist%set('dblarr', test_dbl)
 
+    ! FIXME: without these allocation, the test segfaults when compiled with flang
+    ! According to [this](https://stackoverflow.com/questions/42140832/automatic-array-allocation-upon-assignment-in-fortran) it
+    ! seems that it should be supported in F2003. So it is not clear why flang fails.
+    allocate(iarr(10))
+    allocate(darr(10))
     iarr = plist%get_arr_integer('intarr')
     darr = plist%get_arr_real('dblarr')
 
