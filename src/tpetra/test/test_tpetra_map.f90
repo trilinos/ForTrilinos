@@ -416,11 +416,11 @@ contains
 ! --------------------------------description--------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMap_description)
     type(TpetraMap) :: Obj
-    type(string) :: desciption
+    character(kind=C_CHAR, len=:), allocatable :: description
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
     call Obj%create(num_global, comm); TEST_IERR()
-    desciption = Obj%description(); TEST_IERR()
+    description = Obj%description(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_description)
 
 ! ----------------------------removeEmptyProcesses---------------------------- !

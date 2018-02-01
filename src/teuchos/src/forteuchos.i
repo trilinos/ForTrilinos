@@ -20,6 +20,7 @@
 // Typedefs
 typedef int Teuchos_Ordinal;
 
+// Typemaps
 %include <typemaps.i>
 %fortran_view(int)
 %fortran_view(long long)
@@ -29,7 +30,16 @@ typedef int Teuchos_Ordinal;
 // FIXME: Restore previous bool behaviour
 FORT_FUND_TYPEMAP(bool, "logical(C_BOOL)")
 
+// Convert all std::string references/values to and from Fortran strings
+%ignore std::string;
+%include <std_string.i>
+%apply std::string NATIVE { std::string  };
+%apply const std::string& NATIVE { const std::string& };
+
 // enum workaround
+// XXX: should be able to do something like
+// %rename("Teuchos%s", %$innamespace="Teuchos", %$isenumitem) "";
+// %rename("Teuchos%s", %$innamespace="Teuchos", %$isenum) "";
 #define RENAME_ENUM(X) %rename(Teuchos##X) X;
 RENAME_ENUM(ESide)
 RENAME_ENUM(LEFT_SIDE)
@@ -62,6 +72,7 @@ RENAME_ENUM(View)
 %include "Teuchos_Exceptions.i"
 %include "Teuchos_RCP.i"
 
+%include "Teuchos_Array.i"
 %include "Teuchos_Comm.i"
 %include "Teuchos_ParameterList.i"
 %include "Teuchos_XML.i"

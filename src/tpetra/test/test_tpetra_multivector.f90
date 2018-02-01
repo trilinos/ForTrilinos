@@ -307,12 +307,12 @@ contains
   FORTRILINOS_UNIT_TEST(TpetraMultiVector_Description)
     type(TpetraMap) :: map
     type(TpetraMultiVector) :: Vec
-    type(string) :: fresult
+    character(kind=C_CHAR, len=:), allocatable :: description
     integer(size_type), parameter :: num_vecs=2, num_local=10
     integer(global_ordinal_type) :: num_global
     call map%create(invalid, num_local, comm); TEST_IERR()
     call Vec%create(map, num_vecs)
-    fresult = Vec%description(); TEST_IERR()
+    description = Vec%description(); TEST_IERR()
     call Vec%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_Description)
 

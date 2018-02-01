@@ -68,14 +68,14 @@ type, bind(C) :: SwigfClassWrapper
   integer(C_INT), public :: mem = SWIGF_NULL
 end type
 
- public :: setCombineModeParameter
- public :: TpetraMap
 
 type, bind(C) :: SwigfArrayWrapper
   type(C_PTR), public :: data = C_NULL_PTR
   integer(C_SIZE_T), public :: size = 0
 end type
 
+ public :: setCombineModeParameter
+ public :: TpetraMap
  public :: TpetraExport
  public :: TpetraImport
  public :: TpetraMultiVector
@@ -588,7 +588,6 @@ end type
   ! These should be treated as PROTECTED data
   type(SwigfClassWrapper), public :: swigdata
  contains
-  procedure, private, nopass :: writeMapFile__SWIG_0 => swigf_TpetraWriter_writeMapFile__SWIG_0
   procedure, private, nopass :: writeSparseFile__SWIG_0 => swigf_TpetraWriter_writeSparseFile__SWIG_0
   procedure, private, nopass :: writeSparseFile__SWIG_1 => swigf_TpetraWriter_writeSparseFile__SWIG_1
   procedure, private, nopass :: writeSparseFile__SWIG_2 => swigf_TpetraWriter_writeSparseFile__SWIG_2
@@ -597,14 +596,13 @@ end type
   procedure, private, nopass :: writeSparseGraphFile__SWIG_1 => swigf_TpetraWriter_writeSparseGraphFile__SWIG_1
   procedure, private, nopass :: writeSparseGraphFile__SWIG_2 => swigf_TpetraWriter_writeSparseGraphFile__SWIG_2
   procedure, private, nopass :: writeSparseGraphFile__SWIG_3 => swigf_TpetraWriter_writeSparseGraphFile__SWIG_3
-  procedure, private, nopass :: writeMapFile__SWIG_1 => swigf_TpetraWriter_writeMapFile__SWIG_1
+  procedure, nopass :: writeMapFile => swigf_TpetraWriter_writeMapFile
   procedure :: create => swigf_new_TpetraWriter
   procedure :: release => swigf_delete_TpetraWriter
   procedure, private :: swigf_assignment_TpetraWriter
   generic :: assignment(=) => swigf_assignment_TpetraWriter
   generic :: writeSparseGraphFile => writeSparseGraphFile__SWIG_0, writeSparseGraphFile__SWIG_1, writeSparseGraphFile__SWIG_2, &
     writeSparseGraphFile__SWIG_3
-  generic :: writeMapFile => writeMapFile__SWIG_0, writeMapFile__SWIG_1
   generic :: writeSparseFile => writeSparseFile__SWIG_0, writeSparseFile__SWIG_1, writeSparseFile__SWIG_2, &
     writeSparseFile__SWIG_3
  end type
@@ -616,8 +614,9 @@ subroutine swigc_setCombineModeParameter(farg1, farg2) &
 bind(C, name="swigc_setCombineModeParameter")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfClassWrapper
+import :: SwigfArrayWrapper
 type(SwigfClassWrapper) :: farg1
-type(SwigfClassWrapper) :: farg2
+type(SwigfArrayWrapper) :: farg2
 end subroutine
 
 function swigc_new_TpetraMap__SWIG_0() &
@@ -826,9 +825,10 @@ function swigc_TpetraMap_description(farg1) &
 bind(C, name="swigc_TpetraMap_description") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
 import :: SwigfClassWrapper
 type(SwigfClassWrapper) :: farg1
-type(SwigfClassWrapper) :: fresult
+type(SwigfArrayWrapper) :: fresult
 end function
 
 function swigc_TpetraMap_removeEmptyProcesses(farg1) &
@@ -1529,9 +1529,10 @@ function swigc_TpetraMultiVector_description(farg1) &
 bind(C, name="swigc_TpetraMultiVector_description") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
 import :: SwigfClassWrapper
 type(SwigfClassWrapper) :: farg1
-type(SwigfClassWrapper) :: fresult
+type(SwigfArrayWrapper) :: fresult
 end function
 
 subroutine swigc_TpetraMultiVector_removeEmptyProcessesInPlace(farg1, farg2) &
@@ -2363,9 +2364,10 @@ function swigc_TpetraCrsGraph_description(farg1) &
 bind(C, name="swigc_TpetraCrsGraph_description") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
 import :: SwigfClassWrapper
 type(SwigfClassWrapper) :: farg1
-type(SwigfClassWrapper) :: fresult
+type(SwigfArrayWrapper) :: fresult
 end function
 
 subroutine swigc_TpetraCrsGraph_replaceColMap(farg1, farg2) &
@@ -3293,9 +3295,10 @@ function swigc_TpetraCrsMatrix_description(farg1) &
 bind(C, name="swigc_TpetraCrsMatrix_description") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
+import :: SwigfArrayWrapper
 import :: SwigfClassWrapper
 type(SwigfClassWrapper) :: farg1
-type(SwigfClassWrapper) :: fresult
+type(SwigfArrayWrapper) :: fresult
 end function
 
 subroutine swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6) &
@@ -4068,14 +4071,6 @@ end subroutine
    type(SwigfClassWrapper), intent(inout) :: self
    type(SwigfClassWrapper), intent(in) :: other
   end subroutine
-subroutine swigc_TpetraWriter_writeMapFile__SWIG_0(farg1, farg2) &
-bind(C, name="swigc_TpetraWriter_writeMapFile__SWIG_0")
-use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfClassWrapper) :: farg2
-end subroutine
-
 subroutine swigc_TpetraWriter_writeSparseFile__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
 bind(C, name="swigc_TpetraWriter_writeSparseFile__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
@@ -4083,8 +4078,8 @@ import :: SwigfArrayWrapper
 import :: SwigfClassWrapper
 type(SwigfArrayWrapper) :: farg1
 type(SwigfClassWrapper) :: farg2
-type(SwigfClassWrapper) :: farg3
-type(SwigfClassWrapper) :: farg4
+type(SwigfArrayWrapper) :: farg3
+type(SwigfArrayWrapper) :: farg4
 logical(C_BOOL), intent(in) :: farg5
 end subroutine
 
@@ -4095,8 +4090,8 @@ import :: SwigfArrayWrapper
 import :: SwigfClassWrapper
 type(SwigfArrayWrapper) :: farg1
 type(SwigfClassWrapper) :: farg2
-type(SwigfClassWrapper) :: farg3
-type(SwigfClassWrapper) :: farg4
+type(SwigfArrayWrapper) :: farg3
+type(SwigfArrayWrapper) :: farg4
 end subroutine
 
 subroutine swigc_TpetraWriter_writeSparseFile__SWIG_2(farg1, farg2, farg3) &
@@ -4125,8 +4120,8 @@ import :: SwigfArrayWrapper
 import :: SwigfClassWrapper
 type(SwigfArrayWrapper) :: farg1
 type(SwigfClassWrapper) :: farg2
-type(SwigfClassWrapper) :: farg3
-type(SwigfClassWrapper) :: farg4
+type(SwigfArrayWrapper) :: farg3
+type(SwigfArrayWrapper) :: farg4
 logical(C_BOOL), intent(in) :: farg5
 end subroutine
 
@@ -4137,8 +4132,8 @@ import :: SwigfArrayWrapper
 import :: SwigfClassWrapper
 type(SwigfArrayWrapper) :: farg1
 type(SwigfClassWrapper) :: farg2
-type(SwigfClassWrapper) :: farg3
-type(SwigfClassWrapper) :: farg4
+type(SwigfArrayWrapper) :: farg3
+type(SwigfArrayWrapper) :: farg4
 end subroutine
 
 subroutine swigc_TpetraWriter_writeSparseGraphFile__SWIG_2(farg1, farg2, farg3) &
@@ -4160,8 +4155,8 @@ type(SwigfArrayWrapper) :: farg1
 type(SwigfClassWrapper) :: farg2
 end subroutine
 
-subroutine swigc_TpetraWriter_writeMapFile__SWIG_1(farg1, farg2) &
-bind(C, name="swigc_TpetraWriter_writeMapFile__SWIG_1")
+subroutine swigc_TpetraWriter_writeMapFile(farg1, farg2) &
+bind(C, name="swigc_TpetraWriter_writeMapFile")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfArrayWrapper
 import :: SwigfClassWrapper
@@ -4195,13 +4190,14 @@ subroutine swigc_TpetraMatrixMatrixMultiply__SWIG_0(farg1, farg2, farg3, farg4, 
 bind(C, name="swigc_TpetraMatrixMatrixMultiply__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfClassWrapper
+import :: SwigfArrayWrapper
 type(SwigfClassWrapper) :: farg1
 logical(C_BOOL), intent(in) :: farg2
 type(SwigfClassWrapper) :: farg3
 logical(C_BOOL), intent(in) :: farg4
 type(SwigfClassWrapper) :: farg5
 logical(C_BOOL), intent(in) :: farg6
-type(SwigfClassWrapper) :: farg7
+type(SwigfArrayWrapper) :: farg7
 type(SwigfClassWrapper) :: farg8
 end subroutine
 
@@ -4209,13 +4205,14 @@ subroutine swigc_TpetraMatrixMatrixMultiply__SWIG_1(farg1, farg2, farg3, farg4, 
 bind(C, name="swigc_TpetraMatrixMatrixMultiply__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigfClassWrapper
+import :: SwigfArrayWrapper
 type(SwigfClassWrapper) :: farg1
 logical(C_BOOL), intent(in) :: farg2
 type(SwigfClassWrapper) :: farg3
 logical(C_BOOL), intent(in) :: farg4
 type(SwigfClassWrapper) :: farg5
 logical(C_BOOL), intent(in) :: farg6
-type(SwigfClassWrapper) :: farg7
+type(SwigfArrayWrapper) :: farg7
 end subroutine
 
 subroutine swigc_TpetraMatrixMatrixMultiply__SWIG_2(farg1, farg2, farg3, farg4, farg5, farg6) &
@@ -4270,15 +4267,35 @@ end subroutine
 
 contains
  ! FORTRAN PROXY CODE
+
+subroutine swigf_string_to_chararray(string, chars, wrap)
+  use, intrinsic :: ISO_C_BINDING
+  character(kind=C_CHAR, len=*), intent(IN) :: string
+  character(kind=C_CHAR), dimension(:), target, allocatable, intent(OUT) :: chars
+  type(SwigfArrayWrapper), intent(OUT) :: wrap
+  integer(kind=C_SIZE_T) :: i
+
+  allocate(character(kind=C_CHAR) :: chars(len(string)))
+  do i=1,size(chars)
+    chars(i) = string(i:i)
+  enddo
+  wrap%data = c_loc(chars)
+  wrap%size = size(chars)
+end subroutine
+
 subroutine setCombineModeParameter(plist, paramname)
 use, intrinsic :: ISO_C_BINDING
 class(ParameterList), intent(inout) :: plist
-class(string), intent(in) :: paramname
+character(kind=C_CHAR, len=*), target :: paramname
+
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 type(SwigfClassWrapper) :: farg1 
-type(SwigfClassWrapper) :: farg2 
+type(SwigfArrayWrapper) :: farg2 
 
 farg1 = plist%swigdata
-farg2 = paramname%swigdata
+
+call swigf_string_to_chararray(paramname, farg2_chars, farg2)
+
 call swigc_setCombineModeParameter(farg1, farg2)
 end subroutine
 
@@ -4587,17 +4604,32 @@ fresult = swigc_TpetraMap_getComm(farg1)
 swigf_result%swigdata = fresult
 end function
 
+
+subroutine swigf_chararray_to_string(wrap, string)
+  use, intrinsic :: ISO_C_BINDING
+  type(SwigfArrayWrapper), intent(IN) :: wrap
+  character(kind=C_CHAR, len=:), allocatable, intent(OUT) :: string
+  character(kind=C_CHAR), dimension(:), pointer :: chars
+  integer(kind=C_SIZE_T) :: i
+  call c_f_pointer(wrap%data, chars, [wrap%size])
+  allocate(character(kind=C_CHAR, len=wrap%size) :: string)
+  do i=1, wrap%size
+    string(i:i) = chars(i)
+  enddo
+end subroutine
+
 function swigf_TpetraMap_description(self) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
-type(string) :: swigf_result
+character(kind=C_CHAR, len=:), allocatable :: swigf_result
 class(TpetraMap), intent(in) :: self
-type(SwigfClassWrapper) :: fresult 
+type(SwigfArrayWrapper) :: fresult 
 type(SwigfClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraMap_description(farg1)
-swigf_result%swigdata = fresult
+
+call swigf_chararray_to_string(fresult, swigf_result)
 end function
 
 function swigf_TpetraMap_removeEmptyProcesses(self) &
@@ -5730,14 +5762,15 @@ end function
 function swigf_TpetraMultiVector_description(self) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
-type(string) :: swigf_result
+character(kind=C_CHAR, len=:), allocatable :: swigf_result
 class(TpetraMultiVector), intent(in) :: self
-type(SwigfClassWrapper) :: fresult 
+type(SwigfArrayWrapper) :: fresult 
 type(SwigfClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraMultiVector_description(farg1)
-swigf_result%swigdata = fresult
+
+call swigf_chararray_to_string(fresult, swigf_result)
 end function
 
 subroutine swigf_TpetraMultiVector_removeEmptyProcessesInPlace(self, newmap)
@@ -7044,14 +7077,15 @@ end function
 function swigf_TpetraCrsGraph_description(self) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
-type(string) :: swigf_result
+character(kind=C_CHAR, len=:), allocatable :: swigf_result
 class(TpetraCrsGraph), intent(in) :: self
-type(SwigfClassWrapper) :: fresult 
+type(SwigfArrayWrapper) :: fresult 
 type(SwigfClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsGraph_description(farg1)
-swigf_result%swigdata = fresult
+
+call swigf_chararray_to_string(fresult, swigf_result)
 end function
 
 subroutine swigf_TpetraCrsGraph_replaceColMap(self, newcolmap)
@@ -8613,14 +8647,15 @@ end subroutine
 function swigf_TpetraCrsMatrix_description(self) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
-type(string) :: swigf_result
+character(kind=C_CHAR, len=:), allocatable :: swigf_result
 class(TpetraCrsMatrix), intent(in) :: self
-type(SwigfClassWrapper) :: fresult 
+type(SwigfArrayWrapper) :: fresult 
 type(SwigfClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_description(farg1)
-swigf_result%swigdata = fresult
+
+call swigf_chararray_to_string(fresult, swigf_result)
 end function
 
 subroutine swigf_TpetraCrsMatrix_importAndFillComplete__SWIG_0(self, destmatrix, importer, domainmap, rangemap, params)
@@ -9362,22 +9397,6 @@ end subroutine
    type(TpetraCrsMatrix), intent(in) :: other
    call swigc_assignment_TpetraCrsMatrix(self%swigdata, other%swigdata)
   end subroutine
-
-subroutine swigf_string_to_chararray(string, chars, wrap)
-  use, intrinsic :: ISO_C_BINDING
-  character(kind=C_CHAR, len=*), intent(IN) :: string
-  character(kind=C_CHAR), dimension(:), target, allocatable, intent(OUT) :: chars
-  type(SwigfArrayWrapper), intent(OUT) :: wrap
-  integer(kind=C_SIZE_T) :: i
-
-  allocate(character(kind=C_CHAR) :: chars(len(string)))
-  do i=1,size(chars)
-    chars(i) = string(i:i)
-  enddo
-  wrap%data = c_loc(chars)
-  wrap%size = size(chars)
-end subroutine
-
 function swigf_TpetraReader_readSparseGraphFile__SWIG_0(filename, pcomm, callfillcomplete, tolerant, debug) &
 result(swigf_result)
 use, intrinsic :: ISO_C_BINDING
@@ -10193,39 +10212,35 @@ end subroutine
    type(TpetraReader), intent(in) :: other
    call swigc_assignment_TpetraReader(self%swigdata, other%swigdata)
   end subroutine
-subroutine swigf_TpetraWriter_writeMapFile__SWIG_0(filename, map)
-use, intrinsic :: ISO_C_BINDING
-class(string), intent(in) :: filename
-class(TpetraMap), intent(in) :: map
-type(SwigfClassWrapper) :: farg1 
-type(SwigfClassWrapper) :: farg2 
-
-farg1 = filename%swigdata
-farg2 = map%swigdata
-call swigc_TpetraWriter_writeMapFile__SWIG_0(farg1, farg2)
-end subroutine
-
 subroutine swigf_TpetraWriter_writeSparseFile__SWIG_0(filename, pmatrix, matrixname, matrixdescription, debug)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=*), target :: filename
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
 type(TpetraCrsMatrix) :: pmatrix
-class(string), intent(in) :: matrixname
-class(string), intent(in) :: matrixdescription
+character(kind=C_CHAR, len=*), target :: matrixname
+
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg3_chars
+character(kind=C_CHAR, len=*), target :: matrixdescription
+
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg4_chars
 logical(C_BOOL), intent(in) :: debug
 type(SwigfArrayWrapper) :: farg1 
 type(SwigfClassWrapper) :: farg2 
-type(SwigfClassWrapper) :: farg3 
-type(SwigfClassWrapper) :: farg4 
+type(SwigfArrayWrapper) :: farg3 
+type(SwigfArrayWrapper) :: farg4 
 logical(C_BOOL) :: farg5 
 
 
 call swigf_string_to_chararray(filename, farg1_chars, farg1)
 
 farg2 = pmatrix%swigdata
-farg3 = matrixname%swigdata
-farg4 = matrixdescription%swigdata
+
+call swigf_string_to_chararray(matrixname, farg3_chars, farg3)
+
+
+call swigf_string_to_chararray(matrixdescription, farg4_chars, farg4)
+
 farg5 = debug
 call swigc_TpetraWriter_writeSparseFile__SWIG_0(farg1, farg2, farg3, farg4, farg5)
 end subroutine
@@ -10236,19 +10251,27 @@ character(kind=C_CHAR, len=*), target :: filename
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
 type(TpetraCrsMatrix) :: pmatrix
-class(string), intent(in) :: matrixname
-class(string), intent(in) :: matrixdescription
+character(kind=C_CHAR, len=*), target :: matrixname
+
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg3_chars
+character(kind=C_CHAR, len=*), target :: matrixdescription
+
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg4_chars
 type(SwigfArrayWrapper) :: farg1 
 type(SwigfClassWrapper) :: farg2 
-type(SwigfClassWrapper) :: farg3 
-type(SwigfClassWrapper) :: farg4 
+type(SwigfArrayWrapper) :: farg3 
+type(SwigfArrayWrapper) :: farg4 
 
 
 call swigf_string_to_chararray(filename, farg1_chars, farg1)
 
 farg2 = pmatrix%swigdata
-farg3 = matrixname%swigdata
-farg4 = matrixdescription%swigdata
+
+call swigf_string_to_chararray(matrixname, farg3_chars, farg3)
+
+
+call swigf_string_to_chararray(matrixdescription, farg4_chars, farg4)
+
 call swigc_TpetraWriter_writeSparseFile__SWIG_1(farg1, farg2, farg3, farg4)
 end subroutine
 
@@ -10293,21 +10316,29 @@ character(kind=C_CHAR, len=*), target :: filename
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
 type(TpetraCrsGraph) :: pgraph
-class(string), intent(in) :: graphname
-class(string), intent(in) :: graphdescription
+character(kind=C_CHAR, len=*), target :: graphname
+
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg3_chars
+character(kind=C_CHAR, len=*), target :: graphdescription
+
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg4_chars
 logical(C_BOOL), intent(in) :: debug
 type(SwigfArrayWrapper) :: farg1 
 type(SwigfClassWrapper) :: farg2 
-type(SwigfClassWrapper) :: farg3 
-type(SwigfClassWrapper) :: farg4 
+type(SwigfArrayWrapper) :: farg3 
+type(SwigfArrayWrapper) :: farg4 
 logical(C_BOOL) :: farg5 
 
 
 call swigf_string_to_chararray(filename, farg1_chars, farg1)
 
 farg2 = pgraph%swigdata
-farg3 = graphname%swigdata
-farg4 = graphdescription%swigdata
+
+call swigf_string_to_chararray(graphname, farg3_chars, farg3)
+
+
+call swigf_string_to_chararray(graphdescription, farg4_chars, farg4)
+
 farg5 = debug
 call swigc_TpetraWriter_writeSparseGraphFile__SWIG_0(farg1, farg2, farg3, farg4, farg5)
 end subroutine
@@ -10318,19 +10349,27 @@ character(kind=C_CHAR, len=*), target :: filename
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
 type(TpetraCrsGraph) :: pgraph
-class(string), intent(in) :: graphname
-class(string), intent(in) :: graphdescription
+character(kind=C_CHAR, len=*), target :: graphname
+
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg3_chars
+character(kind=C_CHAR, len=*), target :: graphdescription
+
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg4_chars
 type(SwigfArrayWrapper) :: farg1 
 type(SwigfClassWrapper) :: farg2 
-type(SwigfClassWrapper) :: farg3 
-type(SwigfClassWrapper) :: farg4 
+type(SwigfArrayWrapper) :: farg3 
+type(SwigfArrayWrapper) :: farg4 
 
 
 call swigf_string_to_chararray(filename, farg1_chars, farg1)
 
 farg2 = pgraph%swigdata
-farg3 = graphname%swigdata
-farg4 = graphdescription%swigdata
+
+call swigf_string_to_chararray(graphname, farg3_chars, farg3)
+
+
+call swigf_string_to_chararray(graphdescription, farg4_chars, farg4)
+
 call swigc_TpetraWriter_writeSparseGraphFile__SWIG_1(farg1, farg2, farg3, farg4)
 end subroutine
 
@@ -10369,7 +10408,7 @@ farg2 = pgraph%swigdata
 call swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(farg1, farg2)
 end subroutine
 
-subroutine swigf_TpetraWriter_writeMapFile__SWIG_1(filename, map)
+subroutine swigf_TpetraWriter_writeMapFile(filename, map)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=*), target :: filename
 
@@ -10382,7 +10421,7 @@ type(SwigfClassWrapper) :: farg2
 call swigf_string_to_chararray(filename, farg1_chars, farg1)
 
 farg2 = map%swigdata
-call swigc_TpetraWriter_writeMapFile__SWIG_1(farg1, farg2)
+call swigc_TpetraWriter_writeMapFile(farg1, farg2)
 end subroutine
 
 subroutine swigf_new_TpetraWriter(self)
@@ -10423,7 +10462,9 @@ class(TpetraCrsMatrix), intent(in) :: b
 logical(C_BOOL), intent(in) :: transposeb
 class(TpetraCrsMatrix), intent(inout) :: c
 logical(C_BOOL), intent(in) :: call_fillcomplete_on_result
-class(string), intent(in) :: label
+character(kind=C_CHAR, len=*), target :: label
+
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg7_chars
 type(ParameterList) :: params
 type(SwigfClassWrapper) :: farg1 
 logical(C_BOOL) :: farg2 
@@ -10431,7 +10472,7 @@ type(SwigfClassWrapper) :: farg3
 logical(C_BOOL) :: farg4 
 type(SwigfClassWrapper) :: farg5 
 logical(C_BOOL) :: farg6 
-type(SwigfClassWrapper) :: farg7 
+type(SwigfArrayWrapper) :: farg7 
 type(SwigfClassWrapper) :: farg8 
 
 farg1 = a%swigdata
@@ -10440,7 +10481,9 @@ farg3 = b%swigdata
 farg4 = transposeb
 farg5 = c%swigdata
 farg6 = call_fillcomplete_on_result
-farg7 = label%swigdata
+
+call swigf_string_to_chararray(label, farg7_chars, farg7)
+
 farg8 = params%swigdata
 call swigc_TpetraMatrixMatrixMultiply__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8)
 end subroutine
@@ -10453,14 +10496,16 @@ class(TpetraCrsMatrix), intent(in) :: b
 logical(C_BOOL), intent(in) :: transposeb
 class(TpetraCrsMatrix), intent(inout) :: c
 logical(C_BOOL), intent(in) :: call_fillcomplete_on_result
-class(string), intent(in) :: label
+character(kind=C_CHAR, len=*), target :: label
+
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg7_chars
 type(SwigfClassWrapper) :: farg1 
 logical(C_BOOL) :: farg2 
 type(SwigfClassWrapper) :: farg3 
 logical(C_BOOL) :: farg4 
 type(SwigfClassWrapper) :: farg5 
 logical(C_BOOL) :: farg6 
-type(SwigfClassWrapper) :: farg7 
+type(SwigfArrayWrapper) :: farg7 
 
 farg1 = a%swigdata
 farg2 = transposea
@@ -10468,7 +10513,9 @@ farg3 = b%swigdata
 farg4 = transposeb
 farg5 = c%swigdata
 farg6 = call_fillcomplete_on_result
-farg7 = label%swigdata
+
+call swigf_string_to_chararray(label, farg7_chars, farg7)
+
 call swigc_TpetraMatrixMatrixMultiply__SWIG_1(farg1, farg2, farg3, farg4, farg5, farg6, farg7)
 end subroutine
 
