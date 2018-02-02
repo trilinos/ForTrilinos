@@ -191,22 +191,24 @@ template <typename T> T SwigValueInit() {
 
 
 // Default exception handler
-#define SWIG_exception_impl(CODE, MSG, RETURNNULL) \
-    throw std::logic_error(MSG); RETURNNULL;
+#define SWIG_exception_impl(DECL, CODE, MSG, RETURNNULL) \
+    throw std::logic_error("In " DECL ": " MSG); RETURNNULL;
 
 
 /* Contract support */
 #define SWIG_contract_assert(RETURNNULL, EXPR, MSG) \
-    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, RETURNNULL); }
+    if (!(EXPR)) { SWIG_exception_impl("$decl", SWIG_ValueError, MSG, RETURNNULL); }
 
 
 #undef SWIG_exception_impl
-#define SWIG_exception_impl(CODE, MSG, RETURNNULL) \
-    swigf_store_exception(CODE, MSG); RETURNNULL;
+#define SWIG_exception_impl(DECL, CODE, MSG, RETURNNULL) \
+    SWIG_store_exception(DECL, CODE, MSG); RETURNNULL;
 
 
-void swigf_check_unhandled_exception();
-void swigf_store_exception(int code, const char *msg);
+
+
+void SWIG_check_unhandled_exception_impl(const char* decl);
+void SWIG_store_exception(const char* decl, int errcode, const char *msg);
 
 
 #define SWIGVERSION 0x040000 
@@ -220,73 +222,86 @@ void swigf_store_exception(int code, const char *msg);
 #include <stdexcept>
 
 
-extern "C" {
-int fortrilinos_ierr = 0;
-}
-
-
 #include <string>
+
+
+#include <cctype>
 
 
 #include <algorithm>
 
 
+extern "C" {
+SWIGEXPORT int fortrilinos_ierr = 0;
+}
+
 // Stored exception message
-std::string swigf_last_exception_msg;
+SWIGINTERN std::string* swig_last_exception_msg = NULL;
+
+// Declare %inlined error retrieval function
+const std::string& fortrilinos_get_serr();
 
 // Call this function before any new action
-void swigf_check_unhandled_exception()
+SWIGEXPORT void SWIG_check_unhandled_exception_impl(const char* decl)
 {
-    if (::fortrilinos_ierr != 0)
+    if (fortrilinos_ierr != 0)
     {
-        throw std::runtime_error(
-                "An unhandled exception occurred in $decl: "
-                + swigf_last_exception_msg);
+        // Construct message; calling the error string function ensures that
+        // the string is allocated if the user did something goofy like
+        // manually setting the integer. Since this function is not expected to
+        // be wrapped by a catch statement, it will probably terminate the
+        // program.
+        std::string msg("An unhandled exception occurred before a call to ");
+        msg += decl;
+        msg += "; ";
+        std::string prev_msg = fortrilinos_get_serr();
+        prev_msg.front() = std::tolower(prev_msg.front());
+        msg += prev_msg;
+        throw std::runtime_error(msg);
     }
 }
 
 // Save an exception to the fortran error code and string
-void swigf_store_exception(int code, const char *msg)
+SWIGEXPORT void SWIG_store_exception(const char *decl,
+                                     int errcode,
+                                     const char *msg)
 {
-    ::fortrilinos_ierr = code;
+    ::fortrilinos_ierr = errcode;
 
+    if (!swig_last_exception_msg)
+    {
+        swig_last_exception_msg = new std::string;
+    }
     // Save the message to a std::string first
-    swigf_last_exception_msg = msg;
+    *swig_last_exception_msg = "In ";
+    *swig_last_exception_msg += decl;
+    *swig_last_exception_msg += ": ";
+    *swig_last_exception_msg += msg;
 }
 
 
 
-// DEPRECATED: use swigf_check_unhandled_exception instead
-namespace swig
+const std::string& fortrilinos_get_serr()
 {
-#ifdef __GNUC__
-__attribute__((deprecated))
-#endif
-inline void fortran_check_unhandled_exception()
-{
-    swigf_check_unhandled_exception();
-}
-} // end namespace swig
+    if (!swig_last_exception_msg || swig_last_exception_msg->empty())
+    {
+        SWIG_store_exception("UNKNOWN", SWIG_RuntimeError,
+                             "no error string was present");
 
-
-typedef std::string Swig_Err_String;
-
-
-const Swig_Err_String& fortrilinos_get_serr()
-{
-    return swigf_last_exception_msg;
+    }
+    return *swig_last_exception_msg;
 }
 
 
-struct SwigfArrayWrapper
+struct SwigArrayWrapper
 {
     void* data;
     std::size_t size;
 };
 
-SwigfArrayWrapper SwigfArrayWrapper_uninitialized()
+SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized()
 {
-    SwigfArrayWrapper result;
+    SwigArrayWrapper result;
     result.data = NULL;
     result.size = 0;
     return result;
@@ -295,11 +310,11 @@ SwigfArrayWrapper SwigfArrayWrapper_uninitialized()
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT SwigfArrayWrapper swigc_fortrilinos_get_serr() {
-  SwigfArrayWrapper fresult ;
-  Swig_Err_String *result = 0 ;
+SWIGEXPORT SwigArrayWrapper swigc_fortrilinos_get_serr() {
+  SwigArrayWrapper fresult ;
+  std::string *result = 0 ;
   
-  result = (Swig_Err_String *) &fortrilinos_get_serr();
+  result = (std::string *) &fortrilinos_get_serr();
   fresult.data = (result->empty() ? NULL : &(*result->begin()));
   fresult.size = result->size();
   

@@ -36,7 +36,7 @@ contains
 
     OUT0('Starting TeuchosPList_Basic!')
 
-    call plist%create('myname'); TEST_IERR()
+    plist = create_ParameterList('myname'); TEST_IERR()
     TEST_ASSERT(c_associated(plist%swigdata%ptr))
 
     ! Test a function that raises an exception

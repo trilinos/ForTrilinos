@@ -19,7 +19,7 @@ module forerror
  public :: fortrilinos_ierr
 
 
-type, bind(C) :: SwigfArrayWrapper
+type, bind(C) :: SwigArrayWrapper
   type(C_PTR), public :: data = C_NULL_PTR
   integer(C_SIZE_T), public :: size = 0
 end type
@@ -37,8 +37,8 @@ function swigc_fortrilinos_get_serr() &
 bind(C, name="swigc_fortrilinos_get_serr") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfArrayWrapper
-type(SwigfArrayWrapper) :: fresult
+import :: SwigArrayWrapper
+type(SwigArrayWrapper) :: fresult
 end function
 
  end interface
@@ -47,9 +47,9 @@ end function
 contains
  ! FORTRAN PROXY CODE
 
-subroutine swigf_chararray_to_string(wrap, string)
+subroutine SWIG_chararray_to_string(wrap, string)
   use, intrinsic :: ISO_C_BINDING
-  type(SwigfArrayWrapper), intent(IN) :: wrap
+  type(SwigArrayWrapper), intent(IN) :: wrap
   character(kind=C_CHAR, len=:), allocatable, intent(OUT) :: string
   character(kind=C_CHAR), dimension(:), pointer :: chars
   integer(kind=C_SIZE_T) :: i
@@ -61,14 +61,14 @@ subroutine swigf_chararray_to_string(wrap, string)
 end subroutine
 
 function fortrilinos_get_serr() &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-character(kind=C_CHAR, len=:), allocatable :: swigf_result
-type(SwigfArrayWrapper) :: fresult 
+character(kind=C_CHAR, len=:), allocatable :: swig_result
+type(SwigArrayWrapper) :: fresult 
 
 fresult = swigc_fortrilinos_get_serr()
 
-call swigf_chararray_to_string(fresult, swigf_result)
+call SWIG_chararray_to_string(fresult, swig_result)
 end function
 
 
