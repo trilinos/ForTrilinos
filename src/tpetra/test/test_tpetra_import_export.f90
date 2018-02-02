@@ -18,9 +18,9 @@ program test_TpetraImportExport
   SETUP_TEST()
 
 #ifdef HAVE_MPI
-  call comm%create(MPI_COMM_WORLD); FORTRILINOS_CHECK_IERR()
+  comm = create_TeuchosComm(MPI_COMM_WORLD); FORTRILINOS_CHECK_IERR()
 #else
-  call comm%create()
+  comm = create_TeuchosComm()
 #endif
 
   ADD_SUBTEST_AND_RUN(TpetraImportExport_Basic)
@@ -45,11 +45,11 @@ contains
     OUT0("Starting TpetraImportExport_Basic!")
 
     ! create Maps
-    call src%create(invalid, ten, comm)
-    call tgt%create(invalid, five, comm)
+    src = create_TpetraMap(invalid, ten, comm)
+    tgt = create_TpetraMap(invalid, five, comm)
 
     ! create Import object
-    call importer%create(src, tgt)
+    importer = create_TpetraImport(src, tgt)
 
     same = importer%getNumSameIDs()
     permute = importer%getNumPermuteIDs()
@@ -108,21 +108,21 @@ contains
     end if
 
     ! two maps: one has one entries per node, the other is the 1-D neighbors
-    call src%create(invalid, num_local, comm)
-    call tgt%create(invalid, neighbors, comm)
+    src = create_TpetraMap(invalid, num_local, comm)
+    tgt = create_TpetraMap(invalid, neighbors, comm)
 
     do tnum = 1, 2
 
       ! for tnum=1, these are contiguously allocated multivectors
       ! for tnum=2, these are non-contiguous views of multivectors
       if (tnum == 1) then
-        call mv_mine%create(src, num_vecs)
-        call mv_with_neighbors%create(tgt, num_vecs)
+        mv_mine = create_TpetraMultiVector(src, num_vecs)
+        mv_with_neighbors = create_TpetraMultiVector(tgt, num_vecs)
       else
         allocate(cols(5))
         cols(:) = [1,7,4,5,6]
-        call mine_parent%create(src, num_vecs+2)
-        call neigh_parent%create(tgt, num_vecs+2)
+        mine_parent = create_TpetraMultiVector(src, num_vecs+2)
+        neigh_parent = create_TpetraMultiVector(tgt, num_vecs+2)
         TEST_ASSERT((num_vecs == 5))
         mv_mine = mine_parent%subViewNonConst(cols)
         mv_with_neighbors = neigh_parent%subViewNonConst(cols)
@@ -136,8 +136,8 @@ contains
       end do
 
       ! create Import from src to tgt, Export from tgt to src, test them
-      call importer%create(src, tgt)
-      call exporter%create(tgt, src)
+      importer = create_TpetraImport(src, tgt)
+      exporter = create_TpetraExport(tgt, src)
 
       ! importer testing
       TEST_ASSERT((src%isSameAs(importer%getSourceMap())))
@@ -239,25 +239,25 @@ contains
     if (num_images < 2) return;
 
     ! create a Map
-    call smap%create(invalid, one, comm)
+    smap = create_TpetraMap(invalid, one, comm)
 
     lclrow = 1
     my_only_gid = smap%getGlobalElement(lclrow)
     cols(1) = my_only_gid
     cols(2) = mod(my_only_gid+1, num_images)
-    call dmap%create(twog, cols, comm)
+    dmap = create_TpetraMap(twog, cols, comm)
 
-    call svec%create(smap, one)
+    svec = create_TpetraMultiVector(smap, one)
     call svec%putScalar(-1.0_scalar_type)
 
-    call dvec%create(dmap, one)
+    dvec = create_TpetraMultiVector(dmap, one)
     call dvec%putScalar(-3.0_scalar_type)
 
     ! first item of dvec is local (w.r.t. srcVec), while the second is remote
     ! ergo, during the import:
     ! - the first will be over-written (by 1.0) from the source, while
     ! - the second will be "combined", i.e., abs(max(1.0,3.0)) = 3.0 from the dest
-    call importer%create(smap, dmap)
+    importer = create_TpetraImport(smap, dmap)
     call dvec%doImport(svec, importer, TpetraABSMAX)
 
     a => dvec%get1dView()
@@ -275,7 +275,7 @@ contains
 
     success = .false.
 
-    !call Obj%create(); TEST_IERR()
+    !Obj = create_TpetraImport(); TEST_IERR()
     !fresult = Obj%isLocallyComplete(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -294,8 +294,8 @@ contains
 
     success = .false.
 
-    !call remotetarget%create(); TEST_IERR()
-    !call Obj%create(); TEST_IERR()
+    !remotetarget = create_TpetraMap(); TEST_IERR()
+    !Obj = create_TpetraImport(); TEST_IERR()
     !fresult = Obj%createRemoteOnlyImport(remotetarget); TEST_IERR()
 
     !call remotetarget%release(); TEST_IERR()

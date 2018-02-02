@@ -56,9 +56,9 @@ call MPI_INIT(ierr)
 if (ierr /= 0) then
   stop "MPI failed to init"
 endif
-call comm%create(MPI_COMM_WORLD)
+comm = create_TeuchosComm(MPI_COMM_WORLD)
 #else
-call comm%create()
+comm = create_TeuchosComm()
 #endif
 
 my_rank = comm%getRank()
@@ -66,7 +66,7 @@ my_rank = comm%getRank()
 ! The number of rows and columns in the matrix.
 num_gbl_indices = 50
 
-call map%create(num_gbl_indices, comm)
+map = create_TpetraMap(num_gbl_indices, comm)
 FORTRILINOS_CHECK_IERR()
 
 ! Check that the map was created with the appropriate number of elements
@@ -87,7 +87,7 @@ if (my_rank == 0) &
 ! numerical algorithms that use Tpetra objects to be templated on the type of
 ! the TpetraOperator specialization.
 max_entries_per_row = 3
-call A%create(map, max_entries_per_row, TpetraDynamicProfile)
+A = create_TpetraCrsMatrix(map, max_entries_per_row, TpetraDynamicProfile)
 
 ! Fill the sparse matrix, one row at a time.
 allocate(vals(3))
@@ -270,9 +270,9 @@ contains
     ! matrix.)  The residual vector "resid" is of course in the range of A.
     domain_map = A%getDomainMap()
     range_map = A%getRangeMap()
-    call q%create(domain_map, num_vecs)
-    call z%create(range_map, num_vecs)
-    call resid%create(range_map, num_vecs)
+    q = create_TpetraMultiVector(domain_map, num_vecs)
+    z = create_TpetraMultiVector(range_map, num_vecs)
+    resid = create_TpetraMultiVector(range_map, num_vecs)
 
     ! Fill the iteration vector z with random numbers to start.  Don't have
     ! grand expectations about the quality of our pseudorandom number generator,

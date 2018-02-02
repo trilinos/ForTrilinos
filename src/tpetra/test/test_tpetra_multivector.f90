@@ -18,9 +18,9 @@ program test_TpetraMultiVector
   SETUP_TEST()
 
 #ifdef HAVE_MPI
-  call comm%create(MPI_COMM_WORLD); FORTRILINOS_CHECK_IERR()
+  comm = create_TeuchosComm(MPI_COMM_WORLD); FORTRILINOS_CHECK_IERR()
 #else
-  call comm%create(); FORTRILINOS_CHECK_IERR()
+  comm = create_TeuchosComm(); FORTRILINOS_CHECK_IERR()
 #endif
 
   ADD_SUBTEST_AND_RUN(TpetraMultiVector_ZeroScaleUpdate)
@@ -69,7 +69,7 @@ contains
 
     zeros = zero
 
-    call map%create(invalid, num_local, comm); TEST_IERR()
+    map = create_TpetraMap(invalid, num_local, comm); TEST_IERR()
 
     ! values = {1, 1, 2, 2, 4, 4}
     ! values(1:4) = {1, 1, 2, 2} = [1 2]
@@ -83,8 +83,8 @@ contains
     values = [one, one, two, two, four, four]
 
     ! TODO: Multivec create to take array, not ArrayView
-    call A%create(map, values(1:4), LDA, num_vecs); TEST_IERR()
-    call B%create(map, values(3:), LDA, num_vecs); TEST_IERR()
+    A = create_TpetraMultiVector(map, values(1:4), LDA, num_vecs); TEST_IERR()
+    B = create_TpetraMultiVector(map, values(3:), LDA, num_vecs); TEST_IERR()
 
     !
     !      [.... ....]
@@ -98,7 +98,7 @@ contains
     !   set A2 = A
     !   scale it by 2 in situ
     !   check that it equals B: subtraction in situ
-    call A2%create(A, TeuchosCopy); TEST_IERR()
+    A2 = create_TpetraMultiVector(A, TeuchosCopy); TEST_IERR()
     call A2%scale(two)
     call A2%update(negone, B, one)
     call A2%norm1(norms)
@@ -107,7 +107,7 @@ contains
 
     ! set A2 = A
     ! check that it equals B: scale, subtraction in situ
-    call A2%create(A, TeuchosCopy); TEST_IERR()
+    A2 = create_TpetraMultiVector(A, TeuchosCopy); TEST_IERR()
     call A2%update(negone, B, two)
     call A2%norm1(norms)
     TEST_FLOATING_ARRAY_EQUALITY(norms, zeros, epsilon(zero))
@@ -116,7 +116,7 @@ contains
     ! set C random
     ! set it to zero by combination with A,B
     zeroout = .false.
-    call C%create(map, num_vecs, zeroout); TEST_IERR()
+    C = create_TpetraMultiVector(map, num_vecs, zeroout); TEST_IERR()
     call C%randomize()
     call C%update(negone, B, two, A, zero)
     call C%norm1(norms)
@@ -126,7 +126,7 @@ contains
     ! set C random
     ! scale it ex-situ
     ! check that it equals B: subtraction in situ
-    call C%create(map, num_vecs, zeroout); TEST_IERR()
+    C = create_TpetraMultiVector(map, num_vecs, zeroout); TEST_IERR()
     call C%scale(two, A)
     call C%update(one, B, negone)
     call C%norm1(norms)
@@ -150,13 +150,13 @@ contains
     OUT0("Starting CountNormInf")
 
     ! create a Map
-    call map%create(invalid, num_local, comm); TEST_IERR()
+    map = create_TpetraMap(invalid, num_local, comm); TEST_IERR()
     ! values = {0, 0, 1, 1, 2, 2} = [0 1 2]
     !                               [0 1 2]
     ! normInf(values) = [0 1 2]
     ! over all procs, this is [0 1 2]
     values(:) = [0., 0., 1., 1., 2., 2.]
-    call Vec%create(map, values, LDA, num_vecs); TEST_IERR()
+    Vec = create_TpetraMultiVector(map, values, LDA, num_vecs); TEST_IERR()
     answer(:) = [0., 1., 2.]
 
     ! do the dots
@@ -183,9 +183,9 @@ contains
     OUT0("Starting Norm2")
 
     ! create a Map
-    call map%create(invalid, num_local, comm); TEST_IERR()
+    map = create_TpetraMap(invalid, num_local, comm); TEST_IERR()
 
-    call Vec%create(map, num_vecs); TEST_IERR()
+    Vec = create_TpetraMultiVector(map, num_vecs); TEST_IERR()
     call Vec%randomize(); TEST_IERR()
 
     ! Take the norms, they should not be zero
@@ -219,10 +219,10 @@ contains
     OUT0("Starting Reciprocal")
 
     ! create a Map
-    call map%create(invalid, num_local, comm); TEST_IERR()
+    map = create_TpetraMap(invalid, num_local, comm); TEST_IERR()
 
-    call A%create(map, num_vecs); TEST_IERR()
-    call B%create(map, num_vecs); TEST_IERR()
+    A = create_TpetraMultiVector(map, num_vecs); TEST_IERR()
+    B = create_TpetraMultiVector(map, num_vecs); TEST_IERR()
     call A%putScalar(five); TEST_IERR()
     call B%reciprocal(A); TEST_IERR()
 
@@ -251,12 +251,12 @@ contains
     ! NOTE: This test only tests the interface does not throw.
     ! It does not test correctness
     num_global = 4 * comm%getSize()
-    call map1%create(num_global, comm); TEST_IERR()
+    map1 = create_TpetraMap(num_global, comm); TEST_IERR()
 
     num_global = 5 * comm%getSize()
-    call map2%create(num_global, comm); TEST_IERR()
+    map2 = create_TpetraMap(num_global, comm); TEST_IERR()
 
-    call Obj%create(map1, num_vecs); TEST_IERR()
+    Obj = create_TpetraMultiVector(map1, num_vecs); TEST_IERR()
 
     call Obj%replaceMap(map2); TEST_IERR()
 
@@ -279,17 +279,17 @@ contains
     real(scalar_type) :: norms(num_vecs)
 
     OUT0("Starting Abs")
-    call map%create(invalid, num_local, comm); TEST_IERR()
+    map = create_TpetraMap(invalid, num_local, comm); TEST_IERR()
 
-    call A%create(map, num_vecs); TEST_IERR()
-    call B%create(map, num_vecs); TEST_IERR()
+    A = create_TpetraMultiVector(map, num_vecs); TEST_IERR()
+    B = create_TpetraMultiVector(map, num_vecs); TEST_IERR()
     call A%putScalar(negone); TEST_IERR()
     call A%abs(B)
 
     !   set A2 = A
     !   scale it by 2 in situ
     !   check that it equals B: subtraction in situ
-    call A2%create(A, TeuchosCopy); TEST_IERR()
+    A2 = create_TpetraMultiVector(A, TeuchosCopy); TEST_IERR()
     call A2%update(one, B, one)
     call A2%norm1(norms)
     TEST_FLOATING_ARRAY_EQUALITY(norms, zero, epsilon(zero))
@@ -310,8 +310,8 @@ contains
     character(kind=C_CHAR, len=:), allocatable :: description
     integer(size_type), parameter :: num_vecs=2, num_local=10
     integer(global_ordinal_type) :: num_global
-    call map%create(invalid, num_local, comm); TEST_IERR()
-    call Vec%create(map, num_vecs)
+    map = create_TpetraMap(invalid, num_local, comm); TEST_IERR()
+    Vec = create_TpetraMultiVector(map, num_vecs)
     description = Vec%description(); TEST_IERR()
     call Vec%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_Description)
@@ -325,15 +325,15 @@ contains
 
     OUT0("Starting MeanValue")
 
-    call map%create(invalid, num_local, comm); TEST_IERR()
+    map = create_TpetraMap(invalid, num_local, comm); TEST_IERR()
 
     ! values = {2, 6, 3, 1} = [2 3]
     !                         [6 1]
     values(:) = [2., 6., 3., 1.]
 
-    call Vec%create(map, values, LDA, num_vecs); TEST_IERR()
+    Vec = create_TpetraMultiVector(map, values, LDA, num_vecs); TEST_IERR()
 
-    !call means%create(); TEST_IERR()
+    !means = create_xxx(); TEST_IERR()
     call Vec%meanValue(means); TEST_IERR()
 
     answer = [4., 2.]
@@ -358,19 +358,19 @@ contains
 
     OUT0("Starting Multiply")
 
-    call map2n%create(invalid, n2, comm); TEST_IERR()
-    call map3n%create(invalid, n3, comm); TEST_IERR()
+    map2n = create_TpetraMap(invalid, n2, comm); TEST_IERR()
+    map3n = create_TpetraMap(invalid, n3, comm); TEST_IERR()
 
-    call lmap2%create(n2, comm, TpetraLocallyReplicated); TEST_IERR()
-    call lmap3%create(n3, comm, TpetraLocallyReplicated); TEST_IERR()
+    lmap2 = create_TpetraMap(n2, comm, TpetraLocallyReplicated); TEST_IERR()
+    lmap3 = create_TpetraMap(n3, comm, TpetraLocallyReplicated); TEST_IERR()
 
-    call mv3nx2%create(map3n, n2)
-    call mv3nx3%create(map3n, n3)
+    mv3nx2 = create_TpetraMultiVector(map3n, n2)
+    mv3nx3 = create_TpetraMultiVector(map3n, n3)
 
-    call mv2x2%create(lmap2, n2)
-    call mv2x3%create(lmap2, n3)
-    call mv3x2%create(lmap3, n2)
-    call mv3x3%create(lmap3, n3)
+    mv2x2 = create_TpetraMultiVector(lmap2, n2)
+    mv2x3 = create_TpetraMultiVector(lmap2, n3)
+    mv3x2 = create_TpetraMultiVector(lmap3, n2)
+    mv3x3 = create_TpetraMultiVector(lmap3, n3)
 
     num_images = comm%getSize()
     check = 3 * num_images
@@ -393,8 +393,8 @@ contains
     type(TpetraMap) :: map
     type(TpetraMultiVector) :: Vec
     integer(size_type), parameter :: num_vecs=12, num_local=2
-    call map%create(invalid, num_local, comm); TEST_IERR()
-    call Vec%create(map, num_vecs); TEST_IERR()
+    map = create_TpetraMap(invalid, num_local, comm); TEST_IERR()
+    Vec = create_TpetraMultiVector(map, num_vecs); TEST_IERR()
 
     TEST_EQUALITY(Vec%getNumVectors(), num_vecs)
     TEST_EQUALITY(Vec%getLocalLength(), num_local)
@@ -415,8 +415,8 @@ contains
     real(scalar_type), parameter :: two=2.
     OUT0("Starting Reduce")
     num_global = num_local * comm%getSize()
-    call map%create(num_global, comm, TpetraLocallyReplicated); TEST_IERR()
-    call Vec%create(map, num_vecs); TEST_IERR()
+    map = create_TpetraMap(num_global, comm, TpetraLocallyReplicated); TEST_IERR()
+    Vec = create_TpetraMultiVector(map, num_vecs); TEST_IERR()
     call Vec%putScalar(two); TEST_IERR()
     call Vec%reduce(); TEST_IERR()
     call Vec%release(); TEST_IERR()
@@ -437,10 +437,10 @@ contains
     integer(global_ordinal_type) :: gblrow, num_global
     OUT0("Starting replaceGlobalValue")
     num_global = num_local * comm%getSize()
-    call map%create(num_global, comm); TEST_IERR()
+    map = create_TpetraMap(num_global, comm); TEST_IERR()
 
-    call Vec%create(map, num_vecs); TEST_IERR()
-    call OneV%create(map, num_vecs); TEST_IERR()
+    Vec = create_TpetraMultiVector(map, num_vecs); TEST_IERR()
+    OneV = create_TpetraMultiVector(map, num_vecs); TEST_IERR()
     call OneV%putScalar(one); TEST_IERR()
 
     do lclrow = 1, num_local
@@ -475,9 +475,9 @@ contains
     real(scalar_type), parameter :: one=1.
     OUT0("Starting ReplaceLocalValue")
 
-    call map%create(invalid, num_local, comm); TEST_IERR()
-    call Vec%create(map, num_vecs); TEST_IERR()
-    call OneV%create(map, num_vecs); TEST_IERR()
+    map = create_TpetraMap(invalid, num_local, comm); TEST_IERR()
+    Vec = create_TpetraMultiVector(map, num_vecs); TEST_IERR()
+    OneV = create_TpetraMultiVector(map, num_vecs); TEST_IERR()
     call OneV%putScalar(one)
 
     do lclrow = 1, num_local
@@ -509,8 +509,8 @@ contains
     integer(size_type), parameter :: num_vecs=2, num_local=4
     real(scalar_type), parameter :: one=1.
     OUT0("Starting Get1dCopy")
-    call map%create(invalid, num_local, comm); TEST_IERR()
-    call Vec%create(map, num_vecs); TEST_IERR()
+    map = create_TpetraMap(invalid, num_local, comm); TEST_IERR()
+    Vec = create_TpetraMultiVector(map, num_vecs); TEST_IERR()
     call Vec%putScalar(one); TEST_IERR()
     allocate(a(num_vecs*num_local*comm%getSize()))
     a = 0.
@@ -534,9 +534,9 @@ contains
 
     success = .false.
 
-    !call submap%create(); TEST_IERR()
+    !submap = create_TpetraMap(); TEST_IERR()
     offset = 0
-    !call Obj%create(); TEST_IERR()
+    !Obj = create_TpetraMultiVector(); TEST_IERR()
     !fresult = Obj%offsetViewNonConst(submap, offset); TEST_IERR()
     !call submap%release(); TEST_IERR()
     !call Obj%release(); TEST_IERR()
@@ -553,9 +553,9 @@ contains
 
     success = .false.
 
-    !call weights%create(); TEST_IERR()
-    !call norms%create(); TEST_IERR()
-    !call Obj%create(); TEST_IERR()
+    !weights = create_xxx(); TEST_IERR()
+    !norms = create_xxx(); TEST_IERR()
+    !Obj = create_TpetraMultiVector(); TEST_IERR()
     !call Obj%normWeighted(weights, norms); TEST_IERR()
     !call weights%release(); TEST_IERR()
     !call norms%release(); TEST_IERR()
@@ -572,8 +572,8 @@ contains
 
     success = .false.
 
-    !call newmap%create(); TEST_IERR()
-    !call Obj%create(); TEST_IERR()
+    !newmap = create_TpetraMap(); TEST_IERR()
+    !Obj = create_TpetraMultiVector(); TEST_IERR()
     !call Obj%removeEmptyProcessesInPlace(newmap); TEST_IERR()
     !call newmap%release(); TEST_IERR()
     !call Obj%release(); TEST_IERR()
@@ -590,7 +590,7 @@ contains
     success = .false.
 
     copyorview = TeuchosCopy
-    !call Obj%create(); TEST_IERR()
+    !Obj = create_TpetraMultiVector(); TEST_IERR()
     !call Obj%setCopyOrView(copyorview); TEST_IERR()
     !call Obj%release(); TEST_IERR()
 
@@ -604,7 +604,7 @@ contains
 
     success = .false.
 
-    !call Obj%create(); TEST_IERR()
+    !Obj = create_TpetraMultiVector(); TEST_IERR()
     !fresult = Obj%getCopyOrView(); TEST_IERR()
     !call Obj%release(); TEST_IERR()
 

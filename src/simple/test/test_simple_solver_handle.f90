@@ -55,9 +55,9 @@ program main
     stop 1
   endif
 
-  call comm%create(MPI_COMM_WORLD)
+  comm = create_TeuchosComm(MPI_COMM_WORLD)
 #else
-  call comm%create()
+  comm = create_TeuchosComm()
 #endif
 
   my_rank = comm%getRank()
@@ -66,16 +66,16 @@ program main
   write(*,*) "Processor ", my_rank, " of ", num_procs
 
   ! Read in the parameterList
-  call plist%create("Stratimikos"); FORTRILINOS_CHECK_IERR()
+  plist = create_ParameterList("Stratimikos"); FORTRILINOS_CHECK_IERR()
   call load_from_xml(plist, "stratimikos.xml"); FORTRILINOS_CHECK_IERR()
 
   ! ------------------------------------------------------------------
   ! Step 0: Construct tri-diagonal matrix
   n_global = -1
-  call map%create(n_global, n, comm); FORTRILINOS_CHECK_IERR()
+  map = create_TpetraMap(n_global, n, comm); FORTRILINOS_CHECK_IERR()
 
   max_entries_per_row = 3
-  call A%create(map, max_entries_per_row, TpetraDynamicProfile)
+  A = create_TpetraCrsMatrix(map, max_entries_per_row, TpetraDynamicProfile)
 
   allocate(cols(max_entries_per_row))
   allocate(vals(max_entries_per_row))
@@ -101,7 +101,7 @@ program main
   call A%fillComplete(); FORTRILINOS_CHECK_IERR()
 
   ! This automatically zeroes out X
-  call X%create(map, num_vecs); FORTRILINOS_CHECK_IERR()
+  X = create_TpetraMultiVector(map, num_vecs); FORTRILINOS_CHECK_IERR()
 
   ! The solution X(i) = i-1
   allocate(lhs(n))
@@ -124,11 +124,11 @@ program main
   end do
   lda = n
 
-  call Xtrue%create(map, lhs, lda, num_vecs); FORTRILINOS_CHECK_IERR()
-  call B%create(map, rhs, lda, num_vecs); FORTRILINOS_CHECK_IERR()
+  Xtrue = create_TpetraMultiVector(map, lhs, lda, num_vecs); FORTRILINOS_CHECK_IERR()
+  B = create_TpetraMultiVector(map, rhs, lda, num_vecs); FORTRILINOS_CHECK_IERR()
 
   ! Step 0: create a handle
-  call solver_handle%create(); FORTRILINOS_CHECK_IERR()
+  solver_handle = create_TrilinosSolver(); FORTRILINOS_CHECK_IERR()
 
   ! Step 1: initialize a handle
   call solver_handle%init(comm); FORTRILINOS_CHECK_IERR()
