@@ -286,11 +286,8 @@ contains
     end if
     call Obj%release(); TEST_IERR()
 
-    ! All elements have 4 entries and map has only 4 entries so the map should
-    ! not be distributed
     num_global = 4
-    elements = [1, 2, 3, 4]
-    call Obj%create(num_global, elements, comm); TEST_IERR()
+    call Obj%create(num_global, comm, TpetraLocallyReplicated); TEST_IERR()
     TEST_ASSERT((.not. Obj%isDistributed()))
     call Obj%release(); TEST_IERR()
 

@@ -3620,7 +3620,7 @@ SWIGEXPORT void swigc_delete_TpetraMultiVector(SwigfClassWrapper const *farg1) {
     try
     {
       // Attempt the wrapped function call
-      delete arg1;
+      (void)arg1; delete smartarg1; 
     }
     catch (const std::range_error& e)
     {
