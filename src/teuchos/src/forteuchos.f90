@@ -19,18 +19,18 @@ module forteuchos
  public :: VectorInt
 
  enum, bind(c)
-  enumerator :: SwigfMemState = -1
-  enumerator :: SWIGF_NULL = 0
-  enumerator :: SWIGF_OWN
-  enumerator :: SWIGF_MOVE
-  enumerator :: SWIGF_REF
-  enumerator :: SWIGF_CREF
+  enumerator :: SwigMemState = -1
+  enumerator :: SWIG_NULL = 0
+  enumerator :: SWIG_OWN
+  enumerator :: SWIG_MOVE
+  enumerator :: SWIG_REF
+  enumerator :: SWIG_CREF
  end enum
 
 
-type, bind(C) :: SwigfClassWrapper
+type, bind(C) :: SwigClassWrapper
   type(C_PTR), public :: ptr = C_NULL_PTR
-  integer(C_INT), public :: mem = SWIGF_NULL
+  integer(C_INT), public :: mem = SWIG_NULL
 end type
 
  public :: VectorDouble
@@ -45,13 +45,33 @@ end type
  public :: TeuchosComm
  public :: ParameterList
 
-type, bind(C) :: SwigfArrayWrapper
+type, bind(C) :: SwigArrayWrapper
   type(C_PTR), public :: data = C_NULL_PTR
   integer(C_SIZE_T), public :: size = 0
 end type
 
  public :: load_from_xml
  public :: save_to_xml
+ public :: create_VectorLongLong
+ interface create_VectorLongLong
+  module procedure new_VectorLongLong__SWIG_0, new_VectorLongLong__SWIG_1, new_VectorLongLong__SWIG_2
+ end interface
+ public :: create_TeuchosComm
+ interface create_TeuchosComm
+  module procedure new_TeuchosComm__SWIG_0, new_TeuchosComm__SWIG_1
+ end interface
+ public :: create_VectorDouble
+ interface create_VectorDouble
+  module procedure new_VectorDouble__SWIG_0, new_VectorDouble__SWIG_1, new_VectorDouble__SWIG_2
+ end interface
+ public :: create_VectorInt
+ interface create_VectorInt
+  module procedure new_VectorInt__SWIG_0, new_VectorInt__SWIG_1, new_VectorInt__SWIG_2
+ end interface
+ public :: create_ParameterList
+ interface create_ParameterList
+  module procedure new_ParameterList__SWIG_0, new_ParameterList__SWIG_1
+ end interface
 
  ! PARAMETERS
  enum, bind(c)
@@ -95,11 +115,8 @@ end type
  ! TYPES
  type :: VectorInt
   ! These should be treated as PROTECTED data
-  type(SwigfClassWrapper), public :: swigdata
+  type(SwigClassWrapper), public :: swigdata
  contains
-  procedure, private :: create__SWIG_0 => swigf_new_VectorInt__SWIG_0
-  procedure, private :: create__SWIG_1 => swigf_new_VectorInt__SWIG_1
-  procedure, private :: create__SWIG_2 => swigf_new_VectorInt__SWIG_2
   procedure :: size => swigf_VectorInt_size
   procedure :: capacity => swigf_VectorInt_capacity
   procedure :: empty => swigf_VectorInt_empty
@@ -112,19 +129,15 @@ end type
   procedure :: back => swigf_VectorInt_back
   procedure :: set => swigf_VectorInt_set
   procedure :: get => swigf_VectorInt_get
-  procedure :: release => swigf_delete_VectorInt
+  procedure :: release => delete_VectorInt
   procedure, private :: swigf_assignment_VectorInt
-  generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2
   generic :: assignment(=) => swigf_assignment_VectorInt
   generic :: resize => resize__SWIG_0, resize__SWIG_1
  end type
  type :: VectorDouble
   ! These should be treated as PROTECTED data
-  type(SwigfClassWrapper), public :: swigdata
+  type(SwigClassWrapper), public :: swigdata
  contains
-  procedure, private :: create__SWIG_0 => swigf_new_VectorDouble__SWIG_0
-  procedure, private :: create__SWIG_1 => swigf_new_VectorDouble__SWIG_1
-  procedure, private :: create__SWIG_2 => swigf_new_VectorDouble__SWIG_2
   procedure :: size => swigf_VectorDouble_size
   procedure :: capacity => swigf_VectorDouble_capacity
   procedure :: empty => swigf_VectorDouble_empty
@@ -137,19 +150,15 @@ end type
   procedure :: back => swigf_VectorDouble_back
   procedure :: set => swigf_VectorDouble_set
   procedure :: get => swigf_VectorDouble_get
-  procedure :: release => swigf_delete_VectorDouble
+  procedure :: release => delete_VectorDouble
   procedure, private :: swigf_assignment_VectorDouble
-  generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2
   generic :: assignment(=) => swigf_assignment_VectorDouble
   generic :: resize => resize__SWIG_0, resize__SWIG_1
  end type
  type :: VectorLongLong
   ! These should be treated as PROTECTED data
-  type(SwigfClassWrapper), public :: swigdata
+  type(SwigClassWrapper), public :: swigdata
  contains
-  procedure, private :: create__SWIG_0 => swigf_new_VectorLongLong__SWIG_0
-  procedure, private :: create__SWIG_1 => swigf_new_VectorLongLong__SWIG_1
-  procedure, private :: create__SWIG_2 => swigf_new_VectorLongLong__SWIG_2
   procedure :: size => swigf_VectorLongLong_size
   procedure :: capacity => swigf_VectorLongLong_capacity
   procedure :: empty => swigf_VectorLongLong_empty
@@ -162,32 +171,26 @@ end type
   procedure :: back => swigf_VectorLongLong_back
   procedure :: set => swigf_VectorLongLong_set
   procedure :: get => swigf_VectorLongLong_get
-  procedure :: release => swigf_delete_VectorLongLong
+  procedure :: release => delete_VectorLongLong
   procedure, private :: swigf_assignment_VectorLongLong
-  generic :: create => create__SWIG_0, create__SWIG_1, create__SWIG_2
   generic :: assignment(=) => swigf_assignment_VectorLongLong
   generic :: resize => resize__SWIG_0, resize__SWIG_1
  end type
  type :: TeuchosComm
   ! These should be treated as PROTECTED data
-  type(SwigfClassWrapper), public :: swigdata
+  type(SwigClassWrapper), public :: swigdata
  contains
-  procedure, private :: create__SWIG_0 => swigf_new_TeuchosComm__SWIG_0
-  procedure, private :: create__SWIG_1 => swigf_new_TeuchosComm__SWIG_1
   procedure :: getRank => swigf_TeuchosComm_getRank
   procedure :: getSize => swigf_TeuchosComm_getSize
   procedure :: barrier => swigf_TeuchosComm_barrier
-  procedure :: release => swigf_delete_TeuchosComm
+  procedure :: release => delete_TeuchosComm
   procedure, private :: swigf_assignment_TeuchosComm
-  generic :: create => create__SWIG_0, create__SWIG_1
   generic :: assignment(=) => swigf_assignment_TeuchosComm
  end type
  type :: ParameterList
   ! These should be treated as PROTECTED data
-  type(SwigfClassWrapper), public :: swigdata
+  type(SwigClassWrapper), public :: swigdata
  contains
-  procedure, private :: create__SWIG_0 => swigf_new_ParameterList__SWIG_0
-  procedure, private :: create__SWIG_1 => swigf_new_ParameterList__SWIG_1
   procedure :: print => swigf_ParameterList_print
   procedure :: remove => swigf_ParameterList_remove
   procedure :: is_parameter => swigf_ParameterList_is_parameter
@@ -209,9 +212,8 @@ end type
   procedure :: get_arr_real => swigf_ParameterList_get_arr_real
   procedure :: get_arr_integer => swigf_ParameterList_get_arr_integer
   procedure :: get_arr_longlong => swigf_ParameterList_get_arr_longlong
-  procedure :: release => swigf_delete_ParameterList
+  procedure :: release => delete_ParameterList
   procedure, private :: swigf_assignment_ParameterList
-  generic :: create => create__SWIG_0, create__SWIG_1
   generic :: assignment(=) => swigf_assignment_ParameterList
   generic :: set => set__SWIG_1, set__SWIG_2, set__SWIG_3, set__SWIG_4, set__SWIG_5, set__SWIG_6, set__SWIG_7, set__SWIG_8, &
     set__SWIG_9
@@ -224,35 +226,35 @@ function swigc_new_VectorInt__SWIG_0() &
 bind(C, name="swigc_new_VectorInt__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_new_VectorInt__SWIG_1(farg1) &
 bind(C, name="swigc_new_VectorInt__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
+import :: SwigClassWrapper
 integer(C_LONG), intent(in) :: farg1
-type(SwigfClassWrapper) :: fresult
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_new_VectorInt__SWIG_2(farg1, farg2) &
 bind(C, name="swigc_new_VectorInt__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
+import :: SwigClassWrapper
 integer(C_LONG), intent(in) :: farg1
 integer(C_INT), intent(in) :: farg2
-type(SwigfClassWrapper) :: fresult
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_VectorInt_size(farg1) &
 bind(C, name="swigc_VectorInt_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG) :: fresult
 end function
 
@@ -260,8 +262,8 @@ function swigc_VectorInt_capacity(farg1) &
 bind(C, name="swigc_VectorInt_capacity") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG) :: fresult
 end function
 
@@ -269,39 +271,39 @@ function swigc_VectorInt_empty(farg1) &
 bind(C, name="swigc_VectorInt_empty") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
 
 subroutine swigc_VectorInt_clear(farg1) &
 bind(C, name="swigc_VectorInt_clear")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_VectorInt_reserve(farg1, farg2) &
 bind(C, name="swigc_VectorInt_reserve")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 end subroutine
 
 subroutine swigc_VectorInt_resize__SWIG_0(farg1, farg2) &
 bind(C, name="swigc_VectorInt_resize__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 end subroutine
 
 subroutine swigc_VectorInt_resize__SWIG_1(farg1, farg2, farg3) &
 bind(C, name="swigc_VectorInt_resize__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
 end subroutine
@@ -309,8 +311,8 @@ end subroutine
 subroutine swigc_VectorInt_push_back(farg1, farg2) &
 bind(C, name="swigc_VectorInt_push_back")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_INT), intent(in) :: farg2
 end subroutine
 
@@ -318,8 +320,8 @@ function swigc_VectorInt_front(farg1) &
 bind(C, name="swigc_VectorInt_front") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
 
@@ -327,16 +329,16 @@ function swigc_VectorInt_back(farg1) &
 bind(C, name="swigc_VectorInt_back") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
 
 subroutine swigc_VectorInt_set(farg1, farg2, farg3) &
 bind(C, name="swigc_VectorInt_set")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 integer(C_INT), intent(in) :: farg3
 end subroutine
@@ -345,8 +347,8 @@ function swigc_VectorInt_get(farg1, farg2) &
 bind(C, name="swigc_VectorInt_get") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 integer(C_INT) :: fresult
 end function
@@ -354,50 +356,50 @@ end function
 subroutine swigc_delete_VectorInt(farg1) &
 bind(C, name="swigc_delete_VectorInt")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
   subroutine swigc_assignment_VectorInt(self, other) &
      bind(C, name="swigc_assignment_VectorInt")
    use, intrinsic :: ISO_C_BINDING
-   import :: SwigfClassWrapper
-   type(SwigfClassWrapper), intent(inout) :: self
-   type(SwigfClassWrapper), intent(in) :: other
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
   end subroutine
 function swigc_new_VectorDouble__SWIG_0() &
 bind(C, name="swigc_new_VectorDouble__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_new_VectorDouble__SWIG_1(farg1) &
 bind(C, name="swigc_new_VectorDouble__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
+import :: SwigClassWrapper
 integer(C_LONG), intent(in) :: farg1
-type(SwigfClassWrapper) :: fresult
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_new_VectorDouble__SWIG_2(farg1, farg2) &
 bind(C, name="swigc_new_VectorDouble__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
+import :: SwigClassWrapper
 integer(C_LONG), intent(in) :: farg1
 real(C_DOUBLE), intent(in) :: farg2
-type(SwigfClassWrapper) :: fresult
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_VectorDouble_size(farg1) &
 bind(C, name="swigc_VectorDouble_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG) :: fresult
 end function
 
@@ -405,8 +407,8 @@ function swigc_VectorDouble_capacity(farg1) &
 bind(C, name="swigc_VectorDouble_capacity") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG) :: fresult
 end function
 
@@ -414,39 +416,39 @@ function swigc_VectorDouble_empty(farg1) &
 bind(C, name="swigc_VectorDouble_empty") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
 
 subroutine swigc_VectorDouble_clear(farg1) &
 bind(C, name="swigc_VectorDouble_clear")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_VectorDouble_reserve(farg1, farg2) &
 bind(C, name="swigc_VectorDouble_reserve")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 end subroutine
 
 subroutine swigc_VectorDouble_resize__SWIG_0(farg1, farg2) &
 bind(C, name="swigc_VectorDouble_resize__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 end subroutine
 
 subroutine swigc_VectorDouble_resize__SWIG_1(farg1, farg2, farg3) &
 bind(C, name="swigc_VectorDouble_resize__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 real(C_DOUBLE), intent(in) :: farg3
 end subroutine
@@ -454,8 +456,8 @@ end subroutine
 subroutine swigc_VectorDouble_push_back(farg1, farg2) &
 bind(C, name="swigc_VectorDouble_push_back")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE), intent(in) :: farg2
 end subroutine
 
@@ -463,8 +465,8 @@ function swigc_VectorDouble_front(farg1) &
 bind(C, name="swigc_VectorDouble_front") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE) :: fresult
 end function
 
@@ -472,16 +474,16 @@ function swigc_VectorDouble_back(farg1) &
 bind(C, name="swigc_VectorDouble_back") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 real(C_DOUBLE) :: fresult
 end function
 
 subroutine swigc_VectorDouble_set(farg1, farg2, farg3) &
 bind(C, name="swigc_VectorDouble_set")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 real(C_DOUBLE), intent(in) :: farg3
 end subroutine
@@ -490,8 +492,8 @@ function swigc_VectorDouble_get(farg1, farg2) &
 bind(C, name="swigc_VectorDouble_get") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 real(C_DOUBLE) :: fresult
 end function
@@ -499,50 +501,50 @@ end function
 subroutine swigc_delete_VectorDouble(farg1) &
 bind(C, name="swigc_delete_VectorDouble")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
   subroutine swigc_assignment_VectorDouble(self, other) &
      bind(C, name="swigc_assignment_VectorDouble")
    use, intrinsic :: ISO_C_BINDING
-   import :: SwigfClassWrapper
-   type(SwigfClassWrapper), intent(inout) :: self
-   type(SwigfClassWrapper), intent(in) :: other
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
   end subroutine
 function swigc_new_VectorLongLong__SWIG_0() &
 bind(C, name="swigc_new_VectorLongLong__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_new_VectorLongLong__SWIG_1(farg1) &
 bind(C, name="swigc_new_VectorLongLong__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
+import :: SwigClassWrapper
 integer(C_LONG), intent(in) :: farg1
-type(SwigfClassWrapper) :: fresult
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_new_VectorLongLong__SWIG_2(farg1, farg2) &
 bind(C, name="swigc_new_VectorLongLong__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
+import :: SwigClassWrapper
 integer(C_LONG), intent(in) :: farg1
 integer(C_LONG_LONG), intent(in) :: farg2
-type(SwigfClassWrapper) :: fresult
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_VectorLongLong_size(farg1) &
 bind(C, name="swigc_VectorLongLong_size") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG) :: fresult
 end function
 
@@ -550,8 +552,8 @@ function swigc_VectorLongLong_capacity(farg1) &
 bind(C, name="swigc_VectorLongLong_capacity") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG) :: fresult
 end function
 
@@ -559,39 +561,39 @@ function swigc_VectorLongLong_empty(farg1) &
 bind(C, name="swigc_VectorLongLong_empty") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
 
 subroutine swigc_VectorLongLong_clear(farg1) &
 bind(C, name="swigc_VectorLongLong_clear")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_VectorLongLong_reserve(farg1, farg2) &
 bind(C, name="swigc_VectorLongLong_reserve")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 end subroutine
 
 subroutine swigc_VectorLongLong_resize__SWIG_0(farg1, farg2) &
 bind(C, name="swigc_VectorLongLong_resize__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 end subroutine
 
 subroutine swigc_VectorLongLong_resize__SWIG_1(farg1, farg2, farg3) &
 bind(C, name="swigc_VectorLongLong_resize__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 integer(C_LONG_LONG), intent(in) :: farg3
 end subroutine
@@ -599,8 +601,8 @@ end subroutine
 subroutine swigc_VectorLongLong_push_back(farg1, farg2) &
 bind(C, name="swigc_VectorLongLong_push_back")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG_LONG), intent(in) :: farg2
 end subroutine
 
@@ -608,8 +610,8 @@ function swigc_VectorLongLong_front(farg1) &
 bind(C, name="swigc_VectorLongLong_front") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG_LONG) :: fresult
 end function
 
@@ -617,16 +619,16 @@ function swigc_VectorLongLong_back(farg1) &
 bind(C, name="swigc_VectorLongLong_back") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG_LONG) :: fresult
 end function
 
 subroutine swigc_VectorLongLong_set(farg1, farg2, farg3) &
 bind(C, name="swigc_VectorLongLong_set")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 integer(C_LONG_LONG), intent(in) :: farg3
 end subroutine
@@ -635,8 +637,8 @@ function swigc_VectorLongLong_get(farg1, farg2) &
 bind(C, name="swigc_VectorLongLong_get") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_LONG), intent(in) :: farg2
 integer(C_LONG_LONG) :: fresult
 end function
@@ -644,40 +646,40 @@ end function
 subroutine swigc_delete_VectorLongLong(farg1) &
 bind(C, name="swigc_delete_VectorLongLong")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
   subroutine swigc_assignment_VectorLongLong(self, other) &
      bind(C, name="swigc_assignment_VectorLongLong")
    use, intrinsic :: ISO_C_BINDING
-   import :: SwigfClassWrapper
-   type(SwigfClassWrapper), intent(inout) :: self
-   type(SwigfClassWrapper), intent(in) :: other
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
   end subroutine
 function swigc_new_TeuchosComm__SWIG_0(farg1) &
 bind(C, name="swigc_new_TeuchosComm__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
+import :: SwigClassWrapper
 integer(C_INT), intent(in) :: farg1
-type(SwigfClassWrapper) :: fresult
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_new_TeuchosComm__SWIG_1() &
 bind(C, name="swigc_new_TeuchosComm__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_TeuchosComm_getRank(farg1) &
 bind(C, name="swigc_TeuchosComm_getRank") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
 
@@ -685,74 +687,74 @@ function swigc_TeuchosComm_getSize(farg1) &
 bind(C, name="swigc_TeuchosComm_getSize") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
 
 subroutine swigc_TeuchosComm_barrier(farg1) &
 bind(C, name="swigc_TeuchosComm_barrier")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_delete_TeuchosComm(farg1) &
 bind(C, name="swigc_delete_TeuchosComm")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
   subroutine swigc_assignment_TeuchosComm(self, other) &
      bind(C, name="swigc_assignment_TeuchosComm")
    use, intrinsic :: ISO_C_BINDING
-   import :: SwigfClassWrapper
-   type(SwigfClassWrapper), intent(inout) :: self
-   type(SwigfClassWrapper), intent(in) :: other
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
   end subroutine
 function swigc_new_ParameterList__SWIG_0() &
 bind(C, name="swigc_new_ParameterList__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: fresult
 end function
 
 function swigc_new_ParameterList__SWIG_1(farg1) &
 bind(C, name="swigc_new_ParameterList__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfArrayWrapper) :: farg1
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigArrayWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
 end function
 
 subroutine swigc_ParameterList_print(farg1) &
 bind(C, name="swigc_ParameterList_print")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_ParameterList_remove(farg1, farg2) &
 bind(C, name="swigc_ParameterList_remove")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
 end subroutine
 
 function swigc_ParameterList_is_parameter(farg1, farg2) &
 bind(C, name="swigc_ParameterList_is_parameter") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
 logical(C_BOOL) :: fresult
 end function
 
@@ -760,111 +762,111 @@ function swigc_ParameterList_sublist(farg1, farg2) &
 bind(C, name="swigc_ParameterList_sublist") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
-type(SwigfClassWrapper) :: fresult
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
+type(SwigClassWrapper) :: fresult
 end function
 
 subroutine swigc_ParameterList_set__SWIG_1(farg1, farg2, farg3) &
 bind(C, name="swigc_ParameterList_set__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
 real(C_DOUBLE), intent(in) :: farg3
 end subroutine
 
 subroutine swigc_ParameterList_set__SWIG_2(farg1, farg2, farg3) &
 bind(C, name="swigc_ParameterList_set__SWIG_2")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
 integer(C_INT), intent(in) :: farg3
 end subroutine
 
 subroutine swigc_ParameterList_set__SWIG_3(farg1, farg2, farg3) &
 bind(C, name="swigc_ParameterList_set__SWIG_3")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
 integer(C_LONG_LONG), intent(in) :: farg3
 end subroutine
 
 subroutine swigc_ParameterList_set__SWIG_4(farg1, farg2, farg3) &
 bind(C, name="swigc_ParameterList_set__SWIG_4")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
 logical(C_BOOL), intent(in) :: farg3
 end subroutine
 
 subroutine swigc_ParameterList_set__SWIG_5(farg1, farg2, farg3) &
 bind(C, name="swigc_ParameterList_set__SWIG_5")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
-type(SwigfArrayWrapper) :: farg3
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
+type(SwigArrayWrapper) :: farg3
 end subroutine
 
 subroutine swigc_ParameterList_set__SWIG_6(farg1, farg2, farg3) &
 bind(C, name="swigc_ParameterList_set__SWIG_6")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
-type(SwigfArrayWrapper) :: farg3
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
+type(SwigArrayWrapper) :: farg3
 end subroutine
 
 subroutine swigc_ParameterList_set__SWIG_7(farg1, farg2, farg3) &
 bind(C, name="swigc_ParameterList_set__SWIG_7")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
-type(SwigfArrayWrapper) :: farg3
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
+type(SwigArrayWrapper) :: farg3
 end subroutine
 
 subroutine swigc_ParameterList_set__SWIG_8(farg1, farg2, farg3) &
 bind(C, name="swigc_ParameterList_set__SWIG_8")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
-type(SwigfArrayWrapper) :: farg3
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
+type(SwigArrayWrapper) :: farg3
 end subroutine
 
 subroutine swigc_ParameterList_set__SWIG_9(farg1, farg2, farg3) &
 bind(C, name="swigc_ParameterList_set__SWIG_9")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
-type(SwigfClassWrapper) :: farg3
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
+type(SwigClassWrapper) :: farg3
 end subroutine
 
 function swigc_ParameterList_get_real(farg1, farg2) &
 bind(C, name="swigc_ParameterList_get_real") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
 real(C_DOUBLE) :: fresult
 end function
 
@@ -872,10 +874,10 @@ function swigc_ParameterList_get_integer(farg1, farg2) &
 bind(C, name="swigc_ParameterList_get_integer") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
 integer(C_INT) :: fresult
 end function
 
@@ -883,10 +885,10 @@ function swigc_ParameterList_get_longlong(farg1, farg2) &
 bind(C, name="swigc_ParameterList_get_longlong") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
 integer(C_LONG_LONG) :: fresult
 end function
 
@@ -894,10 +896,10 @@ function swigc_ParameterList_get_logical(farg1, farg2) &
 bind(C, name="swigc_ParameterList_get_logical") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
 logical(C_BOOL) :: fresult
 end function
 
@@ -905,76 +907,76 @@ function swigc_ParameterList_get_string(farg1, farg2) &
 bind(C, name="swigc_ParameterList_get_string") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfArrayWrapper
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
-type(SwigfArrayWrapper) :: fresult
+import :: SwigArrayWrapper
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
+type(SwigArrayWrapper) :: fresult
 end function
 
 function swigc_ParameterList_get_arr_real(farg1, farg2) &
 bind(C, name="swigc_ParameterList_get_arr_real") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfArrayWrapper
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
-type(SwigfArrayWrapper) :: fresult
+import :: SwigArrayWrapper
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
+type(SwigArrayWrapper) :: fresult
 end function
 
 function swigc_ParameterList_get_arr_integer(farg1, farg2) &
 bind(C, name="swigc_ParameterList_get_arr_integer") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfArrayWrapper
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
-type(SwigfArrayWrapper) :: fresult
+import :: SwigArrayWrapper
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
+type(SwigArrayWrapper) :: fresult
 end function
 
 function swigc_ParameterList_get_arr_longlong(farg1, farg2) &
 bind(C, name="swigc_ParameterList_get_arr_longlong") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfArrayWrapper
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
-type(SwigfArrayWrapper) :: fresult
+import :: SwigArrayWrapper
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
+type(SwigArrayWrapper) :: fresult
 end function
 
 subroutine swigc_delete_ParameterList(farg1) &
 bind(C, name="swigc_delete_ParameterList")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-type(SwigfClassWrapper) :: farg1
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
 end subroutine
 
   subroutine swigc_assignment_ParameterList(self, other) &
      bind(C, name="swigc_assignment_ParameterList")
    use, intrinsic :: ISO_C_BINDING
-   import :: SwigfClassWrapper
-   type(SwigfClassWrapper), intent(inout) :: self
-   type(SwigfClassWrapper), intent(in) :: other
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
   end subroutine
 subroutine swigc_load_from_xml(farg1, farg2) &
 bind(C, name="swigc_load_from_xml")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
 end subroutine
 
 subroutine swigc_save_to_xml(farg1, farg2) &
 bind(C, name="swigc_save_to_xml")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfClassWrapper
-import :: SwigfArrayWrapper
-type(SwigfClassWrapper) :: farg1
-type(SwigfArrayWrapper) :: farg2
+import :: SwigClassWrapper
+import :: SwigArrayWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
 end subroutine
 
  end interface
@@ -982,76 +984,73 @@ end subroutine
 
 contains
  ! FORTRAN PROXY CODE
-subroutine swigf_new_VectorInt__SWIG_0(self)
+function new_VectorInt__SWIG_0() &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(VectorInt), intent(inout) :: self
-type(SwigfClassWrapper) :: fresult 
+type(VectorInt) :: self
+type(SwigClassWrapper) :: fresult 
 
-call self%release()
 fresult = swigc_new_VectorInt__SWIG_0()
 self%swigdata = fresult
-self%swigdata%mem = SWIGF_OWN
-end subroutine
+end function
 
-subroutine swigf_new_VectorInt__SWIG_1(self, count)
+function new_VectorInt__SWIG_1(count) &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(VectorInt), intent(inout) :: self
+type(VectorInt) :: self
 integer(C_LONG), intent(in) :: count
-type(SwigfClassWrapper) :: fresult 
+type(SwigClassWrapper) :: fresult 
 integer(C_LONG) :: farg1 
 
-call self%release()
 farg1 = count
 fresult = swigc_new_VectorInt__SWIG_1(farg1)
 self%swigdata = fresult
-self%swigdata%mem = SWIGF_OWN
-end subroutine
+end function
 
-subroutine swigf_new_VectorInt__SWIG_2(self, count, v)
+function new_VectorInt__SWIG_2(count, v) &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(VectorInt), intent(inout) :: self
+type(VectorInt) :: self
 integer(C_LONG), intent(in) :: count
 integer(C_INT), intent(in) :: v
-type(SwigfClassWrapper) :: fresult 
+type(SwigClassWrapper) :: fresult 
 integer(C_LONG) :: farg1 
 integer(C_INT) :: farg2 
 
-call self%release()
 farg1 = count
 farg2 = v
 fresult = swigc_new_VectorInt__SWIG_2(farg1, farg2)
 self%swigdata = fresult
-self%swigdata%mem = SWIGF_OWN
-end subroutine
+end function
 
 function swigf_VectorInt_size(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: swigf_result
+integer(C_LONG) :: swig_result
 class(VectorInt), intent(in) :: self
 integer(C_LONG) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_VectorInt_size(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function swigf_VectorInt_capacity(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: swigf_result
+integer(C_LONG) :: swig_result
 class(VectorInt), intent(in) :: self
 integer(C_LONG) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_VectorInt_capacity(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 
-function swigf_int_to_logical(inp) &
+function SWIG_int_to_logical(inp) &
     result(out)
   use, intrinsic :: ISO_C_BINDING
   integer(kind=C_INT), intent(IN) :: inp
@@ -1064,22 +1063,22 @@ function swigf_int_to_logical(inp) &
 end function
 
 function swigf_VectorInt_empty(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical :: swigf_result
+logical :: swig_result
 class(VectorInt), intent(in) :: self
 integer(C_INT) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_VectorInt_empty(farg1)
-swigf_result = swigf_int_to_logical(fresult)
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 subroutine swigf_VectorInt_clear(self)
 use, intrinsic :: ISO_C_BINDING
 class(VectorInt), intent(inout) :: self
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 call swigc_VectorInt_clear(farg1)
@@ -1089,7 +1088,7 @@ subroutine swigf_VectorInt_reserve(self, count)
 use, intrinsic :: ISO_C_BINDING
 class(VectorInt), intent(inout) :: self
 integer(C_LONG), intent(in) :: count
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 
 farg1 = self%swigdata
@@ -1101,7 +1100,7 @@ subroutine swigf_VectorInt_resize__SWIG_0(self, count)
 use, intrinsic :: ISO_C_BINDING
 class(VectorInt), intent(inout) :: self
 integer(C_LONG), intent(in) :: count
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 
 farg1 = self%swigdata
@@ -1114,7 +1113,7 @@ use, intrinsic :: ISO_C_BINDING
 class(VectorInt), intent(inout) :: self
 integer(C_LONG), intent(in) :: count
 integer(C_INT), intent(in) :: v
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 integer(C_INT) :: farg3 
 
@@ -1128,7 +1127,7 @@ subroutine swigf_VectorInt_push_back(self, v)
 use, intrinsic :: ISO_C_BINDING
 class(VectorInt), intent(inout) :: self
 integer(C_INT), intent(in) :: v
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_INT) :: farg2 
 
 farg1 = self%swigdata
@@ -1137,29 +1136,29 @@ call swigc_VectorInt_push_back(farg1, farg2)
 end subroutine
 
 function swigf_VectorInt_front(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: swigf_result
+integer(C_INT) :: swig_result
 class(VectorInt), intent(in) :: self
 integer(C_INT) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_VectorInt_front(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function swigf_VectorInt_back(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: swigf_result
+integer(C_INT) :: swig_result
 class(VectorInt), intent(in) :: self
 integer(C_INT) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_VectorInt_back(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 subroutine swigf_VectorInt_set(self, index, v)
@@ -1167,7 +1166,7 @@ use, intrinsic :: ISO_C_BINDING
 class(VectorInt), intent(inout) :: self
 integer(C_LONG), intent(in) :: index
 integer(C_INT), intent(in) :: v
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 integer(C_INT) :: farg3 
 
@@ -1178,32 +1177,32 @@ call swigc_VectorInt_set(farg1, farg2, farg3)
 end subroutine
 
 function swigf_VectorInt_get(self, index) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: swigf_result
+integer(C_INT) :: swig_result
 class(VectorInt), intent(inout) :: self
 integer(C_LONG), intent(in) :: index
 integer(C_INT) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 
 farg1 = self%swigdata
 farg2 = index
 fresult = swigc_VectorInt_get(farg1, farg2)
-swigf_result = fresult
+swig_result = fresult
 end function
 
-subroutine swigf_delete_VectorInt(self)
+subroutine delete_VectorInt(self)
 use, intrinsic :: ISO_C_BINDING
 class(VectorInt), intent(inout) :: self
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIGF_OWN) then
+if (self%swigdata%mem == SWIG_OWN) then
 call swigc_delete_VectorInt(farg1)
 end if
 self%swigdata%ptr = C_NULL_PTR
-self%swigdata%mem = SWIGF_NULL
+self%swigdata%mem = SWIG_NULL
 end subroutine
 
   subroutine swigf_assignment_VectorInt(self, other)
@@ -1212,91 +1211,88 @@ end subroutine
    type(VectorInt), intent(in) :: other
    call swigc_assignment_VectorInt(self%swigdata, other%swigdata)
   end subroutine
-subroutine swigf_new_VectorDouble__SWIG_0(self)
+function new_VectorDouble__SWIG_0() &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(VectorDouble), intent(inout) :: self
-type(SwigfClassWrapper) :: fresult 
+type(VectorDouble) :: self
+type(SwigClassWrapper) :: fresult 
 
-call self%release()
 fresult = swigc_new_VectorDouble__SWIG_0()
 self%swigdata = fresult
-self%swigdata%mem = SWIGF_OWN
-end subroutine
+end function
 
-subroutine swigf_new_VectorDouble__SWIG_1(self, count)
+function new_VectorDouble__SWIG_1(count) &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(VectorDouble), intent(inout) :: self
+type(VectorDouble) :: self
 integer(C_LONG), intent(in) :: count
-type(SwigfClassWrapper) :: fresult 
+type(SwigClassWrapper) :: fresult 
 integer(C_LONG) :: farg1 
 
-call self%release()
 farg1 = count
 fresult = swigc_new_VectorDouble__SWIG_1(farg1)
 self%swigdata = fresult
-self%swigdata%mem = SWIGF_OWN
-end subroutine
+end function
 
-subroutine swigf_new_VectorDouble__SWIG_2(self, count, v)
+function new_VectorDouble__SWIG_2(count, v) &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(VectorDouble), intent(inout) :: self
+type(VectorDouble) :: self
 integer(C_LONG), intent(in) :: count
 real(C_DOUBLE), intent(in) :: v
-type(SwigfClassWrapper) :: fresult 
+type(SwigClassWrapper) :: fresult 
 integer(C_LONG) :: farg1 
 real(C_DOUBLE) :: farg2 
 
-call self%release()
 farg1 = count
 farg2 = v
 fresult = swigc_new_VectorDouble__SWIG_2(farg1, farg2)
 self%swigdata = fresult
-self%swigdata%mem = SWIGF_OWN
-end subroutine
+end function
 
 function swigf_VectorDouble_size(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: swigf_result
+integer(C_LONG) :: swig_result
 class(VectorDouble), intent(in) :: self
 integer(C_LONG) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_VectorDouble_size(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function swigf_VectorDouble_capacity(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: swigf_result
+integer(C_LONG) :: swig_result
 class(VectorDouble), intent(in) :: self
 integer(C_LONG) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_VectorDouble_capacity(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function swigf_VectorDouble_empty(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical :: swigf_result
+logical :: swig_result
 class(VectorDouble), intent(in) :: self
 integer(C_INT) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_VectorDouble_empty(farg1)
-swigf_result = swigf_int_to_logical(fresult)
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 subroutine swigf_VectorDouble_clear(self)
 use, intrinsic :: ISO_C_BINDING
 class(VectorDouble), intent(inout) :: self
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 call swigc_VectorDouble_clear(farg1)
@@ -1306,7 +1302,7 @@ subroutine swigf_VectorDouble_reserve(self, count)
 use, intrinsic :: ISO_C_BINDING
 class(VectorDouble), intent(inout) :: self
 integer(C_LONG), intent(in) :: count
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 
 farg1 = self%swigdata
@@ -1318,7 +1314,7 @@ subroutine swigf_VectorDouble_resize__SWIG_0(self, count)
 use, intrinsic :: ISO_C_BINDING
 class(VectorDouble), intent(inout) :: self
 integer(C_LONG), intent(in) :: count
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 
 farg1 = self%swigdata
@@ -1331,7 +1327,7 @@ use, intrinsic :: ISO_C_BINDING
 class(VectorDouble), intent(inout) :: self
 integer(C_LONG), intent(in) :: count
 real(C_DOUBLE), intent(in) :: v
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 real(C_DOUBLE) :: farg3 
 
@@ -1345,7 +1341,7 @@ subroutine swigf_VectorDouble_push_back(self, v)
 use, intrinsic :: ISO_C_BINDING
 class(VectorDouble), intent(inout) :: self
 real(C_DOUBLE), intent(in) :: v
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 real(C_DOUBLE) :: farg2 
 
 farg1 = self%swigdata
@@ -1354,29 +1350,29 @@ call swigc_VectorDouble_push_back(farg1, farg2)
 end subroutine
 
 function swigf_VectorDouble_front(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: swigf_result
+real(C_DOUBLE) :: swig_result
 class(VectorDouble), intent(in) :: self
 real(C_DOUBLE) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_VectorDouble_front(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function swigf_VectorDouble_back(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: swigf_result
+real(C_DOUBLE) :: swig_result
 class(VectorDouble), intent(in) :: self
 real(C_DOUBLE) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_VectorDouble_back(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 subroutine swigf_VectorDouble_set(self, index, v)
@@ -1384,7 +1380,7 @@ use, intrinsic :: ISO_C_BINDING
 class(VectorDouble), intent(inout) :: self
 integer(C_LONG), intent(in) :: index
 real(C_DOUBLE), intent(in) :: v
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 real(C_DOUBLE) :: farg3 
 
@@ -1395,32 +1391,32 @@ call swigc_VectorDouble_set(farg1, farg2, farg3)
 end subroutine
 
 function swigf_VectorDouble_get(self, index) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: swigf_result
+real(C_DOUBLE) :: swig_result
 class(VectorDouble), intent(inout) :: self
 integer(C_LONG), intent(in) :: index
 real(C_DOUBLE) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 
 farg1 = self%swigdata
 farg2 = index
 fresult = swigc_VectorDouble_get(farg1, farg2)
-swigf_result = fresult
+swig_result = fresult
 end function
 
-subroutine swigf_delete_VectorDouble(self)
+subroutine delete_VectorDouble(self)
 use, intrinsic :: ISO_C_BINDING
 class(VectorDouble), intent(inout) :: self
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIGF_OWN) then
+if (self%swigdata%mem == SWIG_OWN) then
 call swigc_delete_VectorDouble(farg1)
 end if
 self%swigdata%ptr = C_NULL_PTR
-self%swigdata%mem = SWIGF_NULL
+self%swigdata%mem = SWIG_NULL
 end subroutine
 
   subroutine swigf_assignment_VectorDouble(self, other)
@@ -1429,91 +1425,88 @@ end subroutine
    type(VectorDouble), intent(in) :: other
    call swigc_assignment_VectorDouble(self%swigdata, other%swigdata)
   end subroutine
-subroutine swigf_new_VectorLongLong__SWIG_0(self)
+function new_VectorLongLong__SWIG_0() &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(VectorLongLong), intent(inout) :: self
-type(SwigfClassWrapper) :: fresult 
+type(VectorLongLong) :: self
+type(SwigClassWrapper) :: fresult 
 
-call self%release()
 fresult = swigc_new_VectorLongLong__SWIG_0()
 self%swigdata = fresult
-self%swigdata%mem = SWIGF_OWN
-end subroutine
+end function
 
-subroutine swigf_new_VectorLongLong__SWIG_1(self, count)
+function new_VectorLongLong__SWIG_1(count) &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(VectorLongLong), intent(inout) :: self
+type(VectorLongLong) :: self
 integer(C_LONG), intent(in) :: count
-type(SwigfClassWrapper) :: fresult 
+type(SwigClassWrapper) :: fresult 
 integer(C_LONG) :: farg1 
 
-call self%release()
 farg1 = count
 fresult = swigc_new_VectorLongLong__SWIG_1(farg1)
 self%swigdata = fresult
-self%swigdata%mem = SWIGF_OWN
-end subroutine
+end function
 
-subroutine swigf_new_VectorLongLong__SWIG_2(self, count, v)
+function new_VectorLongLong__SWIG_2(count, v) &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(VectorLongLong), intent(inout) :: self
+type(VectorLongLong) :: self
 integer(C_LONG), intent(in) :: count
 integer(C_LONG_LONG), intent(in) :: v
-type(SwigfClassWrapper) :: fresult 
+type(SwigClassWrapper) :: fresult 
 integer(C_LONG) :: farg1 
 integer(C_LONG_LONG) :: farg2 
 
-call self%release()
 farg1 = count
 farg2 = v
 fresult = swigc_new_VectorLongLong__SWIG_2(farg1, farg2)
 self%swigdata = fresult
-self%swigdata%mem = SWIGF_OWN
-end subroutine
+end function
 
 function swigf_VectorLongLong_size(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: swigf_result
+integer(C_LONG) :: swig_result
 class(VectorLongLong), intent(in) :: self
 integer(C_LONG) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_VectorLongLong_size(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function swigf_VectorLongLong_capacity(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: swigf_result
+integer(C_LONG) :: swig_result
 class(VectorLongLong), intent(in) :: self
 integer(C_LONG) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_VectorLongLong_capacity(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function swigf_VectorLongLong_empty(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical :: swigf_result
+logical :: swig_result
 class(VectorLongLong), intent(in) :: self
 integer(C_INT) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_VectorLongLong_empty(farg1)
-swigf_result = swigf_int_to_logical(fresult)
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 subroutine swigf_VectorLongLong_clear(self)
 use, intrinsic :: ISO_C_BINDING
 class(VectorLongLong), intent(inout) :: self
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 call swigc_VectorLongLong_clear(farg1)
@@ -1523,7 +1516,7 @@ subroutine swigf_VectorLongLong_reserve(self, count)
 use, intrinsic :: ISO_C_BINDING
 class(VectorLongLong), intent(inout) :: self
 integer(C_LONG), intent(in) :: count
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 
 farg1 = self%swigdata
@@ -1535,7 +1528,7 @@ subroutine swigf_VectorLongLong_resize__SWIG_0(self, count)
 use, intrinsic :: ISO_C_BINDING
 class(VectorLongLong), intent(inout) :: self
 integer(C_LONG), intent(in) :: count
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 
 farg1 = self%swigdata
@@ -1548,7 +1541,7 @@ use, intrinsic :: ISO_C_BINDING
 class(VectorLongLong), intent(inout) :: self
 integer(C_LONG), intent(in) :: count
 integer(C_LONG_LONG), intent(in) :: v
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 integer(C_LONG_LONG) :: farg3 
 
@@ -1562,7 +1555,7 @@ subroutine swigf_VectorLongLong_push_back(self, v)
 use, intrinsic :: ISO_C_BINDING
 class(VectorLongLong), intent(inout) :: self
 integer(C_LONG_LONG), intent(in) :: v
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_LONG_LONG) :: farg2 
 
 farg1 = self%swigdata
@@ -1571,29 +1564,29 @@ call swigc_VectorLongLong_push_back(farg1, farg2)
 end subroutine
 
 function swigf_VectorLongLong_front(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG_LONG) :: swigf_result
+integer(C_LONG_LONG) :: swig_result
 class(VectorLongLong), intent(in) :: self
 integer(C_LONG_LONG) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_VectorLongLong_front(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function swigf_VectorLongLong_back(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG_LONG) :: swigf_result
+integer(C_LONG_LONG) :: swig_result
 class(VectorLongLong), intent(in) :: self
 integer(C_LONG_LONG) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_VectorLongLong_back(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 subroutine swigf_VectorLongLong_set(self, index, v)
@@ -1601,7 +1594,7 @@ use, intrinsic :: ISO_C_BINDING
 class(VectorLongLong), intent(inout) :: self
 integer(C_LONG), intent(in) :: index
 integer(C_LONG_LONG), intent(in) :: v
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 integer(C_LONG_LONG) :: farg3 
 
@@ -1612,32 +1605,32 @@ call swigc_VectorLongLong_set(farg1, farg2, farg3)
 end subroutine
 
 function swigf_VectorLongLong_get(self, index) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG_LONG) :: swigf_result
+integer(C_LONG_LONG) :: swig_result
 class(VectorLongLong), intent(inout) :: self
 integer(C_LONG), intent(in) :: index
 integer(C_LONG_LONG) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 integer(C_LONG) :: farg2 
 
 farg1 = self%swigdata
 farg2 = index
 fresult = swigc_VectorLongLong_get(farg1, farg2)
-swigf_result = fresult
+swig_result = fresult
 end function
 
-subroutine swigf_delete_VectorLongLong(self)
+subroutine delete_VectorLongLong(self)
 use, intrinsic :: ISO_C_BINDING
 class(VectorLongLong), intent(inout) :: self
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIGF_OWN) then
+if (self%swigdata%mem == SWIG_OWN) then
 call swigc_delete_VectorLongLong(farg1)
 end if
 self%swigdata%ptr = C_NULL_PTR
-self%swigdata%mem = SWIGF_NULL
+self%swigdata%mem = SWIG_NULL
 end subroutine
 
   subroutine swigf_assignment_VectorLongLong(self, other)
@@ -1646,77 +1639,75 @@ end subroutine
    type(VectorLongLong), intent(in) :: other
    call swigc_assignment_VectorLongLong(self%swigdata, other%swigdata)
   end subroutine
-subroutine swigf_new_TeuchosComm__SWIG_0(self, rawmpicomm)
+function new_TeuchosComm__SWIG_0(rawmpicomm) &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(TeuchosComm), intent(inout) :: self
+type(TeuchosComm) :: self
 integer(C_INT), intent(in) :: rawmpicomm
-type(SwigfClassWrapper) :: fresult 
+type(SwigClassWrapper) :: fresult 
 integer(C_INT) :: farg1 
 
-call self%release()
 farg1 = rawmpicomm
 fresult = swigc_new_TeuchosComm__SWIG_0(farg1)
 self%swigdata = fresult
-self%swigdata%mem = SWIGF_OWN
-end subroutine
+end function
 
-subroutine swigf_new_TeuchosComm__SWIG_1(self)
+function new_TeuchosComm__SWIG_1() &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(TeuchosComm), intent(inout) :: self
-type(SwigfClassWrapper) :: fresult 
+type(TeuchosComm) :: self
+type(SwigClassWrapper) :: fresult 
 
-call self%release()
 fresult = swigc_new_TeuchosComm__SWIG_1()
 self%swigdata = fresult
-self%swigdata%mem = SWIGF_OWN
-end subroutine
+end function
 
 function swigf_TeuchosComm_getRank(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: swigf_result
+integer(C_INT) :: swig_result
 class(TeuchosComm), intent(in) :: self
 integer(C_INT) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TeuchosComm_getRank(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function swigf_TeuchosComm_getSize(self) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: swigf_result
+integer(C_INT) :: swig_result
 class(TeuchosComm), intent(in) :: self
 integer(C_INT) :: fresult 
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TeuchosComm_getSize(farg1)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 subroutine swigf_TeuchosComm_barrier(self)
 use, intrinsic :: ISO_C_BINDING
 class(TeuchosComm), intent(in) :: self
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 call swigc_TeuchosComm_barrier(farg1)
 end subroutine
 
-subroutine swigf_delete_TeuchosComm(self)
+subroutine delete_TeuchosComm(self)
 use, intrinsic :: ISO_C_BINDING
 class(TeuchosComm), intent(inout) :: self
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIGF_OWN) then
+if (self%swigdata%mem == SWIG_OWN) then
 call swigc_delete_TeuchosComm(farg1)
 end if
 self%swigdata%ptr = C_NULL_PTR
-self%swigdata%mem = SWIGF_NULL
+self%swigdata%mem = SWIG_NULL
 end subroutine
 
   subroutine swigf_assignment_TeuchosComm(self, other)
@@ -1725,23 +1716,22 @@ end subroutine
    type(TeuchosComm), intent(in) :: other
    call swigc_assignment_TeuchosComm(self%swigdata, other%swigdata)
   end subroutine
-subroutine swigf_new_ParameterList__SWIG_0(self)
+function new_ParameterList__SWIG_0() &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(ParameterList), intent(inout) :: self
-type(SwigfClassWrapper) :: fresult 
+type(ParameterList) :: self
+type(SwigClassWrapper) :: fresult 
 
-call self%release()
 fresult = swigc_new_ParameterList__SWIG_0()
 self%swigdata = fresult
-self%swigdata%mem = SWIGF_OWN
-end subroutine
+end function
 
 
-subroutine swigf_string_to_chararray(string, chars, wrap)
+subroutine swig_string_to_chararray(string, chars, wrap)
   use, intrinsic :: ISO_C_BINDING
   character(kind=C_CHAR, len=*), intent(IN) :: string
   character(kind=C_CHAR), dimension(:), target, allocatable, intent(OUT) :: chars
-  type(SwigfArrayWrapper), intent(OUT) :: wrap
+  type(SwigArrayWrapper), intent(OUT) :: wrap
   integer(kind=C_SIZE_T) :: i
 
   allocate(character(kind=C_CHAR) :: chars(len(string)))
@@ -1752,28 +1742,27 @@ subroutine swigf_string_to_chararray(string, chars, wrap)
   wrap%size = size(chars)
 end subroutine
 
-subroutine swigf_new_ParameterList__SWIG_1(self, name)
+function new_ParameterList__SWIG_1(name) &
+result(self)
 use, intrinsic :: ISO_C_BINDING
-class(ParameterList), intent(inout) :: self
+type(ParameterList) :: self
 character(kind=C_CHAR, len=*), target :: name
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-type(SwigfClassWrapper) :: fresult 
-type(SwigfArrayWrapper) :: farg1 
+type(SwigClassWrapper) :: fresult 
+type(SwigArrayWrapper) :: farg1 
 
-call self%release()
 
-call swigf_string_to_chararray(name, farg1_chars, farg1)
+call swig_string_to_chararray(name, farg1_chars, farg1)
 
 fresult = swigc_new_ParameterList__SWIG_1(farg1)
 self%swigdata = fresult
-self%swigdata%mem = SWIGF_OWN
-end subroutine
+end function
 
 subroutine swigf_ParameterList_print(self)
 use, intrinsic :: ISO_C_BINDING
 class(ParameterList), intent(in) :: self
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 call swigc_ParameterList_print(farg1)
@@ -1785,54 +1774,54 @@ class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 call swigc_ParameterList_remove(farg1, farg2)
 end subroutine
 
 function swigf_ParameterList_is_parameter(self, name) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swigf_result
+logical(C_BOOL) :: swig_result
 class(ParameterList), intent(in) :: self
 character(kind=C_CHAR, len=*), target :: name
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 logical(C_BOOL) :: fresult 
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 fresult = swigc_ParameterList_is_parameter(farg1, farg2)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function swigf_ParameterList_sublist(self, name) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-type(ParameterList) :: swigf_result
+type(ParameterList) :: swig_result
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
-type(SwigfClassWrapper) :: fresult 
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 fresult = swigc_ParameterList_sublist(farg1, farg2)
-swigf_result%swigdata = fresult
+swig_result%swigdata = fresult
 end function
 
 subroutine swigf_ParameterList_set__SWIG_1(self, name, value)
@@ -1842,13 +1831,13 @@ character(kind=C_CHAR, len=*), target :: name
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 real(C_DOUBLE), intent(in) :: value
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 real(C_DOUBLE) :: farg3 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 farg3 = value
 call swigc_ParameterList_set__SWIG_1(farg1, farg2, farg3)
@@ -1861,13 +1850,13 @@ character(kind=C_CHAR, len=*), target :: name
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 integer(C_INT), intent(in) :: value
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 integer(C_INT) :: farg3 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 farg3 = value
 call swigc_ParameterList_set__SWIG_2(farg1, farg2, farg3)
@@ -1880,13 +1869,13 @@ character(kind=C_CHAR, len=*), target :: name
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 integer(C_LONG_LONG), intent(in) :: value
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 integer(C_LONG_LONG) :: farg3 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 farg3 = value
 call swigc_ParameterList_set__SWIG_3(farg1, farg2, farg3)
@@ -1899,13 +1888,13 @@ character(kind=C_CHAR, len=*), target :: name
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 logical(C_BOOL), intent(in) :: value
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 logical(C_BOOL) :: farg3 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 farg3 = value
 call swigc_ParameterList_set__SWIG_4(farg1, farg2, farg3)
@@ -1920,16 +1909,16 @@ character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 character(kind=C_CHAR, len=*), target :: value
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg3_chars
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
-type(SwigfArrayWrapper) :: farg3 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
+type(SwigArrayWrapper) :: farg3 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 
-call swigf_string_to_chararray(value, farg3_chars, farg3)
+call swig_string_to_chararray(value, farg3_chars, farg3)
 
 call swigc_ParameterList_set__SWIG_5(farg1, farg2, farg3)
 end subroutine
@@ -1942,13 +1931,13 @@ character(kind=C_CHAR, len=*), target :: name
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 real(C_DOUBLE), dimension(:), target, intent(in) :: value
 real(C_DOUBLE), pointer :: farg3_view
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
-type(SwigfArrayWrapper) :: farg3 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
+type(SwigArrayWrapper) :: farg3 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 farg3_view => value(1)
 farg3%data = c_loc(farg3_view)
@@ -1964,13 +1953,13 @@ character(kind=C_CHAR, len=*), target :: name
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 integer(C_INT), dimension(:), target, intent(in) :: value
 integer(C_INT), pointer :: farg3_view
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
-type(SwigfArrayWrapper) :: farg3 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
+type(SwigArrayWrapper) :: farg3 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 farg3_view => value(1)
 farg3%data = c_loc(farg3_view)
@@ -1986,13 +1975,13 @@ character(kind=C_CHAR, len=*), target :: name
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 integer(C_LONG_LONG), dimension(:), target, intent(in) :: value
 integer(C_LONG_LONG), pointer :: farg3_view
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
-type(SwigfArrayWrapper) :: farg3 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
+type(SwigArrayWrapper) :: farg3 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 farg3_view => value(1)
 farg3%data = c_loc(farg3_view)
@@ -2007,102 +1996,102 @@ character(kind=C_CHAR, len=*), target :: name
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 class(ParameterList), intent(in) :: value
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
-type(SwigfClassWrapper) :: farg3 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
+type(SwigClassWrapper) :: farg3 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 farg3 = value%swigdata
 call swigc_ParameterList_set__SWIG_9(farg1, farg2, farg3)
 end subroutine
 
 function swigf_ParameterList_get_real(self, name) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE) :: swigf_result
+real(C_DOUBLE) :: swig_result
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 real(C_DOUBLE) :: fresult 
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 fresult = swigc_ParameterList_get_real(farg1, farg2)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function swigf_ParameterList_get_integer(self, name) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: swigf_result
+integer(C_INT) :: swig_result
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 integer(C_INT) :: fresult 
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 fresult = swigc_ParameterList_get_integer(farg1, farg2)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function swigf_ParameterList_get_longlong(self, name) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG_LONG) :: swigf_result
+integer(C_LONG_LONG) :: swig_result
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 integer(C_LONG_LONG) :: fresult 
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 fresult = swigc_ParameterList_get_longlong(farg1, farg2)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 function swigf_ParameterList_get_logical(self, name) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swigf_result
+logical(C_BOOL) :: swig_result
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 logical(C_BOOL) :: fresult 
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 fresult = swigc_ParameterList_get_logical(farg1, farg2)
-swigf_result = fresult
+swig_result = fresult
 end function
 
 
-subroutine swigf_chararray_to_string(wrap, string)
+subroutine SWIG_chararray_to_string(wrap, string)
   use, intrinsic :: ISO_C_BINDING
-  type(SwigfArrayWrapper), intent(IN) :: wrap
+  type(SwigArrayWrapper), intent(IN) :: wrap
   character(kind=C_CHAR, len=:), allocatable, intent(OUT) :: string
   character(kind=C_CHAR), dimension(:), pointer :: chars
   integer(kind=C_SIZE_T) :: i
@@ -2114,106 +2103,106 @@ subroutine swigf_chararray_to_string(wrap, string)
 end subroutine
 
 function swigf_ParameterList_get_string(self, name) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-character(kind=C_CHAR, len=:), allocatable :: swigf_result
+character(kind=C_CHAR, len=:), allocatable :: swig_result
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
-type(SwigfArrayWrapper) :: fresult 
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigArrayWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 fresult = swigc_ParameterList_get_string(farg1, farg2)
 
-call swigf_chararray_to_string(fresult, swigf_result)
+call SWIG_chararray_to_string(fresult, swig_result)
 end function
 
 function swigf_ParameterList_get_arr_real(self, name) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE), dimension(:), allocatable :: swigf_result
+real(C_DOUBLE), dimension(:), allocatable :: swig_result
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 real(C_DOUBLE), pointer :: fresult_view(:)
-type(SwigfArrayWrapper) :: fresult 
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigArrayWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 fresult = swigc_ParameterList_get_arr_real(farg1, farg2)
 call c_f_pointer(fresult%data, fresult_view, [fresult%size])
-allocate(real(C_DOUBLE) :: swigf_result(size(fresult_view)))
-swigf_result = fresult_view
+allocate(real(C_DOUBLE) :: swig_result(size(fresult_view)))
+swig_result = fresult_view
 end function
 
 function swigf_ParameterList_get_arr_integer(self, name) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT), dimension(:), allocatable :: swigf_result
+integer(C_INT), dimension(:), allocatable :: swig_result
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 integer(C_INT), pointer :: fresult_view(:)
-type(SwigfArrayWrapper) :: fresult 
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigArrayWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 fresult = swigc_ParameterList_get_arr_integer(farg1, farg2)
 call c_f_pointer(fresult%data, fresult_view, [fresult%size])
-allocate(integer(C_INT) :: swigf_result(size(fresult_view)))
-swigf_result = fresult_view
+allocate(integer(C_INT) :: swig_result(size(fresult_view)))
+swig_result = fresult_view
 end function
 
 function swigf_ParameterList_get_arr_longlong(self, name) &
-result(swigf_result)
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_LONG_LONG), dimension(:), allocatable :: swigf_result
+integer(C_LONG_LONG), dimension(:), allocatable :: swig_result
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 integer(C_LONG_LONG), pointer :: fresult_view(:)
-type(SwigfArrayWrapper) :: fresult 
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigArrayWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
 
-call swigf_string_to_chararray(name, farg2_chars, farg2)
+call swig_string_to_chararray(name, farg2_chars, farg2)
 
 fresult = swigc_ParameterList_get_arr_longlong(farg1, farg2)
 call c_f_pointer(fresult%data, fresult_view, [fresult%size])
-allocate(integer(C_LONG_LONG) :: swigf_result(size(fresult_view)))
-swigf_result = fresult_view
+allocate(integer(C_LONG_LONG) :: swig_result(size(fresult_view)))
+swig_result = fresult_view
 end function
 
-subroutine swigf_delete_ParameterList(self)
+subroutine delete_ParameterList(self)
 use, intrinsic :: ISO_C_BINDING
 class(ParameterList), intent(inout) :: self
-type(SwigfClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIGF_OWN) then
+if (self%swigdata%mem == SWIG_OWN) then
 call swigc_delete_ParameterList(farg1)
 end if
 self%swigdata%ptr = C_NULL_PTR
-self%swigdata%mem = SWIGF_NULL
+self%swigdata%mem = SWIG_NULL
 end subroutine
 
   subroutine swigf_assignment_ParameterList(self, other)
@@ -2228,12 +2217,12 @@ type(ParameterList) :: plist
 character(kind=C_CHAR, len=*), target :: xml_path
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 
 farg1 = plist%swigdata
 
-call swigf_string_to_chararray(xml_path, farg2_chars, farg2)
+call swig_string_to_chararray(xml_path, farg2_chars, farg2)
 
 call swigc_load_from_xml(farg1, farg2)
 end subroutine
@@ -2244,12 +2233,12 @@ class(ParameterList), intent(in) :: plist
 character(kind=C_CHAR, len=*), target :: xml_path
 
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
-type(SwigfClassWrapper) :: farg1 
-type(SwigfArrayWrapper) :: farg2 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
 
 farg1 = plist%swigdata
 
-call swigf_string_to_chararray(xml_path, farg2_chars, farg2)
+call swig_string_to_chararray(xml_path, farg2_chars, farg2)
 
 call swigc_save_to_xml(farg1, farg2)
 end subroutine
