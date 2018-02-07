@@ -1551,7 +1551,7 @@ SWIGEXPORT int swigc_TeuchosComm_getRawMpiComm(SwigClassWrapper const *farg1) {
 #ifdef HAVE_MPI
   fresult = static_cast< int >(MPI_Comm_c2f(result));
 #else
-  result = *$input;
+  fresult = result;
 #endif
   return fresult;
 }

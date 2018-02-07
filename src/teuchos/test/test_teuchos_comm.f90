@@ -56,7 +56,7 @@ contains
     TEST_EQUALITY(MPI_COMM_WORLD, mpicomm)
 #else
     ! Should have thrown an error
-    FORTEST_INEQUALITY(0, fortrilinos_ierr)
+    TEST_INEQUALITY(0, fortrilinos_ierr)
     FORTRILINOS_IERR = 0
 #endif
 

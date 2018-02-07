@@ -39,7 +39,7 @@
 %#ifdef HAVE_MPI
     $result = %static_cast(MPI_Comm_c2f($1), int);
 %#else
-    $1 = *$input;
+    $result = $1;
 %#endif
 }
 
