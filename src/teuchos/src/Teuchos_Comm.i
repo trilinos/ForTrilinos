@@ -18,10 +18,26 @@
 
 %include <Teuchos_RCP.i>
 
-typedef int MPI_Comm;
+%apply int { MPI_Comm };
+%typemap(ftype) MPI_Comm
+   "integer"
+%typemap(fin, noblock=1) MPI_Comm {
+    $1 = int($input, C_INT)
+}
+%typemap(fout, noblock=1) MPI_Comm {
+    $result = int($1)
+}
+
 %typemap(in, noblock=1) MPI_Comm {
 %#ifdef HAVE_MPI
     $1 = MPI_Comm_f2c(%static_cast(*$input, MPI_Fint));
+%#else
+    $1 = *$input;
+%#endif
+}
+%typemap(out, noblock=1) MPI_Comm {
+%#ifdef HAVE_MPI
+    $result = %static_cast(MPI_Comm_c2f($1), int);
 %#else
     $1 = *$input;
 %#endif
@@ -50,7 +66,7 @@ class Comm
   %extend {
     Comm(MPI_Comm rawMpiComm) {
 %#ifdef HAVE_MPI
-      return static_cast<Teuchos::Comm<Ordinal>*>(new Teuchos::MpiComm<int>(rawMpiComm));
+      return new Teuchos::MpiComm<Ordinal>(rawMpiComm);
 %#else
       throw std::runtime_error("MPI based constructor cannot be called when MPI is not enabled.");
 %#endif
@@ -58,12 +74,19 @@ class Comm
 
     Comm() {
 %#ifdef HAVE_MPI
-      return static_cast<Teuchos::Comm<Ordinal>*>(new Teuchos::MpiComm<int>(MPI_COMM_WORLD));
+      return new Teuchos::MpiComm<Ordinal>(MPI_COMM_WORLD);
 %#else
-      return static_cast<Teuchos::Comm<Ordinal>*>(new Teuchos::SerialComm<int>());
+      return new Teuchos::SerialComm<Ordinal>();
 %#endif
     }
 
+    MPI_Comm getRawMpiComm() {
+%#ifdef HAVE_MPI
+      Teuchos::MpiComm<Ordinal>& comm = dynamic_cast<Teuchos::MpiComm<Ordinal>&>(*$self);
+      return *comm.getRawMpiComm();
+%#else
+      throw std::runtime_error("MPI based constructor cannot be called when MPI is not enabled.");
+%#endif
     }
   } // %extend
 };

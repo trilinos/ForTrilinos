@@ -183,6 +183,7 @@ end type
   procedure :: getRank => swigf_TeuchosComm_getRank
   procedure :: getSize => swigf_TeuchosComm_getSize
   procedure :: barrier => swigf_TeuchosComm_barrier
+  procedure :: getRawMpiComm => swigf_TeuchosComm_getRawMpiComm
   procedure :: release => delete_TeuchosComm
   procedure, private :: swigf_assignment_TeuchosComm
   generic :: assignment(=) => swigf_assignment_TeuchosComm
@@ -657,23 +658,6 @@ end subroutine
    type(SwigClassWrapper), intent(inout) :: self
    type(SwigClassWrapper), intent(in) :: other
   end subroutine
-function swigc_new_TeuchosComm__SWIG_0(farg1) &
-bind(C, name="swigc_new_TeuchosComm__SWIG_0") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: SwigClassWrapper
-integer(C_INT), intent(in) :: farg1
-type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_new_TeuchosComm__SWIG_1() &
-bind(C, name="swigc_new_TeuchosComm__SWIG_1") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: SwigClassWrapper
-type(SwigClassWrapper) :: fresult
-end function
-
 function swigc_TeuchosComm_getRank(farg1) &
 bind(C, name="swigc_TeuchosComm_getRank") &
 result(fresult)
@@ -698,6 +682,32 @@ use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
 end subroutine
+
+function swigc_new_TeuchosComm__SWIG_0(farg1) &
+bind(C, name="swigc_new_TeuchosComm__SWIG_0") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigClassWrapper
+integer(C_INT), intent(in) :: farg1
+type(SwigClassWrapper) :: fresult
+end function
+
+function swigc_new_TeuchosComm__SWIG_1() &
+bind(C, name="swigc_new_TeuchosComm__SWIG_1") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: fresult
+end function
+
+function swigc_TeuchosComm_getRawMpiComm(farg1) &
+bind(C, name="swigc_TeuchosComm_getRawMpiComm") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+integer(C_INT) :: fresult
+end function
 
 subroutine swigc_delete_TeuchosComm(farg1) &
 bind(C, name="swigc_delete_TeuchosComm")
@@ -1639,29 +1649,6 @@ end subroutine
    type(VectorLongLong), intent(in) :: other
    call swigc_assignment_VectorLongLong(self%swigdata, other%swigdata)
   end subroutine
-function new_TeuchosComm__SWIG_0(rawmpicomm) &
-result(self)
-use, intrinsic :: ISO_C_BINDING
-type(TeuchosComm) :: self
-integer(C_INT), intent(in) :: rawmpicomm
-type(SwigClassWrapper) :: fresult 
-integer(C_INT) :: farg1 
-
-farg1 = rawmpicomm
-fresult = swigc_new_TeuchosComm__SWIG_0(farg1)
-self%swigdata = fresult
-end function
-
-function new_TeuchosComm__SWIG_1() &
-result(self)
-use, intrinsic :: ISO_C_BINDING
-type(TeuchosComm) :: self
-type(SwigClassWrapper) :: fresult 
-
-fresult = swigc_new_TeuchosComm__SWIG_1()
-self%swigdata = fresult
-end function
-
 function swigf_TeuchosComm_getRank(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
@@ -1696,6 +1683,42 @@ type(SwigClassWrapper) :: farg1
 farg1 = self%swigdata
 call swigc_TeuchosComm_barrier(farg1)
 end subroutine
+
+function new_TeuchosComm__SWIG_0(rawmpicomm) &
+result(self)
+use, intrinsic :: ISO_C_BINDING
+type(TeuchosComm) :: self
+integer :: rawmpicomm
+type(SwigClassWrapper) :: fresult 
+integer(C_INT) :: farg1 
+
+farg1 = int(rawmpicomm, C_INT)
+fresult = swigc_new_TeuchosComm__SWIG_0(farg1)
+self%swigdata = fresult
+end function
+
+function new_TeuchosComm__SWIG_1() &
+result(self)
+use, intrinsic :: ISO_C_BINDING
+type(TeuchosComm) :: self
+type(SwigClassWrapper) :: fresult 
+
+fresult = swigc_new_TeuchosComm__SWIG_1()
+self%swigdata = fresult
+end function
+
+function swigf_TeuchosComm_getRawMpiComm(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer :: swig_result
+class(TeuchosComm), intent(inout) :: self
+integer(C_INT) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc_TeuchosComm_getRawMpiComm(farg1)
+swig_result = int(fresult)
+end function
 
 subroutine delete_TeuchosComm(self)
 use, intrinsic :: ISO_C_BINDING
