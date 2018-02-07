@@ -41,6 +41,12 @@ class Comm
 {
   public:
 
+    // Wrap built-in methods
+    int getRank() const;
+    int getSize() const;
+    void barrier() const;
+
+    // Add constructors
   %extend {
     Comm(MPI_Comm rawMpiComm) {
 %#ifdef HAVE_MPI
@@ -58,14 +64,6 @@ class Comm
 %#endif
     }
 
-    int getRank() const {
-      return $self->getRank();
-    }
-    int getSize() const {
-      return $self->getSize();
-    }
-    void barrier() const {
-      $self->barrier();
     }
   } // %extend
 };
