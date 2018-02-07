@@ -19,13 +19,13 @@
 %include <Teuchos_RCP.i>
 
 typedef int MPI_Comm;
-%typemap(in, noblock=1) MPI_Comm %{
-#ifdef HAVE_MPI
-    $1 = ($1_ltype)(MPI_Comm_f2c(*(MPI_Fint *)($input)));
-#else
+%typemap(in, noblock=1) MPI_Comm {
+%#ifdef HAVE_MPI
+    $1 = MPI_Comm_f2c(%static_cast(*$input, MPI_Fint));
+%#else
     $1 = *$input;
-#endif
-%}
+%#endif
+}
 
 // Make the Comm an RCP
 %teuchos_rcp(Teuchos::Comm<int>)
