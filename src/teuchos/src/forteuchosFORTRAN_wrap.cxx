@@ -578,7 +578,7 @@ SWIGINTERN std::vector< long long >::value_type std_vector_Sl_long_SS_long_Sg__g
 
 SWIGINTERN Teuchos::Comm< int > *new_Teuchos_Comm_Sl_int_Sg___SWIG_0(MPI_Comm rawMpiComm){
 #ifdef HAVE_MPI
-      return static_cast<Teuchos::Comm<int>*>(new Teuchos::MpiComm<int>(rawMpiComm));
+      return new Teuchos::MpiComm<int>(rawMpiComm);
 #else
       throw std::runtime_error("MPI based constructor cannot be called when MPI is not enabled.");
 #endif
@@ -591,19 +591,18 @@ SWIGINTERN Teuchos::Comm< int > *new_Teuchos_Comm_Sl_int_Sg___SWIG_0(MPI_Comm ra
 
 SWIGINTERN Teuchos::Comm< int > *new_Teuchos_Comm_Sl_int_Sg___SWIG_1(){
 #ifdef HAVE_MPI
-      return static_cast<Teuchos::Comm<int>*>(new Teuchos::MpiComm<int>(MPI_COMM_WORLD));
+      return new Teuchos::MpiComm<int>(MPI_COMM_WORLD);
 #else
-      return static_cast<Teuchos::Comm<int>*>(new Teuchos::SerialComm<int>());
+      return new Teuchos::SerialComm<int>();
 #endif
     }
-SWIGINTERN int Teuchos_Comm_Sl_int_Sg__getRank(Teuchos::Comm< int > const *self){
-      return self->getRank();
-    }
-SWIGINTERN int Teuchos_Comm_Sl_int_Sg__getSize(Teuchos::Comm< int > const *self){
-      return self->getSize();
-    }
-SWIGINTERN void Teuchos_Comm_Sl_int_Sg__barrier(Teuchos::Comm< int > const *self){
-      self->barrier();
+SWIGINTERN MPI_Comm Teuchos_Comm_Sl_int_Sg__getRawMpiComm(Teuchos::Comm< int > *self){
+#ifdef HAVE_MPI
+      Teuchos::MpiComm<int>& comm = dynamic_cast<Teuchos::MpiComm<int>&>(*self);
+      return *comm.getRawMpiComm();
+#else
+      throw std::runtime_error("MPI based constructor cannot be called when MPI is not enabled.");
+#endif
     }
 
 #include "Teuchos_ParameterList.hpp"
@@ -1341,18 +1340,121 @@ SWIGEXPORT void swigc_assignment_VectorLongLong(SwigClassWrapper * self, SwigCla
 }
 
 
+SWIGEXPORT int swigc_TeuchosComm_getRank(SwigClassWrapper const *farg1) {
+  int fresult ;
+  Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 ;
+  int result;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::Comm<int> >* >(farg1->ptr);
+  arg1 = smartarg1 ? const_cast<Teuchos::Comm<int>*>(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Teuchos::Comm< int >::getRank() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (int)((Teuchos::Comm< int > const *)arg1)->getRank();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Teuchos::Comm< int >::getRank() const", SWIG_IndexError, e.what(), return 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Teuchos::Comm< int >::getRank() const", SWIG_RuntimeError, e.what(), return 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Teuchos::Comm< int >::getRank() const", SWIG_UnknownError, "An unknown exception occurred", return 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT int swigc_TeuchosComm_getSize(SwigClassWrapper const *farg1) {
+  int fresult ;
+  Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 ;
+  int result;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::Comm<int> >* >(farg1->ptr);
+  arg1 = smartarg1 ? const_cast<Teuchos::Comm<int>*>(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Teuchos::Comm< int >::getSize() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (int)((Teuchos::Comm< int > const *)arg1)->getSize();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Teuchos::Comm< int >::getSize() const", SWIG_IndexError, e.what(), return 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Teuchos::Comm< int >::getSize() const", SWIG_RuntimeError, e.what(), return 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Teuchos::Comm< int >::getSize() const", SWIG_UnknownError, "An unknown exception occurred", return 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_TeuchosComm_barrier(SwigClassWrapper const *farg1) {
+  Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
+  Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::Comm<int> >* >(farg1->ptr);
+  arg1 = smartarg1 ? const_cast<Teuchos::Comm<int>*>(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Teuchos::Comm< int >::barrier() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      ((Teuchos::Comm< int > const *)arg1)->barrier();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Teuchos::Comm< int >::barrier() const", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Teuchos::Comm< int >::barrier() const", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Teuchos::Comm< int >::barrier() const", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
+  
+}
+
+
 SWIGEXPORT SwigClassWrapper swigc_new_TeuchosComm__SWIG_0(int const *farg1) {
   SwigClassWrapper fresult ;
   MPI_Comm arg1 ;
   Teuchos::Comm< int > *result = 0 ;
   
-  
 #ifdef HAVE_MPI
-  arg1 = (MPI_Comm)(MPI_Comm_f2c(*(MPI_Fint *)(farg1)));
+  arg1 = MPI_Comm_f2c(static_cast< MPI_Fint >(*farg1));
 #else
   arg1 = *farg1;
 #endif
-  
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::Comm< int >::Comm(MPI_Comm)");;
@@ -1415,108 +1517,43 @@ SWIGEXPORT SwigClassWrapper swigc_new_TeuchosComm__SWIG_1() {
 }
 
 
-SWIGEXPORT int swigc_TeuchosComm_getRank(SwigClassWrapper const *farg1) {
+SWIGEXPORT int swigc_TeuchosComm_getRawMpiComm(SwigClassWrapper const *farg1) {
   int fresult ;
   Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
-  Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 ;
-  int result;
+  Teuchos::RCP< Teuchos::Comm< int > > *smartarg1 ;
+  MPI_Comm result;
   
-  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::Comm<int> >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<Teuchos::Comm<int>*>(smartarg1->get()) : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::Comm<int> >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Teuchos::Comm< int >::getRank() const");;
+    SWIG_check_unhandled_exception_impl("Teuchos::Comm< int >::getRawMpiComm()");;
     try
     {
       // Attempt the wrapped function call
-      result = (int)Teuchos_Comm_Sl_int_Sg__getRank((Teuchos::Comm< int > const *)arg1);
+      result = Teuchos_Comm_Sl_int_Sg__getRawMpiComm(arg1);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Teuchos::Comm< int >::getRank() const", SWIG_IndexError, e.what(), return 0);
+      SWIG_exception_impl("Teuchos::Comm< int >::getRawMpiComm()", SWIG_IndexError, e.what(), return 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Teuchos::Comm< int >::getRank() const", SWIG_RuntimeError, e.what(), return 0);
+      SWIG_exception_impl("Teuchos::Comm< int >::getRawMpiComm()", SWIG_RuntimeError, e.what(), return 0);
     }
     catch (...)
     {
-      SWIG_exception_impl("Teuchos::Comm< int >::getRank() const", SWIG_UnknownError, "An unknown exception occurred", return 0);
+      SWIG_exception_impl("Teuchos::Comm< int >::getRawMpiComm()", SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
+#ifdef HAVE_MPI
+  fresult = static_cast< int >(MPI_Comm_c2f(result));
+#else
   fresult = result;
+#endif
   return fresult;
-}
-
-
-SWIGEXPORT int swigc_TeuchosComm_getSize(SwigClassWrapper const *farg1) {
-  int fresult ;
-  Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
-  Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 ;
-  int result;
-  
-  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::Comm<int> >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<Teuchos::Comm<int>*>(smartarg1->get()) : NULL;
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Teuchos::Comm< int >::getSize() const");;
-    try
-    {
-      // Attempt the wrapped function call
-      result = (int)Teuchos_Comm_Sl_int_Sg__getSize((Teuchos::Comm< int > const *)arg1);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Teuchos::Comm< int >::getSize() const", SWIG_IndexError, e.what(), return 0);
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Teuchos::Comm< int >::getSize() const", SWIG_RuntimeError, e.what(), return 0);
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Teuchos::Comm< int >::getSize() const", SWIG_UnknownError, "An unknown exception occurred", return 0);
-    }
-  }
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_TeuchosComm_barrier(SwigClassWrapper const *farg1) {
-  Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
-  Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 ;
-  
-  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::Comm<int> >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<Teuchos::Comm<int>*>(smartarg1->get()) : NULL;
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Teuchos::Comm< int >::barrier() const");;
-    try
-    {
-      // Attempt the wrapped function call
-      Teuchos_Comm_Sl_int_Sg__barrier((Teuchos::Comm< int > const *)arg1);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Teuchos::Comm< int >::barrier() const", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Teuchos::Comm< int >::barrier() const", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Teuchos::Comm< int >::barrier() const", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
-  
 }
 
 

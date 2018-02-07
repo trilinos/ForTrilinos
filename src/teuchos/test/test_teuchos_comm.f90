@@ -16,7 +16,7 @@ program test_TeuchosComm
 
   implicit none
   character(len=26), parameter :: FILENAME='test_teuchos_comm.f90'
-  integer :: ierr
+  integer :: ierr, mpicomm
 
 
   SETUP_TEST()
@@ -50,6 +50,15 @@ contains
 
     comm_size_c = comm%getSize(); TEST_IERR()
     TEST_EQUALITY(comm_size_f, comm_size_c)
+
+    mpicomm = comm%getRawMpiComm()
+#ifdef HAVE_MPI
+    TEST_EQUALITY(MPI_COMM_WORLD, mpicomm)
+#else
+    ! Should have thrown an error
+    TEST_INEQUALITY(0, fortrilinos_ierr)
+    FORTRILINOS_IERR = 0
+#endif
 
     call comm%release()
 
