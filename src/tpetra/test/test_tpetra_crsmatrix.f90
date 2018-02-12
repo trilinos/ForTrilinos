@@ -27,6 +27,7 @@ program test_TpetraCrsMatrix
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_AlphaBetaMultiply)
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_ActiveFillGlobal)
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_SimpleEigTest)
+  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_GetGlobalRowView)
 
 !  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_ActiveFillLocal)
 !  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_replaceColMap)
@@ -36,7 +37,6 @@ program test_TpetraCrsMatrix
 !  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_isStorageOptimized)
 !  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_isStaticGraph)
 !  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_supportsRowViews)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_getGlobalRowView)
 !  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_getLocalRowViewRaw)
 !  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_gaussSeidel)
 !  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_reorderedGaussSeidel)
@@ -187,8 +187,8 @@ contains
     logical(c_bool), parameter :: false=.false., true=.true.
     real(scalar_type), parameter :: zero=0., one=1., two=2., negthree=-3.
     real(norm_type) :: norms(1)
-    integer(global_ordinal_type) :: gblrow
-    integer(global_ordinal_type), allocatable :: cols(:), xcols(:)
+    integer(global_ordinal_type) :: gblrow, i
+    integer(global_ordinal_type), allocatable :: cols(:), xcols(:), mask(:)
     real(scalar_type), allocatable :: vals(:), xvals(:)
 
     OUT0("Starting TpetraCrsMatrix_SimpleEigTest")
@@ -259,14 +259,18 @@ contains
     TEST_ASSERT(row_map%isSameAs(A%getDomainMap()))
     TEST_ASSERT(row_map%isSameAs(A%getRangeMap()))
 
-    ! FIXME: getGlobalRowCopy: I expected cols and vals to be in ascending
-    ! FIXME: order, but they are not, so I have commented out the check
-    allocate(xcols(nnz)); allocate(xvals(nnz))
+    allocate(xcols(nnz)); allocate(xvals(nnz)); allocate(mask(nnz));
     numindices = int(nnz, kind=size_type)
     call A%getGlobalRowCopy(gblrow, xcols, xvals, numindices); TEST_IERR()
-    !TEST_ARRAY_EQUALITY(xcols, cols)
-    !TEST_FLOATING_ARRAY_EQUALITY(xvals, vals, epsilon(zero))
-    deallocate(xcols); deallocate(xvals)
+
+    ! after fillComplete, the order of values may not be the same, so we need to
+    ! use the correct mask
+    do i=1, nnz
+      where(cols(i)==xcols) mask = i
+    end do
+    TEST_ARRAY_EQUALITY(xcols(mask), cols)
+    TEST_FLOATING_ARRAY_EQUALITY(xvals(mask), vals, epsilon(zero))
+    deallocate(xcols); deallocate(xvals); deallocate(mask)
 
     ! test the action
     call threes%randomize(); TEST_IERR()
@@ -599,58 +603,130 @@ contains
   END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_supportsRowViews)
 
   ! -----------------------------getGlobalRowView----------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_getGlobalRowView)
-    type(TpetraCrsMatrix) :: Obj
-    integer(global_ordinal_type) :: globalrow
-    !type(TeuchosArrayViewLongLongConst) :: indices
-    !type(TeuchosArrayViewDoubleConst) :: values
-    OUT0("Starting TpetraCrsMatrix_getGlobalRowView")
+  FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_GetGlobalRowView)
 
-    success = .false.
+    integer(size_type), parameter :: izero=0, ione=1
+    logical(c_bool), parameter :: false=.false., true=.true.
+    real(scalar_type), parameter :: zero=0., one=1., two=2.
+    integer(local_ordinal_type), parameter :: lclrow=1
+    type(TpetraMap) :: rowmap, colmap
+    type(TpetraCrsMatrix) :: A
+    type(ParameterList) :: params
+    integer(kind(TpetraProfileType)) :: pftype
+    integer(size_type) :: num_images, my_image_id, numentries
+    integer(local_ordinal_type) :: nnz
+    integer :: T, j
+    logical(c_bool) :: opt_storage
+    real(norm_type) :: norms(1)
+    real(scalar_type) :: scopy(4), csview(4)
+    integer(local_ordinal_type) :: lcopy(4), clview(4), i
+    integer(global_ordinal_type) :: gcopy(4), cgview(4)
+    integer(global_ordinal_type) :: gblrow
+    integer(local_ordinal_type), allocatable :: linds(:)
+    integer(global_ordinal_type), allocatable :: ginds(:), mask(:)
+    real(scalar_type), allocatable :: values(:)
+    ! ------------------------------------------------------------------------ !
 
-    globalrow = 0
-    !indices = create_xxx(); TEST_IERR()
-    !values = create_xxx(); TEST_IERR()
-    !Obj = create_TpetraCrsMatrix(); TEST_IERR()
-    !call Obj%getGlobalRowView(globalrow, indices, values); TEST_IERR()
+    OUT0("Starting TpetraCrsMatrix_GetGlobalRowView")
 
-    !call indices%release(); TEST_IERR()
-    !call values%release(); TEST_IERR()
-    !call Obj%release(); TEST_IERR()
+    num_images = comm%getSize()
+    my_image_id = comm%getRank()
 
-    write(*,*) 'TpetraCrsMatrix_getGlobalRowView: Test not yet implemented'
+    if (num_images < 2) return
 
-    OUT0("Finished TpetraCrsMatrix_getGlobalRowView")
+    ! create a Map, one row per processor
+    rowmap = create_TpetraMap(invalid, ione, comm); TEST_IERR()
 
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_getGlobalRowView)
+    gblrow = rowmap%getGlobalElement(lclrow);
 
-  ! ----------------------------getLocalRowViewRaw---------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_getLocalRowViewRaw)
-    type(TpetraCrsMatrix) :: Obj
-    integer(local_ordinal_type) :: lclrow
-    integer(local_ordinal_type) :: nument
-    type(C_PTR) :: lclcolinds
-    type(C_PTR) :: vals
-    OUT0("Starting TpetraCrsMatrix_getLocalRowViewRaw")
+    ! specify the column map to control ordering
+    ! construct tridiagonal graph
+    if (gblrow == 1) then
+      nnz = 2
+      allocate(ginds(nnz));
+      ginds = [gblrow, gblrow+1]
+    else if (gblrow == num_images) then
+      nnz = 2
+      allocate(ginds(nnz));
+      ginds = [gblrow-1, gblrow]
+    else
+      nnz = 3
+      allocate(ginds(nnz));
+      ginds = [gblrow-1, gblrow, gblrow+1]
+    end if
+    allocate(linds(nnz))
+    forall(i=1:nnz) linds(i)=i
 
-    success = .false.
+    allocate(values(nnz))
+    values = one
 
-    lclrow = 0
-    nument = 0
-    !lclcolinds = create_xxx(); TEST_IERR()
-    !vals = create_xxx(); TEST_IERR()
-    !Obj = create_TpetraCrsMatrix(); TEST_IERR()
-    !fresult = Obj%getLocalRowViewRaw(lclrow, nument, lclcolinds, vals); TEST_IERR()
+    ! Create column map
+    colmap = create_TpetraMap(invalid, ginds, comm);
 
-    !call lclcolinds%release(); TEST_IERR()
-    !call vals%release(); TEST_IERR()
-    !call Obj%release(); TEST_IERR()
+    params = create_ParameterList("ANONOMOUS")
 
-    write(*,*) 'TpetraCrsMatrix_getLocalRowViewRaw: Test not yet implemented'
+    do T = 0, 3
+      if (IAND(T, 1) == 1) then
+        pftype = TpetraStaticProfile
+      else
+        pftype = TpetraDynamicProfile
+      endif
+      opt_storage = IAND(T, 2) == 2
+      call params%set("Optimize Storage", opt_storage) ! FIXME: boolean parameters
 
-    OUT0("Finished TpetraCrsMatrix_getLocalRowViewRaw")
+      ! only allocate as much room as necessary
+      numentries = int(nnz, kind=size_type)
+      A = create_TpetraCrsMatrix(rowmap, colmap, numentries, pftype)
 
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_getLocalRowViewRaw)
+      ! at this point, the graph has not allocated data as global or local, so
+      ! we can do views/copies for either local or global
+      call A%getLocalRowCopy(lclrow, lcopy, scopy, numentries)
+      !call A%getLocalRowView(lclrow, clview, csview)
+      call A%getGlobalRowCopy(gblrow, gcopy, scopy, numentries)
+
+      call A%insertGlobalValues(gblrow, ginds, values)
+
+      ! check values before calling fillComplete
+      allocate(mask(nnz))
+      mask = -1
+      call A%getGlobalRowView(gblrow, cgview(1:nnz), csview(1:nnz))
+      do i=1, nnz;
+        where(ginds(i)==cgview) mask = i
+      end do
+      TEST_ASSERT((.not. any(mask==-1)))
+      TEST_ARRAY_EQUALITY(cgview(mask), ginds)
+      TEST_FLOATING_ARRAY_EQUALITY(csview(mask), values, epsilon(zero))
+      deallocate(mask)
+
+      call A%fillComplete(params);
+
+      ! check for throws and no-throws/values
+      TEST_THROW(call A%getGlobalRowView(gblrow, cgview, csview))
+
+      !TEST_NOTHROW(call A%getLocalRowView(lclrow, clview, csview))
+      !TEST_ARRAY_EQUALITY(clview, linds)
+      !TEST_FLOATING_ARRAY_EQUALITY(csview, values, epsilon(zero))
+
+      TEST_NOTHROW(call A%getLocalRowCopy(lclrow, lcopy, scopy, numentries))
+      TEST_ARRAY_EQUALITY(lcopy(1:numentries), linds)
+      TEST_FLOATING_ARRAY_EQUALITY(scopy(1:numentries), values, epsilon(zero))
+
+      TEST_NOTHROW(call A%getGlobalRowCopy(gblrow, gcopy, scopy, numentries) );
+      TEST_ARRAY_EQUALITY(gcopy(1:numentries), ginds)
+      TEST_FLOATING_ARRAY_EQUALITY(scopy(1:numentries), values, epsilon(zero))
+
+      call A%release()
+
+    end do
+
+    call rowmap%release()
+    call colmap%release()
+
+    deallocate(linds); deallocate(ginds); deallocate(values)
+
+    OUT0("Finished TpetraCrsMatrix_GetGlobalRowView")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_GetGlobalRowView)
 
   ! -------------------------------gaussSeidel-------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_gaussSeidel)
