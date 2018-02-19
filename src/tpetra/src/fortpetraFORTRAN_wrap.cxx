@@ -873,7 +873,7 @@ SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getLocalRowCopy(Tpe
       for (int i = 0; i < colIndsView.size(); i++)
         colIndsView[i]++;
     }
-SWIGINTERN std::pair< GO const *,std::size_t > Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getGlobalRowindicesView(Tpetra::CrsMatrix< SC,LO,GO,NO > const *self,GO GlobalRow){
+SWIGINTERN std::pair< GO const *,std::size_t > Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getGlobalRowIndicesView(Tpetra::CrsMatrix< SC,LO,GO,NO > const *self,GO GlobalRow){
       Teuchos::ArrayView<const GO> indicesView;
       Teuchos::ArrayView<const SC> valuesView;
       self->getGlobalRowView(GlobalRow, indicesView, valuesView);
@@ -12675,7 +12675,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_getLocalRowCopy(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT SwigArrayWrapper swigc_TpetraCrsMatrix_getGlobalRowindicesView(SwigClassWrapper const *farg1, long long const *farg2) {
+SWIGEXPORT SwigArrayWrapper swigc_TpetraCrsMatrix_getGlobalRowIndicesView(SwigClassWrapper const *farg1, long long const *farg2) {
   SwigArrayWrapper fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   GO arg2 ;
@@ -12687,25 +12687,25 @@ SWIGEXPORT SwigArrayWrapper swigc_TpetraCrsMatrix_getGlobalRowindicesView(SwigCl
   arg2 = *farg2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getGlobalRowindicesView(GO) const");;
+    SWIG_check_unhandled_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getGlobalRowIndicesView(GO) const");;
     try
     {
       // Attempt the wrapped function call
-      result = Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getGlobalRowindicesView((Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1,arg2);
+      result = Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getGlobalRowIndicesView((Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1,arg2);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getGlobalRowindicesView(GO) const", SWIG_IndexError, e.what(), return SwigArrayWrapper_uninitialized());
+      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getGlobalRowIndicesView(GO) const", SWIG_IndexError, e.what(), return SwigArrayWrapper_uninitialized());
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getGlobalRowindicesView(GO) const", SWIG_RuntimeError, e.what(), return SwigArrayWrapper_uninitialized());
+      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getGlobalRowIndicesView(GO) const", SWIG_RuntimeError, e.what(), return SwigArrayWrapper_uninitialized());
     }
     catch (...)
     {
-      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getGlobalRowindicesView(GO) const", SWIG_UnknownError, "An unknown exception occurred", return SwigArrayWrapper_uninitialized());
+      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getGlobalRowIndicesView(GO) const", SWIG_UnknownError, "An unknown exception occurred", return SwigArrayWrapper_uninitialized());
     }
   }
   fresult.data = const_cast<long long*>((&result)->first);

@@ -182,7 +182,7 @@
       for (int i = 0; i < colIndsView.size(); i++)
         colIndsView[i]++;
     }
-    std::pair<const GO*,size_t> getGlobalRowindicesView(GO GlobalRow) const {
+    std::pair<const GO*,size_t> getGlobalRowIndicesView(GO GlobalRow) const {
       Teuchos::ArrayView<const GO> indicesView;
       Teuchos::ArrayView<const SC> valuesView;
       self->getGlobalRowView(GlobalRow, indicesView, valuesView);
