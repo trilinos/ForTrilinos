@@ -136,9 +136,10 @@
       for (int i = 0; i < indicesView.size(); i++)
         indicesView[i]++;
     }
-    void getgblRowView(const GO gblRow, std::pair<const GO*,size_t> lclColInds) const {
-      Teuchos::ArrayView<const GO> lclColIndsView = Teuchos::arrayView(lclColInds.first, lclColInds.second);
+    std::pair<const GO*,size_t> getGlobalRowView(const GO gblRow) const {
+      Teuchos::ArrayView<const GO> lclColIndsView;
       self->getGlobalRowView(gblRow, lclColIndsView);
+      return std::make_pair<const GO*,size_t>(lclColIndsView.getRawPtr(), lclColIndsView.size());
     }
     void setAllIndices(std::pair<size_t*,size_t> rowPointers, std::pair<LO*,size_t> columnIndices, std::pair<SC*,size_t> val) {
       Teuchos::ArrayRCP<size_t> rowPointersArrayRCP(rowPointers.second);
