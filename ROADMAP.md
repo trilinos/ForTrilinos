@@ -477,7 +477,7 @@ Status | Class
 :white_check_mark: | `ProfileType 	getProfileType () const`
 :star: | `void 	getGlobalRowCopy (GlobalOrdinal GlobalRow, const Teuchos::ArrayView< GlobalOrdinal > &Indices, size_t &NumIndices) const` | Fortran arrays
 :star2: | `void 	getLocalRowCopy (LocalOrdinal LocalRow, const Teuchos::ArrayView< LocalOrdinal > &indices, size_t &NumIndices) const` | Fortran arrays; 1-based indices
-:star: | `void 	getGlobalRowView (const GlobalOrdinal gblRow, Teuchos::ArrayView< const GlobalOrdinal > &gblColInds) const` | Fortran arrays
+:star: | `void 	getGlobalRowView (const GlobalOrdinal gblRow, Teuchos::ArrayView< const GlobalOrdinal > &gblColInds) const` | API change: replaced with a function that returns Fortran array
 :x: | `void 	getLocalRowView (const LocalOrdinal lclRow, Teuchos::ArrayView< const LocalOrdinal > &lclColInds) const` | cannot maintain the semantics
 :white_check_mark: | `bool 	supportsRowViews () const`
 
@@ -738,7 +738,7 @@ Status | Class
 :white_check_mark: | `virtual bool 	supportsRowViews () const`
 :star: | `void 	getGlobalRowCopy (GlobalOrdinal GlobalRow, const Teuchos::ArrayView< GlobalOrdinal > &Indices, const Teuchos::ArrayView< Scalar > &Values, size_t &NumEntries) const` | Fortran arrays
 :star2: | `void 	getLocalRowCopy (LocalOrdinal localRow, const Teuchos::ArrayView< LocalOrdinal > &colInds, const Teuchos::ArrayView< Scalar > &vals, size_t &numEntries) const` | Fortran arrays; 1-based indices
-:star: | `void 	getGlobalRowView (GlobalOrdinal GlobalRow, Teuchos::ArrayView< const GlobalOrdinal > &indices, Teuchos::ArrayView< const Scalar > &values) const` | Fortran arrays
+:star: | `void 	getGlobalRowView (GlobalOrdinal GlobalRow, Teuchos::ArrayView< const GlobalOrdinal > &indices, Teuchos::ArrayView< const Scalar > &values) const` | API change: replaced with 2 functions that return indices/values as Fortran arrays
 :x: | `void 	getLocalRowView (LocalOrdinal LocalRow, Teuchos::ArrayView< const LocalOrdinal > &indices, Teuchos::ArrayView< const Scalar > &values) const` | use `getLocalRowCopy` as we cannot maintain the semantics
 :x: | `LocalOrdinal 	getLocalRowViewRaw (const LocalOrdinal lclRow, LocalOrdinal &numEnt, const LocalOrdinal *&lclColInds, const Scalar *&vals) const` | prefer `ArrayView` variant
 :x: | `LocalOrdinal 	getLocalRowView (const LocalOrdinal lclRow, LocalOrdinal &numEnt, const impl_scalar_type *&val, const LocalOrdinal *&ind) const` | prefer `ArrayView` variant

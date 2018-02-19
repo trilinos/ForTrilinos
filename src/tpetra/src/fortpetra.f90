@@ -403,7 +403,7 @@ end type
   procedure :: insertLocalIndices => swigf_TpetraCrsGraph_insertLocalIndices
   procedure :: getGlobalRowCopy => swigf_TpetraCrsGraph_getGlobalRowCopy
   procedure :: getLocalRowCopy => swigf_TpetraCrsGraph_getLocalRowCopy
-  procedure :: getgblRowView => swigf_TpetraCrsGraph_getgblRowView
+  procedure :: getGlobalRowView => swigf_TpetraCrsGraph_getGlobalRowView
   procedure :: setAllIndices => swigf_TpetraCrsGraph_setAllIndices
   procedure :: getNodeRowPtrs => swigf_TpetraCrsGraph_getNodeRowPtrs
   procedure :: getNodePackedIndices => swigf_TpetraCrsGraph_getNodePackedIndices
@@ -502,7 +502,8 @@ end type
   procedure :: getAllValues => swigf_TpetraCrsMatrix_getAllValues
   procedure :: getGlobalRowCopy => swigf_TpetraCrsMatrix_getGlobalRowCopy
   procedure :: getLocalRowCopy => swigf_TpetraCrsMatrix_getLocalRowCopy
-  procedure :: getGlobalRowView => swigf_TpetraCrsMatrix_getGlobalRowView
+  procedure :: getGlobalRowindicesView => swigf_TpetraCrsMatrix_getGlobalRowindicesView
+  procedure :: getGlobalRowValuesView => swigf_TpetraCrsMatrix_getGlobalRowValuesView
   procedure :: getLocalDiagOffsets => swigf_TpetraCrsMatrix_getLocalDiagOffsets
   procedure, private :: doImport__SWIG_0 => swigf_TpetraCrsMatrix_doImport__SWIG_0
   procedure, private :: doImport__SWIG_1 => swigf_TpetraCrsMatrix_doImport__SWIG_1
@@ -2564,15 +2565,16 @@ type(SwigArrayWrapper) :: farg3
 type(C_PTR), value :: farg4
 end subroutine
 
-subroutine swigc_TpetraCrsGraph_getgblRowView(farg1, farg2, farg3) &
-bind(C, name="swigc_TpetraCrsGraph_getgblRowView")
+function swigc_TpetraCrsGraph_getGlobalRowView(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsGraph_getGlobalRowView") &
+result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigClassWrapper
 import :: SwigArrayWrapper
+import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
 integer(C_LONG_LONG), intent(in) :: farg2
-type(SwigArrayWrapper) :: farg3
-end subroutine
+type(SwigArrayWrapper) :: fresult
+end function
 
 subroutine swigc_TpetraCrsGraph_setAllIndices(farg1, farg2, farg3, farg4) &
 bind(C, name="swigc_TpetraCrsGraph_setAllIndices")
@@ -3581,16 +3583,27 @@ type(SwigArrayWrapper) :: farg4
 type(C_PTR), value :: farg5
 end subroutine
 
-subroutine swigc_TpetraCrsMatrix_getGlobalRowView(farg1, farg2, farg3, farg4) &
-bind(C, name="swigc_TpetraCrsMatrix_getGlobalRowView")
+function swigc_TpetraCrsMatrix_getGlobalRowindicesView(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsMatrix_getGlobalRowindicesView") &
+result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigClassWrapper
 import :: SwigArrayWrapper
+import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
 integer(C_LONG_LONG), intent(in) :: farg2
-type(SwigArrayWrapper) :: farg3
-type(SwigArrayWrapper) :: farg4
-end subroutine
+type(SwigArrayWrapper) :: fresult
+end function
+
+function swigc_TpetraCrsMatrix_getGlobalRowValuesView(farg1, farg2) &
+bind(C, name="swigc_TpetraCrsMatrix_getGlobalRowValuesView") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigArrayWrapper
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+integer(C_LONG_LONG), intent(in) :: farg2
+type(SwigArrayWrapper) :: fresult
+end function
 
 subroutine swigc_TpetraCrsMatrix_getLocalDiagOffsets(farg1, farg2) &
 bind(C, name="swigc_TpetraCrsMatrix_getLocalDiagOffsets")
@@ -7426,23 +7439,22 @@ farg4 = c_loc(numindices)
 call swigc_TpetraCrsGraph_getLocalRowCopy(farg1, farg2, farg3, farg4)
 end subroutine
 
-subroutine swigf_TpetraCrsGraph_getgblRowView(self, gblrow, lclcolinds)
+function swigf_TpetraCrsGraph_getGlobalRowView(self, gblrow) &
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
+integer(C_LONG_LONG), dimension(:), pointer :: swig_result
 class(TpetraCrsGraph), intent(in) :: self
 integer(C_LONG_LONG), intent(in) :: gblrow
-integer(C_LONG_LONG), dimension(:), target, intent(inout) :: lclcolinds
-integer(C_LONG_LONG), pointer :: farg3_view
+type(SwigArrayWrapper) :: fresult 
 type(SwigClassWrapper) :: farg1 
 integer(C_LONG_LONG) :: farg2 
-type(SwigArrayWrapper) :: farg3 
 
 farg1 = self%swigdata
 farg2 = gblrow
-farg3_view => lclcolinds(1)
-farg3%data = c_loc(farg3_view)
-farg3%size = size(lclcolinds)
-call swigc_TpetraCrsGraph_getgblRowView(farg1, farg2, farg3)
-end subroutine
+fresult = swigc_TpetraCrsGraph_getGlobalRowView(farg1, farg2)
+
+call c_f_pointer(fresult%data, swig_result, [fresult%size])
+end function
 
 subroutine swigf_TpetraCrsGraph_setAllIndices(self, rowpointers, columnindices, val)
 use, intrinsic :: ISO_C_BINDING
@@ -9210,29 +9222,39 @@ farg5 = c_loc(numindices)
 call swigc_TpetraCrsMatrix_getLocalRowCopy(farg1, farg2, farg3, farg4, farg5)
 end subroutine
 
-subroutine swigf_TpetraCrsMatrix_getGlobalRowView(self, globalrow, indices, values)
+function swigf_TpetraCrsMatrix_getGlobalRowindicesView(self, globalrow) &
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
+integer(C_LONG_LONG), dimension(:), pointer :: swig_result
 class(TpetraCrsMatrix), intent(in) :: self
 integer(C_LONG_LONG), intent(in) :: globalrow
-integer(C_LONG_LONG), dimension(:), target, intent(inout) :: indices
-integer(C_LONG_LONG), pointer :: farg3_view
-real(C_DOUBLE), dimension(:), target, intent(inout) :: values
-real(C_DOUBLE), pointer :: farg4_view
+type(SwigArrayWrapper) :: fresult 
 type(SwigClassWrapper) :: farg1 
 integer(C_LONG_LONG) :: farg2 
-type(SwigArrayWrapper) :: farg3 
-type(SwigArrayWrapper) :: farg4 
 
 farg1 = self%swigdata
 farg2 = globalrow
-farg3_view => indices(1)
-farg3%data = c_loc(farg3_view)
-farg3%size = size(indices)
-farg4_view => values(1)
-farg4%data = c_loc(farg4_view)
-farg4%size = size(values)
-call swigc_TpetraCrsMatrix_getGlobalRowView(farg1, farg2, farg3, farg4)
-end subroutine
+fresult = swigc_TpetraCrsMatrix_getGlobalRowindicesView(farg1, farg2)
+
+call c_f_pointer(fresult%data, swig_result, [fresult%size])
+end function
+
+function swigf_TpetraCrsMatrix_getGlobalRowValuesView(self, globalrow) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE), dimension(:), pointer :: swig_result
+class(TpetraCrsMatrix), intent(in) :: self
+integer(C_LONG_LONG), intent(in) :: globalrow
+type(SwigArrayWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+integer(C_LONG_LONG) :: farg2 
+
+farg1 = self%swigdata
+farg2 = globalrow
+fresult = swigc_TpetraCrsMatrix_getGlobalRowValuesView(farg1, farg2)
+
+call c_f_pointer(fresult%data, swig_result, [fresult%size])
+end function
 
 subroutine swigf_TpetraCrsMatrix_getLocalDiagOffsets(self, offsets)
 use, intrinsic :: ISO_C_BINDING

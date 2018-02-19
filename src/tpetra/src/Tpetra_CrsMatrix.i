@@ -173,23 +173,26 @@
     void getGlobalRowCopy(GO GlobalRow, std::pair<GO*,size_t> Indices, std::pair<SC*, size_t> Values, size_t &NumIndices) const {
       Teuchos::ArrayView<GO> IndicesView = Teuchos::arrayView(Indices.first, Indices.second);
       Teuchos::ArrayView<SC> ValuesView  = Teuchos::arrayView(Values.first, Values.second);
-
       self->getGlobalRowCopy(GlobalRow, IndicesView, ValuesView, NumIndices);
     }
     void getLocalRowCopy(LO localRow, std::pair<LO*,size_t> colInds, std::pair<SC*, size_t> vals, size_t &NumIndices) const {
       Teuchos::ArrayView<LO> colIndsView = Teuchos::arrayView(colInds.first, colInds.second);
       Teuchos::ArrayView<SC> valsView  = Teuchos::arrayView(vals.first, vals.second);
-
       self->getLocalRowCopy(localRow, colIndsView, valsView, NumIndices);
-
       for (int i = 0; i < colIndsView.size(); i++)
         colIndsView[i]++;
     }
-    void getGlobalRowView(GO GlobalRow, std::pair<const GO*,size_t> Indices, std::pair<const SC*, size_t> values) const {
-      Teuchos::ArrayView<const GO> IndicesView = Teuchos::arrayView(Indices.first, Indices.second);
-      Teuchos::ArrayView<const SC> valuesView  = Teuchos::arrayView(values.first, values.second);
-
+    std::pair<const GO*,size_t> getGlobalRowindicesView(GO GlobalRow) const {
+      Teuchos::ArrayView<const GO> indicesView;
+      Teuchos::ArrayView<const SC> valuesView;
+      self->getGlobalRowView(GlobalRow, indicesView, valuesView);
+      return std::make_pair<const GO*,size_t>(indicesView.getRawPtr(), indicesView.size());
+    }
+    std::pair<const SC*,size_t> getGlobalRowValuesView(GO GlobalRow) const {
+      Teuchos::ArrayView<const GO> IndicesView;
+      Teuchos::ArrayView<const SC> valuesView;
       self->getGlobalRowView(GlobalRow, IndicesView, valuesView);
+      return std::make_pair<const SC*,size_t>(valuesView.getRawPtr(), valuesView.size());
     }
     void getLocalDiagOffsets (std::pair<size_t*,size_t> offsets) const {
       TEUCHOS_TEST_FOR_EXCEPTION(self->getNodeNumRows() != offsets.second, std::runtime_error, "Wrong offsets size");
