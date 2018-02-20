@@ -106,22 +106,11 @@
       Teuchos::ArrayRCP<SC> valuesArrayRCP(values.first, 0, values.second, false/*has_ownership*/);
       return new Tpetra::CrsMatrix<SC,LO,GO,NO>(rowMap, colMap, rowPointersArrayRCP, columnIndicesArrayRCP, valuesArrayRCP, params);
     }
-    void insertGlobalValues(const GO globalRow, std::pair<const GO*,size_t> cols, std::pair<const SC*,size_t> vals) {
-      Teuchos::ArrayView<const GO> colsView = Teuchos::arrayView(cols.first, cols.second);
-      Teuchos::ArrayView<const SC> valsView = Teuchos::arrayView(vals.first, vals.second);
-      self->insertGlobalValues(globalRow, colsView, valsView);
-    }
-    void insertLocalValues(const LO localRow, std::pair<const LO*,size_t> cols, std::pair<const SC*,size_t> vals) {
+    void insertLocalValues(const LO localRow, std::pair<const LO*,size_t> cols, Teuchos::ArrayView<const SC> valsView) {
       Teuchos::Array<LO> colsArray(cols.second);
       for (int i = 0; i < colsArray.size(); i++)
         colsArray[i] = cols.first[i] - 1;
-      Teuchos::ArrayView<const SC> valsView = Teuchos::arrayView(vals.first, vals.second);
       self->insertLocalValues(localRow, colsArray, valsView);
-    }
-    LO replaceGlobalValues(const GO globalRow, std::pair<const GO*,size_t> cols, std::pair<const SC*,size_t> vals) const {
-      Teuchos::ArrayView<const GO> colsView = Teuchos::arrayView(cols.first, cols.second);
-      Teuchos::ArrayView<const SC> valsView = Teuchos::arrayView(vals.first, vals.second);
-      return self->replaceGlobalValues(globalRow, colsView, valsView);
     }
     LO replaceLocalValues(const LO localRow, std::pair<const LO*,size_t> cols, std::pair<const SC*,size_t> vals) const {
       Teuchos::Array<LO> colsArray(cols.second);
@@ -224,10 +213,8 @@
                const Teuchos::ArrayRCP<LocalOrdinal>& columnIndices,
                const Teuchos::ArrayRCP<Scalar>& values,
                const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);         // needs Teuchos::ArrayRCP
-%ignore Tpetra::CrsMatrix::insertGlobalValues(const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals);
 %ignore Tpetra::CrsMatrix::insertLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals);
 %ignore Tpetra::CrsMatrix::getGlobalRowCopy(GlobalOrdinal GlobalRow, const Teuchos::ArrayView< GlobalOrdinal > &Indices, const Teuchos::ArrayView< Scalar > &Values, size_t &NumEntries) const;
-%ignore Tpetra::CrsMatrix::replaceGlobalValues(const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals) const;
 %ignore Tpetra::CrsMatrix::replaceLocalValues(const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals) const;
 %ignore Tpetra::CrsMatrix::sumIntoGlobalValues(const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals, const bool atomic=useAtomicUpdatesByDefault);
 %ignore Tpetra::CrsMatrix::setAllValues(const Teuchos::ArrayRCP< size_t > &ptr, const Teuchos::ArrayRCP< LocalOrdinal > &ind, const Teuchos::ArrayRCP< Scalar > &val);
