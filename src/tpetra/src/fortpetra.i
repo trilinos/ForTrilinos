@@ -32,7 +32,9 @@ typedef char                                    Packet;
 // FIXME: Restore previous bool behaviour
 FORT_FUND_TYPEMAP(bool, "logical(C_BOOL)")
 
-%fragment("TpetraTypes", "fmodule") {
+// NOTE: with the latest SWIG, these will *not* show up in downstream
+// %imported modules even if %insert is replaced with %fragment.
+%insert("fmodule") {
  use, intrinsic :: iso_c_binding, only : &
    c_bool, &
    c_int, &
@@ -50,7 +52,7 @@ FORT_FUND_TYPEMAP(bool, "logical(C_BOOL)")
    mag_type => c_double, &
    norm_type => c_double
 }
-%fragment("TpetraTypesPublic", "fpublic") {
+%insert("fpublic") {
 public :: scalar_type
 public :: local_ordinal_type
 public :: global_ordinal_type
@@ -61,9 +63,6 @@ public :: int_type
 public :: mag_type
 public :: norm_type
 }
-// Insert fragment
-%fragment("TpetraTypes");
-%fragment("TpetraTypesPublic");
 
 // Helper
 namespace Kokkos {
