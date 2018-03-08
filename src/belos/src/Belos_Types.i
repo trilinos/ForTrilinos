@@ -6,4 +6,8 @@
 %{
 #include "BelosTypes.hpp"
 %}
+
+%ignore Belos::toString;
+%ignore Belos::BelosError;
+
 %include "BelosTypes.hpp"

@@ -16,35 +16,18 @@ module forbelos
  private
 
  ! PUBLIC METHODS AND TYPES
- public :: BelosError
-
- enum, bind(c)
-  enumerator :: SwigMemState = -1
-  enumerator :: SWIG_NULL = 0
-  enumerator :: SWIG_OWN
-  enumerator :: SWIG_MOVE
-  enumerator :: SWIG_REF
-  enumerator :: SWIG_CREF
- end enum
-
-
-type, bind(C) :: SwigClassWrapper
-  type(C_PTR), public :: ptr = C_NULL_PTR
-  integer(C_INT), public :: mem = SWIG_NULL
-end type
-
-
-type, bind(C) :: SwigArrayWrapper
-  type(C_PTR), public :: data = C_NULL_PTR
-  integer(C_SIZE_T), public :: size = 0
-end type
-
  public :: BelosETrans, BelosNOTRANS, BelosTRANS, BelosCONJTRANS
  public :: BelosNormType, BelosOneNorm, BelosTwoNorm, BelosInfNorm
  public :: BelosScaleType, BelosNormOfRHS, BelosNormOfInitRes, BelosNormOfPrecInitRes, BelosNone, BelosUserProvided, &
     BelosNormOfFullInitRes, BelosNormOfFullPrecInitRes, BelosNormOfFullScaledInitRes, BelosNormOfFullScaledPrecInitRes
  public :: BelosOutputType, BelosGeneral, BelosBrief, BelosUser
  public :: BelosReturnType, BelosConverged, BelosUnconverged
+
+type, bind(C) :: SwigArrayWrapper
+  type(C_PTR), public :: data = C_NULL_PTR
+  integer(C_SIZE_T), public :: size = 0
+end type
+
  public :: convertReturnTypeToString
  public :: convertStatusTypeToString
  public :: convertStringToStatusType
@@ -124,46 +107,8 @@ end type
  integer(C_INT), protected, public, &
    bind(C, name="swigc_BelosDebug") :: BelosDebug
 
- ! TYPES
- type :: BelosError
-  ! These should be treated as PROTECTED data
-  type(SwigClassWrapper), public :: swigdata
- contains
-  procedure :: release => delete_BelosError
-  procedure, private :: swigf_assignment_BelosError
-  generic :: assignment(=) => swigf_assignment_BelosError
- end type BelosError
- interface BelosError
-  procedure new_BelosError
- end interface
-
-
  ! WRAPPER DECLARATIONS
  interface
-function swigc_new_BelosError(farg1) &
-bind(C, name="swigc_new_BelosError") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: SwigClassWrapper
-import :: SwigArrayWrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: fresult
-end function
-
-subroutine swigc_delete_BelosError(farg1) &
-bind(C, name="swigc_delete_BelosError")
-use, intrinsic :: ISO_C_BINDING
-import :: SwigClassWrapper
-type(SwigClassWrapper) :: farg1
-end subroutine
-
-  subroutine swigc_assignment_BelosError(self, other) &
-     bind(C, name="swigc_assignment_BelosError")
-   use, intrinsic :: ISO_C_BINDING
-   import :: SwigClassWrapper
-   type(SwigClassWrapper), intent(inout) :: self
-   type(SwigClassWrapper), intent(in) :: other
-  end subroutine
 function swigc_convertReturnTypeToString(farg1) &
 bind(C, name="swigc_convertReturnTypeToString") &
 result(fresult)
@@ -231,57 +176,6 @@ end function
 contains
  ! FORTRAN PROXY CODE
 
-subroutine SWIG_string_to_chararray(string, chars, wrap)
-  use, intrinsic :: ISO_C_BINDING
-  character(kind=C_CHAR, len=*), intent(IN) :: string
-  character(kind=C_CHAR), dimension(:), target, allocatable, intent(OUT) :: chars
-  type(SwigArrayWrapper), intent(OUT) :: wrap
-  integer :: i
-
-  allocate(character(kind=C_CHAR) :: chars(len(string) + 1))
-  do i=1,len(string)
-    chars(i) = string(i:i)
-  end do
-  i = len(string) + 1
-  chars(i) = C_NULL_CHAR ! C string compatibility
-  wrap%data = c_loc(chars)
-  wrap%size = len(string)
-end subroutine
-
-function new_BelosError(what_arg) &
-result(self)
-use, intrinsic :: ISO_C_BINDING
-type(BelosError) :: self
-character(kind=C_CHAR, len=*), target :: what_arg
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-type(SwigClassWrapper) :: fresult 
-type(SwigArrayWrapper) :: farg1 
-
-call SWIG_string_to_chararray(what_arg, farg1_chars, farg1)
-fresult = swigc_new_BelosError(farg1)
-self%swigdata = fresult
-end function
-
-subroutine delete_BelosError(self)
-use, intrinsic :: ISO_C_BINDING
-class(BelosError), intent(inout) :: self
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-if (self%swigdata%mem == SWIG_OWN) then
-call swigc_delete_BelosError(farg1)
-end if
-self%swigdata%ptr = C_NULL_PTR
-self%swigdata%mem = SWIG_NULL
-end subroutine
-
-  subroutine swigf_assignment_BelosError(self, other)
-   use, intrinsic :: ISO_C_BINDING
-   class(BelosError), intent(inout) :: self
-   type(BelosError), intent(in) :: other
-   call swigc_assignment_BelosError(self%swigdata, other%swigdata)
-  end subroutine
-
 subroutine SWIG_chararray_to_string(wrap, string)
   use, intrinsic :: ISO_C_BINDING
   type(SwigArrayWrapper), intent(IN) :: wrap
@@ -322,6 +216,24 @@ fresult = swigc_convertStatusTypeToString(farg1)
 call SWIG_chararray_to_string(fresult, swig_result)
 call SWIG_free(fresult%data)
 end function
+
+
+subroutine SWIG_string_to_chararray(string, chars, wrap)
+  use, intrinsic :: ISO_C_BINDING
+  character(kind=C_CHAR, len=*), intent(IN) :: string
+  character(kind=C_CHAR), dimension(:), target, allocatable, intent(OUT) :: chars
+  type(SwigArrayWrapper), intent(OUT) :: wrap
+  integer :: i
+
+  allocate(character(kind=C_CHAR) :: chars(len(string) + 1))
+  do i=1,len(string)
+    chars(i) = string(i:i)
+  end do
+  i = len(string) + 1
+  chars(i) = C_NULL_CHAR ! C string compatibility
+  wrap%data = c_loc(chars)
+  wrap%size = len(string)
+end subroutine
 
 function convertStringToStatusType(status) &
 result(swig_result)
