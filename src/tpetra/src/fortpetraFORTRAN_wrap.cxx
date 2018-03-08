@@ -268,13 +268,20 @@ struct assignment_flags;
 #define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
 
 
-#include "Tpetra_ConfigDefs.hpp"
+#include "Kokkos_DefaultNode.hpp"
+
 
 typedef double                                  SC;
 typedef int                                     LO;
 typedef long long                               GO;
 typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
 typedef char                                    Packet;
+
+
+#include "Tpetra_ConfigDefs.hpp"
+
+
+#include "Tpetra_CombineMode.hpp"
 
 
 enum SwigMemState {
