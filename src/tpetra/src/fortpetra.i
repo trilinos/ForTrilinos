@@ -12,6 +12,14 @@
 %import <forteuchos.i>
 
 #define HAVE_TPETRA_INST_INT_LONG_LONG
+// From teuchos/kokkoscompat/src/KokkosCompat_ClassicNodeAPI_Wrapper.hpp
+%ignore KokkosSerialWrapperNode;
+namespace Kokkos { namespace Compat {
+struct KokkosSerialWrapperNode {
+  static const bool classic = false;
+};
+} }
+
 %{
 #include "Kokkos_DefaultNode.hpp"
 %}
@@ -66,8 +74,6 @@ public :: norm_type
 
 // ignore indexBase (Map, CrsGraph, CrsMatrix)
 %ignore getIndexBase;
-
-%include "Tpetra_Map.i"
 
 // Order matters!!!
 %include "Tpetra_Map.i"

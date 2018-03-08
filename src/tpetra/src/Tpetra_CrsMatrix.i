@@ -244,8 +244,7 @@
 %ignore Tpetra::CrsMatrix::sumIntoLocalValues (const LocalOrdinal localRow, const LocalOrdinal numEnt, const Scalar vals[], const LocalOrdinal cols[], const bool atomic=useAtomicUpdatesByDefault);
 
 
-%teuchos_rcp(Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>)
-
 %include "Tpetra_CrsMatrix_decl.hpp"
 
+%teuchos_rcp(Tpetra::CrsMatrix<SC,LO,GO,NO>)
 %template(TpetraCrsMatrix) Tpetra::CrsMatrix<SC,LO,GO,NO>;
