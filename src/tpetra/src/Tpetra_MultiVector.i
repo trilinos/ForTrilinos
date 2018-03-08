@@ -16,20 +16,20 @@
 // =======================================================================
 // Postpone temporarily
 // =======================================================================
-%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
-        const Teuchos::ArrayView<const Teuchos::ArrayView<const Scalar> >&ArrayOfPtrs, \
+%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map,
+        const Teuchos::ArrayView<const Teuchos::ArrayView<const Scalar> >&ArrayOfPtrs,
         const size_t NumVectors);                               // needs ArrayView of ArrayView (or alternative)
-%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
+%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map,
         const dual_view_type& view, const Teuchos::ArrayView<const size_t>& whichVectors);  // needs Kokkos::DualView; needs Teuchos::ArrayView<size_t>
-%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
-        const dual_view_type& view, \
-        const dual_view_type& origView, \
+%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map,
+        const dual_view_type& view,
+        const dual_view_type& origView,
         const Teuchos::ArrayView<const size_t>& whichVectors);  // needs Kokkos::DualView; needs Teuchos::ArrayView<size_t>
-%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
+%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map,
         const dual_view_type& view);                            // needs Kokkos::DualView
-%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
+%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map,
         const typename dual_view_type::t_dev& d_view);          // needs Kokkos::DualView
-%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
+%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map,
         const dual_view_type& view, const dual_view_type& origView);    // needs Kokkos::DualView
 %ignore Tpetra::MultiVector::assign;
 %ignore Tpetra::MultiVector::describe;              // needs Teuchos::FancyOStream
