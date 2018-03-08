@@ -55,9 +55,9 @@ program main
     stop 1
   endif
 
-  comm = create_TeuchosComm(MPI_COMM_WORLD)
+  comm = TeuchosComm(MPI_COMM_WORLD)
 #else
-  comm = create_TeuchosComm()
+  comm = TeuchosComm()
 #endif
 
   my_rank = comm%getRank()
@@ -66,7 +66,7 @@ program main
   write(*,*) "Processor ", my_rank, " of ", num_procs
 
   ! Read in the parameterList
-  plist = create_ParameterList("Anasazi"); FORTRILINOS_CHECK_IERR()
+  plist = ParameterList("Anasazi"); FORTRILINOS_CHECK_IERR()
   call load_from_xml(plist, "davidson.xml"); FORTRILINOS_CHECK_IERR()
 
   num_eigen_int = num_eigen
@@ -75,10 +75,10 @@ program main
   ! ------------------------------------------------------------------
   ! Step 0: Construct tri-diagonal matrix
   n_global = -1
-  map = create_TpetraMap(n_global, n, comm); FORTRILINOS_CHECK_IERR()
+  map = TpetraMap(n_global, n, comm); FORTRILINOS_CHECK_IERR()
 
   max_entries_per_row = 3
-  A = create_TpetraCrsMatrix(map, max_entries_per_row, TpetraDynamicProfile)
+  A = TpetraCrsMatrix(map, max_entries_per_row, TpetraDynamicProfile)
 
   allocate(cols(max_entries_per_row))
   allocate(vals(max_entries_per_row))
@@ -105,10 +105,10 @@ program main
 
   ! The solution
   allocate(evalues(num_eigen))
-  X = create_TpetraMultiVector(map, num_eigen)
+  X = TpetraMultiVector(map, num_eigen)
 
   ! Step 0: crate a handle
-  eigen_handle = create_TrilinosEigenSolver(); FORTRILINOS_CHECK_IERR()
+  eigen_handle = TrilinosEigenSolver(); FORTRILINOS_CHECK_IERR()
 
   ! ------------------------------------------------------------------
   ! Explicit setup and solve
