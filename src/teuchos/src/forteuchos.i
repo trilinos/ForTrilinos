@@ -11,11 +11,6 @@
 
 %include "ForTrilinosTeuchos_config.hpp"
 
-%include <std_vector.i>
-%template(VectorInt)    std::vector<int>;
-%template(VectorDouble) std::vector<double>;
-%template(VectorLongLong) std::vector<long long>;
-
 // Typedefs
 typedef int Teuchos_Ordinal;
 

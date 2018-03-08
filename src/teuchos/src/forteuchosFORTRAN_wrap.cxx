@@ -205,28 +205,6 @@ void SWIG_store_exception(const char* decl, int errcode, const char *msg);
     SWIG_store_exception(DECL, CODE, MSG); RETURNNULL;
 
 
-#define SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
-  if ((SWIG_CLASS_WRAPPER).mem == SWIG_NULL) { \
-    SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
-                        "Cannot pass null " TYPENAME " (class " FNAME ") " \
-                        "as a reference", RETURNNULL); \
-  }
-
-
-#define SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
-    if ((SWIG_CLASS_WRAPPER).mem == SWIG_CREF) { \
-        SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
-            "Cannot pass const " TYPENAME " (class " FNAME ") " \
-            "as a mutable reference", \
-            RETURNNULL); \
-    }
-
-
-#define SWIG_check_mutable_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
-    SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL); \
-    SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL);
-
-
 namespace swig {
 
 enum AssignmentFlags {
@@ -265,7 +243,44 @@ struct assignment_flags;
 #define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
 
 
-#include <vector>
+#include <utility>
+
+
+namespace swig {
+template<class T, class U, int Flags>
+struct assignment_flags<std::pair<const T, U>, Flags> {
+  enum { value = IS_DESTR | IS_COPY_CONSTR };
+};
+template<class T, class U, int Flags>
+struct assignment_flags<std::pair<T, const U>, Flags> {
+  enum { value = IS_DESTR | IS_COPY_CONSTR };
+};
+}
+
+
+#include <string>
+
+
+#include "Teuchos_BLAS_types.hpp"
+#include "Teuchos_DataAccess.hpp"
+
+
+#include "Teuchos_Exceptions.hpp"
+
+
+#include "Teuchos_RCP.hpp"
+
+
+#include "Teuchos_Array.hpp"
+
+
+#include "Teuchos_Comm.hpp"
+#ifdef HAVE_MPI
+# include "Teuchos_DefaultMpiComm.hpp"
+#else
+  typedef int MPI_Comm;
+#endif
+#include "Teuchos_DefaultSerialComm.hpp"
 
 
 enum SwigMemState {
@@ -290,17 +305,34 @@ SWIGINTERN SwigClassWrapper SwigClassWrapper_uninitialized() {
     return result;
 }
 
-SWIGINTERN void std_vector_Sl_int_Sg__set(std::vector< int > *self,std::vector< int >::size_type index,std::vector< int >::const_reference v){
-        // TODO: check range
-        (*self)[index] = v;
-      }
-SWIGINTERN std::vector< int >::value_type std_vector_Sl_int_Sg__get(std::vector< int > *self,std::vector< int >::size_type index){
-        // TODO: check range
-        return (*self)[index];
-      }
+SWIGINTERN Teuchos::Comm< int > *new_Teuchos_Comm_Sl_int_Sg___SWIG_0(MPI_Comm rawMpiComm){
+#ifdef HAVE_MPI
+      return new Teuchos::MpiComm<int>(rawMpiComm);
+#else
+      throw std::runtime_error("MPI based constructor cannot be called when MPI is not enabled.");
+#endif
+    }
 
-#include <utility>
+#define SWIG_NO_NULL_DELETER_0 , Teuchos::RCP_WEAK_NO_DEALLOC
+#define SWIG_NO_NULL_DELETER_1
+#define SWIG_NO_NULL_DELETER_SWIG_POINTER_NEW
+#define SWIG_NO_NULL_DELETER_SWIG_POINTER_OWN
 
+SWIGINTERN Teuchos::Comm< int > *new_Teuchos_Comm_Sl_int_Sg___SWIG_1(){
+#ifdef HAVE_MPI
+      return new Teuchos::MpiComm<int>(MPI_COMM_WORLD);
+#else
+      return new Teuchos::SerialComm<int>();
+#endif
+    }
+SWIGINTERN MPI_Comm Teuchos_Comm_Sl_int_Sg__getRawMpiComm(Teuchos::Comm< int > *self){
+#ifdef HAVE_MPI
+      Teuchos::MpiComm<int>& comm = dynamic_cast<Teuchos::MpiComm<int>&>(*self);
+      return *comm.getRawMpiComm();
+#else
+      throw std::runtime_error("MPI based constructor cannot be called when MPI is not enabled.");
+#endif
+    }
 
 namespace swig {
 
@@ -529,87 +561,6 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
   }
 }
 
-SWIGINTERN void std_vector_Sl_double_Sg__set(std::vector< double > *self,std::vector< double >::size_type index,std::vector< double >::const_reference v){
-        // TODO: check range
-        (*self)[index] = v;
-      }
-SWIGINTERN std::vector< double >::value_type std_vector_Sl_double_Sg__get(std::vector< double > *self,std::vector< double >::size_type index){
-        // TODO: check range
-        return (*self)[index];
-      }
-SWIGINTERN void std_vector_Sl_long_SS_long_Sg__set(std::vector< long long > *self,std::vector< long long >::size_type index,std::vector< long long >::const_reference v){
-        // TODO: check range
-        (*self)[index] = v;
-      }
-SWIGINTERN std::vector< long long >::value_type std_vector_Sl_long_SS_long_Sg__get(std::vector< long long > *self,std::vector< long long >::size_type index){
-        // TODO: check range
-        return (*self)[index];
-      }
-
-namespace swig {
-template<class T, class U, int Flags>
-struct assignment_flags<std::pair<const T, U>, Flags> {
-  enum { value = IS_DESTR | IS_COPY_CONSTR };
-};
-template<class T, class U, int Flags>
-struct assignment_flags<std::pair<T, const U>, Flags> {
-  enum { value = IS_DESTR | IS_COPY_CONSTR };
-};
-}
-
-
-#include <string>
-
-
-#include "Teuchos_BLAS_types.hpp"
-#include "Teuchos_DataAccess.hpp"
-
-
-#include "Teuchos_Exceptions.hpp"
-
-
-#include "Teuchos_RCP.hpp"
-
-
-#include "Teuchos_Array.hpp"
-
-
-#include "Teuchos_Comm.hpp"
-#ifdef HAVE_MPI
-# include "Teuchos_DefaultMpiComm.hpp"
-#else
-  typedef int MPI_Comm;
-#endif
-#include "Teuchos_DefaultSerialComm.hpp"
-
-SWIGINTERN Teuchos::Comm< int > *new_Teuchos_Comm_Sl_int_Sg___SWIG_0(MPI_Comm rawMpiComm){
-#ifdef HAVE_MPI
-      return new Teuchos::MpiComm<int>(rawMpiComm);
-#else
-      throw std::runtime_error("MPI based constructor cannot be called when MPI is not enabled.");
-#endif
-    }
-
-#define SWIG_NO_NULL_DELETER_0 , Teuchos::RCP_WEAK_NO_DEALLOC
-#define SWIG_NO_NULL_DELETER_1
-#define SWIG_NO_NULL_DELETER_SWIG_POINTER_NEW
-#define SWIG_NO_NULL_DELETER_SWIG_POINTER_OWN
-
-SWIGINTERN Teuchos::Comm< int > *new_Teuchos_Comm_Sl_int_Sg___SWIG_1(){
-#ifdef HAVE_MPI
-      return new Teuchos::MpiComm<int>(MPI_COMM_WORLD);
-#else
-      return new Teuchos::SerialComm<int>();
-#endif
-    }
-SWIGINTERN MPI_Comm Teuchos_Comm_Sl_int_Sg__getRawMpiComm(Teuchos::Comm< int > *self){
-#ifdef HAVE_MPI
-      Teuchos::MpiComm<int>& comm = dynamic_cast<Teuchos::MpiComm<int>&>(*self);
-      return *comm.getRawMpiComm();
-#else
-      throw std::runtime_error("MPI based constructor cannot be called when MPI is not enabled.");
-#endif
-    }
 
 #include "Teuchos_ParameterList.hpp"
 
@@ -657,705 +608,6 @@ void save_to_xml(const Teuchos::ParameterList& plist,
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT SwigClassWrapper swigc_new_VectorInt__SWIG_0() {
-  SwigClassWrapper fresult ;
-  std::vector< int > *result = 0 ;
-  
-  result = (std::vector< int > *)new std::vector< int >();
-  fresult.ptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
-  return fresult;
-}
-
-
-SWIGEXPORT SwigClassWrapper swigc_new_VectorInt__SWIG_1(unsigned long const *farg1) {
-  SwigClassWrapper fresult ;
-  std::vector< int >::size_type arg1 ;
-  std::vector< int > *result = 0 ;
-  
-  arg1 = *farg1;
-  result = (std::vector< int > *)new std::vector< int >(arg1);
-  fresult.ptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
-  return fresult;
-}
-
-
-SWIGEXPORT SwigClassWrapper swigc_new_VectorInt__SWIG_2(unsigned long const *farg1, int const *farg2) {
-  SwigClassWrapper fresult ;
-  std::vector< int >::size_type arg1 ;
-  std::vector< int >::value_type *arg2 = 0 ;
-  std::vector< int > *result = 0 ;
-  
-  arg1 = *farg1;
-  arg2 = reinterpret_cast< std::vector< int >::value_type * >(const_cast< int* >(farg2));
-  result = (std::vector< int > *)new std::vector< int >(arg1,(std::vector< int >::value_type const &)*arg2);
-  fresult.ptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
-  return fresult;
-}
-
-
-SWIGEXPORT unsigned long swigc_VectorInt_size(SwigClassWrapper const *farg1) {
-  unsigned long fresult ;
-  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
-  std::vector< int >::size_type result;
-  
-  SWIG_check_nonnull(*farg1, "std::vector< int > const *", "VectorInt", "std::vector< int >::size() const", return 0);
-  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
-  result = (std::vector< int >::size_type)((std::vector< int > const *)arg1)->size();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT unsigned long swigc_VectorInt_capacity(SwigClassWrapper const *farg1) {
-  unsigned long fresult ;
-  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
-  std::vector< int >::size_type result;
-  
-  SWIG_check_nonnull(*farg1, "std::vector< int > const *", "VectorInt", "std::vector< int >::capacity() const", return 0);
-  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
-  result = (std::vector< int >::size_type)((std::vector< int > const *)arg1)->capacity();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT int swigc_VectorInt_empty(SwigClassWrapper const *farg1) {
-  int fresult ;
-  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
-  bool result;
-  
-  SWIG_check_nonnull(*farg1, "std::vector< int > const *", "VectorInt", "std::vector< int >::empty() const", return 0);
-  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
-  result = (bool)((std::vector< int > const *)arg1)->empty();
-  fresult = (result ? 1 : 0);
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_VectorInt_clear(SwigClassWrapper const *farg1) {
-  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< int > *", "VectorInt", "std::vector< int >::clear()", return );
-  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
-  (arg1)->clear();
-  
-}
-
-
-SWIGEXPORT void swigc_VectorInt_reserve(SwigClassWrapper const *farg1, unsigned long const *farg2) {
-  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
-  std::vector< int >::size_type arg2 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< int > *", "VectorInt", "std::vector< int >::reserve(std::vector< int >::size_type)", return );
-  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
-  arg2 = *farg2;
-  (arg1)->reserve(arg2);
-  
-}
-
-
-SWIGEXPORT void swigc_VectorInt_resize__SWIG_0(SwigClassWrapper const *farg1, unsigned long const *farg2) {
-  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
-  std::vector< int >::size_type arg2 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< int > *", "VectorInt", "std::vector< int >::resize(std::vector< int >::size_type)", return );
-  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
-  arg2 = *farg2;
-  (arg1)->resize(arg2);
-  
-}
-
-
-SWIGEXPORT void swigc_VectorInt_resize__SWIG_1(SwigClassWrapper const *farg1, unsigned long const *farg2, int const *farg3) {
-  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
-  std::vector< int >::size_type arg2 ;
-  std::vector< int >::value_type *arg3 = 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< int > *", "VectorInt", "std::vector< int >::resize(std::vector< int >::size_type,std::vector< int >::value_type const &)", return );
-  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
-  arg2 = *farg2;
-  arg3 = reinterpret_cast< std::vector< int >::value_type * >(const_cast< int* >(farg3));
-  (arg1)->resize(arg2,(std::vector< int >::value_type const &)*arg3);
-  
-}
-
-
-SWIGEXPORT void swigc_VectorInt_push_back(SwigClassWrapper const *farg1, int const *farg2) {
-  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
-  std::vector< int >::value_type *arg2 = 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< int > *", "VectorInt", "std::vector< int >::push_back(std::vector< int >::value_type const &)", return );
-  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
-  arg2 = reinterpret_cast< std::vector< int >::value_type * >(const_cast< int* >(farg2));
-  (arg1)->push_back((std::vector< int >::value_type const &)*arg2);
-  
-}
-
-
-SWIGEXPORT int swigc_VectorInt_front(SwigClassWrapper const *farg1) {
-  int fresult ;
-  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
-  int *result = 0 ;
-  
-  SWIG_check_nonnull(*farg1, "std::vector< int > const *", "VectorInt", "std::vector< int >::front() const", return 0);
-  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
-  result = (int *) &((std::vector< int > const *)arg1)->front();
-  fresult = *result;
-  return fresult;
-}
-
-
-SWIGEXPORT int swigc_VectorInt_back(SwigClassWrapper const *farg1) {
-  int fresult ;
-  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
-  int *result = 0 ;
-  
-  SWIG_check_nonnull(*farg1, "std::vector< int > const *", "VectorInt", "std::vector< int >::back() const", return 0);
-  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
-  result = (int *) &((std::vector< int > const *)arg1)->back();
-  fresult = *result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_VectorInt_set(SwigClassWrapper const *farg1, unsigned long const *farg2, int const *farg3) {
-  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
-  std::vector< int >::size_type arg2 ;
-  int *arg3 = 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< int > *", "VectorInt", "std::vector< int >::set(std::vector< int >::size_type,std::vector< int >::const_reference)", return );
-  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
-  arg2 = *farg2;
-  arg3 = reinterpret_cast< int * >(const_cast< int* >(farg3));
-  std_vector_Sl_int_Sg__set(arg1,arg2,(int const &)*arg3);
-  
-}
-
-
-SWIGEXPORT int swigc_VectorInt_get(SwigClassWrapper const *farg1, unsigned long const *farg2) {
-  int fresult ;
-  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
-  std::vector< int >::size_type arg2 ;
-  std::vector< int >::value_type result;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< int > *", "VectorInt", "std::vector< int >::get(std::vector< int >::size_type)", return 0);
-  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
-  arg2 = *farg2;
-  result = (std::vector< int >::value_type)std_vector_Sl_int_Sg__get(arg1,arg2);
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_delete_VectorInt(SwigClassWrapper const *farg1) {
-  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< int > *", "VectorInt", "std::vector< int >::~vector()", return );
-  arg1 = static_cast< std::vector< int > * >(farg1->ptr);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("std::vector< int >::~vector()");;
-    try
-    {
-      // Attempt the wrapped function call
-      delete arg1;
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("std::vector< int >::~vector()", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("std::vector< int >::~vector()", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("std::vector< int >::~vector()", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
-  
-}
-
-
-SWIGEXPORT void swigc_assignment_VectorInt(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef std::vector< int > swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
-}
-
-
-SWIGEXPORT SwigClassWrapper swigc_new_VectorDouble__SWIG_0() {
-  SwigClassWrapper fresult ;
-  std::vector< double > *result = 0 ;
-  
-  result = (std::vector< double > *)new std::vector< double >();
-  fresult.ptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
-  return fresult;
-}
-
-
-SWIGEXPORT SwigClassWrapper swigc_new_VectorDouble__SWIG_1(unsigned long const *farg1) {
-  SwigClassWrapper fresult ;
-  std::vector< double >::size_type arg1 ;
-  std::vector< double > *result = 0 ;
-  
-  arg1 = *farg1;
-  result = (std::vector< double > *)new std::vector< double >(arg1);
-  fresult.ptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
-  return fresult;
-}
-
-
-SWIGEXPORT SwigClassWrapper swigc_new_VectorDouble__SWIG_2(unsigned long const *farg1, double const *farg2) {
-  SwigClassWrapper fresult ;
-  std::vector< double >::size_type arg1 ;
-  std::vector< double >::value_type *arg2 = 0 ;
-  std::vector< double > *result = 0 ;
-  
-  arg1 = *farg1;
-  arg2 = reinterpret_cast< std::vector< double >::value_type * >(const_cast< double* >(farg2));
-  result = (std::vector< double > *)new std::vector< double >(arg1,(std::vector< double >::value_type const &)*arg2);
-  fresult.ptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
-  return fresult;
-}
-
-
-SWIGEXPORT unsigned long swigc_VectorDouble_size(SwigClassWrapper const *farg1) {
-  unsigned long fresult ;
-  std::vector< double > *arg1 = (std::vector< double > *) 0 ;
-  std::vector< double >::size_type result;
-  
-  SWIG_check_nonnull(*farg1, "std::vector< double > const *", "VectorDouble", "std::vector< double >::size() const", return 0);
-  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
-  result = (std::vector< double >::size_type)((std::vector< double > const *)arg1)->size();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT unsigned long swigc_VectorDouble_capacity(SwigClassWrapper const *farg1) {
-  unsigned long fresult ;
-  std::vector< double > *arg1 = (std::vector< double > *) 0 ;
-  std::vector< double >::size_type result;
-  
-  SWIG_check_nonnull(*farg1, "std::vector< double > const *", "VectorDouble", "std::vector< double >::capacity() const", return 0);
-  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
-  result = (std::vector< double >::size_type)((std::vector< double > const *)arg1)->capacity();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT int swigc_VectorDouble_empty(SwigClassWrapper const *farg1) {
-  int fresult ;
-  std::vector< double > *arg1 = (std::vector< double > *) 0 ;
-  bool result;
-  
-  SWIG_check_nonnull(*farg1, "std::vector< double > const *", "VectorDouble", "std::vector< double >::empty() const", return 0);
-  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
-  result = (bool)((std::vector< double > const *)arg1)->empty();
-  fresult = (result ? 1 : 0);
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_VectorDouble_clear(SwigClassWrapper const *farg1) {
-  std::vector< double > *arg1 = (std::vector< double > *) 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< double > *", "VectorDouble", "std::vector< double >::clear()", return );
-  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
-  (arg1)->clear();
-  
-}
-
-
-SWIGEXPORT void swigc_VectorDouble_reserve(SwigClassWrapper const *farg1, unsigned long const *farg2) {
-  std::vector< double > *arg1 = (std::vector< double > *) 0 ;
-  std::vector< double >::size_type arg2 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< double > *", "VectorDouble", "std::vector< double >::reserve(std::vector< double >::size_type)", return );
-  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
-  arg2 = *farg2;
-  (arg1)->reserve(arg2);
-  
-}
-
-
-SWIGEXPORT void swigc_VectorDouble_resize__SWIG_0(SwigClassWrapper const *farg1, unsigned long const *farg2) {
-  std::vector< double > *arg1 = (std::vector< double > *) 0 ;
-  std::vector< double >::size_type arg2 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< double > *", "VectorDouble", "std::vector< double >::resize(std::vector< double >::size_type)", return );
-  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
-  arg2 = *farg2;
-  (arg1)->resize(arg2);
-  
-}
-
-
-SWIGEXPORT void swigc_VectorDouble_resize__SWIG_1(SwigClassWrapper const *farg1, unsigned long const *farg2, double const *farg3) {
-  std::vector< double > *arg1 = (std::vector< double > *) 0 ;
-  std::vector< double >::size_type arg2 ;
-  std::vector< double >::value_type *arg3 = 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< double > *", "VectorDouble", "std::vector< double >::resize(std::vector< double >::size_type,std::vector< double >::value_type const &)", return );
-  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
-  arg2 = *farg2;
-  arg3 = reinterpret_cast< std::vector< double >::value_type * >(const_cast< double* >(farg3));
-  (arg1)->resize(arg2,(std::vector< double >::value_type const &)*arg3);
-  
-}
-
-
-SWIGEXPORT void swigc_VectorDouble_push_back(SwigClassWrapper const *farg1, double const *farg2) {
-  std::vector< double > *arg1 = (std::vector< double > *) 0 ;
-  std::vector< double >::value_type *arg2 = 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< double > *", "VectorDouble", "std::vector< double >::push_back(std::vector< double >::value_type const &)", return );
-  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
-  arg2 = reinterpret_cast< std::vector< double >::value_type * >(const_cast< double* >(farg2));
-  (arg1)->push_back((std::vector< double >::value_type const &)*arg2);
-  
-}
-
-
-SWIGEXPORT double swigc_VectorDouble_front(SwigClassWrapper const *farg1) {
-  double fresult ;
-  std::vector< double > *arg1 = (std::vector< double > *) 0 ;
-  double *result = 0 ;
-  
-  SWIG_check_nonnull(*farg1, "std::vector< double > const *", "VectorDouble", "std::vector< double >::front() const", return 0);
-  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
-  result = (double *) &((std::vector< double > const *)arg1)->front();
-  fresult = *result;
-  return fresult;
-}
-
-
-SWIGEXPORT double swigc_VectorDouble_back(SwigClassWrapper const *farg1) {
-  double fresult ;
-  std::vector< double > *arg1 = (std::vector< double > *) 0 ;
-  double *result = 0 ;
-  
-  SWIG_check_nonnull(*farg1, "std::vector< double > const *", "VectorDouble", "std::vector< double >::back() const", return 0);
-  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
-  result = (double *) &((std::vector< double > const *)arg1)->back();
-  fresult = *result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_VectorDouble_set(SwigClassWrapper const *farg1, unsigned long const *farg2, double const *farg3) {
-  std::vector< double > *arg1 = (std::vector< double > *) 0 ;
-  std::vector< double >::size_type arg2 ;
-  double *arg3 = 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< double > *", "VectorDouble", "std::vector< double >::set(std::vector< double >::size_type,std::vector< double >::const_reference)", return );
-  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
-  arg2 = *farg2;
-  arg3 = reinterpret_cast< double * >(const_cast< double* >(farg3));
-  std_vector_Sl_double_Sg__set(arg1,arg2,(double const &)*arg3);
-  
-}
-
-
-SWIGEXPORT double swigc_VectorDouble_get(SwigClassWrapper const *farg1, unsigned long const *farg2) {
-  double fresult ;
-  std::vector< double > *arg1 = (std::vector< double > *) 0 ;
-  std::vector< double >::size_type arg2 ;
-  std::vector< double >::value_type result;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< double > *", "VectorDouble", "std::vector< double >::get(std::vector< double >::size_type)", return 0);
-  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
-  arg2 = *farg2;
-  result = (std::vector< double >::value_type)std_vector_Sl_double_Sg__get(arg1,arg2);
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_delete_VectorDouble(SwigClassWrapper const *farg1) {
-  std::vector< double > *arg1 = (std::vector< double > *) 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< double > *", "VectorDouble", "std::vector< double >::~vector()", return );
-  arg1 = static_cast< std::vector< double > * >(farg1->ptr);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("std::vector< double >::~vector()");;
-    try
-    {
-      // Attempt the wrapped function call
-      delete arg1;
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("std::vector< double >::~vector()", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("std::vector< double >::~vector()", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("std::vector< double >::~vector()", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
-  
-}
-
-
-SWIGEXPORT void swigc_assignment_VectorDouble(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef std::vector< double > swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
-}
-
-
-SWIGEXPORT SwigClassWrapper swigc_new_VectorLongLong__SWIG_0() {
-  SwigClassWrapper fresult ;
-  std::vector< long long > *result = 0 ;
-  
-  result = (std::vector< long long > *)new std::vector< long long >();
-  fresult.ptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
-  return fresult;
-}
-
-
-SWIGEXPORT SwigClassWrapper swigc_new_VectorLongLong__SWIG_1(unsigned long const *farg1) {
-  SwigClassWrapper fresult ;
-  std::vector< long long >::size_type arg1 ;
-  std::vector< long long > *result = 0 ;
-  
-  arg1 = *farg1;
-  result = (std::vector< long long > *)new std::vector< long long >(arg1);
-  fresult.ptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
-  return fresult;
-}
-
-
-SWIGEXPORT SwigClassWrapper swigc_new_VectorLongLong__SWIG_2(unsigned long const *farg1, long long const *farg2) {
-  SwigClassWrapper fresult ;
-  std::vector< long long >::size_type arg1 ;
-  std::vector< long long >::value_type *arg2 = 0 ;
-  std::vector< long long > *result = 0 ;
-  
-  arg1 = *farg1;
-  arg2 = reinterpret_cast< std::vector< long long >::value_type * >(const_cast< long long* >(farg2));
-  result = (std::vector< long long > *)new std::vector< long long >(arg1,(std::vector< long long >::value_type const &)*arg2);
-  fresult.ptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
-  return fresult;
-}
-
-
-SWIGEXPORT unsigned long swigc_VectorLongLong_size(SwigClassWrapper const *farg1) {
-  unsigned long fresult ;
-  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
-  std::vector< long long >::size_type result;
-  
-  SWIG_check_nonnull(*farg1, "std::vector< long long > const *", "VectorLongLong", "std::vector< long long >::size() const", return 0);
-  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
-  result = (std::vector< long long >::size_type)((std::vector< long long > const *)arg1)->size();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT unsigned long swigc_VectorLongLong_capacity(SwigClassWrapper const *farg1) {
-  unsigned long fresult ;
-  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
-  std::vector< long long >::size_type result;
-  
-  SWIG_check_nonnull(*farg1, "std::vector< long long > const *", "VectorLongLong", "std::vector< long long >::capacity() const", return 0);
-  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
-  result = (std::vector< long long >::size_type)((std::vector< long long > const *)arg1)->capacity();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT int swigc_VectorLongLong_empty(SwigClassWrapper const *farg1) {
-  int fresult ;
-  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
-  bool result;
-  
-  SWIG_check_nonnull(*farg1, "std::vector< long long > const *", "VectorLongLong", "std::vector< long long >::empty() const", return 0);
-  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
-  result = (bool)((std::vector< long long > const *)arg1)->empty();
-  fresult = (result ? 1 : 0);
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_VectorLongLong_clear(SwigClassWrapper const *farg1) {
-  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< long long > *", "VectorLongLong", "std::vector< long long >::clear()", return );
-  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
-  (arg1)->clear();
-  
-}
-
-
-SWIGEXPORT void swigc_VectorLongLong_reserve(SwigClassWrapper const *farg1, unsigned long const *farg2) {
-  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
-  std::vector< long long >::size_type arg2 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< long long > *", "VectorLongLong", "std::vector< long long >::reserve(std::vector< long long >::size_type)", return );
-  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
-  arg2 = *farg2;
-  (arg1)->reserve(arg2);
-  
-}
-
-
-SWIGEXPORT void swigc_VectorLongLong_resize__SWIG_0(SwigClassWrapper const *farg1, unsigned long const *farg2) {
-  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
-  std::vector< long long >::size_type arg2 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< long long > *", "VectorLongLong", "std::vector< long long >::resize(std::vector< long long >::size_type)", return );
-  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
-  arg2 = *farg2;
-  (arg1)->resize(arg2);
-  
-}
-
-
-SWIGEXPORT void swigc_VectorLongLong_resize__SWIG_1(SwigClassWrapper const *farg1, unsigned long const *farg2, long long const *farg3) {
-  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
-  std::vector< long long >::size_type arg2 ;
-  std::vector< long long >::value_type *arg3 = 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< long long > *", "VectorLongLong", "std::vector< long long >::resize(std::vector< long long >::size_type,std::vector< long long >::value_type const &)", return );
-  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
-  arg2 = *farg2;
-  arg3 = reinterpret_cast< std::vector< long long >::value_type * >(const_cast< long long* >(farg3));
-  (arg1)->resize(arg2,(std::vector< long long >::value_type const &)*arg3);
-  
-}
-
-
-SWIGEXPORT void swigc_VectorLongLong_push_back(SwigClassWrapper const *farg1, long long const *farg2) {
-  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
-  std::vector< long long >::value_type *arg2 = 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< long long > *", "VectorLongLong", "std::vector< long long >::push_back(std::vector< long long >::value_type const &)", return );
-  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
-  arg2 = reinterpret_cast< std::vector< long long >::value_type * >(const_cast< long long* >(farg2));
-  (arg1)->push_back((std::vector< long long >::value_type const &)*arg2);
-  
-}
-
-
-SWIGEXPORT long long swigc_VectorLongLong_front(SwigClassWrapper const *farg1) {
-  long long fresult ;
-  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
-  long long *result = 0 ;
-  
-  SWIG_check_nonnull(*farg1, "std::vector< long long > const *", "VectorLongLong", "std::vector< long long >::front() const", return 0);
-  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
-  result = (long long *) &((std::vector< long long > const *)arg1)->front();
-  fresult = *result;
-  return fresult;
-}
-
-
-SWIGEXPORT long long swigc_VectorLongLong_back(SwigClassWrapper const *farg1) {
-  long long fresult ;
-  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
-  long long *result = 0 ;
-  
-  SWIG_check_nonnull(*farg1, "std::vector< long long > const *", "VectorLongLong", "std::vector< long long >::back() const", return 0);
-  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
-  result = (long long *) &((std::vector< long long > const *)arg1)->back();
-  fresult = *result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_VectorLongLong_set(SwigClassWrapper const *farg1, unsigned long const *farg2, long long const *farg3) {
-  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
-  std::vector< long long >::size_type arg2 ;
-  long long *arg3 = 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< long long > *", "VectorLongLong", "std::vector< long long >::set(std::vector< long long >::size_type,std::vector< long long >::const_reference)", return );
-  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
-  arg2 = *farg2;
-  arg3 = reinterpret_cast< long long * >(const_cast< long long* >(farg3));
-  std_vector_Sl_long_SS_long_Sg__set(arg1,arg2,(long long const &)*arg3);
-  
-}
-
-
-SWIGEXPORT long long swigc_VectorLongLong_get(SwigClassWrapper const *farg1, unsigned long const *farg2) {
-  long long fresult ;
-  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
-  std::vector< long long >::size_type arg2 ;
-  std::vector< long long >::value_type result;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< long long > *", "VectorLongLong", "std::vector< long long >::get(std::vector< long long >::size_type)", return 0);
-  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
-  arg2 = *farg2;
-  result = (std::vector< long long >::value_type)std_vector_Sl_long_SS_long_Sg__get(arg1,arg2);
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_delete_VectorLongLong(SwigClassWrapper const *farg1) {
-  std::vector< long long > *arg1 = (std::vector< long long > *) 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::vector< long long > *", "VectorLongLong", "std::vector< long long >::~vector()", return );
-  arg1 = static_cast< std::vector< long long > * >(farg1->ptr);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("std::vector< long long >::~vector()");;
-    try
-    {
-      // Attempt the wrapped function call
-      delete arg1;
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("std::vector< long long >::~vector()", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("std::vector< long long >::~vector()", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("std::vector< long long >::~vector()", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
-  
-}
-
-
-SWIGEXPORT void swigc_assignment_VectorLongLong(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef std::vector< long long > swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
-}
-
-
 SWIGEXPORT int swigc_TeuchosComm_getRank(SwigClassWrapper const *farg1) {
   int fresult ;
   Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
