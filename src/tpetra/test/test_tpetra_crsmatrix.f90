@@ -18,9 +18,9 @@ program test_TpetraCrsMatrix
   SETUP_TEST()
 
 #ifdef HAVE_MPI
-  comm = create_TeuchosComm(MPI_COMM_WORLD); FORTRILINOS_CHECK_IERR()
+  comm = TeuchosComm(MPI_COMM_WORLD); FORTRILINOS_CHECK_IERR()
 #else
-  comm = create_TeuchosComm(); FORTRILINOS_CHECK_IERR()
+  comm = TeuchosComm(); FORTRILINOS_CHECK_IERR()
 #endif
 
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_Basic1)
@@ -75,14 +75,14 @@ contains
     my_image_id = comm%getRank()
 
     ! create a Map
-    map = create_TpetraMap(invalid, num_local, comm); TEST_IERR()
-    mvrand = create_TpetraMultiVector(Map, num_vecs, false); TEST_IERR()
-    mvres = create_TpetraMultiVector(Map, num_vecs, false); TEST_IERR()
+    map = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    mvrand = TpetraMultiVector(Map, num_vecs, false); TEST_IERR()
+    mvres = TpetraMultiVector(Map, num_vecs, false); TEST_IERR()
     call mvrand%randomize(); TEST_IERR()
 
     ! create the identity matrix
     base = num_local * my_image_id;
-    Mat = create_TpetraCrsMatrix(Map, ione, TpetraDynamicProfile)
+    Mat = TpetraCrsMatrix(Map, ione, TpetraDynamicProfile)
     do irow = 1, num_local
       gblrow = base + int(irow, kind=global_ordinal_type)
       cols(1) = gblrow
@@ -198,11 +198,11 @@ contains
     if (num_images < 2) return
 
     ! create a Map
-    map = create_TpetraMap(invalid, ione, comm); TEST_IERR()
+    map = TpetraMap(invalid, ione, comm); TEST_IERR()
 
     ! create a multivector ones(n,1)
-    ones = create_TpetraMultiVector(map, ione, false); TEST_IERR()
-    threes = create_TpetraMultiVector(map, ione, false); TEST_IERR()
+    ones = TpetraMultiVector(map, ione, false); TEST_IERR()
+    threes = TpetraMultiVector(map, ione, false); TEST_IERR()
     call ones%putScalar(one)
 
     !  create the following matrix:
@@ -216,7 +216,7 @@ contains
     !  [           1 2]
     ! this matrix has an eigenvalue lambda=3, with eigenvector v = [1 ... 1]
 
-    A = create_TpetraCrsMatrix(map, izero, TpetraDynamicProfile); TEST_IERR()
+    A = TpetraCrsMatrix(map, izero, TpetraDynamicProfile); TEST_IERR()
     gblrow = my_image_id + 1
     if (gblrow == 1) then
       nnz = 2
@@ -305,11 +305,11 @@ contains
     my_image_id = comm%getRank()
 
     ! create a Map
-    map = create_TpetraMap(invalid, ithree, comm); TEST_IERR()
+    map = TpetraMap(invalid, ithree, comm); TEST_IERR()
 
     ! Create the identity matrix, three rows per proc
     base = 3 * my_image_id;
-    Mat = create_TpetraCrsMatrix(Map, ione, TpetraDynamicProfile); TEST_IERR()
+    Mat = TpetraCrsMatrix(Map, ione, TpetraDynamicProfile); TEST_IERR()
     do i = 1, 3
       gblrow = base + i
       cols(1) = gblrow
@@ -317,9 +317,9 @@ contains
     end do
     call Mat%fillComplete(); TEST_IERR()
 
-    X = create_TpetraMultiVector(Map, numvecs); TEST_IERR()
-    Y = create_TpetraMultiVector(Map, numvecs); TEST_IERR()
-    Z = create_TpetraMultiVector(map, numvecs); TEST_IERR()
+    X = TpetraMultiVector(Map, numvecs); TEST_IERR()
+    Y = TpetraMultiVector(Map, numvecs); TEST_IERR()
+    Z = TpetraMultiVector(map, numvecs); TEST_IERR()
 
     call random_number(alpha)
     call random_number(beta)
@@ -361,9 +361,9 @@ contains
     OUT0("Starting TpetraCrsMatrix_ActiveFillGlobal")
 
     ! create Map
-    map = create_TpetraMap(invalid, ione, comm); TEST_IERR()
+    map = TpetraMap(invalid, ione, comm); TEST_IERR()
 
-    Mat = create_TpetraCrsMatrix(map, map, izero, TpetraDynamicProfile); TEST_IERR()
+    Mat = TpetraCrsMatrix(map, map, izero, TpetraDynamicProfile); TEST_IERR()
     TEST_ASSERT(Mat%isFillActive())
     TEST_ASSERT((.not. Mat%isFillComplete()))
     lclrow = 1
@@ -371,7 +371,7 @@ contains
     cols(1) = row; vals(1) = 0.
     call Mat%insertGlobalValues(row, cols, zeros); TEST_IERR()
 
-    params = create_ParameterList("ANONOMOUS")
+    params = ParameterList("ANONOMOUS")
     ! call params%set("Optimize Storage", false) ! FIXME: boolean parameters
     call Mat%fillComplete(params);
     TEST_ASSERT((.not. Mat%isFillActive()))
@@ -398,7 +398,7 @@ contains
     call params%release()
     call Mat%release()
 
-    Mat = create_TpetraCrsMatrix(map, map, izero, TpetraDynamicProfile); TEST_IERR()
+    Mat = TpetraCrsMatrix(map, map, izero, TpetraDynamicProfile); TEST_IERR()
     TEST_ASSERT(Mat%isFillActive())
     TEST_ASSERT((.not. Mat%isFillComplete()))
     lclrow = 1
@@ -409,7 +409,7 @@ contains
     ! FIXME: then the call to fillComplete below hangs indefinitely
     call Mat%insertGlobalValues(row, cols, vals); TEST_IERR()
 
-    params = create_ParameterList("ANONOMOUS"); TEST_IERR()
+    params = ParameterList("ANONOMOUS"); TEST_IERR()
     call Mat%fillComplete(params); TEST_IERR()
     TEST_ASSERT((.not. Mat%isFillActive()))
     TEST_ASSERT(Mat%isFillComplete())
@@ -454,15 +454,15 @@ contains
     OUT0("Starting TpetraCrsMatrix_ActiveFillLocal")
 
     ! create Map
-    map = create_TpetraMap(invalid, ione, comm); TEST_IERR()
+    map = TpetraMap(invalid, ione, comm); TEST_IERR()
 
-    Mat = create_TpetraCrsMatrix(map, map, izero, TpetraDynamicProfile); TEST_IERR()
+    Mat = TpetraCrsMatrix(map, map, izero, TpetraDynamicProfile); TEST_IERR()
     TEST_ASSERT(Mat%isFillActive())
     TEST_ASSERT((.not. Mat%isFillComplete()))
     row = 1; cols(1) = 1; vals(1) = 0.
     call Mat%insertLocalValues(row, cols, tuple<Scalar>(0)); TEST_IERR()
 
-    params = create_ParameterList("ANONOMOUS")
+    params = ParameterList("ANONOMOUS")
     ! call params%set("Optimize Storage", false) ! FIXME: boolean parameters
     call Mat%fillComplete(params);
     TEST_ASSERT((.not. Mat%isFillActive()))
@@ -489,13 +489,13 @@ contains
     call params%release()
     call Mat%release()
 
-    Mat = create_TpetraCrsMatrix(map, map, izero, TpetraDynamicProfile); TEST_IERR()
+    Mat = TpetraCrsMatrix(map, map, izero, TpetraDynamicProfile); TEST_IERR()
     TEST_ASSERT(Mat%isFillActive())
     TEST_ASSERT((.not. Mat%isFillComplete()))
     row = 1; cols(1) = 1; vals(1) = zero;
     call Mat%insertLocalValues(row, cols, vals); TEST_IERR()
 
-    params = create_ParameterList("ANONOMOUS"); TEST_IERR()
+    params = ParameterList("ANONOMOUS"); TEST_IERR()
     !call params%set("Optimize Storage", .false.); TEST_IERR() ! FIXME: boolean parameters
     call Mat%fillComplete(params); TEST_IERR()
     TEST_ASSERT((.not. Mat%isFillActive()))
@@ -533,7 +533,7 @@ contains
 
     success = .false.
 
-    !Obj = create_TpetraCrsMatrix(); TEST_IERR()
+    !Obj = TpetraCrsMatrix(); TEST_IERR()
     !fresult = Obj%getCrsGraph(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -551,7 +551,7 @@ contains
 
     success = .false.
 
-    !Obj = create_TpetraCrsMatrix(); TEST_IERR()
+    !Obj = TpetraCrsMatrix(); TEST_IERR()
     !fresult = Obj%isStorageOptimized(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -569,7 +569,7 @@ contains
 
     success = .false.
 
-    !Obj = create_TpetraCrsMatrix(); TEST_IERR()
+    !Obj = TpetraCrsMatrix(); TEST_IERR()
     !fresult = Obj%isStaticGraph(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -587,7 +587,7 @@ contains
 
     success = .false.
 
-    !Obj = create_TpetraCrsMatrix(); TEST_IERR()
+    !Obj = TpetraCrsMatrix(); TEST_IERR()
     !fresult = Obj%supportsRowViews(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -609,9 +609,9 @@ contains
     success = .false.
 
     globalrow = 0
-    !indices = create_xxx(); TEST_IERR()
-    !values = create_xxx(); TEST_IERR()
-    !Obj = create_TpetraCrsMatrix(); TEST_IERR()
+    !indices = xxx(); TEST_IERR()
+    !values = xxx(); TEST_IERR()
+    !Obj = TpetraCrsMatrix(); TEST_IERR()
     !call Obj%getGlobalRowView(globalrow, indices, values); TEST_IERR()
 
     !call indices%release(); TEST_IERR()
@@ -637,9 +637,9 @@ contains
 
     lclrow = 0
     nument = 0
-    !lclcolinds = create_xxx(); TEST_IERR()
-    !vals = create_xxx(); TEST_IERR()
-    !Obj = create_TpetraCrsMatrix(); TEST_IERR()
+    !lclcolinds = xxx(); TEST_IERR()
+    !vals = xxx(); TEST_IERR()
+    !Obj = TpetraCrsMatrix(); TEST_IERR()
     !fresult = Obj%getLocalRowViewRaw(lclrow, nument, lclcolinds, vals); TEST_IERR()
 
     !call lclcolinds%release(); TEST_IERR()
@@ -665,13 +665,13 @@ contains
 
     success = .false.
 
-    !b = create_TpetraMultiVector(); TEST_IERR()
-    !x = create_TpetraMultiVector(); TEST_IERR()
-    !d = create_TpetraMultiVector(); TEST_IERR()
+    !b = TpetraMultiVector(); TEST_IERR()
+    !x = TpetraMultiVector(); TEST_IERR()
+    !d = TpetraMultiVector(); TEST_IERR()
     dampingfactor = 0
     direction = 0
     numsweeps = 0
-    !Obj = create_TpetraCrsMatrix(); TEST_IERR()
+    !Obj = TpetraCrsMatrix(); TEST_IERR()
     !call Obj%gaussSeidel(b, x, d, dampingfactor, direction, numsweeps); TEST_IERR()
 
     !call b%release(); TEST_IERR()
@@ -699,14 +699,14 @@ contains
 
     success = .false.
 
-    !b = create_TpetraMultiVector(); TEST_IERR()
-    !x = create_TpetraMultiVector(); TEST_IERR()
-    !d = create_TpetraMultiVector(); TEST_IERR()
-    !rowindices = create_xxx(); TEST_IERR()
+    !b = TpetraMultiVector(); TEST_IERR()
+    !x = TpetraMultiVector(); TEST_IERR()
+    !d = TpetraMultiVector(); TEST_IERR()
+    !rowindices = xxx(); TEST_IERR()
     dampingfactor = 0
     direction = 0
     numsweeps = 0
-    !Obj = create_TpetraCrsMatrix(); TEST_IERR()
+    !Obj = TpetraCrsMatrix(); TEST_IERR()
     !call Obj%reorderedGaussSeidel(b, x, d, rowindices, dampingfactor, direction, numsweeps); TEST_IERR()
 
     !call b%release(); TEST_IERR()
@@ -735,14 +735,14 @@ contains
 
     success = .false.
 
-    !x = create_TpetraMultiVector(); TEST_IERR()
-    !b = create_TpetraMultiVector(); TEST_IERR()
-    !d = create_TpetraMultiVector(); TEST_IERR()
+    !x = TpetraMultiVector(); TEST_IERR()
+    !b = TpetraMultiVector(); TEST_IERR()
+    !d = TpetraMultiVector(); TEST_IERR()
     dampingfactor = 0
     direction = 0
     numsweeps = 0
     zeroinitialguess = .false.
-    !Obj = create_TpetraCrsMatrix(); TEST_IERR()
+    !Obj = TpetraCrsMatrix(); TEST_IERR()
     !call Obj%gaussSeidelCopy(x, b, d, dampingfactor, direction, numsweeps, zeroinitialguess); TEST_IERR()
 
     !call x%release(); TEST_IERR()
@@ -771,15 +771,15 @@ contains
 
     success = .false.
 
-    !x = create_TpetraMultiVector(); TEST_IERR()
-    !b = create_TpetraMultiVector(); TEST_IERR()
-    !d = create_TpetraMultiVector(); TEST_IERR()
-    !rowindices = create_xxx(); TEST_IERR()
+    !x = TpetraMultiVector(); TEST_IERR()
+    !b = TpetraMultiVector(); TEST_IERR()
+    !d = TpetraMultiVector(); TEST_IERR()
+    !rowindices = xxx(); TEST_IERR()
     dampingfactor = 0
     direction = 0
     numsweeps = 0
     zeroinitialguess = .false.
-    !Obj = create_TpetraCrsMatrix(); TEST_IERR()
+    !Obj = TpetraCrsMatrix(); TEST_IERR()
     !call Obj%reorderedGaussSeidelCopy(x, b, d, rowindices, dampingfactor, direction, numsweeps, zeroinitialguess); TEST_IERR()
 
     !call x%release(); TEST_IERR()
@@ -802,8 +802,8 @@ contains
 
     success = .false.
 
-    !newcolmap = create_TpetraMap(); TEST_IERR()
-    !Obj = create_TpetraCrsMatrix(); TEST_IERR()
+    !newcolmap = TpetraMap(); TEST_IERR()
+    !Obj = TpetraCrsMatrix(); TEST_IERR()
     !call Obj%replaceColMap(newcolmap); TEST_IERR()
 
     !call newcolmap%release(); TEST_IERR()
@@ -824,9 +824,9 @@ contains
 
     success = .false.
 
-    !newdomainmap = create_TpetraMap(); TEST_IERR()
-    !newimporter = create_TpetraImport(); TEST_IERR()
-    !Obj = create_TpetraCrsMatrix(); TEST_IERR()
+    !newdomainmap = TpetraMap(); TEST_IERR()
+    !newimporter = TpetraImport(); TEST_IERR()
+    !Obj = TpetraCrsMatrix(); TEST_IERR()
     !call Obj%replaceDomainMapAndImporter(newdomainmap, newimporter); TEST_IERR()
 
     !call newdomainmap%release(); TEST_IERR()
@@ -847,8 +847,8 @@ contains
 
     success = .false.
 
-    !newmap = create_TpetraMap(); TEST_IERR()
-    !Obj = create_TpetraCrsMatrix(); TEST_IERR()
+    !newmap = TpetraMap(); TEST_IERR()
+    !Obj = TpetraCrsMatrix(); TEST_IERR()
     !call Obj%removeEmptyProcessesInPlace(newmap); TEST_IERR()
 
     !call newmap%release(); TEST_IERR()
