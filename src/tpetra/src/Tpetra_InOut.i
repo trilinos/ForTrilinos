@@ -87,11 +87,9 @@
 %ignore Tpetra::MatrixMarket::Writer::writeDenseFile;
 %ignore Tpetra::MatrixMarket::Writer::writeOperator;
 
-// The introduction of typedef seems to work. No clue why.
-%teuchos_rcp(Tpetra::MatrixMarket::Reader<CMT>)
-%teuchos_rcp(Tpetra::MatrixMarket::Writer<CMT>)
-
 %include "MatrixMarket_Tpetra.hpp"
 
+%teuchos_rcp(Tpetra::MatrixMarket::Reader<CMT>)
+%teuchos_rcp(Tpetra::MatrixMarket::Writer<CMT>)
 %template(TpetraReader) Tpetra::MatrixMarket::Reader<CMT>;
 %template(TpetraWriter) Tpetra::MatrixMarket::Writer<CMT>;

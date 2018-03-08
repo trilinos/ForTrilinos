@@ -158,20 +158,9 @@
 %ignore Tpetra::MultiVector::get1dView;
 %ignore Tpetra::MultiVector::get1dViewNonConst;
 
-
-// FIXME
-// For some unknown reason, the generated code for Multivector `release()` is
-// different from all other Tpetra classes (even from CrsMatrix which also has
-// a "classic" template argument). Specifically, the default release it was
-// generating was using "delete arg1;" instead of "(void) arg1; delete
-// smartarg1". This means that "unref" feature was not attached to it for some
-// reason.
-// Therefore, we explicitly attach it here to fix the generated wrapper code.
-%feature("unref") Tpetra::MultiVector<SC,LO,GO,NO>
-%{ (void)$self; delete smart$self; %}
-
-%teuchos_rcp(Tpetra::MultiVector<SC,LO,GO,NO,NO::classic>)
-
+/* Include the multivector *before* the RCP declaration so that
+ * SWIG becomes aware of the default template arguments */
 %include "Tpetra_MultiVector_decl.hpp"
 
+%teuchos_rcp(Tpetra::MultiVector<SC,LO,GO,NO>)
 %template(TpetraMultiVector) Tpetra::MultiVector<SC,LO,GO,NO>;

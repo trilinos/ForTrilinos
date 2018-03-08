@@ -209,8 +209,7 @@
 %ignore Tpetra::CrsGraph::setAllIndices (const typename local_graph_type::row_map_type &rowPointers, const typename local_graph_type::entries_type::non_const_type &columnIndices);
 
 
-%teuchos_rcp(Tpetra::CrsGraph<LO,GO,NO,NO::classic>)
-
 %include "Tpetra_CrsGraph_decl.hpp"
 
+%teuchos_rcp(Tpetra::CrsGraph<LO,GO,NO>)
 %template(TpetraCrsGraph) Tpetra::CrsGraph<LO,GO,NO>;
