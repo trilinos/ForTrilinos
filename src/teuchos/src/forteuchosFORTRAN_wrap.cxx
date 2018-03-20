@@ -277,6 +277,9 @@ struct assignment_flags<std::pair<T, const U>, Flags> {
 #include "Teuchos_ArrayView.hpp"
 
 
+#include "Teuchos_ArrayRCP.hpp"
+
+
 #include "Teuchos_Comm.hpp"
 #ifdef HAVE_MPI
 # include "Teuchos_DefaultMpiComm.hpp"
