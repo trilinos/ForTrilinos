@@ -4,7 +4,7 @@
 ! Do not make changes to this file unless you know what you are doing--modify
 ! the SWIG interface file instead.
 
-! Copyright 2017, UT-Battelle, LLC
+! Copyright 2018, UT-Battelle, LLC
 !
 ! SPDX-License-Identifier: BSD-3-Clause
 ! License-Filename: LICENSE
@@ -16,9 +16,6 @@ module forerror
 
  ! PUBLIC METHODS AND TYPES
 
- public :: fortrilinos_ierr
-
-
 type, bind(C) :: SwigArrayWrapper
   type(C_PTR), public :: data = C_NULL_PTR
   integer(C_SIZE_T), public :: size = 0
@@ -28,7 +25,7 @@ end type
 
  ! PARAMETERS
 
- integer(C_INT), bind(C) :: fortrilinos_ierr
+ integer(C_INT), bind(C), public :: fortrilinos_ierr
 
 
  ! WRAPPER DECLARATIONS
@@ -67,7 +64,6 @@ character(kind=C_CHAR, len=:), allocatable :: swig_result
 type(SwigArrayWrapper) :: fresult 
 
 fresult = swigc_fortrilinos_get_serr()
-
 call SWIG_chararray_to_string(fresult, swig_result)
 end function
 

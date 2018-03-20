@@ -30,8 +30,7 @@
 %ignore Tpetra::RowMatrix::rightScale;           // needs Tpetra::Vector
 
 
-%teuchos_rcp(Tpetra::RowMatrix<SC,LO,GO,NO>)
-
 %include "Tpetra_RowMatrix_decl.hpp"
 
+%teuchos_rcp(Tpetra::RowMatrix<SC,LO,GO,NO>)
 %template(TpetraRowMatrix) Tpetra::RowMatrix<SC,LO,GO,NO>;

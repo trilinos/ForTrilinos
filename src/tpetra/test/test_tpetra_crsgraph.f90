@@ -18,9 +18,9 @@ program test_TpetraCrsGraph
   SETUP_TEST()
 
 #ifdef HAVE_MPI
-  comm = create_TeuchosComm(MPI_COMM_WORLD); FORTRILINOS_CHECK_IERR()
+  comm = TeuchosComm(MPI_COMM_WORLD); FORTRILINOS_CHECK_IERR()
 #else
-  comm = create_TeuchosComm()
+  comm = TeuchosComm()
 #endif
 
   ADD_SUBTEST_AND_RUN(TpetraCrsGraph_ActiveFillLocal)
@@ -70,10 +70,10 @@ contains
     OUT0("Starting TpetraCrsGraph_ActiveFillLocal!")
 
     ! create Map
-    Map = create_TpetraMap(invalid, ione, comm); TEST_IERR()
+    Map = TpetraMap(invalid, ione, comm); TEST_IERR()
 
-    params = create_ParameterList("ANONYMOUS")
-    Graph = create_TpetraCrsGraph(Map, Map, izero, TpetraDynamicProfile)
+    params = ParameterList("ANONYMOUS")
+    Graph = TpetraCrsGraph(Map, Map, izero, TpetraDynamicProfile)
     TEST_ASSERT(Graph%isFillActive())
     TEST_ASSERT((.not. Graph%isFillComplete()))
 
@@ -94,8 +94,8 @@ contains
     call Graph%release()
     call params%release()
 
-    params = create_ParameterList("ANONYMOUS")
-    Graph = create_TpetraCrsGraph(Map, Map, izero, TpetraDynamicProfile)
+    params = ParameterList("ANONYMOUS")
+    Graph = TpetraCrsGraph(Map, Map, izero, TpetraDynamicProfile)
 
     TEST_ASSERT(Graph%isFillActive())
     TEST_ASSERT((.not. Graph%isFillComplete()))
@@ -136,10 +136,10 @@ contains
     OUT0("Starting TpetraCrsGraph_Parameters!")
 
     ! create Map
-    Map = create_TpetraMap(invalid, ione, comm); TEST_IERR()
+    Map = TpetraMap(invalid, ione, comm); TEST_IERR()
 
-    params = create_ParameterList("ANONYMOUS")
-    Graph = create_TpetraCrsGraph(Map, Map, izero, TpetraDynamicProfile)
+    params = ParameterList("ANONYMOUS")
+    Graph = TpetraCrsGraph(Map, Map, izero, TpetraDynamicProfile)
     params = Graph%getValidParameters()
     call Graph%setParameterList(params)
 
@@ -173,11 +173,11 @@ contains
     if (num_procs == 1) return
 
     num_local = 1
-    rmap = create_TpetraMap(invalid, num_local, comm); TEST_IERR()
-    cmap = create_TpetraMap(invalid, num_local, comm); TEST_IERR()
+    rmap = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    cmap = TpetraMap(invalid, num_local, comm); TEST_IERR()
     ! must allocate enough for all submitted indices.
     num_ent_per_row = 2
-    Graph = create_TpetraCrsGraph(rmap, cmap, num_ent_per_row, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row, TpetraStaticProfile)
     TEST_ASSERT(Graph%hasColMap())
     lclrow = 1
     myrowind = rmap%getGlobalElement(lclrow);
@@ -199,7 +199,7 @@ contains
     end if
     TEST_NOTHROW(call Graph%fillComplete())
 
-    tmpmap = create_TpetraMap()
+    tmpmap = TpetraMap()
     tmpmap = Graph%getRowMap()
     TEST_EQUALITY(tmpmap%getNodeNumElements(), rmap%getNodeNumElements())
     tmpmap = Graph%getColMap()
@@ -231,19 +231,19 @@ contains
     if (num_procs == 1) return
 
     num_local = 2;
-    rmap = create_TpetraMap(invalid, num_local, comm); TEST_IERR()
+    rmap = TpetraMap(invalid, num_local, comm); TEST_IERR()
 
     allocate(rowptr(num_local+1))
     allocate(colind(num_local)) ! one unknown per row
     rowptr(1:3) = [1, 2, 3]
     colind(1:2) = [1, 2]
 
-    Graph = create_TpetraCrsGraph(rmap, rmap, rowptr, colind)
+    Graph = TpetraCrsGraph(rmap, rmap, rowptr, colind)
     TEST_ASSERT(Graph%hasColMap())
 
     TEST_NOTHROW(call Graph%expertStaticFillComplete(rmap, rmap))
 
-    tmpmap = create_TpetraMap()
+    tmpmap = TpetraMap()
     tmpmap = Graph%getRowMap()
     TEST_EQUALITY(tmpmap%getNodeNumElements(), rmap%getNodeNumElements())
 
@@ -277,20 +277,20 @@ contains
     !if (num_procs <= 1) return
 
     num_local = 2
-    rmap = create_TpetraMap(invalid, num_local, comm)
+    rmap = TpetraMap(invalid, num_local, comm)
     allocate(rowptr(num_local+1))
     allocate(colind(num_local)) ! one unknown per row
     rowptr(1:3) = [1, 2, 3]
     colind(1:2) = [1, 2]
 
-    Graph = create_TpetraCrsGraph(rmap, rmap, izero, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rmap, rmap, izero, TpetraStaticProfile)
 
     TEST_NOTHROW(call Graph%setAllIndices(rowptr, colind))
     TEST_ASSERT(Graph%hasColMap())
 
     TEST_NOTHROW(call Graph%expertStaticFillComplete(rmap,rmap))
 
-    tmpmap = create_TpetraMap()
+    tmpmap = TpetraMap()
     tmpmap = Graph%getRowMap()
     TEST_EQUALITY(tmpmap%getNodeNumElements(), rmap%getNodeNumElements())
 
@@ -326,10 +326,10 @@ contains
 
     ! create a Map
     num_local = 10;
-    map = create_TpetraMap(invalid, num_local, comm)
+    map = TpetraMap(invalid, num_local, comm)
 
     nument = 4
-    Graph = create_TpetraCrsGraph(map, map, nument);
+    Graph = TpetraCrsGraph(map, map, nument);
     TEST_ASSERT(graph%isSorted())
 
     ! insert entries; shouldn't be sorted anymore
@@ -353,7 +353,7 @@ contains
     deallocate(jinds)
 
     ! fill complete; should be sorted now
-    params = create_ParameterList("ANONYMOUS")
+    params = ParameterList("ANONYMOUS")
     call params%set("Optimize Storage", false)
     call graph%fillComplete(params)
 
@@ -443,17 +443,17 @@ contains
 
     ! create a Map
     num_local = 10
-    map = create_TpetraMap(invalid, num_local, comm)
+    map = TpetraMap(invalid, num_local, comm)
 
     ! create static-profile graph, fill-complete without inserting
     ! (and therefore, without allocating)
-    Graph = create_TpetraCrsGraph(map, ione, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(map, ione, TpetraStaticProfile)
     call Graph%fillComplete()
     call Graph%release()
 
     ! create TpetraDynamic-profile graph, fill-complete without inserting
     ! (and therefore, without allocating)
-    Graph = create_TpetraCrsGraph(map, ione, TpetraDynamicProfile)
+    Graph = TpetraCrsGraph(map, ione, TpetraDynamicProfile)
     call Graph%fillComplete()
     call Graph%release()
 
@@ -481,11 +481,11 @@ contains
     if (num_procs == 1) return
 
     num_local = 1
-    rmap = create_TpetraMap(invalid, num_local, comm); TEST_IERR()
-    cmap = create_TpetraMap(invalid, num_local, comm); TEST_IERR()
+    rmap = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    cmap = TpetraMap(invalid, num_local, comm); TEST_IERR()
     ! must allocate enough for all submitted indices.
     num_ent_per_row = 2
-    Graph = create_TpetraCrsGraph(rmap, cmap, num_ent_per_row, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row, TpetraStaticProfile)
     TEST_ASSERT(Graph%hasColMap())
     lclrow = 1
     myrowind = rmap%getGlobalElement(lclrow);
@@ -546,7 +546,7 @@ contains
 
     success = .false.
 
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !fresult = Obj%getComm(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -564,7 +564,7 @@ contains
 
     success = .false.
 
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !fresult = Obj%getDomainMap(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -582,7 +582,7 @@ contains
 
     success = .false.
 
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !fresult = Obj%getRangeMap(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -600,7 +600,7 @@ contains
 
     success = .false.
 
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !fresult = Obj%getImporter(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -618,7 +618,7 @@ contains
 
     success = .false.
 
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !fresult = Obj%getExporter(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -636,7 +636,7 @@ contains
 
     success = .false.
 
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !fresult = Obj%isLowerTriangular(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -654,7 +654,7 @@ contains
 
     success = .false.
 
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !fresult = Obj%isUpperTriangular(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -672,7 +672,7 @@ contains
 
     success = .false.
 
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !fresult = Obj%isLocallyIndexed(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -690,7 +690,7 @@ contains
 
     success = .false.
 
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !fresult = Obj%isGloballyIndexed(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -708,7 +708,7 @@ contains
 
     success = .false.
 
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !fresult = Obj%isStorageOptimized(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -726,7 +726,7 @@ contains
 
     success = .false.
 
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !fresult = Obj%supportsRowViews(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -744,7 +744,7 @@ contains
 
     success = .false.
 
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !fresult = Obj%description(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -763,8 +763,8 @@ contains
 
     success = .false.
 
-    !newcolmap = create_TpetraMap(); TEST_IERR()
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !newcolmap = TpetraMap(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !call Obj%replaceColMap(newcolmap); TEST_IERR()
 
     !call newcolmap%release(); TEST_IERR()
@@ -785,9 +785,9 @@ contains
 
     success = .false.
 
-    !newdomainmap = create_TpetraMap(); TEST_IERR()
-    !newimporter = create_TpetraImport(); TEST_IERR()
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !newdomainmap = TpetraMap(); TEST_IERR()
+    !newimporter = TpetraImport(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !call Obj%replaceDomainMapAndImporter(newdomainmap, newimporter); TEST_IERR()
 
     !call newdomainmap%release(); TEST_IERR()
@@ -808,8 +808,8 @@ contains
 
     success = .false.
 
-    !newmap = create_TpetraMap(); TEST_IERR()
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !newmap = TpetraMap(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !call Obj%removeEmptyProcessesInPlace(newmap); TEST_IERR()
 
     !call newmap%release(); TEST_IERR()
@@ -828,7 +828,7 @@ contains
 
     success = .false.
 
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !fresult = Obj%haveGlobalConstants(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -846,7 +846,7 @@ contains
 
     success = .false.
 
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !call Obj%computeGlobalConstants(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -868,7 +868,7 @@ contains
 
     localrow = 0
     !allocate(indices(:)(0))
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !call Obj%insertLocalIndices(localrow, indices(:)); TEST_IERR()
 
     !deallocate(indices(:))
@@ -893,7 +893,7 @@ contains
     globalrow = 0
     !allocate(indices(:)(0))
     numindices = 0
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !call Obj%getGlobalRowCopy(globalrow, indices(:), numindices); TEST_IERR()
 
     !deallocate(indices(:))
@@ -916,7 +916,7 @@ contains
 
     gblrow = 0
     !allocate(lclcolinds(:)(0))
-    !Obj = create_TpetraCrsGraph(); TEST_IERR()
+    !Obj = TpetraCrsGraph(); TEST_IERR()
     !call Obj%getgblRowView(gblrow, lclcolinds(:)); TEST_IERR()
 
     !deallocate(lclcolinds(:))

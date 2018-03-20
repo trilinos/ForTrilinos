@@ -18,9 +18,9 @@ program test_TpetraMap
   SETUP_TEST()
 
 #ifdef HAVE_MPI
-  comm = create_TeuchosComm(MPI_COMM_WORLD); FORTRILINOS_CHECK_IERR()
+  comm = TeuchosComm(MPI_COMM_WORLD); FORTRILINOS_CHECK_IERR()
 #else
-  comm = create_TeuchosComm(); FORTRILINOS_CHECK_IERR()
+  comm = TeuchosComm(); FORTRILINOS_CHECK_IERR()
 #endif
 
   ADD_SUBTEST_AND_RUN(TpetraMap_isOneToOne)
@@ -58,16 +58,15 @@ contains
 
 ! ---------------------------------isOneToOne--------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMap_isOneToOne)
-    logical(c_bool) :: bool
     type(TpetraMap) :: Obj
     integer(global_ordinal_type) :: num_global, indices(4)
     num_global = 4*comm%getSize()
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
     TEST_ASSERT(Obj%isOneToOne())
     call Obj%release(); TEST_IERR()
     if (comm%getSize() > 1) then
       indices = [1, 2, 3, 4]
-      Obj = create_TpetraMap(num_global, indices, comm); TEST_IERR()
+      Obj = TpetraMap(num_global, indices, comm); TEST_IERR()
       TEST_ASSERT((.not. Obj%isOneToOne()))
       call Obj%release(); TEST_IERR()
     end if
@@ -78,7 +77,7 @@ contains
     type(TpetraMap) :: Obj
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
     TEST_ASSERT(Obj%getGlobalNumElements() == num_global)
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getGlobalNumElements)
@@ -88,7 +87,7 @@ contains
     type(TpetraMap) :: Obj
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
     TEST_EQUALITY(Obj%getNodeNumElements(), int(4, kind=size_type))
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getNodeNumElements)
@@ -98,7 +97,7 @@ contains
     type(TpetraMap) :: Obj
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
     TEST_EQUALITY(Obj%getMinLocalIndex(), int(1, kind=local_ordinal_type))
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getMinLocalIndex)
@@ -108,7 +107,7 @@ contains
     type(TpetraMap) :: Obj
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
     TEST_EQUALITY(Obj%getMaxLocalIndex(), int(4, kind=local_ordinal_type))
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getMaxLocalIndex)
@@ -119,7 +118,7 @@ contains
     integer(C_LONG_LONG) :: expected
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
     expected = comm%getRank() * 4 + 1
     TEST_EQUALITY(Obj%getMinGlobalIndex(), expected)
     call Obj%release(); TEST_IERR()
@@ -131,7 +130,7 @@ contains
     integer(C_LONG_LONG) :: expected
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
     expected = comm%getRank() * 4 + 4
     TEST_EQUALITY(Obj%getMaxGlobalIndex(), expected)
     call Obj%release(); TEST_IERR()
@@ -143,7 +142,7 @@ contains
     integer(global_ordinal_type) :: num_global, one
     num_global = 4*comm%getSize()
     one = 1
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
     TEST_EQUALITY(Obj%getMinAllGlobalIndex(), one)
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getMinAllGlobalIndex)
@@ -153,7 +152,7 @@ contains
     type(TpetraMap) :: Obj
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
     TEST_EQUALITY(Obj%getMaxAllGlobalIndex(), num_global)
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getMaxAllGlobalIndex)
@@ -164,7 +163,7 @@ contains
     integer(C_LONG_LONG) :: globalindex
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
     globalindex = comm%getRank() * 4 + 1
     TEST_EQUALITY(Obj%getLocalElement(globalindex), 1)
     globalindex = comm%getRank() * 4 + 4
@@ -179,7 +178,7 @@ contains
     integer(C_LONG_LONG) :: expected
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
     localindex = 1
     expected = comm%getRank() * 4 + 1
     TEST_EQUALITY(Obj%getGlobalElement(localindex), expected)
@@ -195,7 +194,7 @@ contains
     integer(global_ordinal_type), pointer :: element_list(:)
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
     element_list => Obj%getNodeElementList()
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getNodeElementList)
@@ -206,7 +205,7 @@ contains
     integer(C_INT) :: localindex
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
     localindex = 1
     TEST_ASSERT(Obj%isNodeLocalElement(localindex))
     localindex = 5
@@ -220,7 +219,7 @@ contains
     integer(C_LONG_LONG) :: globalindex
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
 
     globalindex = int(comm%getRank() * 4 + 1, kind=global_ordinal_type)
     TEST_ASSERT(Obj%isNodeGlobalElement(globalindex))
@@ -239,14 +238,14 @@ contains
     integer(global_ordinal_type) :: num_global, elements(4)
     num_global = 4*comm%getSize()
 
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
     TEST_ASSERT(Obj%isUniform())
     call Obj%release(); TEST_IERR()
 
     do k = 1, 4
       elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
     end do
-    Obj = create_TpetraMap(num_global, elements, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, elements, comm); TEST_IERR()
     TEST_ASSERT((.not. Obj%isUniform()))
     call Obj%release(); TEST_IERR()
 
@@ -259,14 +258,14 @@ contains
     integer(global_ordinal_type) :: num_global, elements(4)
     num_global = 4*comm%getSize()
 
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
     TEST_ASSERT(Obj%isContiguous())
     call Obj%release(); TEST_IERR()
 
     do k = 1, 4
       elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
     end do
-    Obj = create_TpetraMap(num_global, elements, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, elements, comm); TEST_IERR()
     TEST_ASSERT((.not. Obj%isContiguous()))
     call Obj%release(); TEST_IERR()
 
@@ -275,10 +274,10 @@ contains
 ! -------------------------------isDistributed-------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMap_isDistributed)
     type(TpetraMap) :: Obj
-    integer(global_ordinal_type) :: num_global, elements(4)
+    integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
 
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
     if (comm%getSize() == 1) then
       TEST_ASSERT((.not. Obj%isDistributed()))
     else
@@ -287,7 +286,7 @@ contains
     call Obj%release(); TEST_IERR()
 
     num_global = 4
-    Obj = create_TpetraMap(num_global, comm, TpetraLocallyReplicated); TEST_IERR()
+    Obj = TpetraMap(num_global, comm, TpetraLocallyReplicated); TEST_IERR()
     TEST_ASSERT((.not. Obj%isDistributed()))
     call Obj%release(); TEST_IERR()
 
@@ -296,17 +295,16 @@ contains
 ! --------------------------------isCompatible-------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMap_isCompatible)
     type(TpetraMap) :: Obj1, Obj2
-    type(TpetraMap) :: map
     integer(global_ordinal_type) :: num_global, elements(4)
     integer :: k
     num_global = 4*comm%getSize()
 
-    Obj1 = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj1 = TpetraMap(num_global, comm); TEST_IERR()
 
     do k = 1, 4
       elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
     end do
-    Obj2 = create_TpetraMap(num_global, elements, comm); TEST_IERR()
+    Obj2 = TpetraMap(num_global, elements, comm); TEST_IERR()
 
     ! Cyclic map should be compatible
     TEST_ASSERT(Obj1%isCompatible(Obj2))
@@ -314,7 +312,7 @@ contains
     call Obj2%release(); TEST_IERR()
 
     num_global = num_global + 10
-    Obj2 = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj2 = TpetraMap(num_global, comm); TEST_IERR()
 
     TEST_ASSERT((.not. Obj1%isCompatible(Obj2)))
 
@@ -326,20 +324,19 @@ contains
 ! ----------------------------------isSameAs---------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMap_isSameAs)
     type(TpetraMap) :: Obj1, Obj2
-    type(TpetraMap) :: map
     integer(size_type) :: num_local
     integer(global_ordinal_type) :: num_global, elements(4)
     integer :: k
     num_global = 4*comm%getSize()
 
-    Obj1 = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj1 = TpetraMap(num_global, comm); TEST_IERR()
 
     if (comm%getSize() > 1) then
 
       do k = 1, 4
         elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
       end do
-      Obj2 = create_TpetraMap(num_global, elements, comm); TEST_IERR()
+      Obj2 = TpetraMap(num_global, elements, comm); TEST_IERR()
 
       ! Cyclic map should not be SameAs
       TEST_ASSERT((.not. Obj1%isSameAs(Obj2)))
@@ -349,7 +346,7 @@ contains
     end if
 
     num_local = 4
-    Obj2 = create_TpetraMap(invalid, num_local, comm); TEST_IERR()
+    Obj2 = TpetraMap(invalid, num_local, comm); TEST_IERR()
 
     TEST_ASSERT(Obj1%isSameAs(Obj2))
 
@@ -366,14 +363,14 @@ contains
     integer :: k
     num_global = 4*comm%getSize()
 
-    Obj1 = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj1 = TpetraMap(num_global, comm); TEST_IERR()
 
     if (comm%getSize() > 1) then
 
       do k = 1, 4
         elements(k) = int(comm%getRank()+k*comm%getSize(), kind=global_ordinal_type)
       end do
-      Obj2 = create_TpetraMap(num_global, elements, comm); TEST_IERR()
+      Obj2 = TpetraMap(num_global, elements, comm); TEST_IERR()
 
       ! Cyclic map should not be locallySameAs
       TEST_ASSERT((.not. Obj1%locallySameAs(Obj2)))
@@ -383,7 +380,7 @@ contains
     end if
 
     num_local = 4
-    Obj2 = create_TpetraMap(invalid, num_local, comm); TEST_IERR()
+    Obj2 = TpetraMap(invalid, num_local, comm); TEST_IERR()
     TEST_ASSERT(Obj1%locallySameAs(Obj2))
 
     call Obj1%release(); TEST_IERR()
@@ -398,7 +395,7 @@ contains
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
 
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
 
     ! We only test the comm returned has the same rank and size.  More
     ! comprehensive testing is (assumed to be) done in Teuchos itself.
@@ -416,7 +413,7 @@ contains
     character(kind=C_CHAR, len=:), allocatable :: description
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
-    Obj = create_TpetraMap(num_global, comm); TEST_IERR()
+    Obj = TpetraMap(num_global, comm); TEST_IERR()
     description = Obj%description(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_description)
 

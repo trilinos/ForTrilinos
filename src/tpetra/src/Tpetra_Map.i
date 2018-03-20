@@ -36,25 +36,11 @@
 
 // =======================================================================
 // Fix ±1 issues
-// =======================================================================
-%typemap(in)  int localIndex        %{$1 = *$input - 1;%}
-%typemap(out) int getMinLocalIndex  %{$result = $1 + 1;%}
-%typemap(out) int getMaxLocalIndex  %{$result = $1 + 1;%}
-%typemap(out) int getLocalElement   %{$result = $1 + 1;%}
-%typemap(argout) const Teuchos::ArrayView<int>& nodeIDList %{
-  for (int i = 0; i < $1->size(); i++)
-    (*$1)[i]++;
-%}
-%typemap(argout) const Teuchos::ArrayView<int>& LIDList %{
-  for (int i = 0; i < $1->size(); i++)
-    (*$1)[i]++;
-%}
-
 
 // =======================================================================
 // Make interface more Fortran friendly
 // =======================================================================
-%extend Tpetra::Map<int, long long, Kokkos::Compat::KokkosSerialWrapperNode> {
+%extend Tpetra::Map<LO,GO,NO> {
     Map(global_size_t numGlobalElements, const Teuchos::RCP<const Teuchos::Comm<int> > &comm, LocalGlobal lg=GloballyDistributed) {
       return new Tpetra::Map<LO,GO,NO>(numGlobalElements, 1/*indexBase*/, comm, lg);
     }
@@ -89,13 +75,21 @@
 %ignore Tpetra::Map::getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList, const Teuchos::ArrayView< LocalOrdinal > &LIDList) const;
 %ignore Tpetra::Map::getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList) const;
 %ignore Tpetra::Map::getNodeElementList() const;
+//
+// (see forteuchos.i)
+// =======================================================================
+%apply int FORTRAN_INDEX { int localIndex,
+                           int getMinLocalIndex,
+                           int getMaxLocalIndex,
+                           int getLocalElement };
 
-// FIXME: figure out why the first verion does not work
-/* %teuchos_rcp(Tpetra::Map<LO,GO,NO>); */
-%teuchos_rcp(Tpetra::Map<int, long long, Kokkos::Compat::KokkosSerialWrapperNode>)
+// Note: these are modifying fortran-owned memory, decrementing the count after
+// the values have been retrieved.
+%apply Teuchos::ArrayView<int> FORTRAN_INDEX {
+    const Teuchos::ArrayView<int>& nodeIDList,
+    const Teuchos::ArrayView<int>& LIDList };
 
 %include "Tpetra_Map_decl.hpp"
 
-// FIXME: figure out why the first verion does not work
-/* %template(TpetraMap) Tpetra::Map<LO,GO,NO>; */
-%template(TpetraMap) Tpetra::Map<int, long long, Kokkos::Compat::KokkosSerialWrapperNode>;
+%teuchos_rcp(Tpetra::Map<LO,GO,NO>)
+%template(TpetraMap) Tpetra::Map<LO,GO,NO>;

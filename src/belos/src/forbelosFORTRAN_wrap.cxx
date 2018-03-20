@@ -9,7 +9,7 @@
  * ----------------------------------------------------------------------------- */
 
 /*
- * Copyright 2017, UT-Battelle, LLC
+ * Copyright 2018, UT-Battelle, LLC
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
@@ -105,6 +105,15 @@ template <typename T> T SwigValueInit() {
 # define SWIGINTERNINLINE SWIGINTERN SWIGINLINE
 #endif
 
+/* qualifier for exported *const* global data variables*/
+#ifndef SWIGEXTERN
+# ifdef __cplusplus
+#   define SWIGEXTERN extern
+# else
+#   define SWIGEXTERN
+# endif
+#endif
+
 /* exporting methods */
 #if defined(__GNUC__)
 #  if (__GNUC__ >= 4) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
@@ -163,15 +172,6 @@ template <typename T> T SwigValueInit() {
 # pragma warning disable 592
 #endif
 
-
-#ifndef SWIGEXTERN
-#ifdef __cplusplus
-#define SWIGEXTERN extern
-#else
-#define SWIGEXTERN
-#endif
-#endif
-
 /*  Errors in SWIG */
 #define  SWIG_UnknownError    	   -1
 #define  SWIG_IOError        	   -2
@@ -190,48 +190,25 @@ template <typename T> T SwigValueInit() {
 
 
 
-// Default exception handler
 #define SWIG_exception_impl(DECL, CODE, MSG, RETURNNULL) \
-    throw std::logic_error("In " DECL ": " MSG); RETURNNULL;
+ { throw std::logic_error("In " DECL ": " MSG); RETURNNULL; }
 
 
-/* Contract support */
-#define SWIG_contract_assert(RETURNNULL, EXPR, MSG) \
-    if (!(EXPR)) { SWIG_exception_impl("$decl", SWIG_ValueError, MSG, RETURNNULL); }
+extern "C" {
+void SWIG_check_unhandled_exception_impl(const char* decl);
+void SWIG_store_exception(const char* decl, int errcode, const char *msg);
+}
 
 
-#define SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
-    if ((SWIG_CLASS_WRAPPER).mem == SWIG_CREF) { \
-        SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
-            "Cannot pass const " TYPENAME " (class " FNAME ") " \
-            "as a mutable reference", \
-            RETURNNULL); \
-    }
+#undef SWIG_exception_impl
+#define SWIG_exception_impl(DECL, CODE, MSG, RETURNNULL) \
+    SWIG_store_exception(DECL, CODE, MSG); RETURNNULL;
 
 
-#define SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
-    if ((SWIG_CLASS_WRAPPER).mem == SWIG_NULL) { \
-        SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
-            "Cannot pass null " TYPENAME " (class " FNAME ") " \
-            "as a reference", RETURNNULL); \
-    }
+#include <string.h>
 
 
-#define SWIG_check_mutable_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
-    SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL); \
-    SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL);
-
-
-
-#if __cplusplus >= 201103L
-#define SWIG_assign(LEFTTYPE, LEFT, RIGHTTYPE, RIGHT, FLAGS) \
-    SWIG_assign_impl<LEFTTYPE , RIGHTTYPE, swig::assignment_flags<LEFTTYPE >() >( \
-            LEFT, RIGHT);
-#else
-#define SWIG_assign(LEFTTYPE, LEFT, RIGHTTYPE, RIGHT, FLAGS) \
-    SWIG_assign_impl<LEFTTYPE , RIGHTTYPE, FLAGS >(LEFT, RIGHT);
-#endif
-
+#include <stdexcept>
 
 
 #define SWIGVERSION 0x040000 
@@ -242,434 +219,56 @@ template <typename T> T SwigValueInit() {
 #define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
 
 
-#include <stdexcept>
-
-
 #include <string>
-
-
-enum SwigMemState {
-    SWIG_NULL = 0,
-    SWIG_OWN,
-    SWIG_MOVE,
-    SWIG_REF,
-    SWIG_CREF
-};
-
-
-struct SwigClassWrapper
-{
-    void* ptr;
-    SwigMemState mem;
-};
-
-SWIGINTERN SwigClassWrapper SwigClassWrapper_uninitialized()
-{
-    SwigClassWrapper result;
-    result.ptr = NULL;
-    result.mem = SWIG_NULL;
-    return result;
-}
-
-
-struct SwigArrayWrapper
-{
-    void* data;
-    std::size_t size;
-};
-
-SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized()
-{
-    SwigArrayWrapper result;
-    result.data = NULL;
-    result.size = 0;
-    return result;
-}
-
-SWIGINTERN std::string const &std_string_str(std::string *self){
-        return *self;
-    }
-
-#include <utility>
-
-
-namespace swig {
-
-enum AssignmentFlags {
-  IS_DESTR       = 0x01,
-  IS_COPY_CONSTR = 0x02,
-  IS_COPY_ASSIGN = 0x04,
-  IS_MOVE_CONSTR = 0x08,
-  IS_MOVE_ASSIGN = 0x10
-};
-
-// Define our own switching struct to support pre-c++11 builds
-template<bool Val>
-struct bool_constant {};
-typedef bool_constant<true>  true_type;
-typedef bool_constant<false> false_type;
-
-// Deletion
-template<class T>
-SWIGINTERN void destruct_impl(T* self, true_type) {
-  delete self;
-}
-template<class T>
-SWIGINTERN T* destruct_impl(T* , false_type) {
-  SWIG_exception_impl("assignment", SWIG_TypeError,
-                      "Invalid assignment: class type has no destructor",
-                      return NULL);
-}
-
-// Copy construction and assignment
-template<class T, class U>
-SWIGINTERN T* copy_construct_impl(const U* other, true_type) {
-  return new T(*other);
-}
-template<class T, class U>
-SWIGINTERN void copy_assign_impl(T* self, const U* other, true_type) {
-  *self = *other;
-}
-
-// Disabled construction and assignment
-template<class T, class U>
-SWIGINTERN T* copy_construct_impl(const U* , false_type) {
-  SWIG_exception_impl("assignment", SWIG_TypeError,
-                      "Invalid assignment: class type has no copy constructor",
-                      return NULL);
-}
-template<class T, class U>
-SWIGINTERN void copy_assign_impl(T* , const U* , false_type) {
-  SWIG_exception_impl("assignment", SWIG_TypeError,
-                      "Invalid assignment: class type has no copy assignment",
-                      return);
-}
-
-#if __cplusplus >= 201103L
-#include <utility>
-#include <type_traits>
-
-// Move construction and assignment
-template<class T, class U>
-SWIGINTERN T* move_construct_impl(U* other, true_type) {
-  return new T(std::move(*other));
-}
-template<class T, class U>
-SWIGINTERN void move_assign_impl(T* self, U* other, true_type) {
-  *self = std::move(*other);
-}
-
-// Disabled move construction and assignment
-template<class T, class U>
-SWIGINTERN T* move_construct_impl(U*, false_type) {
-  SWIG_exception_impl("assignment", SWIG_TypeError,
-                      "Invalid assignment: class type has no move constructor",
-                      return NULL);
-}
-template<class T, class U>
-SWIGINTERN void move_assign_impl(T*, U*, false_type) {
-  SWIG_exception_impl("assignment", SWIG_TypeError,
-                      "Invalid assignment: class type has no move assignment",
-                      return);
-}
-
-template<class T>
-constexpr int assignment_flags() {
-  return   (std::is_destructible<T>::value       ? IS_DESTR       : 0)
-         | (std::is_copy_constructible<T>::value ? IS_COPY_CONSTR : 0)
-         | (std::is_copy_assignable<T>::value    ? IS_COPY_ASSIGN : 0)
-         | (std::is_move_constructible<T>::value ? IS_MOVE_CONSTR : 0)
-         | (std::is_move_assignable<T>::value    ? IS_MOVE_ASSIGN : 0);
-}
-#endif
-
-template<class T, int Flags>
-struct AssignmentTraits
-{
-  static void destruct(T* self)
-  {
-    destruct_impl<T>(self, bool_constant<Flags & IS_DESTR>());
-  }
-
-  template<class U>
-  static T* copy_construct(const U* other)
-  {
-    return copy_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_COPY_CONSTR)>());
-  }
-
-  template<class U>
-  static void copy_assign(T* self, const U* other)
-  {
-    copy_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_COPY_ASSIGN)>());
-  }
-
-#if __cplusplus >= 201103L
-  template<class U>
-  static T* move_construct(U* other)
-  {
-    return move_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_MOVE_CONSTR)>());
-  }
-  template<class U>
-  static void move_assign(T* self, U* other)
-  {
-    move_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_MOVE_ASSIGN)>());
-  }
-#else
-  template<class U>
-  static T* move_construct(U* other)
-  {
-    return copy_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_COPY_CONSTR)>());
-  }
-  template<class U>
-  static void move_assign(T* self, U* other)
-  {
-    copy_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_COPY_ASSIGN)>());
-  }
-#endif
-};
-
-} // end namespace swig
-
-
-
-template<class T1, class T2, int AFlags>
-SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other) {
-  typedef swig::AssignmentTraits<T1, AFlags> Traits_t;
-  T1* pself  = static_cast<T1*>(self->ptr);
-  T2* pother = static_cast<T2*>(other->ptr);
-
-  switch (self->mem) {
-    case SWIG_NULL:
-      /* LHS is unassigned */
-      switch (other->mem) {
-        case SWIG_NULL: /* null op */ break;
-        case SWIG_MOVE: /* capture pointer from RHS */
-          self->ptr = other->ptr;
-          other->ptr = NULL;
-          self->mem = SWIG_OWN;
-          other->mem = SWIG_NULL;
-          break;
-        case SWIG_OWN: /* copy from RHS */
-          self->ptr = Traits_t::copy_construct(pother);
-          self->mem = SWIG_OWN;
-          break;
-        case SWIG_REF: /* pointer to RHS */
-        case SWIG_CREF:
-          self->ptr = other->ptr;
-          self->mem = other->mem;
-          break;
-      }
-      break;
-    case SWIG_OWN:
-      /* LHS owns memory */
-      switch (other->mem) {
-        case SWIG_NULL:
-          /* Delete LHS */
-          Traits_t::destruct(pself);
-          self->ptr = NULL;
-          self->mem = SWIG_NULL;
-          break;
-        case SWIG_MOVE:
-          /* Move RHS into LHS; delete RHS */
-          Traits_t::move_assign(pself, pother);
-          Traits_t::destruct(pother);
-          other->ptr = NULL;
-          other->mem = SWIG_NULL;
-          break;
-        case SWIG_OWN:
-        case SWIG_REF:
-        case SWIG_CREF:
-          /* Copy RHS to LHS */
-          Traits_t::copy_assign(pself, pother);
-          break;
-      }
-      break;
-    case SWIG_MOVE:
-      SWIG_exception_impl("assignment", SWIG_RuntimeError,
-        "Left-hand side of assignment should never be in a 'MOVE' state",
-        return);
-      break;
-    case SWIG_REF:
-      /* LHS is a reference */
-      switch (other->mem) {
-        case SWIG_NULL:
-          /* Remove LHS reference */
-          self->ptr = NULL;
-          self->mem = SWIG_NULL;
-          break;
-        case SWIG_MOVE:
-          /* Move RHS into LHS; delete RHS. The original ownership stays the
-           * same. */
-          Traits_t::move_assign(pself, pother);
-          Traits_t::destruct(pother);
-          other->ptr = NULL;
-          other->mem = SWIG_NULL;
-          break;
-        case SWIG_OWN:
-        case SWIG_REF:
-        case SWIG_CREF:
-          /* Copy RHS to LHS */
-          Traits_t::copy_assign(pself, pother);
-          break;
-      }
-    case SWIG_CREF:
-      switch (other->mem) {
-        case SWIG_NULL:
-          /* Remove LHS reference */
-          self->ptr = NULL;
-          self->mem = SWIG_NULL;
-        default:
-          SWIG_exception_impl("assignment", SWIG_RuntimeError,
-              "Cannot assign to a const reference", return);
-          break;
-      }
-  }
-}
 
 
 #include "BelosTypes.hpp"
 
+
+#include <stdlib.h>
+#ifdef _MSC_VER
+# ifndef strtoull
+#  define strtoull _strtoui64
+# endif
+# ifndef strtoll
+#  define strtoll _strtoi64
+# endif
+#endif
+
+
+struct SwigArrayWrapper {
+    void* data;
+    size_t size;
+};
+
+
+SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
+  SwigArrayWrapper result;
+  result.data = NULL;
+  result.size = 0;
+  return result;
+}
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT SwigClassWrapper swigc_new_string() {
-  SwigClassWrapper fresult ;
-  std::string *result = 0 ;
-  
-  result = (std::string *)new std::string();
-  fresult.ptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_string_resize(SwigClassWrapper const *farg1, unsigned long const *farg2) {
-  std::string *arg1 = (std::string *) 0 ;
-  std::string::size_type arg2 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::string *", "string", "std::string::resize(std::string::size_type)", return );
-  arg1 = static_cast< std::string * >(farg1->ptr);
-  arg2 = *farg2;
-  (arg1)->resize(arg2);
-  
-}
-
-
-SWIGEXPORT void swigc_string_clear(SwigClassWrapper const *farg1) {
-  std::string *arg1 = (std::string *) 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::string *", "string", "std::string::clear()", return );
-  arg1 = static_cast< std::string * >(farg1->ptr);
-  (arg1)->clear();
-  
-}
-
-
-SWIGEXPORT unsigned long swigc_string_size(SwigClassWrapper const *farg1) {
-  unsigned long fresult ;
-  std::string *arg1 = (std::string *) 0 ;
-  std::string::size_type result;
-  
-  SWIG_check_nonnull(*farg1, "std::string const *", "string", "std::string::size() const", return 0);
-  arg1 = static_cast< std::string * >(farg1->ptr);
-  result = (std::string::size_type)((std::string const *)arg1)->size();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT unsigned long swigc_string_length(SwigClassWrapper const *farg1) {
-  unsigned long fresult ;
-  std::string *arg1 = (std::string *) 0 ;
-  std::string::size_type result;
-  
-  SWIG_check_nonnull(*farg1, "std::string const *", "string", "std::string::length() const", return 0);
-  arg1 = static_cast< std::string * >(farg1->ptr);
-  result = (std::string::size_type)((std::string const *)arg1)->length();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT SwigArrayWrapper swigc_string_str(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigArrayWrapper swigc_convertReturnTypeToString(int const *farg1) {
   SwigArrayWrapper fresult ;
-  std::string *arg1 = (std::string *) 0 ;
-  std::string *result = 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::string *", "string", "std::string::str()", return SwigArrayWrapper_uninitialized());
-  arg1 = static_cast< std::string * >(farg1->ptr);
-  result = (std::string *) &std_string_str(arg1);
-  fresult.data = (result->empty() ? NULL : &(*result->begin()));
-  fresult.size = result->size();
-  
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_delete_string(SwigClassWrapper const *farg1) {
-  std::string *arg1 = (std::string *) 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "std::string *", "string", "std::string::~string()", return );
-  arg1 = static_cast< std::string * >(farg1->ptr);
-  delete arg1;
-  
-}
-
-
-SWIGEXPORT void swigc_assignment_string(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef std::string swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_COPY_CONSTR);
-}
-
-
-SWIGEXPORT SwigClassWrapper swigc_new_BelosError(SwigClassWrapper const *farg1) {
-  SwigClassWrapper fresult ;
-  std::string *arg1 = 0 ;
-  Belos::BelosError *result = 0 ;
-  
-  SWIG_check_nonnull(*farg1, "std::string const &", "string", "Belos::BelosError::BelosError(std::string const &)", return SwigClassWrapper_uninitialized());
-  arg1 = static_cast< std::string * >(farg1->ptr);
-  result = (Belos::BelosError *)new Belos::BelosError((std::string const &)*arg1);
-  fresult.ptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_delete_BelosError(SwigClassWrapper const *farg1) {
-  Belos::BelosError *arg1 = (Belos::BelosError *) 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "Belos::BelosError *", "BelosError", "Belos::BelosError::~BelosError()", return );
-  arg1 = static_cast< Belos::BelosError * >(farg1->ptr);
-  delete arg1;
-  
-}
-
-
-SWIGEXPORT void swigc_assignment_BelosError(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Belos::BelosError swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_COPY_CONSTR);
-}
-
-
-SWIGEXPORT SwigClassWrapper swigc_convertReturnTypeToString(int const *farg1) {
-  SwigClassWrapper fresult ;
   Belos::ReturnType arg1 ;
   std::string result;
   
   arg1 = static_cast< Belos::ReturnType >(*farg1);
   result = Belos::convertReturnTypeToString(arg1);
-  fresult.ptr = (new std::string(static_cast< const std::string& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.size = (&result)->size();
+  if (fresult.size > 0) {
+    fresult.data = malloc(fresult.size);
+    memcpy(fresult.data, (&result)->c_str(), fresult.size);
+  } else {
+    fresult.data = NULL;
+  }
   return fresult;
 }
 
-
-SWIGEXPORT SWIGEXTERN int const swigc_BelosStatusType = static_cast< int >(-1);
 
 SWIGEXPORT SWIGEXTERN int const swigc_BelosPassed = static_cast< int >(Belos::Passed);
 
@@ -677,65 +276,73 @@ SWIGEXPORT SWIGEXTERN int const swigc_BelosFailed = static_cast< int >(Belos::Fa
 
 SWIGEXPORT SWIGEXTERN int const swigc_BelosUndefined = static_cast< int >(Belos::Undefined);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosResetType = static_cast< int >(-1);
-
 SWIGEXPORT SWIGEXTERN int const swigc_BelosProblem = static_cast< int >(Belos::Problem);
 
 SWIGEXPORT SWIGEXTERN int const swigc_BelosRecycleSubspace = static_cast< int >(Belos::RecycleSubspace);
 
-SWIGEXPORT SwigClassWrapper swigc_convertStatusTypeToString(int const *farg1) {
-  SwigClassWrapper fresult ;
+SWIGEXPORT SwigArrayWrapper swigc_convertStatusTypeToString(int const *farg1) {
+  SwigArrayWrapper fresult ;
   Belos::StatusType arg1 ;
   std::string result;
   
   arg1 = static_cast< Belos::StatusType >(*farg1);
   result = Belos::convertStatusTypeToString(arg1);
-  fresult.ptr = (new std::string(static_cast< const std::string& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.size = (&result)->size();
+  if (fresult.size > 0) {
+    fresult.data = malloc(fresult.size);
+    memcpy(fresult.data, (&result)->c_str(), fresult.size);
+  } else {
+    fresult.data = NULL;
+  }
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_convertStringToStatusType(SwigClassWrapper const *farg1) {
+SWIGEXPORT int swigc_convertStringToStatusType(SwigArrayWrapper *farg1) {
   int fresult ;
   std::string *arg1 = 0 ;
+  std::string tempstr1 ;
   Belos::StatusType result;
   
-  SWIG_check_nonnull(*farg1, "std::string const &", "string", "Belos::convertStringToStatusType(std::string const &)", return 0);
-  arg1 = static_cast< std::string * >(farg1->ptr);
+  tempstr1 = std::string(static_cast<const char *>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
   result = (Belos::StatusType)Belos::convertStringToStatusType((std::string const &)*arg1);
   fresult = static_cast< int >(result);
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_convertStringToScaleType(SwigClassWrapper const *farg1) {
+SWIGEXPORT int swigc_convertStringToScaleType(SwigArrayWrapper *farg1) {
   int fresult ;
   std::string *arg1 = 0 ;
+  std::string tempstr1 ;
   Belos::ScaleType result;
   
-  SWIG_check_nonnull(*farg1, "std::string const &", "string", "Belos::convertStringToScaleType(std::string const &)", return 0);
-  arg1 = static_cast< std::string * >(farg1->ptr);
+  tempstr1 = std::string(static_cast<const char *>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
   result = (Belos::ScaleType)Belos::convertStringToScaleType((std::string const &)*arg1);
   fresult = static_cast< int >(result);
   return fresult;
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_convertScaleTypeToString(int const *farg1) {
-  SwigClassWrapper fresult ;
+SWIGEXPORT SwigArrayWrapper swigc_convertScaleTypeToString(int const *farg1) {
+  SwigArrayWrapper fresult ;
   Belos::ScaleType arg1 ;
   std::string result;
   
   arg1 = static_cast< Belos::ScaleType >(*farg1);
   result = Belos::convertScaleTypeToString(arg1);
-  fresult.ptr = (new std::string(static_cast< const std::string& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.size = (&result)->size();
+  if (fresult.size > 0) {
+    fresult.data = malloc(fresult.size);
+    memcpy(fresult.data, (&result)->c_str(), fresult.size);
+  } else {
+    fresult.data = NULL;
+  }
   return fresult;
 }
 
-
-SWIGEXPORT SWIGEXTERN int const swigc_BelosMsgType = static_cast< int >(-1);
 
 SWIGEXPORT SWIGEXTERN int const swigc_BelosErrors = static_cast< int >(Belos::Errors);
 
@@ -753,15 +360,20 @@ SWIGEXPORT SWIGEXTERN int const swigc_BelosStatusTestDetails = static_cast< int 
 
 SWIGEXPORT SWIGEXTERN int const swigc_BelosDebug = static_cast< int >(Belos::Debug);
 
-SWIGEXPORT SwigClassWrapper swigc_convertMsgTypeToString(int const *farg1) {
-  SwigClassWrapper fresult ;
+SWIGEXPORT SwigArrayWrapper swigc_convertMsgTypeToString(int const *farg1) {
+  SwigArrayWrapper fresult ;
   Belos::MsgType arg1 ;
   std::string result;
   
   arg1 = static_cast< Belos::MsgType >(*farg1);
   result = Belos::convertMsgTypeToString(arg1);
-  fresult.ptr = (new std::string(static_cast< const std::string& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.size = (&result)->size();
+  if (fresult.size > 0) {
+    fresult.data = malloc(fresult.size);
+    memcpy(fresult.data, (&result)->c_str(), fresult.size);
+  } else {
+    fresult.data = NULL;
+  }
   return fresult;
 }
 

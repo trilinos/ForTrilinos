@@ -10,12 +10,6 @@
 
 %include <std_string.i>
 
-// Instantiate std::pair view
-%include <typemaps.i>
-%fortran_string_view(char)
-%fortran_view(int)
-%fortran_view(double)
-
 // Hide warnings about overloading intrinsics
 %warnfilter(314) Teuchos::ParameterList::print;
 %warnfilter(314) Teuchos::ParameterList::size;

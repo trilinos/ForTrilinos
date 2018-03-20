@@ -14,27 +14,22 @@
 %}
 
 // =======================================================================
-// Ignore permanently
-// =======================================================================
-%ignore Teuchos::TypeNameTraits;
-
-// =======================================================================
 // Postpone temporarily
 // =======================================================================
-%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
-        const Teuchos::ArrayView<const Teuchos::ArrayView<const Scalar> >&ArrayOfPtrs, \
+%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map,
+        const Teuchos::ArrayView<const Teuchos::ArrayView<const Scalar> >&ArrayOfPtrs,
         const size_t NumVectors);                               // needs ArrayView of ArrayView (or alternative)
-%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
+%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map,
         const dual_view_type& view, const Teuchos::ArrayView<const size_t>& whichVectors);  // needs Kokkos::DualView; needs Teuchos::ArrayView<size_t>
-%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
-        const dual_view_type& view, \
-        const dual_view_type& origView, \
+%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map,
+        const dual_view_type& view,
+        const dual_view_type& origView,
         const Teuchos::ArrayView<const size_t>& whichVectors);  // needs Kokkos::DualView; needs Teuchos::ArrayView<size_t>
-%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
+%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map,
         const dual_view_type& view);                            // needs Kokkos::DualView
-%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
+%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map,
         const typename dual_view_type::t_dev& d_view);          // needs Kokkos::DualView
-%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
+%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map,
         const dual_view_type& view, const dual_view_type& origView);    // needs Kokkos::DualView
 %ignore Tpetra::MultiVector::assign;
 %ignore Tpetra::MultiVector::describe;              // needs Teuchos::FancyOStream
@@ -60,9 +55,12 @@
 // =======================================================================
 // Fix ±1 issues
 // =======================================================================
-%typemap(in)  size_t j %{$1 = *$input - 1;%}
-%typemap(in)  size_t col %{$1 = *$input - 1;%}
-%typemap(in)  int lclRow %{$1 = *$input - 1;%} /* int = LocalOrdinal */
+
+%apply int FORTRAN_INDEX { size_t j,
+                           size_t col,
+                           int lclRow };
+
+%apply Teuchos::ArrayView<int> FORTRAN_INDEX { Teuchos::ArrayView<const size_t> cols };
 
 // =======================================================================
 // Make interface more Fortran friendly
@@ -163,20 +161,9 @@
 %ignore Tpetra::MultiVector::get1dView;
 %ignore Tpetra::MultiVector::get1dViewNonConst;
 
-
-// FIXME
-// For some unknown reason, the generated code for Multivector `release()` is
-// different from all other Tpetra classes (even from CrsMatrix which also has
-// a "classic" template argument). Specifically, the default release it was
-// generating was using "delete arg1;" instead of "(void) arg1; delete
-// smartarg1". This means that "unref" feature was not attached to it for some
-// reason.
-// Therefore, we explicitly attach it here to fix the generated wrapper code.
-%feature("unref") Tpetra::MultiVector<SC,LO,GO,NO>
-%{ (void)$self; delete smart$self; %}
-
-%teuchos_rcp(Tpetra::MultiVector<SC,LO,GO,NO,NO::classic>)
-
+/* Include the multivector *before* the RCP declaration so that
+ * SWIG becomes aware of the default template arguments */
 %include "Tpetra_MultiVector_decl.hpp"
 
+%teuchos_rcp(Tpetra::MultiVector<SC,LO,GO,NO>)
 %template(TpetraMultiVector) Tpetra::MultiVector<SC,LO,GO,NO>;

@@ -6,61 +6,17 @@
  */
 %module forbelos
 
-%include "copyright.i"
-
+%include <copyright.i>
+%include <extern_forerror.i>
+%import <forerror.i>
+// TODO?: %import <forteuchos.i>
 %include <std_string.i>
 
-%include "ForTrilinosBelos_config.hpp"
-
-%ignore Belos::toString;
-
-// enum workaround
-#define RENAME_ENUM(X) %rename(Belos##X) X;
-RENAME_ENUM(ETrans)
-RENAME_ENUM(NOTRANS)
-RENAME_ENUM(TRANS)
-RENAME_ENUM(CONJTRANS)
-RENAME_ENUM(NormType)
-RENAME_ENUM(OneNorm)
-RENAME_ENUM(TwoNorm)
-RENAME_ENUM(InfNorm)
-RENAME_ENUM(ScaleType)
-RENAME_ENUM(NormOfRHS)
-RENAME_ENUM(NormOfInitRes)
-RENAME_ENUM(NormOfPrecInitRes)
-RENAME_ENUM(None)
-RENAME_ENUM(UserProvided)
-RENAME_ENUM(NormOfFullInitRes)
-RENAME_ENUM(NormOfFullPrecInitRes)
-RENAME_ENUM(NormOfFullScaledInitRes)
-RENAME_ENUM(NormOfFullScaledPrecInitRes)
-RENAME_ENUM(OutputType)
-RENAME_ENUM(General)
-RENAME_ENUM(Brief)
-RENAME_ENUM(User)
-RENAME_ENUM(ReturnType)
-RENAME_ENUM(Converged)
-RENAME_ENUM(Unconverged)
-RENAME_ENUM(StatusType)
-RENAME_ENUM(Passed)
-RENAME_ENUM(Failed)
-RENAME_ENUM(Undefined)
-RENAME_ENUM(ResetType)
-RENAME_ENUM(Problem)
-RENAME_ENUM(RecycleSubspace)
-RENAME_ENUM(ConjType)
-RENAME_ENUM(NO_CONJ)
-RENAME_ENUM(CONJ)
-RENAME_ENUM(MsgType)
-RENAME_ENUM(Errors)
-RENAME_ENUM(Warnings)
-RENAME_ENUM(IterationDetails)
-RENAME_ENUM(OrthoDetails)
-RENAME_ENUM(FinalSummary)
-RENAME_ENUM(TimingDetails)
-RENAME_ENUM(StatusTestDetails)
-RENAME_ENUM(Debug)
-#undef RENAME_ENUM
-
+// Configuration
 #define BELOS_DEPRECATED
+
+// All enums should be prefaced with Belos
+%rename("Belos%s", %$isenumitem) "";
+%rename("Belos%s", %$isenum)     "";
+
 %include "Belos_Types.i"

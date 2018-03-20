@@ -75,9 +75,6 @@
     static void writeSparseGraphFile (const std::string& filename, const Teuchos::RCP< const crs_graph_type > &pGraph, const bool debug=false) {
       Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filename, pGraph, debug);
     }
-    static void writeMapFile (const std::string& filename, const map_type &map) {
-      Tpetra::MatrixMarket::Writer<CMT>::writeMapFile(filename, map);
-    }
 }
 %ignore Tpetra::MatrixMarket::Reader::readSparseGraphFile;
 %ignore Tpetra::MatrixMarket::Reader::readSparseFile;
@@ -90,11 +87,9 @@
 %ignore Tpetra::MatrixMarket::Writer::writeDenseFile;
 %ignore Tpetra::MatrixMarket::Writer::writeOperator;
 
-// The introduction of typedef seems to work. No clue why.
-%teuchos_rcp(Tpetra::MatrixMarket::Reader<CMT>)
-%teuchos_rcp(Tpetra::MatrixMarket::Writer<CMT>)
-
 %include "MatrixMarket_Tpetra.hpp"
 
+%teuchos_rcp(Tpetra::MatrixMarket::Reader<CMT>)
+%teuchos_rcp(Tpetra::MatrixMarket::Writer<CMT>)
 %template(TpetraReader) Tpetra::MatrixMarket::Reader<CMT>;
 %template(TpetraWriter) Tpetra::MatrixMarket::Writer<CMT>;

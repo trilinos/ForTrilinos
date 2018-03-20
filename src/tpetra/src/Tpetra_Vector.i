@@ -32,8 +32,7 @@
 // =======================================================================
 %typemap(in)  int myRow %{$1 = *$input - 1;%}
 
-%teuchos_rcp(Tpetra::Vector<SC,LO,GO,NO,false>)
-
 %include "Tpetra_Vector_decl.hpp"
 
-%template(TpetraVector) Tpetra::Vector<SC,LO,GO,NO,false>;
+%teuchos_rcp(Tpetra::Vector<SC,LO,GO,NO>)
+%template(TpetraVector) Tpetra::Vector<SC,LO,GO,NO>;

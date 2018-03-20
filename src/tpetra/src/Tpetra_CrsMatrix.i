@@ -36,24 +36,24 @@
 // =======================================================================
 // Postpone temporarily
 // =======================================================================
-%ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap, \
-               const Teuchos::RCP<const map_type>& colMap, \
-               const typename local_matrix_type::row_map_type& rowPointers, \
-               const typename local_graph_type::entries_type::non_const_type& columnIndices, \
-               const typename local_matrix_type::values_type& values, \
+%ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap,
+               const Teuchos::RCP<const map_type>& colMap,
+               const typename local_matrix_type::row_map_type& rowPointers,
+               const typename local_graph_type::entries_type::non_const_type& columnIndices,
+               const typename local_matrix_type::values_type& values,
                const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);         // needs Kokkos containers
-%ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap, \
-               const Teuchos::RCP<const map_type>& colMap, \
-               const local_matrix_type& lclMatrix, \
+%ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap,
+               const Teuchos::RCP<const map_type>& colMap,
+               const local_matrix_type& lclMatrix,
                const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);         // needs Kokkos containers
-%ignore Tpetra::CrsMatrix::CrsMatrix (const local_matrix_type& lclMatrix, \
-               const Teuchos::RCP<const map_type>& rowMap, \
-               const Teuchos::RCP<const map_type>& colMap = Teuchos::null, \
-               const Teuchos::RCP<const map_type>& domainMap = Teuchos::null, \
-               const Teuchos::RCP<const map_type>& rangeMap = Teuchos::null, \
+%ignore Tpetra::CrsMatrix::CrsMatrix (const local_matrix_type& lclMatrix,
+               const Teuchos::RCP<const map_type>& rowMap,
+               const Teuchos::RCP<const map_type>& colMap = Teuchos::null,
+               const Teuchos::RCP<const map_type>& domainMap = Teuchos::null,
+               const Teuchos::RCP<const map_type>& rangeMap = Teuchos::null,
                const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);         // needs Kokkos containers
-%ignore Tpetra::CrsMatrix::setAllValues(const typename local_matrix_type::row_map_type& ptr, \
-               const typename local_graph_type::entries_type::non_const_type& ind, \
+%ignore Tpetra::CrsMatrix::setAllValues(const typename local_matrix_type::row_map_type& ptr,
+               const typename local_graph_type::entries_type::non_const_type& ind,
                const typename local_matrix_type::values_type& val);                         // needs Kokkos::View
 %ignore Tpetra::CrsMatrix::insertGlobalValues (const GlobalOrdinal globalRow, const LocalOrdinal numEnt, const Scalar vals[], const GlobalOrdinal inds[]); // prefer ArrayView version
 %ignore Tpetra::CrsMatrix::insertLocalValues (const LocalOrdinal localRow, const LocalOrdinal numEnt, const Scalar vals[], const LocalOrdinal cols[]); // prefer ArrayView version
@@ -209,20 +209,20 @@
       self->doExport(source, importer, CM);
     }
 }
-%ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap, \
-               const Teuchos::ArrayRCP<const size_t>& NumEntriesPerRowToAlloc, \
-               ProfileType pftype = DynamicProfile, \
+%ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap,
+               const Teuchos::ArrayRCP<const size_t>& NumEntriesPerRowToAlloc,
+               ProfileType pftype = DynamicProfile,
                const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);         // needs ArrayRCP
-%ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap, \
-               const Teuchos::RCP<const map_type>& colMap, \
-               const Teuchos::ArrayRCP<const size_t>& NumEntriesPerRowToAlloc, \
-               ProfileType pftype = DynamicProfile, \
+%ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap,
+               const Teuchos::RCP<const map_type>& colMap,
+               const Teuchos::ArrayRCP<const size_t>& NumEntriesPerRowToAlloc,
+               ProfileType pftype = DynamicProfile,
                const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);         // needs ArrayRCP
-%ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap, \
-               const Teuchos::RCP<const map_type>& colMap, \
-               const Teuchos::ArrayRCP<size_t>& rowPointers, \
-               const Teuchos::ArrayRCP<LocalOrdinal>& columnIndices, \
-               const Teuchos::ArrayRCP<Scalar>& values, \
+%ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap,
+               const Teuchos::RCP<const map_type>& colMap,
+               const Teuchos::ArrayRCP<size_t>& rowPointers,
+               const Teuchos::ArrayRCP<LocalOrdinal>& columnIndices,
+               const Teuchos::ArrayRCP<Scalar>& values,
                const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);         // needs Teuchos::ArrayRCP
 %ignore Tpetra::CrsMatrix::insertGlobalValues(const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals);
 %ignore Tpetra::CrsMatrix::insertLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals);
@@ -244,8 +244,7 @@
 %ignore Tpetra::CrsMatrix::sumIntoLocalValues (const LocalOrdinal localRow, const LocalOrdinal numEnt, const Scalar vals[], const LocalOrdinal cols[], const bool atomic=useAtomicUpdatesByDefault);
 
 
-%teuchos_rcp(Tpetra::CrsMatrix<SC,LO,GO,NO,NO::classic>)
-
 %include "Tpetra_CrsMatrix_decl.hpp"
 
+%teuchos_rcp(Tpetra::CrsMatrix<SC,LO,GO,NO>)
 %template(TpetraCrsMatrix) Tpetra::CrsMatrix<SC,LO,GO,NO>;

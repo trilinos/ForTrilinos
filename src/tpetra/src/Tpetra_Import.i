@@ -50,8 +50,7 @@
 %ignore Tpetra::Import::print;                  // needs std::ostream
 
 
-%teuchos_rcp(Tpetra::Import<LO,GO,NO>)
-
 %include "Tpetra_Import_decl.hpp"
 
+%teuchos_rcp(Tpetra::Import<LO,GO,NO>)
 %template(TpetraImport) Tpetra::Import<LO,GO,NO>;
