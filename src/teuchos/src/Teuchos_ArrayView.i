@@ -61,6 +61,7 @@ class ArrayView
 TEUCHOS_ARRAYVIEW(int);
 TEUCHOS_ARRAYVIEW(double);
 TEUCHOS_ARRAYVIEW(long long);
+TEUCHOS_ARRAYVIEW(size_t);
 
 
 /* -------------------------------------------------------------------------
