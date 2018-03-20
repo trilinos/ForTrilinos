@@ -36,20 +36,6 @@
 
 // =======================================================================
 // Fix ±1 issues
-// =======================================================================
-%typemap(in)  int localIndex        %{$1 = *$input - 1;%}
-%typemap(out) int getMinLocalIndex  %{$result = $1 + 1;%}
-%typemap(out) int getMaxLocalIndex  %{$result = $1 + 1;%}
-%typemap(out) int getLocalElement   %{$result = $1 + 1;%}
-%typemap(argout) const Teuchos::ArrayView<int>& nodeIDList %{
-  for (int i = 0; i < $1->size(); i++)
-    (*$1)[i]++;
-%}
-%typemap(argout) const Teuchos::ArrayView<int>& LIDList %{
-  for (int i = 0; i < $1->size(); i++)
-    (*$1)[i]++;
-%}
-
 
 // =======================================================================
 // Make interface more Fortran friendly
@@ -89,6 +75,19 @@
 %ignore Tpetra::Map::getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList, const Teuchos::ArrayView< LocalOrdinal > &LIDList) const;
 %ignore Tpetra::Map::getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList) const;
 %ignore Tpetra::Map::getNodeElementList() const;
+//
+// (see forteuchos.i)
+// =======================================================================
+%apply int FORTRAN_INDEX { int localIndex,
+                           int getMinLocalIndex,
+                           int getMaxLocalIndex,
+                           int getLocalElement };
+
+// Note: these are modifying fortran-owned memory, decrementing the count after
+// the values have been retrieved.
+%apply Teuchos::ArrayView<int> FORTRAN_INDEX {
+    const Teuchos::ArrayView<int>& nodeIDList,
+    const Teuchos::ArrayView<int>& LIDList };
 
 %include "Tpetra_Map_decl.hpp"
 

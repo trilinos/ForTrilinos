@@ -48,3 +48,8 @@ namespace Teuchos {
 %include "Teuchos_Comm.i"
 %include "Teuchos_ParameterList.i"
 %include "Teuchos_XML.i"
+
+// Declare typemaps that translate from C to Fortran indexing
+%typemap(in)    int FORTRAN_INDEX %{$1 = *$input - 1;%}
+%typemap(out)   int FORTRAN_INDEX %{$result = $1 + 1;%}
+

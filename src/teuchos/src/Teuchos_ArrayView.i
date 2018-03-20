@@ -62,3 +62,28 @@ TEUCHOS_ARRAYVIEW(int);
 TEUCHOS_ARRAYVIEW(double);
 TEUCHOS_ARRAYVIEW(long long);
 
+
+/* -------------------------------------------------------------------------
+ * Typemaps: convert to/from Fortran indexing.
+ */
+%typemap(in, noblock=1) Teuchos::ArrayView<int> FORTRAN_INDEX
+    (Teuchos::Array<$1_ltype::value_type > tmparr,
+     Teuchos::ArrayView<$1_ltype::value_type > tmpview) {
+  tmparr.resize($1->size());
+
+  for (int i = 0; i < $1->size(); i++)
+    (*$1)[i] = (static_cast<$1_ltype::value_type*>($input))[i] - 1;
+  tmpview = tmparr
+  $1 = &tmpview;
+}
+
+%typemap(argout, noblock=1) Teuchos::ArrayView<int> FORTRAN_INDEX {
+  for (int i = 0; i < $1->size(); i++)
+    (*$1)[i]++;
+}
+
+// Convert a return-by-view array in C indexing to Fortran indexing.
+%typemap(argout, noblock=1) Teuchos::ArrayView<int> FORTRAN_INDEX {
+  for (int i = 0; i < $1->size(); i++)
+    (*$1)[i]++;
+}
