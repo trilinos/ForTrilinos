@@ -63,25 +63,10 @@
 // =======================================================================
 // Fix ±1 issues
 // =======================================================================
-%typemap(in)  int localRow %{$1 = *$input - 1;%}
-%typemap(argout) const Teuchos::ArrayView< int > &indices %{
-  for (int i = 0; i < $1->size(); i++)
-    (*$1)[i]++;
-%}
-%typemap(in, noblock=1) const Teuchos::ArrayView< int > &indices () {
-
-  // Original typemap: convert void* to thinvec reference
-  $1 = %static_cast(%const_cast($input, void*), $1_ltype);
-
-  // Construct temporary array and view
-  Teuchos::Array<int> tmp = Teuchos::Array<int>($1->size());
-  for (int i = 0; i < $1->size(); i++)
-    tmp[i] = (*$1)[i] - 1;
-  Teuchos::ArrayView<int> tmpview = tmp();
-
-  // Make the input argument point to our temporary vector
-  $1 = &tmpview;
-}
+%apply int FORTRAN_INDEX { int localRow };
+%apply Teuchos::ArrayView<int> FORTRAN_INDEX {
+    const Teuchos::ArrayView<int> &indices
+};
 
 // =======================================================================
 // Make interface more Fortran friendly

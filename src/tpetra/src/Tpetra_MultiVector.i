@@ -55,9 +55,12 @@
 // =======================================================================
 // Fix ±1 issues
 // =======================================================================
-%typemap(in)  size_t j %{$1 = *$input - 1;%}
-%typemap(in)  size_t col %{$1 = *$input - 1;%}
-%typemap(in)  int lclRow %{$1 = *$input - 1;%} /* int = LocalOrdinal */
+
+%apply int FORTRAN_INDEX { size_t j,
+                           size_t col,
+                           int lclRow };
+
+%apply Teuchos::ArrayView<int> FORTRAN_INDEX { Teuchos::ArrayView<const size_t> cols };
 
 // =======================================================================
 // Make interface more Fortran friendly
