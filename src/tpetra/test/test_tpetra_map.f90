@@ -58,7 +58,6 @@ contains
 
 ! ---------------------------------isOneToOne--------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMap_isOneToOne)
-    logical(c_bool) :: bool
     type(TpetraMap) :: Obj
     integer(global_ordinal_type) :: num_global, indices(4)
     num_global = 4*comm%getSize()
@@ -275,7 +274,7 @@ contains
 ! -------------------------------isDistributed-------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMap_isDistributed)
     type(TpetraMap) :: Obj
-    integer(global_ordinal_type) :: num_global, elements(4)
+    integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
 
     Obj = TpetraMap(num_global, comm); TEST_IERR()
@@ -296,7 +295,6 @@ contains
 ! --------------------------------isCompatible-------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMap_isCompatible)
     type(TpetraMap) :: Obj1, Obj2
-    type(TpetraMap) :: map
     integer(global_ordinal_type) :: num_global, elements(4)
     integer :: k
     num_global = 4*comm%getSize()
@@ -326,7 +324,6 @@ contains
 ! ----------------------------------isSameAs---------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMap_isSameAs)
     type(TpetraMap) :: Obj1, Obj2
-    type(TpetraMap) :: map
     integer(size_type) :: num_local
     integer(global_ordinal_type) :: num_global, elements(4)
     integer :: k
