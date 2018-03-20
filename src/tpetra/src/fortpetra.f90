@@ -79,6 +79,10 @@ end type
  public :: TpetraExport
  public :: TpetraImport
  public :: TpetraMultiVector
+ public :: TpetraOperator
+
+public :: init_TpetraOperator
+
  public :: RowInfo
  public :: TpetraELocalGlobal, TpetraLocalIndices, TpetraGlobalIndices
  public :: TpetraCrsGraph
@@ -304,6 +308,27 @@ end type
   procedure new_TpetraMultiVector__SWIG_6
   procedure new_TpetraMultiVector__SWIG_7
  end interface
+ type :: TpetraOperator
+  ! These should be treated as PROTECTED data
+  type(SwigClassWrapper), public :: swigdata
+ contains
+  procedure :: fhandle => swigf_TpetraOperator_fhandle
+  procedure :: init => swigf_TpetraOperator_init
+  procedure :: getDomainMap => swigf_TpetraOperator_getDomainMap
+  procedure :: getRangeMap => swigf_TpetraOperator_getRangeMap
+  procedure :: apply => swigf_TpetraOperator_apply
+  procedure :: release => delete_TpetraOperator
+  procedure, private :: swigf_assignment_TpetraOperator
+  generic :: assignment(=) => swigf_assignment_TpetraOperator
+ end type TpetraOperator
+ interface TpetraOperator
+  procedure new_TpetraOperator
+ end interface
+
+  type :: TpetraOperatorWrapper
+    class(TpetraOperator), pointer :: data
+  end type
+
  type :: RowInfo
   ! These should be treated as PROTECTED data
   type(SwigClassWrapper), public :: swigdata
@@ -1770,6 +1795,75 @@ end subroutine
 
   subroutine swigc_assignment_TpetraMultiVector(self, other) &
      bind(C, name="swigc_assignment_TpetraMultiVector")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
+  end subroutine
+function swigc_TpetraOperator_fhandle(farg1) &
+bind(C, name="swigc_TpetraOperator_fhandle") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(C_PTR) :: fresult
+end function
+
+subroutine swigc_TpetraOperator_init(farg1, farg2) &
+bind(C, name="swigc_TpetraOperator_init")
+use, intrinsic :: ISO_C_BINDING
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+function swigc_new_TpetraOperator() &
+bind(C, name="swigc_new_TpetraOperator") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: fresult
+end function
+
+function swigc_TpetraOperator_getDomainMap(farg1) &
+bind(C, name="swigc_TpetraOperator_getDomainMap") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
+end function
+
+function swigc_TpetraOperator_getRangeMap(farg1) &
+bind(C, name="swigc_TpetraOperator_getRangeMap") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
+end function
+
+subroutine swigc_TpetraOperator_apply(farg1, farg2, farg3, farg4, farg5, farg6) &
+bind(C, name="swigc_TpetraOperator_apply")
+use, intrinsic :: ISO_C_BINDING
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: farg2
+type(SwigClassWrapper) :: farg3
+integer(C_INT), intent(in) :: farg4
+real(C_DOUBLE), intent(in) :: farg5
+real(C_DOUBLE), intent(in) :: farg6
+end subroutine
+
+subroutine swigc_delete_TpetraOperator(farg1) &
+bind(C, name="swigc_delete_TpetraOperator")
+use, intrinsic :: ISO_C_BINDING
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+end subroutine
+
+  subroutine swigc_assignment_TpetraOperator(self, other) &
+     bind(C, name="swigc_assignment_TpetraOperator")
    use, intrinsic :: ISO_C_BINDING
    import :: SwigClassWrapper
    type(SwigClassWrapper), intent(inout) :: self
@@ -6132,6 +6226,179 @@ end subroutine
    type(TpetraMultiVector), intent(in) :: other
    call swigc_assignment_TpetraMultiVector(self%swigdata, other%swigdata)
   end subroutine
+function swigf_TpetraOperator_fhandle(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: swig_result
+class(TpetraOperator), intent(in) :: self
+type(C_PTR) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc_TpetraOperator_fhandle(farg1)
+swig_result = fresult
+end function
+
+subroutine swigf_TpetraOperator_init(self, fh)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraOperator), intent(inout) :: self
+type(C_PTR) :: fh
+type(SwigClassWrapper) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigdata
+farg2 = fh
+call swigc_TpetraOperator_init(farg1, farg2)
+end subroutine
+
+function new_TpetraOperator() &
+result(self)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraOperator) :: self
+type(SwigClassWrapper) :: fresult 
+
+fresult = swigc_new_TpetraOperator()
+self%swigdata = fresult
+end function
+
+function swigf_TpetraOperator_getDomainMap(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraMap) :: swig_result
+class(TpetraOperator), intent(in) :: self
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc_TpetraOperator_getDomainMap(farg1)
+swig_result%swigdata = fresult
+end function
+
+function swigf_TpetraOperator_getRangeMap(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraMap) :: swig_result
+class(TpetraOperator), intent(in) :: self
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc_TpetraOperator_getRangeMap(farg1)
+swig_result%swigdata = fresult
+end function
+
+subroutine swigf_TpetraOperator_apply(self, x, y, mode, alpha, beta)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraOperator), intent(in) :: self
+class(TpetraMultiVector), intent(in) :: x
+class(TpetraMultiVector), intent(inout) :: y
+integer(kind(TeuchosETransp)), intent(in) :: mode
+real(C_DOUBLE), intent(in) :: alpha
+real(C_DOUBLE), intent(in) :: beta
+type(SwigClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+type(SwigClassWrapper) :: farg3 
+integer(C_INT) :: farg4 
+real(C_DOUBLE) :: farg5 
+real(C_DOUBLE) :: farg6 
+
+farg1 = self%swigdata
+farg2 = x%swigdata
+farg3 = y%swigdata
+farg4 = mode
+farg5 = alpha
+farg6 = beta
+call swigc_TpetraOperator_apply(farg1, farg2, farg3, farg4, farg5, farg6)
+end subroutine
+
+subroutine delete_TpetraOperator(self)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraOperator), intent(inout) :: self
+type(SwigClassWrapper) :: farg1 
+
+
+type(C_PTR) :: fself_ptr
+type(TpetraOperatorWrapper), pointer :: handle
+fself_ptr = swigc_TpetraOperator_fhandle(self%swigdata)
+call c_f_pointer(cptr=fself_ptr, fptr=handle)
+farg1 = self%swigdata
+if (self%swigdata%mem == SWIG_OWN) then
+call swigc_delete_TpetraOperator(farg1)
+end if
+self%swigdata%ptr = C_NULL_PTR
+self%swigdata%mem = SWIG_NULL
+
+! Release the allocated handle
+deallocate(handle)
+end subroutine
+
+  subroutine swigf_assignment_TpetraOperator(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(TpetraOperator), intent(inout) :: self
+   type(TpetraOperator), intent(in) :: other
+   call swigc_assignment_TpetraOperator(self%swigdata, other%swigdata)
+  end subroutine
+
+! Convert a ISO-C class pointer struct into a user Fortran native pointer
+subroutine c_f_pointer_TpetraOperator(clswrap, fptr)
+  type(SwigClassWrapper), intent(in) :: clswrap
+  class(TpetraOperator), pointer, intent(out) :: fptr
+  type(TpetraOperatorWrapper), pointer :: handle
+  type(C_PTR) :: fself_ptr
+  ! Convert C handle to fortran pointer
+  fself_ptr = swigc_TpetraOperator_fhandle(clswrap)
+  ! *** NOTE *** : gfortran 5 through 7 falsely claim the next line is not standards compliant. Since 'handle' is a scalar and
+  ! not an array it should be OK, but TS29113 explicitly removes the interoperability requirement for fptr.
+  ! Error: TS 29113/TS 18508: Noninteroperable array FPTR at (1) to C_F_POINTER: Expression is a noninteroperable derived type
+  ! see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=84924
+  call c_f_pointer(cptr=fself_ptr, fptr=handle)
+  ! Access the pointer inside that
+  fptr => handle%data
+end subroutine
+
+! Convert SWIG array wrapper to temporary Fortran string, pass to the fortran
+! cb function, convert back to SWIG array wrapper.
+! This function must have input/output arguments compatible with ISO C, and it must be marked with "bind(C)"
+subroutine swigd_TpetraOperator_apply(fself, farg1, farg2, farg3, farg4, farg5) &
+    bind(C, name="swigd_TpetraOperator_apply")
+  use, intrinsic :: ISO_C_BINDING
+  implicit none
+  type(SwigClassWrapper), intent(in) :: fself
+  type(SwigClassWrapper), intent(in) :: farg1
+  type(SwigClassWrapper), intent(in) :: farg2
+  integer(C_INT), intent(in) :: farg3
+  real(C_DOUBLE), intent(in) :: farg4
+  real(C_DOUBLE), intent(in) :: farg5
+
+  class(TpetraOperator), pointer :: self
+  type(TpetraMultiVector) :: x
+  type(TpetraMultiVector) :: y
+  integer(kind(TeuchosETransp)) :: mode
+  real(C_DOUBLE) :: alpha
+  real(C_DOUBLE) :: beta
+
+  ! Get pointer to Fortran object from class wrapper
+  call c_f_pointer_TpetraOperator(fself, self)
+  ! Convert class references to fortran proxy references
+  x%swigdata = farg1
+  y%swigdata = farg2
+  ! Copy scalars
+  mode  = int(farg3, kind(TeuchosETransp))
+  alpha = farg4
+  beta  = farg5
+  ! Call fortran function pointer with native fortran input/output
+  call self%apply(x, y, mode, alpha, beta)
+end subroutine
+
+subroutine init_TpetraOperator(self)
+  class(TpetraOperator), target :: self
+  type(TpetraOperatorWrapper), pointer :: handle
+  allocate(handle)
+  handle%data => self
+  self%swigdata = swigc_new_TpetraOperator()
+  call swigc_TpetraOperator_init(self%swigdata, c_loc(handle))
+end subroutine
+
 subroutine RowInfo_localRow_set(self, localrow)
 use, intrinsic :: ISO_C_BINDING
 class(RowInfo), intent(inout) :: self

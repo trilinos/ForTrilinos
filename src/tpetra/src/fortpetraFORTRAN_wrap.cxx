@@ -687,6 +687,70 @@ SWIGINTERN void Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__doExport__SWIG_1(
       self->doExport(source, importer, CM);
     }
 
+#include "Tpetra_Operator.hpp"
+
+
+extern "C" {
+/* Fortran BIND(C) function */
+SwigArrayWrapper swigd_TpetraOperator_apply(
+        SwigClassWrapper const *fself,
+        SwigClassWrapper const *farg1,
+        SwigClassWrapper const *farg2,
+        int *farg3,
+        double const *farg4,
+        double const *farg5
+        );
+}
+
+
+  class TpetraOperator : public Tpetra::Operator<SC,LO,GO,NO> {
+    // Pointer to polymorphic fortran pointer
+    void* fhandle_;
+   public:
+    /* DIRECTOR FUNCTIONS */
+    const void* fhandle() const { return this->fhandle_; }
+    void init(void* fh) { fhandle_ = fh; }
+
+    /* TPETRA */
+    typedef Tpetra::MultiVector<SC,LO,GO,NO> MV_type;
+    typedef Tpetra::Map<LO,GO,NO> Map_type;
+    TpetraOperator() : fhandle_(NULL) { /* * */ }
+
+
+    virtual Teuchos::RCP<const Map_type> getDomainMap() const { return Teuchos::null; }
+    virtual Teuchos::RCP<const Map_type> getRangeMap() const { return Teuchos::null; }
+
+    virtual void apply(const MV_type &X, MV_type &Y,
+                       Teuchos::ETransp mode, SC alpha, SC beta) const
+    {
+      /* construct "this" pointer */
+      SwigClassWrapper self;
+      self.ptr = const_cast<TpetraOperator*>(this);
+      self.mem = SWIG_CREF; // since this function is const
+
+      /* convert X -> class wrapper */
+      Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO> > temprcp1(&X SWIG_NO_NULL_DELETER_0);
+
+      SwigClassWrapper farg1;
+      farg1.ptr = &temprcp1;
+      farg1.mem = SWIG_CREF; // X is const
+
+      Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> > temprcp2(&Y SWIG_NO_NULL_DELETER_0);
+
+      SwigClassWrapper farg2;
+      farg2.ptr = &temprcp2;
+      farg2.mem = SWIG_REF; // Y is mutable
+
+      /* convert scalars to wrappers */
+      int farg3 = mode;
+      double farg4 = alpha;
+      double farg5 = beta;
+
+      swigd_TpetraOperator_apply(&self, &farg1, &farg2, &farg3, &farg4, &farg5);
+    }
+  };
+
+
 #include "Tpetra_CrsGraph.hpp"
 
 SWIGINTERN Tpetra::CrsGraph< LO,GO,NO > *new_Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg___SWIG_6(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > const &rowMap,std::pair< std::size_t const *,std::size_t > numEntPerRow,Tpetra::ProfileType const pftype=Tpetra::DynamicProfile,Teuchos::RCP< Teuchos::ParameterList > const &params=Teuchos::null){
@@ -5467,6 +5531,274 @@ SWIGEXPORT void swigc_assignment_TpetraMultiVector(SwigClassWrapper * self, Swig
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR | swig::IS_COPY_ASSIGN);
+}
+
+
+SWIGEXPORT void * swigc_TpetraOperator_fhandle(SwigClassWrapper const *farg1) {
+  void * fresult ;
+  TpetraOperator *arg1 = (TpetraOperator *) 0 ;
+  Teuchos::RCP< TpetraOperator const > *smartarg1 ;
+  void *result = 0 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const TpetraOperator >* >(farg1->ptr);
+  arg1 = smartarg1 ? const_cast<TpetraOperator*>(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("TpetraOperator::fhandle() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (void *)((TpetraOperator const *)arg1)->fhandle();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("TpetraOperator::fhandle() const", SWIG_IndexError, e.what(), return 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("TpetraOperator::fhandle() const", SWIG_RuntimeError, e.what(), return 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("TpetraOperator::fhandle() const", SWIG_UnknownError, "An unknown exception occurred", return 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_TpetraOperator_init(SwigClassWrapper const *farg1, void *farg2) {
+  TpetraOperator *arg1 = (TpetraOperator *) 0 ;
+  void *arg2 = (void *) 0 ;
+  Teuchos::RCP< TpetraOperator > *smartarg1 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP< TpetraOperator >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  arg2 = reinterpret_cast< void * >(farg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("TpetraOperator::init(void *)");;
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->init(arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("TpetraOperator::init(void *)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("TpetraOperator::init(void *)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("TpetraOperator::init(void *)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT SwigClassWrapper swigc_new_TpetraOperator() {
+  SwigClassWrapper fresult ;
+  TpetraOperator *result = 0 ;
+  
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("TpetraOperator::TpetraOperator()");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (TpetraOperator *)new TpetraOperator();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("TpetraOperator::TpetraOperator()", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("TpetraOperator::TpetraOperator()", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("TpetraOperator::TpetraOperator()", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
+    }
+  }
+  fresult.ptr = result ? new Teuchos::RCP< TpetraOperator >(result SWIG_NO_NULL_DELETER_1) : NULL;
+  fresult.mem = SWIG_MOVE;
+  return fresult;
+}
+
+
+SWIGEXPORT SwigClassWrapper swigc_TpetraOperator_getDomainMap(SwigClassWrapper const *farg1) {
+  SwigClassWrapper fresult ;
+  TpetraOperator *arg1 = (TpetraOperator *) 0 ;
+  Teuchos::RCP< TpetraOperator const > *smartarg1 ;
+  Teuchos::RCP< TpetraOperator::Map_type const > result;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const TpetraOperator >* >(farg1->ptr);
+  arg1 = smartarg1 ? const_cast<TpetraOperator*>(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("TpetraOperator::getDomainMap() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((TpetraOperator const *)arg1)->getDomainMap();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("TpetraOperator::getDomainMap() const", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("TpetraOperator::getDomainMap() const", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("TpetraOperator::getDomainMap() const", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
+    }
+  }
+  fresult.ptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
+  fresult.mem = SWIG_MOVE;
+  return fresult;
+}
+
+
+SWIGEXPORT SwigClassWrapper swigc_TpetraOperator_getRangeMap(SwigClassWrapper const *farg1) {
+  SwigClassWrapper fresult ;
+  TpetraOperator *arg1 = (TpetraOperator *) 0 ;
+  Teuchos::RCP< TpetraOperator const > *smartarg1 ;
+  Teuchos::RCP< TpetraOperator::Map_type const > result;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const TpetraOperator >* >(farg1->ptr);
+  arg1 = smartarg1 ? const_cast<TpetraOperator*>(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("TpetraOperator::getRangeMap() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((TpetraOperator const *)arg1)->getRangeMap();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("TpetraOperator::getRangeMap() const", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("TpetraOperator::getRangeMap() const", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("TpetraOperator::getRangeMap() const", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
+    }
+  }
+  fresult.ptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
+  fresult.mem = SWIG_MOVE;
+  return fresult;
+}
+
+
+SWIGEXPORT void swigc_TpetraOperator_apply(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4, double const *farg5, double const *farg6) {
+  TpetraOperator *arg1 = (TpetraOperator *) 0 ;
+  TpetraOperator::MV_type *arg2 = 0 ;
+  TpetraOperator::MV_type *arg3 = 0 ;
+  Teuchos::ETransp arg4 ;
+  SC arg5 ;
+  SC arg6 ;
+  Teuchos::RCP< TpetraOperator const > *smartarg1 ;
+  Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > const > *smartarg2 ;
+  Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > > *smartarg3 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const TpetraOperator >* >(farg1->ptr);
+  arg1 = smartarg1 ? const_cast<TpetraOperator*>(smartarg1->get()) : NULL;
+  SWIG_check_sp_nonnull(farg2, "TpetraOperator::MV_type *", "TpetraMultiVector", "TpetraOperator::apply(TpetraOperator::MV_type const &,TpetraOperator::MV_type &,Teuchos::ETransp,SC,SC) const", return )
+  smartarg2 = static_cast< Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO> >* >(farg2->ptr);
+  arg2 = const_cast<Tpetra::MultiVector<SC,LO,GO,NO>*>(smartarg2->get());
+  SWIG_check_sp_nonnull(farg3, "TpetraOperator::MV_type *", "TpetraMultiVector", "TpetraOperator::apply(TpetraOperator::MV_type const &,TpetraOperator::MV_type &,Teuchos::ETransp,SC,SC) const", return )
+  smartarg3 = static_cast< Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >* >(farg3->ptr);
+  arg3 = smartarg3->get();
+  arg4 = static_cast< Teuchos::ETransp >(*farg4);
+  arg5 = *farg5;
+  arg6 = *farg6;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("TpetraOperator::apply(TpetraOperator::MV_type const &,TpetraOperator::MV_type &,Teuchos::ETransp,SC,SC) const");;
+    try
+    {
+      // Attempt the wrapped function call
+      ((TpetraOperator const *)arg1)->apply((TpetraOperator::MV_type const &)*arg2,*arg3,arg4,arg5,arg6);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("TpetraOperator::apply(TpetraOperator::MV_type const &,TpetraOperator::MV_type &,Teuchos::ETransp,SC,SC) const", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("TpetraOperator::apply(TpetraOperator::MV_type const &,TpetraOperator::MV_type &,Teuchos::ETransp,SC,SC) const", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("TpetraOperator::apply(TpetraOperator::MV_type const &,TpetraOperator::MV_type &,Teuchos::ETransp,SC,SC) const", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_delete_TpetraOperator(SwigClassWrapper const *farg1) {
+  TpetraOperator *arg1 = (TpetraOperator *) 0 ;
+  Teuchos::RCP< TpetraOperator > *smartarg1 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP< TpetraOperator >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("TpetraOperator::~TpetraOperator()");;
+    try
+    {
+      // Attempt the wrapped function call
+      (void)arg1; delete smartarg1; 
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("TpetraOperator::~TpetraOperator()", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("TpetraOperator::~TpetraOperator()", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("TpetraOperator::~TpetraOperator()", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void swigc_assignment_TpetraOperator(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef Teuchos::RCP< TpetraOperator > swig_lhs_classtype;
+  SWIG_assign(swig_lhs_classtype, self,
+    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
+    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
 }
 
 
