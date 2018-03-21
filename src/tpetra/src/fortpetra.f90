@@ -4,7 +4,7 @@
 ! Do not make changes to this file unless you know what you are doing--modify
 ! the SWIG interface file instead.
 
-! Copyright 2017, UT-Battelle, LLC
+! Copyright 2017-2018, UT-Battelle, LLC
 !
 ! SPDX-License-Identifier: BSD-3-Clause
 ! License-Filename: LICENSE
@@ -10092,8 +10092,8 @@ use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=*), target :: filename
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
 class(TpetraMap), intent(in) :: map
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
+type(SwigArrayWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = map%swigdata
