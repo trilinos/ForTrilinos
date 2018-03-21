@@ -6,9 +6,8 @@
  */
 %module forteuchos
 
-%include "copyright.i"
-
-%import <forerror.i>
+%include <copyright.i>
+%include <extern_forerror.i>
 
 %include "ForTrilinosTeuchos_config.hpp"
 

@@ -52,26 +52,6 @@ end type
 
  public :: load_from_xml
  public :: save_to_xml
- public :: create_VectorLongLong
- interface create_VectorLongLong
-  module procedure new_VectorLongLong__SWIG_0, new_VectorLongLong__SWIG_1, new_VectorLongLong__SWIG_2
- end interface
- public :: create_TeuchosComm
- interface create_TeuchosComm
-  module procedure new_TeuchosComm__SWIG_0, new_TeuchosComm__SWIG_1
- end interface
- public :: create_VectorDouble
- interface create_VectorDouble
-  module procedure new_VectorDouble__SWIG_0, new_VectorDouble__SWIG_1, new_VectorDouble__SWIG_2
- end interface
- public :: create_VectorInt
- interface create_VectorInt
-  module procedure new_VectorInt__SWIG_0, new_VectorInt__SWIG_1, new_VectorInt__SWIG_2
- end interface
- public :: create_ParameterList
- interface create_ParameterList
-  module procedure new_ParameterList__SWIG_0, new_ParameterList__SWIG_1
- end interface
 
  ! PARAMETERS
  enum, bind(c)
@@ -133,7 +113,12 @@ end type
   procedure, private :: swigf_assignment_VectorInt
   generic :: assignment(=) => swigf_assignment_VectorInt
   generic :: resize => resize__SWIG_0, resize__SWIG_1
- end type
+ end type VectorInt
+ interface VectorInt
+  procedure new_VectorInt__SWIG_0
+  procedure new_VectorInt__SWIG_1
+  procedure new_VectorInt__SWIG_2
+ end interface
  type :: VectorDouble
   ! These should be treated as PROTECTED data
   type(SwigClassWrapper), public :: swigdata
@@ -154,7 +139,12 @@ end type
   procedure, private :: swigf_assignment_VectorDouble
   generic :: assignment(=) => swigf_assignment_VectorDouble
   generic :: resize => resize__SWIG_0, resize__SWIG_1
- end type
+ end type VectorDouble
+ interface VectorDouble
+  procedure new_VectorDouble__SWIG_0
+  procedure new_VectorDouble__SWIG_1
+  procedure new_VectorDouble__SWIG_2
+ end interface
  type :: VectorLongLong
   ! These should be treated as PROTECTED data
   type(SwigClassWrapper), public :: swigdata
@@ -175,7 +165,12 @@ end type
   procedure, private :: swigf_assignment_VectorLongLong
   generic :: assignment(=) => swigf_assignment_VectorLongLong
   generic :: resize => resize__SWIG_0, resize__SWIG_1
- end type
+ end type VectorLongLong
+ interface VectorLongLong
+  procedure new_VectorLongLong__SWIG_0
+  procedure new_VectorLongLong__SWIG_1
+  procedure new_VectorLongLong__SWIG_2
+ end interface
  type :: TeuchosComm
   ! These should be treated as PROTECTED data
   type(SwigClassWrapper), public :: swigdata
@@ -187,7 +182,11 @@ end type
   procedure :: release => delete_TeuchosComm
   procedure, private :: swigf_assignment_TeuchosComm
   generic :: assignment(=) => swigf_assignment_TeuchosComm
- end type
+ end type TeuchosComm
+ interface TeuchosComm
+  procedure new_TeuchosComm__SWIG_0
+  procedure new_TeuchosComm__SWIG_1
+ end interface
  type :: ParameterList
   ! These should be treated as PROTECTED data
   type(SwigClassWrapper), public :: swigdata
@@ -218,7 +217,11 @@ end type
   generic :: assignment(=) => swigf_assignment_ParameterList
   generic :: set => set__SWIG_1, set__SWIG_2, set__SWIG_3, set__SWIG_4, set__SWIG_5, set__SWIG_6, set__SWIG_7, set__SWIG_8, &
     set__SWIG_9
- end type
+ end type ParameterList
+ interface ParameterList
+  procedure new_ParameterList__SWIG_0
+  procedure new_ParameterList__SWIG_1
+ end interface
 
 
  ! WRAPPER DECLARATIONS
@@ -1750,19 +1753,21 @@ self%swigdata = fresult
 end function
 
 
-subroutine swig_string_to_chararray(string, chars, wrap)
+subroutine SWIG_string_to_chararray(string, chars, wrap)
   use, intrinsic :: ISO_C_BINDING
   character(kind=C_CHAR, len=*), intent(IN) :: string
   character(kind=C_CHAR), dimension(:), target, allocatable, intent(OUT) :: chars
   type(SwigArrayWrapper), intent(OUT) :: wrap
-  integer(kind=C_SIZE_T) :: i
+  integer :: i
 
-  allocate(character(kind=C_CHAR) :: chars(len(string)))
-  do i=1,size(chars)
+  allocate(character(kind=C_CHAR) :: chars(len(string) + 1))
+  do i=1,len(string)
     chars(i) = string(i:i)
-  enddo
+  end do
+  i = len(string) + 1
+  chars(i) = C_NULL_CHAR ! C string compatibility
   wrap%data = c_loc(chars)
-  wrap%size = size(chars)
+  wrap%size = len(string)
 end subroutine
 
 function new_ParameterList__SWIG_1(name) &
@@ -1770,14 +1775,11 @@ result(self)
 use, intrinsic :: ISO_C_BINDING
 type(ParameterList) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 
-
-call swig_string_to_chararray(name, farg1_chars, farg1)
-
+call SWIG_string_to_chararray(name, farg1_chars, farg1)
 fresult = swigc_new_ParameterList__SWIG_1(farg1)
 self%swigdata = fresult
 end function
@@ -1795,15 +1797,12 @@ subroutine swigf_ParameterList_remove(self, name)
 use, intrinsic :: ISO_C_BINDING
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 call swigc_ParameterList_remove(farg1, farg2)
 end subroutine
 
@@ -1813,16 +1812,13 @@ use, intrinsic :: ISO_C_BINDING
 logical(C_BOOL) :: swig_result
 class(ParameterList), intent(in) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 logical(C_BOOL) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 fresult = swigc_ParameterList_is_parameter(farg1, farg2)
 swig_result = fresult
 end function
@@ -1833,16 +1829,13 @@ use, intrinsic :: ISO_C_BINDING
 type(ParameterList) :: swig_result
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 type(SwigClassWrapper) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 fresult = swigc_ParameterList_sublist(farg1, farg2)
 swig_result%swigdata = fresult
 end function
@@ -1851,7 +1844,6 @@ subroutine swigf_ParameterList_set__SWIG_1(self, name, value)
 use, intrinsic :: ISO_C_BINDING
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 real(C_DOUBLE), intent(in) :: value
 type(SwigClassWrapper) :: farg1 
@@ -1859,9 +1851,7 @@ type(SwigArrayWrapper) :: farg2
 real(C_DOUBLE) :: farg3 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 farg3 = value
 call swigc_ParameterList_set__SWIG_1(farg1, farg2, farg3)
 end subroutine
@@ -1870,7 +1860,6 @@ subroutine swigf_ParameterList_set__SWIG_2(self, name, value)
 use, intrinsic :: ISO_C_BINDING
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 integer(C_INT), intent(in) :: value
 type(SwigClassWrapper) :: farg1 
@@ -1878,9 +1867,7 @@ type(SwigArrayWrapper) :: farg2
 integer(C_INT) :: farg3 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 farg3 = value
 call swigc_ParameterList_set__SWIG_2(farg1, farg2, farg3)
 end subroutine
@@ -1889,7 +1876,6 @@ subroutine swigf_ParameterList_set__SWIG_3(self, name, value)
 use, intrinsic :: ISO_C_BINDING
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 integer(C_LONG_LONG), intent(in) :: value
 type(SwigClassWrapper) :: farg1 
@@ -1897,9 +1883,7 @@ type(SwigArrayWrapper) :: farg2
 integer(C_LONG_LONG) :: farg3 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 farg3 = value
 call swigc_ParameterList_set__SWIG_3(farg1, farg2, farg3)
 end subroutine
@@ -1908,7 +1892,6 @@ subroutine swigf_ParameterList_set__SWIG_4(self, name, value)
 use, intrinsic :: ISO_C_BINDING
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 logical(C_BOOL), intent(in) :: value
 type(SwigClassWrapper) :: farg1 
@@ -1916,9 +1899,7 @@ type(SwigArrayWrapper) :: farg2
 logical(C_BOOL) :: farg3 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 farg3 = value
 call swigc_ParameterList_set__SWIG_4(farg1, farg2, farg3)
 end subroutine
@@ -1927,22 +1908,16 @@ subroutine swigf_ParameterList_set__SWIG_5(self, name, value)
 use, intrinsic :: ISO_C_BINDING
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 character(kind=C_CHAR, len=*), target :: value
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg3_chars
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
 type(SwigArrayWrapper) :: farg3 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
-
-call swig_string_to_chararray(value, farg3_chars, farg3)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
+call SWIG_string_to_chararray(value, farg3_chars, farg3)
 call swigc_ParameterList_set__SWIG_5(farg1, farg2, farg3)
 end subroutine
 
@@ -1950,7 +1925,6 @@ subroutine swigf_ParameterList_set__SWIG_6(self, name, value)
 use, intrinsic :: ISO_C_BINDING
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 real(C_DOUBLE), dimension(:), target, intent(in) :: value
 real(C_DOUBLE), pointer :: farg3_view
@@ -1959,9 +1933,7 @@ type(SwigArrayWrapper) :: farg2
 type(SwigArrayWrapper) :: farg3 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 farg3_view => value(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(value)
@@ -1972,7 +1944,6 @@ subroutine swigf_ParameterList_set__SWIG_7(self, name, value)
 use, intrinsic :: ISO_C_BINDING
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 integer(C_INT), dimension(:), target, intent(in) :: value
 integer(C_INT), pointer :: farg3_view
@@ -1981,9 +1952,7 @@ type(SwigArrayWrapper) :: farg2
 type(SwigArrayWrapper) :: farg3 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 farg3_view => value(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(value)
@@ -1994,7 +1963,6 @@ subroutine swigf_ParameterList_set__SWIG_8(self, name, value)
 use, intrinsic :: ISO_C_BINDING
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 integer(C_LONG_LONG), dimension(:), target, intent(in) :: value
 integer(C_LONG_LONG), pointer :: farg3_view
@@ -2003,9 +1971,7 @@ type(SwigArrayWrapper) :: farg2
 type(SwigArrayWrapper) :: farg3 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 farg3_view => value(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(value)
@@ -2016,7 +1982,6 @@ subroutine swigf_ParameterList_set__SWIG_9(self, name, value)
 use, intrinsic :: ISO_C_BINDING
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 class(ParameterList), intent(in) :: value
 type(SwigClassWrapper) :: farg1 
@@ -2024,9 +1989,7 @@ type(SwigArrayWrapper) :: farg2
 type(SwigClassWrapper) :: farg3 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 farg3 = value%swigdata
 call swigc_ParameterList_set__SWIG_9(farg1, farg2, farg3)
 end subroutine
@@ -2037,16 +2000,13 @@ use, intrinsic :: ISO_C_BINDING
 real(C_DOUBLE) :: swig_result
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 real(C_DOUBLE) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 fresult = swigc_ParameterList_get_real(farg1, farg2)
 swig_result = fresult
 end function
@@ -2057,16 +2017,13 @@ use, intrinsic :: ISO_C_BINDING
 integer(C_INT) :: swig_result
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 fresult = swigc_ParameterList_get_integer(farg1, farg2)
 swig_result = fresult
 end function
@@ -2077,16 +2034,13 @@ use, intrinsic :: ISO_C_BINDING
 integer(C_LONG_LONG) :: swig_result
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 integer(C_LONG_LONG) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 fresult = swigc_ParameterList_get_longlong(farg1, farg2)
 swig_result = fresult
 end function
@@ -2097,16 +2051,13 @@ use, intrinsic :: ISO_C_BINDING
 logical(C_BOOL) :: swig_result
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 logical(C_BOOL) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 fresult = swigc_ParameterList_get_logical(farg1, farg2)
 swig_result = fresult
 end function
@@ -2131,18 +2082,14 @@ use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=:), allocatable :: swig_result
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 type(SwigArrayWrapper) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 fresult = swigc_ParameterList_get_string(farg1, farg2)
-
 call SWIG_chararray_to_string(fresult, swig_result)
 end function
 
@@ -2152,7 +2099,6 @@ use, intrinsic :: ISO_C_BINDING
 real(C_DOUBLE), dimension(:), allocatable :: swig_result
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 real(C_DOUBLE), pointer :: fresult_view(:)
 type(SwigArrayWrapper) :: fresult 
@@ -2160,9 +2106,7 @@ type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 fresult = swigc_ParameterList_get_arr_real(farg1, farg2)
 call c_f_pointer(fresult%data, fresult_view, [fresult%size])
 allocate(real(C_DOUBLE) :: swig_result(size(fresult_view)))
@@ -2175,7 +2119,6 @@ use, intrinsic :: ISO_C_BINDING
 integer(C_INT), dimension(:), allocatable :: swig_result
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 integer(C_INT), pointer :: fresult_view(:)
 type(SwigArrayWrapper) :: fresult 
@@ -2183,9 +2126,7 @@ type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 fresult = swigc_ParameterList_get_arr_integer(farg1, farg2)
 call c_f_pointer(fresult%data, fresult_view, [fresult%size])
 allocate(integer(C_INT) :: swig_result(size(fresult_view)))
@@ -2198,7 +2139,6 @@ use, intrinsic :: ISO_C_BINDING
 integer(C_LONG_LONG), dimension(:), allocatable :: swig_result
 class(ParameterList), intent(inout) :: self
 character(kind=C_CHAR, len=*), target :: name
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 integer(C_LONG_LONG), pointer :: fresult_view(:)
 type(SwigArrayWrapper) :: fresult 
@@ -2206,9 +2146,7 @@ type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
-
-call swig_string_to_chararray(name, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(name, farg2_chars, farg2)
 fresult = swigc_ParameterList_get_arr_longlong(farg1, farg2)
 call c_f_pointer(fresult%data, fresult_view, [fresult%size])
 allocate(integer(C_LONG_LONG) :: swig_result(size(fresult_view)))
@@ -2238,15 +2176,12 @@ subroutine load_from_xml(plist, xml_path)
 use, intrinsic :: ISO_C_BINDING
 type(ParameterList) :: plist
 character(kind=C_CHAR, len=*), target :: xml_path
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = plist%swigdata
-
-call swig_string_to_chararray(xml_path, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(xml_path, farg2_chars, farg2)
 call swigc_load_from_xml(farg1, farg2)
 end subroutine
 
@@ -2254,15 +2189,12 @@ subroutine save_to_xml(plist, xml_path)
 use, intrinsic :: ISO_C_BINDING
 class(ParameterList), intent(in) :: plist
 character(kind=C_CHAR, len=*), target :: xml_path
-
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = plist%swigdata
-
-call swig_string_to_chararray(xml_path, farg2_chars, farg2)
-
+call SWIG_string_to_chararray(xml_path, farg2_chars, farg2)
 call swigc_save_to_xml(farg1, farg2)
 end subroutine
 

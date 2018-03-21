@@ -75,9 +75,6 @@
     static void writeSparseGraphFile (const std::string& filename, const Teuchos::RCP< const crs_graph_type > &pGraph, const bool debug=false) {
       Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filename, pGraph, debug);
     }
-    static void writeMapFile (const std::string& filename, const map_type &map) {
-      Tpetra::MatrixMarket::Writer<CMT>::writeMapFile(filename, map);
-    }
 }
 %ignore Tpetra::MatrixMarket::Reader::readSparseGraphFile;
 %ignore Tpetra::MatrixMarket::Reader::readSparseFile;
