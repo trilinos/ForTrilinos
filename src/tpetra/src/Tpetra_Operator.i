@@ -23,8 +23,7 @@
 // Postpone temporarily
 // =======================================================================
 
-%teuchos_rcp(Tpetra::Operator<SC,LO,GO,NO>)
-
 %include "Tpetra_Operator.hpp"
 
+%teuchos_rcp(Tpetra::Operator<SC,LO,GO,NO>)
 %template(TpetraOperator) Tpetra::Operator<SC,LO,GO,NO>;

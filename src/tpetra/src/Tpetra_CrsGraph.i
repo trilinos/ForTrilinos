@@ -29,29 +29,29 @@
 // =======================================================================
 // Postpone temporarily
 // =======================================================================
-%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap, \
-        const Kokkos::DualView< const size_t *, execution_space > &numEntPerRow, \
-        const ProfileType pftype=DynamicProfile, \
+%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap,
+        const Kokkos::DualView< const size_t *, execution_space > &numEntPerRow,
+        const ProfileType pftype=DynamicProfile,
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);    // needs Kokkos::DualView
-%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap, \
-        const Teuchos::RCP< const map_type > &colMap, \
-        const Kokkos::DualView< const size_t *, execution_space > &numEntPerRow, \
-        ProfileType pftype=DynamicProfile, \
+%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap,
+        const Teuchos::RCP< const map_type > &colMap,
+        const Kokkos::DualView< const size_t *, execution_space > &numEntPerRow,
+        ProfileType pftype=DynamicProfile,
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);    // needs Kokkos::DualView
-%ignore Tpetra::CrsGraph::CrsGraph(const Teuchos::RCP< const map_type > &rowMap, \
-        const Teuchos::RCP< const map_type > &colMap, \
-        const typename local_graph_type::row_map_type &rowPointers, \
-        const typename local_graph_type::entries_type::non_const_type &columnIndices, \
+%ignore Tpetra::CrsGraph::CrsGraph(const Teuchos::RCP< const map_type > &rowMap,
+        const Teuchos::RCP< const map_type > &colMap,
+        const typename local_graph_type::row_map_type &rowPointers,
+        const typename local_graph_type::entries_type::non_const_type &columnIndices,
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);    // needs Kokkos::View; ±1 issue
-%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap, \
-        const Teuchos::RCP< const map_type > &colMap, \
-        const local_graph_type &lclGraph, \
+%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap,
+        const Teuchos::RCP< const map_type > &colMap,
+        const local_graph_type &lclGraph,
         const Teuchos::RCP< Teuchos::ParameterList > &params);                  // needs Kokkos::StaticCrsGraph
-%ignore Tpetra::CrsGraph::CrsGraph (const local_graph_type &lclGraph, \
-        const Teuchos::RCP< const map_type > &rowMap, \
-        const Teuchos::RCP< const map_type > &colMap=Teuchos::null, \
-        const Teuchos::RCP< const map_type > &domainMap=Teuchos::null, \
-        const Teuchos::RCP< const map_type > &rangeMap=Teuchos::null, \
+%ignore Tpetra::CrsGraph::CrsGraph (const local_graph_type &lclGraph,
+        const Teuchos::RCP< const map_type > &rowMap,
+        const Teuchos::RCP< const map_type > &colMap=Teuchos::null,
+        const Teuchos::RCP< const map_type > &domainMap=Teuchos::null,
+        const Teuchos::RCP< const map_type > &rangeMap=Teuchos::null,
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);    // needs Kokkos::StaticCrsGraph
 %ignore Tpetra::CrsGraph::insertLocalIndices(const LocalOrdinal localRow, const LocalOrdinal numEnt, const LocalOrdinal inds[]);    // prefer ArrayView variant
 %ignore Tpetra::CrsGraph::describe;                           // needs Teuchos::FancyOStream
@@ -87,25 +87,25 @@
 // Make interface more Fortran friendly
 // =======================================================================
 %extend Tpetra::CrsGraph<LO,GO,NO> {
-    CrsGraph(const Teuchos::RCP< const map_type > &rowMap, \
-        std::pair<const size_t*,size_t> numEntPerRow, \
-        const ProfileType pftype=DynamicProfile, \
+    CrsGraph(const Teuchos::RCP< const map_type > &rowMap,
+        std::pair<const size_t*,size_t> numEntPerRow,
+        const ProfileType pftype=DynamicProfile,
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null) {
       Teuchos::ArrayRCP<const size_t> numEntPerRowRCP(numEntPerRow.first, 0, numEntPerRow.second, false/*has_ownership*/);
       return new Tpetra::CrsGraph<LO,GO,NO>(rowMap, numEntPerRowRCP, pftype, params);
     }
-    CrsGraph(const Teuchos::RCP< const map_type > &rowMap, \
-        const Teuchos::RCP< const map_type > &colMap, \
-        std::pair<const size_t*,size_t> numEntPerRow, \
-        const ProfileType pftype=DynamicProfile, \
+    CrsGraph(const Teuchos::RCP< const map_type > &rowMap,
+        const Teuchos::RCP< const map_type > &colMap,
+        std::pair<const size_t*,size_t> numEntPerRow,
+        const ProfileType pftype=DynamicProfile,
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null) {
       Teuchos::ArrayRCP<const size_t> numEntPerRowRCP(numEntPerRow.first, 0, numEntPerRow.second, false/*has_ownership*/);
       return new Tpetra::CrsGraph<LO,GO,NO>(rowMap, colMap, numEntPerRowRCP, pftype, params);
     }
-    CrsGraph(const Teuchos::RCP< const map_type > &rowMap, \
-        const Teuchos::RCP< const map_type > &colMap, \
-        std::pair<size_t*,size_t> rowPointers, \
-        std::pair<LO*,size_t> columnIndices, \
+    CrsGraph(const Teuchos::RCP< const map_type > &rowMap,
+        const Teuchos::RCP< const map_type > &colMap,
+        std::pair<size_t*,size_t> rowPointers,
+        std::pair<LO*,size_t> columnIndices,
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null) {
       Teuchos::Array<size_t> rowPointersArray(rowPointers.second);
       for (size_t i = 0; i < rowPointers.second; i++)
@@ -182,19 +182,19 @@
       self->doExport(source, importer, CM);
     }
 }
-%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap, \
-        const Teuchos::ArrayRCP< const size_t > &numEntPerRow, \
-        const ProfileType pftype=DynamicProfile, \
+%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap,
+        const Teuchos::ArrayRCP< const size_t > &numEntPerRow,
+        const ProfileType pftype=DynamicProfile,
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);
-%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap, \
-        const Teuchos::RCP< const map_type > &colMap, \
-        const Teuchos::ArrayRCP< const size_t > &numEntPerRow, \
-        ProfileType pftype=DynamicProfile, \
+%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap,
+        const Teuchos::RCP< const map_type > &colMap,
+        const Teuchos::ArrayRCP< const size_t > &numEntPerRow,
+        ProfileType pftype=DynamicProfile,
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);
-%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap, \
-        const Teuchos::RCP< const map_type > &colMap, \
-        const Teuchos::ArrayRCP< size_t > &rowPointers, \
-        const Teuchos::ArrayRCP< LocalOrdinal > &columnIndices, \
+%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap,
+        const Teuchos::RCP< const map_type > &colMap,
+        const Teuchos::ArrayRCP< size_t > &rowPointers,
+        const Teuchos::ArrayRCP< LocalOrdinal > &columnIndices,
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);    // needs Teuchos::ArrayRCP; ±1 issue
 %ignore Tpetra::CrsGraph::insertGlobalIndices (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &indices);
 %ignore Tpetra::CrsGraph::insertLocalIndices(const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &indices);
@@ -209,8 +209,7 @@
 %ignore Tpetra::CrsGraph::setAllIndices (const typename local_graph_type::row_map_type &rowPointers, const typename local_graph_type::entries_type::non_const_type &columnIndices);
 
 
-%teuchos_rcp(Tpetra::CrsGraph<LO,GO,NO,NO::classic>)
-
 %include "Tpetra_CrsGraph_decl.hpp"
 
+%teuchos_rcp(Tpetra::CrsGraph<LO,GO,NO>)
 %template(TpetraCrsGraph) Tpetra::CrsGraph<LO,GO,NO>;

@@ -37,9 +37,7 @@
 %ignore Tpetra::Export::describe;               // needs Teuchos::FancyOStream
 %ignore Tpetra::Export::print;                  // needs std::ostream
 
-
-%teuchos_rcp(Tpetra::Export<LO,GO,NO>)
-
 %include "Tpetra_Export_decl.hpp"
 
+%teuchos_rcp(Tpetra::Export<LO,GO,NO>)
 %template(TpetraExport) Tpetra::Export<LO,GO,NO>;

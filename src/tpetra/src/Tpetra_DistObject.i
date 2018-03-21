@@ -23,10 +23,9 @@
 %ignore Tpetra::DistObject::print;                  // needs std::ostream
 %ignore Tpetra::DistObject::describe;               // needs Teuchos::FancyOStream
 
-%teuchos_rcp(Tpetra::DistObject<Packet,LO,GO,NO,false>);
 %teuchos_rcp(Tpetra::SrcDistObject);
-
 %include "Tpetra_SrcDistObject.hpp"
-%include "Tpetra_DistObject_decl.hpp"
 
+%include "Tpetra_DistObject_decl.hpp"
+%teuchos_rcp(Tpetra::DistObject<Packet,LO,GO,NO,false>);
 %template(TpetraDistObject) Tpetra::DistObject<Packet,LO,GO,NO,false>;
