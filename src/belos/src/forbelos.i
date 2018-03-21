@@ -6,15 +6,22 @@
  */
 %module forbelos
 
-%include "copyright.i"
+%include <copyright.i>
+%include <extern_forerror.i>
 
+// Convert all std::string references/values to and from Fortran strings
+%ignore std::string;
 %include <std_string.i>
+%apply std::string NATIVE { std::string  };
+%apply const std::string& NATIVE { const std::string& };
 
 %include "ForTrilinosBelos_config.hpp"
 
 %ignore Belos::toString;
 
 // enum workaround
+// TODO: you can probably simplify this by using an expression like:
+// %rename("Belos%s", %$isenumitem, regextarget=1, fullname=1) "Belos::.*";
 #define RENAME_ENUM(X) %rename(Belos##X) X;
 RENAME_ENUM(ETrans)
 RENAME_ENUM(NOTRANS)

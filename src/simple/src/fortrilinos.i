@@ -6,9 +6,9 @@
  */
 %module fortrilinos
 
-%include "copyright.i"
+%include <copyright.i>
+%include <extern_forerror.i>
 
-%import <forerror.i>
 %import <forteuchos.i>
 %import <fortpetra.i>
 

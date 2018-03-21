@@ -14,39 +14,10 @@ module fortrilinos
  use forerror
  use forteuchos
  use fortpetra
-
- use, intrinsic :: iso_c_binding, only : &
-   c_bool, &
-   c_int, &
-   c_long, &
-   c_long_long, &
-   c_size_t, &
-   c_double, &
-   scalar_type => c_double, &
-   local_ordinal_type => c_int, &
-   global_ordinal_type => c_long_long, &
-   global_size_type => c_long, &
-   size_type => c_size_t, &
-   bool_type => c_bool, &
-   int_type => c_int, &
-   mag_type => c_double, &
-   norm_type => c_double
-
  implicit none
  private
 
  ! PUBLIC METHODS AND TYPES
-
-public :: scalar_type
-public :: local_ordinal_type
-public :: global_ordinal_type
-public :: global_size_type
-public :: size_type
-public :: bool_type
-public :: int_type
-public :: mag_type
-public :: norm_type
-
  public :: TrilinosSolver
 
  enum, bind(c)
@@ -71,14 +42,6 @@ type, bind(C) :: SwigArrayWrapper
   integer(C_SIZE_T), public :: size = 0
 end type
 
- public :: create_TrilinosEigenSolver
- interface create_TrilinosEigenSolver
-  module procedure new_TrilinosEigenSolver
- end interface
- public :: create_TrilinosSolver
- interface create_TrilinosSolver
-  module procedure new_TrilinosSolver
- end interface
 
  ! TYPES
  type :: TrilinosSolver
@@ -98,7 +61,10 @@ end type
   generic :: init => init__SWIG_0, init__SWIG_1
   generic :: assignment(=) => swigf_assignment_TrilinosSolver
   generic :: setup_operator => setup_operator__SWIG_0, setup_operator__SWIG_1
- end type
+ end type TrilinosSolver
+ interface TrilinosSolver
+  procedure new_TrilinosSolver
+ end interface
  type :: TrilinosEigenSolver
   ! These should be treated as PROTECTED data
   type(SwigClassWrapper), public :: swigdata
@@ -120,7 +86,10 @@ end type
   generic :: assignment(=) => swigf_assignment_TrilinosEigenSolver
   generic :: setup_operator => setup_operator__SWIG_0, setup_operator__SWIG_1
   generic :: setup_operator_rhs => setup_operator_rhs__SWIG_0, setup_operator_rhs__SWIG_1
- end type
+ end type TrilinosEigenSolver
+ interface TrilinosEigenSolver
+  procedure new_TrilinosEigenSolver
+ end interface
 
 
  ! WRAPPER DECLARATIONS
@@ -601,7 +570,7 @@ end subroutine
 subroutine swigf_TrilinosEigenSolver_solve(self, eigenvalues, lhs)
 use, intrinsic :: ISO_C_BINDING
 class(TrilinosEigenSolver), intent(in) :: self
-real(C_DOUBLE), dimension(:), target, intent(inout) :: eigenvalues
+real(C_DOUBLE), dimension(:), target :: eigenvalues
 real(C_DOUBLE), pointer :: farg2_view
 type(TpetraMultiVector) :: lhs
 type(SwigClassWrapper) :: farg1 
