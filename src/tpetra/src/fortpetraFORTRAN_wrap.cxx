@@ -9,7 +9,7 @@
  * ----------------------------------------------------------------------------- */
 
 /*
- * Copyright 2017, UT-Battelle, LLC
+ * Copyright 2017-2018, UT-Battelle, LLC
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
@@ -914,9 +914,6 @@ SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG
     }
 SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_2(std::string const &filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > const &pGraph,bool const debug=false){
       Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filename, pGraph, debug);
-    }
-SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeMapFile(std::string const &filename,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &map){
-      Tpetra::MatrixMarket::Writer<CMT>::writeMapFile(filename, map);
     }
 
 #include "Teuchos_RCP.hpp"
@@ -14244,6 +14241,44 @@ SWIGEXPORT void swigc_assignment_TpetraReader(SwigClassWrapper * self, SwigClass
 }
 
 
+SWIGEXPORT void swigc_TpetraWriter_writeMapFile(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2) {
+  std::string *arg1 = 0 ;
+  Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type *arg2 = 0 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg2 ;
+  
+  tempstr1 = std::string(static_cast<const char *>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  SWIG_check_sp_nonnull(farg2, "Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type *", "TpetraMap", "Tpetra::MatrixMarket::Writer< CMT >::writeMapFile(std::string const &,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &)", return )
+  smartarg2 = static_cast< Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> >* >(farg2->ptr);
+  arg2 = const_cast<Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode>*>(smartarg2->get());
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::writeMapFile(std::string const &,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra::MatrixMarket::Writer< CMT >::SWIGTEMPLATEDISAMBIGUATOR writeMapFile((std::string const &)*arg1,(Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::writeMapFile(std::string const &,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::writeMapFile(std::string const &,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::writeMapFile(std::string const &,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
+  
+}
+
+
 SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_0(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4, bool const *farg5) {
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::sparse_matrix_type const > *arg2 = 0 ;
@@ -14566,44 +14601,6 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(SwigArrayWrapper
     catch (...)
     {
       SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_2(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::crs_graph_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
-  
-}
-
-
-SWIGEXPORT void swigc_TpetraWriter_writeMapFile(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2) {
-  std::string *arg1 = 0 ;
-  Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type *arg2 = 0 ;
-  std::string tempstr1 ;
-  Teuchos::RCP< Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > *smartarg2 ;
-  
-  tempstr1 = std::string(static_cast<const char *>(farg1->data), farg1->size);
-  arg1 = &tempstr1;
-  SWIG_check_sp_nonnull(farg2, "Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type *", "TpetraMap", "Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeMapFile(std::string const &,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &)", return )
-  smartarg2 = static_cast< Teuchos::RCP<const Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode> >* >(farg2->ptr);
-  arg2 = const_cast<Tpetra::Map<int,long long,Kokkos::Compat::KokkosSerialWrapperNode>*>(smartarg2->get());
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeMapFile(std::string const &,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeMapFile((std::string const &)*arg1,(Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeMapFile(std::string const &,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeMapFile(std::string const &,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeMapFile(std::string const &,Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,Kokkos::Compat::KokkosSerialWrapperNode::classic > >::map_type const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   

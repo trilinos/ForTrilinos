@@ -4,7 +4,7 @@
 ! Do not make changes to this file unless you know what you are doing--modify
 ! the SWIG interface file instead.
 
-! Copyright 2017, UT-Battelle, LLC
+! Copyright 2017-2018, UT-Battelle, LLC
 !
 ! SPDX-License-Identifier: BSD-3-Clause
 ! License-Filename: LICENSE
@@ -594,6 +594,7 @@ end type
   ! These should be treated as PROTECTED data
   type(SwigClassWrapper), public :: swigdata
  contains
+  procedure, nopass :: writeMapFile => TpetraWriter_writeMapFile
   procedure, private, nopass :: writeSparseFile__SWIG_0 => TpetraWriter_writeSparseFile__SWIG_0
   procedure, private, nopass :: writeSparseFile__SWIG_1 => TpetraWriter_writeSparseFile__SWIG_1
   procedure, private, nopass :: writeSparseFile__SWIG_2 => TpetraWriter_writeSparseFile__SWIG_2
@@ -602,7 +603,6 @@ end type
   procedure, private, nopass :: writeSparseGraphFile__SWIG_1 => TpetraWriter_writeSparseGraphFile__SWIG_1
   procedure, private, nopass :: writeSparseGraphFile__SWIG_2 => TpetraWriter_writeSparseGraphFile__SWIG_2
   procedure, private, nopass :: writeSparseGraphFile__SWIG_3 => TpetraWriter_writeSparseGraphFile__SWIG_3
-  procedure, nopass :: writeMapFile => TpetraWriter_writeMapFile
   procedure :: release => delete_TpetraWriter
   procedure, private :: swigf_assignment_TpetraWriter
   generic :: assignment(=) => swigf_assignment_TpetraWriter
@@ -4086,6 +4086,15 @@ end subroutine
    type(SwigClassWrapper), intent(inout) :: self
    type(SwigClassWrapper), intent(in) :: other
   end subroutine
+subroutine swigc_TpetraWriter_writeMapFile(farg1, farg2) &
+bind(C, name="swigc_TpetraWriter_writeMapFile")
+use, intrinsic :: ISO_C_BINDING
+import :: SwigArrayWrapper
+import :: SwigClassWrapper
+type(SwigArrayWrapper) :: farg1
+type(SwigClassWrapper) :: farg2
+end subroutine
+
 subroutine swigc_TpetraWriter_writeSparseFile__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
 bind(C, name="swigc_TpetraWriter_writeSparseFile__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
@@ -4163,15 +4172,6 @@ end subroutine
 
 subroutine swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(farg1, farg2) &
 bind(C, name="swigc_TpetraWriter_writeSparseGraphFile__SWIG_3")
-use, intrinsic :: ISO_C_BINDING
-import :: SwigArrayWrapper
-import :: SwigClassWrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-end subroutine
-
-subroutine swigc_TpetraWriter_writeMapFile(farg1, farg2) &
-bind(C, name="swigc_TpetraWriter_writeMapFile")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigArrayWrapper
 import :: SwigClassWrapper
@@ -10087,6 +10087,19 @@ end subroutine
    type(TpetraReader), intent(in) :: other
    call swigc_assignment_TpetraReader(self%swigdata, other%swigdata)
   end subroutine
+subroutine TpetraWriter_writeMapFile(filename, map)
+use, intrinsic :: ISO_C_BINDING
+character(kind=C_CHAR, len=*), target :: filename
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
+class(TpetraMap), intent(in) :: map
+type(SwigArrayWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+
+call SWIG_string_to_chararray(filename, farg1_chars, farg1)
+farg2 = map%swigdata
+call swigc_TpetraWriter_writeMapFile(farg1, farg2)
+end subroutine
+
 subroutine TpetraWriter_writeSparseFile__SWIG_0(filename, pmatrix, matrixname, matrixdescription, debug)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=*), target :: filename
@@ -10233,19 +10246,6 @@ type(SwigClassWrapper) :: farg2
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pgraph%swigdata
 call swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(farg1, farg2)
-end subroutine
-
-subroutine TpetraWriter_writeMapFile(filename, map)
-use, intrinsic :: ISO_C_BINDING
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TpetraMap), intent(in) :: map
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = map%swigdata
-call swigc_TpetraWriter_writeMapFile(farg1, farg2)
 end subroutine
 
 function new_TpetraWriter() &

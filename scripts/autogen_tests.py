@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#Copyright 2017, UT-Battelle, LLC
+#Copyright 2017-2018, UT-Battelle, LLC
 #
 #SPDX-License-Identifier: BSD-3-Clause
 #License-Filename: LICENSE
@@ -29,7 +29,7 @@ class NamespaceTestGenerator:
 
         # Write the preamble to the test suite
         stream.write("""\
-!Copyright 2017, UT-Battelle, LLC
+!Copyright 2017-2018, UT-Battelle, LLC
 !
 !SPDX-License-Identifier: BSD-3-Clause
 !License-Filename: LICENSE
