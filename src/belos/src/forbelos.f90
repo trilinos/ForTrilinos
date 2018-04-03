@@ -74,16 +74,16 @@ end type
  end enum
  integer(C_INT), parameter, public :: BelosStatusType = -1_C_INT
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_BelosPassed") :: BelosPassed
+   bind(C, name="_wrap_BelosPassed") :: BelosPassed
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_BelosFailed") :: BelosFailed
+   bind(C, name="_wrap_BelosFailed") :: BelosFailed
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_BelosUndefined") :: BelosUndefined
+   bind(C, name="_wrap_BelosUndefined") :: BelosUndefined
  integer(C_INT), parameter, public :: BelosResetType = -1_C_INT
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_BelosProblem") :: BelosProblem
+   bind(C, name="_wrap_BelosProblem") :: BelosProblem
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_BelosRecycleSubspace") :: BelosRecycleSubspace
+   bind(C, name="_wrap_BelosRecycleSubspace") :: BelosRecycleSubspace
  enum, bind(c)
   enumerator :: BelosConjType = -1
   enumerator :: BelosNO_CONJ = 0
@@ -91,26 +91,26 @@ end type
  end enum
  integer(C_INT), parameter, public :: BelosMsgType = -1_C_INT
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_BelosErrors") :: BelosErrors
+   bind(C, name="_wrap_BelosErrors") :: BelosErrors
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_BelosWarnings") :: BelosWarnings
+   bind(C, name="_wrap_BelosWarnings") :: BelosWarnings
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_BelosIterationDetails") :: BelosIterationDetails
+   bind(C, name="_wrap_BelosIterationDetails") :: BelosIterationDetails
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_BelosOrthoDetails") :: BelosOrthoDetails
+   bind(C, name="_wrap_BelosOrthoDetails") :: BelosOrthoDetails
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_BelosFinalSummary") :: BelosFinalSummary
+   bind(C, name="_wrap_BelosFinalSummary") :: BelosFinalSummary
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_BelosTimingDetails") :: BelosTimingDetails
+   bind(C, name="_wrap_BelosTimingDetails") :: BelosTimingDetails
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_BelosStatusTestDetails") :: BelosStatusTestDetails
+   bind(C, name="_wrap_BelosStatusTestDetails") :: BelosStatusTestDetails
  integer(C_INT), protected, public, &
-   bind(C, name="swigc_BelosDebug") :: BelosDebug
+   bind(C, name="_wrap_BelosDebug") :: BelosDebug
 
  ! WRAPPER DECLARATIONS
  interface
 function swigc_convertReturnTypeToString(farg1) &
-bind(C, name="swigc_convertReturnTypeToString") &
+bind(C, name="_wrap_convertReturnTypeToString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigArrayWrapper
@@ -126,7 +126,7 @@ subroutine SWIG_free(ptr) &
 end subroutine
 
 function swigc_convertStatusTypeToString(farg1) &
-bind(C, name="swigc_convertStatusTypeToString") &
+bind(C, name="_wrap_convertStatusTypeToString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigArrayWrapper
@@ -135,7 +135,7 @@ type(SwigArrayWrapper) :: fresult
 end function
 
 function swigc_convertStringToStatusType(farg1) &
-bind(C, name="swigc_convertStringToStatusType") &
+bind(C, name="_wrap_convertStringToStatusType") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigArrayWrapper
@@ -144,7 +144,7 @@ integer(C_INT) :: fresult
 end function
 
 function swigc_convertStringToScaleType(farg1) &
-bind(C, name="swigc_convertStringToScaleType") &
+bind(C, name="_wrap_convertStringToScaleType") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigArrayWrapper
@@ -153,7 +153,7 @@ integer(C_INT) :: fresult
 end function
 
 function swigc_convertScaleTypeToString(farg1) &
-bind(C, name="swigc_convertScaleTypeToString") &
+bind(C, name="_wrap_convertScaleTypeToString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigArrayWrapper
@@ -162,7 +162,7 @@ type(SwigArrayWrapper) :: fresult
 end function
 
 function swigc_convertMsgTypeToString(farg1) &
-bind(C, name="swigc_convertMsgTypeToString") &
+bind(C, name="_wrap_convertMsgTypeToString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigArrayWrapper
