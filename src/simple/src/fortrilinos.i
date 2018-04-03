@@ -15,6 +15,10 @@
 %include "ForTrilinosSimpleInterface_config.hpp"
 
 // Generate wrappers
-%include "fortran_operator.i"
-%include "solver_handle.i"
-%include "eigen_handle.i"
+%{
+#include "solver_handle.hpp"
+#include "eigen_handle.hpp"
+%}
+
+%include "solver_handle.hpp"
+%include "eigen_handle.hpp"

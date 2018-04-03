@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
  */
-#include "fortran_operator.hpp"
 #include "solver_handle.hpp"
 
 #include <Stratimikos_DefaultLinearSolverBuilder.hpp>
@@ -43,9 +42,9 @@ namespace ForTrilinos {
     status_ = MATRIX_SETUP;
   }
 
-  void TrilinosSolver::setup_operator(OperatorCallback callback, const Teuchos::RCP<const Map>& domainMap, const Teuchos::RCP<const Map>& rangeMap) {
+  void TrilinosSolver::setup_operator(const Teuchos::RCP<Operator>& A) {
     TEUCHOS_ASSERT(status_ == INITIALIZED);
-    A_ = Teuchos::rcp(new FortranOperator(callback, domainMap, rangeMap));
+    A_ = A;
     status_ = MATRIX_SETUP;
   }
 
