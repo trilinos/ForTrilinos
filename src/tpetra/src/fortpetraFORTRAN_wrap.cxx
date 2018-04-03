@@ -695,6 +695,9 @@ SWIGINTERN void Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__doExport__SWIG_0(
 SWIGINTERN void Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__doExport__SWIG_1(Tpetra::MultiVector< SC,LO,GO,NO > *self,Tpetra::MultiVector< SC,LO,GO,NO,false > const &source,Tpetra::Import< LO,GO,NO > const &importer,Tpetra::CombineMode CM){
       self->doExport(source, importer, CM);
     }
+SWIGINTERN Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getMap(Tpetra::MultiVector< SC,LO,GO,NO > const *self){
+      return self->getMap();
+    }
 
 #include "Tpetra_Operator.hpp"
 
@@ -5565,6 +5568,43 @@ SWIGEXPORT void _wrap_TpetraMultiVector_doExport__SWIG_1(SwigClassWrapper const 
     }
   }
   
+}
+
+
+SWIGEXPORT SwigClassWrapper _wrap_TpetraMultiVector_getMap(SwigClassWrapper const *farg1) {
+  SwigClassWrapper fresult ;
+  Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
+  Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > const > *smartarg1 ;
+  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > result;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO> >* >(farg1->ptr);
+  arg1 = smartarg1 ? const_cast<Tpetra::MultiVector<SC,LO,GO,NO>*>(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::getMap() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getMap((Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::getMap() const", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::getMap() const", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::getMap() const", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
+    }
+  }
+  fresult.ptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
+  fresult.mem = SWIG_MOVE;
+  return fresult;
 }
 
 

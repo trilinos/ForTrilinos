@@ -342,7 +342,7 @@ Status | Class
 :grey_question: | Command | Comment
 -------|--------|---------
 :arrow_down: | `bool 	isDistributed () const`
-:arrow_down: | `virtual Teuchos::RCP< const map_type > 	getMap () const`
+:white_check_mark: | `virtual Teuchos::RCP< const map_type > 	getMap () const`
 
 **I/O methods**
 

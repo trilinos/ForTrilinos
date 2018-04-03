@@ -289,6 +289,7 @@ public :: init_ForTpetraOperator
   procedure, private :: doImport__SWIG_1 => swigf_TpetraMultiVector_doImport__SWIG_1
   procedure, private :: doExport__SWIG_0 => swigf_TpetraMultiVector_doExport__SWIG_0
   procedure, private :: doExport__SWIG_1 => swigf_TpetraMultiVector_doExport__SWIG_1
+  procedure :: getMap => swigf_TpetraMultiVector_getMap
   procedure, private :: swigf_assignment_TpetraMultiVector
   generic :: assignment(=) => swigf_assignment_TpetraMultiVector
   generic :: randomize => randomize__SWIG_0, randomize__SWIG_1
@@ -1799,6 +1800,15 @@ type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
 integer(C_INT), intent(in) :: farg4
 end subroutine
+
+function swigc_TpetraMultiVector_getMap(farg1) &
+bind(C, name="_wrap_TpetraMultiVector_getMap") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
+end function
 
   subroutine swigc_assignment_TpetraMultiVector(self, other) &
      bind(C, name="_wrap_assign_TpetraMultiVector")
@@ -6240,6 +6250,19 @@ farg3 = importer%swigdata
 farg4 = cm
 call swigc_TpetraMultiVector_doExport__SWIG_1(farg1, farg2, farg3, farg4)
 end subroutine
+
+function swigf_TpetraMultiVector_getMap(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraMap) :: swig_result
+class(TpetraMultiVector), intent(in) :: self
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc_TpetraMultiVector_getMap(farg1)
+swig_result%swigdata = fresult
+end function
 
   subroutine swigf_assignment_TpetraMultiVector(self, other)
    use, intrinsic :: ISO_C_BINDING
