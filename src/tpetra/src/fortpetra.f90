@@ -636,6 +636,8 @@ public :: init_ForTpetraOperator
   procedure, private, nopass :: writeSparseGraphFile__SWIG_1 => TpetraWriter_writeSparseGraphFile__SWIG_1
   procedure, private, nopass :: writeSparseGraphFile__SWIG_2 => TpetraWriter_writeSparseGraphFile__SWIG_2
   procedure, private, nopass :: writeSparseGraphFile__SWIG_3 => TpetraWriter_writeSparseGraphFile__SWIG_3
+  procedure, private, nopass :: writeDenseFile__SWIG_0 => TpetraWriter_writeDenseFile__SWIG_0
+  procedure, private, nopass :: writeDenseFile__SWIG_1 => TpetraWriter_writeDenseFile__SWIG_1
   procedure :: release => delete_TpetraWriter
   procedure, private :: swigf_assignment_TpetraWriter
   generic :: assignment(=) => swigf_assignment_TpetraWriter
@@ -643,6 +645,7 @@ public :: init_ForTpetraOperator
     writeSparseGraphFile__SWIG_3
   generic :: writeSparseFile => writeSparseFile__SWIG_0, writeSparseFile__SWIG_1, writeSparseFile__SWIG_2, &
     writeSparseFile__SWIG_3
+  generic :: writeDenseFile => writeDenseFile__SWIG_0, writeDenseFile__SWIG_1
  end type TpetraWriter
  interface TpetraWriter
   procedure new_TpetraWriter
@@ -4297,6 +4300,26 @@ end subroutine
 
 subroutine swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(farg1, farg2) &
 bind(C, name="_wrap_TpetraWriter_writeSparseGraphFile__SWIG_3")
+use, intrinsic :: ISO_C_BINDING
+import :: SwigArrayWrapper
+import :: SwigClassWrapper
+type(SwigArrayWrapper) :: farg1
+type(SwigClassWrapper) :: farg2
+end subroutine
+
+subroutine swigc_TpetraWriter_writeDenseFile__SWIG_0(farg1, farg2, farg3, farg4) &
+bind(C, name="_wrap_TpetraWriter_writeDenseFile__SWIG_0")
+use, intrinsic :: ISO_C_BINDING
+import :: SwigArrayWrapper
+import :: SwigClassWrapper
+type(SwigArrayWrapper) :: farg1
+type(SwigClassWrapper) :: farg2
+type(SwigArrayWrapper) :: farg3
+type(SwigArrayWrapper) :: farg4
+end subroutine
+
+subroutine swigc_TpetraWriter_writeDenseFile__SWIG_1(farg1, farg2) &
+bind(C, name="_wrap_TpetraWriter_writeDenseFile__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigArrayWrapper
 import :: SwigClassWrapper
@@ -10622,6 +10645,40 @@ type(SwigClassWrapper) :: farg2
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pgraph%swigdata
 call swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(farg1, farg2)
+end subroutine
+
+subroutine TpetraWriter_writeDenseFile__SWIG_0(filename, x, matrixname, matrixdescription)
+use, intrinsic :: ISO_C_BINDING
+character(kind=C_CHAR, len=*), target :: filename
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
+class(TpetraMultiVector), intent(in) :: x
+character(kind=C_CHAR, len=*), target :: matrixname
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg3_chars
+character(kind=C_CHAR, len=*), target :: matrixdescription
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg4_chars
+type(SwigArrayWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+type(SwigArrayWrapper) :: farg3 
+type(SwigArrayWrapper) :: farg4 
+
+call SWIG_string_to_chararray(filename, farg1_chars, farg1)
+farg2 = x%swigdata
+call SWIG_string_to_chararray(matrixname, farg3_chars, farg3)
+call SWIG_string_to_chararray(matrixdescription, farg4_chars, farg4)
+call swigc_TpetraWriter_writeDenseFile__SWIG_0(farg1, farg2, farg3, farg4)
+end subroutine
+
+subroutine TpetraWriter_writeDenseFile__SWIG_1(filename, x)
+use, intrinsic :: ISO_C_BINDING
+character(kind=C_CHAR, len=*), target :: filename
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
+class(TpetraMultiVector), intent(in) :: x
+type(SwigArrayWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+
+call SWIG_string_to_chararray(filename, farg1_chars, farg1)
+farg2 = x%swigdata
+call swigc_TpetraWriter_writeDenseFile__SWIG_1(farg1, farg2)
 end subroutine
 
 function new_TpetraWriter() &

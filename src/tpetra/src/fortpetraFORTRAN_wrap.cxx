@@ -1031,6 +1031,12 @@ SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG
 SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_2(std::string const &filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::crs_graph_type const > const &pGraph,bool const debug=false){
       Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filename, pGraph, debug);
     }
+SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_0(std::string const &filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &X,std::string const &matrixName,std::string const &matrixDescription){
+      Tpetra::MatrixMarket::Writer<CMT>::writeDenseFile(filename, X, matrixName, matrixDescription);
+    }
+SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_1(std::string const &filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &X){
+      Tpetra::MatrixMarket::Writer<CMT>::writeDenseFile(filename, X);
+    }
 
 #include "Teuchos_RCP.hpp"
 #include "TpetraExt_MatrixMatrix.hpp"
@@ -15063,6 +15069,86 @@ SWIGEXPORT void _wrap_TpetraWriter_writeSparseGraphFile__SWIG_3(SwigArrayWrapper
     catch (...)
     {
       SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_2(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::crs_graph_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void _wrap_TpetraWriter_writeDenseFile__SWIG_0(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
+  std::string *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > tempnull2 ;
+  std::string tempstr3 ;
+  std::string tempstr4 ;
+  
+  tempstr1 = std::string(static_cast<const char *>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > * >(farg2->ptr) : &tempnull2;
+  tempstr3 = std::string(static_cast<const char *>(farg3->data), farg3->size);
+  arg3 = &tempstr3;
+  tempstr4 = std::string(static_cast<const char *>(farg4->data), farg4->size);
+  arg4 = &tempstr4;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_0(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &,std::string const &,std::string const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_0((std::string const &)*arg1,(Teuchos::RCP< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_0(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &,std::string const &,std::string const &)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_0(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &,std::string const &,std::string const &)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_0(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &,std::string const &,std::string const &)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void _wrap_TpetraWriter_writeDenseFile__SWIG_1(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2) {
+  std::string *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > *arg2 = 0 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > tempnull2 ;
+  
+  tempstr1 = std::string(static_cast<const char *>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > * >(farg2->ptr) : &tempnull2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_1(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_1((std::string const &)*arg1,(Teuchos::RCP< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_1(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_1(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_1(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
