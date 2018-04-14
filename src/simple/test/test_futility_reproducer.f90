@@ -41,7 +41,6 @@ program main
   type(TpetraMap) :: map
   type(TpetraCrsMatrix) :: A,B
   type(TpetraMultiVector) :: X
-  type(TpetraWriter) :: Writer
 
   real(scalar_type), dimension(:), allocatable :: evalues, evectors
   integer(global_ordinal_type), dimension(:) :: cols(2)
@@ -70,6 +69,7 @@ program main
   ! Read in the parameterList
   plist = ParameterList("Anasazi"); FORTRILINOS_CHECK_IERR()
   call load_from_xml(plist, "davidson.xml"); FORTRILINOS_CHECK_IERR()
+  call plist%set("Preconditioner Type", "IDENTITY")
 
   num_eigen_int = num_eigen
   call plist%set("NumEV", num_eigen_int); FORTRILINOS_CHECK_IERR()
@@ -79,48 +79,26 @@ program main
   n_global = -1
   map = TpetraMap(n_global, n, comm); FORTRILINOS_CHECK_IERR()
 
-  max_entries_per_row = 30
-  A = TpetraCrsMatrix(map, map, max_entries_per_row, TpetraDynamicProfile)
+  max_entries_per_row = 2
+  A = TpetraCrsMatrix(map, map, max_entries_per_row)
   cols(1) = 1
   cols(2) = 2
   vals(1) = 0.0015
   vals(2) = 0.325
   call A%insertGlobalValues(INT(1,global_ordinal_type), cols(1:2), vals(1:2)); FORTRILINOS_CHECK_IERR()
-  cols(1) = 2
-  vals(1) = 1e-14
-  call A%insertGlobalValues(INT(2,global_ordinal_type), cols(1:1), vals(2:2)); FORTRILINOS_CHECK_IERR()
 
-  B = TpetraCrsMatrix(map, map, max_entries_per_row, TpetraDynamicProfile)
+  B = TpetraCrsMatrix(map, map, max_entries_per_row)
   cols(1) = 1
   vals(1) = 0.1208
   call B%insertGlobalValues(INT(1,global_ordinal_type), cols(1:1), vals(1:1)); FORTRILINOS_CHECK_IERR()
-#if 0
   cols(1) = 1
   cols(2) = 2
   vals(1) = -0.117
   vals(2) = 0.184
-#else
-  cols(1) = 1
-  cols(2) = 2
-  vals(1) = -0.0
-  vals(2) = 0.184
-#endif
   call B%insertGlobalValues(INT(2,global_ordinal_type), cols(1:2), vals(1:2)); FORTRILINOS_CHECK_IERR()
-
-  vals(1) = 1e-14
-  vals(2) = 1.0
-  do i=3,30
-    cols(1)=i
-    call A%insertGlobalValues(INT(i,global_ordinal_type), cols(1:1), vals(1:1)); FORTRILINOS_CHECK_IERR()
-    call B%insertGlobalValues(INT(i,global_ordinal_type), cols(1:1), vals(2:2)); FORTRILINOS_CHECK_IERR()
-  enddo
 
   call A%fillComplete(); FORTRILINOS_CHECK_IERR()
   call B%fillComplete(); FORTRILINOS_CHECK_IERR()
-
-  Writer = TpetraWriter()
-  call Writer%writeSparseFile('A.mm', A)
-  call Writer%writeSparseFile('B.mm', B)
 
   ! The solution
   allocate(evalues(num_eigen))
