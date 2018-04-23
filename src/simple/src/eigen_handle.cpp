@@ -48,14 +48,14 @@ namespace ForTrilinos {
     M_ = Teuchos::rcp_dynamic_cast<Operator>(M);
   }
 
-  void TrilinosEigenSolver::setup_operator(OperatorCallback callback, const Teuchos::RCP<const Map>& domainMap, const Teuchos::RCP<const Map>& rangeMap) {
+  void TrilinosEigenSolver::setup_operator(const Teuchos::RCP<Operator>& A) {
     TEUCHOS_ASSERT(status_ == INITIALIZED);
-    A_ = Teuchos::rcp(new FortranOperator(callback, domainMap, rangeMap));
+    A_ = A;
     status_ = MATRIX_SETUP;
   }
-  void TrilinosEigenSolver::setup_operator_rhs(OperatorCallback callback, const Teuchos::RCP<const Map>& domainMap, const Teuchos::RCP<const Map>& rangeMap) {
+  void TrilinosEigenSolver::setup_operator_rhs(const Teuchos::RCP<Operator>& M) {
     TEUCHOS_ASSERT(status_ == INITIALIZED || status_ == MATRIX_SETUP);
-    M_ = Teuchos::rcp(new FortranOperator(callback, domainMap, rangeMap));
+    M_ = M;
   }
 
   void TrilinosEigenSolver::setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList) {

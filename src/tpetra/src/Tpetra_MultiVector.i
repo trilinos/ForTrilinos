@@ -141,6 +141,9 @@
     void doExport (const Tpetra::MultiVector<SC,LO,GO,NO> &source, const Tpetra::Import< LO, GO, NO > &importer, CombineMode CM) {
       self->doExport(source, importer, CM);
     }
+    Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > getMap() const {
+      return self->getMap();
+    }
 }
 %ignore Tpetra::MultiVector::MultiVector (const Teuchos::RCP< const map_type > &map, const Teuchos::ArrayView< const Scalar > &A, const size_t LDA, const size_t NumVectors);
 %ignore Tpetra::MultiVector::subCopy(const Teuchos::ArrayView< const size_t > &cols) const;

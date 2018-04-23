@@ -235,6 +235,15 @@ struct assignment_flags;
 #include <stdexcept>
 
 
+/* Support for the `contract` feature.
+ *
+ * Note that RETURNNULL is first because it's inserted via a 'Replaceall' in
+ * the fortran.cxx file.
+ */
+#define SWIG_contract_assert(RETURNNULL, EXPR, MSG) \
+ if (!(EXPR)) { SWIG_exception_impl("$decl", SWIG_ValueError, MSG, RETURNNULL); } 
+
+
 #define SWIGVERSION 0x040000 
 #define SWIG_VERSION SWIGVERSION
 
@@ -608,7 +617,7 @@ void save_to_xml(const Teuchos::ParameterList& plist,
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT int swigc_TeuchosComm_getRank(SwigClassWrapper const *farg1) {
+SWIGEXPORT int _wrap_TeuchosComm_getRank(SwigClassWrapper const *farg1) {
   int fresult ;
   Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 ;
@@ -644,7 +653,7 @@ SWIGEXPORT int swigc_TeuchosComm_getRank(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT int swigc_TeuchosComm_getSize(SwigClassWrapper const *farg1) {
+SWIGEXPORT int _wrap_TeuchosComm_getSize(SwigClassWrapper const *farg1) {
   int fresult ;
   Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 ;
@@ -680,7 +689,7 @@ SWIGEXPORT int swigc_TeuchosComm_getSize(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_TeuchosComm_barrier(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_TeuchosComm_barrier(SwigClassWrapper const *farg1) {
   Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 ;
   
@@ -713,7 +722,7 @@ SWIGEXPORT void swigc_TeuchosComm_barrier(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TeuchosComm__SWIG_0(int const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TeuchosComm__SWIG_0(int const *farg1) {
   SwigClassWrapper fresult ;
   MPI_Comm arg1 ;
   Teuchos::Comm< int > *result = 0 ;
@@ -752,7 +761,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TeuchosComm__SWIG_0(int const *farg1) {
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TeuchosComm__SWIG_1() {
+SWIGEXPORT SwigClassWrapper _wrap_new_TeuchosComm__SWIG_1() {
   SwigClassWrapper fresult ;
   Teuchos::Comm< int > *result = 0 ;
   
@@ -785,7 +794,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TeuchosComm__SWIG_1() {
 }
 
 
-SWIGEXPORT int swigc_TeuchosComm_getRawMpiComm(SwigClassWrapper const *farg1) {
+SWIGEXPORT int _wrap_TeuchosComm_getRawMpiComm(SwigClassWrapper const *farg1) {
   int fresult ;
   Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
   Teuchos::RCP< Teuchos::Comm< int > > *smartarg1 ;
@@ -825,7 +834,7 @@ SWIGEXPORT int swigc_TeuchosComm_getRawMpiComm(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_delete_TeuchosComm(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_TeuchosComm(SwigClassWrapper const *farg1) {
   Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
   Teuchos::RCP< Teuchos::Comm< int > > *smartarg1 ;
   
@@ -858,15 +867,15 @@ SWIGEXPORT void swigc_delete_TeuchosComm(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_assignment_TeuchosComm(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Teuchos::Comm<int> > swig_lhs_classtype;
+SWIGEXPORT void _wrap_assign_TeuchosComm(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Teuchos::RCP< Teuchos::Comm<int> > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_ParameterList__SWIG_0() {
+SWIGEXPORT SwigClassWrapper _wrap_new_ParameterList__SWIG_0() {
   SwigClassWrapper fresult ;
   Teuchos::ParameterList *result = 0 ;
   
@@ -899,7 +908,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_ParameterList__SWIG_0() {
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_ParameterList__SWIG_1(SwigArrayWrapper *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_new_ParameterList__SWIG_1(SwigArrayWrapper *farg1) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   std::string tempstr1 ;
@@ -936,7 +945,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_ParameterList__SWIG_1(SwigArrayWrapper *fa
 }
 
 
-SWIGEXPORT void swigc_ParameterList_print(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_ParameterList_print(SwigClassWrapper const *farg1) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList const > *smartarg1 ;
   
@@ -969,7 +978,7 @@ SWIGEXPORT void swigc_ParameterList_print(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_ParameterList_remove(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT void _wrap_ParameterList_remove(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
@@ -1006,7 +1015,7 @@ SWIGEXPORT void swigc_ParameterList_remove(SwigClassWrapper const *farg1, SwigAr
 }
 
 
-SWIGEXPORT bool swigc_ParameterList_is_parameter(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT bool _wrap_ParameterList_is_parameter(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   bool fresult ;
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
@@ -1046,7 +1055,7 @@ SWIGEXPORT bool swigc_ParameterList_is_parameter(SwigClassWrapper const *farg1, 
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_ParameterList_sublist(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_ParameterList_sublist(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   SwigClassWrapper fresult ;
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
@@ -1089,7 +1098,7 @@ SWIGEXPORT SwigClassWrapper swigc_ParameterList_sublist(SwigClassWrapper const *
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_1(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, double const *farg3) {
+SWIGEXPORT void _wrap_ParameterList_set__SWIG_1(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, double const *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
   double *arg3 = 0 ;
@@ -1128,7 +1137,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_1(SwigClassWrapper const *farg1, S
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_2(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, int const *farg3) {
+SWIGEXPORT void _wrap_ParameterList_set__SWIG_2(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, int const *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
   int *arg3 = 0 ;
@@ -1167,7 +1176,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_2(SwigClassWrapper const *farg1, S
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_3(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, long long const *farg3) {
+SWIGEXPORT void _wrap_ParameterList_set__SWIG_3(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, long long const *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
   long long *arg3 = 0 ;
@@ -1206,7 +1215,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_3(SwigClassWrapper const *farg1, S
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_4(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, bool const *farg3) {
+SWIGEXPORT void _wrap_ParameterList_set__SWIG_4(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, bool const *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
   bool *arg3 = 0 ;
@@ -1245,7 +1254,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_4(SwigClassWrapper const *farg1, S
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_5(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3) {
+SWIGEXPORT void _wrap_ParameterList_set__SWIG_5(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -1286,7 +1295,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_5(SwigClassWrapper const *farg1, S
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_6(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3) {
+SWIGEXPORT void _wrap_ParameterList_set__SWIG_6(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
   Teuchos::Array< double > *arg3 = 0 ;
@@ -1329,7 +1338,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_6(SwigClassWrapper const *farg1, S
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_7(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3) {
+SWIGEXPORT void _wrap_ParameterList_set__SWIG_7(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
   Teuchos::Array< int > *arg3 = 0 ;
@@ -1372,7 +1381,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_7(SwigClassWrapper const *farg1, S
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_8(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3) {
+SWIGEXPORT void _wrap_ParameterList_set__SWIG_8(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
   Teuchos::Array< long long > *arg3 = 0 ;
@@ -1415,7 +1424,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_8(SwigClassWrapper const *farg1, S
 }
 
 
-SWIGEXPORT void swigc_ParameterList_set__SWIG_9(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigClassWrapper const *farg3) {
+SWIGEXPORT void _wrap_ParameterList_set__SWIG_9(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigClassWrapper const *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
   Teuchos::ParameterList *arg3 = 0 ;
@@ -1457,7 +1466,7 @@ SWIGEXPORT void swigc_ParameterList_set__SWIG_9(SwigClassWrapper const *farg1, S
 }
 
 
-SWIGEXPORT double swigc_ParameterList_get_real(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT double _wrap_ParameterList_get_real(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   double fresult ;
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
@@ -1497,7 +1506,7 @@ SWIGEXPORT double swigc_ParameterList_get_real(SwigClassWrapper const *farg1, Sw
 }
 
 
-SWIGEXPORT int swigc_ParameterList_get_integer(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT int _wrap_ParameterList_get_integer(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   int fresult ;
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
@@ -1537,7 +1546,7 @@ SWIGEXPORT int swigc_ParameterList_get_integer(SwigClassWrapper const *farg1, Sw
 }
 
 
-SWIGEXPORT long long swigc_ParameterList_get_longlong(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT long long _wrap_ParameterList_get_longlong(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   long long fresult ;
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
@@ -1577,7 +1586,7 @@ SWIGEXPORT long long swigc_ParameterList_get_longlong(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT bool swigc_ParameterList_get_logical(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT bool _wrap_ParameterList_get_logical(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   bool fresult ;
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
@@ -1617,7 +1626,7 @@ SWIGEXPORT bool swigc_ParameterList_get_logical(SwigClassWrapper const *farg1, S
 }
 
 
-SWIGEXPORT SwigArrayWrapper swigc_ParameterList_get_string(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT SwigArrayWrapper _wrap_ParameterList_get_string(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   SwigArrayWrapper fresult ;
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
@@ -1658,7 +1667,7 @@ SWIGEXPORT SwigArrayWrapper swigc_ParameterList_get_string(SwigClassWrapper cons
 }
 
 
-SWIGEXPORT SwigArrayWrapper swigc_ParameterList_get_arr_real(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT SwigArrayWrapper _wrap_ParameterList_get_arr_real(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   SwigArrayWrapper fresult ;
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
@@ -1699,7 +1708,7 @@ SWIGEXPORT SwigArrayWrapper swigc_ParameterList_get_arr_real(SwigClassWrapper co
 }
 
 
-SWIGEXPORT SwigArrayWrapper swigc_ParameterList_get_arr_integer(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT SwigArrayWrapper _wrap_ParameterList_get_arr_integer(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   SwigArrayWrapper fresult ;
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
@@ -1740,7 +1749,7 @@ SWIGEXPORT SwigArrayWrapper swigc_ParameterList_get_arr_integer(SwigClassWrapper
 }
 
 
-SWIGEXPORT SwigArrayWrapper swigc_ParameterList_get_arr_longlong(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT SwigArrayWrapper _wrap_ParameterList_get_arr_longlong(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   SwigArrayWrapper fresult ;
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
@@ -1781,7 +1790,7 @@ SWIGEXPORT SwigArrayWrapper swigc_ParameterList_get_arr_longlong(SwigClassWrappe
 }
 
 
-SWIGEXPORT void swigc_delete_ParameterList(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_ParameterList(SwigClassWrapper const *farg1) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   
@@ -1814,15 +1823,15 @@ SWIGEXPORT void swigc_delete_ParameterList(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_assignment_ParameterList(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Teuchos::ParameterList > swig_lhs_classtype;
+SWIGEXPORT void _wrap_assign_ParameterList(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Teuchos::RCP< Teuchos::ParameterList > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
 }
 
 
-SWIGEXPORT void swigc_load_from_xml(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT void _wrap_load_from_xml(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   Teuchos::RCP< Teuchos::ParameterList > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull1 ;
@@ -1858,7 +1867,7 @@ SWIGEXPORT void swigc_load_from_xml(SwigClassWrapper const *farg1, SwigArrayWrap
 }
 
 
-SWIGEXPORT void swigc_save_to_xml(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT void _wrap_save_to_xml(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   Teuchos::ParameterList *arg1 = 0 ;
   std::string *arg2 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList const > *smartarg1 ;

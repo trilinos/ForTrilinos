@@ -31,7 +31,7 @@ end type
  ! WRAPPER DECLARATIONS
  interface
 function swigc_fortrilinos_get_serr() &
-bind(C, name="swigc_fortrilinos_get_serr") &
+bind(C, name="_wrap_fortrilinos_get_serr") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigArrayWrapper

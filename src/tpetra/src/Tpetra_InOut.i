@@ -75,6 +75,12 @@
     static void writeSparseGraphFile (const std::string& filename, const Teuchos::RCP< const crs_graph_type > &pGraph, const bool debug=false) {
       Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filename, pGraph, debug);
     }
+    static void writeDenseFile (const std::string &filename, const Teuchos::RCP< const multivector_type > &X, const std::string &matrixName, const std::string &matrixDescription) {
+      Tpetra::MatrixMarket::Writer<CMT>::writeDenseFile(filename, X, matrixName, matrixDescription);
+    }
+    static void writeDenseFile (const std::string &filename, const Teuchos::RCP< const multivector_type > &X) {
+      Tpetra::MatrixMarket::Writer<CMT>::writeDenseFile(filename, X);
+    }
 }
 %ignore Tpetra::MatrixMarket::Reader::readSparseGraphFile;
 %ignore Tpetra::MatrixMarket::Reader::readSparseFile;

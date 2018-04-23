@@ -213,9 +213,6 @@ void SWIG_store_exception(const char* decl, int errcode, const char *msg);
   }
 
 
-#include <string.h>
-
-
 namespace swig {
 
 enum AssignmentFlags {
@@ -258,6 +255,15 @@ struct assignment_flags;
 
 
 #include <stdexcept>
+
+
+/* Support for the `contract` feature.
+ *
+ * Note that RETURNNULL is first because it's inserted via a 'Replaceall' in
+ * the fortran.cxx file.
+ */
+#define SWIG_contract_assert(RETURNNULL, EXPR, MSG) \
+ if (!(EXPR)) { SWIG_exception_impl("$decl", SWIG_ValueError, MSG, RETURNNULL); } 
 
 
 #define SWIGVERSION 0x040000 
@@ -340,6 +346,9 @@ SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
 #define SWIG_NO_NULL_DELETER_1
 #define SWIG_NO_NULL_DELETER_SWIG_POINTER_NEW
 #define SWIG_NO_NULL_DELETER_SWIG_POINTER_OWN
+
+
+#include <string.h>
 
 SWIGINTERN Tpetra::Map< LO,GO,NO > *new_Tpetra_Map_Sl_LO_Sc_GO_Sc_NO_Sg___SWIG_1(Tpetra::global_size_t numGlobalElements,Teuchos::RCP< Teuchos::Comm< int > const > const &comm,Tpetra::LocalGlobal lg=Tpetra::GloballyDistributed){
       return new Tpetra::Map<LO,GO,NO>(numGlobalElements, 1/*indexBase*/, comm, lg);
@@ -686,6 +695,106 @@ SWIGINTERN void Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__doExport__SWIG_0(
 SWIGINTERN void Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__doExport__SWIG_1(Tpetra::MultiVector< SC,LO,GO,NO > *self,Tpetra::MultiVector< SC,LO,GO,NO,false > const &source,Tpetra::Import< LO,GO,NO > const &importer,Tpetra::CombineMode CM){
       self->doExport(source, importer, CM);
     }
+SWIGINTERN Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getMap(Tpetra::MultiVector< SC,LO,GO,NO > const *self){
+      return self->getMap();
+    }
+
+#include "Tpetra_Operator.hpp"
+
+
+extern "C" {
+/* Fortran BIND(C) function */
+void swigd_ForTpetraOperator_apply(
+        SwigClassWrapper const *fself,
+        SwigClassWrapper const *farg1,
+        SwigClassWrapper const *farg2,
+        int *farg3,
+        double const *farg4,
+        double const *farg5
+        );
+SwigClassWrapper swigd_ForTpetraOperator_getDomainMap(
+        SwigClassWrapper const *fself
+        );
+SwigClassWrapper swigd_ForTpetraOperator_getRangeMap(
+        SwigClassWrapper const *fself
+        );
+}
+
+
+  class ForTpetraOperator : public Tpetra::Operator<SC,LO,GO,NO> {
+    // Pointer to polymorphic fortran pointer
+    void* fhandle_;
+   public:
+    /* DIRECTOR FUNCTIONS */
+    const void* fhandle() const { assert(fhandle_); return this->fhandle_; }
+    void init(void* fh) { fhandle_ = fh; }
+
+    /* TPETRA */
+    typedef Tpetra::MultiVector<SC,LO,GO,NO> vector_type;
+    typedef Tpetra::Map<LO,GO,NO> map_type;
+    ForTpetraOperator() : fhandle_(NULL) { /* * */ }
+
+
+    virtual Teuchos::RCP<const map_type> getDomainMap() const {
+      /* construct "this" pointer */
+      Teuchos::RCP<ForTpetraOperator> tempthis(
+             const_cast<ForTpetraOperator*>(this) SWIG_NO_NULL_DELETER_0);
+      SwigClassWrapper self;
+      self.ptr = &tempthis;
+      self.mem = SWIG_CREF; // since this function is const
+
+      SwigClassWrapper fresult = swigd_ForTpetraOperator_getDomainMap(&self);
+
+      Teuchos::RCP<const map_type>* smartresult = static_cast< Teuchos::RCP<const map_type>* >(fresult.ptr);
+      return *smartresult;
+    }
+
+    virtual Teuchos::RCP<const map_type> getRangeMap() const {
+      /* construct "this" pointer */
+      Teuchos::RCP<ForTpetraOperator> tempthis(
+             const_cast<ForTpetraOperator*>(this) SWIG_NO_NULL_DELETER_0);
+      SwigClassWrapper self;
+      self.ptr = &tempthis;
+      self.mem = SWIG_CREF; // since this function is const
+
+      SwigClassWrapper fresult = swigd_ForTpetraOperator_getRangeMap(&self);
+
+      Teuchos::RCP<const map_type>* smartresult = static_cast< Teuchos::RCP<const map_type>* >(fresult.ptr);
+      return *smartresult;
+    }
+
+    virtual void apply(const vector_type &X, vector_type &Y,
+                       Teuchos::ETransp mode, SC alpha, SC beta) const
+    {
+      /* construct "this" pointer */
+      Teuchos::RCP<ForTpetraOperator> tempthis(
+             const_cast<ForTpetraOperator*>(this) SWIG_NO_NULL_DELETER_0);
+      SwigClassWrapper self;
+      self.ptr = &tempthis;
+      self.mem = SWIG_CREF; // since this function is const
+
+      /* convert X -> class wrapper */
+      Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO> > temprcp1(&X SWIG_NO_NULL_DELETER_0);
+
+      SwigClassWrapper farg1;
+      farg1.ptr = &temprcp1;
+      farg1.mem = SWIG_CREF; // X is const
+
+      Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> > temprcp2(&Y SWIG_NO_NULL_DELETER_0);
+
+      SwigClassWrapper farg2;
+      farg2.ptr = &temprcp2;
+      farg2.mem = SWIG_REF; // Y is mutable
+
+      /* convert scalars to wrappers */
+      int farg3 = mode;
+      double farg4 = alpha;
+      double farg5 = beta;
+
+      swigd_ForTpetraOperator_apply(&self, &farg1, &farg2, &farg3, &farg4, &farg5);
+    }
+  };
+
 
 #include "Tpetra_CrsGraph.hpp"
 
@@ -922,6 +1031,12 @@ SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG
 SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG_2(std::string const &filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::crs_graph_type const > const &pGraph,bool const debug=false){
       Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filename, pGraph, debug);
     }
+SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_0(std::string const &filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &X,std::string const &matrixName,std::string const &matrixDescription){
+      Tpetra::MatrixMarket::Writer<CMT>::writeDenseFile(filename, X, matrixName, matrixDescription);
+    }
+SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_1(std::string const &filename,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &X){
+      Tpetra::MatrixMarket::Writer<CMT>::writeDenseFile(filename, X);
+    }
 
 #include "Teuchos_RCP.hpp"
 #include "TpetraExt_MatrixMatrix.hpp"
@@ -929,7 +1044,7 @@ SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeSparseGraphFile__SWIG
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void swigc_setCombineModeParameter(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT void _wrap_setCombineModeParameter(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   Teuchos::ParameterList *arg1 = 0 ;
   std::string *arg2 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
@@ -967,7 +1082,7 @@ SWIGEXPORT void swigc_setCombineModeParameter(SwigClassWrapper const *farg1, Swi
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraMap__SWIG_0() {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_0() {
   SwigClassWrapper fresult ;
   Tpetra::Map< LO,GO,NO > *result = 0 ;
   
@@ -1000,7 +1115,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraMap__SWIG_0() {
 }
 
 
-SWIGEXPORT void swigc_delete_TpetraMap(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_TpetraMap(SwigClassWrapper const *farg1) {
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > > *smartarg1 ;
   
@@ -1033,7 +1148,7 @@ SWIGEXPORT void swigc_delete_TpetraMap(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isOneToOne(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraMap_isOneToOne(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
@@ -1069,7 +1184,7 @@ SWIGEXPORT bool swigc_TpetraMap_isOneToOne(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraMap_getGlobalNumElements(SwigClassWrapper const *farg1) {
+SWIGEXPORT unsigned long _wrap_TpetraMap_getGlobalNumElements(SwigClassWrapper const *farg1) {
   unsigned long fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
@@ -1105,7 +1220,7 @@ SWIGEXPORT unsigned long swigc_TpetraMap_getGlobalNumElements(SwigClassWrapper c
 }
 
 
-SWIGEXPORT size_t swigc_TpetraMap_getNodeNumElements(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraMap_getNodeNumElements(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
@@ -1141,7 +1256,7 @@ SWIGEXPORT size_t swigc_TpetraMap_getNodeNumElements(SwigClassWrapper const *far
 }
 
 
-SWIGEXPORT int swigc_TpetraMap_getMinLocalIndex(SwigClassWrapper const *farg1) {
+SWIGEXPORT int _wrap_TpetraMap_getMinLocalIndex(SwigClassWrapper const *farg1) {
   int fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
@@ -1177,7 +1292,7 @@ SWIGEXPORT int swigc_TpetraMap_getMinLocalIndex(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT int swigc_TpetraMap_getMaxLocalIndex(SwigClassWrapper const *farg1) {
+SWIGEXPORT int _wrap_TpetraMap_getMaxLocalIndex(SwigClassWrapper const *farg1) {
   int fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
@@ -1213,7 +1328,7 @@ SWIGEXPORT int swigc_TpetraMap_getMaxLocalIndex(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT long long swigc_TpetraMap_getMinGlobalIndex(SwigClassWrapper const *farg1) {
+SWIGEXPORT long long _wrap_TpetraMap_getMinGlobalIndex(SwigClassWrapper const *farg1) {
   long long fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
@@ -1249,7 +1364,7 @@ SWIGEXPORT long long swigc_TpetraMap_getMinGlobalIndex(SwigClassWrapper const *f
 }
 
 
-SWIGEXPORT long long swigc_TpetraMap_getMaxGlobalIndex(SwigClassWrapper const *farg1) {
+SWIGEXPORT long long _wrap_TpetraMap_getMaxGlobalIndex(SwigClassWrapper const *farg1) {
   long long fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
@@ -1285,7 +1400,7 @@ SWIGEXPORT long long swigc_TpetraMap_getMaxGlobalIndex(SwigClassWrapper const *f
 }
 
 
-SWIGEXPORT long long swigc_TpetraMap_getMinAllGlobalIndex(SwigClassWrapper const *farg1) {
+SWIGEXPORT long long _wrap_TpetraMap_getMinAllGlobalIndex(SwigClassWrapper const *farg1) {
   long long fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
@@ -1321,7 +1436,7 @@ SWIGEXPORT long long swigc_TpetraMap_getMinAllGlobalIndex(SwigClassWrapper const
 }
 
 
-SWIGEXPORT long long swigc_TpetraMap_getMaxAllGlobalIndex(SwigClassWrapper const *farg1) {
+SWIGEXPORT long long _wrap_TpetraMap_getMaxAllGlobalIndex(SwigClassWrapper const *farg1) {
   long long fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
@@ -1357,7 +1472,7 @@ SWIGEXPORT long long swigc_TpetraMap_getMaxAllGlobalIndex(SwigClassWrapper const
 }
 
 
-SWIGEXPORT int swigc_TpetraMap_getLocalElement(SwigClassWrapper const *farg1, long long const *farg2) {
+SWIGEXPORT int _wrap_TpetraMap_getLocalElement(SwigClassWrapper const *farg1, long long const *farg2) {
   int fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   long long arg2 ;
@@ -1395,7 +1510,7 @@ SWIGEXPORT int swigc_TpetraMap_getLocalElement(SwigClassWrapper const *farg1, lo
 }
 
 
-SWIGEXPORT long long swigc_TpetraMap_getGlobalElement(SwigClassWrapper const *farg1, int const *farg2) {
+SWIGEXPORT long long _wrap_TpetraMap_getGlobalElement(SwigClassWrapper const *farg1, int const *farg2) {
   long long fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   int arg2 ;
@@ -1433,7 +1548,7 @@ SWIGEXPORT long long swigc_TpetraMap_getGlobalElement(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isNodeLocalElement(SwigClassWrapper const *farg1, int const *farg2) {
+SWIGEXPORT bool _wrap_TpetraMap_isNodeLocalElement(SwigClassWrapper const *farg1, int const *farg2) {
   bool fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   int arg2 ;
@@ -1471,7 +1586,7 @@ SWIGEXPORT bool swigc_TpetraMap_isNodeLocalElement(SwigClassWrapper const *farg1
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isNodeGlobalElement(SwigClassWrapper const *farg1, long long const *farg2) {
+SWIGEXPORT bool _wrap_TpetraMap_isNodeGlobalElement(SwigClassWrapper const *farg1, long long const *farg2) {
   bool fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   long long arg2 ;
@@ -1509,7 +1624,7 @@ SWIGEXPORT bool swigc_TpetraMap_isNodeGlobalElement(SwigClassWrapper const *farg
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isUniform(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraMap_isUniform(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
@@ -1545,7 +1660,7 @@ SWIGEXPORT bool swigc_TpetraMap_isUniform(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isContiguous(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraMap_isContiguous(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
@@ -1581,7 +1696,7 @@ SWIGEXPORT bool swigc_TpetraMap_isContiguous(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isDistributed(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraMap_isDistributed(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
@@ -1617,7 +1732,7 @@ SWIGEXPORT bool swigc_TpetraMap_isDistributed(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isCompatible(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT bool _wrap_TpetraMap_isCompatible(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   bool fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg2 = 0 ;
@@ -1658,7 +1773,7 @@ SWIGEXPORT bool swigc_TpetraMap_isCompatible(SwigClassWrapper const *farg1, Swig
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_isSameAs(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT bool _wrap_TpetraMap_isSameAs(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   bool fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Tpetra::Map< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg2 = 0 ;
@@ -1699,7 +1814,7 @@ SWIGEXPORT bool swigc_TpetraMap_isSameAs(SwigClassWrapper const *farg1, SwigClas
 }
 
 
-SWIGEXPORT bool swigc_TpetraMap_locallySameAs(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT bool _wrap_TpetraMap_locallySameAs(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   bool fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Tpetra::Map< int,long long,Tpetra::Map< LO,GO,NO >::node_type > *arg2 = 0 ;
@@ -1740,7 +1855,7 @@ SWIGEXPORT bool swigc_TpetraMap_locallySameAs(SwigClassWrapper const *farg1, Swi
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraMap_getComm(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraMap_getComm(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
@@ -1777,7 +1892,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraMap_getComm(SwigClassWrapper const *farg
 }
 
 
-SWIGEXPORT SwigArrayWrapper swigc_TpetraMap_description(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigArrayWrapper _wrap_TpetraMap_description(SwigClassWrapper const *farg1) {
   SwigArrayWrapper fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
@@ -1819,7 +1934,7 @@ SWIGEXPORT SwigArrayWrapper swigc_TpetraMap_description(SwigClassWrapper const *
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraMap_removeEmptyProcesses(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraMap_removeEmptyProcesses(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
@@ -1856,7 +1971,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraMap_removeEmptyProcesses(SwigClassWrappe
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraMap_replaceCommWithSubset(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraMap_replaceCommWithSubset(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   SwigClassWrapper fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -1896,7 +2011,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraMap_replaceCommWithSubset(SwigClassWrapp
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraMap__SWIG_1(unsigned long const *farg1, SwigClassWrapper const *farg2, int const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_1(unsigned long const *farg1, SwigClassWrapper const *farg2, int const *farg3) {
   SwigClassWrapper fresult ;
   Tpetra::global_size_t arg1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -1936,7 +2051,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraMap__SWIG_1(unsigned long const *far
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraMap__SWIG_2(unsigned long const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_2(unsigned long const *farg1, SwigClassWrapper const *farg2) {
   SwigClassWrapper fresult ;
   Tpetra::global_size_t arg1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -1974,7 +2089,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraMap__SWIG_2(unsigned long const *far
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraMap__SWIG_3(unsigned long const *farg1, size_t const *farg2, SwigClassWrapper const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_3(unsigned long const *farg1, size_t const *farg2, SwigClassWrapper const *farg3) {
   SwigClassWrapper fresult ;
   Tpetra::global_size_t arg1 ;
   size_t arg2 ;
@@ -2014,7 +2129,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraMap__SWIG_3(unsigned long const *far
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraMap__SWIG_4(unsigned long const *farg1, SwigArrayWrapper *farg2, SwigClassWrapper const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_4(unsigned long const *farg1, SwigArrayWrapper *farg2, SwigClassWrapper const *farg3) {
   SwigClassWrapper fresult ;
   Tpetra::global_size_t arg1 ;
   std::pair< GO const *,std::size_t > arg2 ;
@@ -2055,7 +2170,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraMap__SWIG_4(unsigned long const *far
 }
 
 
-SWIGEXPORT int swigc_TpetraMap_getRemoteIndexList__SWIG_0(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
+SWIGEXPORT int _wrap_TpetraMap_getRemoteIndexList__SWIG_0(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
   int fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   std::pair< GO const *,std::size_t > arg2 ;
@@ -2100,7 +2215,7 @@ SWIGEXPORT int swigc_TpetraMap_getRemoteIndexList__SWIG_0(SwigClassWrapper const
 }
 
 
-SWIGEXPORT int swigc_TpetraMap_getRemoteIndexList__SWIG_1(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3) {
+SWIGEXPORT int _wrap_TpetraMap_getRemoteIndexList__SWIG_1(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3) {
   int fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   std::pair< GO const *,std::size_t > arg2 ;
@@ -2142,7 +2257,7 @@ SWIGEXPORT int swigc_TpetraMap_getRemoteIndexList__SWIG_1(SwigClassWrapper const
 }
 
 
-SWIGEXPORT SwigArrayWrapper swigc_TpetraMap_getNodeElementList(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigArrayWrapper _wrap_TpetraMap_getNodeElementList(SwigClassWrapper const *farg1) {
   SwigArrayWrapper fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
@@ -2179,15 +2294,15 @@ SWIGEXPORT SwigArrayWrapper swigc_TpetraMap_getNodeElementList(SwigClassWrapper 
 }
 
 
-SWIGEXPORT void swigc_assignment_TpetraMap(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Tpetra::Map<LO,GO,NO> > swig_lhs_classtype;
+SWIGEXPORT void _wrap_assign_TpetraMap(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Teuchos::RCP< Tpetra::Map<LO,GO,NO> > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraExport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraExport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
@@ -2226,7 +2341,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraExport__SWIG_0(SwigClassWrapper cons
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraExport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraExport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
@@ -2268,7 +2383,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraExport__SWIG_1(SwigClassWrapper cons
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraExport__SWIG_2(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraExport__SWIG_2(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
@@ -2306,7 +2421,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraExport__SWIG_2(SwigClassWrapper cons
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraExport__SWIG_3(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraExport__SWIG_3(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   Tpetra::Export< LO,GO,NO > *result = 0 ;
@@ -2342,7 +2457,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraExport__SWIG_3(SwigClassWrapper cons
 }
 
 
-SWIGEXPORT void swigc_delete_TpetraExport(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_TpetraExport(SwigClassWrapper const *farg1) {
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > > *smartarg1 ;
   
@@ -2375,7 +2490,7 @@ SWIGEXPORT void swigc_delete_TpetraExport(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_TpetraExport_setParameterList(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraExport_setParameterList(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > > *smartarg1 ;
@@ -2411,7 +2526,7 @@ SWIGEXPORT void swigc_TpetraExport_setParameterList(SwigClassWrapper const *farg
 }
 
 
-SWIGEXPORT size_t swigc_TpetraExport_getNumSameIDs(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraExport_getNumSameIDs(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
@@ -2447,7 +2562,7 @@ SWIGEXPORT size_t swigc_TpetraExport_getNumSameIDs(SwigClassWrapper const *farg1
 }
 
 
-SWIGEXPORT size_t swigc_TpetraExport_getNumPermuteIDs(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraExport_getNumPermuteIDs(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
@@ -2483,7 +2598,7 @@ SWIGEXPORT size_t swigc_TpetraExport_getNumPermuteIDs(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT size_t swigc_TpetraExport_getNumRemoteIDs(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraExport_getNumRemoteIDs(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
@@ -2519,7 +2634,7 @@ SWIGEXPORT size_t swigc_TpetraExport_getNumRemoteIDs(SwigClassWrapper const *far
 }
 
 
-SWIGEXPORT size_t swigc_TpetraExport_getNumExportIDs(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraExport_getNumExportIDs(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
@@ -2555,7 +2670,7 @@ SWIGEXPORT size_t swigc_TpetraExport_getNumExportIDs(SwigClassWrapper const *far
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraExport_getSourceMap(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraExport_getSourceMap(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
@@ -2592,7 +2707,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraExport_getSourceMap(SwigClassWrapper con
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraExport_getTargetMap(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraExport_getTargetMap(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
@@ -2629,7 +2744,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraExport_getTargetMap(SwigClassWrapper con
 }
 
 
-SWIGEXPORT bool swigc_TpetraExport_isLocallyComplete(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraExport_isLocallyComplete(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
@@ -2665,15 +2780,15 @@ SWIGEXPORT bool swigc_TpetraExport_isLocallyComplete(SwigClassWrapper const *far
 }
 
 
-SWIGEXPORT void swigc_assignment_TpetraExport(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Tpetra::Export<LO,GO,NO> > swig_lhs_classtype;
+SWIGEXPORT void _wrap_assign_TpetraExport(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Teuchos::RCP< Tpetra::Export<LO,GO,NO> > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR | swig::IS_COPY_ASSIGN);
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraImport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraImport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
@@ -2712,7 +2827,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraImport__SWIG_0(SwigClassWrapper cons
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraImport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraImport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
@@ -2754,7 +2869,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraImport__SWIG_1(SwigClassWrapper cons
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraImport__SWIG_2(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraImport__SWIG_2(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 ;
@@ -2792,7 +2907,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraImport__SWIG_2(SwigClassWrapper cons
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraImport__SWIG_3(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraImport__SWIG_3(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
@@ -2830,7 +2945,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraImport__SWIG_3(SwigClassWrapper cons
 }
 
 
-SWIGEXPORT void swigc_delete_TpetraImport(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_TpetraImport(SwigClassWrapper const *farg1) {
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > > *smartarg1 ;
   
@@ -2863,7 +2978,7 @@ SWIGEXPORT void swigc_delete_TpetraImport(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_TpetraImport_setParameterList(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraImport_setParameterList(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > > *smartarg1 ;
@@ -2899,7 +3014,7 @@ SWIGEXPORT void swigc_TpetraImport_setParameterList(SwigClassWrapper const *farg
 }
 
 
-SWIGEXPORT size_t swigc_TpetraImport_getNumSameIDs(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraImport_getNumSameIDs(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 ;
@@ -2935,7 +3050,7 @@ SWIGEXPORT size_t swigc_TpetraImport_getNumSameIDs(SwigClassWrapper const *farg1
 }
 
 
-SWIGEXPORT size_t swigc_TpetraImport_getNumPermuteIDs(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraImport_getNumPermuteIDs(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 ;
@@ -2971,7 +3086,7 @@ SWIGEXPORT size_t swigc_TpetraImport_getNumPermuteIDs(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT size_t swigc_TpetraImport_getNumRemoteIDs(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraImport_getNumRemoteIDs(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 ;
@@ -3007,7 +3122,7 @@ SWIGEXPORT size_t swigc_TpetraImport_getNumRemoteIDs(SwigClassWrapper const *far
 }
 
 
-SWIGEXPORT size_t swigc_TpetraImport_getNumExportIDs(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraImport_getNumExportIDs(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 ;
@@ -3043,7 +3158,7 @@ SWIGEXPORT size_t swigc_TpetraImport_getNumExportIDs(SwigClassWrapper const *far
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraImport_getSourceMap(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraImport_getSourceMap(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 ;
@@ -3080,7 +3195,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraImport_getSourceMap(SwigClassWrapper con
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraImport_getTargetMap(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraImport_getTargetMap(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 ;
@@ -3117,7 +3232,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraImport_getTargetMap(SwigClassWrapper con
 }
 
 
-SWIGEXPORT bool swigc_TpetraImport_isLocallyComplete(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraImport_isLocallyComplete(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 ;
@@ -3153,7 +3268,7 @@ SWIGEXPORT bool swigc_TpetraImport_isLocallyComplete(SwigClassWrapper const *far
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraImport_setUnion__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraImport_setUnion__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   SwigClassWrapper fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg2 = 0 ;
@@ -3195,7 +3310,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraImport_setUnion__SWIG_0(SwigClassWrapper
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraImport_setUnion__SWIG_1(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraImport_setUnion__SWIG_1(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 ;
@@ -3232,7 +3347,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraImport_setUnion__SWIG_1(SwigClassWrapper
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraImport_createRemoteOnlyImport(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraImport_createRemoteOnlyImport(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   SwigClassWrapper fresult ;
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
@@ -3272,15 +3387,15 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraImport_createRemoteOnlyImport(SwigClassW
 }
 
 
-SWIGEXPORT void swigc_assignment_TpetraImport(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Tpetra::Import<LO,GO,NO> > swig_lhs_classtype;
+SWIGEXPORT void _wrap_assign_TpetraImport(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Teuchos::RCP< Tpetra::Import<LO,GO,NO> > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR | swig::IS_COPY_ASSIGN);
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraMultiVector__SWIG_0() {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMultiVector__SWIG_0() {
   SwigClassWrapper fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *result = 0 ;
   
@@ -3313,7 +3428,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraMultiVector__SWIG_0() {
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraMultiVector__SWIG_1(SwigClassWrapper const *farg1, size_t const *farg2, bool const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMultiVector__SWIG_1(SwigClassWrapper const *farg1, size_t const *farg2, bool const *farg3) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   size_t arg2 ;
@@ -3353,7 +3468,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraMultiVector__SWIG_1(SwigClassWrapper
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraMultiVector__SWIG_2(SwigClassWrapper const *farg1, size_t const *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMultiVector__SWIG_2(SwigClassWrapper const *farg1, size_t const *farg2) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   size_t arg2 ;
@@ -3391,7 +3506,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraMultiVector__SWIG_2(SwigClassWrapper
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraMultiVector__SWIG_3(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMultiVector__SWIG_3(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > const > *smartarg1 ;
@@ -3429,7 +3544,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraMultiVector__SWIG_3(SwigClassWrapper
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraMultiVector__SWIG_4(SwigClassWrapper const *farg1, int const *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMultiVector__SWIG_4(SwigClassWrapper const *farg1, int const *farg2) {
   SwigClassWrapper fresult ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg1 = 0 ;
   Teuchos::DataAccess arg2 ;
@@ -3469,7 +3584,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraMultiVector__SWIG_4(SwigClassWrapper
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraMultiVector__SWIG_5(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, size_t const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMultiVector__SWIG_5(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, size_t const *farg3) {
   SwigClassWrapper fresult ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg1 = 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type *arg2 = 0 ;
@@ -3514,7 +3629,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraMultiVector__SWIG_5(SwigClassWrapper
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraMultiVector__SWIG_6(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMultiVector__SWIG_6(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   SwigClassWrapper fresult ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg1 = 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type *arg2 = 0 ;
@@ -3557,7 +3672,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraMultiVector__SWIG_6(SwigClassWrapper
 }
 
 
-SWIGEXPORT void swigc_delete_TpetraMultiVector(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_TpetraMultiVector(SwigClassWrapper const *farg1) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > > *smartarg1 ;
   
@@ -3590,7 +3705,7 @@ SWIGEXPORT void swigc_delete_TpetraMultiVector(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_replaceGlobalValue(SwigClassWrapper const *farg1, long long const *farg2, size_t const *farg3, double const *farg4) {
+SWIGEXPORT void _wrap_TpetraMultiVector_replaceGlobalValue(SwigClassWrapper const *farg1, long long const *farg2, size_t const *farg3, double const *farg4) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   long long arg2 ;
   size_t arg3 ;
@@ -3629,7 +3744,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_replaceGlobalValue(SwigClassWrapper cons
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(SwigClassWrapper const *farg1, long long const *farg2, size_t const *farg3, double const *farg4, bool const *farg5) {
+SWIGEXPORT void _wrap_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(SwigClassWrapper const *farg1, long long const *farg2, size_t const *farg3, double const *farg4, bool const *farg5) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   long long arg2 ;
   size_t arg3 ;
@@ -3670,7 +3785,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(SwigClassWrap
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_1(SwigClassWrapper const *farg1, long long const *farg2, size_t const *farg3, double const *farg4) {
+SWIGEXPORT void _wrap_TpetraMultiVector_sumIntoGlobalValue__SWIG_1(SwigClassWrapper const *farg1, long long const *farg2, size_t const *farg3, double const *farg4) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   long long arg2 ;
   size_t arg3 ;
@@ -3709,7 +3824,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_1(SwigClassWrap
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_replaceLocalValue(SwigClassWrapper const *farg1, int const *farg2, size_t const *farg3, double const *farg4) {
+SWIGEXPORT void _wrap_TpetraMultiVector_replaceLocalValue(SwigClassWrapper const *farg1, int const *farg2, size_t const *farg3, double const *farg4) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   int arg2 ;
   size_t arg3 ;
@@ -3748,7 +3863,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_replaceLocalValue(SwigClassWrapper const
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0(SwigClassWrapper const *farg1, int const *farg2, size_t const *farg3, double const *farg4, bool const *farg5) {
+SWIGEXPORT void _wrap_TpetraMultiVector_sumIntoLocalValue__SWIG_0(SwigClassWrapper const *farg1, int const *farg2, size_t const *farg3, double const *farg4, bool const *farg5) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   int arg2 ;
   size_t arg3 ;
@@ -3789,7 +3904,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0(SwigClassWrapp
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_1(SwigClassWrapper const *farg1, int const *farg2, size_t const *farg3, double const *farg4) {
+SWIGEXPORT void _wrap_TpetraMultiVector_sumIntoLocalValue__SWIG_1(SwigClassWrapper const *farg1, int const *farg2, size_t const *farg3, double const *farg4) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   int arg2 ;
   size_t arg3 ;
@@ -3828,7 +3943,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_1(SwigClassWrapp
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_putScalar(SwigClassWrapper const *farg1, double const *farg2) {
+SWIGEXPORT void _wrap_TpetraMultiVector_putScalar(SwigClassWrapper const *farg1, double const *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   double *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > > *smartarg1 ;
@@ -3863,7 +3978,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_putScalar(SwigClassWrapper const *farg1,
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_randomize__SWIG_0(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_TpetraMultiVector_randomize__SWIG_0(SwigClassWrapper const *farg1) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > > *smartarg1 ;
   
@@ -3896,7 +4011,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_randomize__SWIG_0(SwigClassWrapper const
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_randomize__SWIG_1(SwigClassWrapper const *farg1, double const *farg2, double const *farg3) {
+SWIGEXPORT void _wrap_TpetraMultiVector_randomize__SWIG_1(SwigClassWrapper const *farg1, double const *farg2, double const *farg3) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   double *arg2 = 0 ;
   double *arg3 = 0 ;
@@ -3933,7 +4048,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_randomize__SWIG_1(SwigClassWrapper const
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_replaceMap(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraMultiVector_replaceMap(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > > *smartarg1 ;
@@ -3969,7 +4084,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_replaceMap(SwigClassWrapper const *farg1
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_reduce(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_TpetraMultiVector_reduce(SwigClassWrapper const *farg1) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > > *smartarg1 ;
   
@@ -4002,7 +4117,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_reduce(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraMultiVector_offsetView(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, size_t const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraMultiVector_offsetView(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, size_t const *farg3) {
   SwigClassWrapper fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
@@ -4044,7 +4159,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraMultiVector_offsetView(SwigClassWrapper 
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraMultiVector_offsetViewNonConst(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, size_t const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraMultiVector_offsetViewNonConst(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, size_t const *farg3) {
   SwigClassWrapper fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
@@ -4086,7 +4201,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraMultiVector_offsetViewNonConst(SwigClass
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_abs(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraMultiVector_abs(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > > *smartarg1 ;
@@ -4124,7 +4239,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_abs(SwigClassWrapper const *farg1, SwigC
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_reciprocal(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraMultiVector_reciprocal(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > > *smartarg1 ;
@@ -4162,7 +4277,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_reciprocal(SwigClassWrapper const *farg1
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_scale__SWIG_0(SwigClassWrapper const *farg1, double const *farg2) {
+SWIGEXPORT void _wrap_TpetraMultiVector_scale__SWIG_0(SwigClassWrapper const *farg1, double const *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   double *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > > *smartarg1 ;
@@ -4197,7 +4312,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_scale__SWIG_0(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_scale__SWIG_1(SwigClassWrapper const *farg1, double const *farg2, SwigClassWrapper const *farg3) {
+SWIGEXPORT void _wrap_TpetraMultiVector_scale__SWIG_1(SwigClassWrapper const *farg1, double const *farg2, SwigClassWrapper const *farg3) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   double *arg2 = 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -4237,7 +4352,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_scale__SWIG_1(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_update__SWIG_0(SwigClassWrapper const *farg1, double const *farg2, SwigClassWrapper const *farg3, double const *farg4) {
+SWIGEXPORT void _wrap_TpetraMultiVector_update__SWIG_0(SwigClassWrapper const *farg1, double const *farg2, SwigClassWrapper const *farg3, double const *farg4) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   double *arg2 = 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -4279,7 +4394,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_update__SWIG_0(SwigClassWrapper const *f
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_update__SWIG_1(SwigClassWrapper const *farg1, double const *farg2, SwigClassWrapper const *farg3, double const *farg4, SwigClassWrapper const *farg5, double const *farg6) {
+SWIGEXPORT void _wrap_TpetraMultiVector_update__SWIG_1(SwigClassWrapper const *farg1, double const *farg2, SwigClassWrapper const *farg3, double const *farg4, SwigClassWrapper const *farg5, double const *farg6) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   double *arg2 = 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -4328,7 +4443,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_update__SWIG_1(SwigClassWrapper const *f
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_multiply(SwigClassWrapper const *farg1, int const *farg2, int const *farg3, double const *farg4, SwigClassWrapper const *farg5, SwigClassWrapper const *farg6, double const *farg7) {
+SWIGEXPORT void _wrap_TpetraMultiVector_multiply(SwigClassWrapper const *farg1, int const *farg2, int const *farg3, double const *farg4, SwigClassWrapper const *farg5, SwigClassWrapper const *farg6, double const *farg7) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::ETransp arg2 ;
   Teuchos::ETransp arg3 ;
@@ -4379,7 +4494,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_multiply(SwigClassWrapper const *farg1, 
 }
 
 
-SWIGEXPORT size_t swigc_TpetraMultiVector_getNumVectors(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraMultiVector_getNumVectors(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > const > *smartarg1 ;
@@ -4415,7 +4530,7 @@ SWIGEXPORT size_t swigc_TpetraMultiVector_getNumVectors(SwigClassWrapper const *
 }
 
 
-SWIGEXPORT size_t swigc_TpetraMultiVector_getLocalLength(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraMultiVector_getLocalLength(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > const > *smartarg1 ;
@@ -4451,7 +4566,7 @@ SWIGEXPORT size_t swigc_TpetraMultiVector_getLocalLength(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraMultiVector_getGlobalLength(SwigClassWrapper const *farg1) {
+SWIGEXPORT unsigned long _wrap_TpetraMultiVector_getGlobalLength(SwigClassWrapper const *farg1) {
   unsigned long fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > const > *smartarg1 ;
@@ -4487,7 +4602,7 @@ SWIGEXPORT unsigned long swigc_TpetraMultiVector_getGlobalLength(SwigClassWrappe
 }
 
 
-SWIGEXPORT size_t swigc_TpetraMultiVector_getStride(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraMultiVector_getStride(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > const > *smartarg1 ;
@@ -4523,7 +4638,7 @@ SWIGEXPORT size_t swigc_TpetraMultiVector_getStride(SwigClassWrapper const *farg
 }
 
 
-SWIGEXPORT bool swigc_TpetraMultiVector_isConstantStride(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraMultiVector_isConstantStride(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > const > *smartarg1 ;
@@ -4559,7 +4674,7 @@ SWIGEXPORT bool swigc_TpetraMultiVector_isConstantStride(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT SwigArrayWrapper swigc_TpetraMultiVector_description(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigArrayWrapper _wrap_TpetraMultiVector_description(SwigClassWrapper const *farg1) {
   SwigArrayWrapper fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > const > *smartarg1 ;
@@ -4601,7 +4716,7 @@ SWIGEXPORT SwigArrayWrapper swigc_TpetraMultiVector_description(SwigClassWrapper
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_removeEmptyProcessesInPlace(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraMultiVector_removeEmptyProcessesInPlace(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > > *smartarg1 ;
@@ -4637,7 +4752,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_removeEmptyProcessesInPlace(SwigClassWra
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_setCopyOrView(SwigClassWrapper const *farg1, int const *farg2) {
+SWIGEXPORT void _wrap_TpetraMultiVector_setCopyOrView(SwigClassWrapper const *farg1, int const *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::DataAccess arg2 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > > *smartarg1 ;
@@ -4672,7 +4787,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_setCopyOrView(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT int swigc_TpetraMultiVector_getCopyOrView(SwigClassWrapper const *farg1) {
+SWIGEXPORT int _wrap_TpetraMultiVector_getCopyOrView(SwigClassWrapper const *farg1) {
   int fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > const > *smartarg1 ;
@@ -4708,7 +4823,7 @@ SWIGEXPORT int swigc_TpetraMultiVector_getCopyOrView(SwigClassWrapper const *far
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraMultiVector__SWIG_7(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, size_t const *farg3, size_t const *farg4) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMultiVector__SWIG_7(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, size_t const *farg3, size_t const *farg4) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   std::pair< SC const *,std::size_t > arg2 ;
@@ -4751,7 +4866,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraMultiVector__SWIG_7(SwigClassWrapper
 }
 
 
-SWIGEXPORT SwigArrayWrapper swigc_TpetraMultiVector_getData(SwigClassWrapper const *farg1, size_t const *farg2) {
+SWIGEXPORT SwigArrayWrapper _wrap_TpetraMultiVector_getData(SwigClassWrapper const *farg1, size_t const *farg2) {
   SwigArrayWrapper fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   size_t arg2 ;
@@ -4790,7 +4905,7 @@ SWIGEXPORT SwigArrayWrapper swigc_TpetraMultiVector_getData(SwigClassWrapper con
 }
 
 
-SWIGEXPORT SwigArrayWrapper swigc_TpetraMultiVector_getDataNonConst(SwigClassWrapper const *farg1, size_t const *farg2) {
+SWIGEXPORT SwigArrayWrapper _wrap_TpetraMultiVector_getDataNonConst(SwigClassWrapper const *farg1, size_t const *farg2) {
   SwigArrayWrapper fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   size_t arg2 ;
@@ -4829,7 +4944,7 @@ SWIGEXPORT SwigArrayWrapper swigc_TpetraMultiVector_getDataNonConst(SwigClassWra
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraMultiVector_subCopy(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraMultiVector_subCopy(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   SwigClassWrapper fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   std::pair< std::size_t const *,std::size_t > arg2 ;
@@ -4869,7 +4984,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraMultiVector_subCopy(SwigClassWrapper con
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraMultiVector_subView(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraMultiVector_subView(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   SwigClassWrapper fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   std::pair< std::size_t const *,std::size_t > arg2 ;
@@ -4909,7 +5024,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraMultiVector_subView(SwigClassWrapper con
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraMultiVector_subViewNonConst(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraMultiVector_subViewNonConst(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   SwigClassWrapper fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   std::pair< std::size_t const *,std::size_t > arg2 ;
@@ -4949,7 +5064,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraMultiVector_subViewNonConst(SwigClassWra
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_dot(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3) {
+SWIGEXPORT void _wrap_TpetraMultiVector_dot(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg2 = 0 ;
   std::pair< SC *,std::size_t > arg3 ;
@@ -4990,7 +5105,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_dot(SwigClassWrapper const *farg1, SwigC
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_norm1(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT void _wrap_TpetraMultiVector_norm1(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   std::pair< SC *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > const > *smartarg1 ;
@@ -5026,7 +5141,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_norm1(SwigClassWrapper const *farg1, Swi
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_norm2(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT void _wrap_TpetraMultiVector_norm2(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   std::pair< SC *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > const > *smartarg1 ;
@@ -5062,7 +5177,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_norm2(SwigClassWrapper const *farg1, Swi
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_normInf(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT void _wrap_TpetraMultiVector_normInf(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   std::pair< SC *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > const > *smartarg1 ;
@@ -5098,7 +5213,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_normInf(SwigClassWrapper const *farg1, S
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_scale__SWIG_2(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT void _wrap_TpetraMultiVector_scale__SWIG_2(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   std::pair< SC const *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > > *smartarg1 ;
@@ -5134,7 +5249,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_scale__SWIG_2(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_meanValue(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT void _wrap_TpetraMultiVector_meanValue(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   std::pair< SC *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > const > *smartarg1 ;
@@ -5170,7 +5285,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_meanValue(SwigClassWrapper const *farg1,
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_get1dCopy(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, size_t const *farg3) {
+SWIGEXPORT void _wrap_TpetraMultiVector_get1dCopy(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, size_t const *farg3) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   std::pair< SC *,std::size_t > arg2 ;
   size_t arg3 ;
@@ -5208,7 +5323,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_get1dCopy(SwigClassWrapper const *farg1,
 }
 
 
-SWIGEXPORT SwigArrayWrapper swigc_TpetraMultiVector_get1dView(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigArrayWrapper _wrap_TpetraMultiVector_get1dView(SwigClassWrapper const *farg1) {
   SwigArrayWrapper fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > const > *smartarg1 ;
@@ -5245,7 +5360,7 @@ SWIGEXPORT SwigArrayWrapper swigc_TpetraMultiVector_get1dView(SwigClassWrapper c
 }
 
 
-SWIGEXPORT SwigArrayWrapper swigc_TpetraMultiVector_get1dViewNonConst(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigArrayWrapper _wrap_TpetraMultiVector_get1dViewNonConst(SwigClassWrapper const *farg1) {
   SwigArrayWrapper fresult ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > > *smartarg1 ;
@@ -5282,7 +5397,7 @@ SWIGEXPORT SwigArrayWrapper swigc_TpetraMultiVector_get1dViewNonConst(SwigClassW
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_doImport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
+SWIGEXPORT void _wrap_TpetraMultiVector_doImport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg2 = 0 ;
   Tpetra::Import< LO,GO,NO > *arg3 = 0 ;
@@ -5327,7 +5442,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_doImport__SWIG_0(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_doImport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
+SWIGEXPORT void _wrap_TpetraMultiVector_doImport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg2 = 0 ;
   Tpetra::Export< LO,GO,NO > *arg3 = 0 ;
@@ -5372,7 +5487,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_doImport__SWIG_1(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_doExport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
+SWIGEXPORT void _wrap_TpetraMultiVector_doExport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg2 = 0 ;
   Tpetra::Export< LO,GO,NO > *arg3 = 0 ;
@@ -5417,7 +5532,7 @@ SWIGEXPORT void swigc_TpetraMultiVector_doExport__SWIG_0(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT void swigc_TpetraMultiVector_doExport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
+SWIGEXPORT void _wrap_TpetraMultiVector_doExport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Tpetra::MultiVector< SC,LO,GO,NO,false > *arg2 = 0 ;
   Tpetra::Import< LO,GO,NO > *arg3 = 0 ;
@@ -5462,15 +5577,361 @@ SWIGEXPORT void swigc_TpetraMultiVector_doExport__SWIG_1(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT void swigc_assignment_TpetraMultiVector(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> > swig_lhs_classtype;
+SWIGEXPORT SwigClassWrapper _wrap_TpetraMultiVector_getMap(SwigClassWrapper const *farg1) {
+  SwigClassWrapper fresult ;
+  Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
+  Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > const > *smartarg1 ;
+  Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > result;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO> >* >(farg1->ptr);
+  arg1 = smartarg1 ? const_cast<Tpetra::MultiVector<SC,LO,GO,NO>*>(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::getMap() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getMap((Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const *)arg1);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::getMap() const", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::getMap() const", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::getMap() const", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
+    }
+  }
+  fresult.ptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
+  fresult.mem = SWIG_MOVE;
+  return fresult;
+}
+
+
+SWIGEXPORT void _wrap_assign_TpetraMultiVector(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR | swig::IS_COPY_ASSIGN);
 }
 
 
-SWIGEXPORT void swigc_RowInfo_localRow_set(SwigClassWrapper const *farg1, size_t const *farg2) {
+SWIGEXPORT void _wrap_delete_TpetraOperator(SwigClassWrapper const *farg1) {
+  Tpetra::Operator< SC,LO,GO,NO > *arg1 = (Tpetra::Operator< SC,LO,GO,NO > *) 0 ;
+  Teuchos::RCP< Tpetra::Operator< SC,LO,GO,NO > > *smartarg1 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Operator< SC,LO,GO,NO >::~Operator()");;
+    try
+    {
+      // Attempt the wrapped function call
+      (void)arg1; delete smartarg1; 
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Operator< SC,LO,GO,NO >::~Operator()", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Operator< SC,LO,GO,NO >::~Operator()", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Operator< SC,LO,GO,NO >::~Operator()", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void _wrap_assign_TpetraOperator(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> > swig_lhs_classtype;
+  SWIG_assign(swig_lhs_classtype, self,
+    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
+    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+}
+
+
+SWIGEXPORT void * _wrap_ForTpetraOperator_fhandle(SwigClassWrapper const *farg1) {
+  void * fresult ;
+  ForTpetraOperator *arg1 = (ForTpetraOperator *) 0 ;
+  Teuchos::RCP< ForTpetraOperator const > *smartarg1 ;
+  void *result = 0 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const ForTpetraOperator >* >(farg1->ptr);
+  arg1 = smartarg1 ? const_cast<ForTpetraOperator*>(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("ForTpetraOperator::fhandle() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (void *)((ForTpetraOperator const *)arg1)->fhandle();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTpetraOperator::fhandle() const", SWIG_IndexError, e.what(), return 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTpetraOperator::fhandle() const", SWIG_RuntimeError, e.what(), return 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("ForTpetraOperator::fhandle() const", SWIG_UnknownError, "An unknown exception occurred", return 0);
+    }
+  }
+  fresult = result;
+  return fresult;
+}
+
+
+SWIGEXPORT void _wrap_ForTpetraOperator_init(SwigClassWrapper const *farg1, void *farg2) {
+  ForTpetraOperator *arg1 = (ForTpetraOperator *) 0 ;
+  void *arg2 = (void *) 0 ;
+  Teuchos::RCP< ForTpetraOperator > *smartarg1 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP< ForTpetraOperator >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  arg2 = reinterpret_cast< void * >(farg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("ForTpetraOperator::init(void *)");;
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->init(arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTpetraOperator::init(void *)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTpetraOperator::init(void *)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("ForTpetraOperator::init(void *)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT SwigClassWrapper _wrap_new_ForTpetraOperator() {
+  SwigClassWrapper fresult ;
+  ForTpetraOperator *result = 0 ;
+  
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("ForTpetraOperator::ForTpetraOperator()");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (ForTpetraOperator *)new ForTpetraOperator();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTpetraOperator::ForTpetraOperator()", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTpetraOperator::ForTpetraOperator()", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("ForTpetraOperator::ForTpetraOperator()", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
+    }
+  }
+  fresult.ptr = result ? new Teuchos::RCP< ForTpetraOperator >(result SWIG_NO_NULL_DELETER_1) : NULL;
+  fresult.mem = SWIG_MOVE;
+  return fresult;
+}
+
+
+SWIGEXPORT SwigClassWrapper _wrap_ForTpetraOperator_getDomainMap(SwigClassWrapper const *farg1) {
+  SwigClassWrapper fresult ;
+  ForTpetraOperator *arg1 = (ForTpetraOperator *) 0 ;
+  Teuchos::RCP< ForTpetraOperator const > *smartarg1 ;
+  Teuchos::RCP< ForTpetraOperator::map_type const > result;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const ForTpetraOperator >* >(farg1->ptr);
+  arg1 = smartarg1 ? const_cast<ForTpetraOperator*>(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("ForTpetraOperator::getDomainMap() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((ForTpetraOperator const *)arg1)->getDomainMap();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTpetraOperator::getDomainMap() const", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTpetraOperator::getDomainMap() const", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("ForTpetraOperator::getDomainMap() const", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
+    }
+  }
+  fresult.ptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
+  fresult.mem = SWIG_MOVE;
+  return fresult;
+}
+
+
+SWIGEXPORT SwigClassWrapper _wrap_ForTpetraOperator_getRangeMap(SwigClassWrapper const *farg1) {
+  SwigClassWrapper fresult ;
+  ForTpetraOperator *arg1 = (ForTpetraOperator *) 0 ;
+  Teuchos::RCP< ForTpetraOperator const > *smartarg1 ;
+  Teuchos::RCP< ForTpetraOperator::map_type const > result;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const ForTpetraOperator >* >(farg1->ptr);
+  arg1 = smartarg1 ? const_cast<ForTpetraOperator*>(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("ForTpetraOperator::getRangeMap() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((ForTpetraOperator const *)arg1)->getRangeMap();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTpetraOperator::getRangeMap() const", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTpetraOperator::getRangeMap() const", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("ForTpetraOperator::getRangeMap() const", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
+    }
+  }
+  fresult.ptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
+  fresult.mem = SWIG_MOVE;
+  return fresult;
+}
+
+
+SWIGEXPORT void _wrap_ForTpetraOperator_apply(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4, double const *farg5, double const *farg6) {
+  ForTpetraOperator *arg1 = (ForTpetraOperator *) 0 ;
+  ForTpetraOperator::vector_type *arg2 = 0 ;
+  ForTpetraOperator::vector_type *arg3 = 0 ;
+  Teuchos::ETransp arg4 ;
+  SC arg5 ;
+  SC arg6 ;
+  Teuchos::RCP< ForTpetraOperator const > *smartarg1 ;
+  Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > const > *smartarg2 ;
+  Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > > *smartarg3 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const ForTpetraOperator >* >(farg1->ptr);
+  arg1 = smartarg1 ? const_cast<ForTpetraOperator*>(smartarg1->get()) : NULL;
+  SWIG_check_sp_nonnull(farg2, "ForTpetraOperator::vector_type *", "TpetraMultiVector", "ForTpetraOperator::apply(ForTpetraOperator::vector_type const &,ForTpetraOperator::vector_type &,Teuchos::ETransp,SC,SC) const", return )
+  smartarg2 = static_cast< Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO> >* >(farg2->ptr);
+  arg2 = const_cast<Tpetra::MultiVector<SC,LO,GO,NO>*>(smartarg2->get());
+  SWIG_check_sp_nonnull(farg3, "ForTpetraOperator::vector_type *", "TpetraMultiVector", "ForTpetraOperator::apply(ForTpetraOperator::vector_type const &,ForTpetraOperator::vector_type &,Teuchos::ETransp,SC,SC) const", return )
+  smartarg3 = static_cast< Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >* >(farg3->ptr);
+  arg3 = smartarg3->get();
+  arg4 = static_cast< Teuchos::ETransp >(*farg4);
+  arg5 = *farg5;
+  arg6 = *farg6;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("ForTpetraOperator::apply(ForTpetraOperator::vector_type const &,ForTpetraOperator::vector_type &,Teuchos::ETransp,SC,SC) const");;
+    try
+    {
+      // Attempt the wrapped function call
+      ((ForTpetraOperator const *)arg1)->apply((ForTpetraOperator::vector_type const &)*arg2,*arg3,arg4,arg5,arg6);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTpetraOperator::apply(ForTpetraOperator::vector_type const &,ForTpetraOperator::vector_type &,Teuchos::ETransp,SC,SC) const", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTpetraOperator::apply(ForTpetraOperator::vector_type const &,ForTpetraOperator::vector_type &,Teuchos::ETransp,SC,SC) const", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("ForTpetraOperator::apply(ForTpetraOperator::vector_type const &,ForTpetraOperator::vector_type &,Teuchos::ETransp,SC,SC) const", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void _wrap_delete_ForTpetraOperator(SwigClassWrapper const *farg1) {
+  ForTpetraOperator *arg1 = (ForTpetraOperator *) 0 ;
+  Teuchos::RCP< ForTpetraOperator > *smartarg1 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP< ForTpetraOperator >* >(farg1->ptr);
+  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("ForTpetraOperator::~ForTpetraOperator()");;
+    try
+    {
+      // Attempt the wrapped function call
+      (void)arg1; delete smartarg1; 
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTpetraOperator::~ForTpetraOperator()", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTpetraOperator::~ForTpetraOperator()", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("ForTpetraOperator::~ForTpetraOperator()", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void _wrap_assign_ForTpetraOperator(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Teuchos::RCP< ForTpetraOperator > swig_lhs_classtype;
+  SWIG_assign(swig_lhs_classtype, self,
+    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
+    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+}
+
+
+SWIGEXPORT void _wrap_RowInfo_localRow_set(SwigClassWrapper const *farg1, size_t const *farg2) {
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   size_t arg2 ;
   
@@ -5482,7 +5943,7 @@ SWIGEXPORT void swigc_RowInfo_localRow_set(SwigClassWrapper const *farg1, size_t
 }
 
 
-SWIGEXPORT size_t swigc_RowInfo_localRow_get(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_RowInfo_localRow_get(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   size_t result;
@@ -5495,7 +5956,7 @@ SWIGEXPORT size_t swigc_RowInfo_localRow_get(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_RowInfo_allocSize_set(SwigClassWrapper const *farg1, size_t const *farg2) {
+SWIGEXPORT void _wrap_RowInfo_allocSize_set(SwigClassWrapper const *farg1, size_t const *farg2) {
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   size_t arg2 ;
   
@@ -5507,7 +5968,7 @@ SWIGEXPORT void swigc_RowInfo_allocSize_set(SwigClassWrapper const *farg1, size_
 }
 
 
-SWIGEXPORT size_t swigc_RowInfo_allocSize_get(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_RowInfo_allocSize_get(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   size_t result;
@@ -5520,7 +5981,7 @@ SWIGEXPORT size_t swigc_RowInfo_allocSize_get(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_RowInfo_numEntries_set(SwigClassWrapper const *farg1, size_t const *farg2) {
+SWIGEXPORT void _wrap_RowInfo_numEntries_set(SwigClassWrapper const *farg1, size_t const *farg2) {
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   size_t arg2 ;
   
@@ -5532,7 +5993,7 @@ SWIGEXPORT void swigc_RowInfo_numEntries_set(SwigClassWrapper const *farg1, size
 }
 
 
-SWIGEXPORT size_t swigc_RowInfo_numEntries_get(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_RowInfo_numEntries_get(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   size_t result;
@@ -5545,7 +6006,7 @@ SWIGEXPORT size_t swigc_RowInfo_numEntries_get(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_RowInfo_offset1D_set(SwigClassWrapper const *farg1, size_t const *farg2) {
+SWIGEXPORT void _wrap_RowInfo_offset1D_set(SwigClassWrapper const *farg1, size_t const *farg2) {
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   size_t arg2 ;
   
@@ -5557,7 +6018,7 @@ SWIGEXPORT void swigc_RowInfo_offset1D_set(SwigClassWrapper const *farg1, size_t
 }
 
 
-SWIGEXPORT size_t swigc_RowInfo_offset1D_get(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_RowInfo_offset1D_get(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   size_t result;
@@ -5570,7 +6031,7 @@ SWIGEXPORT size_t swigc_RowInfo_offset1D_get(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_RowInfo() {
+SWIGEXPORT SwigClassWrapper _wrap_new_RowInfo() {
   SwigClassWrapper fresult ;
   Tpetra::RowInfo *result = 0 ;
   
@@ -5603,7 +6064,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_RowInfo() {
 }
 
 
-SWIGEXPORT void swigc_delete_RowInfo(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_RowInfo(SwigClassWrapper const *farg1) {
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   
   SWIG_check_mutable_nonnull(*farg1, "Tpetra::RowInfo *", "RowInfo", "Tpetra::RowInfo::~RowInfo()", return );
@@ -5635,15 +6096,15 @@ SWIGEXPORT void swigc_delete_RowInfo(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_assignment_RowInfo(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Tpetra::RowInfo swig_lhs_classtype;
+SWIGEXPORT void _wrap_assign_RowInfo(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Tpetra::RowInfo swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_0(SwigClassWrapper const *farg1, size_t const *farg2, int const *farg3, SwigClassWrapper const *farg4) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_0(SwigClassWrapper const *farg1, size_t const *farg2, int const *farg3, SwigClassWrapper const *farg4) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   size_t arg2 ;
@@ -5686,7 +6147,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_0(SwigClassWrapper co
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_1(SwigClassWrapper const *farg1, size_t const *farg2, int const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_1(SwigClassWrapper const *farg1, size_t const *farg2, int const *farg3) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   size_t arg2 ;
@@ -5726,7 +6187,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_1(SwigClassWrapper co
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_2(SwigClassWrapper const *farg1, size_t const *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_2(SwigClassWrapper const *farg1, size_t const *farg2) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   size_t arg2 ;
@@ -5764,7 +6225,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_2(SwigClassWrapper co
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_3(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, size_t const *farg3, int const *farg4, SwigClassWrapper const *farg5) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_3(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, size_t const *farg3, int const *farg4, SwigClassWrapper const *farg5) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
@@ -5810,7 +6271,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_3(SwigClassWrapper co
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_4(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, size_t const *farg3, int const *farg4) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_4(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, size_t const *farg3, int const *farg4) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
@@ -5853,7 +6314,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_4(SwigClassWrapper co
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_5(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, size_t const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_5(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, size_t const *farg3) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
@@ -5894,7 +6355,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_5(SwigClassWrapper co
 }
 
 
-SWIGEXPORT void swigc_delete_TpetraCrsGraph(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_TpetraCrsGraph(SwigClassWrapper const *farg1) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > > *smartarg1 ;
   
@@ -5927,7 +6388,7 @@ SWIGEXPORT void swigc_delete_TpetraCrsGraph(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_setParameterList(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_setParameterList(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > > *smartarg1 ;
@@ -5963,7 +6424,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_setParameterList(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraCrsGraph_getValidParameters(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsGraph_getValidParameters(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -6000,7 +6461,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraCrsGraph_getValidParameters(SwigClassWra
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_0(SwigClassWrapper const *farg1, long long const *farg2, int const *farg3, long long *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_insertGlobalIndices__SWIG_0(SwigClassWrapper const *farg1, long long const *farg2, int const *farg3, long long *farg4) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   long long arg2 ;
   int arg3 ;
@@ -6039,7 +6500,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_0(SwigClassWrappe
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_removeLocalIndices(SwigClassWrapper const *farg1, int const *farg2) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_removeLocalIndices(SwigClassWrapper const *farg1, int const *farg2) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   int arg2 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > > *smartarg1 ;
@@ -6074,7 +6535,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_removeLocalIndices(SwigClassWrapper const *
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_globalAssemble(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_globalAssemble(SwigClassWrapper const *farg1) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > > *smartarg1 ;
   
@@ -6107,7 +6568,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_globalAssemble(SwigClassWrapper const *farg
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_resumeFill__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_resumeFill__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > > *smartarg1 ;
@@ -6143,7 +6604,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_resumeFill__SWIG_0(SwigClassWrapper const *
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_resumeFill__SWIG_1(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_resumeFill__SWIG_1(SwigClassWrapper const *farg1) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > > *smartarg1 ;
   
@@ -6176,7 +6637,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_resumeFill__SWIG_1(SwigClassWrapper const *
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_fillComplete__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -6218,7 +6679,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_0(SwigClassWrapper const
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_fillComplete__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -6257,7 +6718,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_1(SwigClassWrapper const
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_2(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_fillComplete__SWIG_2(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > > *smartarg1 ;
@@ -6293,7 +6754,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_2(SwigClassWrapper const
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_3(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_fillComplete__SWIG_3(SwigClassWrapper const *farg1) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > > *smartarg1 ;
   
@@ -6326,7 +6787,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_fillComplete__SWIG_3(SwigClassWrapper const
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, SwigClassWrapper const *farg6) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_expertStaticFillComplete__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, SwigClassWrapper const *farg6) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -6374,7 +6835,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_0(SwigClassW
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_expertStaticFillComplete__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -6419,7 +6880,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_1(SwigClassW
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_2(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_expertStaticFillComplete__SWIG_2(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -6461,7 +6922,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_2(SwigClassW
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_3(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_expertStaticFillComplete__SWIG_3(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -6500,7 +6961,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_expertStaticFillComplete__SWIG_3(SwigClassW
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraCrsGraph_getComm(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsGraph_getComm(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -6537,7 +6998,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraCrsGraph_getComm(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraCrsGraph_getRowMap(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsGraph_getRowMap(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -6574,7 +7035,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraCrsGraph_getRowMap(SwigClassWrapper cons
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraCrsGraph_getColMap(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsGraph_getColMap(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -6611,7 +7072,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraCrsGraph_getColMap(SwigClassWrapper cons
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraCrsGraph_getDomainMap(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsGraph_getDomainMap(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -6648,7 +7109,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraCrsGraph_getDomainMap(SwigClassWrapper c
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraCrsGraph_getRangeMap(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsGraph_getRangeMap(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -6685,7 +7146,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraCrsGraph_getRangeMap(SwigClassWrapper co
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraCrsGraph_getImporter(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsGraph_getImporter(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -6722,7 +7183,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraCrsGraph_getImporter(SwigClassWrapper co
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraCrsGraph_getExporter(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsGraph_getExporter(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -6759,7 +7220,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraCrsGraph_getExporter(SwigClassWrapper co
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumRows(SwigClassWrapper const *farg1) {
+SWIGEXPORT unsigned long _wrap_TpetraCrsGraph_getGlobalNumRows(SwigClassWrapper const *farg1) {
   unsigned long fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -6795,7 +7256,7 @@ SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumRows(SwigClassWrapper 
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumCols(SwigClassWrapper const *farg1) {
+SWIGEXPORT unsigned long _wrap_TpetraCrsGraph_getGlobalNumCols(SwigClassWrapper const *farg1) {
   unsigned long fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -6831,7 +7292,7 @@ SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumCols(SwigClassWrapper 
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumRows(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraCrsGraph_getNodeNumRows(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -6867,7 +7328,7 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumRows(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumCols(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraCrsGraph_getNodeNumCols(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -6903,7 +7364,7 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumCols(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumEntries(SwigClassWrapper const *farg1) {
+SWIGEXPORT unsigned long _wrap_TpetraCrsGraph_getGlobalNumEntries(SwigClassWrapper const *farg1) {
   unsigned long fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -6939,7 +7400,7 @@ SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumEntries(SwigClassWrapp
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumEntries(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraCrsGraph_getNodeNumEntries(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -6975,7 +7436,7 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumEntries(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getNumEntriesInGlobalRow(SwigClassWrapper const *farg1, long long const *farg2) {
+SWIGEXPORT size_t _wrap_TpetraCrsGraph_getNumEntriesInGlobalRow(SwigClassWrapper const *farg1, long long const *farg2) {
   size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   long long arg2 ;
@@ -7013,7 +7474,7 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNumEntriesInGlobalRow(SwigClassWrapper
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getNumEntriesInLocalRow(SwigClassWrapper const *farg1, int const *farg2) {
+SWIGEXPORT size_t _wrap_TpetraCrsGraph_getNumEntriesInLocalRow(SwigClassWrapper const *farg1, int const *farg2) {
   size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   int arg2 ;
@@ -7051,7 +7512,7 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNumEntriesInLocalRow(SwigClassWrapper 
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeAllocationSize(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraCrsGraph_getNodeAllocationSize(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -7087,7 +7548,7 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeAllocationSize(SwigClassWrapper co
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow(SwigClassWrapper const *farg1, long long const *farg2) {
+SWIGEXPORT size_t _wrap_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow(SwigClassWrapper const *farg1, long long const *farg2) {
   size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   long long arg2 ;
@@ -7125,7 +7586,7 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow(SwigCla
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getNumAllocatedEntriesInLocalRow(SwigClassWrapper const *farg1, int const *farg2) {
+SWIGEXPORT size_t _wrap_TpetraCrsGraph_getNumAllocatedEntriesInLocalRow(SwigClassWrapper const *farg1, int const *farg2) {
   size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   int arg2 ;
@@ -7163,7 +7624,7 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNumAllocatedEntriesInLocalRow(SwigClas
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumDiags(SwigClassWrapper const *farg1) {
+SWIGEXPORT unsigned long _wrap_TpetraCrsGraph_getGlobalNumDiags(SwigClassWrapper const *farg1) {
   unsigned long fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -7199,7 +7660,7 @@ SWIGEXPORT unsigned long swigc_TpetraCrsGraph_getGlobalNumDiags(SwigClassWrapper
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumDiags(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraCrsGraph_getNodeNumDiags(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -7235,7 +7696,7 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeNumDiags(SwigClassWrapper const *f
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getGlobalMaxNumRowEntries(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraCrsGraph_getGlobalMaxNumRowEntries(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -7271,7 +7732,7 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getGlobalMaxNumRowEntries(SwigClassWrappe
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeMaxNumRowEntries(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraCrsGraph_getNodeMaxNumRowEntries(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -7307,7 +7768,7 @@ SWIGEXPORT size_t swigc_TpetraCrsGraph_getNodeMaxNumRowEntries(SwigClassWrapper 
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_hasColMap(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsGraph_hasColMap(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -7343,7 +7804,7 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_hasColMap(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isLowerTriangular(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsGraph_isLowerTriangular(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -7379,7 +7840,7 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isLowerTriangular(SwigClassWrapper const *f
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isUpperTriangular(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsGraph_isUpperTriangular(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -7415,7 +7876,7 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isUpperTriangular(SwigClassWrapper const *f
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isLocallyIndexed(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsGraph_isLocallyIndexed(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -7451,7 +7912,7 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isLocallyIndexed(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isGloballyIndexed(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsGraph_isGloballyIndexed(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -7487,7 +7948,7 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isGloballyIndexed(SwigClassWrapper const *f
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isFillComplete(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsGraph_isFillComplete(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -7523,7 +7984,7 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isFillComplete(SwigClassWrapper const *farg
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isFillActive(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsGraph_isFillActive(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -7559,7 +8020,7 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isFillActive(SwigClassWrapper const *farg1)
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isSorted(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsGraph_isSorted(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -7595,7 +8056,7 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isSorted(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_isStorageOptimized(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsGraph_isStorageOptimized(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -7631,7 +8092,7 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_isStorageOptimized(SwigClassWrapper const *
 }
 
 
-SWIGEXPORT int swigc_TpetraCrsGraph_getProfileType(SwigClassWrapper const *farg1) {
+SWIGEXPORT int _wrap_TpetraCrsGraph_getProfileType(SwigClassWrapper const *farg1) {
   int fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -7667,7 +8128,7 @@ SWIGEXPORT int swigc_TpetraCrsGraph_getProfileType(SwigClassWrapper const *farg1
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_supportsRowViews(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsGraph_supportsRowViews(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -7703,7 +8164,7 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_supportsRowViews(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT SwigArrayWrapper swigc_TpetraCrsGraph_description(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigArrayWrapper _wrap_TpetraCrsGraph_description(SwigClassWrapper const *farg1) {
   SwigArrayWrapper fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -7745,7 +8206,7 @@ SWIGEXPORT SwigArrayWrapper swigc_TpetraCrsGraph_description(SwigClassWrapper co
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_replaceColMap(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_replaceColMap(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > > *smartarg1 ;
@@ -7781,7 +8242,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_replaceColMap(SwigClassWrapper const *farg1
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, bool const *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_reindexColumns__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, bool const *farg4) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const > *arg3 = 0 ;
@@ -7822,7 +8283,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_0(SwigClassWrapper con
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_reindexColumns__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const > *arg3 = 0 ;
@@ -7861,7 +8322,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_1(SwigClassWrapper con
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_2(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_reindexColumns__SWIG_2(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > > *smartarg1 ;
@@ -7897,7 +8358,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_reindexColumns__SWIG_2(SwigClassWrapper con
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_replaceDomainMapAndImporter(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_replaceDomainMapAndImporter(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const > *arg3 = 0 ;
@@ -7936,7 +8397,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_replaceDomainMapAndImporter(SwigClassWrappe
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_removeEmptyProcessesInPlace(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_removeEmptyProcessesInPlace(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > > *smartarg1 ;
@@ -7972,7 +8433,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_removeEmptyProcessesInPlace(SwigClassWrappe
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsGraph_haveGlobalConstants(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsGraph_haveGlobalConstants(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -8008,7 +8469,7 @@ SWIGEXPORT bool swigc_TpetraCrsGraph_haveGlobalConstants(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_computeGlobalConstants(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_computeGlobalConstants(SwigClassWrapper const *farg1) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > > *smartarg1 ;
   
@@ -8041,7 +8502,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_computeGlobalConstants(SwigClassWrapper con
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_6(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, int const *farg3, SwigClassWrapper const *farg4) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_6(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, int const *farg3, SwigClassWrapper const *farg4) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   std::pair< std::size_t const *,std::size_t > arg2 ;
@@ -8085,7 +8546,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_6(SwigClassWrapper co
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_7(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, int const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_7(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, int const *farg3) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   std::pair< std::size_t const *,std::size_t > arg2 ;
@@ -8126,7 +8587,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_7(SwigClassWrapper co
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_8(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_8(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   std::pair< std::size_t const *,std::size_t > arg2 ;
@@ -8165,7 +8626,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_8(SwigClassWrapper co
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_9(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, int const *farg4, SwigClassWrapper const *farg5) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_9(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, int const *farg4, SwigClassWrapper const *farg5) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
@@ -8212,7 +8673,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_9(SwigClassWrapper co
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_10(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, int const *farg4) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_10(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, int const *farg4) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
@@ -8256,7 +8717,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_10(SwigClassWrapper c
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_11(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_11(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
@@ -8298,7 +8759,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_11(SwigClassWrapper c
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_12(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4, SwigClassWrapper const *farg5) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_12(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4, SwigClassWrapper const *farg5) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
@@ -8346,7 +8807,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_12(SwigClassWrapper c
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_13(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_13(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
@@ -8391,7 +8852,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsGraph__SWIG_13(SwigClassWrapper c
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_1(SwigClassWrapper const *farg1, long long const *farg2, SwigArrayWrapper *farg3) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_insertGlobalIndices__SWIG_1(SwigClassWrapper const *farg1, long long const *farg2, SwigArrayWrapper *farg3) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   GO arg2 ;
   std::pair< GO const *,std::size_t > arg3 ;
@@ -8429,7 +8890,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_1(SwigClassWrappe
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_insertLocalIndices(SwigClassWrapper const *farg1, int const *farg2, SwigArrayWrapper *farg3) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_insertLocalIndices(SwigClassWrapper const *farg1, int const *farg2, SwigArrayWrapper *farg3) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   LO arg2 ;
   std::pair< LO const *,std::size_t > arg3 ;
@@ -8467,7 +8928,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_insertLocalIndices(SwigClassWrapper const *
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_getGlobalRowCopy(SwigClassWrapper const *farg1, long long const *farg2, SwigArrayWrapper *farg3, size_t *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_getGlobalRowCopy(SwigClassWrapper const *farg1, long long const *farg2, SwigArrayWrapper *farg3, size_t *farg4) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   GO arg2 ;
   std::pair< GO *,std::size_t > arg3 ;
@@ -8507,7 +8968,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_getGlobalRowCopy(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_getLocalRowCopy(SwigClassWrapper const *farg1, int const *farg2, SwigArrayWrapper *farg3, size_t *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_getLocalRowCopy(SwigClassWrapper const *farg1, int const *farg2, SwigArrayWrapper *farg3, size_t *farg4) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   LO arg2 ;
   std::pair< LO *,std::size_t > arg3 ;
@@ -8547,7 +9008,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_getLocalRowCopy(SwigClassWrapper const *far
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_getgblRowView(SwigClassWrapper const *farg1, long long const *farg2, SwigArrayWrapper *farg3) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_getgblRowView(SwigClassWrapper const *farg1, long long const *farg2, SwigArrayWrapper *farg3) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   GO arg2 ;
   std::pair< GO const *,std::size_t > arg3 ;
@@ -8585,7 +9046,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_getgblRowView(SwigClassWrapper const *farg1
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_setAllIndices(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_setAllIndices(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   std::pair< std::size_t *,std::size_t > arg2 ;
   std::pair< LO *,std::size_t > arg3 ;
@@ -8627,7 +9088,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_setAllIndices(SwigClassWrapper const *farg1
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_getNodeRowPtrs(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_getNodeRowPtrs(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   std::pair< std::size_t *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -8663,7 +9124,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_getNodeRowPtrs(SwigClassWrapper const *farg
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_getNodePackedIndices(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_getNodePackedIndices(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   std::pair< std::size_t *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -8699,7 +9160,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_getNodePackedIndices(SwigClassWrapper const
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_getLocalDiagOffsets(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_getLocalDiagOffsets(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   std::pair< std::size_t *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
@@ -8735,7 +9196,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_getLocalDiagOffsets(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_doImport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_doImport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg2 = 0 ;
   Tpetra::Import< LO,GO,NO > *arg3 = 0 ;
@@ -8780,7 +9241,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_doImport__SWIG_0(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_doImport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_doImport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg2 = 0 ;
   Tpetra::Export< LO,GO,NO > *arg3 = 0 ;
@@ -8825,7 +9286,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_doImport__SWIG_1(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_doExport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_doExport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg2 = 0 ;
   Tpetra::Export< LO,GO,NO > *arg3 = 0 ;
@@ -8870,7 +9331,7 @@ SWIGEXPORT void swigc_TpetraCrsGraph_doExport__SWIG_0(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsGraph_doExport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_doExport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Tpetra::CrsGraph< LO,GO,NO,false > *arg2 = 0 ;
   Tpetra::Import< LO,GO,NO > *arg3 = 0 ;
@@ -8915,15 +9376,15 @@ SWIGEXPORT void swigc_TpetraCrsGraph_doExport__SWIG_1(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT void swigc_assignment_TpetraCrsGraph(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> > swig_lhs_classtype;
+SWIGEXPORT void _wrap_assign_TpetraCrsGraph(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_0(SwigClassWrapper const *farg1, size_t const *farg2, int const *farg3, SwigClassWrapper const *farg4) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_0(SwigClassWrapper const *farg1, size_t const *farg2, int const *farg3, SwigClassWrapper const *farg4) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   size_t arg2 ;
@@ -8966,7 +9427,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_0(SwigClassWrapper c
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_1(SwigClassWrapper const *farg1, size_t const *farg2, int const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_1(SwigClassWrapper const *farg1, size_t const *farg2, int const *farg3) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   size_t arg2 ;
@@ -9006,7 +9467,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_1(SwigClassWrapper c
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_2(SwigClassWrapper const *farg1, size_t const *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_2(SwigClassWrapper const *farg1, size_t const *farg2) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   size_t arg2 ;
@@ -9044,7 +9505,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_2(SwigClassWrapper c
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_3(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, size_t const *farg3, int const *farg4, SwigClassWrapper const *farg5) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_3(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, size_t const *farg3, int const *farg4, SwigClassWrapper const *farg5) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
@@ -9090,7 +9551,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_3(SwigClassWrapper c
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_4(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, size_t const *farg3, int const *farg4) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_4(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, size_t const *farg3, int const *farg4) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
@@ -9133,7 +9594,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_4(SwigClassWrapper c
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_5(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, size_t const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_5(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, size_t const *farg3) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
@@ -9174,7 +9635,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_5(SwigClassWrapper c
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_6(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_6(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::crs_graph_type const > *arg1 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
@@ -9213,7 +9674,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_6(SwigClassWrapper c
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_7(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_7(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::crs_graph_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::crs_graph_type const > tempnull1 ;
@@ -9249,7 +9710,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_7(SwigClassWrapper c
 }
 
 
-SWIGEXPORT void swigc_delete_TpetraCrsMatrix(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_TpetraCrsMatrix(SwigClassWrapper const *farg1) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > > *smartarg1 ;
   
@@ -9282,7 +9743,7 @@ SWIGEXPORT void swigc_delete_TpetraCrsMatrix(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_setAllToScalar(SwigClassWrapper const *farg1, double const *farg2) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_setAllToScalar(SwigClassWrapper const *farg1, double const *farg2) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   double *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > > *smartarg1 ;
@@ -9317,7 +9778,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_setAllToScalar(SwigClassWrapper const *far
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_scale(SwigClassWrapper const *farg1, double const *farg2) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_scale(SwigClassWrapper const *farg1, double const *farg2) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   double *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > > *smartarg1 ;
@@ -9352,7 +9813,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_scale(SwigClassWrapper const *farg1, doubl
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_globalAssemble(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_globalAssemble(SwigClassWrapper const *farg1) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > > *smartarg1 ;
   
@@ -9385,7 +9846,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_globalAssemble(SwigClassWrapper const *far
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_resumeFill__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_resumeFill__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > > *smartarg1 ;
@@ -9421,7 +9882,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_resumeFill__SWIG_0(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_resumeFill__SWIG_1(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_resumeFill__SWIG_1(SwigClassWrapper const *farg1) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > > *smartarg1 ;
   
@@ -9454,7 +9915,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_resumeFill__SWIG_1(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_fillComplete__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -9496,7 +9957,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_0(SwigClassWrapper cons
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_fillComplete__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -9535,7 +9996,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_1(SwigClassWrapper cons
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_2(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_fillComplete__SWIG_2(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > > *smartarg1 ;
@@ -9571,7 +10032,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_2(SwigClassWrapper cons
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_3(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_fillComplete__SWIG_3(SwigClassWrapper const *farg1) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > > *smartarg1 ;
   
@@ -9604,7 +10065,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_fillComplete__SWIG_3(SwigClassWrapper cons
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, SwigClassWrapper const *farg6) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_expertStaticFillComplete__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, SwigClassWrapper const *farg6) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -9652,7 +10113,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_0(SwigClass
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_expertStaticFillComplete__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -9697,7 +10158,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_1(SwigClass
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_2(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_expertStaticFillComplete__SWIG_2(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -9739,7 +10200,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_2(SwigClass
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_3(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_expertStaticFillComplete__SWIG_3(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -9778,7 +10239,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_expertStaticFillComplete__SWIG_3(SwigClass
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_replaceColMap(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_replaceColMap(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > > *smartarg1 ;
@@ -9814,7 +10275,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_replaceColMap(SwigClassWrapper const *farg
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, bool const *farg5) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_reindexColumns__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, bool const *farg5) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::crs_graph_type *arg2 = (Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::crs_graph_type *) (Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::crs_graph_type *)0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -9859,7 +10320,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_0(SwigClassWrapper co
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_reindexColumns__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::crs_graph_type *arg2 = (Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::crs_graph_type *) (Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::crs_graph_type *)0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -9902,7 +10363,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_1(SwigClassWrapper co
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_2(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_reindexColumns__SWIG_2(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::crs_graph_type *arg2 = (Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::crs_graph_type *) (Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::crs_graph_type *)0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg3 = 0 ;
@@ -9942,7 +10403,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_reindexColumns__SWIG_2(SwigClassWrapper co
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_replaceDomainMapAndImporter(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_replaceDomainMapAndImporter(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::import_type const > *arg3 = 0 ;
@@ -9981,7 +10442,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_replaceDomainMapAndImporter(SwigClassWrapp
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_removeEmptyProcessesInPlace(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_removeEmptyProcessesInPlace(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > > *smartarg1 ;
@@ -10017,7 +10478,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_removeEmptyProcessesInPlace(SwigClassWrapp
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraCrsMatrix_getComm(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsMatrix_getComm(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10054,7 +10515,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraCrsMatrix_getComm(SwigClassWrapper const
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraCrsMatrix_getRowMap(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsMatrix_getRowMap(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10091,7 +10552,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraCrsMatrix_getRowMap(SwigClassWrapper con
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraCrsMatrix_getColMap(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsMatrix_getColMap(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10128,7 +10589,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraCrsMatrix_getColMap(SwigClassWrapper con
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraCrsMatrix_getCrsGraph(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsMatrix_getCrsGraph(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10165,7 +10626,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraCrsMatrix_getCrsGraph(SwigClassWrapper c
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumRows(SwigClassWrapper const *farg1) {
+SWIGEXPORT unsigned long _wrap_TpetraCrsMatrix_getGlobalNumRows(SwigClassWrapper const *farg1) {
   unsigned long fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10201,7 +10662,7 @@ SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumRows(SwigClassWrapper
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumCols(SwigClassWrapper const *farg1) {
+SWIGEXPORT unsigned long _wrap_TpetraCrsMatrix_getGlobalNumCols(SwigClassWrapper const *farg1) {
   unsigned long fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10237,7 +10698,7 @@ SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumCols(SwigClassWrapper
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumRows(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraCrsMatrix_getNodeNumRows(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10273,7 +10734,7 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumRows(SwigClassWrapper const *f
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumCols(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraCrsMatrix_getNodeNumCols(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10309,7 +10770,7 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumCols(SwigClassWrapper const *f
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumEntries(SwigClassWrapper const *farg1) {
+SWIGEXPORT unsigned long _wrap_TpetraCrsMatrix_getGlobalNumEntries(SwigClassWrapper const *farg1) {
   unsigned long fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10345,7 +10806,7 @@ SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumEntries(SwigClassWrap
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumEntries(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraCrsMatrix_getNodeNumEntries(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10381,7 +10842,7 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumEntries(SwigClassWrapper const
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNumEntriesInGlobalRow(SwigClassWrapper const *farg1, long long const *farg2) {
+SWIGEXPORT size_t _wrap_TpetraCrsMatrix_getNumEntriesInGlobalRow(SwigClassWrapper const *farg1, long long const *farg2) {
   size_t fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   long long arg2 ;
@@ -10419,7 +10880,7 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNumEntriesInGlobalRow(SwigClassWrappe
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNumEntriesInLocalRow(SwigClassWrapper const *farg1, int const *farg2) {
+SWIGEXPORT size_t _wrap_TpetraCrsMatrix_getNumEntriesInLocalRow(SwigClassWrapper const *farg1, int const *farg2) {
   size_t fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   int arg2 ;
@@ -10457,7 +10918,7 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNumEntriesInLocalRow(SwigClassWrapper
 }
 
 
-SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumDiags(SwigClassWrapper const *farg1) {
+SWIGEXPORT unsigned long _wrap_TpetraCrsMatrix_getGlobalNumDiags(SwigClassWrapper const *farg1) {
   unsigned long fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10493,7 +10954,7 @@ SWIGEXPORT unsigned long swigc_TpetraCrsMatrix_getGlobalNumDiags(SwigClassWrappe
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumDiags(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraCrsMatrix_getNodeNumDiags(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10529,7 +10990,7 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeNumDiags(SwigClassWrapper const *
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsMatrix_getGlobalMaxNumRowEntries(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraCrsMatrix_getGlobalMaxNumRowEntries(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10565,7 +11026,7 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getGlobalMaxNumRowEntries(SwigClassWrapp
 }
 
 
-SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeMaxNumRowEntries(SwigClassWrapper const *farg1) {
+SWIGEXPORT size_t _wrap_TpetraCrsMatrix_getNodeMaxNumRowEntries(SwigClassWrapper const *farg1) {
   size_t fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10601,7 +11062,7 @@ SWIGEXPORT size_t swigc_TpetraCrsMatrix_getNodeMaxNumRowEntries(SwigClassWrapper
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_hasColMap(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsMatrix_hasColMap(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10637,7 +11098,7 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_hasColMap(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isLowerTriangular(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsMatrix_isLowerTriangular(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10673,7 +11134,7 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isLowerTriangular(SwigClassWrapper const *
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isUpperTriangular(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsMatrix_isUpperTriangular(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10709,7 +11170,7 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isUpperTriangular(SwigClassWrapper const *
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isLocallyIndexed(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsMatrix_isLocallyIndexed(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10745,7 +11206,7 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isLocallyIndexed(SwigClassWrapper const *f
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isGloballyIndexed(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsMatrix_isGloballyIndexed(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10781,7 +11242,7 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isGloballyIndexed(SwigClassWrapper const *
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isFillComplete(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsMatrix_isFillComplete(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10817,7 +11278,7 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isFillComplete(SwigClassWrapper const *far
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isFillActive(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsMatrix_isFillActive(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10853,7 +11314,7 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isFillActive(SwigClassWrapper const *farg1
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isStorageOptimized(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsMatrix_isStorageOptimized(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10889,7 +11350,7 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isStorageOptimized(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT int swigc_TpetraCrsMatrix_getProfileType(SwigClassWrapper const *farg1) {
+SWIGEXPORT int _wrap_TpetraCrsMatrix_getProfileType(SwigClassWrapper const *farg1) {
   int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10925,7 +11386,7 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_getProfileType(SwigClassWrapper const *farg
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_isStaticGraph(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsMatrix_isStaticGraph(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10961,7 +11422,7 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_isStaticGraph(SwigClassWrapper const *farg
 }
 
 
-SWIGEXPORT double swigc_TpetraCrsMatrix_getFrobeniusNorm(SwigClassWrapper const *farg1) {
+SWIGEXPORT double _wrap_TpetraCrsMatrix_getFrobeniusNorm(SwigClassWrapper const *farg1) {
   double fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -10997,7 +11458,7 @@ SWIGEXPORT double swigc_TpetraCrsMatrix_getFrobeniusNorm(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_supportsRowViews(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsMatrix_supportsRowViews(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -11033,7 +11494,7 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_supportsRowViews(SwigClassWrapper const *f
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4, double const *farg5, double const *farg6) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_apply__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4, double const *farg5, double const *farg6) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -11082,7 +11543,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_0(SwigClassWrapper const *farg
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4, double const *farg5) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_apply__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4, double const *farg5) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -11129,7 +11590,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_1(SwigClassWrapper const *farg
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_2(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_apply__SWIG_2(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -11174,7 +11635,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_2(SwigClassWrapper const *farg
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_3(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_apply__SWIG_3(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -11217,7 +11678,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_apply__SWIG_3(SwigClassWrapper const *farg
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_hasTransposeApply(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsMatrix_hasTransposeApply(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -11253,7 +11714,7 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_hasTransposeApply(SwigClassWrapper const *
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraCrsMatrix_getDomainMap(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsMatrix_getDomainMap(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -11290,7 +11751,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraCrsMatrix_getDomainMap(SwigClassWrapper 
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraCrsMatrix_getRangeMap(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsMatrix_getRangeMap(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -11327,7 +11788,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraCrsMatrix_getRangeMap(SwigClassWrapper c
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_gaussSeidel(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, double const *farg5, int const *farg6, int const *farg7) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_gaussSeidel(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, double const *farg5, int const *farg6, int const *farg7) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -11381,7 +11842,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_gaussSeidel(SwigClassWrapper const *farg1,
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_gaussSeidelCopy(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, double const *farg5, int const *farg6, int const *farg7, bool const *farg8) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_gaussSeidelCopy(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, double const *farg5, int const *farg6, int const *farg7, bool const *farg8) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg2 = 0 ;
   Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > *arg3 = 0 ;
@@ -11437,7 +11898,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_gaussSeidelCopy(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT SwigArrayWrapper swigc_TpetraCrsMatrix_description(SwigClassWrapper const *farg1) {
+SWIGEXPORT SwigArrayWrapper _wrap_TpetraCrsMatrix_description(SwigClassWrapper const *farg1) {
   SwigArrayWrapper fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -11479,7 +11940,7 @@ SWIGEXPORT SwigArrayWrapper swigc_TpetraCrsMatrix_description(SwigClassWrapper c
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, SwigClassWrapper const *farg6) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_importAndFillComplete__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, SwigClassWrapper const *farg6) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > > *arg2 = 0 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type *arg3 = 0 ;
@@ -11529,7 +11990,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_0(SwigClassWra
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_importAndFillComplete__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > > *arg2 = 0 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type *arg3 = 0 ;
@@ -11576,7 +12037,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_1(SwigClassWra
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_2(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, SwigClassWrapper const *farg6, SwigClassWrapper const *farg7) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_importAndFillComplete__SWIG_2(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, SwigClassWrapper const *farg6, SwigClassWrapper const *farg7) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > > *arg2 = 0 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type *arg3 = 0 ;
@@ -11631,7 +12092,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_importAndFillComplete__SWIG_2(SwigClassWra
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, SwigClassWrapper const *farg6) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_exportAndFillComplete__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, SwigClassWrapper const *farg6) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > > *arg2 = 0 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type *arg3 = 0 ;
@@ -11681,7 +12142,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_0(SwigClassWra
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_exportAndFillComplete__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > > *arg2 = 0 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type *arg3 = 0 ;
@@ -11728,7 +12189,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_1(SwigClassWra
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_2(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_exportAndFillComplete__SWIG_2(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > > *arg2 = 0 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type *arg3 = 0 ;
@@ -11772,7 +12233,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_2(SwigClassWra
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_3(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_exportAndFillComplete__SWIG_3(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > > *arg2 = 0 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type *arg3 = 0 ;
@@ -11813,7 +12274,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_3(SwigClassWra
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_4(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, SwigClassWrapper const *farg6, SwigClassWrapper const *farg7) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_exportAndFillComplete__SWIG_4(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, SwigClassWrapper const *farg6, SwigClassWrapper const *farg7) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > > *arg2 = 0 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type *arg3 = 0 ;
@@ -11868,7 +12329,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_exportAndFillComplete__SWIG_4(SwigClassWra
 }
 
 
-SWIGEXPORT bool swigc_TpetraCrsMatrix_haveGlobalConstants(SwigClassWrapper const *farg1) {
+SWIGEXPORT bool _wrap_TpetraCrsMatrix_haveGlobalConstants(SwigClassWrapper const *farg1) {
   bool fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -11904,7 +12365,7 @@ SWIGEXPORT bool swigc_TpetraCrsMatrix_haveGlobalConstants(SwigClassWrapper const
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_8(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, int const *farg3, SwigClassWrapper const *farg4) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_8(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, int const *farg3, SwigClassWrapper const *farg4) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   std::pair< std::size_t const *,std::size_t > arg2 ;
@@ -11948,7 +12409,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_8(SwigClassWrapper c
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_9(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, int const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_9(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, int const *farg3) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   std::pair< std::size_t const *,std::size_t > arg2 ;
@@ -11989,7 +12450,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_9(SwigClassWrapper c
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_10(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_10(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   std::pair< std::size_t const *,std::size_t > arg2 ;
@@ -12028,7 +12489,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_10(SwigClassWrapper 
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_11(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, int const *farg4, SwigClassWrapper const *farg5) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_11(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, int const *farg4, SwigClassWrapper const *farg5) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
@@ -12075,7 +12536,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_11(SwigClassWrapper 
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_12(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, int const *farg4) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_12(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, int const *farg4) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
@@ -12119,7 +12580,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_12(SwigClassWrapper 
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_13(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_13(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
@@ -12161,7 +12622,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_13(SwigClassWrapper 
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_14(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4, SwigArrayWrapper *farg5, SwigClassWrapper const *farg6) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_14(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4, SwigArrayWrapper *farg5, SwigClassWrapper const *farg6) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
@@ -12212,7 +12673,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_14(SwigClassWrapper 
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_15(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4, SwigArrayWrapper *farg5) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_15(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4, SwigArrayWrapper *farg5) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg1 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false >::map_type const > *arg2 = 0 ;
@@ -12260,7 +12721,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraCrsMatrix__SWIG_15(SwigClassWrapper 
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_insertGlobalValues(SwigClassWrapper const *farg1, long long const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_insertGlobalValues(SwigClassWrapper const *farg1, long long const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   GO arg2 ;
   std::pair< GO const *,std::size_t > arg3 ;
@@ -12301,7 +12762,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_insertGlobalValues(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_insertLocalValues(SwigClassWrapper const *farg1, int const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_insertLocalValues(SwigClassWrapper const *farg1, int const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   LO arg2 ;
   std::pair< LO const *,std::size_t > arg3 ;
@@ -12342,7 +12803,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_insertLocalValues(SwigClassWrapper const *
 }
 
 
-SWIGEXPORT int swigc_TpetraCrsMatrix_replaceGlobalValues(SwigClassWrapper const *farg1, long long const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
+SWIGEXPORT int _wrap_TpetraCrsMatrix_replaceGlobalValues(SwigClassWrapper const *farg1, long long const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
   int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   GO arg2 ;
@@ -12386,7 +12847,7 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_replaceGlobalValues(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues(SwigClassWrapper const *farg1, long long const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
+SWIGEXPORT int _wrap_TpetraCrsMatrix_sumIntoGlobalValues(SwigClassWrapper const *farg1, long long const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
   int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   GO arg2 ;
@@ -12430,7 +12891,7 @@ SWIGEXPORT int swigc_TpetraCrsMatrix_sumIntoGlobalValues(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_setAllValues(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_setAllValues(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   std::pair< std::size_t *,std::size_t > arg2 ;
   std::pair< LO *,std::size_t > arg3 ;
@@ -12472,7 +12933,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_setAllValues(SwigClassWrapper const *farg1
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_getAllValues(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_getAllValues(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   std::pair< std::size_t *,std::size_t > arg2 ;
   std::pair< LO *,std::size_t > arg3 ;
@@ -12514,7 +12975,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_getAllValues(SwigClassWrapper const *farg1
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowCopy(SwigClassWrapper const *farg1, long long const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4, size_t *farg5) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_getGlobalRowCopy(SwigClassWrapper const *farg1, long long const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4, size_t *farg5) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   GO arg2 ;
   std::pair< GO *,std::size_t > arg3 ;
@@ -12557,7 +13018,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowCopy(SwigClassWrapper const *f
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_getLocalRowCopy(SwigClassWrapper const *farg1, int const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4, size_t *farg5) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_getLocalRowCopy(SwigClassWrapper const *farg1, int const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4, size_t *farg5) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   LO arg2 ;
   std::pair< LO *,std::size_t > arg3 ;
@@ -12600,7 +13061,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_getLocalRowCopy(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowView(SwigClassWrapper const *farg1, long long const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_getGlobalRowView(SwigClassWrapper const *farg1, long long const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   GO arg2 ;
   std::pair< GO const *,std::size_t > arg3 ;
@@ -12641,7 +13102,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_getGlobalRowView(SwigClassWrapper const *f
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_getLocalDiagOffsets(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_getLocalDiagOffsets(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   std::pair< std::size_t *,std::size_t > arg2 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
@@ -12677,7 +13138,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_getLocalDiagOffsets(SwigClassWrapper const
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_doImport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_doImport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg2 = 0 ;
   Tpetra::Import< LO,GO,NO > *arg3 = 0 ;
@@ -12722,7 +13183,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_doImport__SWIG_0(SwigClassWrapper const *f
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_doImport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_doImport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg2 = 0 ;
   Tpetra::Export< LO,GO,NO > *arg3 = 0 ;
@@ -12767,7 +13228,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_doImport__SWIG_1(SwigClassWrapper const *f
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_doExport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_doExport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg2 = 0 ;
   Tpetra::Export< LO,GO,NO > *arg3 = 0 ;
@@ -12812,7 +13273,7 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_doExport__SWIG_0(SwigClassWrapper const *f
 }
 
 
-SWIGEXPORT void swigc_TpetraCrsMatrix_doExport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_doExport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Tpetra::CrsMatrix< SC,LO,GO,NO,false > *arg2 = 0 ;
   Tpetra::Import< LO,GO,NO > *arg3 = 0 ;
@@ -12857,15 +13318,15 @@ SWIGEXPORT void swigc_TpetraCrsMatrix_doExport__SWIG_1(SwigClassWrapper const *f
 }
 
 
-SWIGEXPORT void swigc_assignment_TpetraCrsMatrix(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> > swig_lhs_classtype;
+SWIGEXPORT void _wrap_assign_TpetraCrsMatrix(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR);
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_0(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3, bool const *farg4, bool const *farg5) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseGraphFile__SWIG_0(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3, bool const *farg4, bool const *farg5) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -12911,7 +13372,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_0(SwigA
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_1(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3, bool const *farg4) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseGraphFile__SWIG_1(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3, bool const *farg4) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -12955,7 +13416,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_1(SwigA
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_2(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseGraphFile__SWIG_2(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -12997,7 +13458,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_2(SwigA
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_3(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseGraphFile__SWIG_3(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -13037,7 +13498,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_3(SwigA
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_4(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, bool const *farg5, bool const *farg6) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseGraphFile__SWIG_4(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, bool const *farg5, bool const *farg6) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -13087,7 +13548,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_4(SwigA
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_5(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, bool const *farg5) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseGraphFile__SWIG_5(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, bool const *farg5) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -13135,7 +13596,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_5(SwigA
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_6(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseGraphFile__SWIG_6(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -13181,7 +13642,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_6(SwigA
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_7(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, bool const *farg6, bool const *farg7, bool const *farg8) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseGraphFile__SWIG_7(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, bool const *farg6, bool const *farg7, bool const *farg8) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,false > >::map_type const > *arg2 = 0 ;
@@ -13236,7 +13697,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_7(SwigA
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_8(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, bool const *farg6, bool const *farg7) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseGraphFile__SWIG_8(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, bool const *farg6, bool const *farg7) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,false > >::map_type const > *arg2 = 0 ;
@@ -13289,7 +13750,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_8(SwigA
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_9(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, bool const *farg6) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseGraphFile__SWIG_9(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, bool const *farg6) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,false > >::map_type const > *arg2 = 0 ;
@@ -13340,7 +13801,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_9(SwigA
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_10(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseGraphFile__SWIG_10(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,false > >::map_type const > *arg2 = 0 ;
@@ -13389,7 +13850,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseGraphFile__SWIG_10(Swig
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_0(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3, bool const *farg4, bool const *farg5) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseFile__SWIG_0(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3, bool const *farg4, bool const *farg5) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -13435,7 +13896,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_0(SwigArrayW
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_1(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3, bool const *farg4) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseFile__SWIG_1(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3, bool const *farg4) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -13479,7 +13940,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_1(SwigArrayW
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_2(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseFile__SWIG_2(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -13521,7 +13982,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_2(SwigArrayW
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_3(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseFile__SWIG_3(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -13561,7 +14022,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_3(SwigArrayW
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_4(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, bool const *farg5, bool const *farg6) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseFile__SWIG_4(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, bool const *farg5, bool const *farg6) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -13611,7 +14072,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_4(SwigArrayW
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_5(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, bool const *farg5) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseFile__SWIG_5(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, bool const *farg5) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -13659,7 +14120,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_5(SwigArrayW
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_6(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseFile__SWIG_6(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
@@ -13705,7 +14166,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_6(SwigArrayW
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_7(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, bool const *farg6, bool const *farg7, bool const *farg8) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseFile__SWIG_7(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, bool const *farg6, bool const *farg7, bool const *farg8) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,false > >::map_type const > *arg2 = 0 ;
@@ -13760,7 +14221,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_7(SwigArrayW
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_8(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, bool const *farg6, bool const *farg7) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseFile__SWIG_8(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, bool const *farg6, bool const *farg7) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,false > >::map_type const > *arg2 = 0 ;
@@ -13813,7 +14274,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_8(SwigArrayW
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_9(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, bool const *farg6) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseFile__SWIG_9(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5, bool const *farg6) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,false > >::map_type const > *arg2 = 0 ;
@@ -13864,7 +14325,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_9(SwigArrayW
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_10(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseFile__SWIG_10(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, SwigClassWrapper const *farg4, SwigClassWrapper const *farg5) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,false > >::map_type const > *arg2 = 0 ;
@@ -13913,7 +14374,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readSparseFile__SWIG_10(SwigArray
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readDenseFile__SWIG_0(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, bool const *farg4, bool const *farg5) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readDenseFile__SWIG_0(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, bool const *farg4, bool const *farg5) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,false > >::comm_type const > *arg2 = 0 ;
@@ -13960,7 +14421,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readDenseFile__SWIG_0(SwigArrayWr
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readDenseFile__SWIG_1(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, bool const *farg4) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readDenseFile__SWIG_1(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, bool const *farg4) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,false > >::comm_type const > *arg2 = 0 ;
@@ -14005,7 +14466,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readDenseFile__SWIG_1(SwigArrayWr
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readDenseFile__SWIG_2(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readDenseFile__SWIG_2(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,false > >::comm_type const > *arg2 = 0 ;
@@ -14048,7 +14509,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readDenseFile__SWIG_2(SwigArrayWr
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readMapFile__SWIG_0(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3, bool const *farg4) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readMapFile__SWIG_0(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3, bool const *farg4) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,false > >::comm_type const > *arg2 = 0 ;
@@ -14092,7 +14553,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readMapFile__SWIG_0(SwigArrayWrap
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readMapFile__SWIG_1(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readMapFile__SWIG_1(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,false > >::comm_type const > *arg2 = 0 ;
@@ -14134,7 +14595,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readMapFile__SWIG_1(SwigArrayWrap
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readMapFile__SWIG_2(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readMapFile__SWIG_2(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2) {
   SwigClassWrapper fresult ;
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO,false > >::comm_type const > *arg2 = 0 ;
@@ -14174,7 +14635,7 @@ SWIGEXPORT SwigClassWrapper swigc_TpetraReader_readMapFile__SWIG_2(SwigArrayWrap
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraReader() {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraReader() {
   SwigClassWrapper fresult ;
   Tpetra::MatrixMarket::Reader< CMT > *result = 0 ;
   
@@ -14207,7 +14668,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraReader() {
 }
 
 
-SWIGEXPORT void swigc_delete_TpetraReader(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_TpetraReader(SwigClassWrapper const *farg1) {
   Tpetra::MatrixMarket::Reader< CMT > *arg1 = (Tpetra::MatrixMarket::Reader< CMT > *) 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< CMT > > *smartarg1 ;
   
@@ -14240,15 +14701,15 @@ SWIGEXPORT void swigc_delete_TpetraReader(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_assignment_TpetraReader(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Tpetra::MatrixMarket::Reader<CMT> > swig_lhs_classtype;
+SWIGEXPORT void _wrap_assign_TpetraReader(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Teuchos::RCP< Tpetra::MatrixMarket::Reader<CMT> > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeMapFile(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraWriter_writeMapFile(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2) {
   std::string *arg1 = 0 ;
   Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::map_type *arg2 = 0 ;
   std::string tempstr1 ;
@@ -14286,7 +14747,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeMapFile(SwigArrayWrapper *farg1, SwigCla
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_0(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4, bool const *farg5) {
+SWIGEXPORT void _wrap_TpetraWriter_writeSparseFile__SWIG_0(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4, bool const *farg5) {
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::sparse_matrix_type const > *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -14332,7 +14793,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_0(SwigArrayWrapper *far
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_1(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
+SWIGEXPORT void _wrap_TpetraWriter_writeSparseFile__SWIG_1(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::sparse_matrix_type const > *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -14376,7 +14837,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_1(SwigArrayWrapper *far
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_2(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3) {
+SWIGEXPORT void _wrap_TpetraWriter_writeSparseFile__SWIG_2(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3) {
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::sparse_matrix_type const > *arg2 = 0 ;
   bool arg3 ;
@@ -14414,7 +14875,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_2(SwigArrayWrapper *far
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_3(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraWriter_writeSparseFile__SWIG_3(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2) {
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::sparse_matrix_type const > *arg2 = 0 ;
   std::string tempstr1 ;
@@ -14450,7 +14911,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseFile__SWIG_3(SwigArrayWrapper *far
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_0(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4, bool const *farg5) {
+SWIGEXPORT void _wrap_TpetraWriter_writeSparseGraphFile__SWIG_0(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4, bool const *farg5) {
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::crs_graph_type const > *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -14496,7 +14957,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_0(SwigArrayWrapper
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_1(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
+SWIGEXPORT void _wrap_TpetraWriter_writeSparseGraphFile__SWIG_1(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::crs_graph_type const > *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -14540,7 +15001,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_1(SwigArrayWrapper
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_2(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3) {
+SWIGEXPORT void _wrap_TpetraWriter_writeSparseGraphFile__SWIG_2(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, bool const *farg3) {
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::crs_graph_type const > *arg2 = 0 ;
   bool arg3 ;
@@ -14578,7 +15039,7 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_2(SwigArrayWrapper
 }
 
 
-SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2) {
+SWIGEXPORT void _wrap_TpetraWriter_writeSparseGraphFile__SWIG_3(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2) {
   std::string *arg1 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::crs_graph_type const > *arg2 = 0 ;
   std::string tempstr1 ;
@@ -14614,7 +15075,87 @@ SWIGEXPORT void swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(SwigArrayWrapper
 }
 
 
-SWIGEXPORT SwigClassWrapper swigc_new_TpetraWriter() {
+SWIGEXPORT void _wrap_TpetraWriter_writeDenseFile__SWIG_0(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
+  std::string *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > tempnull2 ;
+  std::string tempstr3 ;
+  std::string tempstr4 ;
+  
+  tempstr1 = std::string(static_cast<const char *>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > * >(farg2->ptr) : &tempnull2;
+  tempstr3 = std::string(static_cast<const char *>(farg3->data), farg3->size);
+  arg3 = &tempstr3;
+  tempstr4 = std::string(static_cast<const char *>(farg4->data), farg4->size);
+  arg4 = &tempstr4;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_0(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &,std::string const &,std::string const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_0((std::string const &)*arg1,(Teuchos::RCP< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_0(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &,std::string const &,std::string const &)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_0(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &,std::string const &,std::string const &)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_0(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &,std::string const &,std::string const &)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void _wrap_TpetraWriter_writeDenseFile__SWIG_1(SwigArrayWrapper *farg1, SwigClassWrapper const *farg2) {
+  std::string *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > *arg2 = 0 ;
+  std::string tempstr1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > tempnull2 ;
+  
+  tempstr1 = std::string(static_cast<const char *>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > * >(farg2->ptr) : &tempnull2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_1(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_1((std::string const &)*arg1,(Teuchos::RCP< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_1(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_1(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< CMT >::Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_1(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode,false > >::multivector_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraWriter() {
   SwigClassWrapper fresult ;
   Tpetra::MatrixMarket::Writer< CMT > *result = 0 ;
   
@@ -14647,7 +15188,7 @@ SWIGEXPORT SwigClassWrapper swigc_new_TpetraWriter() {
 }
 
 
-SWIGEXPORT void swigc_delete_TpetraWriter(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_TpetraWriter(SwigClassWrapper const *farg1) {
   Tpetra::MatrixMarket::Writer< CMT > *arg1 = (Tpetra::MatrixMarket::Writer< CMT > *) 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< CMT > > *smartarg1 ;
   
@@ -14680,15 +15221,15 @@ SWIGEXPORT void swigc_delete_TpetraWriter(SwigClassWrapper const *farg1) {
 }
 
 
-SWIGEXPORT void swigc_assignment_TpetraWriter(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Tpetra::MatrixMarket::Writer<CMT> > swig_lhs_classtype;
+SWIGEXPORT void _wrap_assign_TpetraWriter(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Teuchos::RCP< Tpetra::MatrixMarket::Writer<CMT> > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
 }
 
 
-SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_0(SwigClassWrapper const *farg1, bool const *farg2, SwigClassWrapper const *farg3, bool const *farg4, SwigClassWrapper const *farg5, bool const *farg6, SwigArrayWrapper *farg7, SwigClassWrapper const *farg8) {
+SWIGEXPORT void _wrap_TpetraMatrixMatrixMultiply__SWIG_0(SwigClassWrapper const *farg1, bool const *farg2, SwigClassWrapper const *farg3, bool const *farg4, SwigClassWrapper const *farg5, bool const *farg6, SwigArrayWrapper *farg7, SwigClassWrapper const *farg8) {
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   bool arg2 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg3 = 0 ;
@@ -14745,7 +15286,7 @@ SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_0(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_1(SwigClassWrapper const *farg1, bool const *farg2, SwigClassWrapper const *farg3, bool const *farg4, SwigClassWrapper const *farg5, bool const *farg6, SwigArrayWrapper *farg7) {
+SWIGEXPORT void _wrap_TpetraMatrixMatrixMultiply__SWIG_1(SwigClassWrapper const *farg1, bool const *farg2, SwigClassWrapper const *farg3, bool const *farg4, SwigClassWrapper const *farg5, bool const *farg6, SwigArrayWrapper *farg7) {
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   bool arg2 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg3 = 0 ;
@@ -14799,7 +15340,7 @@ SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_1(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_2(SwigClassWrapper const *farg1, bool const *farg2, SwigClassWrapper const *farg3, bool const *farg4, SwigClassWrapper const *farg5, bool const *farg6) {
+SWIGEXPORT void _wrap_TpetraMatrixMatrixMultiply__SWIG_2(SwigClassWrapper const *farg1, bool const *farg2, SwigClassWrapper const *farg3, bool const *farg4, SwigClassWrapper const *farg5, bool const *farg6) {
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   bool arg2 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg3 = 0 ;
@@ -14849,7 +15390,7 @@ SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_2(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_3(SwigClassWrapper const *farg1, bool const *farg2, SwigClassWrapper const *farg3, bool const *farg4, SwigClassWrapper const *farg5) {
+SWIGEXPORT void _wrap_TpetraMatrixMatrixMultiply__SWIG_3(SwigClassWrapper const *farg1, bool const *farg2, SwigClassWrapper const *farg3, bool const *farg4, SwigClassWrapper const *farg5) {
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   bool arg2 ;
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg3 = 0 ;
@@ -14897,7 +15438,7 @@ SWIGEXPORT void swigc_TpetraMatrixMatrixMultiply__SWIG_3(SwigClassWrapper const 
 }
 
 
-SWIGEXPORT void swigc_TpetraMatrixMatrixAdd__SWIG_0(SwigClassWrapper const *farg1, bool const *farg2, double const *farg3, SwigClassWrapper const *farg4, double const *farg5) {
+SWIGEXPORT void _wrap_TpetraMatrixMatrixAdd__SWIG_0(SwigClassWrapper const *farg1, bool const *farg2, double const *farg3, SwigClassWrapper const *farg4, double const *farg5) {
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   bool arg2 ;
   double arg3 ;
@@ -14942,7 +15483,7 @@ SWIGEXPORT void swigc_TpetraMatrixMatrixAdd__SWIG_0(SwigClassWrapper const *farg
 }
 
 
-SWIGEXPORT void swigc_TpetraMatrixMatrixAdd__SWIG_1(SwigClassWrapper const *farg1, bool const *farg2, double const *farg3, SwigClassWrapper const *farg4, bool const *farg5, double const *farg6, SwigClassWrapper const *farg7) {
+SWIGEXPORT void _wrap_TpetraMatrixMatrixAdd__SWIG_1(SwigClassWrapper const *farg1, bool const *farg2, double const *farg3, SwigClassWrapper const *farg4, bool const *farg5, double const *farg6, SwigClassWrapper const *farg7) {
   Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
   bool arg2 ;
   double arg3 ;

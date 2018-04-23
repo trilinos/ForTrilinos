@@ -208,6 +208,15 @@ void SWIG_store_exception(const char* decl, int errcode, const char *msg);
 #include <stdexcept>
 
 
+/* Support for the `contract` feature.
+ *
+ * Note that RETURNNULL is first because it's inserted via a 'Replaceall' in
+ * the fortran.cxx file.
+ */
+#define SWIG_contract_assert(RETURNNULL, EXPR, MSG) \
+ if (!(EXPR)) { SWIG_exception_impl("$decl", SWIG_ValueError, MSG, RETURNNULL); } 
+
+
 #define SWIGVERSION 0x040000 
 #define SWIG_VERSION SWIGVERSION
 
@@ -302,7 +311,7 @@ SWIGEXPORT void SWIG_store_exception(const char *decl,
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT SwigArrayWrapper swigc_fortrilinos_get_serr() {
+SWIGEXPORT SwigArrayWrapper _wrap_fortrilinos_get_serr() {
   SwigArrayWrapper fresult ;
   std::string *result = 0 ;
   

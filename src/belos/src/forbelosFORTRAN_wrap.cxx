@@ -205,10 +205,16 @@ void SWIG_store_exception(const char* decl, int errcode, const char *msg);
     SWIG_store_exception(DECL, CODE, MSG); RETURNNULL;
 
 
-#include <string.h>
-
-
 #include <stdexcept>
+
+
+/* Support for the `contract` feature.
+ *
+ * Note that RETURNNULL is first because it's inserted via a 'Replaceall' in
+ * the fortran.cxx file.
+ */
+#define SWIG_contract_assert(RETURNNULL, EXPR, MSG) \
+ if (!(EXPR)) { SWIG_exception_impl("$decl", SWIG_ValueError, MSG, RETURNNULL); } 
 
 
 #define SWIGVERSION 0x040000 
@@ -249,10 +255,13 @@ SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
   return result;
 }
 
+
+#include <string.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT SwigArrayWrapper swigc_convertReturnTypeToString(int const *farg1) {
+SWIGEXPORT SwigArrayWrapper _wrap_convertReturnTypeToString(int const *farg1) {
   SwigArrayWrapper fresult ;
   Belos::ReturnType arg1 ;
   std::string result;
@@ -270,17 +279,17 @@ SWIGEXPORT SwigArrayWrapper swigc_convertReturnTypeToString(int const *farg1) {
 }
 
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosPassed = static_cast< int >(Belos::Passed);
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosPassed = static_cast< int >(Belos::Passed);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosFailed = static_cast< int >(Belos::Failed);
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosFailed = static_cast< int >(Belos::Failed);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosUndefined = static_cast< int >(Belos::Undefined);
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosUndefined = static_cast< int >(Belos::Undefined);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosProblem = static_cast< int >(Belos::Problem);
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosProblem = static_cast< int >(Belos::Problem);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosRecycleSubspace = static_cast< int >(Belos::RecycleSubspace);
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosRecycleSubspace = static_cast< int >(Belos::RecycleSubspace);
 
-SWIGEXPORT SwigArrayWrapper swigc_convertStatusTypeToString(int const *farg1) {
+SWIGEXPORT SwigArrayWrapper _wrap_convertStatusTypeToString(int const *farg1) {
   SwigArrayWrapper fresult ;
   Belos::StatusType arg1 ;
   std::string result;
@@ -298,7 +307,7 @@ SWIGEXPORT SwigArrayWrapper swigc_convertStatusTypeToString(int const *farg1) {
 }
 
 
-SWIGEXPORT int swigc_convertStringToStatusType(SwigArrayWrapper *farg1) {
+SWIGEXPORT int _wrap_convertStringToStatusType(SwigArrayWrapper *farg1) {
   int fresult ;
   std::string *arg1 = 0 ;
   std::string tempstr1 ;
@@ -312,7 +321,7 @@ SWIGEXPORT int swigc_convertStringToStatusType(SwigArrayWrapper *farg1) {
 }
 
 
-SWIGEXPORT int swigc_convertStringToScaleType(SwigArrayWrapper *farg1) {
+SWIGEXPORT int _wrap_convertStringToScaleType(SwigArrayWrapper *farg1) {
   int fresult ;
   std::string *arg1 = 0 ;
   std::string tempstr1 ;
@@ -326,7 +335,7 @@ SWIGEXPORT int swigc_convertStringToScaleType(SwigArrayWrapper *farg1) {
 }
 
 
-SWIGEXPORT SwigArrayWrapper swigc_convertScaleTypeToString(int const *farg1) {
+SWIGEXPORT SwigArrayWrapper _wrap_convertScaleTypeToString(int const *farg1) {
   SwigArrayWrapper fresult ;
   Belos::ScaleType arg1 ;
   std::string result;
@@ -344,23 +353,23 @@ SWIGEXPORT SwigArrayWrapper swigc_convertScaleTypeToString(int const *farg1) {
 }
 
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosErrors = static_cast< int >(Belos::Errors);
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosErrors = static_cast< int >(Belos::Errors);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosWarnings = static_cast< int >(Belos::Warnings);
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosWarnings = static_cast< int >(Belos::Warnings);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosIterationDetails = static_cast< int >(Belos::IterationDetails);
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosIterationDetails = static_cast< int >(Belos::IterationDetails);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosOrthoDetails = static_cast< int >(Belos::OrthoDetails);
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosOrthoDetails = static_cast< int >(Belos::OrthoDetails);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosFinalSummary = static_cast< int >(Belos::FinalSummary);
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosFinalSummary = static_cast< int >(Belos::FinalSummary);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosTimingDetails = static_cast< int >(Belos::TimingDetails);
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosTimingDetails = static_cast< int >(Belos::TimingDetails);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosStatusTestDetails = static_cast< int >(Belos::StatusTestDetails);
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosStatusTestDetails = static_cast< int >(Belos::StatusTestDetails);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosDebug = static_cast< int >(Belos::Debug);
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosDebug = static_cast< int >(Belos::Debug);
 
-SWIGEXPORT SwigArrayWrapper swigc_convertMsgTypeToString(int const *farg1) {
+SWIGEXPORT SwigArrayWrapper _wrap_convertMsgTypeToString(int const *farg1) {
   SwigArrayWrapper fresult ;
   Belos::MsgType arg1 ;
   std::string result;

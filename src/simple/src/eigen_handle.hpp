@@ -18,8 +18,6 @@
 
 #include <AnasaziSolverManager.hpp>
 
-#include "fortran_operator.hpp"
-
 #include <utility>
 
 namespace ForTrilinos {
@@ -56,8 +54,8 @@ namespace ForTrilinos {
     void setup_matrix_rhs(const Teuchos::RCP<Matrix>& M);
 
     // Setup operators
-    void setup_operator    (OperatorCallback callback, const Teuchos::RCP<const Map>& domainMap, const Teuchos::RCP<const Map>& rangeMap = Teuchos::null);
-    void setup_operator_rhs(OperatorCallback callback, const Teuchos::RCP<const Map>& domainMap, const Teuchos::RCP<const Map>& rangeMap = Teuchos::null);
+    void setup_operator    (const Teuchos::RCP<Operator>& A);
+    void setup_operator_rhs(const Teuchos::RCP<Operator>& M);
 
     // Setup solver based on the parameter list
     void setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList);
