@@ -34,7 +34,6 @@ Patch, configure, build, and test as you would usually do:
 .. code:: bash
 
     [container]$ cd $TRILINOS_DIR
-    [container]$ ./packages/ForTrilinos/scripts/patches/apply-patches
     [container]$ cd $TRILINOS_DIR/packages/ForTrilinos
     [container]$ mkdir build && cd build
     [container]$ ../scripts/docker_cmake
@@ -77,6 +76,6 @@ This can be done by adding the following configuration options to the script (as
     files in ForTrilinos.
 
 
-.. warning::
-
-    When using the developer mode, all of the patches ``scripts/patches`` directory of the ForTrilinos source tree must be applied.  If you previously used the ``scripts/patches/apply-patches`` script, this was done for you.  Otherwise, be sure that all of the patches are applied.
+.. .. warning::
+.. 
+    .. When using the developer mode, all of the patches ``scripts/patches`` directory of the ForTrilinos source tree must be applied.  If you previously used the ``scripts/patches/apply-patches`` script, this was done for you. Otherwise, be sure that all of the patches are applied.
