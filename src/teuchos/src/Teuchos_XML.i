@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, UT-Battelle, LLC
+ * Copyright 2017-2018, UT-Battelle, LLC
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
@@ -10,15 +10,14 @@
 
 %inline %{
 void load_from_xml(const Teuchos::RCP<Teuchos::ParameterList>& plist,
-                   std::pair<const char*, size_t> xml)
+                   const std::string& xml_path)
 {
-    Teuchos::updateParametersFromXmlFile(std::string(xml.first, xml.second),
-                                         Teuchos::inOutArg(*plist));
+    Teuchos::updateParametersFromXmlFile(xml_path, Teuchos::inOutArg(*plist));
 }
 
 void save_to_xml(const Teuchos::ParameterList& plist,
-                 std::pair<const char*, size_t> xml)
+                 const std::string& xml_path)
 {
-    Teuchos::writeParameterListToXmlFile(plist, std::string(xml.first, xml.second));
+    Teuchos::writeParameterListToXmlFile(plist, xml_path);
 }
 %}

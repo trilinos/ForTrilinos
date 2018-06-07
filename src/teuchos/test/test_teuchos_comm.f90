@@ -1,4 +1,4 @@
-!Copyright 2017, UT-Battelle, LLC
+!Copyright 2017-2018, UT-Battelle, LLC
 !
 !SPDX-License-Identifier: BSD-3-Clause
 !License-Filename: LICENSE
@@ -16,7 +16,7 @@ program test_TeuchosComm
 
   implicit none
   character(len=26), parameter :: FILENAME='test_teuchos_comm.f90'
-  integer :: ierr
+  integer :: ierr, mpicomm
 
 
   SETUP_TEST()
@@ -32,14 +32,14 @@ contains
     integer :: comm_size_f, comm_size_c
 
 #ifdef HAVE_MPI
-    call comm%create(MPI_COMM_WORLD); TEST_IERR()
-    TEST_ASSERT(c_associated(comm%swigptr))
+    comm = TeuchosComm(MPI_COMM_WORLD); TEST_IERR()
+    TEST_ASSERT(c_associated(comm%swigdata%ptr))
 
     call MPI_COMM_RANK(MPI_COMM_WORLD, comm_rank_f, ierr)
     call MPI_COMM_SIZE(MPI_COMM_WORLD, comm_size_f, ierr)
 #else
-    call comm%create(); TEST_IERR()
-    TEST_ASSERT(c_associated(comm%swigptr))
+    comm = TeuchosComm(); TEST_IERR()
+    TEST_ASSERT(c_associated(comm%swigdata%ptr))
 
     comm_rank_f = 0
     comm_size_f = 1
@@ -50,6 +50,15 @@ contains
 
     comm_size_c = comm%getSize(); TEST_IERR()
     TEST_EQUALITY(comm_size_f, comm_size_c)
+
+    mpicomm = comm%getRawMpiComm()
+#ifdef HAVE_MPI
+    TEST_EQUALITY(MPI_COMM_WORLD, mpicomm)
+#else
+    ! Should have thrown an error
+    TEST_INEQUALITY(0, fortrilinos_ierr)
+    FORTRILINOS_IERR = 0
+#endif
 
     call comm%release()
 

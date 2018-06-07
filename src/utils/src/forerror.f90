@@ -4,7 +4,7 @@
 ! Do not make changes to this file unless you know what you are doing--modify
 ! the SWIG interface file instead.
 
-! Copyright 2017, UT-Battelle, LLC
+! Copyright 2017-2018, UT-Battelle, LLC
 !
 ! SPDX-License-Identifier: BSD-3-Clause
 ! License-Filename: LICENSE
@@ -16,30 +16,26 @@ module forerror
 
  ! PUBLIC METHODS AND TYPES
 
- public :: fortrilinos_ierr
-
-
-type, bind(C) :: SwigfArrayWrapper
-  type(C_PTR), public :: data
-  integer(C_SIZE_T), public :: size
+type, bind(C) :: SwigArrayWrapper
+  type(C_PTR), public :: data = C_NULL_PTR
+  integer(C_SIZE_T), public :: size = 0
 end type
 
  public :: fortrilinos_get_serr
 
  ! PARAMETERS
- integer(C_INT), parameter, public :: SWIG_FORTRAN_ERROR_STRLEN = 1024_C_INT
 
- integer(C_INT), bind(C) :: fortrilinos_ierr = 0
+ integer(C_INT), bind(C), public :: fortrilinos_ierr
 
 
  ! WRAPPER DECLARATIONS
  interface
 function swigc_fortrilinos_get_serr() &
-bind(C, name="swigc_fortrilinos_get_serr") &
+bind(C, name="_wrap_fortrilinos_get_serr") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigfArrayWrapper
-type(SwigfArrayWrapper) :: fresult
+import :: SwigArrayWrapper
+type(SwigArrayWrapper) :: fresult
 end function
 
  end interface
@@ -47,22 +43,28 @@ end function
 
 contains
  ! FORTRAN PROXY CODE
-function fortrilinos_get_serr() &
-result(swigf_result)
-use, intrinsic :: ISO_C_BINDING
-character(kind=C_CHAR, len=:), allocatable :: swigf_result
 
-integer(kind=C_SIZE_T) :: fresult_i
-character(kind=C_CHAR), dimension(:), pointer :: fresult_chars
-type(SwigfArrayWrapper) :: fresult 
+subroutine SWIG_chararray_to_string(wrap, string)
+  use, intrinsic :: ISO_C_BINDING
+  type(SwigArrayWrapper), intent(IN) :: wrap
+  character(kind=C_CHAR, len=:), allocatable, intent(OUT) :: string
+  character(kind=C_CHAR), dimension(:), pointer :: chars
+  integer(kind=C_SIZE_T) :: i
+  call c_f_pointer(wrap%data, chars, [wrap%size])
+  allocate(character(kind=C_CHAR, len=wrap%size) :: string)
+  do i=1, wrap%size
+    string(i:i) = chars(i)
+  enddo
+end subroutine
+
+function fortrilinos_get_serr() &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+character(kind=C_CHAR, len=:), allocatable :: swig_result
+type(SwigArrayWrapper) :: fresult 
 
 fresult = swigc_fortrilinos_get_serr()
-
-call c_f_pointer(fresult%data, fresult_chars, [fresult%size])
-allocate(character(kind=C_CHAR, len=fresult%size) :: swigf_result)
-do fresult_i=1,fresult%size
-swigf_result(fresult_i:fresult_i) = fresult_chars(fresult_i)
-enddo
+call SWIG_chararray_to_string(fresult, swig_result)
 end function
 
 

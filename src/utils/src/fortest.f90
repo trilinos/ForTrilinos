@@ -1,4 +1,4 @@
-! Copyright 2017, UT-Battelle, LLC
+! Copyright 2017-2018, UT-Battelle, LLC
 !
 ! SPDX-License-Identifier: BSD-3-Clause
 ! License-Filename: LICENSE
@@ -678,6 +678,7 @@ contains
       signature = trim(name)//'('//trim(namea)//', '//trim(nameb)//', TOL)'
       call write_error_diagnostics(filename, lineno, signature)
     end if
+    call gather_success(lcl_success, success)
     return
   end subroutine fortest_array_inequality_int2
 

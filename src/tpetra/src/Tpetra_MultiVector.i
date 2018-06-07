@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, UT-Battelle, LLC
+ * Copyright 2017-2018, UT-Battelle, LLC
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
@@ -14,27 +14,22 @@
 %}
 
 // =======================================================================
-// Ignore permanently
-// =======================================================================
-%ignore Teuchos::TypeNameTraits;
-
-// =======================================================================
 // Postpone temporarily
 // =======================================================================
-%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
-        const Teuchos::ArrayView<const Teuchos::ArrayView<const Scalar> >&ArrayOfPtrs, \
+%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map,
+        const Teuchos::ArrayView<const Teuchos::ArrayView<const Scalar> >&ArrayOfPtrs,
         const size_t NumVectors);                               // needs ArrayView of ArrayView (or alternative)
-%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
+%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map,
         const dual_view_type& view, const Teuchos::ArrayView<const size_t>& whichVectors);  // needs Kokkos::DualView; needs Teuchos::ArrayView<size_t>
-%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
-        const dual_view_type& view, \
-        const dual_view_type& origView, \
+%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map,
+        const dual_view_type& view,
+        const dual_view_type& origView,
         const Teuchos::ArrayView<const size_t>& whichVectors);  // needs Kokkos::DualView; needs Teuchos::ArrayView<size_t>
-%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
+%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map,
         const dual_view_type& view);                            // needs Kokkos::DualView
-%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
+%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map,
         const typename dual_view_type::t_dev& d_view);          // needs Kokkos::DualView
-%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map, \
+%ignore Tpetra::MultiVector::MultiVector(const Teuchos::RCP<const map_type>& map,
         const dual_view_type& view, const dual_view_type& origView);    // needs Kokkos::DualView
 %ignore Tpetra::MultiVector::assign;
 %ignore Tpetra::MultiVector::describe;              // needs Teuchos::FancyOStream
@@ -146,6 +141,9 @@
     void doExport (const Tpetra::MultiVector<SC,LO,GO,NO> &source, const Tpetra::Import< LO, GO, NO > &importer, CombineMode CM) {
       self->doExport(source, importer, CM);
     }
+    Teuchos::RCP<const Tpetra::Map<LO,GO,NO> > getMap() const {
+      return self->getMap();
+    }
 }
 %ignore Tpetra::MultiVector::MultiVector (const Teuchos::RCP< const map_type > &map, const Teuchos::ArrayView< const Scalar > &A, const size_t LDA, const size_t NumVectors);
 %ignore Tpetra::MultiVector::subCopy(const Teuchos::ArrayView< const size_t > &cols) const;
@@ -163,9 +161,9 @@
 %ignore Tpetra::MultiVector::get1dView;
 %ignore Tpetra::MultiVector::get1dViewNonConst;
 
-
-%teuchos_rcp(Tpetra::MultiVector<SC,LO,GO,NO,NO::classic>)
-
+/* Include the multivector *before* the RCP declaration so that
+ * SWIG becomes aware of the default template arguments */
 %include "Tpetra_MultiVector_decl.hpp"
 
+%teuchos_rcp(Tpetra::MultiVector<SC,LO,GO,NO>)
 %template(TpetraMultiVector) Tpetra::MultiVector<SC,LO,GO,NO>;

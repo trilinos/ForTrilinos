@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, UT-Battelle, LLC
+ * Copyright 2017-2018, UT-Battelle, LLC
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
@@ -37,67 +37,49 @@
 // Make interface more Fortran friendly
 // =======================================================================
 %extend Tpetra::MatrixMarket::Reader<CMT> {
-    static Teuchos::RCP < sparse_graph_type > readSparseGraphFile (std::pair<const char*, size_t> filename, const Teuchos::RCP< const Teuchos::Comm< int > > &pComm, const bool callFillComplete=true, const bool tolerant=false, const bool debug=false) {
-      std::string filenameStr(filename.first, filename.second);
-      return Tpetra::MatrixMarket::Reader<CMT>::readSparseGraphFile(filenameStr, pComm, callFillComplete, tolerant, debug);
+    static Teuchos::RCP < sparse_graph_type > readSparseGraphFile (const std::string& filename, const Teuchos::RCP< const Teuchos::Comm< int > > &pComm, const bool callFillComplete=true, const bool tolerant=false, const bool debug=false) {
+      return Tpetra::MatrixMarket::Reader<CMT>::readSparseGraphFile(filename, pComm, callFillComplete, tolerant, debug);
     }
-    static Teuchos::RCP < sparse_graph_type > readSparseGraphFile (std::pair<const char*, size_t> filename, const Teuchos::RCP< const Teuchos::Comm< int > > &pComm, const Teuchos::RCP< Teuchos::ParameterList > &constructorParams, const Teuchos::RCP< Teuchos::ParameterList > &fillCompleteParams, const bool tolerant=false, const bool debug=false) {
-      std::string filenameStr(filename.first, filename.second);
-      return Tpetra::MatrixMarket::Reader<CMT>::readSparseGraphFile(filenameStr, pComm, constructorParams, fillCompleteParams, tolerant, debug);
+    static Teuchos::RCP < sparse_graph_type > readSparseGraphFile (const std::string& filename, const Teuchos::RCP< const Teuchos::Comm< int > > &pComm, const Teuchos::RCP< Teuchos::ParameterList > &constructorParams, const Teuchos::RCP< Teuchos::ParameterList > &fillCompleteParams, const bool tolerant=false, const bool debug=false) {
+      return Tpetra::MatrixMarket::Reader<CMT>::readSparseGraphFile(filename, pComm, constructorParams, fillCompleteParams, tolerant, debug);
     }
-    static Teuchos::RCP < sparse_graph_type > readSparseGraphFile (std::pair<const char*, size_t> filename, const Teuchos::RCP< const map_type > &rowMap, Teuchos::RCP< const map_type > &colMap, const Teuchos::RCP< const map_type > &domainMap, const Teuchos::RCP< const map_type > &rangeMap, const bool callFillComplete=true, const bool tolerant=false, const bool debug=false) {
-      std::string filenameStr(filename.first, filename.second);
-      return Tpetra::MatrixMarket::Reader<CMT>::readSparseGraphFile(filenameStr, rowMap, colMap, domainMap, rangeMap, callFillComplete, tolerant, debug);
+    static Teuchos::RCP < sparse_graph_type > readSparseGraphFile (const std::string& filename, const Teuchos::RCP< const map_type > &rowMap, Teuchos::RCP< const map_type > &colMap, const Teuchos::RCP< const map_type > &domainMap, const Teuchos::RCP< const map_type > &rangeMap, const bool callFillComplete=true, const bool tolerant=false, const bool debug=false) {
+      return Tpetra::MatrixMarket::Reader<CMT>::readSparseGraphFile(filename, rowMap, colMap, domainMap, rangeMap, callFillComplete, tolerant, debug);
     }
-    static Teuchos::RCP < sparse_matrix_type > readSparseFile (std::pair<const char*, size_t> filename, const Teuchos::RCP< const Teuchos::Comm< int > > &pComm, const bool callFillComplete=true, const bool tolerant=false, const bool debug=false) {
-      std::string filenameStr(filename.first, filename.second);
-      return Tpetra::MatrixMarket::Reader<CMT>::readSparseFile(filenameStr, pComm, callFillComplete, tolerant, debug);
+    static Teuchos::RCP < sparse_matrix_type > readSparseFile (const std::string& filename, const Teuchos::RCP< const Teuchos::Comm< int > > &pComm, const bool callFillComplete=true, const bool tolerant=false, const bool debug=false) {
+      return Tpetra::MatrixMarket::Reader<CMT>::readSparseFile(filename, pComm, callFillComplete, tolerant, debug);
     }
-    static Teuchos::RCP < sparse_matrix_type > readSparseFile (std::pair<const char*, size_t> filename, const Teuchos::RCP< const Teuchos::Comm< int > > &pComm, const Teuchos::RCP< Teuchos::ParameterList > &constructorParams, const Teuchos::RCP< Teuchos::ParameterList > &fillCompleteParams, const bool tolerant=false, const bool debug=false) {
-      std::string filenameStr(filename.first, filename.second);
-      return Tpetra::MatrixMarket::Reader<CMT>::readSparseFile(filenameStr, pComm, constructorParams, fillCompleteParams, tolerant, debug);
+    static Teuchos::RCP < sparse_matrix_type > readSparseFile (const std::string& filename, const Teuchos::RCP< const Teuchos::Comm< int > > &pComm, const Teuchos::RCP< Teuchos::ParameterList > &constructorParams, const Teuchos::RCP< Teuchos::ParameterList > &fillCompleteParams, const bool tolerant=false, const bool debug=false) {
+      return Tpetra::MatrixMarket::Reader<CMT>::readSparseFile(filename, pComm, constructorParams, fillCompleteParams, tolerant, debug);
     }
-    static Teuchos::RCP < sparse_matrix_type > readSparseFile (std::pair<const char*, size_t> filename, const Teuchos::RCP< const map_type > &rowMap, Teuchos::RCP< const map_type > &colMap, const Teuchos::RCP< const map_type > &domainMap, const Teuchos::RCP< const map_type > &rangeMap, const bool callFillComplete=true, const bool tolerant=false, const bool debug=false) {
-      std::string filenameStr(filename.first, filename.second);
-      return Tpetra::MatrixMarket::Reader<CMT>::readSparseFile(filenameStr, rowMap, colMap, domainMap, rangeMap, callFillComplete, tolerant, debug);
+    static Teuchos::RCP < sparse_matrix_type > readSparseFile (const std::string& filename, const Teuchos::RCP< const map_type > &rowMap, Teuchos::RCP< const map_type > &colMap, const Teuchos::RCP< const map_type > &domainMap, const Teuchos::RCP< const map_type > &rangeMap, const bool callFillComplete=true, const bool tolerant=false, const bool debug=false) {
+      return Tpetra::MatrixMarket::Reader<CMT>::readSparseFile(filename, rowMap, colMap, domainMap, rangeMap, callFillComplete, tolerant, debug);
     }
-    static Teuchos::RCP < multivector_type > readDenseFile (std::pair<const char*, size_t> filename, const Teuchos::RCP< const comm_type > &comm, Teuchos::RCP< const map_type > &map, const bool tolerant=false, const bool debug=false) {
-      std::string filenameStr(filename.first, filename.second);
-      return Tpetra::MatrixMarket::Reader<CMT>::readDenseFile(filenameStr, comm, map, tolerant, debug);
+    static Teuchos::RCP < multivector_type > readDenseFile (const std::string& filename, const Teuchos::RCP< const comm_type > &comm, Teuchos::RCP< const map_type > &map, const bool tolerant=false, const bool debug=false) {
+      return Tpetra::MatrixMarket::Reader<CMT>::readDenseFile(filename, comm, map, tolerant, debug);
     }
-    static Teuchos::RCP< const map_type > readMapFile (std::pair<const char*, size_t> filename, const Teuchos::RCP< const comm_type > &comm, const bool tolerant=false, const bool debug=false) {
-      std::string filenameStr(filename.first, filename.second);
-      return Tpetra::MatrixMarket::Reader<CMT>::readMapFile(filenameStr, comm, tolerant, debug);
+    static Teuchos::RCP< const map_type > readMapFile (const std::string& filename, const Teuchos::RCP< const comm_type > &comm, const bool tolerant=false, const bool debug=false) {
+      return Tpetra::MatrixMarket::Reader<CMT>::readMapFile(filename, comm, tolerant, debug);
     }
 }
 %extend Tpetra::MatrixMarket::Writer<CMT> {
-    static void writeSparseFile (std::pair<const char*, size_t> filename, const Teuchos::RCP< const sparse_matrix_type > &pMatrix, const std::string &matrixName, const std::string &matrixDescription, const bool debug=false) {
-      std::string filenameStr(filename.first, filename.second);
-      Tpetra::MatrixMarket::Writer<CMT>::writeSparseFile(filenameStr, pMatrix, matrixName, matrixDescription, debug);
+    static void writeSparseFile (const std::string& filename, const Teuchos::RCP< const sparse_matrix_type > &pMatrix, const std::string &matrixName, const std::string &matrixDescription, const bool debug=false) {
+      Tpetra::MatrixMarket::Writer<CMT>::writeSparseFile(filename, pMatrix, matrixName, matrixDescription, debug);
     }
-    static void writeSparseFile (std::pair<const char*, size_t> filename, const Teuchos::RCP< const sparse_matrix_type > &pMatrix, const bool debug=false) {
-      std::string filenameStr(filename.first, filename.second);
-      Tpetra::MatrixMarket::Writer<CMT>::writeSparseFile(filenameStr, pMatrix, debug);
+    static void writeSparseFile (const std::string& filename, const Teuchos::RCP< const sparse_matrix_type > &pMatrix, const bool debug=false) {
+      Tpetra::MatrixMarket::Writer<CMT>::writeSparseFile(filename, pMatrix, debug);
     }
-    static void writeSparseGraphFile (std::pair<const char*, size_t> filename, const crs_graph_type &graph, const std::string &graphName, const std::string &graphDescription, const bool debug=false) {
-      std::string filenameStr(filename.first, filename.second);
-      Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filenameStr, graph, graphName, graphDescription, debug);
+    static void writeSparseGraphFile (const std::string& filename, const Teuchos::RCP< const crs_graph_type > &pGraph, const std::string &graphName, const std::string &graphDescription, const bool debug=false) {
+      Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filename, pGraph, graphName, graphDescription, debug);
     }
-    static void writeSparseGraphFile (std::pair<const char*, size_t> filename, const crs_graph_type &graph, const bool debug=false) {
-      std::string filenameStr(filename.first, filename.second);
-      Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filenameStr, graph, debug);
+    static void writeSparseGraphFile (const std::string& filename, const Teuchos::RCP< const crs_graph_type > &pGraph, const bool debug=false) {
+      Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filename, pGraph, debug);
     }
-    static void writeSparseGraphFile (std::pair<const char*, size_t> filename, const Teuchos::RCP< const crs_graph_type > &pGraph, const std::string &graphName, const std::string &graphDescription, const bool debug=false) {
-      std::string filenameStr(filename.first, filename.second);
-      Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filenameStr, pGraph, graphName, graphDescription, debug);
+    static void writeDenseFile (const std::string &filename, const Teuchos::RCP< const multivector_type > &X, const std::string &matrixName, const std::string &matrixDescription) {
+      Tpetra::MatrixMarket::Writer<CMT>::writeDenseFile(filename, X, matrixName, matrixDescription);
     }
-    static void writeSparseGraphFile (std::pair<const char*, size_t> filename, const Teuchos::RCP< const crs_graph_type > &pGraph, const bool debug=false) {
-      std::string filenameStr(filename.first, filename.second);
-      Tpetra::MatrixMarket::Writer<CMT>::writeSparseGraphFile(filenameStr, pGraph, debug);
-    }
-    static void writeMapFile (std::pair<const char*, size_t> filename, const map_type &map) {
-      std::string filenameStr(filename.first, filename.second);
-      Tpetra::MatrixMarket::Writer<CMT>::writeMapFile(filenameStr, map);
+    static void writeDenseFile (const std::string &filename, const Teuchos::RCP< const multivector_type > &X) {
+      Tpetra::MatrixMarket::Writer<CMT>::writeDenseFile(filename, X);
     }
 }
 %ignore Tpetra::MatrixMarket::Reader::readSparseGraphFile;
@@ -111,11 +93,9 @@
 %ignore Tpetra::MatrixMarket::Writer::writeDenseFile;
 %ignore Tpetra::MatrixMarket::Writer::writeOperator;
 
-// The introduction of typedef seems to work. No clue why.
-%teuchos_rcp(Tpetra::MatrixMarket::Reader<CMT>)
-%teuchos_rcp(Tpetra::MatrixMarket::Writer<CMT>)
-
 %include "MatrixMarket_Tpetra.hpp"
 
+%teuchos_rcp(Tpetra::MatrixMarket::Reader<CMT>)
+%teuchos_rcp(Tpetra::MatrixMarket::Writer<CMT>)
 %template(TpetraReader) Tpetra::MatrixMarket::Reader<CMT>;
 %template(TpetraWriter) Tpetra::MatrixMarket::Writer<CMT>;

@@ -9,7 +9,7 @@
  * ----------------------------------------------------------------------------- */
 
 /*
- * Copyright 2017, UT-Battelle, LLC
+ * Copyright 2017-2018, UT-Battelle, LLC
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
@@ -105,6 +105,15 @@ template <typename T> T SwigValueInit() {
 # define SWIGINTERNINLINE SWIGINTERN SWIGINLINE
 #endif
 
+/* qualifier for exported *const* global data variables*/
+#ifndef SWIGEXTERN
+# ifdef __cplusplus
+#   define SWIGEXTERN extern
+# else
+#   define SWIGEXTERN
+# endif
+#endif
+
 /* exporting methods */
 #if defined(__GNUC__)
 #  if (__GNUC__ >= 4) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
@@ -163,15 +172,6 @@ template <typename T> T SwigValueInit() {
 # pragma warning disable 592
 #endif
 
-
-#ifndef SWIGEXTERN
-#ifdef __cplusplus
-#define SWIGEXTERN extern
-#else
-#define SWIGEXTERN
-#endif
-#endif
-
 /*  Errors in SWIG */
 #define  SWIG_UnknownError    	   -1
 #define  SWIG_IOError        	   -2
@@ -190,14 +190,31 @@ template <typename T> T SwigValueInit() {
 
 
 
-// Default exception handler
-#define SWIG_exception_impl(CODE, MSG, NULLRETURN) \
-    throw std::logic_error(MSG); return NULLRETURN;
+#define SWIG_exception_impl(DECL, CODE, MSG, RETURNNULL) \
+ { throw std::logic_error("In " DECL ": " MSG); RETURNNULL; }
 
 
-/* Contract support */
-#define SWIG_contract_assert(NULLRETURN, EXPR, MSG) \
-    if (!(EXPR)) { SWIG_exception_impl(SWIG_ValueError, MSG, NULLRETURN); }
+extern "C" {
+void SWIG_check_unhandled_exception_impl(const char* decl);
+void SWIG_store_exception(const char* decl, int errcode, const char *msg);
+}
+
+
+#undef SWIG_exception_impl
+#define SWIG_exception_impl(DECL, CODE, MSG, RETURNNULL) \
+    SWIG_store_exception(DECL, CODE, MSG); RETURNNULL;
+
+
+#include <stdexcept>
+
+
+/* Support for the `contract` feature.
+ *
+ * Note that RETURNNULL is first because it's inserted via a 'Replaceall' in
+ * the fortran.cxx file.
+ */
+#define SWIG_contract_assert(RETURNNULL, EXPR, MSG) \
+ if (!(EXPR)) { SWIG_exception_impl("$decl", SWIG_ValueError, MSG, RETURNNULL); } 
 
 
 #define SWIGVERSION 0x040000 
@@ -208,236 +225,164 @@ template <typename T> T SwigValueInit() {
 #define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
 
 
-#include <stdexcept>
-
-
 #include <string>
 
-SWIGINTERN void std_string_set(std::string *self,std::string::size_type pos,std::string::value_type v){
-        // TODO: check range
-        (*self)[pos] = v;
-    }
-SWIGINTERN std::string::value_type std_string_get(std::string *self,std::string::size_type pos){
-        // TODO: check range
-        return (*self)[pos];
-    }
 
 #include "BelosTypes.hpp"
+
+
+#include <stdlib.h>
+#ifdef _MSC_VER
+# ifndef strtoull
+#  define strtoull _strtoui64
+# endif
+# ifndef strtoll
+#  define strtoll _strtoi64
+# endif
+#endif
+
+
+struct SwigArrayWrapper {
+    void* data;
+    size_t size;
+};
+
+
+SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
+  SwigArrayWrapper result;
+  result.data = NULL;
+  result.size = 0;
+  return result;
+}
+
+
+#include <string.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT void * swigc_new_string() {
-  void * fresult ;
-  std::string *result = 0 ;
-  
-  result = (std::string *)new std::string();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_string_resize(void *farg1, long const *farg2) {
-  std::string *arg1 = (std::string *) 0 ;
-  std::string::size_type arg2 ;
-  
-  arg1 = static_cast< std::string * >(farg1);
-  arg2 = *farg2;
-  (arg1)->resize(arg2);
-  
-}
-
-
-SWIGEXPORT void swigc_string_clear(void *farg1) {
-  std::string *arg1 = (std::string *) 0 ;
-  
-  arg1 = static_cast< std::string * >(farg1);
-  (arg1)->clear();
-  
-}
-
-
-SWIGEXPORT long swigc_string_size(void const *farg1) {
-  long fresult ;
-  std::string *arg1 = (std::string *) 0 ;
-  std::string::size_type result;
-  
-  arg1 = static_cast< std::string * >(const_cast< void* >(farg1));
-  result = (std::string::size_type)((std::string const *)arg1)->size();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT long swigc_string_length(void const *farg1) {
-  long fresult ;
-  std::string *arg1 = (std::string *) 0 ;
-  std::string::size_type result;
-  
-  arg1 = static_cast< std::string * >(const_cast< void* >(farg1));
-  result = (std::string::size_type)((std::string const *)arg1)->length();
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_string_set(void *farg1, long const *farg2, char const *farg3) {
-  std::string *arg1 = (std::string *) 0 ;
-  std::string::size_type arg2 ;
-  std::string::value_type arg3 ;
-  
-  arg1 = static_cast< std::string * >(farg1);
-  arg2 = *farg2;
-  arg3 = *farg3;
-  std_string_set(arg1,arg2,arg3);
-  
-}
-
-
-SWIGEXPORT char swigc_string_get(void *farg1, long const *farg2) {
-  char fresult ;
-  std::string *arg1 = (std::string *) 0 ;
-  std::string::size_type arg2 ;
-  std::string::value_type result;
-  
-  arg1 = static_cast< std::string * >(farg1);
-  arg2 = *farg2;
-  result = (std::string::value_type)std_string_get(arg1,arg2);
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_delete_string(void *farg1) {
-  std::string *arg1 = (std::string *) 0 ;
-  
-  arg1 = static_cast< std::string * >(farg1);
-  delete arg1;
-  
-}
-
-
-SWIGEXPORT void * swigc_new_BelosError(void const *farg1) {
-  void * fresult ;
-  std::string *arg1 = 0 ;
-  Belos::BelosError *result = 0 ;
-  
-  arg1 = static_cast< std::string * >(const_cast< void* >(farg1));
-  result = (Belos::BelosError *)new Belos::BelosError((std::string const &)*arg1);
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void swigc_delete_BelosError(void *farg1) {
-  Belos::BelosError *arg1 = (Belos::BelosError *) 0 ;
-  
-  arg1 = static_cast< Belos::BelosError * >(farg1);
-  delete arg1;
-  
-}
-
-
-SWIGEXPORT void * swigc_convertReturnTypeToString(int const *farg1) {
-  void * fresult ;
+SWIGEXPORT SwigArrayWrapper _wrap_convertReturnTypeToString(int const *farg1) {
+  SwigArrayWrapper fresult ;
   Belos::ReturnType arg1 ;
   std::string result;
   
   arg1 = static_cast< Belos::ReturnType >(*farg1);
   result = Belos::convertReturnTypeToString(arg1);
-  fresult = (new std::string(static_cast< const std::string& >(result)));
+  fresult.size = (&result)->size();
+  if (fresult.size > 0) {
+    fresult.data = malloc(fresult.size);
+    memcpy(fresult.data, (&result)->c_str(), fresult.size);
+  } else {
+    fresult.data = NULL;
+  }
   return fresult;
 }
 
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosStatusType = -1;
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosPassed = static_cast< int >(Belos::Passed);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosPassed = Belos::Passed;
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosFailed = static_cast< int >(Belos::Failed);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosFailed = Belos::Failed;
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosUndefined = static_cast< int >(Belos::Undefined);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosUndefined = Belos::Undefined;
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosProblem = static_cast< int >(Belos::Problem);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosResetType = -1;
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosRecycleSubspace = static_cast< int >(Belos::RecycleSubspace);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosProblem = Belos::Problem;
-
-SWIGEXPORT SWIGEXTERN int const swigc_BelosRecycleSubspace = Belos::RecycleSubspace;
-
-SWIGEXPORT void * swigc_convertStatusTypeToString(int const *farg1) {
-  void * fresult ;
+SWIGEXPORT SwigArrayWrapper _wrap_convertStatusTypeToString(int const *farg1) {
+  SwigArrayWrapper fresult ;
   Belos::StatusType arg1 ;
   std::string result;
   
   arg1 = static_cast< Belos::StatusType >(*farg1);
   result = Belos::convertStatusTypeToString(arg1);
-  fresult = (new std::string(static_cast< const std::string& >(result)));
+  fresult.size = (&result)->size();
+  if (fresult.size > 0) {
+    fresult.data = malloc(fresult.size);
+    memcpy(fresult.data, (&result)->c_str(), fresult.size);
+  } else {
+    fresult.data = NULL;
+  }
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_convertStringToStatusType(void const *farg1) {
+SWIGEXPORT int _wrap_convertStringToStatusType(SwigArrayWrapper *farg1) {
   int fresult ;
   std::string *arg1 = 0 ;
+  std::string tempstr1 ;
   Belos::StatusType result;
   
-  arg1 = static_cast< std::string * >(const_cast< void* >(farg1));
+  tempstr1 = std::string(static_cast<const char *>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
   result = (Belos::StatusType)Belos::convertStringToStatusType((std::string const &)*arg1);
-  fresult = result;
+  fresult = static_cast< int >(result);
   return fresult;
 }
 
 
-SWIGEXPORT int swigc_convertStringToScaleType(void const *farg1) {
+SWIGEXPORT int _wrap_convertStringToScaleType(SwigArrayWrapper *farg1) {
   int fresult ;
   std::string *arg1 = 0 ;
+  std::string tempstr1 ;
   Belos::ScaleType result;
   
-  arg1 = static_cast< std::string * >(const_cast< void* >(farg1));
+  tempstr1 = std::string(static_cast<const char *>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
   result = (Belos::ScaleType)Belos::convertStringToScaleType((std::string const &)*arg1);
-  fresult = result;
+  fresult = static_cast< int >(result);
   return fresult;
 }
 
 
-SWIGEXPORT void * swigc_convertScaleTypeToString(int const *farg1) {
-  void * fresult ;
+SWIGEXPORT SwigArrayWrapper _wrap_convertScaleTypeToString(int const *farg1) {
+  SwigArrayWrapper fresult ;
   Belos::ScaleType arg1 ;
   std::string result;
   
   arg1 = static_cast< Belos::ScaleType >(*farg1);
   result = Belos::convertScaleTypeToString(arg1);
-  fresult = (new std::string(static_cast< const std::string& >(result)));
+  fresult.size = (&result)->size();
+  if (fresult.size > 0) {
+    fresult.data = malloc(fresult.size);
+    memcpy(fresult.data, (&result)->c_str(), fresult.size);
+  } else {
+    fresult.data = NULL;
+  }
   return fresult;
 }
 
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosMsgType = -1;
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosErrors = static_cast< int >(Belos::Errors);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosErrors = Belos::Errors;
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosWarnings = static_cast< int >(Belos::Warnings);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosWarnings = Belos::Warnings;
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosIterationDetails = static_cast< int >(Belos::IterationDetails);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosIterationDetails = Belos::IterationDetails;
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosOrthoDetails = static_cast< int >(Belos::OrthoDetails);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosOrthoDetails = Belos::OrthoDetails;
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosFinalSummary = static_cast< int >(Belos::FinalSummary);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosFinalSummary = Belos::FinalSummary;
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosTimingDetails = static_cast< int >(Belos::TimingDetails);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosTimingDetails = Belos::TimingDetails;
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosStatusTestDetails = static_cast< int >(Belos::StatusTestDetails);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosStatusTestDetails = Belos::StatusTestDetails;
+SWIGEXPORT SWIGEXTERN int const _wrap_BelosDebug = static_cast< int >(Belos::Debug);
 
-SWIGEXPORT SWIGEXTERN int const swigc_BelosDebug = Belos::Debug;
-
-SWIGEXPORT void * swigc_convertMsgTypeToString(int const *farg1) {
-  void * fresult ;
+SWIGEXPORT SwigArrayWrapper _wrap_convertMsgTypeToString(int const *farg1) {
+  SwigArrayWrapper fresult ;
   Belos::MsgType arg1 ;
   std::string result;
   
   arg1 = static_cast< Belos::MsgType >(*farg1);
   result = Belos::convertMsgTypeToString(arg1);
-  fresult = (new std::string(static_cast< const std::string& >(result)));
+  fresult.size = (&result)->size();
+  if (fresult.size > 0) {
+    fresult.data = malloc(fresult.size);
+    memcpy(fresult.data, (&result)->c_str(), fresult.size);
+  } else {
+    fresult.data = NULL;
+  }
   return fresult;
 }
 

@@ -1,4 +1,4 @@
-! Copyright 2017, UT-Battelle, LLC
+! Copyright 2017-2018, UT-Battelle, LLC
 !
 ! SPDX-License-Identifier: BSD-3-Clause
 ! License-Filename: LICENSE
@@ -47,11 +47,9 @@ call MPI_INIT(ierr)
 if (ierr /= 0) then
   stop "MPI failed to init"
 endif
-write(*,*) 'Herre!'
-call comm%create(MPI_COMM_WORLD)
+comm = TeuchosComm(MPI_COMM_WORLD)
 #else
-write(*,*) 'There!'
-call comm%create()
+comm = TeuchosComm()
 #endif
 
 my_rank = comm%getRank()
@@ -89,7 +87,7 @@ num_global_entries = num_procs * num_local_entries
 !
 ! Create a Map that puts the same number of equations on each processor.  The
 ! resulting Map is "contiguous and uniform."
-call contig_map%create(num_global_entries, comm)
+contig_map = TpetraMap(num_global_entries, comm)
 
 ! contig_map is contiguous by construction.  Test this at run time.
 if (.not. contig_map%isContiguous()) then
@@ -103,7 +101,7 @@ end if
 ! since the numbers of entries on different MPI processes may differ.  In this
 ! case, the number of entries on each MPI process is the same, but that doesn't
 ! always have to be the case.
-call contig_map2%create(num_global_entries, num_local_entries, comm);
+contig_map2 = TpetraMap(num_global_entries, num_local_entries, comm);
 
 ! Since contig_map and contig_map2 have the same communicators, and the same
 ! number of entries on all MPI processes in their communicators, they are "the
@@ -118,7 +116,7 @@ end if
 ! entries each MPI process has, but don't know the global number.  Instead of
 ! num_global_entries, we use -1
 invalid = -1
-call contig_map3%create(invalid, num_local_entries, comm)
+contig_map3 = TpetraMap(invalid, num_local_entries, comm)
 
 ! Even though we made contig_map3 without specifying the global number of
 ! entries, it should still be the same as contig_map2.
@@ -141,7 +139,7 @@ allocate(element_list(num_elements_per_proc))
 do k = 1, num_elements_per_proc
   element_list(k) = int(my_rank + k * num_procs, kind=global_ordinal_type)
 end do
-call cyclic_map%create(num_global_entries, element_list, comm);
+cyclic_map = TpetraMap(num_global_entries, element_list, comm);
 deallocate(element_list)
 
 ! If there's more than one MPI process in the communicator, then cyclic_map is
@@ -168,19 +166,19 @@ end if
 
 ! Create a Vector with the contiguous Map.  This version of the constructor will
 ! fill in the vector with zeros.
-call x%create(contig_map, num_vecs)
+x = TpetraMultiVector(contig_map, num_vecs)
 
 ! The two-argument copy constructor with second argument Teuchos::Copy performs
 ! a deep copy.  x and y have the same Map.  The one-argument copy constructor
 ! does a _shallow_ copy.
-call y%create(x, TeuchosCopy)
+y = TpetraMultiVector(x, TeuchosCopy)
 
 ! Create a Vector with the 1-D cyclic Map.  Calling the constructor
 ! with false for the second argument leaves the data uninitialized,
 ! so that you can fill it later without paying the cost of
 ! initially filling it with zeros.
 zero_out = .false.
-call z%create(cyclic_map, num_vecs, zero_out)
+z = TpetraMultiVector(cyclic_map, num_vecs, zero_out)
 
 ! Set the entries of z to (pseudo)random numbers.  Please don't consider this
 ! a good parallel pseudorandom number generator.

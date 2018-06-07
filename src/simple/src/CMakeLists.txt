@@ -1,4 +1,4 @@
-## Copyright 2017, UT-Battelle, LLC
+## Copyright 2017-2018, UT-Battelle, LLC
 ##
 ## SPDX-License-Identifier: BSD-3-Clause
 ## License-Filename: LICENSE
@@ -7,7 +7,6 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 SET(EXTRA_SOURCE
   solver_handle.cpp
-  fortran_operator.cpp
   )
 
 IF (${PACKAGE_NAME}_ENABLE_Anasazi)

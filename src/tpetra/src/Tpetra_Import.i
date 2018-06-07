@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, UT-Battelle, LLC
+ * Copyright 2017-2018, UT-Battelle, LLC
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
@@ -50,8 +50,7 @@
 %ignore Tpetra::Import::print;                  // needs std::ostream
 
 
-%teuchos_rcp(Tpetra::Import<LO,GO,NO>)
-
 %include "Tpetra_Import_decl.hpp"
 
+%teuchos_rcp(Tpetra::Import<LO,GO,NO>)
 %template(TpetraImport) Tpetra::Import<LO,GO,NO>;

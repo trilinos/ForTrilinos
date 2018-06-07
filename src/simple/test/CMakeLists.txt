@@ -1,4 +1,4 @@
-## Copyright 2017, UT-Battelle, LLC
+## Copyright 2017-2018, UT-Battelle, LLC
 ##
 ## SPDX-License-Identifier: BSD-3-Clause
 ## License-Filename: LICENSE
@@ -17,6 +17,7 @@ IF (${PACKAGE_NAME}_ENABLE_Belos AND ${PACKAGE_NAME}_ENABLE_Ifpack2)
   TRIBITS_ADD_EXECUTABLE_AND_TEST(
     test_simple_solver_handle_test_fortran
     SOURCES test_simple_solver_handle.f90
+    LINKER_LANGUAGE Fortran
     COMM serial mpi
   )
 
@@ -25,22 +26,31 @@ ENDIF()
 IF (${PACKAGE_NAME}_ENABLE_Anasazi)
 
   TRIBITS_ADD_EXECUTABLE_AND_TEST(
-    eigen_handle_test_cpp
+    test_eigen_handle_cpp
     SOURCES test_simple_eigen_handle.cpp
     COMM serial mpi
     NUM_MPI_PROCS 1
     )
 
   TRIBITS_ADD_EXECUTABLE_AND_TEST(
-    eigen_handle_preset_test_cpp
+    test_eigen_handle_preset_cpp
     SOURCES test_simple_eigen_handle_preset.cpp
     COMM serial mpi
     NUM_MPI_PROCS 1
     )
 
   TRIBITS_ADD_EXECUTABLE_AND_TEST(
-    eigen_handle_test_fortran
+    test_eigen_handle_fortran
     SOURCES test_simple_eigen_handle.f90
+    LINKER_LANGUAGE Fortran
+    COMM serial mpi
+    NUM_MPI_PROCS 1
+    )
+
+  TRIBITS_ADD_EXECUTABLE_AND_TEST(
+    test_futility
+    SOURCES test_futility_reproducer.f90
+    LINKER_LANGUAGE Fortran
     COMM serial mpi
     NUM_MPI_PROCS 1
     )

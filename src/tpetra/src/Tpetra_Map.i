@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, UT-Battelle, LLC
+ * Copyright 2017-2018, UT-Battelle, LLC
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
@@ -54,7 +54,7 @@
 // =======================================================================
 // Make interface more Fortran friendly
 // =======================================================================
-%extend Tpetra::Map<int, long long, Kokkos::Compat::KokkosSerialWrapperNode> {
+%extend Tpetra::Map<LO,GO,NO> {
     Map(global_size_t numGlobalElements, const Teuchos::RCP<const Teuchos::Comm<int> > &comm, LocalGlobal lg=GloballyDistributed) {
       return new Tpetra::Map<LO,GO,NO>(numGlobalElements, 1/*indexBase*/, comm, lg);
     }
@@ -90,12 +90,7 @@
 %ignore Tpetra::Map::getRemoteIndexList (const Teuchos::ArrayView< const GlobalOrdinal > &GIDList, const Teuchos::ArrayView< int > &nodeIDList) const;
 %ignore Tpetra::Map::getNodeElementList() const;
 
-// FIXME: figure out why the first verion does not work
-/* %teuchos_rcp(Tpetra::Map<LO,GO,NO>); */
-%teuchos_rcp(Tpetra::Map<int, long long, Kokkos::Compat::KokkosSerialWrapperNode>)
-
 %include "Tpetra_Map_decl.hpp"
 
-// FIXME: figure out why the first verion does not work
-/* %template(TpetraMap) Tpetra::Map<LO,GO,NO>; */
-%template(TpetraMap) Tpetra::Map<int, long long, Kokkos::Compat::KokkosSerialWrapperNode>;
+%teuchos_rcp(Tpetra::Map<LO,GO,NO>)
+%template(TpetraMap) Tpetra::Map<LO,GO,NO>;

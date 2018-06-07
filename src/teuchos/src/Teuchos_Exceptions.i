@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, UT-Battelle, LLC
+ * Copyright 2017-2018, UT-Battelle, LLC
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
@@ -16,7 +16,7 @@ class ExceptionBase : public std::logic_error { /* * */ };
 
 %exception {
     // Make sure no unhandled exceptions exist before performing a new action
-    swig::fortran_check_unhandled_exception();
+    SWIG_check_unhandled_exception();
     try
     {
         // Attempt the wrapped function call

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, UT-Battelle, LLC
+ * Copyright 2017-2018, UT-Battelle, LLC
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
@@ -18,14 +18,30 @@
 
 %include <Teuchos_RCP.i>
 
-typedef int MPI_Comm;
-%typemap(in, noblock=1) MPI_Comm %{
-#ifdef HAVE_MPI
-    $1 = ($1_ltype)(MPI_Comm_f2c(*(MPI_Fint *)($input)));
-#else
+%apply int { MPI_Comm };
+%typemap(ftype) MPI_Comm
+   "integer"
+%typemap(fin, noblock=1) MPI_Comm {
+    $1 = int($input, C_INT)
+}
+%typemap(fout, noblock=1) MPI_Comm {
+    $result = int($1)
+}
+
+%typemap(in, noblock=1) MPI_Comm {
+%#ifdef HAVE_MPI
+    $1 = MPI_Comm_f2c(%static_cast(*$input, MPI_Fint));
+%#else
     $1 = *$input;
-#endif
-%}
+%#endif
+}
+%typemap(out, noblock=1) MPI_Comm {
+%#ifdef HAVE_MPI
+    $result = %static_cast(MPI_Comm_c2f($1), int);
+%#else
+    $result = $1;
+%#endif
+}
 
 // Make the Comm an RCP
 %teuchos_rcp(Teuchos::Comm<int>)
@@ -41,10 +57,16 @@ class Comm
 {
   public:
 
+    // Wrap built-in methods
+    int getRank() const;
+    int getSize() const;
+    void barrier() const;
+
+    // Add constructors
   %extend {
     Comm(MPI_Comm rawMpiComm) {
 %#ifdef HAVE_MPI
-      return static_cast<Teuchos::Comm<Ordinal>*>(new Teuchos::MpiComm<int>(rawMpiComm));
+      return new Teuchos::MpiComm<Ordinal>(rawMpiComm);
 %#else
       throw std::runtime_error("MPI based constructor cannot be called when MPI is not enabled.");
 %#endif
@@ -52,20 +74,19 @@ class Comm
 
     Comm() {
 %#ifdef HAVE_MPI
-      return static_cast<Teuchos::Comm<Ordinal>*>(new Teuchos::MpiComm<int>(MPI_COMM_WORLD));
+      return new Teuchos::MpiComm<Ordinal>(MPI_COMM_WORLD);
 %#else
-      return static_cast<Teuchos::Comm<Ordinal>*>(new Teuchos::SerialComm<int>());
+      return new Teuchos::SerialComm<Ordinal>();
 %#endif
     }
 
-    int getRank() const {
-      return $self->getRank();
-    }
-    int getSize() const {
-      return $self->getSize();
-    }
-    void barrier() const {
-      $self->barrier();
+    MPI_Comm getRawMpiComm() {
+%#ifdef HAVE_MPI
+      Teuchos::MpiComm<Ordinal>& comm = dynamic_cast<Teuchos::MpiComm<Ordinal>&>(*$self);
+      return *comm.getRawMpiComm();
+%#else
+      throw std::runtime_error("MPI based constructor cannot be called when MPI is not enabled.");
+%#endif
     }
   } // %extend
 };

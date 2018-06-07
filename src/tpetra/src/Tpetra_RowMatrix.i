@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, UT-Battelle, LLC
+ * Copyright 2017-2018, UT-Battelle, LLC
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
@@ -30,8 +30,7 @@
 %ignore Tpetra::RowMatrix::rightScale;           // needs Tpetra::Vector
 
 
-%teuchos_rcp(Tpetra::RowMatrix<SC,LO,GO,NO>)
-
 %include "Tpetra_RowMatrix_decl.hpp"
 
+%teuchos_rcp(Tpetra::RowMatrix<SC,LO,GO,NO>)
 %template(TpetraRowMatrix) Tpetra::RowMatrix<SC,LO,GO,NO>;

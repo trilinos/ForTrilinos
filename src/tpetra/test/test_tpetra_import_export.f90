@@ -1,4 +1,4 @@
-!Copyright 2017, UT-Battelle, LLC
+!Copyright 2017-2018, UT-Battelle, LLC
 !
 !SPDX-License-Identifier: BSD-3-Clause
 !License-Filename: LICENSE
@@ -18,9 +18,9 @@ program test_TpetraImportExport
   SETUP_TEST()
 
 #ifdef HAVE_MPI
-  call comm%create(MPI_COMM_WORLD); FORTRILINOS_CHECK_IERR()
+  comm = TeuchosComm(MPI_COMM_WORLD); FORTRILINOS_CHECK_IERR()
 #else
-  call comm%create()
+  comm = TeuchosComm()
 #endif
 
   ADD_SUBTEST_AND_RUN(TpetraImportExport_Basic)
@@ -45,11 +45,11 @@ contains
     OUT0("Starting TpetraImportExport_Basic!")
 
     ! create Maps
-    call src%create(invalid, ten, comm)
-    call tgt%create(invalid, five, comm)
+    src = TpetraMap(invalid, ten, comm)
+    tgt = TpetraMap(invalid, five, comm)
 
     ! create Import object
-    call importer%create(src, tgt)
+    importer = TpetraImport(src, tgt)
 
     same = importer%getNumSameIDs()
     permute = importer%getNumPermuteIDs()
@@ -70,7 +70,8 @@ contains
     type(TpetraExport) :: exporter
     type(TpetraMultiVector) :: mv_mine, mv_with_neighbors
     type(TpetraMultiVector) :: mine_parent, neigh_parent
-    real(scalar_type), allocatable :: a(:), val(:)
+    real(scalar_type), allocatable :: val(:)
+    real(scalar_type), pointer :: a(:)
     real(scalar_type), parameter :: zero=0
     integer(size_type), parameter :: ten=10, five=5
     integer(size_type) :: num_images, my_image_id, num_local, num_vecs
@@ -107,24 +108,22 @@ contains
     end if
 
     ! two maps: one has one entries per node, the other is the 1-D neighbors
-    call src%create(invalid, num_local, comm)
-    call tgt%create(invalid, neighbors, comm)
+    src = TpetraMap(invalid, num_local, comm)
+    tgt = TpetraMap(invalid, neighbors, comm)
 
     do tnum = 1, 2
 
       ! for tnum=1, these are contiguously allocated multivectors
       ! for tnum=2, these are non-contiguous views of multivectors
       if (tnum == 1) then
-        call mv_mine%create(src, num_vecs)
-        call mv_with_neighbors%create(tgt, num_vecs)
+        mv_mine = TpetraMultiVector(src, num_vecs)
+        mv_with_neighbors = TpetraMultiVector(tgt, num_vecs)
       else
         allocate(cols(5))
         cols(:) = [1,7,4,5,6]
-        call mine_parent%create(src, num_vecs+2)
-        call neigh_parent%create(tgt, num_vecs+2)
+        mine_parent = TpetraMultiVector(src, num_vecs+2)
+        neigh_parent = TpetraMultiVector(tgt, num_vecs+2)
         TEST_ASSERT((num_vecs == 5))
-        call mv_mine%create()
-        call mv_with_neighbors%create()
         mv_mine = mine_parent%subViewNonConst(cols)
         mv_with_neighbors = neigh_parent%subViewNonConst(cols)
       end if
@@ -137,8 +136,8 @@ contains
       end do
 
       ! create Import from src to tgt, Export from tgt to src, test them
-      call importer%create(src, tgt)
-      call exporter%create(tgt, src)
+      importer = TpetraImport(src, tgt)
+      exporter = TpetraExport(tgt, src)
 
       ! importer testing
       TEST_ASSERT((src%isSameAs(importer%getSourceMap())))
@@ -170,7 +169,7 @@ contains
       !                     [n-1  2n-1  3n-1  4n-1  5n-1]
       call mv_with_neighbors%doImport(mv_mine, importer, TpetraREPLACE)
       do j = 1, num_vecs
-        a = mv_with_neighbors%getData(j)
+        a => mv_with_neighbors%getData(j)
         if (my_image_id == 0) then
           val(1) = real(my_image_id+j*num_images,kind=scalar_type)
           val(2) = real(j*num_images+1, kind=scalar_type)
@@ -190,7 +189,7 @@ contains
       call mv_mine%putScalar(zero)
       call mv_mine%doExport(mv_with_neighbors, exporter, TpetraADD)
       do j = 1, num_vecs
-        a = mv_mine%getData(j)
+        a => mv_mine%getData(j)
         if (my_image_id == 0 .or. my_image_id == num_images-1) then
           ! contribution from me and one neighbor: double original value
           val(1) = real(2.0*(my_image_id+j*num_images), kind=scalar_type)
@@ -200,17 +199,18 @@ contains
         TEST_FLOATING_EQUALITY(a(1), val(1), epsilon(val(1)))
       end do
 
+      call mv_mine%release()
+      call mv_with_neighbors%release()
+      call mine_parent%release()
+      call neigh_parent%release()
+      call importer%release()
+      call exporter%release()
+
     end do
 
-    deallocate(neighbors, a, val)
+    deallocate(neighbors, val)
     call src%release()
     call tgt%release()
-    call mv_mine%release()
-    call mv_with_neighbors%release()
-    call mine_parent%release()
-    call neigh_parent%release()
-    call importer%release()
-    call exporter%release()
 
     OUT0("Finished TpetraImportExport_GetNeighborsForward!")
 
@@ -223,7 +223,7 @@ contains
     type(TpetraExport) :: exporter
     type(TpetraMultiVector) :: svec, dvec
     integer(size_type) :: num_images
-    real(scalar_type) :: a(2)
+    real(scalar_type), pointer :: a(:)
     integer(local_ordinal_type) :: lclrow
     integer(global_ordinal_type) :: my_only_gid, cols(2)
     integer(size_type), parameter :: one=1
@@ -239,28 +239,28 @@ contains
     if (num_images < 2) return;
 
     ! create a Map
-    call smap%create(invalid, one, comm)
+    smap = TpetraMap(invalid, one, comm)
 
     lclrow = 1
     my_only_gid = smap%getGlobalElement(lclrow)
     cols(1) = my_only_gid
     cols(2) = mod(my_only_gid+1, num_images)
-    call dmap%create(twog, cols, comm)
+    dmap = TpetraMap(twog, cols, comm)
 
-    call svec%create(smap, one)
+    svec = TpetraMultiVector(smap, one)
     call svec%putScalar(-1.0_scalar_type)
 
-    call dvec%create(dmap, one)
+    dvec = TpetraMultiVector(dmap, one)
     call dvec%putScalar(-3.0_scalar_type)
 
     ! first item of dvec is local (w.r.t. srcVec), while the second is remote
     ! ergo, during the import:
     ! - the first will be over-written (by 1.0) from the source, while
     ! - the second will be "combined", i.e., abs(max(1.0,3.0)) = 3.0 from the dest
-    call importer%create(smap, dmap)
+    importer = TpetraImport(smap, dmap)
     call dvec%doImport(svec, importer, TpetraABSMAX)
 
-    a = dvec%get1dView()
+    a => dvec%get1dView()
     TEST_FLOATING_EQUALITY(a(1), -1.0_scalar_type, epsilon(a(1)))
     TEST_FLOATING_EQUALITY(a(2), 3.0_scalar_type, epsilon(a(1)))
 
@@ -275,7 +275,7 @@ contains
 
     success = .false.
 
-    !call Obj%create(); TEST_IERR()
+    !Obj = TpetraImport(); TEST_IERR()
     !fresult = Obj%isLocallyComplete(); TEST_IERR()
 
     !call Obj%release(); TEST_IERR()
@@ -294,8 +294,8 @@ contains
 
     success = .false.
 
-    !call remotetarget%create(); TEST_IERR()
-    !call Obj%create(); TEST_IERR()
+    !remotetarget = TpetraMap(); TEST_IERR()
+    !Obj = TpetraImport(); TEST_IERR()
     !fresult = Obj%createRemoteOnlyImport(remotetarget); TEST_IERR()
 
     !call remotetarget%release(); TEST_IERR()

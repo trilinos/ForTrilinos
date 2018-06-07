@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, UT-Battelle, LLC
+ * Copyright 2017-2018, UT-Battelle, LLC
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
@@ -17,8 +17,6 @@
 #include <Tpetra_MultiVector.hpp>
 
 #include <AnasaziSolverManager.hpp>
-
-#include "fortran_operator.hpp"
 
 #include <utility>
 
@@ -56,8 +54,8 @@ namespace ForTrilinos {
     void setup_matrix_rhs(const Teuchos::RCP<Matrix>& M);
 
     // Setup operators
-    void setup_operator    (OperatorCallback callback, const Teuchos::RCP<const Map>& domainMap, const Teuchos::RCP<const Map>& rangeMap = Teuchos::null);
-    void setup_operator_rhs(OperatorCallback callback, const Teuchos::RCP<const Map>& domainMap, const Teuchos::RCP<const Map>& rangeMap = Teuchos::null);
+    void setup_operator    (const Teuchos::RCP<Operator>& A);
+    void setup_operator_rhs(const Teuchos::RCP<Operator>& M);
 
     // Setup solver based on the parameter list
     void setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList);

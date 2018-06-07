@@ -33,17 +33,14 @@ required to build and install ForTrilinos:
 1. Download Trilinos 12.12 release
 
   ForTrilinos release model requires users to work with a specific version of
-  Trilinos, as otherwise the interfaces may have changed. Users may download
-  Trilinos 12.12.1 source `here
-  <https://github.com/trilinos/Trilinos/archive/trilinos-release-12-12-1.tar.gz>`_.
-  An alternative is to checkout a specific version of Trilinos repository like
-  this:
+  Trilinos, as otherwise the interfaces may have changed. Users must checkout a
+  specific version of Trilinos repository like this:
 
   .. code::
 
       $ git clone https://github.com/trilinos/Trilinos.git $TRILINOS_DIR
       $ cd $TRILINOS_DIR
-      $ git checkout trilinos-release-12-12-1
+      $ git checkout trilinos-release-12-12-branch
 
   Here, ``$TRILINOS_DIR`` is the name you want give to the repository.
 
@@ -117,19 +114,7 @@ required to build and install ForTrilinos:
 
 .. _patches:
 
-4. Apply one-time patches to Trilinos.  In future updates, patches will be incorporated directly in to Trilinos but, for now, they must be applied manually.  All required patches can be found in ``scripts/patches`` directory in the ForTrilinos source tree. The script ``scripts/patches/apply-patches`` can be used to apply all of the patches at once.
-
-  .. code::
-
-     $ cd $FORTRILINOS_DIR/scripts/patches
-     $ ./apply-patches
-
-  .. note::
-
-     Note, the environment variable ``TRILINOS_DIR`` must be defined and point to the 12.12 release version of Trilinos cloned in Step 1 for the patching and building to succeed.
-
-
-5. Run the configuration script from your build directory.  Here the CMake
+4. Run the configuration script from your build directory.  Here the CMake
    configure script is assumed to be named ``do-configure``
 
   .. code::
