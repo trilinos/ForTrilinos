@@ -1,0 +1,67 @@
+<ParameterList name="ANONYMOUS">
+
+  <ParameterList name="Linear Solver Settings">
+    <Parameter name="Preconditioner Type" value="Ifpack2" type="string"/>
+    <ParameterList name="Preconditioner Types">
+      <ParameterList name="Ifpack2">
+        <Parameter name="Prec Type" value="ILUT" type="string"/>
+      </ParameterList>
+    </ParameterList>
+
+    <Parameter name="Linear Solver Type" value="Belos" type="string"/>
+    <ParameterList name="Linear Solver Types">
+      <ParameterList name="Belos">
+        <Parameter name="Solver Type" value="Pseudo Block GMRES" type="string"/>
+        <ParameterList name="Solver Types">
+          <ParameterList name="Pseudo Block GMRES">
+            <Parameter name="Maximum Iterations" value="200" type="int"/>
+            <Parameter name="Num Blocks" value="200" type="int"/>
+            <Parameter name="Verbosity" value="127" type="int"/>
+            <Parameter name="Output Frequency" value="100" type="int"/>
+          </ParameterList>
+        </ParameterList>
+        <ParameterList name="VerboseObject">
+          <Parameter name="Verbosity Level" value="medium" type="string"/>
+        </ParameterList>
+      </ParameterList>
+    </ParameterList>
+  </ParameterList>
+
+  <ParameterList name="Jacobian Settings">
+    <!-- <Parameter name="Jacobian Type" value="Analytic" type="string"/> -->
+    <Parameter name="Jacobian Type" value="Matrix Free Newton" type="string"/>
+    <Parameter name="Use Prec" value="true" type="bool"/> <!--  # If false, the linear Preconditioner Type must be None -->
+    <ParameterList name="Jacobian Types">
+      <ParameterList name="Matrix Free Newton">
+        <Parameter name="Difference Type" value="Forward" type="string"/>
+        <Parameter name="Perturbation Algorithm" value="KSP NOX 2001" type="string"/>
+        <Parameter name="lambda" value="0.0001" type="double"/>
+      </ParameterList>
+    </ParameterList>
+  </ParameterList>
+
+  <ParameterList name="Nonlinear Solver Settings">
+    <Parameter name="Nonlinear Solver" value="Line Search Based" type="string"/>
+    <ParameterList name="Direction">
+      <ParameterList name="Newton">
+        <ParameterList name="Linear Solver">
+          <Parameter name="Tolerance" value="0.0001" type="double"/>
+        </ParameterList>
+      </ParameterList>
+    </ParameterList>
+    <ParameterList name="Printing">
+      <ParameterList name="Output Information">
+        <Parameter name="Debug" value="true" type="bool"/>
+        <Parameter name="Warning" value="true" type="bool"/>
+        <Parameter name="Error" value="true" type="bool"/>
+        <Parameter name="Test Details" value="true" type="bool"/>
+        <Parameter name="Details" value="true" type="bool"/>
+        <Parameter name="Parameters" value="true" type="bool"/>
+        <Parameter name="Linear Solver Details" value="true" type="bool"/>
+        <Parameter name="Inner Iteration" value="true" type="bool"/>
+        <Parameter name="Outer Iteration" value="true" type="bool"/>
+        <Parameter name="Outer Iteration StatusTest" value="true" type="bool"/>
+      </ParameterList>
+    </ParameterList>
+  </ParameterList>
+</ParameterList>
