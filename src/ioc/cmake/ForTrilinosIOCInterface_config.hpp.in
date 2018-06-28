@@ -1,0 +1,32 @@
+/*
+ * Copyright 2017-2018, UT-Battelle, LLC
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * License-Filename: LICENSE
+ */
+#ifndef FORTRILINOSIOCINTERFACE_CONFIG_HPP
+#define FORTRILINOSIOCINTERFACE_CONFIG_HPP
+
+/* Options */
+
+#cmakedefine HAVE_MPI
+
+/* Optional Dependencies */
+
+#cmakedefine HAVE_FORTRILINOSIOCINTERFACE_IFPACK2
+
+#cmakedefine HAVE_FORTRILINOSIOCINTERFACE_MUELU
+
+#cmakedefine HAVE_FORTRILINOSIOCINTERFACE_NOX
+
+/* Optional TPL */
+
+
+/*
+ If deprecated warnings are on, and the compiler supports them, then
+ define FORTRILINOSIOCINTERFACE_DEPRECATED to emit deprecated warnings.  Otherwise,
+ give it an empty definition.
+*/
+@FORTRILINOSIOCINTERFACE_DEPRECATED_DECLARATIONS@
+
+#endif /* FORTRILINOSIOCINTERFACE_CONFIG_HPP */

@@ -5,4 +5,5 @@ TRIBITS_PACKAGE_DEFINE_DEPENDENCIES(
   Tpetra            src/tpetra      SS OPTIONAL
   Belos             src/belos       SS OPTIONAL
   SimpleInterface   src/simple      SS OPTIONAL
+  IOCInterface      src/ioc         SS OPTIONAL
 )
