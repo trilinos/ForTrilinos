@@ -21,6 +21,14 @@ IF ("${CMAKE_VERSION}" VERSION_LESS "3.8.0")
   ENDMACRO()
 ENDIF()
 
+IF ("${CMAKE_VERSION}" VERSION_GREATER "3.11.0")
+  IF (CMAKE_GENERATOR MATCHES "Make")
+    # see https://gitlab.kitware.com/cmake/cmake/issues/16830
+    MESSAGE(FATAL_ERROR "This SWIG script needs to be updated for "
+      "the makefile generator with new versions of cmake")
+  ENDIF()
+ENDIF()
+
 # Load SWIG and other modules we need
 INCLUDE(UseSWIG)
 INCLUDE(CMakeParseArguments)
@@ -132,25 +140,27 @@ function(MAKE_SWIG)
       CPLUSPLUS TRUE)
   endif()
 
-  # Get dependencies of main SWIG source file and the files it includes
-  # we can't do recursive
-  set(SUBDEPS ${SRC_FILE})
-  set(DEPENDENCIES)
-  foreach(RECURSION 0 1 2)
-    set(OLD_SUBDEPS ${SUBDEPS})
-    set(SUBDEPS)
-    foreach(DEPENDENCY ${OLD_SUBDEPS})
-      if(DEPENDENCY MATCHES "\\.i$")
-        get_swig_dependencies(SUBSUBDEPS ${DEPENDENCY})
-        list(APPEND SUBDEPS ${SUBSUBDEPS})
-      endif()
+  IF ("${CMAKE_VERSION}" VERSION_LESS "3.11.0")
+    # Get dependencies of main SWIG source file and the files it includes.
+    # A similar feature was integrated into SWIG:
+    # https://gitlab.kitware.com/cmake/cmake/merge_requests/354
+    set(SUBDEPS ${SRC_FILE})
+    set(DEPENDENCIES)
+    foreach(RECURSION 0 1 2)
+      set(OLD_SUBDEPS ${SUBDEPS})
+      set(SUBDEPS)
+      foreach(DEPENDENCY ${OLD_SUBDEPS})
+        if(DEPENDENCY MATCHES "\\.i$")
+          get_swig_dependencies(SUBSUBDEPS ${DEPENDENCY})
+          list(APPEND SUBDEPS ${SUBSUBDEPS})
+        endif()
+      endforeach()
+      list(APPEND DEPENDENCIES ${SUBDEPS})
     endforeach()
-    list(APPEND DEPENDENCIES ${SUBDEPS})
-  endforeach()
 
-  #message("Extra dependencies for ${SRC_FILE}:\n ${DEPENDENCIES}" )
-
-  set(SWIG_MODULE_${PARSE_MODULE}_EXTRA_DEPS ${DEPENDENCIES} )
+    message("Extra dependencies for ${SRC_FILE}:\n ${DEPENDENCIES}" )
+    set(SWIG_MODULE_${PARSE_MODULE}_EXTRA_DEPS ${DEPENDENCIES} )
+  ENDIF()
 
   if (PARSE_LANGUAGE STREQUAL "FORTRAN")
     set(SWIG_FORTRAN_GENERATED_SRC "${CMAKE_SWIG_OUTDIR}/${PARSE_MODULE}.f90")
@@ -271,8 +281,4 @@ function(MAKE_SWIG)
     install(FILES ${CMAKE_SWIG_OUTDIR}/${PARSE_MODULE}.py
       DESTINATION python)
   endif ()
-
-  # clean up after SWIG (in cmake 2.6 - 2.8)
-  set(swig_extra_generated_files)
-
 endfunction()
