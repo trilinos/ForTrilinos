@@ -1,3 +1,7 @@
+# Distributed under the OSI-approved BSD 3-Clause License.  See accompanying
+# file Copyright.txt or https://cmake.org/licensing for details.
+# Source: v3.6.3 (9c507c13a0cffb163a1d56f34c020b5474a3e100)
+
 #.rst:
 # UseSWIG
 # -------
@@ -43,20 +47,6 @@
 #
 #    set_source_files_properties( ${swig_generated_file_fullname}
 #                                 PROPERTIES COMPILE_FLAGS "-bla")
-
-#=============================================================================
-# Copyright 2004-2009 Kitware, Inc.
-# Copyright 2009 Mathieu Malaterre <mathieu.malaterre@gmail.com>
-#
-# Distributed under the OSI-approved BSD License (the "License");
-# see accompanying file Copyright.txt for details.
-#
-# This software is distributed WITHOUT ANY WARRANTY; without even the
-# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-# See the License for more information.
-#=============================================================================
-# (To distribute this file outside of CMake, substitute the full
-#  License text for the above reference.)
 
 set(SWIG_CXX_EXTENSION "cxx")
 set(SWIG_EXTRA_LIBRARIES "")
@@ -229,12 +219,6 @@ macro(SWIG_ADD_MODULE name language)
     endif()
   endforeach()
 
-  #### SRJ PATCH ####
-  if (NOT SWIG_LIBRARY_TYPE)
-    set(SWIG_LIBRARY_TYPE MODULE)
-  endif()
-  #### END SRJ PATCH ####
-
   set(swig_generated_sources)
   foreach(it ${swig_dot_i_sources})
     SWIG_ADD_SOURCE_TO_MODULE(${name} swig_generated_source ${it})
@@ -244,16 +228,10 @@ macro(SWIG_ADD_MODULE name language)
   set_directory_properties(PROPERTIES
     ADDITIONAL_MAKE_CLEAN_FILES "${swig_extra_clean_files};${swig_generated_sources}")
   add_library(${SWIG_MODULE_${name}_REAL_NAME}
-    ${SWIG_LIBRARY_TYPE} ### SRJ PATCH
+    MODULE
     ${swig_generated_sources}
     ${swig_other_sources})
-
-  ### SRJ PATCH ###
-  IF (${SWIG_LIBRARY_TYPE} STREQUAL "MODULE")
-    set_target_properties(${SWIG_MODULE_${name}_REAL_NAME} PROPERTIES NO_SONAME ON)
-  ENDIF()
-  ### END SRJ PATCH ###
-
+  set_target_properties(${SWIG_MODULE_${name}_REAL_NAME} PROPERTIES NO_SONAME ON)
   string(TOLOWER "${language}" swig_lowercase_language)
   if ("${swig_lowercase_language}" STREQUAL "octave")
     set_target_properties(${SWIG_MODULE_${name}_REAL_NAME} PROPERTIES PREFIX "")

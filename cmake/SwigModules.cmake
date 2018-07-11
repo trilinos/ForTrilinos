@@ -10,25 +10,6 @@ IF (NOT DEFINED SWIG_DIR)
   MESSAGE(FATAL_ERROR "SWIG not loaded.")
 ENDIF()
 
-IF ("${CMAKE_VERSION}" VERSION_LESS "3.8.0")
-  # Old cmake that doesn't have support for non-'module' libraries: load a
-  # replacement for UseSWIG and define the "swig_add_library" macro
-  LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/old_cmake)
-  MACRO(swig_add_library NAME)
-    cmake_parse_arguments(_SAM "" "LANGUAGE;TYPE" "SOURCES" ${ARGN})
-    SET(SWIG_LIBRARY_TYPE ${_SAM_TYPE})
-    SWIG_ADD_MODULE(${NAME} ${_SAM_LANGUAGE} ${_SAM_SOURCES})
-  ENDMACRO()
-ENDIF()
-
-IF ("${CMAKE_VERSION}" VERSION_GREATER "3.11.0")
-  IF (CMAKE_GENERATOR MATCHES "Make")
-    # see https://gitlab.kitware.com/cmake/cmake/issues/16830
-    MESSAGE(FATAL_ERROR "This SWIG script needs to be updated for "
-      "the makefile generator with new versions of cmake")
-  ENDIF()
-ENDIF()
-
 # Load SWIG and other modules we need
 INCLUDE(UseSWIG)
 INCLUDE(CMakeParseArguments)
@@ -43,7 +24,6 @@ IF(PYTHON_VERSION_STRING VERSION_GREATER 3.0)
 ENDIF()
 
 # Define extra output files
-set(SWIG_FORTRAN_EXTRA_FILE_EXTENSION "f90") # old CMake
 set(SWIG_FORTRAN_EXTRA_FILE_EXTENSIONS ".f90")# new CMake
 
 ##---------------------------------------------------------------------------##
