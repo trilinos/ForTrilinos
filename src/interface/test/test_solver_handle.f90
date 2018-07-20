@@ -131,7 +131,7 @@ end module
 
 program main
 
-#include "ForTrilinosSimpleInterface_config.hpp"
+#include "ForTrilinosInterface_config.hpp"
 #include "ForTrilinos.h"
 
   use ISO_FORTRAN_ENV

@@ -12,7 +12,7 @@
 %import <forteuchos.i>
 %import <fortpetra.i>
 
-%include "ForTrilinosSimpleInterface_config.hpp"
+%include "ForTrilinosInterface_config.hpp"
 
 // Generate wrappers
 %{

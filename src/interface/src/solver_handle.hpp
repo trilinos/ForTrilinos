@@ -7,7 +7,7 @@
 #ifndef FORTRILINOS_SOLVER_HANDLE_HPP
 #define FORTRILINOS_SOLVER_HANDLE_HPP
 
-#include "ForTrilinosSimpleInterface_config.hpp"
+#include "ForTrilinosInterface_config.hpp"
 
 #include <Teuchos_Comm.hpp>
 #include <Teuchos_ParameterList.hpp>

@@ -25,7 +25,7 @@ program test_TpetraCrsMatrix
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_Basic1)
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_AlphaBetaMultiply)
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_ActiveFillGlobal)
-  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_SimpleEigTest)
+  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_EigTest)
 
 !  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_ActiveFillLocal)
 !  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_replaceColMap)
@@ -175,8 +175,8 @@ contains
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_Basic1)
 
-  ! -------------------------- SimpleEigTest --------------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_SimpleEigTest)
+  ! -------------------------- EigTest --------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_EigTest)
     type(TpetraMap) :: Map, row_map
     type(TpetraCrsMatrix) :: A
     type(TpetraMultiVector) :: ones, threes
@@ -190,7 +190,7 @@ contains
     integer(global_ordinal_type), allocatable :: cols(:), xcols(:)
     real(scalar_type), allocatable :: vals(:), xvals(:)
 
-    OUT0("Starting TpetraCrsMatrix_SimpleEigTest")
+    OUT0("Starting TpetraCrsMatrix_EigTest")
     num_images = comm%getSize()
     my_image_id = comm%getRank()
 
@@ -283,9 +283,9 @@ contains
     call row_map%release()
     deallocate(cols); deallocate(vals)
 
-    OUT0("Finished TpetraCrsMatrix_SimpleEigTest!")
+    OUT0("Finished TpetraCrsMatrix_EigTest!")
 
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_SimpleEigTest)
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_EigTest)
 
   ! ------------------------ Alphabetamultiply ------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_AlphaBetaMultiply)

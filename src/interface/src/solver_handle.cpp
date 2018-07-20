@@ -9,12 +9,12 @@
 #include <Stratimikos_DefaultLinearSolverBuilder.hpp>
 #include <Teuchos_DefaultComm.hpp>
 
-#ifdef HAVE_FORTRILINOSSIMPLEINTERFACE_IFPACK2
+#ifdef HAVE_FORTRILINOSINTERFACE_IFPACK2
 #  include <Teuchos_AbstractFactoryStd.hpp>
 #  include <Thyra_Ifpack2PreconditionerFactory.hpp>
 #endif
 
-#ifdef HAVE_FORTRILINOSSIMPLEINTERFACE_MUELU
+#ifdef HAVE_FORTRILINOSINTERFACE_MUELU
 #  include <Stratimikos_MueLuHelpers.hpp>
 #endif
 
@@ -66,14 +66,14 @@ namespace ForTrilinos {
 
     // Build Stratimikos solver
     Stratimikos::DefaultLinearSolverBuilder linearSolverBuilder;
-#ifdef HAVE_FORTRILINOSSIMPLEINTERFACE_IFPACK2
+#ifdef HAVE_FORTRILINOSINTERFACE_IFPACK2
     {
       typedef Thyra::PreconditionerFactoryBase<SC>          Base;
       typedef Thyra::Ifpack2PreconditionerFactory<Matrix>   Impl;
       linearSolverBuilder.setPreconditioningStrategyFactory(Teuchos::abstractFactoryStd<Base, Impl>(), "Ifpack2");
     }
 #endif
-#ifdef HAVE_FORTRILINOSSIMPLEINTERFACE_MUELU
+#ifdef HAVE_FORTRILINOSINTERFACE_MUELU
     Stratimikos::enableMueLu<LO,GO,NO>(linearSolverBuilder);
 #endif
 

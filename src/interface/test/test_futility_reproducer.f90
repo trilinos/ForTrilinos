@@ -1,10 +1,11 @@
-! Copyright 2017-2018, UT-Battelle, LLC
+
+! Copyright 2017, UT-Battelle, LLC
 !
 ! SPDX-License-Identifier: BSD-3-Clause
 ! License-Filename: LICENSE
 program main
 
-#include "ForTrilinosSimpleInterface_config.hpp"
+#include "ForTrilinosInterface_config.hpp"
 #include "ForTrilinos.h"
 
   use ISO_FORTRAN_ENV
@@ -39,15 +40,15 @@ program main
   type(ParameterList) :: plist
   type(TrilinosEigenSolver) :: eigen_handle
   type(TpetraMap) :: map
-  type(TpetraCrsMatrix) :: A
+  type(TpetraCrsMatrix) :: A,B
   type(TpetraMultiVector) :: X
 
   real(scalar_type), dimension(:), allocatable :: evalues
   integer(int_type), dimension(:), allocatable :: eindex
-  integer(global_ordinal_type), dimension(:), allocatable :: cols
-  real(scalar_type), dimension(:), allocatable :: vals
+  integer(global_ordinal_type), dimension(:) :: cols(2)
+  real(scalar_type), dimension(:) :: vals(2)
 
-  n = 50
+  n = 30
 
 #ifdef HAVE_MPI
   ! Initialize MPI subsystem
@@ -70,44 +71,42 @@ program main
   ! Read in the parameterList
   plist = ParameterList("Anasazi"); FORTRILINOS_CHECK_IERR()
   call load_from_xml(plist, "davidson.xml"); FORTRILINOS_CHECK_IERR()
+  call plist%set("Preconditioner Type", "IDENTITY")
 
   num_eigen_int = num_eigen
   call plist%set("NumEV", num_eigen_int); FORTRILINOS_CHECK_IERR()
 
   ! ------------------------------------------------------------------
-  ! Step 0: Construct tri-diagonal matrix
+  ! Step 0: Construct A and B matrices
   n_global = -1
   map = TpetraMap(n_global, n, comm); FORTRILINOS_CHECK_IERR()
 
-  max_entries_per_row = 3
-  A = TpetraCrsMatrix(map, max_entries_per_row, TpetraDynamicProfile)
+  max_entries_per_row = 2
+  A = TpetraCrsMatrix(map, map, max_entries_per_row)
+  cols(1) = 1
+  cols(2) = 2
+  vals(1) = 0.0015
+  vals(2) = 0.325
+  call A%insertGlobalValues(INT(1,global_ordinal_type), cols(1:2), vals(1:2)); FORTRILINOS_CHECK_IERR()
 
-  allocate(cols(max_entries_per_row))
-  allocate(vals(max_entries_per_row))
-  offset = n * my_rank
-  do i = 1, n
-    row_nnz = 1
-    if (i .ne. 1 .or. my_rank > 0) then
-      cols(row_nnz) = offset + i-1
-      vals(row_nnz) = -1.0
-      row_nnz = row_nnz + 1
-    end if
-    cols(row_nnz) = offset + i
-    vals(row_nnz) = 2.0
-    row_nnz = row_nnz + 1
-    if (i .ne. n .or. my_rank .ne. num_procs-1) then
-      cols(row_nnz) = offset + i+1
-      vals(row_nnz) = -1.0
-      row_nnz = row_nnz + 1
-    end if
+  B = TpetraCrsMatrix(map, map, max_entries_per_row)
+  cols(1) = 1
+  vals(1) = 0.1208
+  call B%insertGlobalValues(INT(1,global_ordinal_type), cols(1:1), vals(1:1)); FORTRILINOS_CHECK_IERR()
+  cols(1) = 1
+  cols(2) = 2
+  vals(1) = -0.117
+  vals(2) = 0.184
+  call B%insertGlobalValues(INT(2,global_ordinal_type), cols(1:2), vals(1:2)); FORTRILINOS_CHECK_IERR()
 
-    call A%insertGlobalValues(offset + i, cols(1:row_nnz-1), vals(1:row_nnz-1)); FORTRILINOS_CHECK_IERR()
-  end do
   call A%fillComplete(); FORTRILINOS_CHECK_IERR()
+  call B%fillComplete(); FORTRILINOS_CHECK_IERR()
 
   ! The solution
   allocate(evalues(2*num_eigen))
   allocate(eindex(2*num_eigen))
+
+  X = TpetraMultiVector(map, num_eigen)
 
   ! Step 0: crate a handle
   eigen_handle = TrilinosEigenSolver(); FORTRILINOS_CHECK_IERR()
@@ -120,7 +119,7 @@ program main
 
   ! Step 2: setup the problem
   call eigen_handle%setup_matrix(A); FORTRILINOS_CHECK_IERR()
-
+  call eigen_handle%setup_matrix_rhs(B); FORTRILINOS_CHECK_IERR()
   ! Step 3: setup the solver
   call eigen_handle%setup_solver(plist); FORTRILINOS_CHECK_IERR()
 
@@ -145,8 +144,6 @@ program main
   call comm%release(); FORTRILINOS_CHECK_IERR()
   deallocate(eindex)
   deallocate(evalues)
-  deallocate(cols)
-  deallocate(vals)
 
 #ifdef HAVE_MPI
   ! Finalize MPI must be called after releasing all handles
