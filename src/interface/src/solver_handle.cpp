@@ -48,7 +48,7 @@ namespace ForTrilinos {
     status_ = MATRIX_SETUP;
   }
 
-  void TrilinosSolver::setup_solver(const Teuchos::RCP<Teuchos::ParameterList> paramList) {
+  void TrilinosSolver::setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList) {
     using Teuchos::RCP;
     using Teuchos::rcp;
     using Teuchos::rcp_implicit_cast;

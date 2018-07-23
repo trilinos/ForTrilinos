@@ -92,6 +92,8 @@ public :: init_ForTpetraOperator
  public :: TpetraELocalGlobal, TpetraLocalIndices, TpetraGlobalIndices
  public :: TpetraCrsGraph
  public :: TpetraCrsMatrix
+ public :: operator_to_matrix
+ public :: matrix_to_operator
  public :: TpetraReader
  public :: TpetraWriter
  public :: TpetraMatrixMatrixAdd
@@ -3813,6 +3815,24 @@ end subroutine
    type(SwigClassWrapper), intent(inout) :: self
    type(SwigClassWrapper), intent(in) :: other
   end subroutine
+function swigc_operator_to_matrix(farg1) &
+bind(C, name="_wrap_operator_to_matrix") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
+end function
+
+function swigc_matrix_to_operator(farg1) &
+bind(C, name="_wrap_matrix_to_operator") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
+end function
+
 function swigc_TpetraReader_readSparseGraphFile__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
 bind(C, name="_wrap_TpetraReader_readSparseGraphFile__SWIG_0") &
 result(fresult)
@@ -9759,6 +9779,32 @@ end subroutine
    type(TpetraCrsMatrix), intent(in) :: other
    call swigc_assignment_TpetraCrsMatrix(self%swigdata, other%swigdata)
   end subroutine
+function operator_to_matrix(op) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraCrsMatrix) :: swig_result
+class(TpetraOperator), intent(inout) :: op
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = op%swigdata
+fresult = swigc_operator_to_matrix(farg1)
+swig_result%swigdata = fresult
+end function
+
+function matrix_to_operator(a) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+type(TpetraOperator) :: swig_result
+class(TpetraCrsMatrix), intent(inout) :: a
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = a%swigdata
+fresult = swigc_matrix_to_operator(farg1)
+swig_result%swigdata = fresult
+end function
+
 function TpetraReader_readSparseGraphFile__SWIG_0(filename, pcomm, callfillcomplete, tolerant, debug) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING

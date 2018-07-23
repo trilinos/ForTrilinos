@@ -56,7 +56,7 @@ namespace ForTrilinos {
     void setup_operator(const Teuchos::RCP<Operator>& A);
 
     // Setup solver based on the parameter list
-    void setup_solver(const Teuchos::RCP<Teuchos::ParameterList> paramList);
+    void setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList);
 
     // Solve linear system given rhs
     void solve(const Teuchos::RCP<const MultiVector>& rhs, Teuchos::RCP<MultiVector>& lhs) const;
