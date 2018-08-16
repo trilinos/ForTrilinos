@@ -105,8 +105,10 @@ namespace ForTrilinos {
       }
     }
 
-    int numEV = paramList->get("NumEV", 1);
-    problem->setNEV(numEV);
+    TEUCHOS_TEST_FOR_EXCEPTION(!paramList->isParameter("NumEV"), std::runtime_error,
+        "Please specify the desired number of eigenvectors by providing \"NumEV\" parameter");
+    numEigenvalues_ = paramList->get<int>("NumEV");
+    problem->setNEV(numEigenvalues_);
 
     // set random initial guess
     auto initVec = rcp(new MultiVector(A_->getDomainMap(), 1));
@@ -115,13 +117,17 @@ namespace ForTrilinos {
     bool r = problem->setProblem();
     TEUCHOS_ASSERT(r);
 
+    TEUCHOS_TEST_FOR_EXCEPTION(!paramList->isParameter("Solver Type"), std::runtime_error,
+        "Please specify the desired solver by providing \"Solver Type\" parameter");
     auto solverName = paramList->get<std::string>("Solver Type");
     solver_ = Anasazi::Factory::create(solverName, problem, paramList->sublist(solverName));
 
     status_ = SOLVER_SETUP;
   }
 
-  void TrilinosEigenSolver::solve(std::pair<SC*, size_t> eigenValues, Teuchos::RCP<MultiVector>& eigenVectors) const {
+  size_t TrilinosEigenSolver::solve(std::pair<SC*, size_t> eigenValues,
+                                    Teuchos::RCP<MultiVector>& eigenVectors,
+                                    std::pair<int*, size_t> eigenIndex) const {
     using Teuchos::RCP;
     using Teuchos::ArrayRCP;
 
@@ -133,11 +139,28 @@ namespace ForTrilinos {
     // Extract solution
     Anasazi::Eigensolution<SC,MultiVector> solution = solver_->getProblem().getSolution();
 
-    std::vector<Anasazi::Value<SC>>& evalues = solution.Evals;
-    for (int i = 0; i < std::min(eigenValues.second, evalues.size()); i++)
-      eigenValues.first[i] = evalues[i].realpart; // FIXME: need to implement complex case
+    int eNum = solution.numVecs;
+    TEUCHOS_ASSERT(eNum > 0);
+    std::vector<Anasazi::Value<SC>>& eValues = solution.Evals;
+    std::vector<int>&                eIndex  = solution.index;
+
+    size_t numConverged = std::min(eNum, numEigenvalues_);
+    TEUCHOS_TEST_FOR_EXCEPTION(eigenValues.second < numConverged, std::runtime_error,
+      "Insufficient space to store eigenvalues. Please provide at least two times the desired number of eigenvalues.");
+    TEUCHOS_TEST_FOR_EXCEPTION(eigenIndex.second < numConverged, std::runtime_error,
+      "Insufficient space to store index. Please provide at least two times the desired number of eigenvalues.");
+
+    for (size_t i = 0; i < eValues.size(); i++) {
+      eigenValues.first[2*i+0] = eValues[i].realpart;
+      eigenValues.first[2*i+1] = eValues[i].imagpart;
+    }
+
+    for (size_t i = 0; i < eIndex.size(); i++)
+      eigenIndex.first[i] = eIndex[i];
 
     eigenVectors = solution.Evecs;
+
+    return eValues.size();
   }
 
   void TrilinosEigenSolver::finalize() {

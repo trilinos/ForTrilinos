@@ -34,6 +34,8 @@ int main(int argc, char *argv[]) {
     ParameterList paramList;
     Teuchos::updateParametersFromXmlFileAndBroadcast("davidson.xml", Teuchos::Ptr<ParameterList>(&paramList), *comm);
 
+    paramList.set("NumEV", 1);
+
     // For now, run without a preconditioner
     paramList.remove("Preconditioner Type", false/*throwIfExists*/);
 
@@ -43,6 +45,7 @@ int main(int argc, char *argv[]) {
 
     // The eigen solution
     std::vector<double> evalues(1);
+    std::vector<int>    eindex(1);
     Teuchos::RCP<MultiVector> X = Teuchos::rcp(new MultiVector(A->getRowMap(), 1));
 
     // Step 1: initialize a handle
@@ -57,7 +60,7 @@ int main(int argc, char *argv[]) {
     handle.setup_solver(Teuchos::rcpFromRef(paramList));
 
     // Step 4: solve the system
-    handle.solve(std::make_pair(evalues.data(), 1), X);
+    handle.solve(std::make_pair(evalues.data(), 1), X, std::make_pair(eindex.data(), 1));
 
     // TODO: Check the solution
 

@@ -61,7 +61,9 @@ namespace ForTrilinos {
     void setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList);
 
     // Solve eigen system given rhs
-    void solve(std::pair<SC*, size_t> eigenValues, Teuchos::RCP<MultiVector>& lhs) const;
+    size_t solve(std::pair<SC*, size_t> eigenValues,
+                 Teuchos::RCP<MultiVector>& eigenVectors,
+                 std::pair<int*, size_t> eigenIndex) const;
 
     // Free all data
     void finalize();
@@ -72,6 +74,7 @@ namespace ForTrilinos {
     Teuchos::RCP<Operator>           A_, M_;
     Teuchos::RCP<SolverManager>      solver_;
     Teuchos::RCP<ParameterList>      paramList_;
+    int                              numEigenvalues_;
 
     enum Status {
       NOT_INITIALIZED,
