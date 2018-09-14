@@ -7,6 +7,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 SET(EXTRA_SOURCE
   solver_handle.cpp
+  fortrilinos_utilities.cpp
   )
 
 IF (${PACKAGE_NAME}_ENABLE_Anasazi)
