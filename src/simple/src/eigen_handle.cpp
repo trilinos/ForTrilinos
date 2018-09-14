@@ -5,6 +5,7 @@
  * License-Filename: LICENSE
  */
 #include "eigen_handle.hpp"
+#include "fortrilinos_utilities.hpp"
 
 #include <Stratimikos_DefaultLinearSolverBuilder.hpp>
 #include <Teuchos_DefaultComm.hpp>
@@ -110,6 +111,8 @@ namespace ForTrilinos {
 
     // set random initial guess
     auto initVec = rcp(new MultiVector(A_->getDomainMap(), 1));
+    SetRandomSeed(*comm_);
+    initVec->randomize();
     problem->setInitVec(initVec);
 
     bool r = problem->setProblem();
