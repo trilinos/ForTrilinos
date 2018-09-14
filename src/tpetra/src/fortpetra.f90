@@ -6482,45 +6482,47 @@ subroutine swigd_ForTpetraOperator_apply(fself, farg1, farg2, farg3, farg4, farg
   call self%apply(x, y, mode, alpha, beta)
 end subroutine
 
-function swigd_ForTpetraOperator_getDomainMap(fself) &
-    bind(C, name="swigd_ForTpetraOperator_getDomainMap") &
-    result(fresult)
+!function swigd_ForTpetraOperator_getDomainMap(fself) &
+!    bind(C, name="swigd_ForTpetraOperator_getDomainMap") &
+!    result(fresult)
+subroutine swigd_ForTpetraOperator_getDomainMap (fresult, fself) &
+    bind(C, name="swigd_ForTpetraOperator_getDomainMap")
   use, intrinsic :: ISO_C_BINDING
   implicit none
   type(SwigClassWrapper), intent(in) :: fself
   type(SwigClassWrapper) :: fresult
 
   class(ForTpetraOperator), pointer :: self
-  type(TpetraMap) :: result
+  type(TpetraMap) :: res
 
   ! Get pointer to Fortran object from class Handle
   call c_f_pointer_ForTpetraOperator(fself, self)
   if (.not. associated(self)) stop 3
 
-  result = self%getDomainMap()
+  res = self%getDomainMap()
 
-  fresult = result%swigdata
-end function
+  fresult = res%swigdata
+end subroutine
 
-function swigd_ForTpetraOperator_getRangeMap(fself) &
-    bind(C, name="swigd_ForTpetraOperator_getRangeMap") &
-    result(fresult)
+
+subroutine swigd_ForTpetraOperator_getRangeMap(fresult, fself) &
+    bind(C, name="swigd_ForTpetraOperator_getRangeMap") 
   use, intrinsic :: ISO_C_BINDING
   implicit none
   type(SwigClassWrapper), intent(in) :: fself
   type(SwigClassWrapper) :: fresult
 
   class(ForTpetraOperator), pointer :: self
-  type(TpetraMap) :: result
+  type(TpetraMap) :: res
 
   ! Get pointer to Fortran object from class Handle
   call c_f_pointer_ForTpetraOperator(fself, self)
   if (.not. associated(self)) stop 3
 
-  result = self%getRangeMap()
+  res = self%getRangeMap()
 
-  fresult = result%swigdata
-end function
+  fresult = res%swigdata
+end subroutine 
 
 subroutine init_ForTpetraOperator(self)
   class(ForTpetraOperator), target :: self
