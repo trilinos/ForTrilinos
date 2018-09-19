@@ -25,7 +25,8 @@ program main
   integer(int_type) :: my_rank, num_procs
 
   integer(global_size_type) :: n_global
-  integer(size_type) :: n, max_entries_per_row, lda, num_eigen = 1
+  integer(size_type) :: n, max_entries_per_row, lda
+  integer(size_type) :: num_eigen = 1, num_found_eigen
   integer(int_type) :: num_eigen_int
   integer(int_type) :: row_nnz
 
@@ -41,7 +42,8 @@ program main
   type(TpetraCrsMatrix) :: A
   type(TpetraMultiVector) :: X
 
-  real(scalar_type), dimension(:), allocatable :: evalues, evectors
+  real(scalar_type), dimension(:), allocatable :: evalues
+  integer(int_type), dimension(:), allocatable :: eindex
   integer(global_ordinal_type), dimension(:), allocatable :: cols
   real(scalar_type), dimension(:), allocatable :: vals
 
@@ -104,8 +106,8 @@ program main
   call A%fillComplete(); FORTRILINOS_CHECK_IERR()
 
   ! The solution
-  allocate(evalues(num_eigen))
-  X = TpetraMultiVector(map, num_eigen)
+  allocate(evalues(2*num_eigen))
+  allocate(eindex(2*num_eigen))
 
   ! Step 0: crate a handle
   eigen_handle = TrilinosEigenSolver(); FORTRILINOS_CHECK_IERR()
@@ -123,10 +125,10 @@ program main
   call eigen_handle%setup_solver(plist); FORTRILINOS_CHECK_IERR()
 
   ! Step 4: solve the system
-  call eigen_handle%solve(evalues, X); FORTRILINOS_CHECK_IERR()
+  num_found_eigen = eigen_handle%solve(evalues, X, eindex); FORTRILINOS_CHECK_IERR()
 
   ! FIXME: Check the solution
-  if (size(evalues) /= num_eigen) then
+  if (num_found_eigen < num_eigen) then
     write(error_unit, '(A)') 'The number of returned eigenvalues does not match!'
     stop 1
   end if
@@ -141,6 +143,7 @@ program main
   call A%release(); FORTRILINOS_CHECK_IERR()
   call map%release(); FORTRILINOS_CHECK_IERR()
   call comm%release(); FORTRILINOS_CHECK_IERR()
+  deallocate(eindex)
   deallocate(evalues)
   deallocate(cols)
   deallocate(vals)

@@ -228,15 +228,18 @@ type(SwigClassWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
 end subroutine
 
-subroutine swigc_TrilinosEigenSolver_solve(farg1, farg2, farg3) &
-bind(C, name="_wrap_TrilinosEigenSolver_solve")
+function swigc_TrilinosEigenSolver_solve(farg1, farg2, farg3, farg4) &
+bind(C, name="_wrap_TrilinosEigenSolver_solve") &
+result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 import :: SwigArrayWrapper
 type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
-end subroutine
+type(SwigArrayWrapper) :: farg4
+integer(C_SIZE_T) :: fresult
+end function
 
 subroutine swigc_TrilinosEigenSolver_finalize(farg1) &
 bind(C, name="_wrap_TrilinosEigenSolver_finalize")
@@ -465,23 +468,33 @@ farg2 = paramlist%swigdata
 call swigc_TrilinosEigenSolver_setup_solver(farg1, farg2)
 end subroutine
 
-subroutine swigf_TrilinosEigenSolver_solve(self, eigenvalues, lhs)
+function swigf_TrilinosEigenSolver_solve(self, eigenvalues, eigenvectors, eigenindex) &
+result(swig_result)
 use, intrinsic :: ISO_C_BINDING
+integer(C_SIZE_T) :: swig_result
 class(TrilinosEigenSolver), intent(in) :: self
 real(C_DOUBLE), dimension(:), target :: eigenvalues
 real(C_DOUBLE), pointer :: farg2_view
-class(TpetraMultiVector), intent(inout) :: lhs
+class(TpetraMultiVector), intent(inout) :: eigenvectors
+integer(C_INT), dimension(:), target :: eigenindex
+integer(C_INT), pointer :: farg4_view
+integer(C_SIZE_T) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
+type(SwigArrayWrapper) :: farg4 
 
 farg1 = self%swigdata
 farg2_view => eigenvalues(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(eigenvalues)
-farg3 = lhs%swigdata
-call swigc_TrilinosEigenSolver_solve(farg1, farg2, farg3)
-end subroutine
+farg3 = eigenvectors%swigdata
+farg4_view => eigenindex(1)
+farg4%data = c_loc(farg4_view)
+farg4%size = size(eigenindex)
+fresult = swigc_TrilinosEigenSolver_solve(farg1, farg2, farg3, farg4)
+swig_result = fresult
+end function
 
 subroutine swigf_TrilinosEigenSolver_finalize(self)
 use, intrinsic :: ISO_C_BINDING
