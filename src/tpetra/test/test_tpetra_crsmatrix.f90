@@ -12,7 +12,6 @@ program test_TpetraCrsMatrix
 
   implicit none
   type(TeuchosComm) :: comm
-  integer(global_size_type), parameter :: invalid=-1
   character(len=256), parameter :: FILENAME="test_tpetra_crsmatrix.f90"
 
   SETUP_TEST()
@@ -75,7 +74,7 @@ contains
     my_image_id = comm%getRank()
 
     ! create a Map
-    map = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
     mvrand = TpetraMultiVector(Map, num_vecs, false); TEST_IERR()
     mvres = TpetraMultiVector(Map, num_vecs, false); TEST_IERR()
     call mvrand%randomize(); TEST_IERR()
@@ -198,7 +197,7 @@ contains
     if (num_images < 2) return
 
     ! create a Map
-    map = TpetraMap(invalid, ione, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, ione, comm); TEST_IERR()
 
     ! create a multivector ones(n,1)
     ones = TpetraMultiVector(map, ione, false); TEST_IERR()
@@ -305,7 +304,7 @@ contains
     my_image_id = comm%getRank()
 
     ! create a Map
-    map = TpetraMap(invalid, ithree, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, ithree, comm); TEST_IERR()
 
     ! Create the identity matrix, three rows per proc
     base = 3 * my_image_id;
@@ -361,7 +360,7 @@ contains
     OUT0("Starting TpetraCrsMatrix_ActiveFillGlobal")
 
     ! create Map
-    map = TpetraMap(invalid, ione, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, ione, comm); TEST_IERR()
 
     Mat = TpetraCrsMatrix(map, map, izero, TpetraDynamicProfile); TEST_IERR()
     TEST_ASSERT(Mat%isFillActive())
@@ -385,10 +384,10 @@ contains
     TEST_THROW(call Mat%insertGlobalValues(row, cols, vals))
 
     numvalid = Mat%replaceGlobalValues(row, cols, vals); TEST_IERR()
-    TEST_ASSERT(numvalid==invalid)
+    TEST_ASSERT(numvalid==TPETRA_GLOBAL_INVALID)
 
     numvalid = Mat%sumIntoGlobalValues(row, cols, vals); TEST_IERR()
-    TEST_ASSERT(numvalid==invalid)
+    TEST_ASSERT(numvalid==TPETRA_GLOBAL_INVALID)
 
     TEST_THROW(call Mat%setAllToScalar(zero))
     TEST_THROW(call Mat%scale(zero))
@@ -454,7 +453,7 @@ contains
     OUT0("Starting TpetraCrsMatrix_ActiveFillLocal")
 
     ! create Map
-    map = TpetraMap(invalid, ione, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, ione, comm); TEST_IERR()
 
     Mat = TpetraCrsMatrix(map, map, izero, TpetraDynamicProfile); TEST_IERR()
     TEST_ASSERT(Mat%isFillActive())
@@ -476,10 +475,10 @@ contains
     TEST_THROW(call Mat%insertLocalValues(row, cols, vals))
 
     numvalid = Mat%replaceLocalValues(row, cols, vals); TEST_IERR()
-    TEST_ASSERT(numvalid==invalid)
+    TEST_ASSERT(numvalid==TPETRA_GLOBAL_INVALID)
 
     numvalid = Mat%sumIntoLocalValues(lcrow, cols, vals); TEST_IERR()
-    TEST_ASSERT(numvalid==invalid)
+    TEST_ASSERT(numvalid==TPETRA_GLOBAL_INVALID)
 
     TEST_THROW(call Mat%setAllToScalar(zero))
     TEST_THROW(call Mat%scale(zero))

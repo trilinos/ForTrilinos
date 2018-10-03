@@ -12,7 +12,6 @@ program test_TpetraMap
 
   implicit none
   type(TeuchosComm) :: comm
-  integer(global_size_type), parameter :: invalid=-1
   character(len=256), parameter :: FILENAME="test_tpetra_map.f90"
 
   SETUP_TEST()
@@ -346,7 +345,7 @@ contains
     end if
 
     num_local = 4
-    Obj2 = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    Obj2 = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
 
     TEST_ASSERT(Obj1%isSameAs(Obj2))
 
@@ -380,7 +379,7 @@ contains
     end if
 
     num_local = 4
-    Obj2 = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    Obj2 = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
     TEST_ASSERT(Obj1%locallySameAs(Obj2))
 
     call Obj1%release(); TEST_IERR()

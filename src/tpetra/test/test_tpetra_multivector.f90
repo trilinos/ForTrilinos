@@ -12,7 +12,6 @@ program test_TpetraMultiVector
 
   implicit none
   type(TeuchosComm) :: comm
-  integer(global_size_type), parameter :: invalid = -1
   character(len=256), parameter :: FILENAME="test_tpetra_multivector.f90"
 
   SETUP_TEST()
@@ -69,7 +68,7 @@ contains
 
     zeros = zero
 
-    map = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
 
     ! values = {1, 1, 2, 2, 4, 4}
     ! values(1:4) = {1, 1, 2, 2} = [1 2]
@@ -150,7 +149,7 @@ contains
     OUT0("Starting CountNormInf")
 
     ! create a Map
-    map = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
     ! values = {0, 0, 1, 1, 2, 2} = [0 1 2]
     !                               [0 1 2]
     ! normInf(values) = [0 1 2]
@@ -183,7 +182,7 @@ contains
     OUT0("Starting Norm2")
 
     ! create a Map
-    map = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
 
     Vec = TpetraMultiVector(map, num_vecs); TEST_IERR()
     call Vec%randomize(); TEST_IERR()
@@ -219,7 +218,7 @@ contains
     OUT0("Starting Reciprocal")
 
     ! create a Map
-    map = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
 
     A = TpetraMultiVector(map, num_vecs); TEST_IERR()
     B = TpetraMultiVector(map, num_vecs); TEST_IERR()
@@ -279,7 +278,7 @@ contains
     real(scalar_type) :: norms(num_vecs)
 
     OUT0("Starting Abs")
-    map = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
 
     A = TpetraMultiVector(map, num_vecs); TEST_IERR()
     B = TpetraMultiVector(map, num_vecs); TEST_IERR()
@@ -310,7 +309,7 @@ contains
     character(kind=C_CHAR, len=:), allocatable :: description
     integer(size_type), parameter :: num_vecs=2, num_local=10
     integer(global_ordinal_type) :: num_global
-    map = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
     Vec = TpetraMultiVector(map, num_vecs)
     description = Vec%description(); TEST_IERR()
     write(*,*) "Vector description:", description
@@ -326,7 +325,7 @@ contains
 
     OUT0("Starting MeanValue")
 
-    map = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
 
     ! values = {2, 6, 3, 1} = [2 3]
     !                         [6 1]
@@ -359,8 +358,8 @@ contains
 
     OUT0("Starting Multiply")
 
-    map2n = TpetraMap(invalid, n2, comm); TEST_IERR()
-    map3n = TpetraMap(invalid, n3, comm); TEST_IERR()
+    map2n = TpetraMap(TPETRA_GLOBAL_INVALID, n2, comm); TEST_IERR()
+    map3n = TpetraMap(TPETRA_GLOBAL_INVALID, n3, comm); TEST_IERR()
 
     lmap2 = TpetraMap(n2, comm, TpetraLocallyReplicated); TEST_IERR()
     lmap3 = TpetraMap(n3, comm, TpetraLocallyReplicated); TEST_IERR()
@@ -394,7 +393,7 @@ contains
     type(TpetraMap) :: map
     type(TpetraMultiVector) :: Vec
     integer(size_type), parameter :: num_vecs=12, num_local=2
-    map = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
     Vec = TpetraMultiVector(map, num_vecs); TEST_IERR()
 
     TEST_EQUALITY(Vec%getNumVectors(), num_vecs)
@@ -476,7 +475,7 @@ contains
     real(scalar_type), parameter :: one=1.
     OUT0("Starting ReplaceLocalValue")
 
-    map = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
     Vec = TpetraMultiVector(map, num_vecs); TEST_IERR()
     OneV = TpetraMultiVector(map, num_vecs); TEST_IERR()
     call OneV%putScalar(one)
@@ -510,7 +509,7 @@ contains
     integer(size_type), parameter :: num_vecs=2, num_local=4
     real(scalar_type), parameter :: one=1.
     OUT0("Starting Get1dCopy")
-    map = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
     Vec = TpetraMultiVector(map, num_vecs); TEST_IERR()
     call Vec%putScalar(one); TEST_IERR()
     allocate(a(num_vecs*num_local*comm%getSize()))
