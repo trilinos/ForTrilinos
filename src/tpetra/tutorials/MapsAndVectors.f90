@@ -31,7 +31,7 @@ type(TpetraMultiVector) :: x, y, z
 integer :: ierr
 integer(size_type) :: my_rank, num_procs, k
 integer(size_type) :: num_local_entries, num_elements_per_proc
-integer(global_size_type) :: num_global_entries, invalid
+integer(global_size_type) :: num_global_entries
 logical(bool_type) :: zero_out
 real(scalar_type) :: alpha, beta, gamma
 real(mag_type) :: the_norm
@@ -115,8 +115,7 @@ end if
 ! the global number of entries.  This is helpful if you only know how many
 ! entries each MPI process has, but don't know the global number.  Instead of
 ! num_global_entries, we use -1
-invalid = -1
-contig_map3 = TpetraMap(invalid, num_local_entries, comm)
+contig_map3 = TpetraMap(TPETRA_GLOBAL_INVALID, num_local_entries, comm)
 
 ! Even though we made contig_map3 without specifying the global number of
 ! entries, it should still be the same as contig_map2.

@@ -75,6 +75,10 @@ type, bind(C) :: SwigArrayWrapper
 end type
 
  public :: setCombineModeParameter
+
+  integer(global_ordinal_type), parameter, public :: TPETRA_GLOBAL_INVALID = -1
+  integer(local_ordinal_type),  parameter, public :: TPETRA_LOCAL_INVALID  = 0
+
  public :: TpetraMap
  public :: TpetraExport
  public :: TpetraImport

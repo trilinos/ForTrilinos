@@ -12,7 +12,6 @@ program test_TpetraImportExport
 
   implicit none
   type(TeuchosComm) :: comm
-  integer(global_size_type), parameter :: invalid=-1
   character(len=30), parameter :: FILENAME="test_tpetraimport_export.f90"
 
   SETUP_TEST()
@@ -45,8 +44,8 @@ contains
     OUT0("Starting TpetraImportExport_Basic!")
 
     ! create Maps
-    src = TpetraMap(invalid, ten, comm)
-    tgt = TpetraMap(invalid, five, comm)
+    src = TpetraMap(TPETRA_GLOBAL_INVALID, ten, comm)
+    tgt = TpetraMap(TPETRA_GLOBAL_INVALID, five, comm)
 
     ! create Import object
     importer = TpetraImport(src, tgt)
@@ -108,8 +107,8 @@ contains
     end if
 
     ! two maps: one has one entries per node, the other is the 1-D neighbors
-    src = TpetraMap(invalid, num_local, comm)
-    tgt = TpetraMap(invalid, neighbors, comm)
+    src = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm)
+    tgt = TpetraMap(TPETRA_GLOBAL_INVALID, neighbors, comm)
 
     do tnum = 1, 2
 
@@ -239,7 +238,7 @@ contains
     if (num_images < 2) return;
 
     ! create a Map
-    smap = TpetraMap(invalid, one, comm)
+    smap = TpetraMap(TPETRA_GLOBAL_INVALID, one, comm)
 
     lclrow = 1
     my_only_gid = smap%getGlobalElement(lclrow)

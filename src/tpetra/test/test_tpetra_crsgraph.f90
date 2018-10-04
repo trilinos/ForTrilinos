@@ -12,7 +12,6 @@ program test_TpetraCrsGraph
 
   implicit none
   type(TeuchosComm) :: comm
-  integer(global_size_type), parameter :: invalid=-1
   character(len=26), parameter :: FILENAME="test_tpetra_crsgraph.f90"
 
   SETUP_TEST()
@@ -70,7 +69,7 @@ contains
     OUT0("Starting TpetraCrsGraph_ActiveFillLocal!")
 
     ! create Map
-    Map = TpetraMap(invalid, ione, comm); TEST_IERR()
+    Map = TpetraMap(TPETRA_GLOBAL_INVALID, ione, comm); TEST_IERR()
 
     params = ParameterList("ANONYMOUS")
     Graph = TpetraCrsGraph(Map, Map, izero, TpetraDynamicProfile)
@@ -136,7 +135,7 @@ contains
     OUT0("Starting TpetraCrsGraph_Parameters!")
 
     ! create Map
-    Map = TpetraMap(invalid, ione, comm); TEST_IERR()
+    Map = TpetraMap(TPETRA_GLOBAL_INVALID, ione, comm); TEST_IERR()
 
     params = ParameterList("ANONYMOUS")
     Graph = TpetraCrsGraph(Map, Map, izero, TpetraDynamicProfile)
@@ -173,8 +172,8 @@ contains
     if (num_procs == 1) return
 
     num_local = 1
-    rmap = TpetraMap(invalid, num_local, comm); TEST_IERR()
-    cmap = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    rmap = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
+    cmap = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
     ! must allocate enough for all submitted indices.
     num_ent_per_row = 2
     Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row, TpetraStaticProfile)
@@ -231,7 +230,7 @@ contains
     if (num_procs == 1) return
 
     num_local = 2;
-    rmap = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    rmap = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
 
     allocate(rowptr(num_local+1))
     allocate(colind(num_local)) ! one unknown per row
@@ -277,7 +276,7 @@ contains
     !if (num_procs <= 1) return
 
     num_local = 2
-    rmap = TpetraMap(invalid, num_local, comm)
+    rmap = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm)
     allocate(rowptr(num_local+1))
     allocate(colind(num_local)) ! one unknown per row
     rowptr(1:3) = [1, 2, 3]
@@ -326,7 +325,7 @@ contains
 
     ! create a Map
     num_local = 10;
-    map = TpetraMap(invalid, num_local, comm)
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm)
 
     nument = 4
     Graph = TpetraCrsGraph(map, map, nument);
@@ -443,7 +442,7 @@ contains
 
     ! create a Map
     num_local = 10
-    map = TpetraMap(invalid, num_local, comm)
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm)
 
     ! create static-profile graph, fill-complete without inserting
     ! (and therefore, without allocating)
@@ -481,8 +480,8 @@ contains
     if (num_procs == 1) return
 
     num_local = 1
-    rmap = TpetraMap(invalid, num_local, comm); TEST_IERR()
-    cmap = TpetraMap(invalid, num_local, comm); TEST_IERR()
+    rmap = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
+    cmap = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
     ! must allocate enough for all submitted indices.
     num_ent_per_row = 2
     Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row, TpetraStaticProfile)
