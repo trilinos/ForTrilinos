@@ -403,6 +403,7 @@ contains
     TEST_ASSERT(tcomm%getSize() == comm%getSize())
 
     call Obj%release(); TEST_IERR()
+    call tcomm%release(); TEST_IERR()
 
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getComm)
 
@@ -414,6 +415,7 @@ contains
     num_global = 4*comm%getSize()
     Obj = TpetraMap(num_global, comm); TEST_IERR()
     description = Obj%description(); TEST_IERR()
+    call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_description)
 
 ! ----------------------------removeEmptyProcesses---------------------------- !

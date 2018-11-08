@@ -7,7 +7,7 @@
 #ifndef FORTRILINOS_SOLVER_HANDLE_HPP
 #define FORTRILINOS_SOLVER_HANDLE_HPP
 
-#include "ForTrilinosSimpleInterface_config.hpp"
+#include "ForTrilinosInterface_config.hpp"
 
 #include <Teuchos_Comm.hpp>
 #include <Teuchos_ParameterList.hpp>
@@ -56,7 +56,7 @@ namespace ForTrilinos {
     void setup_operator(const Teuchos::RCP<Operator>& A);
 
     // Setup solver based on the parameter list
-    void setup_solver(const Teuchos::RCP<Teuchos::ParameterList> paramList);
+    void setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList);
 
     // Solve linear system given rhs
     void solve(const Teuchos::RCP<const MultiVector>& rhs, Teuchos::RCP<MultiVector>& lhs) const;

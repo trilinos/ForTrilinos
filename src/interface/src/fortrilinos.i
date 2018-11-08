@@ -12,7 +12,17 @@
 %import <forteuchos.i>
 %import <fortpetra.i>
 
-%include "ForTrilinosSimpleInterface_config.hpp"
+%include "ForTrilinosInterface_config.hpp"
+
+%inline %{
+#include "Kokkos_DefaultNode.hpp"
+
+typedef double                                  SC;
+typedef int                                     LO;
+typedef long long                               GO;
+typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
+typedef char                                    Packet;
+%}
 
 // Generate wrappers
 %{
@@ -22,3 +32,5 @@
 
 %include "solver_handle.hpp"
 %include "eigen_handle.hpp"
+
+%include "nox.i"

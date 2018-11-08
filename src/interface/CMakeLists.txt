@@ -7,7 +7,7 @@
 ## Define the package
 ##---------------------------------------------------------------------------##
 
-TRIBITS_SUBPACKAGE(SimpleInterface)
+TRIBITS_SUBPACKAGE(Interface)
 
 ##---------------------------------------------------------------------------##
 ## Generate config file and add it to the list

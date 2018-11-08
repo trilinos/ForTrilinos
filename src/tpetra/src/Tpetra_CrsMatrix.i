@@ -248,3 +248,27 @@
 
 %teuchos_rcp(Tpetra::CrsMatrix<SC,LO,GO,NO>)
 %template(TpetraCrsMatrix) Tpetra::CrsMatrix<SC,LO,GO,NO>;
+
+// Operator to Matrix conversion
+%{
+#include "Tpetra_CrsMatrix.hpp"
+%}
+%inline %{
+namespace ForTrilinos {
+  template <class Scalar, class LocalOrdinal, class GlobalOrdinal, class Node>
+  Teuchos::RCP<Tpetra::CrsMatrix<Scalar, LocalOrdinal, GlobalOrdinal, Node> >
+  operator_to_matrix(Teuchos::RCP<Tpetra::Operator<Scalar,LocalOrdinal,GlobalOrdinal,Node> > op) {
+    auto A = Teuchos::rcp_dynamic_cast<Tpetra::CrsMatrix<Scalar, LocalOrdinal, GlobalOrdinal, Node> >(op);
+    TEUCHOS_TEST_FOR_EXCEPTION(A.is_null(), std::runtime_error, "operator_to_matrix: the provided operator is not a Tpetra CrsMatrix");
+    return A;
+  }
+  template <class Scalar, class LocalOrdinal, class GlobalOrdinal, class Node>
+  Teuchos::RCP<Tpetra::Operator<Scalar, LocalOrdinal, GlobalOrdinal, Node> >
+  matrix_to_operator(Teuchos::RCP<Tpetra::CrsMatrix<Scalar, LocalOrdinal, GlobalOrdinal, Node> > A) {
+    auto op = Teuchos::rcp_dynamic_cast<Tpetra::Operator<Scalar, LocalOrdinal, GlobalOrdinal, Node> >(A);
+    return op;
+  }
+}
+%}
+%template(operator_to_matrix) ForTrilinos::operator_to_matrix<SC,LO,GO,NO>;
+%template(matrix_to_operator) ForTrilinos::matrix_to_operator<SC,LO,GO,NO>;
