@@ -41,10 +41,10 @@ program main
   call comm%release(); FORTRILINOS_CHECK_IERR()
 
   if (ierr /= 0) then
-    write(*,*) "TEST FAILED!"
+    write(*,*) "End Result: TEST FAILED"
     stop 1
   else
-    write(*,*) "TEST PASSED!"
+    write(*,*) "End Result: TEST PASSED"
   endif
 
 contains
