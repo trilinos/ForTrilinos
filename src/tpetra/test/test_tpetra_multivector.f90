@@ -314,6 +314,7 @@ contains
     description = Vec%description(); TEST_IERR()
     write(*,*) "Vector description:", description
     call Vec%release(); TEST_IERR()
+    call map%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_Description)
 
   ! --------------------------------MeanValue--------------------------------- !
@@ -383,6 +384,17 @@ contains
     !a = fortran array view of the data
     !n = size of a
     !TEST_FLOATING_ARRAY_EQUALITY(a, check(1:n), epsilon(a(1)))
+
+    call map2n%release(); TEST_IERR()
+    call map3n%release(); TEST_IERR()
+    call lmap2%release(); TEST_IERR()
+    call lmap3%release(); TEST_IERR()
+    call mv3nx2%release(); TEST_IERR()
+    call mv3nx3%release(); TEST_IERR()
+    call mv2x2%release(); TEST_IERR()
+    call mv2x3%release(); TEST_IERR()
+    call mv3x2%release(); TEST_IERR()
+    call mv3x3%release(); TEST_IERR()
 
     OUT0("Finished Multiply!")
 
@@ -520,6 +532,9 @@ contains
 
     TEST_FLOATING_ARRAY_EQUALITY(a, one, epsilon(one))
     deallocate(a)
+
+    call map%release(); TEST_IERR()
+    call Vec%release(); TEST_IERR()
 
     OUT0("Finished Get1dCopy!")
 

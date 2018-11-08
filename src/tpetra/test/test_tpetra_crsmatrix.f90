@@ -50,7 +50,7 @@ contains
 
   ! ------------------------------- Basic1 ----------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_Basic1)
-    type(TpetraMap) :: Map, row_map
+    type(TpetraMap) :: Map, row_map, tmp_map
     type(TeuchosComm) :: tcomm
     type(TpetraCrsMatrix) :: Mat
     type(TpetraMultiVector) :: mvrand, mvres
@@ -110,9 +110,15 @@ contains
     TEST_ASSERT((.not. Mat%isFillActive()))
     fnorm = sqrt(real(num_images*num_local, kind=scalar_type))
     TEST_ASSERT(Mat%getFrobeniusNorm()==fnorm)
-    TEST_ASSERT(row_map%isSameAs(Mat%getColMap()))
-    TEST_ASSERT(row_map%isSameAs(Mat%getDomainMap()))
-    TEST_ASSERT(row_map%isSameAs(Mat%getRangeMap()))
+    tmp_map = Mat%getColMap(); TEST_IERR()
+    TEST_ASSERT(row_map%isSameAs(tmp_map))
+    call tmp_map%release(); TEST_IERR()
+    tmp_map = Mat%getDomainMap(); TEST_IERR()
+    TEST_ASSERT(row_map%isSameAs(tmp_map))
+    call tmp_map%release(); TEST_IERR()
+    tmp_map = Mat%getRangeMap(); TEST_IERR()
+    TEST_ASSERT(row_map%isSameAs(tmp_map))
+    call tmp_map%release(); TEST_IERR()
     TEST_ASSERT(Mat%hasColMap())
     TEST_ASSERT(Mat%haveGlobalConstants())
     !TEST_ASSERT((.not. Mat%isLowerTriangular())) ! FIXME: This throws an error from Tpetra
@@ -166,10 +172,12 @@ contains
     call mvres%norm1(norms); TEST_IERR()
     TEST_FLOATING_ARRAY_EQUALITY(norms, zero, epsilon(zero))
 
-    call Mat%release()
-    call Map%release()
-    call mvres%release()
-    call mvrand%release()
+    call Mat%release(); TEST_IERR()
+    call map%release(); TEST_IERR()
+    call row_map%release(); TEST_IERR()
+    call tcomm%release(); TEST_IERR()
+    call mvres%release(); TEST_IERR()
+    call mvrand%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsMatrix_Basic1!")
 
