@@ -255,11 +255,12 @@ function swigd_ForTpetraOperator_getRangeMap(fself) &
 end function
 
 subroutine init_ForTpetraOperator(self)
+  ! Note: subclass should call `self = ForTpetraOperator()` in its
+  ! initialization code *before* doing this
   class(ForTpetraOperator), target :: self
   type(ForTpetraOperatorHandle), pointer :: handle
   allocate(handle)
   handle%data => self
-  self%swigdata = swigc_new_ForTpetraOperator()
   call swigc_ForTpetraOperator_init(self%swigdata, c_loc(handle))
 end subroutine
 %}

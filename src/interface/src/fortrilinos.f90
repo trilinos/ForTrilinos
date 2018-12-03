@@ -1244,11 +1244,12 @@ function swigd_ForModelEvaluator_create_operator(fself) &
 end function
 
 subroutine init_ForModelEvaluator(self)
+  ! Note: subclass should call `self = ForModelEvaluator()` in its
+  ! initialization code *before* doing this
   class(ForModelEvaluator), target :: self
   type(ForModelEvaluatorHandle), pointer :: handle
   allocate(handle)
   handle%data => self
-  self%swigdata = swigc_new_ForModelEvaluator()
   call swigc_ForModelEvaluator_init(self%swigdata, c_loc(handle))
 end subroutine
 
