@@ -143,6 +143,8 @@ contains
     type(TpetraCrsGraph) :: graph
     ! ------------------------------------------------------------------------ !
 
+    self = ForModelEvaluator()
+
     self%comm = comm
     num_nodes = num_global_elems + 1;
 

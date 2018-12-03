@@ -25,6 +25,7 @@ contains
     use, intrinsic :: ISO_C_BINDING
     type(TpetraMap), intent(in) :: row_map, col_map
     type(TriDiagOperator) :: self
+    self = ForTpetraOperator()
     self%row_map = row_map
     self%col_map = col_map
     self%domain_map = row_map
