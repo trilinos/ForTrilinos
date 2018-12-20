@@ -12,7 +12,7 @@ program test_TpetraMultiVector
 
   implicit none
   type(TeuchosComm) :: comm
-  character(len=256), parameter :: FILENAME="test_tpetra_multivector.f90"
+  character(len=256), parameter :: FILENAME="test_tpetra_multivector.F90"
 
   SETUP_TEST()
 

@@ -241,9 +241,9 @@ def main():
         namespaces.setdefault(namespace, []).append(theproc)
 
     for (namespace, procs) in namespaces.items():
-        filename = 'Test{0}_autogen.f90'.format(namespace)
+        filename = 'Test{0}_autogen.F90'.format(namespace)
         s = namespace.lower().replace(package, package+'_')
-        write_filename = 'test_{0}.f90'.format(s)
+        write_filename = 'test_{0}.F90'.format(s)
         doc = NamespaceTestGenerator(namespace, procs, write_filename, f90_module)
         with open(filename, 'w') as fh:
             doc.write(fh)

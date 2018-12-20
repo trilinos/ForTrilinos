@@ -34,7 +34,7 @@ matrix, using the procedure discussed in the text above.
 .. only:: builder_html
 
    The source code can be downloaded from
-   :download:`here <../../../../../src/tpetra/tutorials/PowerMethod.f90>`
+   :download:`here <../../../../../src/tpetra/tutorials/PowerMethod.F90>`
 
-.. literalinclude:: ../../../../../src/tpetra/tutorials/PowerMethod.f90
+.. literalinclude:: ../../../../../src/tpetra/tutorials/PowerMethod.F90
    :language: fortran
