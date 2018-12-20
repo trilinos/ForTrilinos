@@ -30,7 +30,7 @@ IF (ForTrilinos_ENABLE_DeveloperMode)
 ELSE()
   # Use pre-generated files
   SET(GEN_SOURCE
-    fortrilinos.f90
+    fortrilinos.F90
     fortrilinosFORTRAN_wrap.cxx)
 
   TRIBITS_ADD_LIBRARY(

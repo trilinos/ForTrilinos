@@ -15,7 +15,7 @@ program test_TeuchosComm
   use forteuchos
 
   implicit none
-  character(len=26), parameter :: FILENAME='test_teuchos_comm.f90'
+  character(len=26), parameter :: FILENAME='test_teuchos_comm.F90'
   integer :: ierr, mpicomm
 
 
