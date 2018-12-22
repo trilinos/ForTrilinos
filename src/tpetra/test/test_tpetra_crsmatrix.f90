@@ -12,7 +12,7 @@ program test_TpetraCrsMatrix
 
   implicit none
   type(TeuchosComm) :: comm
-  character(len=256), parameter :: FILENAME="test_tpetra_crsmatrix.F90"
+  character(len=256), parameter :: FILENAME="test_tpetra_crsmatrix.f90"
 
   SETUP_TEST()
 

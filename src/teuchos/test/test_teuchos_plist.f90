@@ -11,7 +11,7 @@ program test_TeuchosPList
   use forteuchos
 
   implicit none
-  character(len=26), parameter :: FILENAME='test_teuchos_plist.F90'
+  character(len=26), parameter :: FILENAME='test_teuchos_plist.f90'
 
 
   SETUP_TEST()

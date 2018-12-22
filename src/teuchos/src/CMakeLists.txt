@@ -21,7 +21,7 @@ IF (ForTrilinos_ENABLE_DeveloperMode)
 ELSE()
   # Use pre-generated files
   SET(GEN_SOURCE
-    forteuchos.F90
+    forteuchos.f90
     forteuchosFORTRAN_wrap.cxx)
 
   TRIBITS_ADD_LIBRARY(

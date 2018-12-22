@@ -12,7 +12,7 @@ program test_TpetraCrsGraph
 
   implicit none
   type(TeuchosComm) :: comm
-  character(len=26), parameter :: FILENAME="test_tpetra_crsgraph.F90"
+  character(len=26), parameter :: FILENAME="test_tpetra_crsgraph.f90"
 
   SETUP_TEST()
 

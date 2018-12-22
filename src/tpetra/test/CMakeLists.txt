@@ -8,11 +8,11 @@
 ##---------------------------------------------------------------------------##
 
 SET(TESTS
-  test_tpetra_map.F90
-  test_tpetra_crsgraph.F90
-  test_tpetra_crsmatrix.F90
-  test_tpetra_multivector.F90
-  test_tpetra_import_export.F90
+  test_tpetra_map.f90
+  test_tpetra_crsgraph.f90
+  test_tpetra_crsmatrix.f90
+  test_tpetra_multivector.f90
+  test_tpetra_import_export.f90
   )
 
 FOREACH(test ${TESTS})

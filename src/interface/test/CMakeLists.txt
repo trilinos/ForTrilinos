@@ -16,7 +16,7 @@ IF (${PACKAGE_NAME}_ENABLE_Belos AND ${PACKAGE_NAME}_ENABLE_Ifpack2)
 
   TRIBITS_ADD_EXECUTABLE_AND_TEST(
     test_solver_handle_test_fortran
-    SOURCES test_solver_handle.F90
+    SOURCES test_solver_handle.f90
     LINKER_LANGUAGE Fortran
     COMM serial mpi
   )
@@ -41,7 +41,7 @@ IF (${PACKAGE_NAME}_ENABLE_Anasazi)
 
   TRIBITS_ADD_EXECUTABLE_AND_TEST(
     test_eigen_handle_fortran
-    SOURCES test_eigen_handle.F90
+    SOURCES test_eigen_handle.f90
     LINKER_LANGUAGE Fortran
     COMM serial mpi
     NUM_MPI_PROCS 1
@@ -49,7 +49,7 @@ IF (${PACKAGE_NAME}_ENABLE_Anasazi)
 
   TRIBITS_ADD_EXECUTABLE_AND_TEST(
     test_futility
-    SOURCES test_futility_reproducer.F90
+    SOURCES test_futility_reproducer.f90
     LINKER_LANGUAGE Fortran
     COMM serial mpi
     NUM_MPI_PROCS 1
@@ -65,7 +65,7 @@ TRIBITS_ADD_EXECUTABLE_AND_TEST(
 
 TRIBITS_ADD_EXECUTABLE_AND_TEST(
   test_nox_fortran
-  SOURCES Tpetra_ModelEvaluator_1DFEM.F90 test_nox.F90
+  SOURCES Tpetra_ModelEvaluator_1DFEM.f90 test_nox.f90
   LINKER_LANGUAGE Fortran
   STANDARD_PASS_OUTPUT
   COMM serial mpi
