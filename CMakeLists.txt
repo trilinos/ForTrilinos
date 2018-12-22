@@ -7,7 +7,7 @@
 ## Define the package
 ##---------------------------------------------------------------------------##
 
-TRIBITS_PACKAGE(ForTrilinos)
+TRIBITS_PACKAGE_DECL(ForTrilinos)
 
 ##---------------------------------------------------------------------------##
 ## Set up package-specific options
