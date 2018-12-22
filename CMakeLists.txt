@@ -35,7 +35,8 @@ IF (${PACKAGE_NAME}_ENABLE_DeveloperMode)
           "directory, since they will not contain MPI-related classes.")
     ELSE()
         # Export the newly generated wrappers to the source directory.
-        SET(ForTrilinos_EXPORT_SWIG TRUE)
+        SET(ForTrilinos_EXPORT_SWIG TRUE CACHE BOOL
+          "Build SWIG wrapper files in the source directory")
     ENDIF()
 ENDIF()
 
