@@ -49,7 +49,7 @@ required to build and install ForTrilinos:
   .. code::
 
       $ git clone https://github.com/trilinos/ForTrilinos.git $FORTRILINOS_DIR
-      $ ln -s $FORTRILINOS_DIR $TRILINOS_DIR/packages
+      $ ln -s $FORTRILINOS_DIR $TRILINOS_DIR/ForTrilinos
 
 3. Create a build directory and in it a CMake configuration script.
 
@@ -94,6 +94,8 @@ required to build and install ForTrilinos:
 
           -D Trilinos_ENABLE_TESTS=OFF
           -D Trilinos_ENABLE_EXAMPLES=OFF
+
+          -D Trilinos_EXTRA_REPOSITORIES="ForTrilinos"
 
           -D Trilinos_ENABLE_Amesos2=ON
           -D Trilinos_ENABLE_Anasazi=ON

@@ -31,6 +31,8 @@ ARGS=(
     -D Trilinos_ENABLE_TESTS=OFF
     -D Trilinos_ENABLE_EXAMPLES=OFF
 
+    -D Trilinos_EXTRA_REPOSITORIES="ForTrilinos"
+
     -D Trilinos_ENABLE_Amesos2=ON
     -D Trilinos_ENABLE_Anasazi=ON
     -D Trilinos_ENABLE_Belos=ON
