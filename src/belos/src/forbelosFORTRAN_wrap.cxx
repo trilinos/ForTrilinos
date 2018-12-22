@@ -205,6 +205,47 @@ void SWIG_store_exception(const char* decl, int errcode, const char *msg);
     SWIG_store_exception(DECL, CODE, MSG); RETURNNULL;
 
 
+#define SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
+    if ((SWIG_CLASS_WRAPPER).mem == SWIG_CREF) { \
+        SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
+            "Cannot pass const " TYPENAME " (class " FNAME ") " \
+            "as a mutable reference", \
+            RETURNNULL); \
+    }
+
+
+#define SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
+  if ((SWIG_CLASS_WRAPPER).mem == SWIG_NULL) { \
+    SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
+                        "Cannot pass null " TYPENAME " (class " FNAME ") " \
+                        "as a reference", RETURNNULL); \
+  }
+
+
+#define SWIG_check_mutable_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
+    SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL); \
+    SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL);
+
+
+namespace swig {
+
+enum AssignmentFlags {
+  IS_DESTR       = 0x01,
+  IS_COPY_CONSTR = 0x02,
+  IS_COPY_ASSIGN = 0x04,
+  IS_MOVE_CONSTR = 0x08,
+  IS_MOVE_ASSIGN = 0x10
+};
+
+template<class T, int Flags>
+struct assignment_flags;
+}
+
+
+#define SWIG_assign(LEFTTYPE, LEFT, RIGHTTYPE, RIGHT, FLAGS) \
+    SWIG_assign_impl<LEFTTYPE , RIGHTTYPE, swig::assignment_flags<LEFTTYPE, FLAGS >::value >(LEFT, RIGHT);
+
+
 #include <stdexcept>
 
 
@@ -257,6 +298,260 @@ SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
 
 
 #include <string.h>
+
+
+enum SwigMemState {
+    SWIG_NULL = 0,
+    SWIG_OWN,
+    SWIG_MOVE,
+    SWIG_REF,
+    SWIG_CREF
+};
+
+
+struct SwigClassWrapper {
+    void* ptr;
+    SwigMemState mem;
+};
+
+
+SWIGINTERN SwigClassWrapper SwigClassWrapper_uninitialized() {
+    SwigClassWrapper result;
+    result.ptr = NULL;
+    result.mem = SWIG_NULL;
+    return result;
+}
+
+
+#include <utility>
+
+
+namespace swig {
+
+// Define our own switching struct to support pre-c++11 builds
+template<bool Val>
+struct bool_constant {};
+typedef bool_constant<true>  true_type;
+typedef bool_constant<false> false_type;
+
+// Deletion
+template<class T>
+SWIGINTERN void destruct_impl(T* self, true_type) {
+  delete self;
+}
+template<class T>
+SWIGINTERN T* destruct_impl(T* , false_type) {
+  SWIG_exception_impl("assignment", SWIG_TypeError,
+                      "Invalid assignment: class type has no destructor",
+                      return NULL);
+}
+
+// Copy construction and assignment
+template<class T, class U>
+SWIGINTERN T* copy_construct_impl(const U* other, true_type) {
+  return new T(*other);
+}
+template<class T, class U>
+SWIGINTERN void copy_assign_impl(T* self, const U* other, true_type) {
+  *self = *other;
+}
+
+// Disabled construction and assignment
+template<class T, class U>
+SWIGINTERN T* copy_construct_impl(const U* , false_type) {
+  SWIG_exception_impl("assignment", SWIG_TypeError,
+                      "Invalid assignment: class type has no copy constructor",
+                      return NULL);
+}
+template<class T, class U>
+SWIGINTERN void copy_assign_impl(T* , const U* , false_type) {
+  SWIG_exception_impl("assignment", SWIG_TypeError,
+                      "Invalid assignment: class type has no copy assignment",
+                      return);
+}
+
+#if __cplusplus >= 201103L
+#include <utility>
+#include <type_traits>
+
+// Move construction and assignment
+template<class T, class U>
+SWIGINTERN T* move_construct_impl(U* other, true_type) {
+  return new T(std::move(*other));
+}
+template<class T, class U>
+SWIGINTERN void move_assign_impl(T* self, U* other, true_type) {
+  *self = std::move(*other);
+}
+
+// Disabled move construction and assignment
+template<class T, class U>
+SWIGINTERN T* move_construct_impl(U*, false_type) {
+  SWIG_exception_impl("assignment", SWIG_TypeError,
+                      "Invalid assignment: class type has no move constructor",
+                      return NULL);
+}
+template<class T, class U>
+SWIGINTERN void move_assign_impl(T*, U*, false_type) {
+  SWIG_exception_impl("assignment", SWIG_TypeError,
+                      "Invalid assignment: class type has no move assignment",
+                      return);
+}
+
+template<class T, int Flags>
+struct assignment_flags {
+  constexpr static int value =
+             (std::is_destructible<T>::value       ? IS_DESTR       : 0)
+           | (std::is_copy_constructible<T>::value ? IS_COPY_CONSTR : 0)
+           | (std::is_copy_assignable<T>::value    ? IS_COPY_ASSIGN : 0)
+           | (std::is_move_constructible<T>::value ? IS_MOVE_CONSTR : 0)
+           | (std::is_move_assignable<T>::value    ? IS_MOVE_ASSIGN : 0);
+};
+
+#else
+
+template<class T, int Flags>
+struct assignment_flags {
+  enum { value = Flags };
+};
+
+#endif
+
+template<class T, int Flags>
+struct AssignmentTraits {
+  static void destruct(T* self) {
+    destruct_impl<T>(self, bool_constant<Flags & IS_DESTR>());
+  }
+
+  template<class U>
+  static T* copy_construct(const U* other) {
+    return copy_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_COPY_CONSTR)>());
+  }
+
+  template<class U>
+  static void copy_assign(T* self, const U* other) {
+    copy_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_COPY_ASSIGN)>());
+  }
+
+#if __cplusplus >= 201103L
+  template<class U>
+  static T* move_construct(U* other) {
+    return move_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_MOVE_CONSTR)>());
+  }
+  template<class U>
+  static void move_assign(T* self, U* other) {
+    move_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_MOVE_ASSIGN)>());
+  }
+#else
+  template<class U>
+  static T* move_construct(U* other) {
+    return copy_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_COPY_CONSTR)>());
+  }
+  template<class U>
+  static void move_assign(T* self, U* other) {
+    copy_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_COPY_ASSIGN)>());
+  }
+#endif
+};
+
+} // end namespace swig
+
+
+template<class T1, class T2, int AFlags>
+SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other) {
+  typedef swig::AssignmentTraits<T1, AFlags> Traits_t;
+  T1* pself  = static_cast<T1*>(self->ptr);
+  T2* pother = static_cast<T2*>(other->ptr);
+
+  switch (self->mem) {
+    case SWIG_NULL:
+      /* LHS is unassigned */
+      switch (other->mem) {
+        case SWIG_NULL: /* null op */ break;
+        case SWIG_MOVE: /* capture pointer from RHS */
+          self->ptr = other->ptr;
+          other->ptr = NULL;
+          self->mem = SWIG_OWN;
+          other->mem = SWIG_NULL;
+          break;
+        case SWIG_OWN: /* copy from RHS */
+          self->ptr = Traits_t::copy_construct(pother);
+          self->mem = SWIG_OWN;
+          break;
+        case SWIG_REF: /* pointer to RHS */
+        case SWIG_CREF:
+          self->ptr = other->ptr;
+          self->mem = other->mem;
+          break;
+      }
+      break;
+    case SWIG_OWN:
+      /* LHS owns memory */
+      switch (other->mem) {
+        case SWIG_NULL:
+          /* Delete LHS */
+          Traits_t::destruct(pself);
+          self->ptr = NULL;
+          self->mem = SWIG_NULL;
+          break;
+        case SWIG_MOVE:
+          /* Move RHS into LHS; delete RHS */
+          Traits_t::move_assign(pself, pother);
+          Traits_t::destruct(pother);
+          other->ptr = NULL;
+          other->mem = SWIG_NULL;
+          break;
+        case SWIG_OWN:
+        case SWIG_REF:
+        case SWIG_CREF:
+          /* Copy RHS to LHS */
+          Traits_t::copy_assign(pself, pother);
+          break;
+      }
+      break;
+    case SWIG_MOVE:
+      SWIG_exception_impl("assignment", SWIG_RuntimeError,
+        "Left-hand side of assignment should never be in a 'MOVE' state",
+        return);
+      break;
+    case SWIG_REF:
+      /* LHS is a reference */
+      switch (other->mem) {
+        case SWIG_NULL:
+          /* Remove LHS reference */
+          self->ptr = NULL;
+          self->mem = SWIG_NULL;
+          break;
+        case SWIG_MOVE:
+          /* Move RHS into LHS; delete RHS. The original ownership stays the
+           * same. */
+          Traits_t::move_assign(pself, pother);
+          Traits_t::destruct(pother);
+          other->ptr = NULL;
+          other->mem = SWIG_NULL;
+          break;
+        case SWIG_OWN:
+        case SWIG_REF:
+        case SWIG_CREF:
+          /* Copy RHS to LHS */
+          Traits_t::copy_assign(pself, pother);
+          break;
+      }
+      break;
+    case SWIG_CREF:
+      switch (other->mem) {
+        case SWIG_NULL:
+          /* Remove LHS reference */
+          self->ptr = NULL;
+          self->mem = SWIG_NULL;
+        default:
+          SWIG_exception_impl("assignment", SWIG_RuntimeError,
+              "Cannot assign to a const reference", return);
+          break;
+      }
+      break;
+  }
+}
 
 #ifdef __cplusplus
 extern "C" {
@@ -384,6 +679,45 @@ SWIGEXPORT SwigArrayWrapper _wrap_convertMsgTypeToString(int const *farg1) {
     fresult.data = NULL;
   }
   return fresult;
+}
+
+
+SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_convTol = Belos::DefaultSolverParameters::convTol;
+
+SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_polyTol = Belos::DefaultSolverParameters::polyTol;
+
+SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_orthoKappa = Belos::DefaultSolverParameters::orthoKappa;
+
+SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_resScaleFactor = Belos::DefaultSolverParameters::resScaleFactor;
+
+SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_impTolScale = Belos::DefaultSolverParameters::impTolScale;
+
+SWIGEXPORT SwigClassWrapper _wrap_new_DefaultSolverParameters() {
+  SwigClassWrapper fresult ;
+  Belos::DefaultSolverParameters *result = 0 ;
+
+  result = (Belos::DefaultSolverParameters *)new Belos::DefaultSolverParameters();
+  fresult.ptr = result;
+  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
+  return fresult;
+}
+
+
+SWIGEXPORT void _wrap_delete_DefaultSolverParameters(SwigClassWrapper const *farg1) {
+  Belos::DefaultSolverParameters *arg1 = (Belos::DefaultSolverParameters *) 0 ;
+
+  SWIG_check_mutable_nonnull(*farg1, "Belos::DefaultSolverParameters *", "DefaultSolverParameters", "Belos::DefaultSolverParameters::~DefaultSolverParameters()", return );
+  arg1 = static_cast< Belos::DefaultSolverParameters * >(farg1->ptr);
+  delete arg1;
+
+}
+
+
+SWIGEXPORT void _wrap_assign_DefaultSolverParameters(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef ::Belos::DefaultSolverParameters swig_lhs_classtype;
+  SWIG_assign(swig_lhs_classtype, self,
+    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
+    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
 }
 
 

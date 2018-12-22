@@ -73,6 +73,8 @@
 %ignore Tpetra::CrsMatrix::rightScale;                      // needs Tpetra::Vector
 %ignore Tpetra::CrsMatrix::reorderedGaussSeidel;
 %ignore Tpetra::CrsMatrix::reorderedGaussSeidelCopy;
+%ignore Tpetra::importAndFillCompleteCrsMatrix;
+%ignore Tpetra::exportAndFillCompleteCrsMatrix;
 
 // =======================================================================
 // Fix ±1 issues

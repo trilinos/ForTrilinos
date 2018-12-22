@@ -20,35 +20,43 @@
 // =======================================================================
 // Postpone temporarily
 // =======================================================================
-%ignore Tpetra::Import::Import(const Teuchos::RCP< const map_type > &source, \
-        const Teuchos::RCP< const map_type > &target, \
+%ignore Tpetra::Import::Import(const Teuchos::RCP< const map_type > &source,
+        const Teuchos::RCP< const map_type > &target,
         const Teuchos::RCP< Teuchos::FancyOStream > &out);      // needs Teuchos::FancyOStream
-%ignore Tpetra::Import::Import(const Teuchos::RCP< const map_type > &source, \
-        const Teuchos::RCP< const map_type > &target, \
-        const Teuchos::RCP< Teuchos::FancyOStream > &out, \
+%ignore Tpetra::Import::Import(const Teuchos::RCP< const map_type > &source,
+        const Teuchos::RCP< const map_type > &target,
+        const Teuchos::RCP< Teuchos::FancyOStream > &out,
         const Teuchos::RCP< Teuchos::ParameterList > &plist);   // needs Teuchos::FancyOStream
-%ignore Tpetra::Import::Import (const Teuchos::RCP<const map_type>& source,
+%ignore Tpetra::Import::Import (
+        const Teuchos::RCP<const map_type>& source,
         const Teuchos::RCP<const map_type>& target,
-        Teuchos::Array<int> & remotePIDs);              // ±1 issue
-%ignore Tpetra::Import::Import( \
-        const Teuchos::RCP< const Map< LocalOrdinal, GlobalOrdinal, Node > > &source, \
-        const Teuchos::RCP< const Map< LocalOrdinal, GlobalOrdinal, Node > > &target, \
-        Teuchos::Array< int > &userRemotePIDs, Teuchos::Array< GlobalOrdinal > &remoteGIDs, \
-        const Teuchos::ArrayView< const LocalOrdinal > &userExportLIDs, \
-        const Teuchos::ArrayView< const int > &userExportPIDs, \
-        const bool useRemotePIDs, \
-        const Teuchos::RCP< Teuchos::ParameterList > &plist=Teuchos::null, \
-        const Teuchos::RCP< Teuchos::FancyOStream > &out=Teuchos::null); // ±1 issue, needs Teuchos::FancyOStream
+        Teuchos::Array<int> & remotePIDs,
+        const Teuchos::RCP<Teuchos::ParameterList>& plist = Teuchos::rcp(new Teuchos::ParameterList) );              // ±1 issue
+%ignore Tpetra::Import::Import(
+        const Teuchos::RCP<const Map<LocalOrdinal, GlobalOrdinal, Node> >& source,
+        const Teuchos::RCP<const Map<LocalOrdinal, GlobalOrdinal, Node> >& target,
+        const Teuchos::ArrayView<int> & remotePIDs,
+        const Teuchos::ArrayView<const LocalOrdinal> & userExportLIDs,
+        const Teuchos::ArrayView<const int> & userExportPIDs,
+        const Teuchos::RCP<Teuchos::ParameterList>& plist = Teuchos::null,
+        const Teuchos::RCP<Teuchos::FancyOStream>& out = Teuchos::null); // ±1 issue, needs Teuchos::FancyOStream
+%ignore Import (const Teuchos::RCP<const Map<LocalOrdinal, GlobalOrdinal, Node> >& sourceMap,
+            const GlobalOrdinal targetMapRemoteOrPermuteGlobalIndices[],
+            const int targetMapRemoteOrPermuteProcessRanks[],
+            const LocalOrdinal numTargetMapRemoteOrPermuteGlobalIndices,
+            const bool mayReorderTargetMapIndicesLocally,
+            const Teuchos::RCP<Teuchos::ParameterList>& plist = Teuchos::null,
+            const Teuchos::RCP<Teuchos::FancyOStream>& out = Teuchos::null);
 %ignore Tpetra::Import::getPermuteFromLIDs;     // ±1 issue
 %ignore Tpetra::Import::getPermuteToLIDs;       // ±1 issue
 %ignore Tpetra::Import::getRemoteLIDs;          // ±1 issue
 %ignore Tpetra::Import::getExportLIDs;          // ±1 issue
 %ignore Tpetra::Import::getExportPIDs;          // ±1 issue
+%ignore Tpetra::Import::findUnionTargetGIDs;    // ±1 issue
 %ignore Tpetra::Import::getDistributor;         // needs Tpetra::Distributor
 %ignore Tpetra::Import::operator=;              // needs operator=
 %ignore Tpetra::Import::describe;               // needs Teuchos::FancyOStream
 %ignore Tpetra::Import::print;                  // needs std::ostream
-
 
 %include "Tpetra_Import_decl.hpp"
 
