@@ -20,7 +20,7 @@ IF (ForTrilinos_ENABLE_DeveloperMode)
 ELSE()
   # Use pre-generated files
   SET(GEN_SOURCE
-    forbelos.F90
+    forbelos.f90
     forbelosFORTRAN_wrap.cxx)
 
   TRIBITS_ADD_LIBRARY(

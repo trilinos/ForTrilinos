@@ -8,7 +8,7 @@
 ##---------------------------------------------------------------------------##
 
 SET(TESTS
-  test_belos_types.F90
+  test_belos_types.f90
   )
 
 FOREACH(test ${TESTS})

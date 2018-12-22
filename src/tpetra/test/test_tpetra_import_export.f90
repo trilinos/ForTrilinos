@@ -12,7 +12,7 @@ program test_TpetraImportExport
 
   implicit none
   type(TeuchosComm) :: comm
-  character(len=30), parameter :: FILENAME="test_tpetraimport_export.F90"
+  character(len=30), parameter :: FILENAME="test_tpetraimport_export.f90"
 
   SETUP_TEST()
 
