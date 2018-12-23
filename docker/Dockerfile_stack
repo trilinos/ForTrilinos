@@ -2,31 +2,39 @@ FROM ubuntu:16.04
 
 ARG NPROC=14
 
+# 1. Need gcc-7 to install pgmath using Spack (required by Flang)
+# 2. Do not install cmake as we'll need cmake 3.10+ for Trilinos
+# 3. Need gawk for pgmath as default mawk segfaults
 RUN apt-get update && apt-get install -y \
-        build-essential \
-        gfortran \
-        libopenmpi-dev \
-        curl \
-        cmake \
-        git \
-        wget \
-        vim \
         autoconf \
+        build-essential \
+        curl \
+        environment-modules \
+        gfortran \
+        git \
         lcov \
-        valgrind \
-        libssl-dev \
-        libpng-dev \
-        libfreetype6-dev \
-        libxft-dev \
-        libsqlite3-dev \
-        libbz2-dev \
         libatlas-base-dev \
-        zlib1g-dev \
+        libbz2-dev \
+        libfreetype6-dev \
+        libopenmpi-dev \
+        libpng-dev \
+        libsqlite3-dev \
+        libssl-dev \
+        libxft-dev \
         python2.7-dev \
         tmux \
         unzip \
-        environment-modules \
+        valgrind \
+        vim \
+        wget \
+        zlib1g-dev \
         && \
+    apt-get install -y gawk && \
+    apt-get install -y software-properties-common && \
+    add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
+    apt-get update && apt-get install -y \
+        gcc-7 \
+        g++-7 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/bin/python2.7 /usr/bin/python
@@ -39,22 +47,6 @@ RUN mkdir -p ${PREFIX} && \
     mkdir build && \
     mkdir install
 
-# download Trilinos
-RUN export TRILINOS_HASH=c2ce113e511bed0238816dfdcc8db938a35e0bdd && \
-    export TRILINOS_SHORT_HASH=c2ce113 && \
-    export TRILINOS_URL=https://github.com/trilinos/Trilinos/archive/${TRILINOS_HASH}.tar.gz && \
-    export TRILINOS_ARCHIVE=${PREFIX}/archive/trilinos-${TRILINOS_HASH}.tar.gz && \
-    export TRILINOS_SOURCE_DIR=${PREFIX}/source/trilinos/${TRILINOS_SHORT_HASH} && \
-    export TRILINOS_BUILD_DIR=${PREFIX}/build/trilinos/${TRILINOS_SHORT_HASH} && \
-    wget --quiet ${TRILINOS_URL} --output-document=${TRILINOS_ARCHIVE} && \
-    mkdir -p ${TRILINOS_SOURCE_DIR} && \
-    tar -xf ${TRILINOS_ARCHIVE} -C ${TRILINOS_SOURCE_DIR} --strip-components=1 && \
-    ln -s ${TRILINOS_SOURCE_DIR} ${PREFIX}/source/trilinos/release && \
-    mkdir -p ${TRILINOS_BUILD_DIR} && \
-    rm -rf ${TRILINOS_ARCHIVE}
-
-ENV TRILINOS_DIR=/scratch/source/trilinos/release
-
 # append the option flag --allow-run-as-root to mpiexec
 RUN echo '#!/usr/bin/env bash' > /usr/local/bin/mpiexec && \
     echo '/usr/bin/mpiexec --allow-run-as-root "$@"' >> /usr/local/bin/mpiexec && \
@@ -64,8 +56,8 @@ ENV HOME=/root
 
 ENV SPACK_ROOT=${PREFIX}/spack
 
-# Install Spack (specific hash)
-RUN export SPACK_HASH=c97d058ce3ff0ffc4b1de063daca78cecff23d62 && \
+# Install Spack (v0.12.0 specific hash)
+RUN export SPACK_HASH=42962f2409fe7b46543dc5974c45bb6392fcea99 && \
     export SPACK_URL="https://github.com/spack/spack/archive/${SPACK_HASH}.tar.gz" && \
     export SPACK_INSTALL_DIR="${SPACK_ROOT}" && \
     export SPACK_ARCHIVE="${PREFIX}/archive/spack-${SPACK_HASH}.tar.gz" && \
@@ -84,4 +76,24 @@ RUN echo "source /usr/share/modules/init/bash"         >> ${HOME}/.bashrc
 COPY packages.yaml ${HOME}/.spack/
 
 # Install flang
-RUN spack spec -I flang && spack install flang && spack clean -a
+RUN spack spec -Il cmake@3.10.3%gcc@7.4.0   && \
+    spack install  cmake@3.10.3%gcc@7.4.0   && \
+    spack spec -Il flang@20180612%gcc@7.4.0 ^cmake@3.10.3 && \
+    spack install  flang@20180612%gcc@7.4.0 ^cmake@3.10.3 && \
+    spack clean -a
+
+# download Trilinos
+RUN export TRILINOS_HASH=c2ce113e511bed0238816dfdcc8db938a35e0bdd && \
+    export TRILINOS_SHORT_HASH=c2ce113 && \
+    export TRILINOS_URL=https://github.com/trilinos/Trilinos/archive/${TRILINOS_HASH}.tar.gz && \
+    export TRILINOS_ARCHIVE=${PREFIX}/archive/trilinos-${TRILINOS_HASH}.tar.gz && \
+    export TRILINOS_SOURCE_DIR=${PREFIX}/source/trilinos/${TRILINOS_SHORT_HASH} && \
+    export TRILINOS_BUILD_DIR=${PREFIX}/build/trilinos/${TRILINOS_SHORT_HASH} && \
+    wget --quiet ${TRILINOS_URL} --output-document=${TRILINOS_ARCHIVE} && \
+    mkdir -p ${TRILINOS_SOURCE_DIR} && \
+    tar -xf ${TRILINOS_ARCHIVE} -C ${TRILINOS_SOURCE_DIR} --strip-components=1 && \
+    ln -s ${TRILINOS_SOURCE_DIR} ${PREFIX}/source/trilinos/release && \
+    mkdir -p ${TRILINOS_BUILD_DIR} && \
+    rm -rf ${TRILINOS_ARCHIVE}
+
+ENV TRILINOS_DIR=/scratch/source/trilinos/release
