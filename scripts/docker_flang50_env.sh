@@ -1,11 +1,3 @@
-# Load modules
-for file in \
-    "/usr/share/modules/init/bash" \
-    "/usr/share/Modules/init/bash" \
-    ; do
-    [[ -s $file ]] && source $file
-done
-
 # Load Spack env
 SPACK_ROOT=$1
 source $SPACK_ROOT/share/spack/setup-env.sh
@@ -14,6 +6,7 @@ source $SPACK_ROOT/share/spack/setup-env.sh
 # "flang" as a symlink to clang
 spack load llvm
 spack load flang
+spack load pgmath
 
 # Use flang and clang instead of gfortran and gcc
 export CC=mpicc
