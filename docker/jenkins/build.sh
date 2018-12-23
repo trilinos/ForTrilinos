@@ -16,6 +16,17 @@ mkdir build && cd build
 # move the build directory afterwards...
 # configure trilinos with fortrilinos
 
+# Load module environment
+for file in \
+    "/usr/share/modules/init/bash" \
+    "/usr/share/Modules/init/bash" \
+    ; do
+    [[ -s $file ]] && source $file
+done
+
+source ${SPACK_ROOT}/share/spack/setup-env.sh
+spack load cmake
+
 if [ "${BUILD_TYPE}" == "gcc54-mpi" ]; then
   ../scripts/docker_cmake -D Trilinos_ENABLE_COVERAGE_TESTING=ON
 elif [ "${BUILD_TYPE}" == "gcc54-serial" ]; then
