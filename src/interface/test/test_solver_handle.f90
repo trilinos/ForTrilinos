@@ -136,8 +136,11 @@ contains
     call self%domain_map%release()
     call self%range_map%release()
 
+#ifdef __GNUC__
+    ! FIXME This segfaults with Flang
     ! Call base class release()
     call self%ForTpetraOperator%release()
+#endif
   end subroutine
 
 
