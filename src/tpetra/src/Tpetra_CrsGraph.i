@@ -13,6 +13,8 @@
 #include "Tpetra_CrsGraph.hpp"
 %}
 
+%ignore Tpetra::Details::HasDeprecatedMethods2630_WarningThisClassIsNotForUsers;
+
 // =======================================================================
 // Ignore permanently
 // =======================================================================
@@ -33,11 +35,11 @@
         const Kokkos::DualView< const size_t *, execution_space > &numEntPerRow,
         const ProfileType pftype=DynamicProfile,
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);    // needs Kokkos::DualView
-%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap,
-        const Teuchos::RCP< const map_type > &colMap,
-        const Kokkos::DualView< const size_t *, execution_space > &numEntPerRow,
-        ProfileType pftype=DynamicProfile,
-        const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);    // needs Kokkos::DualView
+%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP<const map_type>& rowMap,
+        const Teuchos::RCP<const map_type>& colMap,
+        const Kokkos::DualView<const size_t*, execution_space>& numEntPerRow,
+        const ProfileType pftype = DynamicProfile,
+        const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);    // needs Kokkos::DualView
 %ignore Tpetra::CrsGraph::CrsGraph(const Teuchos::RCP< const map_type > &rowMap,
         const Teuchos::RCP< const map_type > &colMap,
         const typename local_graph_type::row_map_type &rowPointers,
@@ -186,11 +188,10 @@
         const Teuchos::ArrayRCP< const size_t > &numEntPerRow,
         const ProfileType pftype=DynamicProfile,
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);
-%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap,
-        const Teuchos::RCP< const map_type > &colMap,
-        const Teuchos::ArrayRCP< const size_t > &numEntPerRow,
-        ProfileType pftype=DynamicProfile,
-        const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);
+%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP<const map_type>& rowMap,                                                                                    const Teuchos::RCP<const map_type>& colMap,
+        const Teuchos::ArrayRCP<const size_t>& numEntPerRow,
+        const ProfileType pftype = DynamicProfile,
+        const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);
 %ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap,
         const Teuchos::RCP< const map_type > &colMap,
         const Teuchos::ArrayRCP< size_t > &rowPointers,

@@ -39,6 +39,8 @@
 %ignore Tpetra::MultiVector::get2dViewNonConst;     // needs ArrayRCP<ArrayRCP>
 %ignore Tpetra::MultiVector::getDualView;           // needs Kokkos::DualView
 %ignore Tpetra::MultiVector::getLocalView;          // needs Kokkos::View
+%ignore Tpetra::MultiVector::getLocalViewHost;      // needs Kokkos::View
+%ignore Tpetra::MultiVector::getLocalViewDevice;    // needs Kokkos::View
 %ignore Tpetra::MultiVector::getVector;             // needs Tpetra::Vector
 %ignore Tpetra::MultiVector::getVectorNonConst;     // needs Tpetra::Vector
 %ignore Tpetra::MultiVector::modify;                // templated on device type
@@ -51,6 +53,7 @@
 %ignore Tpetra::MultiVector::subViewNonConst(const Teuchos::Range1D &colRng); // prefer ArrayView version
 %ignore Tpetra::MultiVector::normWeighted;  // deprecated in Tpetra
 %ignore Tpetra::deep_copy;
+%ignore Tpetra::getMultiVectorWhichVectors;
 
 // =======================================================================
 // Fix ±1 issues

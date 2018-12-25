@@ -590,8 +590,11 @@ contains
     call self%x%release()
     call self%J_diagonal%release()
 
+#ifdef __GNUC__
+    ! FIXME This segfaults with Flang
     ! Call base class release()
     call self%ForModelEvaluator%release()
+#endif
   end subroutine
 
 end module TpetraModelEvaluator1DFEM_module

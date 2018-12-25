@@ -35,6 +35,23 @@ end type
  public :: convertScaleTypeToString
  public :: BelosConjType, BelosNO_CONJ, BelosCONJ
  public :: convertMsgTypeToString
+ public :: DefaultSolverParameters
+
+ enum, bind(c)
+  enumerator :: SwigMemState = -1
+  enumerator :: SWIG_NULL = 0
+  enumerator :: SWIG_OWN
+  enumerator :: SWIG_MOVE
+  enumerator :: SWIG_REF
+  enumerator :: SWIG_CREF
+ end enum
+
+
+type, bind(C) :: SwigClassWrapper
+  type(C_PTR), public :: ptr = C_NULL_PTR
+  integer(C_INT), public :: mem = SWIG_NULL
+end type
+
 
  ! PARAMETERS
  enum, bind(c)
@@ -106,6 +123,30 @@ end type
    bind(C, name="_wrap_BelosStatusTestDetails") :: BelosStatusTestDetails
  integer(C_INT), protected, public, &
    bind(C, name="_wrap_BelosDebug") :: BelosDebug
+ real(C_DOUBLE), protected, public, &
+   bind(C, name="_wrap_DefaultSolverParameters_convTol") :: DefaultSolverParameters_convTol
+ real(C_DOUBLE), protected, public, &
+   bind(C, name="_wrap_DefaultSolverParameters_polyTol") :: DefaultSolverParameters_polyTol
+ real(C_DOUBLE), protected, public, &
+   bind(C, name="_wrap_DefaultSolverParameters_orthoKappa") :: DefaultSolverParameters_orthoKappa
+ real(C_DOUBLE), protected, public, &
+   bind(C, name="_wrap_DefaultSolverParameters_resScaleFactor") :: DefaultSolverParameters_resScaleFactor
+ real(C_DOUBLE), protected, public, &
+   bind(C, name="_wrap_DefaultSolverParameters_impTolScale") :: DefaultSolverParameters_impTolScale
+
+ ! TYPES
+ type :: DefaultSolverParameters
+  ! These should be treated as PROTECTED data
+  type(SwigClassWrapper), public :: swigdata
+ contains
+  procedure :: release => delete_DefaultSolverParameters
+  procedure, private :: swigf_assignment_DefaultSolverParameters
+  generic :: assignment(=) => swigf_assignment_DefaultSolverParameters
+ end type DefaultSolverParameters
+ interface DefaultSolverParameters
+  procedure new_DefaultSolverParameters
+ end interface
+
 
  ! WRAPPER DECLARATIONS
  interface
@@ -170,6 +211,28 @@ integer(C_INT), intent(in) :: farg1
 type(SwigArrayWrapper) :: fresult
 end function
 
+function swigc_new_DefaultSolverParameters() &
+bind(C, name="_wrap_new_DefaultSolverParameters") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: fresult
+end function
+
+subroutine swigc_delete_DefaultSolverParameters(farg1) &
+bind(C, name="_wrap_delete_DefaultSolverParameters")
+use, intrinsic :: ISO_C_BINDING
+import :: SwigClassWrapper
+type(SwigClassWrapper) :: farg1
+end subroutine
+
+  subroutine swigc_assignment_DefaultSolverParameters(self, other) &
+     bind(C, name="_wrap_assign_DefaultSolverParameters")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
+  end subroutine
  end interface
 
 
@@ -291,5 +354,34 @@ call SWIG_chararray_to_string(fresult, swig_result)
 call SWIG_free(fresult%data)
 end function
 
+function new_DefaultSolverParameters() &
+result(self)
+use, intrinsic :: ISO_C_BINDING
+type(DefaultSolverParameters) :: self
+type(SwigClassWrapper) :: fresult
+
+fresult = swigc_new_DefaultSolverParameters()
+self%swigdata = fresult
+end function
+
+subroutine delete_DefaultSolverParameters(self)
+use, intrinsic :: ISO_C_BINDING
+class(DefaultSolverParameters), intent(inout) :: self
+type(SwigClassWrapper) :: farg1
+
+farg1 = self%swigdata
+if (self%swigdata%mem == SWIG_OWN) then
+call swigc_delete_DefaultSolverParameters(farg1)
+end if
+self%swigdata%ptr = C_NULL_PTR
+self%swigdata%mem = SWIG_NULL
+end subroutine
+
+  subroutine swigf_assignment_DefaultSolverParameters(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(DefaultSolverParameters), intent(inout) :: self
+   type(DefaultSolverParameters), intent(in) :: other
+   call swigc_assignment_DefaultSolverParameters(self%swigdata, other%swigdata)
+  end subroutine
 
 end module

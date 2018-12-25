@@ -83,8 +83,8 @@ RUN spack spec -Il cmake@3.10.3%gcc@7.4.0   && \
     spack clean -a
 
 # download Trilinos
-RUN export TRILINOS_HASH=c2ce113e511bed0238816dfdcc8db938a35e0bdd && \
-    export TRILINOS_SHORT_HASH=c2ce113 && \
+RUN export TRILINOS_HASH=9461709507e4d4e0ffced97d7649ccd117e7b16f && \
+    export TRILINOS_SHORT_HASH=9461709507 && \
     export TRILINOS_URL=https://github.com/trilinos/Trilinos/archive/${TRILINOS_HASH}.tar.gz && \
     export TRILINOS_ARCHIVE=${PREFIX}/archive/trilinos-${TRILINOS_HASH}.tar.gz && \
     export TRILINOS_SOURCE_DIR=${PREFIX}/source/trilinos/${TRILINOS_SHORT_HASH} && \
