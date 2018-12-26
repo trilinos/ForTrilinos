@@ -1,3 +1,5 @@
+# Build command:
+#   $ docker build -t aprokop/fortrilinos-stack:latest -f Dockerfile_stack  .
 FROM ubuntu:16.04
 
 ARG NPROC=14
@@ -82,18 +84,18 @@ RUN spack spec -Il cmake@3.10.3%gcc@7.4.0   && \
     spack install  flang@20180612%gcc@7.4.0 ^cmake@3.10.3 && \
     spack clean -a
 
-# download Trilinos
-RUN export TRILINOS_HASH=9461709507e4d4e0ffced97d7649ccd117e7b16f && \
-    export TRILINOS_SHORT_HASH=9461709507 && \
-    export TRILINOS_URL=https://github.com/trilinos/Trilinos/archive/${TRILINOS_HASH}.tar.gz && \
-    export TRILINOS_ARCHIVE=${PREFIX}/archive/trilinos-${TRILINOS_HASH}.tar.gz && \
-    export TRILINOS_SOURCE_DIR=${PREFIX}/source/trilinos/${TRILINOS_SHORT_HASH} && \
-    export TRILINOS_BUILD_DIR=${PREFIX}/build/trilinos/${TRILINOS_SHORT_HASH} && \
-    wget --quiet ${TRILINOS_URL} --output-document=${TRILINOS_ARCHIVE} && \
-    mkdir -p ${TRILINOS_SOURCE_DIR} && \
-    tar -xf ${TRILINOS_ARCHIVE} -C ${TRILINOS_SOURCE_DIR} --strip-components=1 && \
-    ln -s ${TRILINOS_SOURCE_DIR} ${PREFIX}/source/trilinos/release && \
-    mkdir -p ${TRILINOS_BUILD_DIR} && \
-    rm -rf ${TRILINOS_ARCHIVE}
+# Download Trilinos (version specified in TrilinosVersion.cmake)
+COPY "trilinos_version" "${PREFIX}/"
+RUN export TRILINOS_HASH="$(cat ${PREFIX}/trilinos_version)" && \
+    export TRILINOS_URL="https://github.com/trilinos/Trilinos/archive/${TRILINOS_HASH}.tar.gz" && \
+    export TRILINOS_ARCHIVE="${PREFIX}/archive/trilinos-${TRILINOS_HASH}.tar.gz" && \
+    export TRILINOS_SOURCE_DIR="${PREFIX}/source/trilinos/${TRILINOS_HASH}" && \
+    export TRILINOS_BUILD_DIR="${PREFIX}/build/trilinos/${TRILINOS_HASH}" && \
+    wget --quiet "${TRILINOS_URL}" --output-document="${TRILINOS_ARCHIVE}" && \
+    mkdir -p "${TRILINOS_SOURCE_DIR}" && \
+    tar -xf "${TRILINOS_ARCHIVE}" -C "${TRILINOS_SOURCE_DIR}" --strip-components=1 && \
+    ln -s "${TRILINOS_SOURCE_DIR}" "${PREFIX}/source/trilinos/release" && \
+    mkdir -p "${TRILINOS_BUILD_DIR}" && \
+    rm -rf "${TRILINOS_ARCHIVE}"
 
-ENV TRILINOS_DIR=/scratch/source/trilinos/release
+ENV TRILINOS_DIR="/scratch/source/trilinos/release"

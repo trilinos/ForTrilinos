@@ -16,12 +16,14 @@ automated build on Jenkins, run:
 
 This will mount the local ForTrilinos source directory into the container at
 ``$TRILINOS_DIR/packages/ForTrilinos``. The environment variable ``TRILINOS_DIR``
-is already defined and contains the path to a release version of Trilinos that
-has been downloaded into the ForTrilinos base image.  We recommend you use a ``.env``
-file to specify an alternate project name (the default being the directory name,
-i.e. ``docker``).  This will let you run multiple isolated environments on a
-single host.  Here the service name will be prefixed by your username which will
-prevent interferences with other developers on the same system.
+is already defined and contains the path to a version of Trilinos that
+has been downloaded into the ForTrilinos base image. The exact version of the
+Trilinos version is given by a hash in ``docker/trilinos_version``. We recommend
+you use a ``.env`` file to specify an alternate project name (the default being
+the directory name, i.e. ``docker``).  This will let you run multiple isolated
+environments on a single host.  Here the service name will be prefixed by your
+username which will prevent interferences with other developers on the same
+system.
 
 Then to launch an interactive Bash session inside that container, do:
 

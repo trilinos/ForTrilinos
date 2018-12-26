@@ -30,17 +30,21 @@ ForTrilinos is configured and built using `TriBITS <https://tribits.org>`_. ForT
 within Trilinos effectively as an internal package. The following steps are
 required to build and install ForTrilinos:
 
-1. Download Trilinos 12.12 release
+1. Download Trilinos version
 
-  ForTrilinos release model requires users to work with a specific version of
-  Trilinos, as otherwise the interfaces may have changed. Users must checkout a
-  specific version of Trilinos repository like this:
+  ForTrilinos strives to be able to work with the most recent ``develop``
+  version of Trilinos. However, being a separate project, sometimes upstream
+  changes lead to incompatibility. However, the most recent version of
+  ``develop`` that ForTrilinos works with can be found in
+  ``docker/trilinos_version``.
+
+  To download Trilinos, users should download Trilinos repository like this:
 
   .. code::
 
       $ git clone https://github.com/trilinos/Trilinos.git $TRILINOS_DIR
       $ cd $TRILINOS_DIR
-      $ git checkout trilinos-release-12-12-branch
+      $ git checkout develop
 
   Here, ``$TRILINOS_DIR`` is the name you want give to the repository.
 
