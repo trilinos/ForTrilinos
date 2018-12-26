@@ -2,6 +2,17 @@
 Release Notes for Trilinos Package ForTrilinos
 ----------------------------------------------
 
+develop (2018/12/25)
+-------------------
+
+* Phase 2 ForTrilinos release
+
+- The new release includes access to nonlinear solvers and provides
+Inversion-of-Control (IoC) functionality.
+- The source code is updated to work with the latest develop.
+
+* Phase 2 ForTrilinos release
+
 Trilinos 12.12
 --------------
 
