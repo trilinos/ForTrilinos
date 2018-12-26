@@ -13,6 +13,7 @@ services:
       - NPROC=16
       - FORTRILINOS_DIR=$WORKSPACE
       - BUILD_TYPE=$BUILD_TYPE
+      - TRILINOS_VERSION=$TRILINOS_VERSION
     command: $WORKSPACE/docker/jenkins/build.sh
     cap_add:
       - SYS_ADMIN
