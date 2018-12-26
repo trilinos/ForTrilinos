@@ -12,10 +12,12 @@ if [ -n "${TRILINOS_VERSION}" ]; then
   PREFIX="/scratch"
   TRILINOS_URL="https://github.com/trilinos/Trilinos/archive/${TRILINOS_VERSION}.tar.gz"
   TRILINOS_ARCHIVE="${PREFIX}/archive/trilinos-${TRILINOS_VERSION}.tar.gz"
-  echo "Downloading Trilinos version \"${TRILINOS_VERSION}\""
   wget --quiet "${TRILINOS_URL}" --output-document="${TRILINOS_ARCHIVE}"
   tar -xf "${TRILINOS_ARCHIVE}" -C "${TRILINOS_DIR}" --strip-components=1
   rm -rf "${TRILINOS_ARCHIVE}"
+  echo "Updating container version of Trilinos to \"${TRILINOS_VERSION}\""
+else
+  echo "Using container version of Trilinos"
 fi
 # bind mount ForTrilinos source dir into Trilinos base dir
 mkdir "${TRILINOS_DIR}/ForTrilinos"
