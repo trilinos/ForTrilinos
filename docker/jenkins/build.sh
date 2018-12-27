@@ -13,6 +13,7 @@ if [ -n "${TRILINOS_VERSION}" ]; then
   TRILINOS_URL="https://github.com/trilinos/Trilinos/archive/${TRILINOS_VERSION}.tar.gz"
   TRILINOS_ARCHIVE="${PREFIX}/archive/trilinos-${TRILINOS_VERSION}.tar.gz"
   wget --quiet "${TRILINOS_URL}" --output-document="${TRILINOS_ARCHIVE}"
+  mkdir "${TRILINOS_DIR}"
   tar -xf "${TRILINOS_ARCHIVE}" -C "${TRILINOS_DIR}" --strip-components=1
   rm -rf "${TRILINOS_ARCHIVE}"
   echo "Updating container version of Trilinos to \"${TRILINOS_VERSION}\""
