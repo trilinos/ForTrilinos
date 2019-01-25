@@ -20,23 +20,26 @@
 
 namespace ForTrilinos {
 
-  template<class Scalar, class LocalOrdinal, class GlobalOrdinal, class Node>
   class NOXSolver {
+    typedef double                                  SC;
+    typedef int                                     LO;
+    typedef long long                               GO;
+    typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
+
+    typedef Tpetra::MultiVector<SC,LO,GO,NO>        MultiVector;
+    typedef ModelEvaluator<SC,LO,GO,NO>             ME;
 
   public:
 
-    NOXSolver(const Teuchos::RCP<ModelEvaluator<Scalar, LocalOrdinal, GlobalOrdinal, Node>>& model);
+    NOXSolver(const Teuchos::RCP<ME>& model);
     void setup(Teuchos::RCP<Teuchos::ParameterList>& plist);
-    NOX::StatusTest::StatusType solve();
+    NOX::StatusTest::StatusType solve(Teuchos::RCP<MultiVector> initial_guess = Teuchos::null);
+    Teuchos::RCP<MultiVector> get_solution() const;
 
   private:
     Teuchos::RCP<NOX::Solver::Generic> solver_;
-    Teuchos::RCP<ModelEvaluator<Scalar, LocalOrdinal, GlobalOrdinal, Node>> model_;
+    Teuchos::RCP<ME> model_;
   };
 }
-
-#ifndef SWIG
-#include "nox_solver_def.hpp"
-#endif
 
 #endif

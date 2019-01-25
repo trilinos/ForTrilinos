@@ -27,10 +27,14 @@ int main2(Teuchos::RCP<const Teuchos::Comm<int>>& comm,
   using Teuchos::rcp;
 
   // Get default Tpetra template types
-  using Scalar = Tpetra::CrsMatrix<>::scalar_type;
-  using LO = Tpetra::CrsMatrix<>::local_ordinal_type;
-  using GO = Tpetra::CrsMatrix<>::global_ordinal_type;
-  using Node = Tpetra::CrsMatrix<>::node_type;
+  //using Scalar = Tpetra::CrsMatrix<>::scalar_type;
+  //using LO = Tpetra::CrsMatrix<>::local_ordinal_type;
+  //using GO = Tpetra::CrsMatrix<>::global_ordinal_type;
+  //using Node = Tpetra::CrsMatrix<>::node_type;
+    typedef double                                  Scalar;
+    typedef int                                     LO;
+    typedef long long                               GO;
+    typedef Kokkos::Compat::KokkosSerialWrapperNode Node;
 
   Teuchos::TimeMonitor::zeroOutTimers();
 
@@ -39,9 +43,11 @@ int main2(Teuchos::RCP<const Teuchos::Comm<int>>& comm,
     rcp(new TpetraModelEvaluator1DFEM<Scalar,LO,GO,Node>(comm, 100, 0.0, 1.0));
   evaluator->setup(plist);
 
-  ForTrilinos::NOXSolver<Scalar,LO,GO,Node> nox_solver(evaluator);
+  ForTrilinos::NOXSolver nox_solver(evaluator);
   nox_solver.setup(plist);
   NOX::StatusTest::StatusType solve_status = nox_solver.solve();
+
+  auto result_vec = nox_solver.get_solution();
 
   int returncode = (solve_status == NOX::StatusTest::Converged) ? 0 : 1;
 

@@ -13,16 +13,14 @@
 #include <Teuchos_ParameterList.hpp>
 #include <Teuchos_XMLParameterListHelpers.hpp>
 
+#include <nox_solver.hpp>
+
 namespace ForTrilinos {
 
-  template<class Scalar, class LocalOrdinal, class GlobalOrdinal, class Node>
-  NOXSolver<Scalar, LocalOrdinal, GlobalOrdinal, Node>::
-  NOXSolver(const Teuchos::RCP<ModelEvaluator<Scalar, LocalOrdinal, GlobalOrdinal, Node>>& model) :
+  NOXSolver::NOXSolver(const Teuchos::RCP<ME>& model) :
     model_(model) {}
 
-  template<class Scalar, class LocalOrdinal, class GlobalOrdinal, class Node>
-  void NOXSolver<Scalar, LocalOrdinal, GlobalOrdinal, Node>::
-  setup(Teuchos::RCP<Teuchos::ParameterList>& plist)
+  void NOXSolver::setup(Teuchos::RCP<Teuchos::ParameterList>& plist)
   {
 
     using Teuchos::RCP;
@@ -31,9 +29,9 @@ namespace ForTrilinos {
     // Create the JFNK operator
     std::string jtype;
     RCP<NOX::Thyra::Group> nox_group;
-    RCP<Thyra::PreconditionerBase<Scalar>> prec_op;
-    RCP<Thyra::ModelEvaluator<Scalar>> thyra_model;
-    RCP<NOX::Thyra::MatrixFreeJacobianOperator<Scalar>> jfnk_op;
+    RCP<Thyra::PreconditionerBase<SC>> prec_op;
+    RCP<Thyra::ModelEvaluator<SC>> thyra_model;
+    RCP<NOX::Thyra::MatrixFreeJacobianOperator<SC>> jfnk_op;
 
     if (plist->isSublist("Jacobian Settings")) {
       auto jsettings = plist->sublist("Jacobian Settings");
@@ -51,7 +49,7 @@ namespace ForTrilinos {
         if (jtype == "Matrix Free Newton") {
           auto jfnk_params = Teuchos::rcpFromRef(p.sublist(jtype));
           Teuchos::ParameterList print_params;
-          jfnk_op = rcp(new NOX::Thyra::MatrixFreeJacobianOperator<Scalar>(print_params));
+          jfnk_op = rcp(new NOX::Thyra::MatrixFreeJacobianOperator<SC>(print_params));
           jfnk_op->setParameterList(jfnk_params);
           /*
           RCP<Teuchos::FancyOStream> out = Teuchos::VerboseObjectBase::getDefaultOStream();
@@ -59,7 +57,7 @@ namespace ForTrilinos {
           */
 
           // Wrap the model evaluator in a JFNK Model Evaluator
-          thyra_model = rcp(new NOX::MatrixFreeModelEvaluatorDecorator<Scalar>(model_));
+          thyra_model = rcp(new NOX::MatrixFreeModelEvaluatorDecorator<SC>(model_));
 
           // Create the Preconditioner operator
           if (jsettings.get<bool>("Use Prec", false))
@@ -109,11 +107,18 @@ namespace ForTrilinos {
     solver_ = NOX::Solver::buildSolver(nox_group, combo, nl_params);
   }
 
-  template<class Scalar, class LocalOrdinal, class GlobalOrdinal, class Node>
-  NOX::StatusTest::StatusType
-  NOXSolver<Scalar, LocalOrdinal, GlobalOrdinal, Node>::
-  solve()
+  NOX::StatusTest::StatusType NOXSolver::solve(Teuchos::RCP<MultiVector> initial_guess)
   {
+    // FIXME: setup initial guess (it could be Teuchos::null, in which case do nothing?)
     return solver_->solve();
+  }
+
+  Teuchos::RCP<typename NOXSolver::MultiVector> NOXSolver::get_solution() const {
+    auto& solution_group = solver_->getSolutionGroup();
+    NOX::Thyra::Vector& x_nox_thyra = dynamic_cast<NOX::Thyra::Vector>(solution_group.getX());
+    Thyra::VectorBase<double>& x_thyra = x_nox_thyra.getThyraVector();
+    Techos::RCP<Tpetra_MultiVector> x_tpetra = Thyra::TpetraOperatorVectorExtraction<>::getTpetraVector(x_thyra);
+
+    return x_tpetra;
   }
 }

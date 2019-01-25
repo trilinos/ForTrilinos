@@ -8,11 +8,10 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 SET(EXTRA_SOURCE
   solver_handle.cpp
   fortrilinos_utilities.cpp
+  eigen_handle.cpp
+  nox_solver.cpp
   )
 
-IF (${PACKAGE_NAME}_ENABLE_Anasazi)
-  LIST(APPEND EXTRA_SOURCE eigen_handle.cpp)
-ENDIF()
 
 IF (ForTrilinos_ENABLE_DeveloperMode)
   IF (ForTrilinos_EXPORT_SWIG)
