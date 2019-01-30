@@ -33,13 +33,13 @@ contains
 
 #ifdef HAVE_MPI
     comm = TeuchosComm(MPI_COMM_WORLD); TEST_IERR()
-    TEST_ASSERT(c_associated(comm%swigdata%ptr))
+    TEST_ASSERT(c_associated(comm%swigdata%cptr))
 
     call MPI_COMM_RANK(MPI_COMM_WORLD, comm_rank_f, ierr)
     call MPI_COMM_SIZE(MPI_COMM_WORLD, comm_size_f, ierr)
 #else
     comm = TeuchosComm(); TEST_IERR()
-    TEST_ASSERT(c_associated(comm%swigdata%ptr))
+    TEST_ASSERT(c_associated(comm%swigdata%cptr))
 
     comm_rank_f = 0
     comm_size_f = 1

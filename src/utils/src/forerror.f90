@@ -14,35 +14,36 @@ module forerror
  implicit none
  private
 
- ! PUBLIC METHODS AND TYPES
-
-type, bind(C) :: SwigArrayWrapper
-  type(C_PTR), public :: data = C_NULL_PTR
-  integer(C_SIZE_T), public :: size = 0
-end type
-
- public :: fortrilinos_get_serr
-
- ! PARAMETERS
+ ! DECLARATION CONSTRUCTS
 
  integer(C_INT), bind(C), public :: fortrilinos_ierr
 
+ type, bind(C) :: SwigArrayWrapper
+  type(C_PTR), public :: data = C_NULL_PTR
+  integer(C_SIZE_T), public :: size = 0
+ end type
+ public :: fortrilinos_get_serr
 
- ! WRAPPER DECLARATIONS
- interface
+! WRAPPER DECLARATIONS
+interface
 function swigc_fortrilinos_get_serr() &
 bind(C, name="_wrap_fortrilinos_get_serr") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigArrayWrapper
+import :: swigarraywrapper
 type(SwigArrayWrapper) :: fresult
 end function
 
- end interface
+ subroutine SWIG_free(cptr) &
+  bind(C, name="free")
+ use, intrinsic :: ISO_C_BINDING
+ type(C_PTR), value :: cptr
+end subroutine
+end interface
 
 
 contains
- ! FORTRAN PROXY CODE
+ ! MODULE SUBPROGRAMS
 
 subroutine SWIG_chararray_to_string(wrap, string)
   use, intrinsic :: ISO_C_BINDING
@@ -61,10 +62,12 @@ function fortrilinos_get_serr() &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=:), allocatable :: swig_result
+
 type(SwigArrayWrapper) :: fresult 
 
 fresult = swigc_fortrilinos_get_serr()
 call SWIG_chararray_to_string(fresult, swig_result)
+if (.false.) call SWIG_free(fresult%data)
 end function
 
 

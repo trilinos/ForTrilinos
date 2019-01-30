@@ -191,7 +191,7 @@ template <typename T> T SwigValueInit() {
 
 
 #define SWIG_exception_impl(DECL, CODE, MSG, RETURNNULL) \
- { throw std::logic_error("In " DECL ": " MSG); RETURNNULL; }
+ { throw std::logic_error("In " DECL ": " MSG); }
 
 
 extern "C" {
@@ -293,7 +293,7 @@ struct assignment_flags<std::pair<T, const U>, Flags> {
 
 
 enum SwigMemState {
-    SWIG_NULL = 0,
+    SWIG_NULL,
     SWIG_OWN,
     SWIG_MOVE,
     SWIG_REF,
@@ -302,14 +302,14 @@ enum SwigMemState {
 
 
 struct SwigClassWrapper {
-    void* ptr;
+    void* cptr;
     SwigMemState mem;
 };
 
 
 SWIGINTERN SwigClassWrapper SwigClassWrapper_uninitialized() {
     SwigClassWrapper result;
-    result.ptr = NULL;
+    result.cptr = NULL;
     result.mem = SWIG_NULL;
     return result;
 }
@@ -477,27 +477,28 @@ struct AssignmentTraits {
 template<class T1, class T2, int AFlags>
 SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other) {
   typedef swig::AssignmentTraits<T1, AFlags> Traits_t;
-  T1* pself  = static_cast<T1*>(self->ptr);
-  T2* pother = static_cast<T2*>(other->ptr);
+  T1* pself  = static_cast<T1*>(self->cptr);
+  T2* pother = static_cast<T2*>(other->cptr);
 
   switch (self->mem) {
     case SWIG_NULL:
       /* LHS is unassigned */
       switch (other->mem) {
-        case SWIG_NULL: /* null op */ break;
+        case SWIG_NULL: /* null op */
+          break;
         case SWIG_MOVE: /* capture pointer from RHS */
-          self->ptr = other->ptr;
-          other->ptr = NULL;
+          self->cptr = other->cptr;
+          other->cptr = NULL;
           self->mem = SWIG_OWN;
           other->mem = SWIG_NULL;
           break;
         case SWIG_OWN: /* copy from RHS */
-          self->ptr = Traits_t::copy_construct(pother);
+          self->cptr = Traits_t::copy_construct(pother);
           self->mem = SWIG_OWN;
           break;
         case SWIG_REF: /* pointer to RHS */
         case SWIG_CREF:
-          self->ptr = other->ptr;
+          self->cptr = other->cptr;
           self->mem = other->mem;
           break;
       }
@@ -508,14 +509,14 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
         case SWIG_NULL:
           /* Delete LHS */
           Traits_t::destruct(pself);
-          self->ptr = NULL;
+          self->cptr = NULL;
           self->mem = SWIG_NULL;
           break;
         case SWIG_MOVE:
           /* Move RHS into LHS; delete RHS */
           Traits_t::move_assign(pself, pother);
           Traits_t::destruct(pother);
-          other->ptr = NULL;
+          other->cptr = NULL;
           other->mem = SWIG_NULL;
           break;
         case SWIG_OWN:
@@ -536,7 +537,7 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
       switch (other->mem) {
         case SWIG_NULL:
           /* Remove LHS reference */
-          self->ptr = NULL;
+          self->cptr = NULL;
           self->mem = SWIG_NULL;
           break;
         case SWIG_MOVE:
@@ -544,7 +545,7 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
            * same. */
           Traits_t::move_assign(pself, pother);
           Traits_t::destruct(pother);
-          other->ptr = NULL;
+          other->cptr = NULL;
           other->mem = SWIG_NULL;
           break;
         case SWIG_OWN:
@@ -559,8 +560,9 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
       switch (other->mem) {
         case SWIG_NULL:
           /* Remove LHS reference */
-          self->ptr = NULL;
+          self->cptr = NULL;
           self->mem = SWIG_NULL;
+          break;
         default:
           SWIG_exception_impl("assignment", SWIG_RuntimeError,
               "Cannot assign to a const reference", return);
@@ -623,8 +625,8 @@ SWIGEXPORT int _wrap_TeuchosComm_getRank(SwigClassWrapper const *farg1) {
   Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 ;
   int result;
   
-  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::Comm<int> >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<Teuchos::Comm<int>*>(smartarg1->get()) : NULL;
+  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::Comm<int> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::Comm<int>* >(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::Comm< int >::getRank() const");;
@@ -648,7 +650,7 @@ SWIGEXPORT int _wrap_TeuchosComm_getRank(SwigClassWrapper const *farg1) {
       SWIG_exception_impl("Teuchos::Comm< int >::getRank() const", SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = static_cast< int >(result);
   return fresult;
 }
 
@@ -659,8 +661,8 @@ SWIGEXPORT int _wrap_TeuchosComm_getSize(SwigClassWrapper const *farg1) {
   Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 ;
   int result;
   
-  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::Comm<int> >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<Teuchos::Comm<int>*>(smartarg1->get()) : NULL;
+  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::Comm<int> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::Comm<int>* >(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::Comm< int >::getSize() const");;
@@ -684,7 +686,7 @@ SWIGEXPORT int _wrap_TeuchosComm_getSize(SwigClassWrapper const *farg1) {
       SWIG_exception_impl("Teuchos::Comm< int >::getSize() const", SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = static_cast< int >(result);
   return fresult;
 }
 
@@ -693,8 +695,8 @@ SWIGEXPORT void _wrap_TeuchosComm_barrier(SwigClassWrapper const *farg1) {
   Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *smartarg1 ;
   
-  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::Comm<int> >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<Teuchos::Comm<int>*>(smartarg1->get()) : NULL;
+  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::Comm<int> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::Comm<int>* >(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::Comm< int >::barrier() const");;
@@ -755,7 +757,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TeuchosComm__SWIG_0(int const *farg1) {
       SWIG_exception_impl("Teuchos::Comm< int >::Comm(MPI_Comm)", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
     }
   }
-  fresult.ptr = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : NULL;
+  fresult.cptr = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : NULL;
   fresult.mem = SWIG_MOVE;
   return fresult;
 }
@@ -788,7 +790,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TeuchosComm__SWIG_1() {
       SWIG_exception_impl("Teuchos::Comm< int >::Comm()", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
     }
   }
-  fresult.ptr = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : NULL;
+  fresult.cptr = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : NULL;
   fresult.mem = SWIG_MOVE;
   return fresult;
 }
@@ -800,8 +802,8 @@ SWIGEXPORT int _wrap_TeuchosComm_getRawMpiComm(SwigClassWrapper const *farg1) {
   Teuchos::RCP< Teuchos::Comm< int > > *smartarg1 ;
   MPI_Comm result;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::Comm<int> >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::Comm<int> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::Comm<int>* >(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::Comm< int >::getRawMpiComm()");;
@@ -838,8 +840,8 @@ SWIGEXPORT void _wrap_delete_TeuchosComm(SwigClassWrapper const *farg1) {
   Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
   Teuchos::RCP< Teuchos::Comm< int > > *smartarg1 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::Comm<int> >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::Comm<int> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::Comm<int>* >(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::Comm< int >::~Comm()");;
@@ -868,7 +870,7 @@ SWIGEXPORT void _wrap_delete_TeuchosComm(SwigClassWrapper const *farg1) {
 
 
 SWIGEXPORT void _wrap_assign_TeuchosComm(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef ::Teuchos::RCP< Teuchos::Comm<int> > swig_lhs_classtype;
+  typedef Teuchos::RCP< Teuchos::Comm<int> > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
@@ -902,7 +904,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_ParameterList__SWIG_0() {
       SWIG_exception_impl("Teuchos::ParameterList::ParameterList()", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
     }
   }
-  fresult.ptr = result ? new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_1) : NULL;
+  fresult.cptr = result ? new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_1) : NULL;
   fresult.mem = SWIG_MOVE;
   return fresult;
 }
@@ -939,7 +941,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_ParameterList__SWIG_1(SwigArrayWrapper *fa
       SWIG_exception_impl("Teuchos::ParameterList::ParameterList(std::string const &)", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
     }
   }
-  fresult.ptr = result ? new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_1) : NULL;
+  fresult.cptr = result ? new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_1) : NULL;
   fresult.mem = SWIG_MOVE;
   return fresult;
 }
@@ -949,8 +951,8 @@ SWIGEXPORT void _wrap_ParameterList_print(SwigClassWrapper const *farg1) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList const > *smartarg1 ;
   
-  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<Teuchos::ParameterList*>(smartarg1->get()) : NULL;
+  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::ParameterList::print() const");;
@@ -984,8 +986,8 @@ SWIGEXPORT void _wrap_ParameterList_remove(SwigClassWrapper const *farg1, SwigAr
   Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   std::string tempstr2 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
   {
@@ -1023,8 +1025,8 @@ SWIGEXPORT bool _wrap_ParameterList_is_parameter(SwigClassWrapper const *farg1, 
   std::string tempstr2 ;
   bool result;
   
-  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<Teuchos::ParameterList*>(smartarg1->get()) : NULL;
+  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
   {
@@ -1050,7 +1052,7 @@ SWIGEXPORT bool _wrap_ParameterList_is_parameter(SwigClassWrapper const *farg1, 
       SWIG_exception_impl("Teuchos::ParameterList::isParameter(std::string const &) const", SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = static_cast< bool >(result);
   return fresult;
 }
 
@@ -1063,8 +1065,8 @@ SWIGEXPORT SwigClassWrapper _wrap_ParameterList_sublist(SwigClassWrapper const *
   std::string tempstr2 ;
   Teuchos::ParameterList *result = 0 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
   {
@@ -1091,7 +1093,7 @@ SWIGEXPORT SwigClassWrapper _wrap_ParameterList_sublist(SwigClassWrapper const *
     }
   }
   {
-    fresult.ptr = new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_0);
+    fresult.cptr = new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_0);
     fresult.mem = SWIG_MOVE;
   }
   return fresult;
@@ -1104,12 +1106,14 @@ SWIGEXPORT void _wrap_ParameterList_set__SWIG_1(SwigClassWrapper const *farg1, S
   double *arg3 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   std::string tempstr2 ;
+  double temp3 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
-  arg3 = reinterpret_cast< double * >(const_cast< double* >(farg3));
+  temp3 = static_cast< double >(*farg3);
+  arg3 = &temp3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::ParameterList::set< double >(std::string const &,double const &)");;
@@ -1143,12 +1147,14 @@ SWIGEXPORT void _wrap_ParameterList_set__SWIG_2(SwigClassWrapper const *farg1, S
   int *arg3 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   std::string tempstr2 ;
+  int temp3 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
-  arg3 = reinterpret_cast< int * >(const_cast< int* >(farg3));
+  temp3 = static_cast< int >(*farg3);
+  arg3 = &temp3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::ParameterList::set< int >(std::string const &,int const &)");;
@@ -1182,12 +1188,14 @@ SWIGEXPORT void _wrap_ParameterList_set__SWIG_3(SwigClassWrapper const *farg1, S
   long long *arg3 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   std::string tempstr2 ;
+  long long temp3 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
-  arg3 = reinterpret_cast< long long * >(const_cast< long long* >(farg3));
+  temp3 = static_cast< long long >(*farg3);
+  arg3 = &temp3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::ParameterList::set< long long >(std::string const &,long long const &)");;
@@ -1221,12 +1229,14 @@ SWIGEXPORT void _wrap_ParameterList_set__SWIG_4(SwigClassWrapper const *farg1, S
   bool *arg3 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   std::string tempstr2 ;
+  bool temp3 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
-  arg3 = reinterpret_cast< bool * >(const_cast< bool* >(farg3));
+  temp3 = static_cast< bool >(*farg3);
+  arg3 = &temp3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::ParameterList::set< bool >(std::string const &,bool const &)");;
@@ -1262,8 +1272,8 @@ SWIGEXPORT void _wrap_ParameterList_set__SWIG_5(SwigClassWrapper const *farg1, S
   std::string tempstr2 ;
   std::string tempstr3 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
   tempstr3 = std::string(static_cast<const char *>(farg3->data), farg3->size);
@@ -1304,8 +1314,8 @@ SWIGEXPORT void _wrap_ParameterList_set__SWIG_6(SwigClassWrapper const *farg1, S
   Teuchos::Array< double > temparr3 ;
   Teuchos::Array< double >::value_type *tempbegin3 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
   tempbegin3 = static_cast<Teuchos::Array<double>::value_type*>(farg3->data);
@@ -1347,8 +1357,8 @@ SWIGEXPORT void _wrap_ParameterList_set__SWIG_7(SwigClassWrapper const *farg1, S
   Teuchos::Array< int > temparr3 ;
   Teuchos::Array< int >::value_type *tempbegin3 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
   tempbegin3 = static_cast<Teuchos::Array<int>::value_type*>(farg3->data);
@@ -1390,8 +1400,8 @@ SWIGEXPORT void _wrap_ParameterList_set__SWIG_8(SwigClassWrapper const *farg1, S
   Teuchos::Array< long long > temparr3 ;
   Teuchos::Array< long long >::value_type *tempbegin3 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
   tempbegin3 = static_cast<Teuchos::Array<long long>::value_type*>(farg3->data);
@@ -1432,13 +1442,13 @@ SWIGEXPORT void _wrap_ParameterList_set__SWIG_9(SwigClassWrapper const *farg1, S
   std::string tempstr2 ;
   Teuchos::RCP< Teuchos::ParameterList const > *smartarg3 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
   SWIG_check_sp_nonnull(farg3, "Teuchos::ParameterList *", "ParameterList", "Teuchos::ParameterList::set< Teuchos::ParameterList >(std::string const &,Teuchos::ParameterList const &)", return )
-  smartarg3 = static_cast< Teuchos::RCP<const Teuchos::ParameterList >* >(farg3->ptr);
-  arg3 = const_cast<Teuchos::ParameterList*>(smartarg3->get());
+  smartarg3 = static_cast< Teuchos::RCP<const Teuchos::ParameterList >* >(farg3->cptr);
+  arg3 = const_cast< Teuchos::ParameterList* >(smartarg3->get());
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::ParameterList::set< Teuchos::ParameterList >(std::string const &,Teuchos::ParameterList const &)");;
@@ -1474,8 +1484,8 @@ SWIGEXPORT double _wrap_ParameterList_get_real(SwigClassWrapper const *farg1, Sw
   std::string tempstr2 ;
   double *result = 0 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
   {
@@ -1514,8 +1524,8 @@ SWIGEXPORT int _wrap_ParameterList_get_integer(SwigClassWrapper const *farg1, Sw
   std::string tempstr2 ;
   int *result = 0 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
   {
@@ -1554,8 +1564,8 @@ SWIGEXPORT long long _wrap_ParameterList_get_longlong(SwigClassWrapper const *fa
   std::string tempstr2 ;
   long long *result = 0 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
   {
@@ -1594,8 +1604,8 @@ SWIGEXPORT bool _wrap_ParameterList_get_logical(SwigClassWrapper const *farg1, S
   std::string tempstr2 ;
   bool *result = 0 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
   {
@@ -1634,8 +1644,8 @@ SWIGEXPORT SwigArrayWrapper _wrap_ParameterList_get_string(SwigClassWrapper cons
   std::string tempstr2 ;
   std::string *result = 0 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
   {
@@ -1675,8 +1685,8 @@ SWIGEXPORT SwigArrayWrapper _wrap_ParameterList_get_arr_real(SwigClassWrapper co
   std::string tempstr2 ;
   Teuchos::Array< double > *result = 0 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
   {
@@ -1716,8 +1726,8 @@ SWIGEXPORT SwigArrayWrapper _wrap_ParameterList_get_arr_integer(SwigClassWrapper
   std::string tempstr2 ;
   Teuchos::Array< int > *result = 0 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
   {
@@ -1757,8 +1767,8 @@ SWIGEXPORT SwigArrayWrapper _wrap_ParameterList_get_arr_longlong(SwigClassWrappe
   std::string tempstr2 ;
   Teuchos::Array< long long > *result = 0 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
   {
@@ -1794,8 +1804,8 @@ SWIGEXPORT void _wrap_delete_ParameterList(SwigClassWrapper const *farg1) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::ParameterList::~ParameterList()");;
@@ -1824,7 +1834,7 @@ SWIGEXPORT void _wrap_delete_ParameterList(SwigClassWrapper const *farg1) {
 
 
 SWIGEXPORT void _wrap_assign_ParameterList(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef ::Teuchos::RCP< Teuchos::ParameterList > swig_lhs_classtype;
+  typedef Teuchos::RCP< Teuchos::ParameterList > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
@@ -1837,7 +1847,7 @@ SWIGEXPORT void _wrap_load_from_xml(SwigClassWrapper const *farg1, SwigArrayWrap
   Teuchos::RCP< Teuchos::ParameterList > tempnull1 ;
   std::string tempstr2 ;
   
-  arg1 = farg1->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg1->ptr) : &tempnull1;
+  arg1 = farg1->cptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg1->cptr) : &tempnull1;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
   {
@@ -1874,8 +1884,8 @@ SWIGEXPORT void _wrap_save_to_xml(SwigClassWrapper const *farg1, SwigArrayWrappe
   std::string tempstr2 ;
   
   SWIG_check_sp_nonnull(farg1, "Teuchos::ParameterList *", "ParameterList", "save_to_xml(Teuchos::ParameterList const &,std::string const &)", return )
-  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::ParameterList >* >(farg1->ptr);
-  arg1 = const_cast<Teuchos::ParameterList*>(smartarg1->get());
+  smartarg1 = static_cast< Teuchos::RCP<const Teuchos::ParameterList >* >(farg1->cptr);
+  arg1 = const_cast< Teuchos::ParameterList* >(smartarg1->get());
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
   {

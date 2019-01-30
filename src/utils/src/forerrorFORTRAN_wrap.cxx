@@ -191,7 +191,7 @@ template <typename T> T SwigValueInit() {
 
 
 #define SWIG_exception_impl(DECL, CODE, MSG, RETURNNULL) \
- { throw std::logic_error("In " DECL ": " MSG); RETURNNULL; }
+ { throw std::logic_error("In " DECL ": " MSG); }
 
 
 extern "C" {
@@ -250,6 +250,9 @@ SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
 }
 
 
+#include <string.h>
+
+
 #include <string>
 
 
@@ -259,14 +262,14 @@ SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
 // Stored exception message
 SWIGINTERN std::string* swig_last_exception_msg = NULL;
 // Inlined error retrieval function
-SWIGINTERN const std::string& fortrilinos_get_serr()
+SWIGINTERN const char* fortrilinos_get_serr()
 {
     if (!swig_last_exception_msg || swig_last_exception_msg->empty()) {
         SWIG_store_exception("UNKNOWN", SWIG_RuntimeError,
                              "no error string was present");
 
     }
-    return *swig_last_exception_msg;
+    return swig_last_exception_msg->c_str();
 }
 
 extern "C" {
@@ -313,11 +316,11 @@ extern "C" {
 #endif
 SWIGEXPORT SwigArrayWrapper _wrap_fortrilinos_get_serr() {
   SwigArrayWrapper fresult ;
-  std::string *result = 0 ;
+  char *result = 0 ;
   
-  result = (std::string *) &fortrilinos_get_serr();
-  fresult.data = (result->empty() ? NULL : &(*result->begin()));
-  fresult.size = result->size();
+  result = (char *)fortrilinos_get_serr();
+  fresult.size = strlen(reinterpret_cast< const char* >(result));
+  fresult.data = const_cast< char * >(result);
   return fresult;
 }
 

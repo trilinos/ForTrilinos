@@ -32,11 +32,11 @@ typedef char                                    Packet;
 %}
 
 // FIXME: Restore previous bool behaviour
-FORT_FUND_TYPEMAP(bool, "logical(C_BOOL)")
+FORT_FUND_TYPEMAP(bool, logical(C_BOOL))
 
 // NOTE: with the latest SWIG, these will *not* show up in downstream
 // %imported modules even if %insert is replaced with %fragment.
-%insert("fmodule") {
+%insert("fuse") {
  use, intrinsic :: iso_c_binding, only : &
    c_bool, &
    c_int, &
@@ -54,7 +54,7 @@ FORT_FUND_TYPEMAP(bool, "logical(C_BOOL)")
    mag_type => c_double, &
    norm_type => c_double
 }
-%insert("fpublic") {
+%insert("fdecl") {
 public :: scalar_type
 public :: local_ordinal_type
 public :: global_ordinal_type

@@ -191,7 +191,7 @@ template <typename T> T SwigValueInit() {
 
 
 #define SWIG_exception_impl(DECL, CODE, MSG, RETURNNULL) \
- { throw std::logic_error("In " DECL ": " MSG); RETURNNULL; }
+ { throw std::logic_error("In " DECL ": " MSG); }
 
 
 extern "C" {
@@ -301,7 +301,7 @@ SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
 
 
 enum SwigMemState {
-    SWIG_NULL = 0,
+    SWIG_NULL,
     SWIG_OWN,
     SWIG_MOVE,
     SWIG_REF,
@@ -310,14 +310,14 @@ enum SwigMemState {
 
 
 struct SwigClassWrapper {
-    void* ptr;
+    void* cptr;
     SwigMemState mem;
 };
 
 
 SWIGINTERN SwigClassWrapper SwigClassWrapper_uninitialized() {
     SwigClassWrapper result;
-    result.ptr = NULL;
+    result.cptr = NULL;
     result.mem = SWIG_NULL;
     return result;
 }
@@ -460,27 +460,28 @@ struct AssignmentTraits {
 template<class T1, class T2, int AFlags>
 SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other) {
   typedef swig::AssignmentTraits<T1, AFlags> Traits_t;
-  T1* pself  = static_cast<T1*>(self->ptr);
-  T2* pother = static_cast<T2*>(other->ptr);
+  T1* pself  = static_cast<T1*>(self->cptr);
+  T2* pother = static_cast<T2*>(other->cptr);
 
   switch (self->mem) {
     case SWIG_NULL:
       /* LHS is unassigned */
       switch (other->mem) {
-        case SWIG_NULL: /* null op */ break;
+        case SWIG_NULL: /* null op */
+          break;
         case SWIG_MOVE: /* capture pointer from RHS */
-          self->ptr = other->ptr;
-          other->ptr = NULL;
+          self->cptr = other->cptr;
+          other->cptr = NULL;
           self->mem = SWIG_OWN;
           other->mem = SWIG_NULL;
           break;
         case SWIG_OWN: /* copy from RHS */
-          self->ptr = Traits_t::copy_construct(pother);
+          self->cptr = Traits_t::copy_construct(pother);
           self->mem = SWIG_OWN;
           break;
         case SWIG_REF: /* pointer to RHS */
         case SWIG_CREF:
-          self->ptr = other->ptr;
+          self->cptr = other->cptr;
           self->mem = other->mem;
           break;
       }
@@ -491,14 +492,14 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
         case SWIG_NULL:
           /* Delete LHS */
           Traits_t::destruct(pself);
-          self->ptr = NULL;
+          self->cptr = NULL;
           self->mem = SWIG_NULL;
           break;
         case SWIG_MOVE:
           /* Move RHS into LHS; delete RHS */
           Traits_t::move_assign(pself, pother);
           Traits_t::destruct(pother);
-          other->ptr = NULL;
+          other->cptr = NULL;
           other->mem = SWIG_NULL;
           break;
         case SWIG_OWN:
@@ -519,7 +520,7 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
       switch (other->mem) {
         case SWIG_NULL:
           /* Remove LHS reference */
-          self->ptr = NULL;
+          self->cptr = NULL;
           self->mem = SWIG_NULL;
           break;
         case SWIG_MOVE:
@@ -527,7 +528,7 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
            * same. */
           Traits_t::move_assign(pself, pother);
           Traits_t::destruct(pother);
-          other->ptr = NULL;
+          other->cptr = NULL;
           other->mem = SWIG_NULL;
           break;
         case SWIG_OWN:
@@ -542,8 +543,9 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
       switch (other->mem) {
         case SWIG_NULL:
           /* Remove LHS reference */
-          self->ptr = NULL;
+          self->cptr = NULL;
           self->mem = SWIG_NULL;
+          break;
         default:
           SWIG_exception_impl("assignment", SWIG_RuntimeError,
               "Cannot assign to a const reference", return);
@@ -682,22 +684,22 @@ SWIGEXPORT SwigArrayWrapper _wrap_convertMsgTypeToString(int const *farg1) {
 }
 
 
-SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_convTol = Belos::DefaultSolverParameters::convTol;
+SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_convTol = static_cast< double >(Belos::DefaultSolverParameters::convTol);
 
-SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_polyTol = Belos::DefaultSolverParameters::polyTol;
+SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_polyTol = static_cast< double >(Belos::DefaultSolverParameters::polyTol);
 
-SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_orthoKappa = Belos::DefaultSolverParameters::orthoKappa;
+SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_orthoKappa = static_cast< double >(Belos::DefaultSolverParameters::orthoKappa);
 
-SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_resScaleFactor = Belos::DefaultSolverParameters::resScaleFactor;
+SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_resScaleFactor = static_cast< double >(Belos::DefaultSolverParameters::resScaleFactor);
 
-SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_impTolScale = Belos::DefaultSolverParameters::impTolScale;
+SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_impTolScale = static_cast< double >(Belos::DefaultSolverParameters::impTolScale);
 
 SWIGEXPORT SwigClassWrapper _wrap_new_DefaultSolverParameters() {
   SwigClassWrapper fresult ;
   Belos::DefaultSolverParameters *result = 0 ;
-
+  
   result = (Belos::DefaultSolverParameters *)new Belos::DefaultSolverParameters();
-  fresult.ptr = result;
+  fresult.cptr = result;
   fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
   return fresult;
 }
@@ -705,16 +707,16 @@ SWIGEXPORT SwigClassWrapper _wrap_new_DefaultSolverParameters() {
 
 SWIGEXPORT void _wrap_delete_DefaultSolverParameters(SwigClassWrapper const *farg1) {
   Belos::DefaultSolverParameters *arg1 = (Belos::DefaultSolverParameters *) 0 ;
-
+  
   SWIG_check_mutable_nonnull(*farg1, "Belos::DefaultSolverParameters *", "DefaultSolverParameters", "Belos::DefaultSolverParameters::~DefaultSolverParameters()", return );
-  arg1 = static_cast< Belos::DefaultSolverParameters * >(farg1->ptr);
+  arg1 = static_cast< Belos::DefaultSolverParameters * >(farg1->cptr);
   delete arg1;
-
+  
 }
 
 
 SWIGEXPORT void _wrap_assign_DefaultSolverParameters(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef ::Belos::DefaultSolverParameters swig_lhs_classtype;
+  typedef Belos::DefaultSolverParameters swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);

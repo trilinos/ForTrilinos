@@ -37,11 +37,11 @@ contains
     OUT0('Starting TeuchosPList_Basic!')
 
     plist = ParameterList('myname'); TEST_IERR()
-    TEST_ASSERT(c_associated(plist%swigdata%ptr))
+    TEST_ASSERT(c_associated(plist%swigdata%cptr))
 
     ! Test a function that raises an exception
     TEST_THROW(call load_from_xml(plist, 'nonexistent_path.xml'))
-    TEST_ASSERT(c_associated(plist%swigdata%ptr))
+    TEST_ASSERT(c_associated(plist%swigdata%cptr))
 
     ! Get and set a vlaue
     call plist%set('myint', 4)
@@ -77,9 +77,9 @@ contains
     call plist%remove('deleteme')
     TEST_ASSERT((.not. plist%is_parameter('deleteme')))
 
-    TEST_ASSERT((.not. c_associated(sublist%swigdata%ptr)))
+    TEST_ASSERT((.not. c_associated(sublist%swigdata%cptr)))
     sublist = plist%sublist('sublist')
-    TEST_ASSERT(c_associated(sublist%swigdata%ptr))
+    TEST_ASSERT(c_associated(sublist%swigdata%cptr))
 
     call sublist%set('anotherval', 4.0d0)
 

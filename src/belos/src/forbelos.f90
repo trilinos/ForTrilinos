@@ -15,98 +15,84 @@ module forbelos
  implicit none
  private
 
- ! PUBLIC METHODS AND TYPES
- public :: BelosETrans, BelosNOTRANS, BelosTRANS, BelosCONJTRANS
- public :: BelosNormType, BelosOneNorm, BelosTwoNorm, BelosInfNorm
- public :: BelosScaleType, BelosNormOfRHS, BelosNormOfInitRes, BelosNormOfPrecInitRes, BelosNone, BelosUserProvided, &
-    BelosNormOfFullInitRes, BelosNormOfFullPrecInitRes, BelosNormOfFullScaledInitRes, BelosNormOfFullScaledPrecInitRes
- public :: BelosOutputType, BelosGeneral, BelosBrief, BelosUser
- public :: BelosReturnType, BelosConverged, BelosUnconverged
-
-type, bind(C) :: SwigArrayWrapper
-  type(C_PTR), public :: data = C_NULL_PTR
-  integer(C_SIZE_T), public :: size = 0
-end type
-
- public :: convertReturnTypeToString
- public :: convertStatusTypeToString
- public :: convertStringToStatusType
- public :: convertStringToScaleType
- public :: convertScaleTypeToString
- public :: BelosConjType, BelosNO_CONJ, BelosCONJ
- public :: convertMsgTypeToString
- public :: DefaultSolverParameters
-
+ ! DECLARATION CONSTRUCTS
+ ! enum Belos::ETrans
  enum, bind(c)
-  enumerator :: SwigMemState = -1
-  enumerator :: SWIG_NULL = 0
-  enumerator :: SWIG_OWN
-  enumerator :: SWIG_MOVE
-  enumerator :: SWIG_REF
-  enumerator :: SWIG_CREF
- end enum
-
-
-type, bind(C) :: SwigClassWrapper
-  type(C_PTR), public :: ptr = C_NULL_PTR
-  integer(C_INT), public :: mem = SWIG_NULL
-end type
-
-
- ! PARAMETERS
- enum, bind(c)
-  enumerator :: BelosETrans = -1
   enumerator :: BelosNOTRANS = 0
   enumerator :: BelosTRANS = 1
   enumerator :: BelosCONJTRANS = 2
  end enum
+ integer, parameter, public :: BelosETrans = kind(BelosNOTRANS)
+ public :: BelosNOTRANS, BelosTRANS, BelosCONJTRANS
+ ! enum Belos::NormType
  enum, bind(c)
-  enumerator :: BelosNormType = -1
-  enumerator :: BelosOneNorm = 0
-  enumerator :: BelosTwoNorm = BelosOneNorm + 1
-  enumerator :: BelosInfNorm = BelosTwoNorm + 1
+  enumerator :: BelosOneNorm
+  enumerator :: BelosTwoNorm
+  enumerator :: BelosInfNorm
  end enum
+ integer, parameter, public :: BelosNormType = kind(BelosOneNorm)
+ public :: BelosOneNorm, BelosTwoNorm, BelosInfNorm
+ ! enum Belos::ScaleType
  enum, bind(c)
-  enumerator :: BelosScaleType = -1
-  enumerator :: BelosNormOfRHS = 0
-  enumerator :: BelosNormOfInitRes = BelosNormOfRHS + 1
-  enumerator :: BelosNormOfPrecInitRes = BelosNormOfInitRes + 1
-  enumerator :: BelosNone = BelosNormOfPrecInitRes + 1
-  enumerator :: BelosUserProvided = BelosNone + 1
-  enumerator :: BelosNormOfFullInitRes = BelosUserProvided + 1
-  enumerator :: BelosNormOfFullPrecInitRes = BelosNormOfFullInitRes + 1
-  enumerator :: BelosNormOfFullScaledInitRes = BelosNormOfFullPrecInitRes + 1
-  enumerator :: BelosNormOfFullScaledPrecInitRes = BelosNormOfFullScaledInitRes + 1
+  enumerator :: BelosNormOfRHS
+  enumerator :: BelosNormOfInitRes
+  enumerator :: BelosNormOfPrecInitRes
+  enumerator :: BelosNone
+  enumerator :: BelosUserProvided
+  enumerator :: BelosNormOfFullInitRes
+  enumerator :: BelosNormOfFullPrecInitRes
+  enumerator :: BelosNormOfFullScaledInitRes
+  enumerator :: BelosNormOfFullScaledPrecInitRes
  end enum
+ integer, parameter, public :: BelosScaleType = kind(BelosNormOfRHS)
+ public :: BelosNormOfRHS, BelosNormOfInitRes, BelosNormOfPrecInitRes, BelosNone, BelosUserProvided, BelosNormOfFullInitRes, &
+    BelosNormOfFullPrecInitRes, BelosNormOfFullScaledInitRes, BelosNormOfFullScaledPrecInitRes
+ ! enum Belos::OutputType
  enum, bind(c)
-  enumerator :: BelosOutputType = -1
-  enumerator :: BelosGeneral = 0
-  enumerator :: BelosBrief = BelosGeneral + 1
-  enumerator :: BelosUser = BelosBrief + 1
+  enumerator :: BelosGeneral
+  enumerator :: BelosBrief
+  enumerator :: BelosUser
  end enum
+ integer, parameter, public :: BelosOutputType = kind(BelosGeneral)
+ public :: BelosGeneral, BelosBrief, BelosUser
+ ! enum Belos::ReturnType
  enum, bind(c)
-  enumerator :: BelosReturnType = -1
-  enumerator :: BelosConverged = 0
-  enumerator :: BelosUnconverged = BelosConverged + 1
+  enumerator :: BelosConverged
+  enumerator :: BelosUnconverged
  end enum
- integer(C_INT), parameter, public :: BelosStatusType = -1_C_INT
+ integer, parameter, public :: BelosReturnType = kind(BelosConverged)
+ public :: BelosConverged, BelosUnconverged
+ type, bind(C) :: SwigArrayWrapper
+  type(C_PTR), public :: data = C_NULL_PTR
+  integer(C_SIZE_T), public :: size = 0
+ end type
+ public :: convertReturnTypeToString
+ ! enum Belos::StatusType
  integer(C_INT), protected, public, &
    bind(C, name="_wrap_BelosPassed") :: BelosPassed
  integer(C_INT), protected, public, &
    bind(C, name="_wrap_BelosFailed") :: BelosFailed
  integer(C_INT), protected, public, &
    bind(C, name="_wrap_BelosUndefined") :: BelosUndefined
- integer(C_INT), parameter, public :: BelosResetType = -1_C_INT
+ integer, parameter, public :: BelosStatusType = C_INT
+ ! enum Belos::ResetType
  integer(C_INT), protected, public, &
    bind(C, name="_wrap_BelosProblem") :: BelosProblem
  integer(C_INT), protected, public, &
    bind(C, name="_wrap_BelosRecycleSubspace") :: BelosRecycleSubspace
+ integer, parameter, public :: BelosResetType = C_INT
+ public :: convertStatusTypeToString
+ public :: convertStringToStatusType
+ public :: convertStringToScaleType
+ public :: convertScaleTypeToString
+ ! enum Belos::ConjType
  enum, bind(c)
-  enumerator :: BelosConjType = -1
-  enumerator :: BelosNO_CONJ = 0
-  enumerator :: BelosCONJ = BelosNO_CONJ + 1
+  enumerator :: BelosNO_CONJ
+  enumerator :: BelosCONJ
  end enum
- integer(C_INT), parameter, public :: BelosMsgType = -1_C_INT
+ integer, parameter, public :: BelosConjType = kind(BelosNO_CONJ)
+ public :: BelosNO_CONJ, BelosCONJ
+ ! enum Belos::MsgType
  integer(C_INT), protected, public, &
    bind(C, name="_wrap_BelosErrors") :: BelosErrors
  integer(C_INT), protected, public, &
@@ -123,6 +109,20 @@ end type
    bind(C, name="_wrap_BelosStatusTestDetails") :: BelosStatusTestDetails
  integer(C_INT), protected, public, &
    bind(C, name="_wrap_BelosDebug") :: BelosDebug
+ integer, parameter, public :: BelosMsgType = C_INT
+ public :: convertMsgTypeToString
+ enum, bind(c)
+  enumerator :: SWIG_NULL
+  enumerator :: SWIG_OWN
+  enumerator :: SWIG_MOVE
+  enumerator :: SWIG_REF
+  enumerator :: SWIG_CREF
+ end enum
+ integer, parameter :: SwigMemState = kind(SWIG_NULL)
+ type, bind(C) :: SwigClassWrapper
+  type(C_PTR), public :: cptr = C_NULL_PTR
+  integer(C_INT), public :: mem = SWIG_NULL
+ end type
  real(C_DOUBLE), protected, public, &
    bind(C, name="_wrap_DefaultSolverParameters_convTol") :: DefaultSolverParameters_convTol
  real(C_DOUBLE), protected, public, &
@@ -133,10 +133,8 @@ end type
    bind(C, name="_wrap_DefaultSolverParameters_resScaleFactor") :: DefaultSolverParameters_resScaleFactor
  real(C_DOUBLE), protected, public, &
    bind(C, name="_wrap_DefaultSolverParameters_impTolScale") :: DefaultSolverParameters_impTolScale
-
- ! TYPES
- type :: DefaultSolverParameters
-  ! These should be treated as PROTECTED data
+ ! struct Belos::DefaultSolverParameters
+ type, public :: DefaultSolverParameters
   type(SwigClassWrapper), public :: swigdata
  contains
   procedure :: release => delete_DefaultSolverParameters
@@ -144,33 +142,30 @@ end type
   generic :: assignment(=) => swigf_assignment_DefaultSolverParameters
  end type DefaultSolverParameters
  interface DefaultSolverParameters
-  procedure new_DefaultSolverParameters
+  module procedure new_DefaultSolverParameters
  end interface
 
-
- ! WRAPPER DECLARATIONS
- interface
+! WRAPPER DECLARATIONS
+interface
 function swigc_convertReturnTypeToString(farg1) &
 bind(C, name="_wrap_convertReturnTypeToString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigArrayWrapper
+import :: swigarraywrapper
 integer(C_INT), intent(in) :: farg1
 type(SwigArrayWrapper) :: fresult
 end function
 
-
-subroutine SWIG_free(ptr) &
+ subroutine SWIG_free(cptr) &
   bind(C, name="free")
  use, intrinsic :: ISO_C_BINDING
- type(C_PTR), value :: ptr
+ type(C_PTR), value :: cptr
 end subroutine
-
 function swigc_convertStatusTypeToString(farg1) &
 bind(C, name="_wrap_convertStatusTypeToString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigArrayWrapper
+import :: swigarraywrapper
 integer(C_INT), intent(in) :: farg1
 type(SwigArrayWrapper) :: fresult
 end function
@@ -179,7 +174,7 @@ function swigc_convertStringToStatusType(farg1) &
 bind(C, name="_wrap_convertStringToStatusType") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigArrayWrapper
+import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
@@ -188,7 +183,7 @@ function swigc_convertStringToScaleType(farg1) &
 bind(C, name="_wrap_convertStringToScaleType") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigArrayWrapper
+import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
@@ -197,7 +192,7 @@ function swigc_convertScaleTypeToString(farg1) &
 bind(C, name="_wrap_convertScaleTypeToString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigArrayWrapper
+import :: swigarraywrapper
 integer(C_INT), intent(in) :: farg1
 type(SwigArrayWrapper) :: fresult
 end function
@@ -206,7 +201,7 @@ function swigc_convertMsgTypeToString(farg1) &
 bind(C, name="_wrap_convertMsgTypeToString") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigArrayWrapper
+import :: swigarraywrapper
 integer(C_INT), intent(in) :: farg1
 type(SwigArrayWrapper) :: fresult
 end function
@@ -215,14 +210,14 @@ function swigc_new_DefaultSolverParameters() &
 bind(C, name="_wrap_new_DefaultSolverParameters") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
-import :: SwigClassWrapper
+import :: swigclasswrapper
 type(SwigClassWrapper) :: fresult
 end function
 
 subroutine swigc_delete_DefaultSolverParameters(farg1) &
 bind(C, name="_wrap_delete_DefaultSolverParameters")
 use, intrinsic :: ISO_C_BINDING
-import :: SwigClassWrapper
+import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
 end subroutine
 
@@ -233,11 +228,11 @@ end subroutine
    type(SwigClassWrapper), intent(inout) :: self
    type(SwigClassWrapper), intent(in) :: other
   end subroutine
- end interface
+end interface
 
 
 contains
- ! FORTRAN PROXY CODE
+ ! MODULE SUBPROGRAMS
 
 subroutine SWIG_chararray_to_string(wrap, string)
   use, intrinsic :: ISO_C_BINDING
@@ -256,7 +251,8 @@ function convertReturnTypeToString(result) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=:), allocatable :: swig_result
-integer(kind(BelosReturnType)), intent(in) :: result
+integer(BelosReturnType), intent(in) :: result
+
 type(SwigArrayWrapper) :: fresult 
 integer(C_INT) :: farg1 
 
@@ -270,7 +266,8 @@ function convertStatusTypeToString(status) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=:), allocatable :: swig_result
-integer(kind(BelosStatusType)), intent(in) :: status
+integer(BelosStatusType), intent(in) :: status
+
 type(SwigArrayWrapper) :: fresult 
 integer(C_INT) :: farg1 
 
@@ -301,9 +298,10 @@ end subroutine
 function convertStringToStatusType(status) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(kind(BelosStatusType)) :: swig_result
+integer(BelosStatusType) :: swig_result
 character(kind=C_CHAR, len=*), target :: status
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
+
 integer(C_INT) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 
@@ -315,9 +313,10 @@ end function
 function convertStringToScaleType(scaletype) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(kind(BelosScaleType)) :: swig_result
+integer(BelosScaleType) :: swig_result
 character(kind=C_CHAR, len=*), target :: scaletype
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
+
 integer(C_INT) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 
@@ -330,7 +329,8 @@ function convertScaleTypeToString(scaletype) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=:), allocatable :: swig_result
-integer(kind(BelosScaleType)), intent(in) :: scaletype
+integer(BelosScaleType), intent(in) :: scaletype
+
 type(SwigArrayWrapper) :: fresult 
 integer(C_INT) :: farg1 
 
@@ -344,7 +344,8 @@ function convertMsgTypeToString(msgtype) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=:), allocatable :: swig_result
-integer(kind(BelosMsgType)), intent(in) :: msgtype
+integer(BelosMsgType), intent(in) :: msgtype
+
 type(SwigArrayWrapper) :: fresult 
 integer(C_INT) :: farg1 
 
@@ -358,7 +359,8 @@ function new_DefaultSolverParameters() &
 result(self)
 use, intrinsic :: ISO_C_BINDING
 type(DefaultSolverParameters) :: self
-type(SwigClassWrapper) :: fresult
+
+type(SwigClassWrapper) :: fresult 
 
 fresult = swigc_new_DefaultSolverParameters()
 self%swigdata = fresult
@@ -367,13 +369,14 @@ end function
 subroutine delete_DefaultSolverParameters(self)
 use, intrinsic :: ISO_C_BINDING
 class(DefaultSolverParameters), intent(inout) :: self
-type(SwigClassWrapper) :: farg1
+
+type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 if (self%swigdata%mem == SWIG_OWN) then
 call swigc_delete_DefaultSolverParameters(farg1)
 end if
-self%swigdata%ptr = C_NULL_PTR
+self%swigdata%cptr = C_NULL_PTR
 self%swigdata%mem = SWIG_NULL
 end subroutine
 

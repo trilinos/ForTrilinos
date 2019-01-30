@@ -191,7 +191,7 @@ template <typename T> T SwigValueInit() {
 
 
 #define SWIG_exception_impl(DECL, CODE, MSG, RETURNNULL) \
- { throw std::logic_error("In " DECL ": " MSG); RETURNNULL; }
+ { throw std::logic_error("In " DECL ": " MSG); }
 
 
 extern "C" {
@@ -280,7 +280,7 @@ typedef char                                    Packet;
 
 
 enum SwigMemState {
-    SWIG_NULL = 0,
+    SWIG_NULL,
     SWIG_OWN,
     SWIG_MOVE,
     SWIG_REF,
@@ -289,14 +289,14 @@ enum SwigMemState {
 
 
 struct SwigClassWrapper {
-    void* ptr;
+    void* cptr;
     SwigMemState mem;
 };
 
 
 SWIGINTERN SwigClassWrapper SwigClassWrapper_uninitialized() {
     SwigClassWrapper result;
-    result.ptr = NULL;
+    result.cptr = NULL;
     result.mem = SWIG_NULL;
     return result;
 }
@@ -439,27 +439,28 @@ struct AssignmentTraits {
 template<class T1, class T2, int AFlags>
 SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other) {
   typedef swig::AssignmentTraits<T1, AFlags> Traits_t;
-  T1* pself  = static_cast<T1*>(self->ptr);
-  T2* pother = static_cast<T2*>(other->ptr);
+  T1* pself  = static_cast<T1*>(self->cptr);
+  T2* pother = static_cast<T2*>(other->cptr);
 
   switch (self->mem) {
     case SWIG_NULL:
       /* LHS is unassigned */
       switch (other->mem) {
-        case SWIG_NULL: /* null op */ break;
+        case SWIG_NULL: /* null op */
+          break;
         case SWIG_MOVE: /* capture pointer from RHS */
-          self->ptr = other->ptr;
-          other->ptr = NULL;
+          self->cptr = other->cptr;
+          other->cptr = NULL;
           self->mem = SWIG_OWN;
           other->mem = SWIG_NULL;
           break;
         case SWIG_OWN: /* copy from RHS */
-          self->ptr = Traits_t::copy_construct(pother);
+          self->cptr = Traits_t::copy_construct(pother);
           self->mem = SWIG_OWN;
           break;
         case SWIG_REF: /* pointer to RHS */
         case SWIG_CREF:
-          self->ptr = other->ptr;
+          self->cptr = other->cptr;
           self->mem = other->mem;
           break;
       }
@@ -470,14 +471,14 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
         case SWIG_NULL:
           /* Delete LHS */
           Traits_t::destruct(pself);
-          self->ptr = NULL;
+          self->cptr = NULL;
           self->mem = SWIG_NULL;
           break;
         case SWIG_MOVE:
           /* Move RHS into LHS; delete RHS */
           Traits_t::move_assign(pself, pother);
           Traits_t::destruct(pother);
-          other->ptr = NULL;
+          other->cptr = NULL;
           other->mem = SWIG_NULL;
           break;
         case SWIG_OWN:
@@ -498,7 +499,7 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
       switch (other->mem) {
         case SWIG_NULL:
           /* Remove LHS reference */
-          self->ptr = NULL;
+          self->cptr = NULL;
           self->mem = SWIG_NULL;
           break;
         case SWIG_MOVE:
@@ -506,7 +507,7 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
            * same. */
           Traits_t::move_assign(pself, pother);
           Traits_t::destruct(pother);
-          other->ptr = NULL;
+          other->cptr = NULL;
           other->mem = SWIG_NULL;
           break;
         case SWIG_OWN:
@@ -521,8 +522,9 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
       switch (other->mem) {
         case SWIG_NULL:
           /* Remove LHS reference */
-          self->ptr = NULL;
+          self->cptr = NULL;
           self->mem = SWIG_NULL;
+          break;
         default:
           SWIG_exception_impl("assignment", SWIG_RuntimeError,
               "Cannot assign to a const reference", return);
@@ -615,17 +617,17 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
       Teuchos::RCP<ForModelEvaluator> tempthis(
              const_cast<ForModelEvaluator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
-      self.ptr = &tempthis;
+      self.cptr = &tempthis;
       self.mem = SWIG_CREF; // since this function is const
 
       /* convert x -> class wrapper */
       SwigClassWrapper farg1;
-      farg1.ptr = const_cast<Teuchos::RCP<const multivector_type>*>(&x);
+      farg1.cptr = const_cast<Teuchos::RCP<const multivector_type>*>(&x);
       farg1.mem = SWIG_CREF; // x is const
 
       /* convert f -> class wrapper */
       SwigClassWrapper farg2;
-      farg2.ptr = &f;
+      farg2.cptr = &f;
       farg2.mem = SWIG_REF; // f is mutable
 
       swigd_ForModelEvaluator_evaluate_residual(&self, &farg1, &farg2);
@@ -637,17 +639,17 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
       Teuchos::RCP<ForModelEvaluator> tempthis(
              const_cast<ForModelEvaluator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
-      self.ptr = &tempthis;
+      self.cptr = &tempthis;
       self.mem = SWIG_CREF; // since this function is const
 
       /* convert x -> class wrapper */
       SwigClassWrapper farg1;
-      farg1.ptr = const_cast<Teuchos::RCP<const multivector_type>*>(&x);
+      farg1.cptr = const_cast<Teuchos::RCP<const multivector_type>*>(&x);
       farg1.mem = SWIG_CREF; // x is const
 
       /* convert J -> class wrapper */
       SwigClassWrapper farg2;
-      farg2.ptr = &J;
+      farg2.cptr = &J;
       farg2.mem = SWIG_REF; // f is mutable
 
       swigd_ForModelEvaluator_evaluate_jacobian(&self, &farg1, &farg2);
@@ -659,17 +661,17 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
       Teuchos::RCP<ForModelEvaluator> tempthis(
              const_cast<ForModelEvaluator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
-      self.ptr = &tempthis;
+      self.cptr = &tempthis;
       self.mem = SWIG_CREF; // since this function is const
 
       /* convert x -> class wrapper */
       SwigClassWrapper farg1;
-      farg1.ptr = const_cast<Teuchos::RCP<const multivector_type>*>(&x);
+      farg1.cptr = const_cast<Teuchos::RCP<const multivector_type>*>(&x);
       farg1.mem = SWIG_CREF; // x is const
 
       /* convert M -> class wrapper */
       SwigClassWrapper farg2;
-      farg2.ptr = &M;
+      farg2.cptr = &M;
       farg2.mem = SWIG_REF; // f is mutable
 
       swigd_ForModelEvaluator_evaluate_preconditioner(&self, &farg1, &farg2);
@@ -680,12 +682,12 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
       Teuchos::RCP<ForModelEvaluator> tempthis(
              const_cast<ForModelEvaluator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
-      self.ptr = &tempthis;
+      self.cptr = &tempthis;
       self.mem = SWIG_CREF; // since this function is const
 
       SwigClassWrapper fresult = swigd_ForModelEvaluator_get_x_map(&self);
 
-      Teuchos::RCP<const map_type>* smartresult = static_cast< Teuchos::RCP<const map_type>* >(fresult.ptr);
+      Teuchos::RCP<const map_type>* smartresult = static_cast< Teuchos::RCP<const map_type>* >(fresult.cptr);
       return *smartresult;
     }
 
@@ -694,12 +696,12 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
       Teuchos::RCP<ForModelEvaluator> tempthis(
              const_cast<ForModelEvaluator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
-      self.ptr = &tempthis;
+      self.cptr = &tempthis;
       self.mem = SWIG_CREF; // since this function is const
 
       SwigClassWrapper fresult = swigd_ForModelEvaluator_get_f_map(&self);
 
-      Teuchos::RCP<const map_type>* smartresult = static_cast< Teuchos::RCP<const map_type>* >(fresult.ptr);
+      Teuchos::RCP<const map_type>* smartresult = static_cast< Teuchos::RCP<const map_type>* >(fresult.cptr);
       return *smartresult;
     }
 
@@ -708,12 +710,12 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
       Teuchos::RCP<ForModelEvaluator> tempthis(
              const_cast<ForModelEvaluator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
-      self.ptr = &tempthis;
+      self.cptr = &tempthis;
       self.mem = SWIG_CREF; // since this function is const
 
       SwigClassWrapper fresult = swigd_ForModelEvaluator_create_operator(&self);
 
-      Teuchos::RCP<operator_type>* smartresult = static_cast< Teuchos::RCP<operator_type>* >(fresult.ptr);
+      Teuchos::RCP<operator_type>* smartresult = static_cast< Teuchos::RCP<operator_type>* >(fresult.cptr);
       return *smartresult;
     }
   };
@@ -761,7 +763,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TrilinosSolver() {
       SWIG_exception_impl("ForTrilinos::TrilinosSolver::TrilinosSolver()", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
     }
   }
-  fresult.ptr = result;
+  fresult.cptr = result;
   fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
   return fresult;
 }
@@ -771,7 +773,7 @@ SWIGEXPORT void _wrap_TrilinosSolver_init__SWIG_0(SwigClassWrapper const *farg1)
   ForTrilinos::TrilinosSolver *arg1 = (ForTrilinos::TrilinosSolver *) 0 ;
   
   SWIG_check_mutable_nonnull(*farg1, "ForTrilinos::TrilinosSolver *", "TrilinosSolver", "ForTrilinos::TrilinosSolver::init()", return );
-  arg1 = static_cast< ForTrilinos::TrilinosSolver * >(farg1->ptr);
+  arg1 = static_cast< ForTrilinos::TrilinosSolver * >(farg1->cptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosSolver::init()");;
@@ -805,8 +807,8 @@ SWIGEXPORT void _wrap_TrilinosSolver_init__SWIG_1(SwigClassWrapper const *farg1,
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
   
   SWIG_check_mutable_nonnull(*farg1, "ForTrilinos::TrilinosSolver *", "TrilinosSolver", "ForTrilinos::TrilinosSolver::init(Teuchos::RCP< Teuchos::Comm< int > const > const &)", return );
-  arg1 = static_cast< ForTrilinos::TrilinosSolver * >(farg1->ptr);
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::Comm< int > const > * >(farg2->ptr) : &tempnull2;
+  arg1 = static_cast< ForTrilinos::TrilinosSolver * >(farg1->cptr);
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< Teuchos::Comm< int > const > * >(farg2->cptr) : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosSolver::init(Teuchos::RCP< Teuchos::Comm< int > const > const &)");;
@@ -840,8 +842,8 @@ SWIGEXPORT void _wrap_TrilinosSolver_setup_matrix(SwigClassWrapper const *farg1,
   Teuchos::RCP< ForTrilinos::TrilinosSolver::Matrix > tempnull2 ;
   
   SWIG_check_mutable_nonnull(*farg1, "ForTrilinos::TrilinosSolver *", "TrilinosSolver", "ForTrilinos::TrilinosSolver::setup_matrix(Teuchos::RCP< ForTrilinos::TrilinosSolver::Matrix > const &)", return );
-  arg1 = static_cast< ForTrilinos::TrilinosSolver * >(farg1->ptr);
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< ForTrilinos::TrilinosSolver::Matrix > * >(farg2->ptr) : &tempnull2;
+  arg1 = static_cast< ForTrilinos::TrilinosSolver * >(farg1->cptr);
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForTrilinos::TrilinosSolver::Matrix > * >(farg2->cptr) : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosSolver::setup_matrix(Teuchos::RCP< ForTrilinos::TrilinosSolver::Matrix > const &)");;
@@ -875,8 +877,8 @@ SWIGEXPORT void _wrap_TrilinosSolver_setup_operator(SwigClassWrapper const *farg
   Teuchos::RCP< ForTrilinos::TrilinosSolver::Operator > tempnull2 ;
   
   SWIG_check_mutable_nonnull(*farg1, "ForTrilinos::TrilinosSolver *", "TrilinosSolver", "ForTrilinos::TrilinosSolver::setup_operator(Teuchos::RCP< ForTrilinos::TrilinosSolver::Operator > const &)", return );
-  arg1 = static_cast< ForTrilinos::TrilinosSolver * >(farg1->ptr);
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< ForTrilinos::TrilinosSolver::Operator > * >(farg2->ptr) : &tempnull2;
+  arg1 = static_cast< ForTrilinos::TrilinosSolver * >(farg1->cptr);
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForTrilinos::TrilinosSolver::Operator > * >(farg2->cptr) : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosSolver::setup_operator(Teuchos::RCP< ForTrilinos::TrilinosSolver::Operator > const &)");;
@@ -910,8 +912,8 @@ SWIGEXPORT void _wrap_TrilinosSolver_setup_solver(SwigClassWrapper const *farg1,
   Teuchos::RCP< Teuchos::ParameterList > tempnull2 ;
   
   SWIG_check_mutable_nonnull(*farg1, "ForTrilinos::TrilinosSolver *", "TrilinosSolver", "ForTrilinos::TrilinosSolver::setup_solver(Teuchos::RCP< Teuchos::ParameterList > const &)", return );
-  arg1 = static_cast< ForTrilinos::TrilinosSolver * >(farg1->ptr);
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg2->ptr) : &tempnull2;
+  arg1 = static_cast< ForTrilinos::TrilinosSolver * >(farg1->cptr);
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg2->cptr) : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosSolver::setup_solver(Teuchos::RCP< Teuchos::ParameterList > const &)");;
@@ -947,9 +949,9 @@ SWIGEXPORT void _wrap_TrilinosSolver_solve(SwigClassWrapper const *farg1, SwigCl
   Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector > tempnull3 ;
   
   SWIG_check_nonnull(*farg1, "ForTrilinos::TrilinosSolver const *", "TrilinosSolver", "ForTrilinos::TrilinosSolver::solve(Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector const > const &,Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector > &) const", return );
-  arg1 = static_cast< ForTrilinos::TrilinosSolver * >(farg1->ptr);
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector const > * >(farg2->ptr) : &tempnull2;
-  arg3 = farg3->ptr ? static_cast< Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector > * >(farg3->ptr) : &tempnull3;
+  arg1 = static_cast< ForTrilinos::TrilinosSolver * >(farg1->cptr);
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector const > * >(farg2->cptr) : &tempnull2;
+  arg3 = farg3->cptr ? static_cast< Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector > * >(farg3->cptr) : &tempnull3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosSolver::solve(Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector const > const &,Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector > &) const");;
@@ -981,7 +983,7 @@ SWIGEXPORT void _wrap_TrilinosSolver_finalize(SwigClassWrapper const *farg1) {
   ForTrilinos::TrilinosSolver *arg1 = (ForTrilinos::TrilinosSolver *) 0 ;
   
   SWIG_check_mutable_nonnull(*farg1, "ForTrilinos::TrilinosSolver *", "TrilinosSolver", "ForTrilinos::TrilinosSolver::finalize()", return );
-  arg1 = static_cast< ForTrilinos::TrilinosSolver * >(farg1->ptr);
+  arg1 = static_cast< ForTrilinos::TrilinosSolver * >(farg1->cptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosSolver::finalize()");;
@@ -1013,7 +1015,7 @@ SWIGEXPORT void _wrap_delete_TrilinosSolver(SwigClassWrapper const *farg1) {
   ForTrilinos::TrilinosSolver *arg1 = (ForTrilinos::TrilinosSolver *) 0 ;
   
   SWIG_check_mutable_nonnull(*farg1, "ForTrilinos::TrilinosSolver *", "TrilinosSolver", "ForTrilinos::TrilinosSolver::~TrilinosSolver()", return );
-  arg1 = static_cast< ForTrilinos::TrilinosSolver * >(farg1->ptr);
+  arg1 = static_cast< ForTrilinos::TrilinosSolver * >(farg1->cptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosSolver::~TrilinosSolver()");;
@@ -1042,7 +1044,7 @@ SWIGEXPORT void _wrap_delete_TrilinosSolver(SwigClassWrapper const *farg1) {
 
 
 SWIGEXPORT void _wrap_assign_TrilinosSolver(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef ::ForTrilinos::TrilinosSolver swig_lhs_classtype;
+  typedef ForTrilinos::TrilinosSolver swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
@@ -1076,7 +1078,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TrilinosEigenSolver() {
       SWIG_exception_impl("ForTrilinos::TrilinosEigenSolver::TrilinosEigenSolver()", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
     }
   }
-  fresult.ptr = result;
+  fresult.cptr = result;
   fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
   return fresult;
 }
@@ -1086,7 +1088,7 @@ SWIGEXPORT void _wrap_TrilinosEigenSolver_init__SWIG_0(SwigClassWrapper const *f
   ForTrilinos::TrilinosEigenSolver *arg1 = (ForTrilinos::TrilinosEigenSolver *) 0 ;
   
   SWIG_check_mutable_nonnull(*farg1, "ForTrilinos::TrilinosEigenSolver *", "TrilinosEigenSolver", "ForTrilinos::TrilinosEigenSolver::init()", return );
-  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->ptr);
+  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->cptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosEigenSolver::init()");;
@@ -1120,8 +1122,8 @@ SWIGEXPORT void _wrap_TrilinosEigenSolver_init__SWIG_1(SwigClassWrapper const *f
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
   
   SWIG_check_mutable_nonnull(*farg1, "ForTrilinos::TrilinosEigenSolver *", "TrilinosEigenSolver", "ForTrilinos::TrilinosEigenSolver::init(Teuchos::RCP< Teuchos::Comm< int > const > const &)", return );
-  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->ptr);
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::Comm< int > const > * >(farg2->ptr) : &tempnull2;
+  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->cptr);
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< Teuchos::Comm< int > const > * >(farg2->cptr) : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosEigenSolver::init(Teuchos::RCP< Teuchos::Comm< int > const > const &)");;
@@ -1155,8 +1157,8 @@ SWIGEXPORT void _wrap_TrilinosEigenSolver_setup_matrix(SwigClassWrapper const *f
   Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Matrix > tempnull2 ;
   
   SWIG_check_mutable_nonnull(*farg1, "ForTrilinos::TrilinosEigenSolver *", "TrilinosEigenSolver", "ForTrilinos::TrilinosEigenSolver::setup_matrix(Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Matrix > const &)", return );
-  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->ptr);
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Matrix > * >(farg2->ptr) : &tempnull2;
+  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->cptr);
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Matrix > * >(farg2->cptr) : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosEigenSolver::setup_matrix(Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Matrix > const &)");;
@@ -1190,8 +1192,8 @@ SWIGEXPORT void _wrap_TrilinosEigenSolver_setup_matrix_rhs(SwigClassWrapper cons
   Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Matrix > tempnull2 ;
   
   SWIG_check_mutable_nonnull(*farg1, "ForTrilinos::TrilinosEigenSolver *", "TrilinosEigenSolver", "ForTrilinos::TrilinosEigenSolver::setup_matrix_rhs(Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Matrix > const &)", return );
-  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->ptr);
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Matrix > * >(farg2->ptr) : &tempnull2;
+  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->cptr);
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Matrix > * >(farg2->cptr) : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosEigenSolver::setup_matrix_rhs(Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Matrix > const &)");;
@@ -1225,8 +1227,8 @@ SWIGEXPORT void _wrap_TrilinosEigenSolver_setup_operator(SwigClassWrapper const 
   Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Operator > tempnull2 ;
   
   SWIG_check_mutable_nonnull(*farg1, "ForTrilinos::TrilinosEigenSolver *", "TrilinosEigenSolver", "ForTrilinos::TrilinosEigenSolver::setup_operator(Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Operator > const &)", return );
-  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->ptr);
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Operator > * >(farg2->ptr) : &tempnull2;
+  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->cptr);
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Operator > * >(farg2->cptr) : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosEigenSolver::setup_operator(Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Operator > const &)");;
@@ -1260,8 +1262,8 @@ SWIGEXPORT void _wrap_TrilinosEigenSolver_setup_operator_rhs(SwigClassWrapper co
   Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Operator > tempnull2 ;
   
   SWIG_check_mutable_nonnull(*farg1, "ForTrilinos::TrilinosEigenSolver *", "TrilinosEigenSolver", "ForTrilinos::TrilinosEigenSolver::setup_operator_rhs(Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Operator > const &)", return );
-  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->ptr);
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Operator > * >(farg2->ptr) : &tempnull2;
+  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->cptr);
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Operator > * >(farg2->cptr) : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosEigenSolver::setup_operator_rhs(Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::Operator > const &)");;
@@ -1295,8 +1297,8 @@ SWIGEXPORT void _wrap_TrilinosEigenSolver_setup_solver(SwigClassWrapper const *f
   Teuchos::RCP< Teuchos::ParameterList > tempnull2 ;
   
   SWIG_check_mutable_nonnull(*farg1, "ForTrilinos::TrilinosEigenSolver *", "TrilinosEigenSolver", "ForTrilinos::TrilinosEigenSolver::setup_solver(Teuchos::RCP< Teuchos::ParameterList > const &)", return );
-  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->ptr);
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg2->ptr) : &tempnull2;
+  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->cptr);
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg2->cptr) : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosEigenSolver::setup_solver(Teuchos::RCP< Teuchos::ParameterList > const &)");;
@@ -1334,10 +1336,10 @@ SWIGEXPORT size_t _wrap_TrilinosEigenSolver_solve(SwigClassWrapper const *farg1,
   size_t result;
   
   SWIG_check_nonnull(*farg1, "ForTrilinos::TrilinosEigenSolver const *", "TrilinosEigenSolver", "ForTrilinos::TrilinosEigenSolver::solve(std::pair< ForTrilinos::TrilinosEigenSolver::SC *,std::size_t >,Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::MultiVector > &,std::pair< int *,std::size_t >) const", return 0);
-  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->ptr);
+  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->cptr);
   (&arg2)->first  = static_cast<double*>(farg2->data);
   (&arg2)->second = farg2->size;
-  arg3 = farg3->ptr ? static_cast< Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::MultiVector > * >(farg3->ptr) : &tempnull3;
+  arg3 = farg3->cptr ? static_cast< Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::MultiVector > * >(farg3->cptr) : &tempnull3;
   (&arg4)->first  = static_cast<int*>(farg4->data);
   (&arg4)->second = farg4->size;
   {
@@ -1363,7 +1365,7 @@ SWIGEXPORT size_t _wrap_TrilinosEigenSolver_solve(SwigClassWrapper const *farg1,
       SWIG_exception_impl("ForTrilinos::TrilinosEigenSolver::solve(std::pair< ForTrilinos::TrilinosEigenSolver::SC *,std::size_t >,Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::MultiVector > &,std::pair< int *,std::size_t >) const", SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = result;
+  fresult = static_cast< size_t >(result);
   return fresult;
 }
 
@@ -1372,7 +1374,7 @@ SWIGEXPORT void _wrap_TrilinosEigenSolver_finalize(SwigClassWrapper const *farg1
   ForTrilinos::TrilinosEigenSolver *arg1 = (ForTrilinos::TrilinosEigenSolver *) 0 ;
   
   SWIG_check_mutable_nonnull(*farg1, "ForTrilinos::TrilinosEigenSolver *", "TrilinosEigenSolver", "ForTrilinos::TrilinosEigenSolver::finalize()", return );
-  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->ptr);
+  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->cptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosEigenSolver::finalize()");;
@@ -1404,7 +1406,7 @@ SWIGEXPORT void _wrap_delete_TrilinosEigenSolver(SwigClassWrapper const *farg1) 
   ForTrilinos::TrilinosEigenSolver *arg1 = (ForTrilinos::TrilinosEigenSolver *) 0 ;
   
   SWIG_check_mutable_nonnull(*farg1, "ForTrilinos::TrilinosEigenSolver *", "TrilinosEigenSolver", "ForTrilinos::TrilinosEigenSolver::~TrilinosEigenSolver()", return );
-  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->ptr);
+  arg1 = static_cast< ForTrilinos::TrilinosEigenSolver * >(farg1->cptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosEigenSolver::~TrilinosEigenSolver()");;
@@ -1433,7 +1435,7 @@ SWIGEXPORT void _wrap_delete_TrilinosEigenSolver(SwigClassWrapper const *farg1) 
 
 
 SWIGEXPORT void _wrap_assign_TrilinosEigenSolver(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef ::ForTrilinos::TrilinosEigenSolver swig_lhs_classtype;
+  typedef ForTrilinos::TrilinosEigenSolver swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
@@ -1448,10 +1450,10 @@ SWIGEXPORT void _wrap_ForTrilinosModelEvaluator_evaluate_residual(SwigClassWrapp
   Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > tempnull2 ;
   Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector > tempnull3 ;
   
-  smartarg1 = static_cast< Teuchos::RCP<const ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<ForTrilinos::ModelEvaluator<SC,LO,GO,NO>*>(smartarg1->get()) : NULL;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > * >(farg2->ptr) : &tempnull2;
-  arg3 = farg3->ptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector > * >(farg3->ptr) : &tempnull3;
+  smartarg1 = static_cast< Teuchos::RCP<const ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForTrilinos::ModelEvaluator<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > * >(farg2->cptr) : &tempnull2;
+  arg3 = farg3->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector > * >(farg3->cptr) : &tempnull3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_residual(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector > &) const");;
@@ -1487,10 +1489,10 @@ SWIGEXPORT void _wrap_ForTrilinosModelEvaluator_evaluate_jacobian(SwigClassWrapp
   Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > tempnull2 ;
   Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > tempnull3 ;
   
-  smartarg1 = static_cast< Teuchos::RCP<const ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<ForTrilinos::ModelEvaluator<SC,LO,GO,NO>*>(smartarg1->get()) : NULL;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > * >(farg2->ptr) : &tempnull2;
-  arg3 = farg3->ptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > * >(farg3->ptr) : &tempnull3;
+  smartarg1 = static_cast< Teuchos::RCP<const ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForTrilinos::ModelEvaluator<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > * >(farg2->cptr) : &tempnull2;
+  arg3 = farg3->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > * >(farg3->cptr) : &tempnull3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_jacobian(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > &) const");;
@@ -1526,10 +1528,10 @@ SWIGEXPORT void _wrap_ForTrilinosModelEvaluator_evaluate_preconditioner(SwigClas
   Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > tempnull2 ;
   Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > tempnull3 ;
   
-  smartarg1 = static_cast< Teuchos::RCP<const ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<ForTrilinos::ModelEvaluator<SC,LO,GO,NO>*>(smartarg1->get()) : NULL;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > * >(farg2->ptr) : &tempnull2;
-  arg3 = farg3->ptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > * >(farg3->ptr) : &tempnull3;
+  smartarg1 = static_cast< Teuchos::RCP<const ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForTrilinos::ModelEvaluator<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > * >(farg2->cptr) : &tempnull2;
+  arg3 = farg3->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > * >(farg3->cptr) : &tempnull3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_preconditioner(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > &) const");;
@@ -1563,8 +1565,8 @@ SWIGEXPORT SwigClassWrapper _wrap_ForTrilinosModelEvaluator_get_x_map(SwigClassW
   Teuchos::RCP< ForTrilinos::ModelEvaluator< SC,LO,GO,NO > const > *smartarg1 ;
   Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Map const > result;
   
-  smartarg1 = static_cast< Teuchos::RCP<const ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<ForTrilinos::ModelEvaluator<SC,LO,GO,NO>*>(smartarg1->get()) : NULL;
+  smartarg1 = static_cast< Teuchos::RCP<const ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForTrilinos::ModelEvaluator<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::get_x_map() const");;
@@ -1588,7 +1590,7 @@ SWIGEXPORT SwigClassWrapper _wrap_ForTrilinosModelEvaluator_get_x_map(SwigClassW
       SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::get_x_map() const", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
     }
   }
-  fresult.ptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
+  fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
   fresult.mem = SWIG_MOVE;
   return fresult;
 }
@@ -1600,8 +1602,8 @@ SWIGEXPORT SwigClassWrapper _wrap_ForTrilinosModelEvaluator_get_f_map(SwigClassW
   Teuchos::RCP< ForTrilinos::ModelEvaluator< SC,LO,GO,NO > const > *smartarg1 ;
   Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Map const > result;
   
-  smartarg1 = static_cast< Teuchos::RCP<const ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<ForTrilinos::ModelEvaluator<SC,LO,GO,NO>*>(smartarg1->get()) : NULL;
+  smartarg1 = static_cast< Teuchos::RCP<const ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForTrilinos::ModelEvaluator<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::get_f_map() const");;
@@ -1625,7 +1627,7 @@ SWIGEXPORT SwigClassWrapper _wrap_ForTrilinosModelEvaluator_get_f_map(SwigClassW
       SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::get_f_map() const", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
     }
   }
-  fresult.ptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
+  fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
   fresult.mem = SWIG_MOVE;
   return fresult;
 }
@@ -1637,8 +1639,8 @@ SWIGEXPORT SwigClassWrapper _wrap_ForTrilinosModelEvaluator_create_operator(Swig
   Teuchos::RCP< ForTrilinos::ModelEvaluator< SC,LO,GO,NO > const > *smartarg1 ;
   Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > result;
   
-  smartarg1 = static_cast< Teuchos::RCP<const ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<ForTrilinos::ModelEvaluator<SC,LO,GO,NO>*>(smartarg1->get()) : NULL;
+  smartarg1 = static_cast< Teuchos::RCP<const ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForTrilinos::ModelEvaluator<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::create_operator() const");;
@@ -1662,7 +1664,7 @@ SWIGEXPORT SwigClassWrapper _wrap_ForTrilinosModelEvaluator_create_operator(Swig
       SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::create_operator() const", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
     }
   }
-  fresult.ptr = (new Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> >& >(result)));
+  fresult.cptr = (new Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> >& >(result)));
   fresult.mem = SWIG_MOVE;
   return fresult;
 }
@@ -1674,9 +1676,9 @@ SWIGEXPORT void _wrap_ForTrilinosModelEvaluator_setup(SwigClassWrapper const *fa
   Teuchos::RCP< ForTrilinos::ModelEvaluator< SC,LO,GO,NO > > *smartarg1 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull2 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg2->ptr) : &tempnull2;
+  smartarg1 = static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForTrilinos::ModelEvaluator<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg2->cptr) : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::setup(Teuchos::RCP< Teuchos::ParameterList > &)");;
@@ -1708,8 +1710,8 @@ SWIGEXPORT void _wrap_delete_ForTrilinosModelEvaluator(SwigClassWrapper const *f
   ForTrilinos::ModelEvaluator< SC,LO,GO,NO > *arg1 = (ForTrilinos::ModelEvaluator< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< ForTrilinos::ModelEvaluator< SC,LO,GO,NO > > *smartarg1 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForTrilinos::ModelEvaluator<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::~ModelEvaluator()");;
@@ -1738,7 +1740,7 @@ SWIGEXPORT void _wrap_delete_ForTrilinosModelEvaluator(SwigClassWrapper const *f
 
 
 SWIGEXPORT void _wrap_assign_ForTrilinosModelEvaluator(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef ::Teuchos::RCP< ForTrilinos::ModelEvaluator<SC,LO,GO,NO> > swig_lhs_classtype;
+  typedef Teuchos::RCP< ForTrilinos::ModelEvaluator<SC,LO,GO,NO> > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR);
@@ -1751,8 +1753,8 @@ SWIGEXPORT void * _wrap_ForModelEvaluator_fhandle(SwigClassWrapper const *farg1)
   Teuchos::RCP< ForModelEvaluator const > *smartarg1 ;
   void *result = 0 ;
   
-  smartarg1 = static_cast< Teuchos::RCP<const ForModelEvaluator >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<ForModelEvaluator*>(smartarg1->get()) : NULL;
+  smartarg1 = static_cast< Teuchos::RCP<const ForModelEvaluator >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForModelEvaluator* >(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForModelEvaluator::fhandle() const");;
@@ -1786,8 +1788,8 @@ SWIGEXPORT void _wrap_ForModelEvaluator_init(SwigClassWrapper const *farg1, void
   void *arg2 = (void *) 0 ;
   Teuchos::RCP< ForModelEvaluator > *smartarg1 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< ForModelEvaluator >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< ForModelEvaluator >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForModelEvaluator* >(smartarg1->get()) : NULL;
   arg2 = reinterpret_cast< void * >(farg2);
   {
     // Make sure no unhandled exceptions exist before performing a new action
@@ -1822,9 +1824,9 @@ SWIGEXPORT void _wrap_ForModelEvaluator_setup(SwigClassWrapper const *farg1, Swi
   Teuchos::RCP< ForModelEvaluator > *smartarg1 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull2 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< ForModelEvaluator >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg2->ptr) : &tempnull2;
+  smartarg1 = static_cast< Teuchos::RCP< ForModelEvaluator >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForModelEvaluator* >(smartarg1->get()) : NULL;
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg2->cptr) : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForModelEvaluator::setup(Teuchos::RCP< Teuchos::ParameterList > &)");;
@@ -1860,10 +1862,10 @@ SWIGEXPORT void _wrap_ForModelEvaluator_evaluate_residual(SwigClassWrapper const
   Teuchos::RCP< ForModelEvaluator::multivector_type const > tempnull2 ;
   Teuchos::RCP< ForModelEvaluator::multivector_type > tempnull3 ;
   
-  smartarg1 = static_cast< Teuchos::RCP<const ForModelEvaluator >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<ForModelEvaluator*>(smartarg1->get()) : NULL;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< ForModelEvaluator::multivector_type const > * >(farg2->ptr) : &tempnull2;
-  arg3 = farg3->ptr ? static_cast< Teuchos::RCP< ForModelEvaluator::multivector_type > * >(farg3->ptr) : &tempnull3;
+  smartarg1 = static_cast< Teuchos::RCP<const ForModelEvaluator >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForModelEvaluator* >(smartarg1->get()) : NULL;
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForModelEvaluator::multivector_type const > * >(farg2->cptr) : &tempnull2;
+  arg3 = farg3->cptr ? static_cast< Teuchos::RCP< ForModelEvaluator::multivector_type > * >(farg3->cptr) : &tempnull3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForModelEvaluator::evaluate_residual(Teuchos::RCP< ForModelEvaluator::multivector_type const > const &,Teuchos::RCP< ForModelEvaluator::multivector_type > &) const");;
@@ -1899,10 +1901,10 @@ SWIGEXPORT void _wrap_ForModelEvaluator_evaluate_jacobian(SwigClassWrapper const
   Teuchos::RCP< ForModelEvaluator::multivector_type const > tempnull2 ;
   Teuchos::RCP< ForModelEvaluator::operator_type > tempnull3 ;
   
-  smartarg1 = static_cast< Teuchos::RCP<const ForModelEvaluator >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<ForModelEvaluator*>(smartarg1->get()) : NULL;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< ForModelEvaluator::multivector_type const > * >(farg2->ptr) : &tempnull2;
-  arg3 = farg3->ptr ? static_cast< Teuchos::RCP< ForModelEvaluator::operator_type > * >(farg3->ptr) : &tempnull3;
+  smartarg1 = static_cast< Teuchos::RCP<const ForModelEvaluator >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForModelEvaluator* >(smartarg1->get()) : NULL;
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForModelEvaluator::multivector_type const > * >(farg2->cptr) : &tempnull2;
+  arg3 = farg3->cptr ? static_cast< Teuchos::RCP< ForModelEvaluator::operator_type > * >(farg3->cptr) : &tempnull3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForModelEvaluator::evaluate_jacobian(Teuchos::RCP< ForModelEvaluator::multivector_type const > const &,Teuchos::RCP< ForModelEvaluator::operator_type > &) const");;
@@ -1938,10 +1940,10 @@ SWIGEXPORT void _wrap_ForModelEvaluator_evaluate_preconditioner(SwigClassWrapper
   Teuchos::RCP< ForModelEvaluator::multivector_type const > tempnull2 ;
   Teuchos::RCP< ForModelEvaluator::operator_type > tempnull3 ;
   
-  smartarg1 = static_cast< Teuchos::RCP<const ForModelEvaluator >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<ForModelEvaluator*>(smartarg1->get()) : NULL;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< ForModelEvaluator::multivector_type const > * >(farg2->ptr) : &tempnull2;
-  arg3 = farg3->ptr ? static_cast< Teuchos::RCP< ForModelEvaluator::operator_type > * >(farg3->ptr) : &tempnull3;
+  smartarg1 = static_cast< Teuchos::RCP<const ForModelEvaluator >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForModelEvaluator* >(smartarg1->get()) : NULL;
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForModelEvaluator::multivector_type const > * >(farg2->cptr) : &tempnull2;
+  arg3 = farg3->cptr ? static_cast< Teuchos::RCP< ForModelEvaluator::operator_type > * >(farg3->cptr) : &tempnull3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForModelEvaluator::evaluate_preconditioner(Teuchos::RCP< ForModelEvaluator::multivector_type const > const &,Teuchos::RCP< ForModelEvaluator::operator_type > &) const");;
@@ -1975,8 +1977,8 @@ SWIGEXPORT SwigClassWrapper _wrap_ForModelEvaluator_get_x_map(SwigClassWrapper c
   Teuchos::RCP< ForModelEvaluator const > *smartarg1 ;
   Teuchos::RCP< ForModelEvaluator::map_type const > result;
   
-  smartarg1 = static_cast< Teuchos::RCP<const ForModelEvaluator >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<ForModelEvaluator*>(smartarg1->get()) : NULL;
+  smartarg1 = static_cast< Teuchos::RCP<const ForModelEvaluator >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForModelEvaluator* >(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForModelEvaluator::get_x_map() const");;
@@ -2000,7 +2002,7 @@ SWIGEXPORT SwigClassWrapper _wrap_ForModelEvaluator_get_x_map(SwigClassWrapper c
       SWIG_exception_impl("ForModelEvaluator::get_x_map() const", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
     }
   }
-  fresult.ptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
+  fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
   fresult.mem = SWIG_MOVE;
   return fresult;
 }
@@ -2012,8 +2014,8 @@ SWIGEXPORT SwigClassWrapper _wrap_ForModelEvaluator_get_f_map(SwigClassWrapper c
   Teuchos::RCP< ForModelEvaluator const > *smartarg1 ;
   Teuchos::RCP< ForModelEvaluator::map_type const > result;
   
-  smartarg1 = static_cast< Teuchos::RCP<const ForModelEvaluator >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<ForModelEvaluator*>(smartarg1->get()) : NULL;
+  smartarg1 = static_cast< Teuchos::RCP<const ForModelEvaluator >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForModelEvaluator* >(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForModelEvaluator::get_f_map() const");;
@@ -2037,7 +2039,7 @@ SWIGEXPORT SwigClassWrapper _wrap_ForModelEvaluator_get_f_map(SwigClassWrapper c
       SWIG_exception_impl("ForModelEvaluator::get_f_map() const", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
     }
   }
-  fresult.ptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
+  fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
   fresult.mem = SWIG_MOVE;
   return fresult;
 }
@@ -2049,8 +2051,8 @@ SWIGEXPORT SwigClassWrapper _wrap_ForModelEvaluator_create_operator(SwigClassWra
   Teuchos::RCP< ForModelEvaluator const > *smartarg1 ;
   Teuchos::RCP< ForModelEvaluator::operator_type > result;
   
-  smartarg1 = static_cast< Teuchos::RCP<const ForModelEvaluator >* >(farg1->ptr);
-  arg1 = smartarg1 ? const_cast<ForModelEvaluator*>(smartarg1->get()) : NULL;
+  smartarg1 = static_cast< Teuchos::RCP<const ForModelEvaluator >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForModelEvaluator* >(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForModelEvaluator::create_operator() const");;
@@ -2074,7 +2076,7 @@ SWIGEXPORT SwigClassWrapper _wrap_ForModelEvaluator_create_operator(SwigClassWra
       SWIG_exception_impl("ForModelEvaluator::create_operator() const", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
     }
   }
-  fresult.ptr = (new Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> >& >(result)));
+  fresult.cptr = (new Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> >& >(result)));
   fresult.mem = SWIG_MOVE;
   return fresult;
 }
@@ -2107,7 +2109,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_ForModelEvaluator() {
       SWIG_exception_impl("ForModelEvaluator::ForModelEvaluator()", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
     }
   }
-  fresult.ptr = result ? new Teuchos::RCP< ForModelEvaluator >(result SWIG_NO_NULL_DELETER_1) : NULL;
+  fresult.cptr = result ? new Teuchos::RCP< ForModelEvaluator >(result SWIG_NO_NULL_DELETER_1) : NULL;
   fresult.mem = SWIG_MOVE;
   return fresult;
 }
@@ -2117,8 +2119,8 @@ SWIGEXPORT void _wrap_delete_ForModelEvaluator(SwigClassWrapper const *farg1) {
   ForModelEvaluator *arg1 = (ForModelEvaluator *) 0 ;
   Teuchos::RCP< ForModelEvaluator > *smartarg1 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< ForModelEvaluator >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< ForModelEvaluator >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForModelEvaluator* >(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForModelEvaluator::~ForModelEvaluator()");;
@@ -2147,7 +2149,7 @@ SWIGEXPORT void _wrap_delete_ForModelEvaluator(SwigClassWrapper const *farg1) {
 
 
 SWIGEXPORT void _wrap_assign_ForModelEvaluator(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef ::Teuchos::RCP< ForModelEvaluator > swig_lhs_classtype;
+  typedef Teuchos::RCP< ForModelEvaluator > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
@@ -2160,7 +2162,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_NOXSolver(SwigClassWrapper const *farg1) {
   Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > tempnull1 ;
   ForTrilinos::NOXSolver< SC,LO,GO,NO > *result = 0 ;
   
-  arg1 = farg1->ptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > * >(farg1->ptr) : &tempnull1;
+  arg1 = farg1->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > * >(farg1->cptr) : &tempnull1;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::NOXSolver< SC,LO,GO,NO >::NOXSolver(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > const &)");;
@@ -2184,7 +2186,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_NOXSolver(SwigClassWrapper const *farg1) {
       SWIG_exception_impl("ForTrilinos::NOXSolver< SC,LO,GO,NO >::NOXSolver(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > const &)", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
     }
   }
-  fresult.ptr = result ? new Teuchos::RCP< ForTrilinos::NOXSolver<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
+  fresult.cptr = result ? new Teuchos::RCP< ForTrilinos::NOXSolver<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
   fresult.mem = SWIG_MOVE;
   return fresult;
 }
@@ -2196,9 +2198,9 @@ SWIGEXPORT void _wrap_NOXSolver_setup(SwigClassWrapper const *farg1, SwigClassWr
   Teuchos::RCP< ForTrilinos::NOXSolver< SC,LO,GO,NO > > *smartarg1 ;
   Teuchos::RCP< Teuchos::ParameterList > tempnull2 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< ForTrilinos::NOXSolver<SC,LO,GO,NO> >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
-  arg2 = farg2->ptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg2->ptr) : &tempnull2;
+  smartarg1 = static_cast< Teuchos::RCP< ForTrilinos::NOXSolver<SC,LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForTrilinos::NOXSolver<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg2->cptr) : &tempnull2;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::NOXSolver< SC,LO,GO,NO >::setup(Teuchos::RCP< Teuchos::ParameterList > &)");;
@@ -2232,8 +2234,8 @@ SWIGEXPORT int _wrap_NOXSolver_solve(SwigClassWrapper const *farg1) {
   Teuchos::RCP< ForTrilinos::NOXSolver< SC,LO,GO,NO > > *smartarg1 ;
   NOX::StatusTest::StatusType result;
   
-  smartarg1 = static_cast< Teuchos::RCP< ForTrilinos::NOXSolver<SC,LO,GO,NO> >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< ForTrilinos::NOXSolver<SC,LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForTrilinos::NOXSolver<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::NOXSolver< SC,LO,GO,NO >::solve()");;
@@ -2266,8 +2268,8 @@ SWIGEXPORT void _wrap_delete_NOXSolver(SwigClassWrapper const *farg1) {
   ForTrilinos::NOXSolver< SC,LO,GO,NO > *arg1 = (ForTrilinos::NOXSolver< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< ForTrilinos::NOXSolver< SC,LO,GO,NO > > *smartarg1 ;
   
-  smartarg1 = static_cast< Teuchos::RCP< ForTrilinos::NOXSolver<SC,LO,GO,NO> >* >(farg1->ptr);
-  arg1 = smartarg1 ? smartarg1->get() : NULL;
+  smartarg1 = static_cast< Teuchos::RCP< ForTrilinos::NOXSolver<SC,LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForTrilinos::NOXSolver<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("ForTrilinos::NOXSolver< SC,LO,GO,NO >::~NOXSolver()");;
@@ -2296,7 +2298,7 @@ SWIGEXPORT void _wrap_delete_NOXSolver(SwigClassWrapper const *farg1) {
 
 
 SWIGEXPORT void _wrap_assign_NOXSolver(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef ::Teuchos::RCP< ForTrilinos::NOXSolver<SC,LO,GO,NO> > swig_lhs_classtype;
+  typedef Teuchos::RCP< ForTrilinos::NOXSolver<SC,LO,GO,NO> > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
