@@ -205,6 +205,21 @@ void SWIG_store_exception(const char* decl, int errcode, const char *msg);
     SWIG_store_exception(DECL, CODE, MSG); RETURNNULL;
 
 
+namespace swig {
+
+enum AssignmentFlags {
+  IS_DESTR       = 0x01,
+  IS_COPY_CONSTR = 0x02,
+  IS_COPY_ASSIGN = 0x04,
+  IS_MOVE_CONSTR = 0x08,
+  IS_MOVE_ASSIGN = 0x10
+};
+
+template<class T, int Flags>
+struct assignment_flags;
+}
+
+
 #define SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
     if ((SWIG_CLASS_WRAPPER).mem == SWIG_CREF) { \
         SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
@@ -225,21 +240,6 @@ void SWIG_store_exception(const char* decl, int errcode, const char *msg);
 #define SWIG_check_mutable_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
     SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL); \
     SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL);
-
-
-namespace swig {
-
-enum AssignmentFlags {
-  IS_DESTR       = 0x01,
-  IS_COPY_CONSTR = 0x02,
-  IS_COPY_ASSIGN = 0x04,
-  IS_MOVE_CONSTR = 0x08,
-  IS_MOVE_ASSIGN = 0x10
-};
-
-template<class T, int Flags>
-struct assignment_flags;
-}
 
 
 #define SWIG_assign(LEFTTYPE, LEFT, RIGHTTYPE, RIGHT, FLAGS) \
@@ -272,6 +272,21 @@ struct assignment_flags;
 
 #define SWIG_as_voidptr(a) const_cast< void * >(static_cast< const void * >(a)) 
 #define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
+
+
+#include <utility>
+
+
+namespace swig {
+template<class T, class U, int Flags>
+struct assignment_flags<std::pair<const T, U>, Flags> {
+  enum { value = IS_DESTR | IS_COPY_CONSTR };
+};
+template<class T, class U, int Flags>
+struct assignment_flags<std::pair<T, const U>, Flags> {
+  enum { value = IS_DESTR | IS_COPY_CONSTR };
+};
+}
 
 
 #include <string>
@@ -343,9 +358,6 @@ SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
 SWIGINTERN Teuchos::ArrayView< int > Teuchos_Array_Sl_int_Sg__view(Teuchos::Array< int > *self){
             return (*self)();
         }
-
-#include <utility>
-
 
 namespace swig {
 
@@ -710,7 +722,7 @@ SWIGEXPORT SwigArrayWrapper _wrap_TeuchosArrayInt_view(SwigClassWrapper const *f
       SWIG_exception_impl("Teuchos::Array< int >::view()", SWIG_UnknownError, "An unknown exception occurred", return SwigArrayWrapper_uninitialized());
     }
   }
-  fresult.data = (&result)->getRawPtr();
+  fresult.data = (void*)(&result)->getRawPtr();
   fresult.size = (&result)->size();
   return fresult;
 }
@@ -825,7 +837,7 @@ SWIGEXPORT SwigArrayWrapper _wrap_TeuchosArrayDbl_view(SwigClassWrapper const *f
       SWIG_exception_impl("Teuchos::Array< double >::view()", SWIG_UnknownError, "An unknown exception occurred", return SwigArrayWrapper_uninitialized());
     }
   }
-  fresult.data = (&result)->getRawPtr();
+  fresult.data = (void*)(&result)->getRawPtr();
   fresult.size = (&result)->size();
   return fresult;
 }
@@ -940,7 +952,7 @@ SWIGEXPORT SwigArrayWrapper _wrap_TeuchosArrayLongLong_view(SwigClassWrapper con
       SWIG_exception_impl("Teuchos::Array< long long >::view()", SWIG_UnknownError, "An unknown exception occurred", return SwigArrayWrapper_uninitialized());
     }
   }
-  fresult.data = (&result)->getRawPtr();
+  fresult.data = (void*)(&result)->getRawPtr();
   fresult.size = (&result)->size();
   return fresult;
 }

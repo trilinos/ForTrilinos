@@ -138,7 +138,7 @@ allocate(element_list(num_elements_per_proc))
 do k = 1, num_elements_per_proc
   element_list(k) = int(my_rank + k * num_procs, kind=global_ordinal_type)
 end do
-cyclic_map = TpetraMap(num_global_entries, element_list, comm);
+cyclic_map = TpetraMap(num_global_entries, element_list, comm)
 deallocate(element_list)
 
 ! If there's more than one MPI process in the communicator, then cyclic_map is

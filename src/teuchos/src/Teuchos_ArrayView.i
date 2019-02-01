@@ -29,7 +29,7 @@ class ArrayView
     }
 
     %typemap(out, noblock=1) ArrayView<_Tp> {
-      $result.data = $1.getRawPtr();
+      $result.data = (void*)$1.getRawPtr();
       $result.size = $1.size();
     }
 
@@ -52,3 +52,7 @@ class ArrayView
 %template() Teuchos::ArrayView<const int>;
 %template() Teuchos::ArrayView<const double>;
 %template() Teuchos::ArrayView<const long long>;
+
+%template() Teuchos::ArrayView<const unsigned int>;
+%template() Teuchos::ArrayView<const unsigned long>;
+%template() Teuchos::ArrayView<const unsigned long long>;
