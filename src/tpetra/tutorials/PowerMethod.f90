@@ -216,7 +216,7 @@ contains
     implicit None
     integer(int_type), intent(out) :: iconv
     real(scalar_type), intent(out) :: lambda
-    logical(bool_type), intent(in), optional :: verbose_in
+    logical, intent(in), optional :: verbose_in
     type(TpetraCrsMatrix), intent(in) :: A
     type(TeuchosComm), intent(in) :: comm
     ! ----------------------------------------------------------------------- !
@@ -244,7 +244,7 @@ contains
     real(scalar_type) :: normz, residual
     integer(int_type) :: report_frequency, it
     integer(size_type) :: my_rank
-    logical(bool_type) :: verbose
+    logical :: verbose
 
     ! -- Local Arrays
     real(scalar_type) :: norms(num_vecs), dots(num_vecs)

@@ -31,7 +31,7 @@ contains
     real(C_DOUBLE), allocatable :: darr(:)
     integer(C_INT) :: ival
     real(C_DOUBLE) :: dval
-    logical(C_BOOL) :: bval, true=.true. ! FIXME: can we get rid of this true somethow?
+    logical :: bval
     character(kind=C_CHAR, len=:), allocatable :: sval
 
     OUT0('Starting TeuchosPList_Basic!')
@@ -53,7 +53,7 @@ contains
     TEST_FLOATING_EQUALITY(dval, 1.25_C_DOUBLE, epsilon(1.0_C_DOUBLE))
 
     bval = .false.
-    call plist%set('mybool', true)
+    call plist%set('mybool', .true.)
     bval = plist%get_logical('mybool')
     TEST_ASSERT(bval)
 

@@ -117,10 +117,6 @@ interface fortest_inequality
                    fortest_inequality_long1
 end interface
 
-interface fortest_assert
-  module procedure fortest_assert1, fortest_assert2
-end interface
-
 public
 
 contains
@@ -1161,7 +1157,7 @@ contains
 
   ! -------------------------------------------------------------------------- !
 
-  subroutine fortest_assert1(success, filename, lineno, namec, c)
+  subroutine fortest_assert(success, filename, lineno, namec, c)
     ! ------------------------------------------------------------------------ !
     logical, intent(inout) :: success
     character(len=*), intent(in) :: filename, namec
@@ -1179,29 +1175,7 @@ contains
     end if
     call gather_success(lcl_success, success)
     return
-  end subroutine fortest_assert1
-
-  ! -------------------------------------------------------------------------- !
-
-  subroutine fortest_assert2(success, filename, lineno, namec, c)
-    ! ------------------------------------------------------------------------ !
-    logical, intent(inout) :: success
-    character(len=*), intent(in) :: filename, namec
-    integer, intent(in) :: lineno
-    logical(c_bool), intent(in) :: c
-    character(len=30) :: name
-    character(len=256) :: signature
-    logical :: lcl_success
-    ! ------------------------------------------------------------------------ !
-    name = 'TEST_ASSERT'
-    lcl_success = c
-    if (.not. lcl_success) then
-      signature = trim(name) // '(' // trim(namec) // ')'
-      call write_error_diagnostics(filename, lineno, signature)
-    end if
-    call gather_success(lcl_success, success)
-    return
-  end subroutine fortest_assert2
+  end subroutine fortest_assert
 
   ! -------------------------------------------------------------------------- !
 

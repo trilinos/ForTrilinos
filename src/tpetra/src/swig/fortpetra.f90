@@ -26,7 +26,6 @@ module fortpetra
    global_ordinal_type => c_long_long, &
    global_size_type => c_long, &
    size_type => c_size_t, &
-   bool_type => c_bool, &
    int_type => c_int, &
    mag_type => c_double, &
    norm_type => c_double
@@ -41,7 +40,6 @@ public :: local_ordinal_type
 public :: global_ordinal_type
 public :: global_size_type
 public :: size_type
-public :: bool_type
 public :: int_type
 public :: mag_type
 public :: norm_type
@@ -738,7 +736,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraMap_getGlobalNumElements(farg1) &
@@ -840,7 +838,7 @@ use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
 integer(C_INT), intent(in) :: farg2
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraMap_isNodeGlobalElement(farg1, farg2) &
@@ -850,7 +848,7 @@ use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
 integer(C_LONG_LONG), intent(in) :: farg2
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraMap_isUniform(farg1) &
@@ -859,7 +857,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraMap_isContiguous(farg1) &
@@ -868,7 +866,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraMap_isDistributed(farg1) &
@@ -877,7 +875,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraMap_isCompatible(farg1, farg2) &
@@ -887,7 +885,7 @@ use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraMap_isSameAs(farg1, farg2) &
@@ -897,7 +895,7 @@ use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraMap_locallySameAs(farg1, farg2) &
@@ -907,7 +905,7 @@ use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraMap_isLocallyFitted(farg1, farg2) &
@@ -917,7 +915,7 @@ use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraMap_getComm(farg1) &
@@ -1158,7 +1156,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
   subroutine swigc_assignment_TpetraExport(self, other) &
@@ -1282,7 +1280,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraImport_setUnion__SWIG_0(farg1, farg2) &
@@ -1336,7 +1334,7 @@ use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
 integer(C_SIZE_T), intent(in) :: farg2
-logical(C_BOOL), intent(in) :: farg3
+integer(C_INT), intent(in) :: farg3
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -1423,7 +1421,7 @@ type(SwigClassWrapper) :: farg1
 integer(C_LONG_LONG), intent(in) :: farg2
 integer(C_SIZE_T), intent(in) :: farg3
 real(C_DOUBLE), intent(in) :: farg4
-logical(C_BOOL), intent(in) :: farg5
+integer(C_INT), intent(in) :: farg5
 end subroutine
 
 subroutine swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_1(farg1, farg2, farg3, farg4) &
@@ -1454,7 +1452,7 @@ type(SwigClassWrapper) :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_SIZE_T), intent(in) :: farg3
 real(C_DOUBLE), intent(in) :: farg4
-logical(C_BOOL), intent(in) :: farg5
+integer(C_INT), intent(in) :: farg5
 end subroutine
 
 subroutine swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_1(farg1, farg2, farg3, farg4) &
@@ -1548,7 +1546,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraMultiVector_need_sync_device(farg1) &
@@ -1557,7 +1555,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_TpetraMultiVector_modify_device(farg1) &
@@ -1684,7 +1682,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraMultiVector_description(farg1) &
@@ -1729,7 +1727,7 @@ use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_new_TpetraMultiVector__SWIG_8(farg1, farg2, farg3, farg4) &
@@ -2205,7 +2203,7 @@ use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_TpetraCrsGraph_setParameterList(farg1, farg2) &
@@ -2567,7 +2565,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsGraph_isLowerTriangularImpl(farg1) &
@@ -2576,7 +2574,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsGraph_isLowerTriangular(farg1) &
@@ -2585,7 +2583,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsGraph_isUpperTriangularImpl(farg1) &
@@ -2594,7 +2592,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsGraph_isUpperTriangular(farg1) &
@@ -2603,7 +2601,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsGraph_isLocallyIndexed(farg1) &
@@ -2612,7 +2610,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsGraph_isGloballyIndexed(farg1) &
@@ -2621,7 +2619,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsGraph_isFillComplete(farg1) &
@@ -2630,7 +2628,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsGraph_isFillActive(farg1) &
@@ -2639,7 +2637,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsGraph_isSorted(farg1) &
@@ -2648,7 +2646,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsGraph_isStorageOptimized(farg1) &
@@ -2657,7 +2655,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsGraph_getProfileType(farg1) &
@@ -2675,7 +2673,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsGraph_description(farg1) &
@@ -2703,7 +2701,7 @@ import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
-logical(C_BOOL), intent(in) :: farg4
+integer(C_INT), intent(in) :: farg4
 end subroutine
 
 subroutine swigc_TpetraCrsGraph_reindexColumns__SWIG_1(farg1, farg2, farg3) &
@@ -2837,7 +2835,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_TpetraCrsGraph_computeGlobalConstants(farg1, farg2) &
@@ -2845,7 +2843,7 @@ bind(C, name="_wrap_TpetraCrsGraph_computeGlobalConstants")
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg2
 end subroutine
 
 function swigc_new_TpetraCrsGraph__SWIG_6(farg1, farg2, farg3, farg4) &
@@ -3333,7 +3331,7 @@ type(SwigClassWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
 type(SwigClassWrapper) :: farg4
-logical(C_BOOL), intent(in) :: farg5
+integer(C_INT), intent(in) :: farg5
 end subroutine
 
 subroutine swigc_TpetraCrsMatrix_reindexColumns__SWIG_1(farg1, farg2, farg3, farg4) &
@@ -3542,7 +3540,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsMatrix_isLowerTriangularImpl(farg1) &
@@ -3551,7 +3549,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsMatrix_isLowerTriangular(farg1) &
@@ -3560,7 +3558,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsMatrix_isUpperTriangularImpl(farg1) &
@@ -3569,7 +3567,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsMatrix_isUpperTriangular(farg1) &
@@ -3578,7 +3576,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsMatrix_isLocallyIndexed(farg1) &
@@ -3587,7 +3585,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsMatrix_isGloballyIndexed(farg1) &
@@ -3596,7 +3594,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsMatrix_isFillComplete(farg1) &
@@ -3605,7 +3603,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsMatrix_isFillActive(farg1) &
@@ -3614,7 +3612,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsMatrix_isStorageOptimized(farg1) &
@@ -3623,7 +3621,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsMatrix_getProfileType(farg1) &
@@ -3641,7 +3639,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsMatrix_getFrobeniusNorm(farg1) &
@@ -3659,7 +3657,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_TpetraCrsMatrix_apply__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6) &
@@ -3710,7 +3708,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraCrsMatrix_getDomainMap(farg1) &
@@ -3755,7 +3753,7 @@ type(SwigClassWrapper) :: farg4
 real(C_DOUBLE), intent(in) :: farg5
 integer(C_INT), intent(in) :: farg6
 integer(C_INT), intent(in) :: farg7
-logical(C_BOOL), intent(in) :: farg8
+integer(C_INT), intent(in) :: farg8
 end subroutine
 
 function swigc_TpetraCrsMatrix_description(farg1) &
@@ -3872,7 +3870,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_new_TpetraCrsMatrix__SWIG_10(farg1, farg2, farg3, farg4) &
@@ -4166,9 +4164,9 @@ import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-logical(C_BOOL), intent(in) :: farg3
-logical(C_BOOL), intent(in) :: farg4
-logical(C_BOOL), intent(in) :: farg5
+integer(C_INT), intent(in) :: farg3
+integer(C_INT), intent(in) :: farg4
+integer(C_INT), intent(in) :: farg5
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4180,8 +4178,8 @@ import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-logical(C_BOOL), intent(in) :: farg3
-logical(C_BOOL), intent(in) :: farg4
+integer(C_INT), intent(in) :: farg3
+integer(C_INT), intent(in) :: farg4
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4193,7 +4191,7 @@ import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-logical(C_BOOL), intent(in) :: farg3
+integer(C_INT), intent(in) :: farg3
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4218,8 +4216,8 @@ type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
 type(SwigClassWrapper) :: farg4
-logical(C_BOOL), intent(in) :: farg5
-logical(C_BOOL), intent(in) :: farg6
+integer(C_INT), intent(in) :: farg5
+integer(C_INT), intent(in) :: farg6
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4233,7 +4231,7 @@ type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
 type(SwigClassWrapper) :: farg4
-logical(C_BOOL), intent(in) :: farg5
+integer(C_INT), intent(in) :: farg5
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4261,9 +4259,9 @@ type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
 type(SwigClassWrapper) :: farg4
 type(SwigClassWrapper) :: farg5
-logical(C_BOOL), intent(in) :: farg6
-logical(C_BOOL), intent(in) :: farg7
-logical(C_BOOL), intent(in) :: farg8
+integer(C_INT), intent(in) :: farg6
+integer(C_INT), intent(in) :: farg7
+integer(C_INT), intent(in) :: farg8
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4278,8 +4276,8 @@ type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
 type(SwigClassWrapper) :: farg4
 type(SwigClassWrapper) :: farg5
-logical(C_BOOL), intent(in) :: farg6
-logical(C_BOOL), intent(in) :: farg7
+integer(C_INT), intent(in) :: farg6
+integer(C_INT), intent(in) :: farg7
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4294,7 +4292,7 @@ type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
 type(SwigClassWrapper) :: farg4
 type(SwigClassWrapper) :: farg5
-logical(C_BOOL), intent(in) :: farg6
+integer(C_INT), intent(in) :: farg6
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4320,9 +4318,9 @@ import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-logical(C_BOOL), intent(in) :: farg3
-logical(C_BOOL), intent(in) :: farg4
-logical(C_BOOL), intent(in) :: farg5
+integer(C_INT), intent(in) :: farg3
+integer(C_INT), intent(in) :: farg4
+integer(C_INT), intent(in) :: farg5
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4334,8 +4332,8 @@ import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-logical(C_BOOL), intent(in) :: farg3
-logical(C_BOOL), intent(in) :: farg4
+integer(C_INT), intent(in) :: farg3
+integer(C_INT), intent(in) :: farg4
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4347,7 +4345,7 @@ import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-logical(C_BOOL), intent(in) :: farg3
+integer(C_INT), intent(in) :: farg3
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4372,8 +4370,8 @@ type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
 type(SwigClassWrapper) :: farg4
-logical(C_BOOL), intent(in) :: farg5
-logical(C_BOOL), intent(in) :: farg6
+integer(C_INT), intent(in) :: farg5
+integer(C_INT), intent(in) :: farg6
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4387,7 +4385,7 @@ type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
 type(SwigClassWrapper) :: farg4
-logical(C_BOOL), intent(in) :: farg5
+integer(C_INT), intent(in) :: farg5
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4415,9 +4413,9 @@ type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
 type(SwigClassWrapper) :: farg4
 type(SwigClassWrapper) :: farg5
-logical(C_BOOL), intent(in) :: farg6
-logical(C_BOOL), intent(in) :: farg7
-logical(C_BOOL), intent(in) :: farg8
+integer(C_INT), intent(in) :: farg6
+integer(C_INT), intent(in) :: farg7
+integer(C_INT), intent(in) :: farg8
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4432,8 +4430,8 @@ type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
 type(SwigClassWrapper) :: farg4
 type(SwigClassWrapper) :: farg5
-logical(C_BOOL), intent(in) :: farg6
-logical(C_BOOL), intent(in) :: farg7
+integer(C_INT), intent(in) :: farg6
+integer(C_INT), intent(in) :: farg7
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4448,7 +4446,7 @@ type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
 type(SwigClassWrapper) :: farg4
 type(SwigClassWrapper) :: farg5
-logical(C_BOOL), intent(in) :: farg6
+integer(C_INT), intent(in) :: farg6
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4475,8 +4473,8 @@ import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
-logical(C_BOOL), intent(in) :: farg4
-logical(C_BOOL), intent(in) :: farg5
+integer(C_INT), intent(in) :: farg4
+integer(C_INT), intent(in) :: farg5
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4489,7 +4487,7 @@ import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
-logical(C_BOOL), intent(in) :: farg4
+integer(C_INT), intent(in) :: farg4
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4513,8 +4511,8 @@ import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-logical(C_BOOL), intent(in) :: farg3
-logical(C_BOOL), intent(in) :: farg4
+integer(C_INT), intent(in) :: farg3
+integer(C_INT), intent(in) :: farg4
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4526,7 +4524,7 @@ import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-logical(C_BOOL), intent(in) :: farg3
+integer(C_INT), intent(in) :: farg3
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4581,7 +4579,7 @@ type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
 type(SwigArrayWrapper) :: farg3
 type(SwigArrayWrapper) :: farg4
-logical(C_BOOL), intent(in) :: farg5
+integer(C_INT), intent(in) :: farg5
 end subroutine
 
 subroutine swigc_TpetraWriter_writeSparseFile__SWIG_1(farg1, farg2, farg3, farg4) &
@@ -4602,7 +4600,7 @@ import :: swigarraywrapper
 import :: swigclasswrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-logical(C_BOOL), intent(in) :: farg3
+integer(C_INT), intent(in) :: farg3
 end subroutine
 
 subroutine swigc_TpetraWriter_writeSparseFile__SWIG_3(farg1, farg2) &
@@ -4623,7 +4621,7 @@ type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
 type(SwigArrayWrapper) :: farg3
 type(SwigArrayWrapper) :: farg4
-logical(C_BOOL), intent(in) :: farg5
+integer(C_INT), intent(in) :: farg5
 end subroutine
 
 subroutine swigc_TpetraWriter_writeSparseGraphFile__SWIG_1(farg1, farg2, farg3, farg4) &
@@ -4644,7 +4642,7 @@ import :: swigarraywrapper
 import :: swigclasswrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-logical(C_BOOL), intent(in) :: farg3
+integer(C_INT), intent(in) :: farg3
 end subroutine
 
 subroutine swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(farg1, farg2) &
@@ -4704,11 +4702,11 @@ use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg2
 type(SwigClassWrapper) :: farg3
-logical(C_BOOL), intent(in) :: farg4
+integer(C_INT), intent(in) :: farg4
 type(SwigClassWrapper) :: farg5
-logical(C_BOOL), intent(in) :: farg6
+integer(C_INT), intent(in) :: farg6
 type(SwigArrayWrapper) :: farg7
 type(SwigClassWrapper) :: farg8
 end subroutine
@@ -4719,11 +4717,11 @@ use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg2
 type(SwigClassWrapper) :: farg3
-logical(C_BOOL), intent(in) :: farg4
+integer(C_INT), intent(in) :: farg4
 type(SwigClassWrapper) :: farg5
-logical(C_BOOL), intent(in) :: farg6
+integer(C_INT), intent(in) :: farg6
 type(SwigArrayWrapper) :: farg7
 end subroutine
 
@@ -4732,11 +4730,11 @@ bind(C, name="_wrap_TpetraMatrixMatrixMultiply__SWIG_2")
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg2
 type(SwigClassWrapper) :: farg3
-logical(C_BOOL), intent(in) :: farg4
+integer(C_INT), intent(in) :: farg4
 type(SwigClassWrapper) :: farg5
-logical(C_BOOL), intent(in) :: farg6
+integer(C_INT), intent(in) :: farg6
 end subroutine
 
 subroutine swigc_TpetraMatrixMatrixMultiply__SWIG_3(farg1, farg2, farg3, farg4, farg5) &
@@ -4744,9 +4742,9 @@ bind(C, name="_wrap_TpetraMatrixMatrixMultiply__SWIG_3")
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg2
 type(SwigClassWrapper) :: farg3
-logical(C_BOOL), intent(in) :: farg4
+integer(C_INT), intent(in) :: farg4
 type(SwigClassWrapper) :: farg5
 end subroutine
 
@@ -4755,7 +4753,7 @@ bind(C, name="_wrap_TpetraMatrixMatrixAdd__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg2
 real(C_DOUBLE), intent(in) :: farg3
 type(SwigClassWrapper) :: farg4
 real(C_DOUBLE), intent(in) :: farg5
@@ -4766,10 +4764,10 @@ bind(C, name="_wrap_TpetraMatrixMatrixAdd__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
-logical(C_BOOL), intent(in) :: farg2
+integer(C_INT), intent(in) :: farg2
 real(C_DOUBLE), intent(in) :: farg3
 type(SwigClassWrapper) :: farg4
-logical(C_BOOL), intent(in) :: farg5
+integer(C_INT), intent(in) :: farg5
 real(C_DOUBLE), intent(in) :: farg6
 type(SwigClassWrapper) :: farg7
 end subroutine
@@ -4866,18 +4864,31 @@ self%swigdata%cptr = C_NULL_PTR
 self%swigdata%mem = SWIG_NULL
 end subroutine
 
+
+function SWIG_int_to_logical(inp) &
+    result(out)
+  use, intrinsic :: ISO_C_BINDING
+  integer(kind=C_INT), intent(IN) :: inp
+  logical :: out
+  if (inp /= 0) then
+    out = .true.
+  else
+    out = .false.
+  end if
+end function
+
 function swigf_TpetraMap_isOneToOne(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraMap), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraMap_isOneToOne(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraMap_getGlobalNumElements(self) &
@@ -5031,151 +5042,151 @@ end function
 function swigf_TpetraMap_isNodeLocalElement(self, localindex) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraMap), intent(in) :: self
 
 integer(C_INT), intent(in) :: localindex
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 integer(C_INT) :: farg2 
 
 farg1 = self%swigdata
 farg2 = localindex
 fresult = swigc_TpetraMap_isNodeLocalElement(farg1, farg2)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraMap_isNodeGlobalElement(self, globalindex) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraMap), intent(in) :: self
 
 integer(C_LONG_LONG), intent(in) :: globalindex
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 integer(C_LONG_LONG) :: farg2 
 
 farg1 = self%swigdata
 farg2 = globalindex
 fresult = swigc_TpetraMap_isNodeGlobalElement(farg1, farg2)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraMap_isUniform(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraMap), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraMap_isUniform(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraMap_isContiguous(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraMap), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraMap_isContiguous(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraMap_isDistributed(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraMap), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraMap_isDistributed(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraMap_isCompatible(self, map) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraMap), intent(in) :: self
 
 class(TpetraMap), intent(in) :: map
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
 farg1 = self%swigdata
 farg2 = map%swigdata
 fresult = swigc_TpetraMap_isCompatible(farg1, farg2)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraMap_isSameAs(self, map) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraMap), intent(in) :: self
 
 class(TpetraMap), intent(in) :: map
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
 farg1 = self%swigdata
 farg2 = map%swigdata
 fresult = swigc_TpetraMap_isSameAs(farg1, farg2)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraMap_locallySameAs(self, map) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraMap), intent(in) :: self
 
 class(TpetraMap), intent(in) :: map
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
 farg1 = self%swigdata
 farg2 = map%swigdata
 fresult = swigc_TpetraMap_locallySameAs(farg1, farg2)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraMap_isLocallyFitted(self, map) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraMap), intent(in) :: self
 
 class(TpetraMap), intent(in) :: map
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
 farg1 = self%swigdata
 farg2 = map%swigdata
 fresult = swigc_TpetraMap_isLocallyFitted(farg1, farg2)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraMap_getComm(self) &
@@ -5583,15 +5594,15 @@ end function
 function swigf_TpetraExport_isLocallyComplete(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraExport), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraExport_isLocallyComplete(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
   subroutine swigf_assignment_TpetraExport(self, other)
@@ -5783,15 +5794,15 @@ end function
 function swigf_TpetraImport_isLocallyComplete(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraImport), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraImport_isLocallyComplete(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraImport_setUnion__SWIG_0(self, rhs) &
@@ -5861,6 +5872,19 @@ fresult = swigc_new_TpetraMultiVector__SWIG_0()
 self%swigdata = fresult
 end function
 
+
+function SWIG_logical_to_int(inp) &
+    result(out)
+  use, intrinsic :: ISO_C_BINDING
+  logical, intent(IN) :: inp
+  integer(kind=C_INT) :: out
+  if (inp .eqv. .true.) then
+    out = 1
+  else
+    out = 0
+  end if
+end function
+
 function new_TpetraMultiVector__SWIG_1(map, numvecs, zeroout) &
 result(self)
 use, intrinsic :: ISO_C_BINDING
@@ -5868,16 +5892,16 @@ type(TpetraMultiVector) :: self
 class(TpetraMap), intent(in) :: map
 
 integer(C_SIZE_T), intent(in) :: numvecs
-logical(C_BOOL), intent(in) :: zeroout
+logical, intent(in) :: zeroout
 
 type(SwigClassWrapper) :: fresult 
 type(SwigClassWrapper) :: farg1 
 integer(C_SIZE_T) :: farg2 
-logical(C_BOOL) :: farg3 
+integer(C_INT) :: farg3 
 
 farg1 = map%swigdata
 farg2 = numvecs
-farg3 = zeroout
+farg3 = SWIG_logical_to_int(zeroout)
 fresult = swigc_new_TpetraMultiVector__SWIG_1(farg1, farg2, farg3)
 self%swigdata = fresult
 end function
@@ -6027,19 +6051,19 @@ class(TpetraMultiVector), intent(in) :: self
 integer(C_LONG_LONG), intent(in) :: gblrow
 integer(C_SIZE_T), intent(in) :: col
 real(C_DOUBLE), intent(in) :: value
-logical(C_BOOL), intent(in) :: atomic
+logical, intent(in) :: atomic
 
 type(SwigClassWrapper) :: farg1 
 integer(C_LONG_LONG) :: farg2 
 integer(C_SIZE_T) :: farg3 
 real(C_DOUBLE) :: farg4 
-logical(C_BOOL) :: farg5 
+integer(C_INT) :: farg5 
 
 farg1 = self%swigdata
 farg2 = gblrow
 farg3 = col
 farg4 = value
-farg5 = atomic
+farg5 = SWIG_logical_to_int(atomic)
 call swigc_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(farg1, farg2, farg3, farg4, farg5)
 end subroutine
 
@@ -6090,19 +6114,19 @@ class(TpetraMultiVector), intent(in) :: self
 integer(C_INT), intent(in) :: lclrow
 integer(C_SIZE_T), intent(in) :: col
 real(C_DOUBLE), intent(in) :: val
-logical(C_BOOL), intent(in) :: atomic
+logical, intent(in) :: atomic
 
 type(SwigClassWrapper) :: farg1 
 integer(C_INT) :: farg2 
 integer(C_SIZE_T) :: farg3 
 real(C_DOUBLE) :: farg4 
-logical(C_BOOL) :: farg5 
+integer(C_INT) :: farg5 
 
 farg1 = self%swigdata
 farg2 = lclrow
 farg3 = col
 farg4 = val
-farg5 = atomic
+farg5 = SWIG_logical_to_int(atomic)
 call swigc_TpetraMultiVector_sumIntoLocalValue__SWIG_0(farg1, farg2, farg3, farg4, farg5)
 end subroutine
 
@@ -6258,29 +6282,29 @@ end subroutine
 function swigf_TpetraMultiVector_need_sync_host(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraMultiVector), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraMultiVector_need_sync_host(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraMultiVector_need_sync_device(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraMultiVector), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraMultiVector_need_sync_device(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 subroutine swigf_TpetraMultiVector_modify_device(self)
@@ -6501,15 +6525,15 @@ end function
 function swigf_TpetraMultiVector_isConstantStride(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraMultiVector), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraMultiVector_isConstantStride(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraMultiVector_description(self) &
@@ -6572,19 +6596,19 @@ end function
 function swigf_TpetraMultiVector_isSameSize(self, vec) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraMultiVector), intent(in) :: self
 
 class(TpetraMultiVector), intent(in) :: vec
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
 farg1 = self%swigdata
 farg2 = vec%swigdata
 fresult = swigc_TpetraMultiVector_isSameSize(farg1, farg2)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function new_TpetraMultiVector__SWIG_8(map, a, lda, numvectors) &
@@ -7538,19 +7562,19 @@ end subroutine
 function swigf_TpetraCrsGraph_isIdenticalTo(self, graph) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsGraph), intent(in) :: self
 
 class(TpetraCrsGraph), intent(in) :: graph
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
 farg1 = self%swigdata
 farg2 = graph%swigdata
 fresult = swigc_TpetraCrsGraph_isIdenticalTo(farg1, farg2)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 subroutine swigf_TpetraCrsGraph_setParameterList(self, params)
@@ -8164,155 +8188,155 @@ end function
 function swigf_TpetraCrsGraph_hasColMap(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsGraph), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsGraph_hasColMap(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsGraph_isLowerTriangularImpl(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsGraph), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsGraph_isLowerTriangularImpl(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsGraph_isLowerTriangular(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsGraph), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsGraph_isLowerTriangular(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsGraph_isUpperTriangularImpl(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsGraph), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsGraph_isUpperTriangularImpl(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsGraph_isUpperTriangular(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsGraph), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsGraph_isUpperTriangular(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsGraph_isLocallyIndexed(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsGraph), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsGraph_isLocallyIndexed(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsGraph_isGloballyIndexed(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsGraph), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsGraph_isGloballyIndexed(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsGraph_isFillComplete(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsGraph), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsGraph_isFillComplete(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsGraph_isFillActive(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsGraph), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsGraph_isFillActive(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsGraph_isSorted(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsGraph), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsGraph_isSorted(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsGraph_isStorageOptimized(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsGraph), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsGraph_isStorageOptimized(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsGraph_getProfileType(self) &
@@ -8332,15 +8356,15 @@ end function
 function swigf_TpetraCrsGraph_supportsRowViews(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsGraph), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsGraph_supportsRowViews(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsGraph_description(self) &
@@ -8380,17 +8404,17 @@ class(TpetraMap), intent(in) :: newcolmap
 
 class(TpetraImport), intent(in) :: newimport
 
-logical(C_BOOL), intent(in) :: sortindicesineachrow
+logical, intent(in) :: sortindicesineachrow
 
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
-logical(C_BOOL) :: farg4 
+integer(C_INT) :: farg4 
 
 farg1 = self%swigdata
 farg2 = newcolmap%swigdata
 farg3 = newimport%swigdata
-farg4 = sortindicesineachrow
+farg4 = SWIG_logical_to_int(sortindicesineachrow)
 call swigc_TpetraCrsGraph_reindexColumns__SWIG_0(farg1, farg2, farg3, farg4)
 end subroutine
 
@@ -8683,28 +8707,28 @@ end subroutine
 function swigf_TpetraCrsGraph_haveGlobalConstants(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsGraph), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsGraph_haveGlobalConstants(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 subroutine swigf_TpetraCrsGraph_computeGlobalConstants(self, computelocaltriangularconstants)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsGraph), intent(inout) :: self
 
-logical(C_BOOL), intent(in) :: computelocaltriangularconstants
+logical, intent(in) :: computelocaltriangularconstants
 
 type(SwigClassWrapper) :: farg1 
-logical(C_BOOL) :: farg2 
+integer(C_INT) :: farg2 
 
 farg1 = self%swigdata
-farg2 = computelocaltriangularconstants
+farg2 = SWIG_logical_to_int(computelocaltriangularconstants)
 call swigc_TpetraCrsGraph_computeGlobalConstants(farg1, farg2)
 end subroutine
 
@@ -9679,19 +9703,19 @@ class(TpetraMap), intent(in) :: newcolmap
 
 class(TpetraImport), intent(in) :: newimport
 
-logical(C_BOOL), intent(in) :: sorteachrow
+logical, intent(in) :: sorteachrow
 
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
 type(SwigClassWrapper) :: farg4 
-logical(C_BOOL) :: farg5 
+integer(C_INT) :: farg5 
 
 farg1 = self%swigdata
 farg2 = graph%swigdata
 farg3 = newcolmap%swigdata
 farg4 = newimport%swigdata
-farg5 = sorteachrow
+farg5 = SWIG_logical_to_int(sorteachrow)
 call swigc_TpetraCrsMatrix_reindexColumns__SWIG_0(farg1, farg2, farg3, farg4, farg5)
 end subroutine
 
@@ -10030,141 +10054,141 @@ end function
 function swigf_TpetraCrsMatrix_hasColMap(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsMatrix), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_hasColMap(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsMatrix_isLowerTriangularImpl(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsMatrix), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_isLowerTriangularImpl(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsMatrix_isLowerTriangular(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsMatrix), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_isLowerTriangular(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsMatrix_isUpperTriangularImpl(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsMatrix), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_isUpperTriangularImpl(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsMatrix_isUpperTriangular(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsMatrix), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_isUpperTriangular(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsMatrix_isLocallyIndexed(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsMatrix), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_isLocallyIndexed(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsMatrix_isGloballyIndexed(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsMatrix), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_isGloballyIndexed(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsMatrix_isFillComplete(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsMatrix), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_isFillComplete(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsMatrix_isFillActive(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsMatrix), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_isFillActive(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsMatrix_isStorageOptimized(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsMatrix), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_isStorageOptimized(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsMatrix_getProfileType(self) &
@@ -10184,15 +10208,15 @@ end function
 function swigf_TpetraCrsMatrix_isStaticGraph(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsMatrix), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_isStaticGraph(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsMatrix_getFrobeniusNorm(self) &
@@ -10212,15 +10236,15 @@ end function
 function swigf_TpetraCrsMatrix_supportsRowViews(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsMatrix), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_supportsRowViews(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 subroutine swigf_TpetraCrsMatrix_apply__SWIG_0(self, x, y, mode, alpha, beta)
@@ -10319,15 +10343,15 @@ end subroutine
 function swigf_TpetraCrsMatrix_hasTransposeApply(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsMatrix), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_hasTransposeApply(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_TpetraCrsMatrix_getDomainMap(self) &
@@ -10403,7 +10427,7 @@ class(TpetraMultiVector), intent(in) :: d
 real(C_DOUBLE), intent(in) :: dampingfactor
 integer(TpetraESweepDirection), intent(in) :: direction
 integer(C_INT), intent(in) :: numsweeps
-logical(C_BOOL), intent(in) :: zeroinitialguess
+logical, intent(in) :: zeroinitialguess
 
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
@@ -10412,7 +10436,7 @@ type(SwigClassWrapper) :: farg4
 real(C_DOUBLE) :: farg5 
 integer(C_INT) :: farg6 
 integer(C_INT) :: farg7 
-logical(C_BOOL) :: farg8 
+integer(C_INT) :: farg8 
 
 farg1 = self%swigdata
 farg2 = x%swigdata
@@ -10421,7 +10445,7 @@ farg4 = d%swigdata
 farg5 = dampingfactor
 farg6 = direction
 farg7 = numsweeps
-farg8 = zeroinitialguess
+farg8 = SWIG_logical_to_int(zeroinitialguess)
 call swigc_TpetraCrsMatrix_gaussSeidelCopy(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8)
 end subroutine
 
@@ -10675,15 +10699,15 @@ end subroutine
 function swigf_TpetraCrsMatrix_haveGlobalConstants(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(TpetraCrsMatrix), intent(in) :: self
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_haveGlobalConstants(farg1)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function new_TpetraCrsMatrix__SWIG_10(rowmap, numentriesperrowtoalloc, pftype, params) &
@@ -11320,22 +11344,22 @@ character(kind=C_CHAR, len=*), target :: filename
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
 class(TeuchosComm), intent(in) :: pcomm
 
-logical(C_BOOL), intent(in) :: callfillcomplete
-logical(C_BOOL), intent(in) :: tolerant
-logical(C_BOOL), intent(in) :: debug
+logical, intent(in) :: callfillcomplete
+logical, intent(in) :: tolerant
+logical, intent(in) :: debug
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
-logical(C_BOOL) :: farg3 
-logical(C_BOOL) :: farg4 
-logical(C_BOOL) :: farg5 
+integer(C_INT) :: farg3 
+integer(C_INT) :: farg4 
+integer(C_INT) :: farg5 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pcomm%swigdata
-farg3 = callfillcomplete
-farg4 = tolerant
-farg5 = debug
+farg3 = SWIG_logical_to_int(callfillcomplete)
+farg4 = SWIG_logical_to_int(tolerant)
+farg5 = SWIG_logical_to_int(debug)
 fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_0(farg1, farg2, farg3, farg4, farg5)
 swig_result%swigdata = fresult
 end function
@@ -11348,19 +11372,19 @@ character(kind=C_CHAR, len=*), target :: filename
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
 class(TeuchosComm), intent(in) :: pcomm
 
-logical(C_BOOL), intent(in) :: callfillcomplete
-logical(C_BOOL), intent(in) :: tolerant
+logical, intent(in) :: callfillcomplete
+logical, intent(in) :: tolerant
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
-logical(C_BOOL) :: farg3 
-logical(C_BOOL) :: farg4 
+integer(C_INT) :: farg3 
+integer(C_INT) :: farg4 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pcomm%swigdata
-farg3 = callfillcomplete
-farg4 = tolerant
+farg3 = SWIG_logical_to_int(callfillcomplete)
+farg4 = SWIG_logical_to_int(tolerant)
 fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_1(farg1, farg2, farg3, farg4)
 swig_result%swigdata = fresult
 end function
@@ -11373,16 +11397,16 @@ character(kind=C_CHAR, len=*), target :: filename
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
 class(TeuchosComm), intent(in) :: pcomm
 
-logical(C_BOOL), intent(in) :: callfillcomplete
+logical, intent(in) :: callfillcomplete
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
-logical(C_BOOL) :: farg3 
+integer(C_INT) :: farg3 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pcomm%swigdata
-farg3 = callfillcomplete
+farg3 = SWIG_logical_to_int(callfillcomplete)
 fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_2(farg1, farg2, farg3)
 swig_result%swigdata = fresult
 end function
@@ -11417,23 +11441,23 @@ class(ParameterList), intent(in) :: constructorparams
 
 class(ParameterList), intent(in) :: fillcompleteparams
 
-logical(C_BOOL), intent(in) :: tolerant
-logical(C_BOOL), intent(in) :: debug
+logical, intent(in) :: tolerant
+logical, intent(in) :: debug
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
 type(SwigClassWrapper) :: farg4 
-logical(C_BOOL) :: farg5 
-logical(C_BOOL) :: farg6 
+integer(C_INT) :: farg5 
+integer(C_INT) :: farg6 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pcomm%swigdata
 farg3 = constructorparams%swigdata
 farg4 = fillcompleteparams%swigdata
-farg5 = tolerant
-farg6 = debug
+farg5 = SWIG_logical_to_int(tolerant)
+farg6 = SWIG_logical_to_int(debug)
 fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_4(farg1, farg2, farg3, farg4, farg5, farg6)
 swig_result%swigdata = fresult
 end function
@@ -11450,20 +11474,20 @@ class(ParameterList), intent(in) :: constructorparams
 
 class(ParameterList), intent(in) :: fillcompleteparams
 
-logical(C_BOOL), intent(in) :: tolerant
+logical, intent(in) :: tolerant
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
 type(SwigClassWrapper) :: farg4 
-logical(C_BOOL) :: farg5 
+integer(C_INT) :: farg5 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pcomm%swigdata
 farg3 = constructorparams%swigdata
 farg4 = fillcompleteparams%swigdata
-farg5 = tolerant
+farg5 = SWIG_logical_to_int(tolerant)
 fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_5(farg1, farg2, farg3, farg4, farg5)
 swig_result%swigdata = fresult
 end function
@@ -11509,9 +11533,9 @@ class(TpetraMap), intent(in) :: domainmap
 
 class(TpetraMap), intent(in) :: rangemap
 
-logical(C_BOOL), intent(in) :: callfillcomplete
-logical(C_BOOL), intent(in) :: tolerant
-logical(C_BOOL), intent(in) :: debug
+logical, intent(in) :: callfillcomplete
+logical, intent(in) :: tolerant
+logical, intent(in) :: debug
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
@@ -11519,18 +11543,18 @@ type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3 
 type(SwigClassWrapper) :: farg4 
 type(SwigClassWrapper) :: farg5 
-logical(C_BOOL) :: farg6 
-logical(C_BOOL) :: farg7 
-logical(C_BOOL) :: farg8 
+integer(C_INT) :: farg6 
+integer(C_INT) :: farg7 
+integer(C_INT) :: farg8 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = rowmap%swigdata
 farg3 = colmap%swigdata
 farg4 = domainmap%swigdata
 farg5 = rangemap%swigdata
-farg6 = callfillcomplete
-farg7 = tolerant
-farg8 = debug
+farg6 = SWIG_logical_to_int(callfillcomplete)
+farg7 = SWIG_logical_to_int(tolerant)
+farg8 = SWIG_logical_to_int(debug)
 fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_7(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8)
 swig_result%swigdata = fresult
 end function
@@ -11549,8 +11573,8 @@ class(TpetraMap), intent(in) :: domainmap
 
 class(TpetraMap), intent(in) :: rangemap
 
-logical(C_BOOL), intent(in) :: callfillcomplete
-logical(C_BOOL), intent(in) :: tolerant
+logical, intent(in) :: callfillcomplete
+logical, intent(in) :: tolerant
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
@@ -11558,16 +11582,16 @@ type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3 
 type(SwigClassWrapper) :: farg4 
 type(SwigClassWrapper) :: farg5 
-logical(C_BOOL) :: farg6 
-logical(C_BOOL) :: farg7 
+integer(C_INT) :: farg6 
+integer(C_INT) :: farg7 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = rowmap%swigdata
 farg3 = colmap%swigdata
 farg4 = domainmap%swigdata
 farg5 = rangemap%swigdata
-farg6 = callfillcomplete
-farg7 = tolerant
+farg6 = SWIG_logical_to_int(callfillcomplete)
+farg7 = SWIG_logical_to_int(tolerant)
 fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_8(farg1, farg2, farg3, farg4, farg5, farg6, farg7)
 swig_result%swigdata = fresult
 end function
@@ -11586,7 +11610,7 @@ class(TpetraMap), intent(in) :: domainmap
 
 class(TpetraMap), intent(in) :: rangemap
 
-logical(C_BOOL), intent(in) :: callfillcomplete
+logical, intent(in) :: callfillcomplete
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
@@ -11594,14 +11618,14 @@ type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3 
 type(SwigClassWrapper) :: farg4 
 type(SwigClassWrapper) :: farg5 
-logical(C_BOOL) :: farg6 
+integer(C_INT) :: farg6 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = rowmap%swigdata
 farg3 = colmap%swigdata
 farg4 = domainmap%swigdata
 farg5 = rangemap%swigdata
-farg6 = callfillcomplete
+farg6 = SWIG_logical_to_int(callfillcomplete)
 fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_9(farg1, farg2, farg3, farg4, farg5, farg6)
 swig_result%swigdata = fresult
 end function
@@ -11644,22 +11668,22 @@ character(kind=C_CHAR, len=*), target :: filename
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
 class(TeuchosComm), intent(in) :: pcomm
 
-logical(C_BOOL), intent(in) :: callfillcomplete
-logical(C_BOOL), intent(in) :: tolerant
-logical(C_BOOL), intent(in) :: debug
+logical, intent(in) :: callfillcomplete
+logical, intent(in) :: tolerant
+logical, intent(in) :: debug
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
-logical(C_BOOL) :: farg3 
-logical(C_BOOL) :: farg4 
-logical(C_BOOL) :: farg5 
+integer(C_INT) :: farg3 
+integer(C_INT) :: farg4 
+integer(C_INT) :: farg5 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pcomm%swigdata
-farg3 = callfillcomplete
-farg4 = tolerant
-farg5 = debug
+farg3 = SWIG_logical_to_int(callfillcomplete)
+farg4 = SWIG_logical_to_int(tolerant)
+farg5 = SWIG_logical_to_int(debug)
 fresult = swigc_TpetraReader_readSparseFile__SWIG_0(farg1, farg2, farg3, farg4, farg5)
 swig_result%swigdata = fresult
 end function
@@ -11672,19 +11696,19 @@ character(kind=C_CHAR, len=*), target :: filename
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
 class(TeuchosComm), intent(in) :: pcomm
 
-logical(C_BOOL), intent(in) :: callfillcomplete
-logical(C_BOOL), intent(in) :: tolerant
+logical, intent(in) :: callfillcomplete
+logical, intent(in) :: tolerant
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
-logical(C_BOOL) :: farg3 
-logical(C_BOOL) :: farg4 
+integer(C_INT) :: farg3 
+integer(C_INT) :: farg4 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pcomm%swigdata
-farg3 = callfillcomplete
-farg4 = tolerant
+farg3 = SWIG_logical_to_int(callfillcomplete)
+farg4 = SWIG_logical_to_int(tolerant)
 fresult = swigc_TpetraReader_readSparseFile__SWIG_1(farg1, farg2, farg3, farg4)
 swig_result%swigdata = fresult
 end function
@@ -11697,16 +11721,16 @@ character(kind=C_CHAR, len=*), target :: filename
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
 class(TeuchosComm), intent(in) :: pcomm
 
-logical(C_BOOL), intent(in) :: callfillcomplete
+logical, intent(in) :: callfillcomplete
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
-logical(C_BOOL) :: farg3 
+integer(C_INT) :: farg3 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pcomm%swigdata
-farg3 = callfillcomplete
+farg3 = SWIG_logical_to_int(callfillcomplete)
 fresult = swigc_TpetraReader_readSparseFile__SWIG_2(farg1, farg2, farg3)
 swig_result%swigdata = fresult
 end function
@@ -11741,23 +11765,23 @@ class(ParameterList), intent(in) :: constructorparams
 
 class(ParameterList), intent(in) :: fillcompleteparams
 
-logical(C_BOOL), intent(in) :: tolerant
-logical(C_BOOL), intent(in) :: debug
+logical, intent(in) :: tolerant
+logical, intent(in) :: debug
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
 type(SwigClassWrapper) :: farg4 
-logical(C_BOOL) :: farg5 
-logical(C_BOOL) :: farg6 
+integer(C_INT) :: farg5 
+integer(C_INT) :: farg6 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pcomm%swigdata
 farg3 = constructorparams%swigdata
 farg4 = fillcompleteparams%swigdata
-farg5 = tolerant
-farg6 = debug
+farg5 = SWIG_logical_to_int(tolerant)
+farg6 = SWIG_logical_to_int(debug)
 fresult = swigc_TpetraReader_readSparseFile__SWIG_4(farg1, farg2, farg3, farg4, farg5, farg6)
 swig_result%swigdata = fresult
 end function
@@ -11774,20 +11798,20 @@ class(ParameterList), intent(in) :: constructorparams
 
 class(ParameterList), intent(in) :: fillcompleteparams
 
-logical(C_BOOL), intent(in) :: tolerant
+logical, intent(in) :: tolerant
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
 type(SwigClassWrapper) :: farg4 
-logical(C_BOOL) :: farg5 
+integer(C_INT) :: farg5 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pcomm%swigdata
 farg3 = constructorparams%swigdata
 farg4 = fillcompleteparams%swigdata
-farg5 = tolerant
+farg5 = SWIG_logical_to_int(tolerant)
 fresult = swigc_TpetraReader_readSparseFile__SWIG_5(farg1, farg2, farg3, farg4, farg5)
 swig_result%swigdata = fresult
 end function
@@ -11832,9 +11856,9 @@ class(TpetraMap), intent(in) :: domainmap
 
 class(TpetraMap), intent(in) :: rangemap
 
-logical(C_BOOL), intent(in) :: callfillcomplete
-logical(C_BOOL), intent(in) :: tolerant
-logical(C_BOOL), intent(in) :: debug
+logical, intent(in) :: callfillcomplete
+logical, intent(in) :: tolerant
+logical, intent(in) :: debug
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
@@ -11842,18 +11866,18 @@ type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3 
 type(SwigClassWrapper) :: farg4 
 type(SwigClassWrapper) :: farg5 
-logical(C_BOOL) :: farg6 
-logical(C_BOOL) :: farg7 
-logical(C_BOOL) :: farg8 
+integer(C_INT) :: farg6 
+integer(C_INT) :: farg7 
+integer(C_INT) :: farg8 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = rowmap%swigdata
 farg3 = colmap%swigdata
 farg4 = domainmap%swigdata
 farg5 = rangemap%swigdata
-farg6 = callfillcomplete
-farg7 = tolerant
-farg8 = debug
+farg6 = SWIG_logical_to_int(callfillcomplete)
+farg7 = SWIG_logical_to_int(tolerant)
+farg8 = SWIG_logical_to_int(debug)
 fresult = swigc_TpetraReader_readSparseFile__SWIG_7(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8)
 swig_result%swigdata = fresult
 end function
@@ -11872,8 +11896,8 @@ class(TpetraMap), intent(in) :: domainmap
 
 class(TpetraMap), intent(in) :: rangemap
 
-logical(C_BOOL), intent(in) :: callfillcomplete
-logical(C_BOOL), intent(in) :: tolerant
+logical, intent(in) :: callfillcomplete
+logical, intent(in) :: tolerant
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
@@ -11881,16 +11905,16 @@ type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3 
 type(SwigClassWrapper) :: farg4 
 type(SwigClassWrapper) :: farg5 
-logical(C_BOOL) :: farg6 
-logical(C_BOOL) :: farg7 
+integer(C_INT) :: farg6 
+integer(C_INT) :: farg7 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = rowmap%swigdata
 farg3 = colmap%swigdata
 farg4 = domainmap%swigdata
 farg5 = rangemap%swigdata
-farg6 = callfillcomplete
-farg7 = tolerant
+farg6 = SWIG_logical_to_int(callfillcomplete)
+farg7 = SWIG_logical_to_int(tolerant)
 fresult = swigc_TpetraReader_readSparseFile__SWIG_8(farg1, farg2, farg3, farg4, farg5, farg6, farg7)
 swig_result%swigdata = fresult
 end function
@@ -11909,7 +11933,7 @@ class(TpetraMap), intent(in) :: domainmap
 
 class(TpetraMap), intent(in) :: rangemap
 
-logical(C_BOOL), intent(in) :: callfillcomplete
+logical, intent(in) :: callfillcomplete
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
@@ -11917,14 +11941,14 @@ type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3 
 type(SwigClassWrapper) :: farg4 
 type(SwigClassWrapper) :: farg5 
-logical(C_BOOL) :: farg6 
+integer(C_INT) :: farg6 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = rowmap%swigdata
 farg3 = colmap%swigdata
 farg4 = domainmap%swigdata
 farg5 = rangemap%swigdata
-farg6 = callfillcomplete
+farg6 = SWIG_logical_to_int(callfillcomplete)
 fresult = swigc_TpetraReader_readSparseFile__SWIG_9(farg1, farg2, farg3, farg4, farg5, farg6)
 swig_result%swigdata = fresult
 end function
@@ -11969,21 +11993,21 @@ class(TeuchosComm), intent(in) :: comm
 
 class(TpetraMap), intent(inout) :: map
 
-logical(C_BOOL), intent(in) :: tolerant
-logical(C_BOOL), intent(in) :: debug
+logical, intent(in) :: tolerant
+logical, intent(in) :: debug
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
-logical(C_BOOL) :: farg4 
-logical(C_BOOL) :: farg5 
+integer(C_INT) :: farg4 
+integer(C_INT) :: farg5 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = comm%swigdata
 farg3 = map%swigdata
-farg4 = tolerant
-farg5 = debug
+farg4 = SWIG_logical_to_int(tolerant)
+farg5 = SWIG_logical_to_int(debug)
 fresult = swigc_TpetraReader_readDenseFile__SWIG_0(farg1, farg2, farg3, farg4, farg5)
 swig_result%swigdata = fresult
 end function
@@ -11998,18 +12022,18 @@ class(TeuchosComm), intent(in) :: comm
 
 class(TpetraMap), intent(inout) :: map
 
-logical(C_BOOL), intent(in) :: tolerant
+logical, intent(in) :: tolerant
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
-logical(C_BOOL) :: farg4 
+integer(C_INT) :: farg4 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = comm%swigdata
 farg3 = map%swigdata
-farg4 = tolerant
+farg4 = SWIG_logical_to_int(tolerant)
 fresult = swigc_TpetraReader_readDenseFile__SWIG_1(farg1, farg2, farg3, farg4)
 swig_result%swigdata = fresult
 end function
@@ -12044,19 +12068,19 @@ character(kind=C_CHAR, len=*), target :: filename
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
 class(TeuchosComm), intent(in) :: comm
 
-logical(C_BOOL), intent(in) :: tolerant
-logical(C_BOOL), intent(in) :: debug
+logical, intent(in) :: tolerant
+logical, intent(in) :: debug
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
-logical(C_BOOL) :: farg3 
-logical(C_BOOL) :: farg4 
+integer(C_INT) :: farg3 
+integer(C_INT) :: farg4 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = comm%swigdata
-farg3 = tolerant
-farg4 = debug
+farg3 = SWIG_logical_to_int(tolerant)
+farg4 = SWIG_logical_to_int(debug)
 fresult = swigc_TpetraReader_readMapFile__SWIG_0(farg1, farg2, farg3, farg4)
 swig_result%swigdata = fresult
 end function
@@ -12069,16 +12093,16 @@ character(kind=C_CHAR, len=*), target :: filename
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
 class(TeuchosComm), intent(in) :: comm
 
-logical(C_BOOL), intent(in) :: tolerant
+logical, intent(in) :: tolerant
 
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
-logical(C_BOOL) :: farg3 
+integer(C_INT) :: farg3 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = comm%swigdata
-farg3 = tolerant
+farg3 = SWIG_logical_to_int(tolerant)
 fresult = swigc_TpetraReader_readMapFile__SWIG_1(farg1, farg2, farg3)
 swig_result%swigdata = fresult
 end function
@@ -12156,19 +12180,19 @@ character(kind=C_CHAR, len=*), target :: matrixname
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg3_chars
 character(kind=C_CHAR, len=*), target :: matrixdescription
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg4_chars
-logical(C_BOOL), intent(in) :: debug
+logical, intent(in) :: debug
 
 type(SwigArrayWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigArrayWrapper) :: farg3 
 type(SwigArrayWrapper) :: farg4 
-logical(C_BOOL) :: farg5 
+integer(C_INT) :: farg5 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pmatrix%swigdata
 call SWIG_string_to_chararray(matrixname, farg3_chars, farg3)
 call SWIG_string_to_chararray(matrixdescription, farg4_chars, farg4)
-farg5 = debug
+farg5 = SWIG_logical_to_int(debug)
 call swigc_TpetraWriter_writeSparseFile__SWIG_0(farg1, farg2, farg3, farg4, farg5)
 end subroutine
 
@@ -12201,15 +12225,15 @@ character(kind=C_CHAR, len=*), target :: filename
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
 class(TpetraCrsMatrix), intent(in) :: pmatrix
 
-logical(C_BOOL), intent(in) :: debug
+logical, intent(in) :: debug
 
 type(SwigArrayWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
-logical(C_BOOL) :: farg3 
+integer(C_INT) :: farg3 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pmatrix%swigdata
-farg3 = debug
+farg3 = SWIG_logical_to_int(debug)
 call swigc_TpetraWriter_writeSparseFile__SWIG_2(farg1, farg2, farg3)
 end subroutine
 
@@ -12237,19 +12261,19 @@ character(kind=C_CHAR, len=*), target :: graphname
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg3_chars
 character(kind=C_CHAR, len=*), target :: graphdescription
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg4_chars
-logical(C_BOOL), intent(in) :: debug
+logical, intent(in) :: debug
 
 type(SwigArrayWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigArrayWrapper) :: farg3 
 type(SwigArrayWrapper) :: farg4 
-logical(C_BOOL) :: farg5 
+integer(C_INT) :: farg5 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pgraph%swigdata
 call SWIG_string_to_chararray(graphname, farg3_chars, farg3)
 call SWIG_string_to_chararray(graphdescription, farg4_chars, farg4)
-farg5 = debug
+farg5 = SWIG_logical_to_int(debug)
 call swigc_TpetraWriter_writeSparseGraphFile__SWIG_0(farg1, farg2, farg3, farg4, farg5)
 end subroutine
 
@@ -12282,15 +12306,15 @@ character(kind=C_CHAR, len=*), target :: filename
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
 class(TpetraCrsGraph), intent(in) :: pgraph
 
-logical(C_BOOL), intent(in) :: debug
+logical, intent(in) :: debug
 
 type(SwigArrayWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
-logical(C_BOOL) :: farg3 
+integer(C_INT) :: farg3 
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pgraph%swigdata
-farg3 = debug
+farg3 = SWIG_logical_to_int(debug)
 call swigc_TpetraWriter_writeSparseGraphFile__SWIG_2(farg1, farg2, farg3)
 end subroutine
 
@@ -12380,32 +12404,32 @@ subroutine TpetraMatrixMatrixMultiply__SWIG_0(a, transposea, b, transposeb, c, c
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsMatrix), intent(in) :: a
 
-logical(C_BOOL), intent(in) :: transposea
+logical, intent(in) :: transposea
 class(TpetraCrsMatrix), intent(in) :: b
 
-logical(C_BOOL), intent(in) :: transposeb
+logical, intent(in) :: transposeb
 class(TpetraCrsMatrix), intent(inout) :: c
 
-logical(C_BOOL), intent(in) :: call_fillcomplete_on_result
+logical, intent(in) :: call_fillcomplete_on_result
 character(kind=C_CHAR, len=*), target :: label
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg7_chars
 class(ParameterList), intent(in) :: params
 
 type(SwigClassWrapper) :: farg1 
-logical(C_BOOL) :: farg2 
+integer(C_INT) :: farg2 
 type(SwigClassWrapper) :: farg3 
-logical(C_BOOL) :: farg4 
+integer(C_INT) :: farg4 
 type(SwigClassWrapper) :: farg5 
-logical(C_BOOL) :: farg6 
+integer(C_INT) :: farg6 
 type(SwigArrayWrapper) :: farg7 
 type(SwigClassWrapper) :: farg8 
 
 farg1 = a%swigdata
-farg2 = transposea
+farg2 = SWIG_logical_to_int(transposea)
 farg3 = b%swigdata
-farg4 = transposeb
+farg4 = SWIG_logical_to_int(transposeb)
 farg5 = c%swigdata
-farg6 = call_fillcomplete_on_result
+farg6 = SWIG_logical_to_int(call_fillcomplete_on_result)
 call SWIG_string_to_chararray(label, farg7_chars, farg7)
 farg8 = params%swigdata
 call swigc_TpetraMatrixMatrixMultiply__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8)
@@ -12415,30 +12439,30 @@ subroutine TpetraMatrixMatrixMultiply__SWIG_1(a, transposea, b, transposeb, c, c
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsMatrix), intent(in) :: a
 
-logical(C_BOOL), intent(in) :: transposea
+logical, intent(in) :: transposea
 class(TpetraCrsMatrix), intent(in) :: b
 
-logical(C_BOOL), intent(in) :: transposeb
+logical, intent(in) :: transposeb
 class(TpetraCrsMatrix), intent(inout) :: c
 
-logical(C_BOOL), intent(in) :: call_fillcomplete_on_result
+logical, intent(in) :: call_fillcomplete_on_result
 character(kind=C_CHAR, len=*), target :: label
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg7_chars
 
 type(SwigClassWrapper) :: farg1 
-logical(C_BOOL) :: farg2 
+integer(C_INT) :: farg2 
 type(SwigClassWrapper) :: farg3 
-logical(C_BOOL) :: farg4 
+integer(C_INT) :: farg4 
 type(SwigClassWrapper) :: farg5 
-logical(C_BOOL) :: farg6 
+integer(C_INT) :: farg6 
 type(SwigArrayWrapper) :: farg7 
 
 farg1 = a%swigdata
-farg2 = transposea
+farg2 = SWIG_logical_to_int(transposea)
 farg3 = b%swigdata
-farg4 = transposeb
+farg4 = SWIG_logical_to_int(transposeb)
 farg5 = c%swigdata
-farg6 = call_fillcomplete_on_result
+farg6 = SWIG_logical_to_int(call_fillcomplete_on_result)
 call SWIG_string_to_chararray(label, farg7_chars, farg7)
 call swigc_TpetraMatrixMatrixMultiply__SWIG_1(farg1, farg2, farg3, farg4, farg5, farg6, farg7)
 end subroutine
@@ -12447,27 +12471,27 @@ subroutine TpetraMatrixMatrixMultiply__SWIG_2(a, transposea, b, transposeb, c, c
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsMatrix), intent(in) :: a
 
-logical(C_BOOL), intent(in) :: transposea
+logical, intent(in) :: transposea
 class(TpetraCrsMatrix), intent(in) :: b
 
-logical(C_BOOL), intent(in) :: transposeb
+logical, intent(in) :: transposeb
 class(TpetraCrsMatrix), intent(inout) :: c
 
-logical(C_BOOL), intent(in) :: call_fillcomplete_on_result
+logical, intent(in) :: call_fillcomplete_on_result
 
 type(SwigClassWrapper) :: farg1 
-logical(C_BOOL) :: farg2 
+integer(C_INT) :: farg2 
 type(SwigClassWrapper) :: farg3 
-logical(C_BOOL) :: farg4 
+integer(C_INT) :: farg4 
 type(SwigClassWrapper) :: farg5 
-logical(C_BOOL) :: farg6 
+integer(C_INT) :: farg6 
 
 farg1 = a%swigdata
-farg2 = transposea
+farg2 = SWIG_logical_to_int(transposea)
 farg3 = b%swigdata
-farg4 = transposeb
+farg4 = SWIG_logical_to_int(transposeb)
 farg5 = c%swigdata
-farg6 = call_fillcomplete_on_result
+farg6 = SWIG_logical_to_int(call_fillcomplete_on_result)
 call swigc_TpetraMatrixMatrixMultiply__SWIG_2(farg1, farg2, farg3, farg4, farg5, farg6)
 end subroutine
 
@@ -12475,22 +12499,22 @@ subroutine TpetraMatrixMatrixMultiply__SWIG_3(a, transposea, b, transposeb, c)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsMatrix), intent(in) :: a
 
-logical(C_BOOL), intent(in) :: transposea
+logical, intent(in) :: transposea
 class(TpetraCrsMatrix), intent(in) :: b
 
-logical(C_BOOL), intent(in) :: transposeb
+logical, intent(in) :: transposeb
 class(TpetraCrsMatrix), intent(inout) :: c
 
 type(SwigClassWrapper) :: farg1 
-logical(C_BOOL) :: farg2 
+integer(C_INT) :: farg2 
 type(SwigClassWrapper) :: farg3 
-logical(C_BOOL) :: farg4 
+integer(C_INT) :: farg4 
 type(SwigClassWrapper) :: farg5 
 
 farg1 = a%swigdata
-farg2 = transposea
+farg2 = SWIG_logical_to_int(transposea)
 farg3 = b%swigdata
-farg4 = transposeb
+farg4 = SWIG_logical_to_int(transposeb)
 farg5 = c%swigdata
 call swigc_TpetraMatrixMatrixMultiply__SWIG_3(farg1, farg2, farg3, farg4, farg5)
 end subroutine
@@ -12499,20 +12523,20 @@ subroutine TpetraMatrixMatrixAdd__SWIG_0(a, transposea, scalara, b, scalarb)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsMatrix), intent(in) :: a
 
-logical(C_BOOL), intent(in) :: transposea
+logical, intent(in) :: transposea
 real(C_DOUBLE), intent(in) :: scalara
 class(TpetraCrsMatrix), intent(inout) :: b
 
 real(C_DOUBLE), intent(in) :: scalarb
 
 type(SwigClassWrapper) :: farg1 
-logical(C_BOOL) :: farg2 
+integer(C_INT) :: farg2 
 real(C_DOUBLE) :: farg3 
 type(SwigClassWrapper) :: farg4 
 real(C_DOUBLE) :: farg5 
 
 farg1 = a%swigdata
-farg2 = transposea
+farg2 = SWIG_logical_to_int(transposea)
 farg3 = scalara
 farg4 = b%swigdata
 farg5 = scalarb
@@ -12523,27 +12547,27 @@ subroutine TpetraMatrixMatrixAdd__SWIG_1(a, transposea, scalara, b, transposeb, 
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsMatrix), intent(in) :: a
 
-logical(C_BOOL), intent(in) :: transposea
+logical, intent(in) :: transposea
 real(C_DOUBLE), intent(in) :: scalara
 class(TpetraCrsMatrix), intent(in) :: b
 
-logical(C_BOOL), intent(in) :: transposeb
+logical, intent(in) :: transposeb
 real(C_DOUBLE), intent(in) :: scalarb
 class(TpetraCrsMatrix), intent(inout) :: c
 
 type(SwigClassWrapper) :: farg1 
-logical(C_BOOL) :: farg2 
+integer(C_INT) :: farg2 
 real(C_DOUBLE) :: farg3 
 type(SwigClassWrapper) :: farg4 
-logical(C_BOOL) :: farg5 
+integer(C_INT) :: farg5 
 real(C_DOUBLE) :: farg6 
 type(SwigClassWrapper) :: farg7 
 
 farg1 = a%swigdata
-farg2 = transposea
+farg2 = SWIG_logical_to_int(transposea)
 farg3 = scalara
 farg4 = b%swigdata
-farg5 = transposeb
+farg5 = SWIG_logical_to_int(transposeb)
 farg6 = scalarb
 farg7 = c%swigdata
 call swigc_TpetraMatrixMatrixAdd__SWIG_1(farg1, farg2, farg3, farg4, farg5, farg6, farg7)

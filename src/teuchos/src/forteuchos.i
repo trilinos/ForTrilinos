@@ -21,9 +21,6 @@ typedef int Teuchos_Ordinal;
 %fortran_view(double)
 %fortran_view(size_t)
 
-// FIXME: Restore previous bool behaviour
-FORT_FUND_TYPEMAP(bool, logical(C_BOOL))
-
 // Convert all std::string references/values to and from Fortran strings
 %include <std_string.i>
 

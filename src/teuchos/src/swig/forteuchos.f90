@@ -244,7 +244,7 @@ import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_ParameterList_sublist(farg1, farg2) &
@@ -295,7 +295,7 @@ import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2
-logical(C_BOOL), intent(in) :: farg3
+integer(C_INT), intent(in) :: farg3
 end subroutine
 
 subroutine swigc_ParameterList_set__SWIG_5(farg1, farg2, farg3) &
@@ -389,7 +389,7 @@ import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2
-logical(C_BOOL) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_ParameterList_get_string(farg1, farg2) &
@@ -639,23 +639,36 @@ call SWIG_string_to_chararray(name, farg2_chars, farg2)
 call swigc_ParameterList_remove(farg1, farg2)
 end subroutine
 
+
+function SWIG_int_to_logical(inp) &
+    result(out)
+  use, intrinsic :: ISO_C_BINDING
+  integer(kind=C_INT), intent(IN) :: inp
+  logical :: out
+  if (inp /= 0) then
+    out = .true.
+  else
+    out = .false.
+  end if
+end function
+
 function swigf_ParameterList_is_parameter(self, name) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(ParameterList), intent(in) :: self
 
 character(kind=C_CHAR, len=*), target :: name
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
 call SWIG_string_to_chararray(name, farg2_chars, farg2)
 fresult = swigc_ParameterList_is_parameter(farg1, farg2)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 function swigf_ParameterList_sublist(self, name) &
@@ -731,21 +744,34 @@ farg3 = value
 call swigc_ParameterList_set__SWIG_3(farg1, farg2, farg3)
 end subroutine
 
+
+function SWIG_logical_to_int(inp) &
+    result(out)
+  use, intrinsic :: ISO_C_BINDING
+  logical, intent(IN) :: inp
+  integer(kind=C_INT) :: out
+  if (inp .eqv. .true.) then
+    out = 1
+  else
+    out = 0
+  end if
+end function
+
 subroutine swigf_ParameterList_set__SWIG_4(self, name, value)
 use, intrinsic :: ISO_C_BINDING
 class(ParameterList), intent(inout) :: self
 
 character(kind=C_CHAR, len=*), target :: name
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
-logical(C_BOOL), intent(in) :: value
+logical, intent(in) :: value
 
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
-logical(C_BOOL) :: farg3 
+integer(C_INT) :: farg3 
 
 farg1 = self%swigdata
 call SWIG_string_to_chararray(name, farg2_chars, farg2)
-farg3 = value
+farg3 = SWIG_logical_to_int(value)
 call swigc_ParameterList_set__SWIG_4(farg1, farg2, farg3)
 end subroutine
 
@@ -909,20 +935,20 @@ end function
 function swigf_ParameterList_get_logical(self, name) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-logical(C_BOOL) :: swig_result
+logical :: swig_result
 class(ParameterList), intent(inout) :: self
 
 character(kind=C_CHAR, len=*), target :: name
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
 
-logical(C_BOOL) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
 call SWIG_string_to_chararray(name, farg2_chars, farg2)
 fresult = swigc_ParameterList_get_logical(farg1, farg2)
-swig_result = fresult
+swig_result = SWIG_int_to_logical(fresult)
 end function
 
 

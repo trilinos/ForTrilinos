@@ -31,9 +31,6 @@ typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
 typedef char                                    Packet;
 %}
 
-// FIXME: Restore previous bool behaviour
-FORT_FUND_TYPEMAP(bool, logical(C_BOOL))
-
 // NOTE: with the latest SWIG, these will *not* show up in downstream
 // %imported modules even if %insert is replaced with %fragment.
 %insert("fuse") {
@@ -49,7 +46,6 @@ FORT_FUND_TYPEMAP(bool, logical(C_BOOL))
    global_ordinal_type => c_long_long, &
    global_size_type => c_long, &
    size_type => c_size_t, &
-   bool_type => c_bool, &
    int_type => c_int, &
    mag_type => c_double, &
    norm_type => c_double
@@ -60,7 +56,6 @@ public :: local_ordinal_type
 public :: global_ordinal_type
 public :: global_size_type
 public :: size_type
-public :: bool_type
 public :: int_type
 public :: mag_type
 public :: norm_type

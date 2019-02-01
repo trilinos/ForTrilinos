@@ -26,10 +26,9 @@ class Array
 
 // Add native wrapping typemaps to convert to/from Teuchos array
 %std_native_container(Teuchos::Array<TYPE>)
-%apply const Teuchos::Array<TYPE>& NATIVE { const Teuchos::Array<TYPE>& }
-
 // Instantiate the typemaps without generating wrappers
 %template() Teuchos::Array<TYPE>;
+
 %enddef
 
 TEUCHOS_ARRAY(int);

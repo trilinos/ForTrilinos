@@ -1017,8 +1017,8 @@ SWIGEXPORT void _wrap_ParameterList_remove(SwigClassWrapper const *farg1, SwigAr
 }
 
 
-SWIGEXPORT bool _wrap_ParameterList_is_parameter(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
-  bool fresult ;
+SWIGEXPORT int _wrap_ParameterList_is_parameter(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+  int fresult ;
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList const > *smartarg1 ;
@@ -1052,7 +1052,7 @@ SWIGEXPORT bool _wrap_ParameterList_is_parameter(SwigClassWrapper const *farg1, 
       SWIG_exception_impl("Teuchos::ParameterList::isParameter(std::string const &) const", SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = static_cast< bool >(result);
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 
@@ -1223,20 +1223,20 @@ SWIGEXPORT void _wrap_ParameterList_set__SWIG_3(SwigClassWrapper const *farg1, S
 }
 
 
-SWIGEXPORT void _wrap_ParameterList_set__SWIG_4(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, bool const *farg3) {
+SWIGEXPORT void _wrap_ParameterList_set__SWIG_4(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, int const *farg3) {
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
   bool *arg3 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
   std::string tempstr2 ;
-  bool temp3 ;
+  bool tempbool3 ;
   
   smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
   tempstr2 = std::string(static_cast<const char *>(farg2->data), farg2->size);
   arg2 = &tempstr2;
-  temp3 = static_cast< bool >(*farg3);
-  arg3 = &temp3;
+  tempbool3 = (*farg3 ? true : false);
+  arg3 = &tempbool3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::ParameterList::set< bool >(std::string const &,bool const &)");;
@@ -1596,8 +1596,8 @@ SWIGEXPORT long long _wrap_ParameterList_get_longlong(SwigClassWrapper const *fa
 }
 
 
-SWIGEXPORT bool _wrap_ParameterList_get_logical(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
-  bool fresult ;
+SWIGEXPORT int _wrap_ParameterList_get_logical(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
+  int fresult ;
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   std::string *arg2 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
@@ -1631,7 +1631,7 @@ SWIGEXPORT bool _wrap_ParameterList_get_logical(SwigClassWrapper const *farg1, S
       SWIG_exception_impl("Teuchos::ParameterList::get< bool >(std::string const &)", SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-  fresult = *result;
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 

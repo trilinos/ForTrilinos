@@ -61,7 +61,7 @@ contains
     type(TpetraMultiVector) :: A, B, A2, C
     integer(size_type), parameter :: num_vecs=2, num_local=2, LDA=2
     integer(local_ordinal_type) :: lclrow
-    logical(bool_type) :: zeroout
+    logical :: zeroout
     real(scalar_type), parameter :: zero=0., one=1., two=2., four=4., negone=-1.
     real(scalar_type) :: norms(num_vecs), zeros(num_vecs), values(6)
     integer(global_ordinal_type) :: gblrow, num_global

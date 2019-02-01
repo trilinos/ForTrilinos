@@ -64,7 +64,6 @@ contains
     type(TpetraCrsGraph) :: Graph
     integer(local_ordinal_type) :: row, indices(1)
     integer(size_type), parameter :: izero=0, ione=1
-    logical(c_bool), parameter :: false=.false.
 
     OUT0("Starting TpetraCrsGraph_ActiveFillLocal!")
 
@@ -80,7 +79,7 @@ contains
     indices(1) = 1
     call Graph%insertLocalIndices(row, indices)
 
-    call params%set("Optimize Storage", false)
+    call params%set("Optimize Storage", .false.)
     call graph%fillComplete(params)
     TEST_ASSERT((.not. graph%isFillActive()))
 
@@ -101,7 +100,7 @@ contains
     row = 1
     indices(1) = 1
     call Graph%insertLocalIndices(row, indices)
-    call params%set("Optimize Storage", false)
+    call params%set("Optimize Storage", .false.)
     call Graph%fillComplete(params);
     TEST_ASSERT((.not. graph%isFillActive()))
     TEST_ASSERT(graph%isFillComplete())
@@ -163,7 +162,6 @@ contains
     integer(local_ordinal_type) :: lclrow
     integer(global_ordinal_type) :: myrowind
     integer(global_ordinal_type), allocatable :: indices(:)
-    logical(c_bool), parameter :: true=.true., false=.false.
     integer(size_type), parameter :: ione=1
 
     OUT0("Starting TpetraCrsGraph_WithColMap!")
@@ -222,7 +220,6 @@ contains
     integer(size_type), allocatable :: rowptr(:)
     integer(local_ordinal_type), allocatable :: colind(:)
     integer(global_ordinal_type), allocatable :: indices(:)
-    logical(c_bool), parameter :: false=.false., true=.true.
 
     OUT0("Starting TpetraCrsGraph_TwoArraysESFC!")
 
@@ -268,7 +265,6 @@ contains
     integer(size_type), allocatable :: rowptr(:)
     integer(local_ordinal_type), allocatable :: colind(:)
     integer(global_ordinal_type), allocatable :: indices(:)
-    logical(c_bool), parameter :: false=.false., true=.true.
     integer(size_type), parameter :: izero=0
 
     OUT0("Starting TpetraCrsGraph_SetAllIndices!")
@@ -313,8 +309,7 @@ contains
     type(ParameterList) :: params
     integer(size_type) :: num_procs, num_local, nument
     integer(size_type), allocatable :: rowptr(:)
-    logical(c_bool), parameter :: false=.false., true=.true.
-    logical(c_bool) :: sorting_check
+    logical :: sorting_check
     integer(size_type), parameter :: izero=0
     integer(global_ordinal_type) :: j, jj, jstart, jfinish, firstind, lastind
     integer(global_ordinal_type), allocatable :: jinds(:)
@@ -353,10 +348,10 @@ contains
 
     ! fill complete; should be sorted now
     params = ParameterList("ANONYMOUS")
-    call params%set("Optimize Storage", false)
+    call params%set("Optimize Storage", .false.)
     call graph%fillComplete(params)
 
-    sorting_check = true
+    sorting_check = .true.
     kstart = map%getMinLocalIndex()
     kfinish = map%getMaxLocalIndex()
     do k = kstart, kfinish
@@ -365,7 +360,7 @@ contains
       call Graph%getLocalRowCopy(k, kinds, nument);
       do kk = 2, nument
         if (kinds(kk-1) > kinds(kk)) then
-          sorting_check = false
+          sorting_check = .false.
           exit
         endif
       end do
@@ -377,7 +372,7 @@ contains
     call Graph%resumeFill()
     TEST_ASSERT(graph%isSorted())
 
-    sorting_check = true
+    sorting_check = .true.
     kstart = map%getMinLocalIndex()
     kfinish = map%getMaxLocalIndex()
     do k = kstart, kfinish
@@ -386,7 +381,7 @@ contains
       call Graph%getLocalRowCopy(k, kinds, nument);
       do kk = 2, nument
         if (kinds(kk-1) > kinds(kk)) then
-          sorting_check = false
+          sorting_check = .false.
           exit
         endif
       end do
@@ -404,10 +399,10 @@ contains
     deallocate(kinds)
 
     ! fill complete, check one more time
-    call params%set("Optimize Storage", false)
+    call params%set("Optimize Storage", .false.)
     call graph%fillComplete(params)
 
-    sorting_check = true
+    sorting_check = .true.
     kstart = map%getMinLocalIndex()
     kfinish = map%getMaxLocalIndex()
     do k = kstart, kfinish
@@ -416,7 +411,7 @@ contains
       call Graph%getLocalRowCopy(k, kinds, nument);
       do kk = 2, nument
         if (kinds(kk-1) > kinds(kk)) then
-          sorting_check = false
+          sorting_check = .false.
           exit
         endif
       end do
@@ -470,7 +465,6 @@ contains
     integer(local_ordinal_type) :: lclrow
     integer(global_ordinal_type) :: myrowind
     integer(global_ordinal_type), allocatable :: indices(:)
-    logical(c_bool), parameter :: true=.true.
     integer(local_ordinal_type) :: i_LO, commsize
     integer(local_ordinal_type), parameter :: ione=1
 

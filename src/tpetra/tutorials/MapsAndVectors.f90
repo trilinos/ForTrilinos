@@ -32,7 +32,7 @@ integer :: ierr
 integer(size_type) :: my_rank, num_procs, k
 integer(size_type) :: num_local_entries, num_elements_per_proc
 integer(global_size_type) :: num_global_entries
-logical(bool_type) :: zero_out
+logical :: zero_out
 real(scalar_type) :: alpha, beta, gamma
 real(mag_type) :: the_norm
 real(mag_type), allocatable :: norms(:)
