@@ -11,13 +11,9 @@ IF (ForTrilinos_ENABLE_DeveloperMode)
     SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}/swig")
   ENDIF()
 
-  LIST(APPEND CMAKE_SWIG_FLAGS -I${CMAKE_CURRENT_SOURCE_DIR}/../../utils/src/)
   MAKE_SWIG_FORTRAN(MODULE forteuchos
     SOURCE forteuchos.i
-    DEPLIBS ${Trilinos_LIBRARIES}
-    EXTRASRC ${EXTRA_SOURCE}
     )
-
 ELSE()
   # Use pre-generated files
   SET(GEN_SOURCE
@@ -26,7 +22,7 @@ ELSE()
 
   TRIBITS_ADD_LIBRARY(
     forteuchos
-    SOURCES ${GEN_SOURCE} ${EXTRA_SOURCE})
+    SOURCES ${GEN_SOURCE})
 ENDIF()
 
 INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/forteuchos.mod DESTINATION include)

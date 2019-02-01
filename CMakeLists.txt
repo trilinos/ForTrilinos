@@ -22,10 +22,18 @@ SET(CMAKE_Fortran_FLAGS "-ffree-line-length-none -cpp ${CMAKE_Fortran_FLAGS}")
 IF (${PACKAGE_NAME}_ENABLE_DeveloperMode)
     # SWIG setup
     FIND_PACKAGE(SWIG REQUIRED)
-    INCLUDE(SwigModules)
+    # SWIG is requested and available; make sure it's the Fortran fork.
+    INCLUDE(CheckSWIGFortran)
+    IF (CMAKE_VERSION VERSION_LESS 3.10)
+      # TODO: Old version of cmake modules
+      include(SwigModulesOld)
+    ELSE()
+      include(SwigModules)
+    ENDIF()
+
     # Ignore some SWIG warnings:
     #   401: "Nothing known about base class"
-    SET(CMAKE_SWIG_FLAGS "-w401 ${CMAKE_SWIG_FLAGS}")
+    LIST(APPEND CMAKE_SWIG_FLAGS "-w401")
 
     IF (NOT TPL_ENABLE_MPI)
         # Warn if MPI is disabled since not all wrapper functions will be
