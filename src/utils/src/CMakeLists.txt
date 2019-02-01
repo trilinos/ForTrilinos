@@ -18,7 +18,7 @@ IF (ForTrilinos_ENABLE_DeveloperMode)
 ELSE()
   # Use pre-generated files
   SET(GEN_SOURCE
-    swig/forerror.f90
+    swig/forerror.F90
     swig/forerrorFORTRAN_wrap.cxx)
 
   TRIBITS_ADD_LIBRARY(
@@ -29,7 +29,7 @@ ENDIF()
 TRIBITS_ADD_LIBRARY(
   forutils
   NOINSTALLHEADERS FortranTestUtilities.h
-  SOURCES fortest.f90
+  SOURCES fortest.F90
   DEPLIBS forerror
 )
 

@@ -8,8 +8,8 @@
 ##---------------------------------------------------------------------------##
 
 SET(TESTS
-  test_teuchos_comm.f90
-  test_teuchos_plist.f90
+  test_teuchos_comm.F90
+  test_teuchos_plist.F90
   )
 
 FOREACH(test ${TESTS})

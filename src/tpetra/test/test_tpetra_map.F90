@@ -12,7 +12,7 @@ program test_TpetraMap
 
   implicit none
   type(TeuchosComm) :: comm
-  character(len=256), parameter :: FILENAME="test_tpetra_map.f90"
+  character(len=256), parameter :: FILENAME="test_tpetra_map.F90"
 
   SETUP_TEST()
 

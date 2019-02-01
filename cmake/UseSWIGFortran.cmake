@@ -322,7 +322,7 @@ function(SWIG_GET_EXTRA_OUTPUT_FILES language outfiles generatedpath infile)
     set(extra_file "${generatedpath}/${module_basename}${it}")
     if (extra_file MATCHES "\\.cs$" AND CMAKE_CSharp_COMPILER_LOADED)
       set_source_files_properties(${extra_file} PROPERTIES LANGUAGE "CSharp")
-    elseif (extra_file MATCHES "\\.f90$" AND CMAKE_Fortran_COMPILER_LOADED)
+    elseif (extra_file MATCHES "\\.[fF]90$" AND CMAKE_Fortran_COMPILER_LOADED)
       set_source_files_properties(${extra_file} PROPERTIES LANGUAGE "Fortran")
     else()
       # Treat extra outputs as plain files regardless of language.
