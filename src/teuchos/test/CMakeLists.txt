@@ -8,6 +8,7 @@
 ##---------------------------------------------------------------------------##
 
 SET(TESTS
+  test_teuchos_array.F90
   test_teuchos_comm.F90
   test_teuchos_plist.F90
   )

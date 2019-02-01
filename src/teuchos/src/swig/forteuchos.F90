@@ -77,6 +77,46 @@ module forteuchos
   type(C_PTR), public :: cptr = C_NULL_PTR
   integer(C_INT), public :: mem = SWIG_NULL
  end type
+ type, bind(C) :: SwigArrayWrapper
+  type(C_PTR), public :: data = C_NULL_PTR
+  integer(C_SIZE_T), public :: size = 0
+ end type
+ ! class Teuchos::Array< int >
+ type, public :: TeuchosArrayInt
+  type(SwigClassWrapper), public :: swigdata
+ contains
+  procedure :: view => swigf_TeuchosArrayInt_view
+  procedure :: release => delete_TeuchosArrayInt
+  procedure, private :: swigf_assignment_TeuchosArrayInt
+  generic :: assignment(=) => swigf_assignment_TeuchosArrayInt
+ end type TeuchosArrayInt
+ interface TeuchosArrayInt
+  module procedure new_TeuchosArrayInt
+ end interface
+ ! class Teuchos::Array< double >
+ type, public :: TeuchosArrayDbl
+  type(SwigClassWrapper), public :: swigdata
+ contains
+  procedure :: view => swigf_TeuchosArrayDbl_view
+  procedure :: release => delete_TeuchosArrayDbl
+  procedure, private :: swigf_assignment_TeuchosArrayDbl
+  generic :: assignment(=) => swigf_assignment_TeuchosArrayDbl
+ end type TeuchosArrayDbl
+ interface TeuchosArrayDbl
+  module procedure new_TeuchosArrayDbl
+ end interface
+ ! class Teuchos::Array< long long >
+ type, public :: TeuchosArrayLongLong
+  type(SwigClassWrapper), public :: swigdata
+ contains
+  procedure :: view => swigf_TeuchosArrayLongLong_view
+  procedure :: release => delete_TeuchosArrayLongLong
+  procedure, private :: swigf_assignment_TeuchosArrayLongLong
+  generic :: assignment(=) => swigf_assignment_TeuchosArrayLongLong
+ end type TeuchosArrayLongLong
+ interface TeuchosArrayLongLong
+  module procedure new_TeuchosArrayLongLong
+ end interface
  ! class Teuchos::Comm< int >
  type, public :: TeuchosComm
   type(SwigClassWrapper), public :: swigdata
@@ -93,10 +133,6 @@ module forteuchos
   module procedure new_TeuchosComm__SWIG_0
   module procedure new_TeuchosComm__SWIG_1
  end interface
- type, bind(C) :: SwigArrayWrapper
-  type(C_PTR), public :: data = C_NULL_PTR
-  integer(C_SIZE_T), public :: size = 0
- end type
  ! class Teuchos::ParameterList
  type, public :: ParameterList
   type(SwigClassWrapper), public :: swigdata
@@ -137,6 +173,108 @@ module forteuchos
 
 ! WRAPPER DECLARATIONS
 interface
+function swigc_new_TeuchosArrayInt(farg1) &
+bind(C, name="_wrap_new_TeuchosArrayInt") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+import :: swigarraywrapper
+type(SwigArrayWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
+end function
+
+function swigc_TeuchosArrayInt_view(farg1) &
+bind(C, name="_wrap_TeuchosArrayInt_view") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigarraywrapper
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: fresult
+end function
+
+subroutine swigc_delete_TeuchosArrayInt(farg1) &
+bind(C, name="_wrap_delete_TeuchosArrayInt")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+end subroutine
+
+  subroutine swigc_assignment_TeuchosArrayInt(self, other) &
+     bind(C, name="_wrap_assign_TeuchosArrayInt")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
+  end subroutine
+function swigc_new_TeuchosArrayDbl(farg1) &
+bind(C, name="_wrap_new_TeuchosArrayDbl") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+import :: swigarraywrapper
+type(SwigArrayWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
+end function
+
+function swigc_TeuchosArrayDbl_view(farg1) &
+bind(C, name="_wrap_TeuchosArrayDbl_view") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigarraywrapper
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: fresult
+end function
+
+subroutine swigc_delete_TeuchosArrayDbl(farg1) &
+bind(C, name="_wrap_delete_TeuchosArrayDbl")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+end subroutine
+
+  subroutine swigc_assignment_TeuchosArrayDbl(self, other) &
+     bind(C, name="_wrap_assign_TeuchosArrayDbl")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
+  end subroutine
+function swigc_new_TeuchosArrayLongLong(farg1) &
+bind(C, name="_wrap_new_TeuchosArrayLongLong") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+import :: swigarraywrapper
+type(SwigArrayWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
+end function
+
+function swigc_TeuchosArrayLongLong_view(farg1) &
+bind(C, name="_wrap_TeuchosArrayLongLong_view") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigarraywrapper
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: fresult
+end function
+
+subroutine swigc_delete_TeuchosArrayLongLong(farg1) &
+bind(C, name="_wrap_delete_TeuchosArrayLongLong")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+end subroutine
+
+  subroutine swigc_assignment_TeuchosArrayLongLong(self, other) &
+     bind(C, name="_wrap_assign_TeuchosArrayLongLong")
+   use, intrinsic :: ISO_C_BINDING
+   import :: SwigClassWrapper
+   type(SwigClassWrapper), intent(inout) :: self
+   type(SwigClassWrapper), intent(in) :: other
+  end subroutine
 function swigc_TeuchosComm_getRank(farg1) &
 bind(C, name="_wrap_TeuchosComm_getRank") &
 result(fresult)
@@ -473,6 +611,159 @@ end interface
 
 contains
  ! MODULE SUBPROGRAMS
+function new_TeuchosArrayInt(arg0) &
+result(self)
+use, intrinsic :: ISO_C_BINDING
+type(TeuchosArrayInt) :: self
+integer(C_INT), dimension(:), target :: arg0
+integer(C_INT), pointer :: farg1_view
+
+type(SwigClassWrapper) :: fresult 
+type(SwigArrayWrapper) :: farg1 
+
+farg1_view => arg0(1)
+farg1%data = c_loc(farg1_view)
+farg1%size = size(arg0)
+fresult = swigc_new_TeuchosArrayInt(farg1)
+self%swigdata = fresult
+end function
+
+function swigf_TeuchosArrayInt_view(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT), dimension(:), pointer :: swig_result
+class(TeuchosArrayInt), intent(inout) :: self
+
+type(SwigArrayWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc_TeuchosArrayInt_view(farg1)
+call c_f_pointer(fresult%data, swig_result, [fresult%size])
+end function
+
+subroutine delete_TeuchosArrayInt(self)
+use, intrinsic :: ISO_C_BINDING
+class(TeuchosArrayInt), intent(inout) :: self
+
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+if (self%swigdata%mem == SWIG_OWN) then
+call swigc_delete_TeuchosArrayInt(farg1)
+end if
+self%swigdata%cptr = C_NULL_PTR
+self%swigdata%mem = SWIG_NULL
+end subroutine
+
+  subroutine swigf_assignment_TeuchosArrayInt(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosArrayInt), intent(inout) :: self
+   type(TeuchosArrayInt), intent(in) :: other
+   call swigc_assignment_TeuchosArrayInt(self%swigdata, other%swigdata)
+  end subroutine
+function new_TeuchosArrayDbl(arg0) &
+result(self)
+use, intrinsic :: ISO_C_BINDING
+type(TeuchosArrayDbl) :: self
+real(C_DOUBLE), dimension(:), target :: arg0
+real(C_DOUBLE), pointer :: farg1_view
+
+type(SwigClassWrapper) :: fresult 
+type(SwigArrayWrapper) :: farg1 
+
+farg1_view => arg0(1)
+farg1%data = c_loc(farg1_view)
+farg1%size = size(arg0)
+fresult = swigc_new_TeuchosArrayDbl(farg1)
+self%swigdata = fresult
+end function
+
+function swigf_TeuchosArrayDbl_view(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE), dimension(:), pointer :: swig_result
+class(TeuchosArrayDbl), intent(inout) :: self
+
+type(SwigArrayWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc_TeuchosArrayDbl_view(farg1)
+call c_f_pointer(fresult%data, swig_result, [fresult%size])
+end function
+
+subroutine delete_TeuchosArrayDbl(self)
+use, intrinsic :: ISO_C_BINDING
+class(TeuchosArrayDbl), intent(inout) :: self
+
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+if (self%swigdata%mem == SWIG_OWN) then
+call swigc_delete_TeuchosArrayDbl(farg1)
+end if
+self%swigdata%cptr = C_NULL_PTR
+self%swigdata%mem = SWIG_NULL
+end subroutine
+
+  subroutine swigf_assignment_TeuchosArrayDbl(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosArrayDbl), intent(inout) :: self
+   type(TeuchosArrayDbl), intent(in) :: other
+   call swigc_assignment_TeuchosArrayDbl(self%swigdata, other%swigdata)
+  end subroutine
+function new_TeuchosArrayLongLong(arg0) &
+result(self)
+use, intrinsic :: ISO_C_BINDING
+type(TeuchosArrayLongLong) :: self
+integer(C_LONG_LONG), dimension(:), target :: arg0
+integer(C_LONG_LONG), pointer :: farg1_view
+
+type(SwigClassWrapper) :: fresult 
+type(SwigArrayWrapper) :: farg1 
+
+farg1_view => arg0(1)
+farg1%data = c_loc(farg1_view)
+farg1%size = size(arg0)
+fresult = swigc_new_TeuchosArrayLongLong(farg1)
+self%swigdata = fresult
+end function
+
+function swigf_TeuchosArrayLongLong_view(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG_LONG), dimension(:), pointer :: swig_result
+class(TeuchosArrayLongLong), intent(inout) :: self
+
+type(SwigArrayWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc_TeuchosArrayLongLong_view(farg1)
+call c_f_pointer(fresult%data, swig_result, [fresult%size])
+end function
+
+subroutine delete_TeuchosArrayLongLong(self)
+use, intrinsic :: ISO_C_BINDING
+class(TeuchosArrayLongLong), intent(inout) :: self
+
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+if (self%swigdata%mem == SWIG_OWN) then
+call swigc_delete_TeuchosArrayLongLong(farg1)
+end if
+self%swigdata%cptr = C_NULL_PTR
+self%swigdata%mem = SWIG_NULL
+end subroutine
+
+  subroutine swigf_assignment_TeuchosArrayLongLong(self, other)
+   use, intrinsic :: ISO_C_BINDING
+   class(TeuchosArrayLongLong), intent(inout) :: self
+   type(TeuchosArrayLongLong), intent(in) :: other
+   call swigc_assignment_TeuchosArrayLongLong(self%swigdata, other%swigdata)
+  end subroutine
 function swigf_TeuchosComm_getRank(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING

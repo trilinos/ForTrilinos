@@ -13,24 +13,28 @@
 
 namespace Teuchos
 {
-template<typename T>
+template<typename _Tp>
 class Array
 {
-    public:
-    typedef T value_type;
+  public:
+    typedef _Tp value_type;
     typedef std::size_t size_type;
+
+    // Implicit conversion from array view
+    Array(const ArrayView<const _Tp>&);
+
+    // Wrap like a std::vector: const references and values are treated as
+    // native Fortran data; mutable references and pointers are wrapped.
+    %std_native_container(Teuchos::Array<_Tp>)
+
+    %extend {
+        ArrayView<_Tp> view() {
+            return (*$self)();
+        }
+    }
 };
 }
 
-%define TEUCHOS_ARRAY(TYPE...)
-
-// Add native wrapping typemaps to convert to/from Teuchos array
-%std_native_container(Teuchos::Array<TYPE>)
-// Instantiate the typemaps without generating wrappers
-%template() Teuchos::Array<TYPE>;
-
-%enddef
-
-TEUCHOS_ARRAY(int);
-TEUCHOS_ARRAY(double);
-TEUCHOS_ARRAY(long long);
+%template(TeuchosArrayInt) Teuchos::Array<int>;
+%template(TeuchosArrayDbl) Teuchos::Array<double>;
+%template(TeuchosArrayLongLong) Teuchos::Array<long long>;
