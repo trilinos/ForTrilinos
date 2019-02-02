@@ -68,7 +68,11 @@
 // =======================================================================
 // Fix ±1 issues
 // =======================================================================
-%apply int INDEX { int localRow };
+%apply int INDEX { int localRow, int LocalRow };
+
+%apply const Teuchos::ArrayView<const int>& INDEX { const Teuchos::ArrayView<const LO>& indices }
+
+%apply const Teuchos::ArrayView<int>& INDEX { const Teuchos::ArrayView<LO>& indices }
 
 %apply int { size_t getNumEntriesInLocalRow,
              size_t getNumAllocatedEntriesInLocalRow}
@@ -103,20 +107,6 @@
         columnIndicesArray[i] = columnIndices[i]-1;
       return new Tpetra::CrsGraph<LO,GO,NO>(rowMap, colMap,
         Teuchos::arcpFromArray(rowPointersArray), Teuchos::arcpFromArray(columnIndicesArray), params);
-    }
-    void insertGlobalIndices(const GO globalRow, Teuchos::ArrayView<const GO> indicesView) {
-      $self->insertGlobalIndices(globalRow, indicesView);
-    }
-    void insertLocalIndices(const LO localRow, Teuchos::ArrayView<const LO> indices) {
-      Teuchos::Array<LO> indicesArray(indices.size());
-      for (size_t i = 0; i < indicesArray.size(); i++)
-        indicesArray[i] = indices[i]-1;
-      $self->insertLocalIndices(localRow, indicesArray);
-    }
-    void getLocalRowCopy(LO localRow, Teuchos::ArrayView<LO> indicesView, size_t &NumIndices) const {
-      $self->getLocalRowCopy(localRow, indicesView, NumIndices);
-      for (int i = 0; i < indicesView.size(); i++)
-        indicesView[i]++;
     }
     void setAllIndices(Teuchos::ArrayView<size_t> rowPointers, Teuchos::ArrayView<LO> columnIndices, Teuchos::ArrayView<SC> val) {
       Teuchos::ArrayRCP<size_t> rowPointersArrayRCP(rowPointers.size());
@@ -168,9 +158,6 @@
         const Teuchos::ArrayRCP< size_t > &rowPointers,
         const Teuchos::ArrayRCP< LocalOrdinal > &columnIndices,
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);    // needs Teuchos::ArrayRCP; ±1 issue
-%ignore Tpetra::CrsGraph::insertGlobalIndices (const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &indices);
-%ignore Tpetra::CrsGraph::insertLocalIndices(const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &indices);
-%ignore Tpetra::CrsGraph::getLocalRowCopy(LocalOrdinal LocalRow, const Teuchos::ArrayView< LocalOrdinal > &indices, size_t &NumIndices) const;
 %ignore Tpetra::CrsGraph::getNodeRowPtrs() const;
 %ignore Tpetra::CrsGraph::getNodePackedIndices() const;
 %ignore Tpetra::CrsGraph::getLocalDiagOffsets;
