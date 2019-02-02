@@ -136,6 +136,9 @@ public :: norm_type
   procedure :: getMaxAllGlobalIndex => swigf_TpetraMap_getMaxAllGlobalIndex
   procedure :: getLocalElement => swigf_TpetraMap_getLocalElement
   procedure :: getGlobalElement => swigf_TpetraMap_getGlobalElement
+  procedure, private :: getRemoteIndexList__SWIG_0 => swigf_TpetraMap_getRemoteIndexList__SWIG_0
+  procedure, private :: getRemoteIndexList__SWIG_1 => swigf_TpetraMap_getRemoteIndexList__SWIG_1
+  procedure :: getNodeElementList => swigf_TpetraMap_getNodeElementList
   procedure :: isNodeLocalElement => swigf_TpetraMap_isNodeLocalElement
   procedure :: isNodeGlobalElement => swigf_TpetraMap_isNodeGlobalElement
   procedure :: isUniform => swigf_TpetraMap_isUniform
@@ -149,9 +152,6 @@ public :: norm_type
   procedure :: description => swigf_TpetraMap_description
   procedure :: removeEmptyProcesses => swigf_TpetraMap_removeEmptyProcesses
   procedure :: replaceCommWithSubset => swigf_TpetraMap_replaceCommWithSubset
-  procedure, private :: getRemoteIndexList__SWIG_0 => swigf_TpetraMap_getRemoteIndexList__SWIG_0
-  procedure, private :: getRemoteIndexList__SWIG_1 => swigf_TpetraMap_getRemoteIndexList__SWIG_1
-  procedure :: getNodeElementList => swigf_TpetraMap_getNodeElementList
   procedure, private :: swigf_assignment_TpetraMap
   generic :: assignment(=) => swigf_assignment_TpetraMap
   generic :: getRemoteIndexList => getRemoteIndexList__SWIG_0, getRemoteIndexList__SWIG_1
@@ -403,15 +403,11 @@ public :: init_ForTpetraOperator
   procedure :: getNumAllocatedEntriesInGlobalRow => swigf_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow
   procedure :: getNumAllocatedEntriesInLocalRow => swigf_TpetraCrsGraph_getNumAllocatedEntriesInLocalRow
   procedure :: getGlobalNumDiags => swigf_TpetraCrsGraph_getGlobalNumDiags
-  procedure :: getGlobalNumDiagsImpl => swigf_TpetraCrsGraph_getGlobalNumDiagsImpl
   procedure :: getNodeNumDiags => swigf_TpetraCrsGraph_getNodeNumDiags
-  procedure :: getNodeNumDiagsImpl => swigf_TpetraCrsGraph_getNodeNumDiagsImpl
   procedure :: getGlobalMaxNumRowEntries => swigf_TpetraCrsGraph_getGlobalMaxNumRowEntries
   procedure :: getNodeMaxNumRowEntries => swigf_TpetraCrsGraph_getNodeMaxNumRowEntries
   procedure :: hasColMap => swigf_TpetraCrsGraph_hasColMap
-  procedure :: isLowerTriangularImpl => swigf_TpetraCrsGraph_isLowerTriangularImpl
   procedure :: isLowerTriangular => swigf_TpetraCrsGraph_isLowerTriangular
-  procedure :: isUpperTriangularImpl => swigf_TpetraCrsGraph_isUpperTriangularImpl
   procedure :: isUpperTriangular => swigf_TpetraCrsGraph_isUpperTriangular
   procedure :: isLocallyIndexed => swigf_TpetraCrsGraph_isLocallyIndexed
   procedure :: isGloballyIndexed => swigf_TpetraCrsGraph_isGloballyIndexed
@@ -521,16 +517,12 @@ public :: init_ForTpetraOperator
   procedure :: getNodeNumEntries => swigf_TpetraCrsMatrix_getNodeNumEntries
   procedure :: getNumEntriesInGlobalRow => swigf_TpetraCrsMatrix_getNumEntriesInGlobalRow
   procedure :: getNumEntriesInLocalRow => swigf_TpetraCrsMatrix_getNumEntriesInLocalRow
-  procedure :: getGlobalNumDiagsImpl => swigf_TpetraCrsMatrix_getGlobalNumDiagsImpl
   procedure :: getGlobalNumDiags => swigf_TpetraCrsMatrix_getGlobalNumDiags
-  procedure :: getNodeNumDiagsImpl => swigf_TpetraCrsMatrix_getNodeNumDiagsImpl
   procedure :: getNodeNumDiags => swigf_TpetraCrsMatrix_getNodeNumDiags
   procedure :: getGlobalMaxNumRowEntries => swigf_TpetraCrsMatrix_getGlobalMaxNumRowEntries
   procedure :: getNodeMaxNumRowEntries => swigf_TpetraCrsMatrix_getNodeMaxNumRowEntries
   procedure :: hasColMap => swigf_TpetraCrsMatrix_hasColMap
-  procedure :: isLowerTriangularImpl => swigf_TpetraCrsMatrix_isLowerTriangularImpl
   procedure :: isLowerTriangular => swigf_TpetraCrsMatrix_isLowerTriangular
-  procedure :: isUpperTriangularImpl => swigf_TpetraCrsMatrix_isUpperTriangularImpl
   procedure :: isUpperTriangular => swigf_TpetraCrsMatrix_isUpperTriangular
   procedure :: isLocallyIndexed => swigf_TpetraCrsMatrix_isLocallyIndexed
   procedure :: isGloballyIndexed => swigf_TpetraCrsMatrix_isGloballyIndexed
@@ -837,6 +829,41 @@ integer(C_INT), intent(in) :: farg2
 integer(C_LONG_LONG) :: fresult
 end function
 
+function swigc_TpetraMap_getRemoteIndexList__SWIG_0(farg1, farg2, farg3, farg4) &
+bind(C, name="_wrap_TpetraMap_getRemoteIndexList__SWIG_0") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+import :: swigarraywrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
+type(SwigArrayWrapper) :: farg3
+type(SwigArrayWrapper) :: farg4
+integer(C_INT) :: fresult
+end function
+
+function swigc_TpetraMap_getRemoteIndexList__SWIG_1(farg1, farg2, farg3) &
+bind(C, name="_wrap_TpetraMap_getRemoteIndexList__SWIG_1") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+import :: swigarraywrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: farg2
+type(SwigArrayWrapper) :: farg3
+integer(C_INT) :: fresult
+end function
+
+function swigc_TpetraMap_getNodeElementList(farg1) &
+bind(C, name="_wrap_TpetraMap_getNodeElementList") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigarraywrapper
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigArrayWrapper) :: fresult
+end function
+
 function swigc_TpetraMap_isNodeLocalElement(farg1, farg2) &
 bind(C, name="_wrap_TpetraMap_isNodeLocalElement") &
 result(fresult)
@@ -1004,41 +1031,6 @@ integer(C_LONG), intent(in) :: farg1
 type(SwigArrayWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
 type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_TpetraMap_getRemoteIndexList__SWIG_0(farg1, farg2, farg3, farg4) &
-bind(C, name="_wrap_TpetraMap_getRemoteIndexList__SWIG_0") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-import :: swigarraywrapper
-type(SwigClassWrapper) :: farg1
-type(SwigArrayWrapper) :: farg2
-type(SwigArrayWrapper) :: farg3
-type(SwigArrayWrapper) :: farg4
-integer(C_INT) :: fresult
-end function
-
-function swigc_TpetraMap_getRemoteIndexList__SWIG_1(farg1, farg2, farg3) &
-bind(C, name="_wrap_TpetraMap_getRemoteIndexList__SWIG_1") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-import :: swigarraywrapper
-type(SwigClassWrapper) :: farg1
-type(SwigArrayWrapper) :: farg2
-type(SwigArrayWrapper) :: farg3
-integer(C_INT) :: fresult
-end function
-
-function swigc_TpetraMap_getNodeElementList(farg1) &
-bind(C, name="_wrap_TpetraMap_getNodeElementList") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigarraywrapper
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-type(SwigArrayWrapper) :: fresult
 end function
 
   subroutine swigc_assignment_TpetraMap(self, other) &
@@ -2544,26 +2536,8 @@ type(SwigClassWrapper) :: farg1
 integer(C_LONG) :: fresult
 end function
 
-function swigc_TpetraCrsGraph_getGlobalNumDiagsImpl(farg1) &
-bind(C, name="_wrap_TpetraCrsGraph_getGlobalNumDiagsImpl") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-integer(C_LONG) :: fresult
-end function
-
 function swigc_TpetraCrsGraph_getNodeNumDiags(farg1) &
 bind(C, name="_wrap_TpetraCrsGraph_getNodeNumDiags") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-integer(C_SIZE_T) :: fresult
-end function
-
-function swigc_TpetraCrsGraph_getNodeNumDiagsImpl(farg1) &
-bind(C, name="_wrap_TpetraCrsGraph_getNodeNumDiagsImpl") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
@@ -2598,26 +2572,8 @@ type(SwigClassWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
 
-function swigc_TpetraCrsGraph_isLowerTriangularImpl(farg1) &
-bind(C, name="_wrap_TpetraCrsGraph_isLowerTriangularImpl") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-integer(C_INT) :: fresult
-end function
-
 function swigc_TpetraCrsGraph_isLowerTriangular(farg1) &
 bind(C, name="_wrap_TpetraCrsGraph_isLowerTriangular") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-integer(C_INT) :: fresult
-end function
-
-function swigc_TpetraCrsGraph_isUpperTriangularImpl(farg1) &
-bind(C, name="_wrap_TpetraCrsGraph_isUpperTriangularImpl") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
@@ -3510,15 +3466,6 @@ integer(C_INT), intent(in) :: farg2
 integer(C_INT) :: fresult
 end function
 
-function swigc_TpetraCrsMatrix_getGlobalNumDiagsImpl(farg1) &
-bind(C, name="_wrap_TpetraCrsMatrix_getGlobalNumDiagsImpl") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-integer(C_LONG) :: fresult
-end function
-
 function swigc_TpetraCrsMatrix_getGlobalNumDiags(farg1) &
 bind(C, name="_wrap_TpetraCrsMatrix_getGlobalNumDiags") &
 result(fresult)
@@ -3526,15 +3473,6 @@ use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
 integer(C_LONG) :: fresult
-end function
-
-function swigc_TpetraCrsMatrix_getNodeNumDiagsImpl(farg1) &
-bind(C, name="_wrap_TpetraCrsMatrix_getNodeNumDiagsImpl") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-integer(C_SIZE_T) :: fresult
 end function
 
 function swigc_TpetraCrsMatrix_getNodeNumDiags(farg1) &
@@ -3573,26 +3511,8 @@ type(SwigClassWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
 
-function swigc_TpetraCrsMatrix_isLowerTriangularImpl(farg1) &
-bind(C, name="_wrap_TpetraCrsMatrix_isLowerTriangularImpl") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-integer(C_INT) :: fresult
-end function
-
 function swigc_TpetraCrsMatrix_isLowerTriangular(farg1) &
 bind(C, name="_wrap_TpetraCrsMatrix_isLowerTriangular") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-integer(C_INT) :: fresult
-end function
-
-function swigc_TpetraCrsMatrix_isUpperTriangularImpl(farg1) &
-bind(C, name="_wrap_TpetraCrsMatrix_isUpperTriangularImpl") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
@@ -5069,6 +4989,80 @@ fresult = swigc_TpetraMap_getGlobalElement(farg1, farg2)
 swig_result = fresult
 end function
 
+function swigf_TpetraMap_getRemoteIndexList__SWIG_0(self, gidlist, nodeidlist, lidlist) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(TpetraLookupStatus) :: swig_result
+class(TpetraMap), intent(in) :: self
+
+integer(C_LONG_LONG), dimension(:), target :: gidlist
+integer(C_LONG_LONG), pointer :: farg2_view
+integer(C_INT), dimension(:), target :: nodeidlist
+integer(C_INT), pointer :: farg3_view
+integer(C_INT), dimension(:), target :: lidlist
+integer(C_INT), pointer :: farg4_view
+
+integer(C_INT) :: fresult 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
+type(SwigArrayWrapper) :: farg3 
+type(SwigArrayWrapper) :: farg4 
+
+farg1 = self%swigdata
+farg2_view => gidlist(1)
+farg2%data = c_loc(farg2_view)
+farg2%size = size(gidlist)
+farg3_view => nodeidlist(1)
+farg3%data = c_loc(farg3_view)
+farg3%size = size(nodeidlist)
+farg4_view => lidlist(1)
+farg4%data = c_loc(farg4_view)
+farg4%size = size(lidlist)
+fresult = swigc_TpetraMap_getRemoteIndexList__SWIG_0(farg1, farg2, farg3, farg4)
+swig_result = fresult
+end function
+
+function swigf_TpetraMap_getRemoteIndexList__SWIG_1(self, gidlist, nodeidlist) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(TpetraLookupStatus) :: swig_result
+class(TpetraMap), intent(in) :: self
+
+integer(C_LONG_LONG), dimension(:), target :: gidlist
+integer(C_LONG_LONG), pointer :: farg2_view
+integer(C_INT), dimension(:), target :: nodeidlist
+integer(C_INT), pointer :: farg3_view
+
+integer(C_INT) :: fresult 
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
+type(SwigArrayWrapper) :: farg3 
+
+farg1 = self%swigdata
+farg2_view => gidlist(1)
+farg2%data = c_loc(farg2_view)
+farg2%size = size(gidlist)
+farg3_view => nodeidlist(1)
+farg3%data = c_loc(farg3_view)
+farg3%size = size(nodeidlist)
+fresult = swigc_TpetraMap_getRemoteIndexList__SWIG_1(farg1, farg2, farg3)
+swig_result = fresult
+end function
+
+function swigf_TpetraMap_getNodeElementList(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_LONG_LONG), dimension(:), pointer :: swig_result
+class(TpetraMap), intent(in) :: self
+
+type(SwigArrayWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc_TpetraMap_getNodeElementList(farg1)
+call c_f_pointer(fresult%data, swig_result, [fresult%size])
+end function
+
 function swigf_TpetraMap_isNodeLocalElement(self, localindex) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
@@ -5359,80 +5353,6 @@ farg2%size = size(indexlist)
 farg3 = comm%swigdata
 fresult = swigc_new_TpetraMap__SWIG_4(farg1, farg2, farg3)
 self%swigdata = fresult
-end function
-
-function swigf_TpetraMap_getRemoteIndexList__SWIG_0(self, gidlist, nodeidlist, lidlist) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-integer(TpetraLookupStatus) :: swig_result
-class(TpetraMap), intent(in) :: self
-
-integer(C_LONG_LONG), dimension(:), target :: gidlist
-integer(C_LONG_LONG), pointer :: farg2_view
-integer(C_INT), dimension(:), target :: nodeidlist
-integer(C_INT), pointer :: farg3_view
-integer(C_INT), dimension(:), target :: lidlist
-integer(C_INT), pointer :: farg4_view
-
-integer(C_INT) :: fresult 
-type(SwigClassWrapper) :: farg1 
-type(SwigArrayWrapper) :: farg2 
-type(SwigArrayWrapper) :: farg3 
-type(SwigArrayWrapper) :: farg4 
-
-farg1 = self%swigdata
-farg2_view => gidlist(1)
-farg2%data = c_loc(farg2_view)
-farg2%size = size(gidlist)
-farg3_view => nodeidlist(1)
-farg3%data = c_loc(farg3_view)
-farg3%size = size(nodeidlist)
-farg4_view => lidlist(1)
-farg4%data = c_loc(farg4_view)
-farg4%size = size(lidlist)
-fresult = swigc_TpetraMap_getRemoteIndexList__SWIG_0(farg1, farg2, farg3, farg4)
-swig_result = fresult
-end function
-
-function swigf_TpetraMap_getRemoteIndexList__SWIG_1(self, gidlist, nodeidlist) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-integer(TpetraLookupStatus) :: swig_result
-class(TpetraMap), intent(in) :: self
-
-integer(C_LONG_LONG), dimension(:), target :: gidlist
-integer(C_LONG_LONG), pointer :: farg2_view
-integer(C_INT), dimension(:), target :: nodeidlist
-integer(C_INT), pointer :: farg3_view
-
-integer(C_INT) :: fresult 
-type(SwigClassWrapper) :: farg1 
-type(SwigArrayWrapper) :: farg2 
-type(SwigArrayWrapper) :: farg3 
-
-farg1 = self%swigdata
-farg2_view => gidlist(1)
-farg2%data = c_loc(farg2_view)
-farg2%size = size(gidlist)
-farg3_view => nodeidlist(1)
-farg3%data = c_loc(farg3_view)
-farg3%size = size(nodeidlist)
-fresult = swigc_TpetraMap_getRemoteIndexList__SWIG_1(farg1, farg2, farg3)
-swig_result = fresult
-end function
-
-function swigf_TpetraMap_getNodeElementList(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-integer(C_LONG_LONG), dimension(:), pointer :: swig_result
-class(TpetraMap), intent(in) :: self
-
-type(SwigArrayWrapper) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraMap_getNodeElementList(farg1)
-call c_f_pointer(fresult%data, swig_result, [fresult%size])
 end function
 
   subroutine swigf_assignment_TpetraMap(self, other)
@@ -8191,20 +8111,6 @@ fresult = swigc_TpetraCrsGraph_getGlobalNumDiags(farg1)
 swig_result = fresult
 end function
 
-function swigf_TpetraCrsGraph_getGlobalNumDiagsImpl(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: swig_result
-class(TpetraCrsGraph), intent(in) :: self
-
-integer(C_LONG) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraCrsGraph_getGlobalNumDiagsImpl(farg1)
-swig_result = fresult
-end function
-
 function swigf_TpetraCrsGraph_getNodeNumDiags(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
@@ -8216,20 +8122,6 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsGraph_getNodeNumDiags(farg1)
-swig_result = fresult
-end function
-
-function swigf_TpetraCrsGraph_getNodeNumDiagsImpl(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-integer(C_SIZE_T) :: swig_result
-class(TpetraCrsGraph), intent(in) :: self
-
-integer(C_SIZE_T) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraCrsGraph_getNodeNumDiagsImpl(farg1)
 swig_result = fresult
 end function
 
@@ -8275,20 +8167,6 @@ fresult = swigc_TpetraCrsGraph_hasColMap(farg1)
 swig_result = SWIG_int_to_logical(fresult)
 end function
 
-function swigf_TpetraCrsGraph_isLowerTriangularImpl(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-logical :: swig_result
-class(TpetraCrsGraph), intent(in) :: self
-
-integer(C_INT) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraCrsGraph_isLowerTriangularImpl(farg1)
-swig_result = SWIG_int_to_logical(fresult)
-end function
-
 function swigf_TpetraCrsGraph_isLowerTriangular(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
@@ -8300,20 +8178,6 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsGraph_isLowerTriangular(farg1)
-swig_result = SWIG_int_to_logical(fresult)
-end function
-
-function swigf_TpetraCrsGraph_isUpperTriangularImpl(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-logical :: swig_result
-class(TpetraCrsGraph), intent(in) :: self
-
-integer(C_INT) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraCrsGraph_isUpperTriangularImpl(farg1)
 swig_result = SWIG_int_to_logical(fresult)
 end function
 
@@ -10043,20 +9907,6 @@ fresult = swigc_TpetraCrsMatrix_getNumEntriesInLocalRow(farg1, farg2)
 swig_result = int(fresult)
 end function
 
-function swigf_TpetraCrsMatrix_getGlobalNumDiagsImpl(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: swig_result
-class(TpetraCrsMatrix), intent(in) :: self
-
-integer(C_LONG) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraCrsMatrix_getGlobalNumDiagsImpl(farg1)
-swig_result = fresult
-end function
-
 function swigf_TpetraCrsMatrix_getGlobalNumDiags(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
@@ -10068,20 +9918,6 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_getGlobalNumDiags(farg1)
-swig_result = fresult
-end function
-
-function swigf_TpetraCrsMatrix_getNodeNumDiagsImpl(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-integer(C_SIZE_T) :: swig_result
-class(TpetraCrsMatrix), intent(in) :: self
-
-integer(C_SIZE_T) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraCrsMatrix_getNodeNumDiagsImpl(farg1)
 swig_result = fresult
 end function
 
@@ -10141,20 +9977,6 @@ fresult = swigc_TpetraCrsMatrix_hasColMap(farg1)
 swig_result = SWIG_int_to_logical(fresult)
 end function
 
-function swigf_TpetraCrsMatrix_isLowerTriangularImpl(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-logical :: swig_result
-class(TpetraCrsMatrix), intent(in) :: self
-
-integer(C_INT) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraCrsMatrix_isLowerTriangularImpl(farg1)
-swig_result = SWIG_int_to_logical(fresult)
-end function
-
 function swigf_TpetraCrsMatrix_isLowerTriangular(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
@@ -10166,20 +9988,6 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_isLowerTriangular(farg1)
-swig_result = SWIG_int_to_logical(fresult)
-end function
-
-function swigf_TpetraCrsMatrix_isUpperTriangularImpl(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-logical :: swig_result
-class(TpetraCrsMatrix), intent(in) :: self
-
-integer(C_INT) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraCrsMatrix_isUpperTriangularImpl(farg1)
 swig_result = SWIG_int_to_logical(fresult)
 end function
 

@@ -62,6 +62,7 @@ public :: norm_type
 // All enums should be prefaced with Tpetra
 %rename("Tpetra%s", %$isenumitem) "";
 %rename("Tpetra%s", %$isenum)     "";
+%rename("$ignore", regextarget=1) "Impl$";
 
 %include "Tpetra_ConfigDefs.i"
 
