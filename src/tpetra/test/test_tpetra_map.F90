@@ -87,7 +87,7 @@ contains
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
     Obj = TpetraMap(num_global, comm); TEST_IERR()
-    TEST_EQUALITY(Obj%getNodeNumElements(), int(4, kind=size_type))
+    TEST_EQUALITY(Obj%getNodeNumElements(), 4)
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getNodeNumElements)
 
@@ -97,7 +97,7 @@ contains
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
     Obj = TpetraMap(num_global, comm); TEST_IERR()
-    TEST_EQUALITY(Obj%getMinLocalIndex(), int(1, kind=local_ordinal_type))
+    TEST_EQUALITY(Obj%getMinLocalIndex(), 1)
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getMinLocalIndex)
 
@@ -107,14 +107,14 @@ contains
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
     Obj = TpetraMap(num_global, comm); TEST_IERR()
-    TEST_EQUALITY(Obj%getMaxLocalIndex(), int(4, kind=local_ordinal_type))
+    TEST_EQUALITY(Obj%getMaxLocalIndex(), 4)
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getMaxLocalIndex)
 
 ! -----------------------------getMinGlobalIndex------------------------------ !
   FORTRILINOS_UNIT_TEST(TpetraMap_getMinGlobalIndex)
     type(TpetraMap) :: Obj
-    integer(C_LONG_LONG) :: expected
+    integer(global_ordinal_type) :: expected
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
     Obj = TpetraMap(num_global, comm); TEST_IERR()
@@ -126,7 +126,7 @@ contains
 ! -----------------------------getMaxGlobalIndex------------------------------ !
   FORTRILINOS_UNIT_TEST(TpetraMap_getMaxGlobalIndex)
     type(TpetraMap) :: Obj
-    integer(C_LONG_LONG) :: expected
+    integer(global_ordinal_type) :: expected
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
     Obj = TpetraMap(num_global, comm); TEST_IERR()
@@ -159,7 +159,7 @@ contains
 ! ------------------------------getLocalElement------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMap_getLocalElement)
     type(TpetraMap) :: Obj
-    integer(C_LONG_LONG) :: globalindex
+    integer(global_ordinal_type) :: globalindex
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
     Obj = TpetraMap(num_global, comm); TEST_IERR()
@@ -174,7 +174,7 @@ contains
   FORTRILINOS_UNIT_TEST(TpetraMap_getGlobalElement)
     type(TpetraMap) :: Obj
     integer(C_INT) :: localindex
-    integer(C_LONG_LONG) :: expected
+    integer(global_ordinal_type) :: expected
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
     Obj = TpetraMap(num_global, comm); TEST_IERR()
@@ -215,7 +215,7 @@ contains
 ! ----------------------------isNodeGlobalElement----------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMap_isNodeGlobalElement)
     type(TpetraMap) :: Obj
-    integer(C_LONG_LONG) :: globalindex
+    integer(global_ordinal_type) :: globalindex
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
     Obj = TpetraMap(num_global, comm); TEST_IERR()
@@ -323,7 +323,7 @@ contains
 ! ----------------------------------isSameAs---------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMap_isSameAs)
     type(TpetraMap) :: Obj1, Obj2
-    integer(size_type) :: num_local
+    integer :: num_local
     integer(global_ordinal_type) :: num_global, elements(4)
     integer :: k
     num_global = 4*comm%getSize()
@@ -357,7 +357,7 @@ contains
 ! -------------------------------locallySameAs-------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMap_locallySameAs)
     type(TpetraMap) :: Obj1, Obj2
-    integer(size_type) :: num_local
+    integer :: num_local
     integer(global_ordinal_type) :: num_global, elements(4)
     integer :: k
     num_global = 4*comm%getSize()

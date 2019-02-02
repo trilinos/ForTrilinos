@@ -55,19 +55,16 @@ contains
     type(TpetraCrsMatrix) :: Mat
     type(TpetraMultiVector) :: mvrand, mvres
     character(kind=C_CHAR, len=:), allocatable :: description
-    integer(size_type) :: num_images, my_image_id
-    integer(size_type), parameter :: num_local=10, num_vecs=5
-    integer(size_type), parameter :: ione=1
-    integer(local_ordinal_type) :: irow
+    integer :: num_images, my_image_id
+    integer(size_type), parameter :: num_vecs=5
+    integer, parameter :: num_local=10
+    integer :: irow
     integer(global_ordinal_type) :: base, gblrow, cols(1)
     real(mag_type) :: vals(1)=[1.], norms(num_vecs), zeros(num_vecs), fnorm
-    real(scalar_type), parameter :: zero=0., one=1., negone=-1., two=2., four=4.
-    real(scalar_type), allocatable :: a1(:), a2(:)
-    integer(size_type) :: lda
 
     OUT0("Starting TpetraCrsMatrix_Basic1")
 
-    zeros = zero
+    zeros = 0.d0
 
     num_images = comm%getSize()
     my_image_id = comm%getRank()
@@ -80,11 +77,11 @@ contains
 
     ! create the identity matrix
     base = num_local * my_image_id;
-    Mat = TpetraCrsMatrix(Map, ione, TpetraDynamicProfile)
+    Mat = TpetraCrsMatrix(Map, 1_size_type, TpetraDynamicProfile)
     do irow = 1, num_local
       gblrow = base + int(irow, kind=global_ordinal_type)
       cols(1) = gblrow
-      vals(1) = one
+      vals(1) = 1.d0
       call Mat%insertGlobalValues(gblrow, cols, vals)
     end do
 
@@ -142,34 +139,34 @@ contains
     ! test the action
     call mvres%randomize(); TEST_IERR()
     call Mat%apply(mvrand, mvres); TEST_IERR()
-    call mvres%update(one, mvrand, negone); TEST_IERR()
+    call mvres%update(1.d0, mvrand, -1.d0); TEST_IERR()
 
     call mvres%norm1(norms); TEST_IERR()
-    TEST_FLOATING_ARRAY_EQUALITY(norms, zero, epsilon(zero))
+    TEST_FLOATING_ARRAY_EQUALITY(norms, 0.d0, epsilon(0.d0))
 
     ! Set all diagonal entries to 2 and do again
     call Mat%resumeFill(); TEST_IERR()
-    call Mat%setAllToScalar(two); TEST_IERR()
+    call Mat%setAllToScalar(2.d0); TEST_IERR()
     call Mat%fillComplete(); TEST_IERR()
 
     call mvres%randomize(); TEST_IERR()
     call Mat%apply(mvrand, mvres); TEST_IERR()
-    call mvres%update(two, mvrand, negone); TEST_IERR()
+    call mvres%update(2.d0, mvrand, -1.d0); TEST_IERR()
 
     call mvres%norm1(norms); TEST_IERR()
-    TEST_FLOATING_ARRAY_EQUALITY(norms, zero, epsilon(zero))
+    TEST_FLOATING_ARRAY_EQUALITY(norms, 0.d0, epsilon(0.d0))
 
     ! Scale diagonal entries by 2 and do again
     call Mat%resumeFill(); TEST_IERR()
-    call Mat%scale(two); TEST_IERR()
+    call Mat%scale(2.d0); TEST_IERR()
     call Mat%fillComplete(); TEST_IERR()
 
     call mvres%randomize(); TEST_IERR()
     call Mat%apply(mvrand, mvres); TEST_IERR()
-    call mvres%update(four, mvrand, negone); TEST_IERR()
+    call mvres%update(4.d0, mvrand, -1.d0); TEST_IERR()
 
     call mvres%norm1(norms); TEST_IERR()
-    TEST_FLOATING_ARRAY_EQUALITY(norms, zero, epsilon(zero))
+    TEST_FLOATING_ARRAY_EQUALITY(norms, 0.d0, epsilon(0.d0))
 
     call Mat%release(); TEST_IERR()
     call map%release(); TEST_IERR()
@@ -187,10 +184,9 @@ contains
     type(TpetraMap) :: Map, row_map
     type(TpetraCrsMatrix) :: A
     type(TpetraMultiVector) :: ones, threes
-    integer(size_type), parameter :: izero=0, ione=1
-    integer(size_type) :: num_images, my_image_id, numindices
-    integer(local_ordinal_type) :: nnz
-    real(scalar_type), parameter :: zero=0., one=1., two=2., negthree=-3.
+    integer :: num_images, my_image_id
+    integer(size_type) :: numindices
+    integer :: nnz
     real(norm_type) :: norms(1)
     integer(global_ordinal_type) :: gblrow
     integer(global_ordinal_type), allocatable :: cols(:), xcols(:)
@@ -203,12 +199,12 @@ contains
     if (num_images < 2) return
 
     ! create a Map
-    map = TpetraMap(TPETRA_GLOBAL_INVALID, ione, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, 1, comm); TEST_IERR()
 
     ! create a multivector ones(n,1)
-    ones = TpetraMultiVector(map, ione, .false.); TEST_IERR()
-    threes = TpetraMultiVector(map, ione, .false.); TEST_IERR()
-    call ones%putScalar(one)
+    ones = TpetraMultiVector(map, 1_size_type, .false.); TEST_IERR()
+    threes = TpetraMultiVector(map, 1_size_type, .false.); TEST_IERR()
+    call ones%putScalar(1.d0)
 
     !  create the following matrix:
     !  [2 1           ]
@@ -221,24 +217,24 @@ contains
     !  [           1 2]
     ! this matrix has an eigenvalue lambda=3, with eigenvector v = [1 ... 1]
 
-    A = TpetraCrsMatrix(map, izero, TpetraDynamicProfile); TEST_IERR()
+    A = TpetraCrsMatrix(map, 0_size_type, TpetraDynamicProfile); TEST_IERR()
     gblrow = my_image_id + 1
     if (gblrow == 1) then
       nnz = 2
       allocate(cols(nnz)); allocate(vals(nnz));
       cols(1:nnz) = [gblrow, gblrow+1]
-      vals(1:nnz) = [two, one]
+      vals(1:nnz) = [2.d0, 1.d0]
       call A%insertGlobalValues(gblrow, cols, vals); TEST_IERR()
     else if (gblrow == num_images) then
       nnz = 2;
       allocate(cols(nnz)); allocate(vals(nnz));
       cols(1:nnz) = [gblrow-1, gblrow]
-      vals(1:nnz) = [one, two]
+      vals(1:nnz) = [1.d0, 2.d0]
       call A%insertGlobalValues(gblrow, cols, vals); TEST_IERR()
     else
       nnz = 3;
       allocate(cols(nnz)); allocate(vals(nnz));
-      vals = [one, one, one]
+      vals = [1.d0, 1.d0, 1.d0]
       cols = [gblrow-1, gblrow, gblrow+1]
       call A%insertGlobalValues(gblrow, cols, vals); TEST_IERR()
     end if
@@ -270,7 +266,7 @@ contains
     numindices = int(nnz, kind=size_type)
     call A%getGlobalRowCopy(gblrow, xcols, xvals, numindices); TEST_IERR()
     !TEST_ARRAY_EQUALITY(xcols, cols)
-    !TEST_FLOATING_ARRAY_EQUALITY(xvals, vals, epsilon(zero))
+    !TEST_FLOATING_ARRAY_EQUALITY(xvals, vals, epsilon(0.d0))
     deallocate(xcols); deallocate(xvals)
 
     ! test the action
@@ -278,9 +274,9 @@ contains
     call A%apply(ones, threes); TEST_IERR()
 
     ! now, threes should be 3*ones
-    call threes%update(negthree, ones, one)
+    call threes%update(-3.d0, ones, 1.d0)
     call threes%norm1(norms)
-    TEST_FLOATING_ARRAY_EQUALITY(norms, zero, epsilon(zero))
+    TEST_FLOATING_ARRAY_EQUALITY(norms, 0.d0, epsilon(0.d0))
 
     call ones%release()
     call threes%release()
@@ -298,19 +294,18 @@ contains
     type(TpetraMap) :: Map
     type(TpetraCrsMatrix) :: Mat
     type(TpetraMultiVector) :: X, Y, Z
-    integer(size_type), parameter :: numvecs=1
-    real(scalar_type), parameter :: zero=0., one=1.
+    integer(size_type), parameter ::numvecs=1
     real(scalar_type) :: alpha, beta
-    integer(size_type) :: my_image_id
+    integer :: my_image_id
     integer(global_ordinal_type) :: gblrow, base, cols(1), i
-    real(scalar_type) :: ones(1)=[one], normz(numvecs), normy(numvecs)
+    real(scalar_type) :: ones(1)=[1.d0], normz(numvecs), normy(numvecs)
 
     OUT0("Starting TpetraCrsMatrix_AlphaBetaMultiply")
 
     my_image_id = comm%getRank()
 
     ! create a Map
-    map = TpetraMap(TPETRA_GLOBAL_INVALID, 3_size_type, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, 3, comm); TEST_IERR()
 
     ! Create the identity matrix, three rows per proc
     base = 3 * my_image_id;
@@ -333,14 +328,14 @@ contains
     call Y%randomize()
 
     ! Z = alpha*X + beta*Y
-    call Z%update(alpha, X, beta, Y, zero)
+    call Z%update(alpha, X, beta, Y, 0.d0)
 
     ! test the action: Y = alpha*I*X + beta*Y = alpha*X + beta*Y = Z
     call Mat%apply(X, Y, TEUCHOSNO_TRANS, alpha, beta)
     !
     call Z%norm1(normz)
     call Y%norm1(normy)
-    TEST_FLOATING_ARRAY_EQUALITY(normy, normz, epsilon(zero))
+    TEST_FLOATING_ARRAY_EQUALITY(normy, normz, epsilon(0.d0))
 
     call Z%release()
     call Y%release()
@@ -356,18 +351,16 @@ contains
     type(TpetraMap) :: Map
     type(ParameterList) :: params
     type(TpetraCrsMatrix) :: Mat
-    integer(size_type), parameter :: izero=0, ione=1
-    integer(local_ordinal_type) :: lclrow, numvalid
+    integer :: lclrow, numvalid
     integer(global_ordinal_type) :: row, cols(1)
-    real(scalar_type), parameter :: zero=0.
-    real(scalar_type) :: vals(1), zeros(1)=[zero]
+    real(scalar_type) :: vals(1), zeros(1)=[0.d0]
 
     OUT0("Starting TpetraCrsMatrix_ActiveFillGlobal")
 
     ! create Map
-    map = TpetraMap(TPETRA_GLOBAL_INVALID, ione, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, 1, comm); TEST_IERR()
 
-    Mat = TpetraCrsMatrix(map, map, izero, TpetraDynamicProfile); TEST_IERR()
+    Mat = TpetraCrsMatrix(map, map, 0_size_type, TpetraDynamicProfile); TEST_IERR()
     TEST_ASSERT(Mat%isFillActive())
     TEST_ASSERT((.not. Mat%isFillComplete()))
     lclrow = 1
@@ -394,20 +387,20 @@ contains
     numvalid = Mat%sumIntoGlobalValues(row, cols, vals); TEST_IERR()
     TEST_ASSERT(numvalid==TPETRA_GLOBAL_INVALID)
 
-    TEST_THROW(call Mat%setAllToScalar(zero))
-    TEST_THROW(call Mat%scale(zero))
+    TEST_THROW(call Mat%setAllToScalar(0.d0))
+    TEST_THROW(call Mat%scale(0.d0))
     TEST_THROW(call Mat%globalAssemble())
     TEST_THROW(call Mat%fillComplete())
 
     call params%release()
     call Mat%release()
 
-    Mat = TpetraCrsMatrix(map, map, izero, TpetraDynamicProfile); TEST_IERR()
+    Mat = TpetraCrsMatrix(map, map, 0_size_type, TpetraDynamicProfile); TEST_IERR()
     TEST_ASSERT(Mat%isFillActive())
     TEST_ASSERT((.not. Mat%isFillComplete()))
     lclrow = 1
     row = map%getGlobalElement(lclrow)
-    cols(1) = row; vals(1) = zero;
+    cols(1) = row; vals(1) = 0.d0;
     ! FIXME: If a mistake is made, and cols above is just set to 1:
     ! cols(1) = 1
     ! FIXME: then the call to fillComplete below hangs indefinitely
@@ -426,8 +419,8 @@ contains
     !TEST_NOTHROW(call Mat%insertGlobalValues(row, cols, vals))
     TEST_NOTHROW(numvalid = Mat%replaceGlobalValues(row, cols, vals))
     TEST_NOTHROW(numvalid = Mat%sumIntoGlobalValues(row, cols, vals))
-    TEST_NOTHROW(call Mat%setAllToScalar(zero))
-    TEST_NOTHROW(call Mat%scale(zero))
+    TEST_NOTHROW(call Mat%setAllToScalar(0.d0))
+    TEST_NOTHROW(call Mat%scale(0.d0))
     TEST_NOTHROW(call Mat%globalAssemble())
 
     TEST_NOTHROW(call Mat%fillComplete())
@@ -449,17 +442,15 @@ contains
     type(TpetraMap) :: Map
     type(ParameterList) :: params
     type(TpetraCrsMatrix) :: Mat
-    integer(size_type), parameter :: izero=0, ione=1
-    integer(local_ordinal_type) :: row, cols(1), numvalid
-    real(scalar_type), parameter :: zero=0.
-    real(scalar_type) :: vals(1), zeros(1)=[zero]
+    integer :: row, cols(1), numvalid
+    real(scalar_type) :: vals(1), zeros(1)=[0.d0]
 
     OUT0("Starting TpetraCrsMatrix_ActiveFillLocal")
 
     ! create Map
-    map = TpetraMap(TPETRA_GLOBAL_INVALID, ione, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, 1, comm); TEST_IERR()
 
-    Mat = TpetraCrsMatrix(map, map, izero, TpetraDynamicProfile); TEST_IERR()
+    Mat = TpetraCrsMatrix(map, map, 0, TpetraDynamicProfile); TEST_IERR()
     TEST_ASSERT(Mat%isFillActive())
     TEST_ASSERT((.not. Mat%isFillComplete()))
     row = 1; cols(1) = 1; vals(1) = 0.
@@ -484,22 +475,22 @@ contains
     numvalid = Mat%sumIntoLocalValues(lcrow, cols, vals); TEST_IERR()
     TEST_ASSERT(numvalid==TPETRA_GLOBAL_INVALID)
 
-    TEST_THROW(call Mat%setAllToScalar(zero))
-    TEST_THROW(call Mat%scale(zero))
+    TEST_THROW(call Mat%setAllToScalar(0.d0))
+    TEST_THROW(call Mat%scale(0.d0))
     TEST_THROW(call Mat%globalAssemble())
     TEST_THROW(call Mat%fillComplete())
 
     call params%release()
     call Mat%release()
 
-    Mat = TpetraCrsMatrix(map, map, izero, TpetraDynamicProfile); TEST_IERR()
+    Mat = TpetraCrsMatrix(map, map, 0, TpetraDynamicProfile); TEST_IERR()
     TEST_ASSERT(Mat%isFillActive())
     TEST_ASSERT((.not. Mat%isFillComplete()))
-    row = 1; cols(1) = 1; vals(1) = zero;
+    row = 1; cols(1) = 1; vals(1) = 0.d0;
     call Mat%insertLocalValues(row, cols, vals); TEST_IERR()
 
-    params = ParameterList("ANONYMOUS"); TEST_IERR()
-    call params%set("Optimize Storage", .false.); TEST_IERR()
+    params = ParameterList("ANONOMOUS"); TEST_IERR()
+    !call params%set("Optimize Storage", .false.); TEST_IERR() ! FIXME: boolean parameters
     call Mat%fillComplete(params); TEST_IERR()
     TEST_ASSERT((.not. Mat%isFillActive()))
     TEST_ASSERT(Mat%isFillComplete())
@@ -512,8 +503,8 @@ contains
     TEST_NOTHROW(call Mat%sumIntoLocalValues(row, cols, vals))
 
     ! FIXME: The following should NOT set ierr/=0 but does
-    TEST_NOTHROW(call Mat%setAllToScalar(zero))
-    TEST_NOTHROW(call Mat%scale(zero))
+    TEST_NOTHROW(call Mat%setAllToScalar(0.d0))
+    TEST_NOTHROW(call Mat%scale(0.d0))
     TEST_NOTHROW(call Mat%globalAssemble())
 
     TEST_NOTHROW(call Mat%fillComplete())
@@ -629,8 +620,8 @@ contains
   ! ----------------------------getLocalRowViewRaw---------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_getLocalRowViewRaw)
     type(TpetraCrsMatrix) :: Obj
-    integer(local_ordinal_type) :: lclrow
-    integer(local_ordinal_type) :: nument
+    integer :: lclrow
+    integer :: nument
     type(C_PTR) :: lclcolinds
     type(C_PTR) :: vals
     OUT0("Starting TpetraCrsMatrix_getLocalRowViewRaw")

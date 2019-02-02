@@ -29,8 +29,8 @@ type(TpetraMultiVector) :: x, y, z
 
 ! -- Scalars
 integer :: ierr
-integer(size_type) :: my_rank, num_procs, k
-integer(size_type) :: num_local_entries, num_elements_per_proc
+integer :: my_rank, num_procs, k
+integer :: num_local_entries, num_elements_per_proc
 integer(global_size_type) :: num_global_entries
 logical :: zero_out
 real(scalar_type) :: alpha, beta, gamma

@@ -22,16 +22,16 @@ program main
 
   implicit none
 
-  integer(int_type) :: my_rank, num_procs
+  integer :: my_rank, num_procs
 
   integer(global_size_type) :: n_global
-  integer(size_type) :: n, max_entries_per_row
+  integer:: i, n
+  integer(size_type) :: max_entries_per_row
   integer(size_type) :: num_eigen = 1, num_found_eigen
   integer(int_type) :: num_eigen_int
   integer(int_type) :: row_nnz
 
   integer :: ierr
-  integer(local_ordinal_type) :: i
   integer(global_ordinal_type) :: offset
 
   type(TeuchosComm) :: comm

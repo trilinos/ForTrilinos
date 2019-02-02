@@ -79,7 +79,8 @@
 // =======================================================================
 // Fix ±1 issues
 // =======================================================================
-%typemap(in)  int localRow %{$1 = *$input - 1;%}            // int = LO
+%apply int INDEX { int localRow };
+
 %ignore Tpetra::CrsMatrix::getLocalRowView;                 // ±1 issue
 %ignore Tpetra::CrsMatrix::reorderedLocalGaussSeidel;       // ±1 issue
 %ignore Tpetra::CrsMatrix::replaceLocalValues;              // ±1 issue

@@ -18,6 +18,11 @@
 %apply Teuchos::ArrayView<double> { Teuchos::ArrayRCP<double> };
 %apply Teuchos::ArrayView<const double> { Teuchos::ArrayRCP<const double> };
 
+// Function signatures for local quantities are incorrectly declared as size_t
+%apply LO { size_t getLocalLength,
+            size_t getOrigNumLocalRows,
+            size_t getOrigNumLocalCols };
+
 // =======================================================================
 // Postpone temporarily
 // =======================================================================

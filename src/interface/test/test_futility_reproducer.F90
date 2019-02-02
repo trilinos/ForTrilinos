@@ -26,9 +26,9 @@ program main
   integer(int_type) :: my_rank, num_procs
 
   integer(global_size_type) :: n_global
-  integer(size_type) :: n, max_entries_per_row
+  integer(size_type) :: max_entries_per_row
+  integer :: n
   integer(size_type) :: num_eigen = 1, num_found_eigen
-  integer(int_type) :: num_eigen_int
 
   integer :: ierr
 
@@ -69,8 +69,7 @@ program main
   call load_from_xml(plist, "davidson.xml"); FORTRILINOS_CHECK_IERR()
   call plist%set("Preconditioner Type", "IDENTITY")
 
-  num_eigen_int = num_eigen
-  call plist%set("NumEV", num_eigen_int); FORTRILINOS_CHECK_IERR()
+  call plist%set("NumEV", 1); FORTRILINOS_CHECK_IERR()
 
   ! ------------------------------------------------------------------
   ! Step 0: Construct A and B matrices
@@ -83,17 +82,17 @@ program main
   cols(2) = 2
   vals(1) = 0.0015
   vals(2) = 0.325
-  call A%insertGlobalValues(INT(1,global_ordinal_type), cols(1:2), vals(1:2)); FORTRILINOS_CHECK_IERR()
+  call A%insertGlobalValues(1_global_ordinal_type, cols(1:2), vals(1:2)); FORTRILINOS_CHECK_IERR()
 
   B = TpetraCrsMatrix(map, map, max_entries_per_row)
   cols(1) = 1
   vals(1) = 0.1208
-  call B%insertGlobalValues(INT(1,global_ordinal_type), cols(1:1), vals(1:1)); FORTRILINOS_CHECK_IERR()
+  call B%insertGlobalValues(1_global_ordinal_type, cols(1:1), vals(1:1)); FORTRILINOS_CHECK_IERR()
   cols(1) = 1
   cols(2) = 2
   vals(1) = -0.117
   vals(2) = 0.184
-  call B%insertGlobalValues(INT(2,global_ordinal_type), cols(1:2), vals(1:2)); FORTRILINOS_CHECK_IERR()
+  call B%insertGlobalValues(2_global_ordinal_type, cols(1:2), vals(1:2)); FORTRILINOS_CHECK_IERR()
 
   call A%fillComplete(); FORTRILINOS_CHECK_IERR()
   call B%fillComplete(); FORTRILINOS_CHECK_IERR()

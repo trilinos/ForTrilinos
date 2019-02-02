@@ -86,11 +86,11 @@ contains
     ! Calculates the values of z and u at the specified Gauss point
     ! ------------------------------------------------------------------------ !
     class(Linear2NodeFEBasis) :: self
-    integer(local_ordinal_type), intent(in) :: gp
+    integer, intent(in) :: gp
     real(scalar_type), intent(in) :: z(2), u(2)
     real(scalar_type), intent(in), optional :: uold(2)
     real(scalar_type) :: eta
-    integer(local_ordinal_type) :: i
+    integer :: i
 
     if (gp==1) then
       eta = -1.0 / sqrt(3.0)
@@ -202,9 +202,9 @@ contains
     class(TpetraModelEvaluator1DFEM) :: self
     type(TpetraCrsGraph) :: graph
     type(TpetraMap) :: owned_map, ghosted_map
-    integer(local_ordinal_type) :: ne, i, j
+    integer :: ne, num_my_overlap_nodes, i, j
     integer(global_ordinal_type) :: gblrow, gblinds(1)
-    integer(size_type) :: num_my_overlap_nodes, num_ent_per_row
+    integer(size_type) :: num_ent_per_row
     ! ------------------------------------------------------------------------ !
 
     ! Create the shell for the graph
@@ -248,8 +248,8 @@ contains
     type(TpetraMap), intent(in) :: owned_map
     real(scalar_type), intent(in) :: z_min, z_max
     integer(global_size_type), intent(in) :: num_elems
-    integer(local_ordinal_type) :: lclrow
-    integer(size_type) :: num_local_nodes, num_vecs=1
+    integer(size_type) :: num_vecs=1
+    integer :: lclrow, num_local_nodes
     integer(global_ordinal_type) :: min_GID, col=1
     real(scalar_type) :: dz
     ! ------------------------------------------------------------------------ !
@@ -257,7 +257,7 @@ contains
     num_local_nodes = owned_map%getNodeNumElements()
     min_GID = owned_map%getMinGlobalIndex()
     dz = (z_max - z_min) / num_elems
-    coords = TpetraMultiVector(owned_map, num_vecs);
+    coords = TpetraMultiVector(owned_map, num_vecs)
     do lclrow=1, num_local_nodes
       call coords%replaceLocalValue(lclrow, col, z_min + dz * (min_GID+lclrow))
     end do
@@ -285,7 +285,7 @@ contains
     class(TpetraMultiVector), intent(in) :: x
     class(TpetraMultiVector), intent(inout) :: f
     type(Linear2NodeFEBasis) :: basis
-    integer(local_ordinal_type) :: ne, num_my_elems, gp, i, lclrow
+    integer :: num_my_elems, ne, gp, i, lclrow
     integer(size_type) :: col
     integer :: my_rank
     integer(size_type), parameter :: ione=1
@@ -358,8 +358,8 @@ contains
     class(TpetraOperator), intent(inout) :: J
     type(TpetraCrsMatrix) :: Jmat
     type(Linear2NodeFEBasis) :: basis
-    integer(local_ordinal_type) :: ne, num_my_elems, gp, i, jj
-    integer(local_ordinal_type) :: lclrow, lclcol, numvalid
+    integer :: ne, num_my_elems, gp, i, jj
+    integer :: lclrow, lclcol, numvalid
     integer(global_ordinal_type) :: gblrow, cols(1)
     real(scalar_type), dimension(:), pointer :: xdata
     real(scalar_type), dimension(:), pointer :: udata
@@ -449,8 +449,8 @@ contains
     type(TpetraCrsMatrix) :: Mmat
     type(TpetraMap) :: row_map, col_map
     type(Linear2NodeFEBasis) :: basis
-    integer(local_ordinal_type) :: ne, num_my_elems, gp, i, j
-    integer(local_ordinal_type) :: lclrow, lclcol, numvalid
+    integer :: ne, num_my_elems, gp, i, j
+    integer :: lclrow, lclcol, numvalid
     integer(global_ordinal_type) :: gblrow, cols(1)
     integer(size_type), parameter :: ione=1
     real(scalar_type), dimension(:), pointer :: xdata

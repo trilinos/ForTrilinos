@@ -17,7 +17,7 @@
 
 %insert("fdecl") %{
   integer(global_ordinal_type), parameter, public :: TPETRA_GLOBAL_INVALID = -1
-  integer(local_ordinal_type),  parameter, public :: TPETRA_LOCAL_INVALID  = 0
+  integer, parameter, public :: TPETRA_LOCAL_INVALID  = 0
 %}
 
 // =======================================================================
@@ -38,6 +38,10 @@
 %ignore Tpetra::Map::describe;                  // needs Teuchos::FancyOStream
 %ignore Tpetra::Map::getLocalMap;               // no need to expose this yet
 %ignore Tpetra::Map::getMyGlobalIndices;        // return type is not exposed externally, requires using `auto`; for now, use getNodeElementList
+
+// Function signatures for local quantities are incorrectly declared as size_t
+%apply LO { size_t getNodeNumElements,
+            size_t numLocalElements };
 
 // =======================================================================
 // Fix ±1 issues

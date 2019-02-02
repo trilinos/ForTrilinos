@@ -14,6 +14,12 @@
 // Typedefs
 typedef int Teuchos_Ordinal;
 
+// Treat plain 'int' (and Teuchos_Ordinal) as native integers.
+// Assume that large integers are defined as size_t or global_ordinal
+%typemap(ftype, in="integer, intent(in)") int "integer"
+%typemap(fin) int "$1 = int($input, C_INT)"
+%typemap(fout) int "$result = int($1)"
+
 // pair<int> typemaps: (TODO: these should be deprecated)
 %include <typemaps.i>
 %fortran_view(int)

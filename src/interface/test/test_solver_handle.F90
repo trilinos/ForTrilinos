@@ -41,14 +41,14 @@ contains
     integer(kind(TeuchosETransp)), intent(in) :: mode
     real(scalar_type), intent(in) :: alpha
     real(scalar_type), intent(in) :: beta
-    integer(local_ordinal_type) :: i, lid
+    integer :: lid
     integer(global_ordinal_type) :: gid
 
     type(TeuchosComm) :: comm
     type(TpetraImport) :: import
     type(TpetraMultiVector) :: x_ghosted
-    integer(int_type) :: my_rank, num_procs
-    integer(size_type) :: n
+    integer :: my_rank, num_procs
+    integer :: i, n
     real(scalar_type), dimension(:), pointer :: xdata
     real(scalar_type), dimension(:), pointer :: ydata
 
@@ -61,12 +61,12 @@ contains
     num_procs = comm%getSize()
 
     import = TpetraImport(self%domain_map, self%col_map)
-    x_ghosted = TpetraMultiVector(self%col_map, INT(1,size_type))
+    x_ghosted = TpetraMultiVector(self%col_map, 1_size_type)
     call x_ghosted%doImport(x, import, TpetraINSERT)
     call import%release()
 
-    xdata => x_ghosted%getData        (INT(1,size_type))
-    ydata => y        %getDataNonConst(INT(1,size_type))
+    xdata => x_ghosted%getData        (1_size_type)
+    ydata => y        %getDataNonConst(1_size_type)
     n = y%getLocalLength()
 
     ! Sometimes, ydata may be unitialized (when beta is 0), potentially containing
@@ -167,16 +167,15 @@ program main
   use myoperators
   implicit none
 
-  integer(int_type) :: my_rank, num_procs
+  integer :: my_rank, num_procs
 
   integer(global_size_type) :: n_global
-  integer(size_type) :: n, max_entries_per_row, num_vecs = 1, lda
+  integer(size_type) :: max_entries_per_row, num_vecs = 1, lda
   integer(int_type) :: row_nnz
 
   integer :: ierr
-  integer(local_ordinal_type) :: i
+  integer :: i, n
   integer(global_ordinal_type) :: offset
-  real(scalar_type) :: one = 1.0
 
   type(TeuchosComm) :: comm
   type(ParameterList) :: plist, linear_solver_list, belos_list, solver_list, krylov_list
@@ -294,7 +293,7 @@ program main
   call solver_handle%solve(B, X); FORTRILINOS_CHECK_IERR()
 
   ! Check the solution
-  call X%update(-one, Xtrue, one); FORTRILINOS_CHECK_IERR()
+  call X%update(-1.d0, Xtrue, 1.d0); FORTRILINOS_CHECK_IERR()
   call X%norm2(norms); FORTRILINOS_CHECK_IERR()
 
   ! TODO: Get the tolerance out of the parameter list
@@ -339,7 +338,7 @@ program main
   call X%randomize()
   call solver_handle%solve(B, X); FORTRILINOS_CHECK_IERR()
 
-  call X%update(-one, Xtrue, one); FORTRILINOS_CHECK_IERR()
+  call X%update(-1.d0, Xtrue, 1.d0); FORTRILINOS_CHECK_IERR()
   call X%norm2(norms); FORTRILINOS_CHECK_IERR()
   if (norms(1) > 1e-10) then
     write(error_unit, '(A)') 'The implicit result differs from explicit!'

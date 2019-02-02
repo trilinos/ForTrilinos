@@ -85,6 +85,9 @@
   $1 = &tmpview;
 }
 
+%apply int { size_t getNumEntriesInLocalRow,
+             size_t getNumAllocatedEntriesInLocalRow}
+
 // =======================================================================
 // Make interface more Fortran friendly
 // =======================================================================

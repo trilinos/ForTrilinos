@@ -42,7 +42,6 @@ typedef char                                    Packet;
    c_size_t, &
    c_double, &
    scalar_type => c_double, &
-   local_ordinal_type => c_int, &
    global_ordinal_type => c_long_long, &
    global_size_type => c_long, &
    size_type => c_size_t, &
@@ -52,7 +51,6 @@ typedef char                                    Packet;
 }
 %insert("fdecl") {
 public :: scalar_type
-public :: local_ordinal_type
 public :: global_ordinal_type
 public :: global_size_type
 public :: size_type

@@ -767,7 +767,7 @@ end subroutine
 function swigf_TeuchosComm_getRank(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: swig_result
+integer :: swig_result
 class(TeuchosComm), intent(in) :: self
 
 integer(C_INT) :: fresult 
@@ -775,13 +775,13 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = self%swigdata
 fresult = swigc_TeuchosComm_getRank(farg1)
-swig_result = fresult
+swig_result = int(fresult)
 end function
 
 function swigf_TeuchosComm_getSize(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: swig_result
+integer :: swig_result
 class(TeuchosComm), intent(in) :: self
 
 integer(C_INT) :: fresult 
@@ -789,7 +789,7 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = self%swigdata
 fresult = swigc_TeuchosComm_getSize(farg1)
-swig_result = fresult
+swig_result = int(fresult)
 end function
 
 subroutine swigf_TeuchosComm_barrier(self)
@@ -1005,7 +1005,7 @@ class(ParameterList), intent(inout) :: self
 
 character(kind=C_CHAR, len=*), target :: name
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg2_chars
-integer(C_INT), intent(in) :: value
+integer, intent(in) :: value
 
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
@@ -1188,7 +1188,7 @@ end function
 function swigf_ParameterList_get_integer(self, name) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: swig_result
+integer :: swig_result
 class(ParameterList), intent(inout) :: self
 
 character(kind=C_CHAR, len=*), target :: name

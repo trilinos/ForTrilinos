@@ -14,6 +14,9 @@
 #include "MatrixMarket_Tpetra.hpp"
 %}
 
+// Function signatures for local quantities are incorrectly declared as size_t
+%apply LO { size_t getNumEntriesInLocalRow };
+
 // =======================================================================
 // Ignore permanently
 // =======================================================================

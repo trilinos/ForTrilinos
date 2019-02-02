@@ -48,7 +48,7 @@ program test_TpetraCrsGraph
 !  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_haveGlobalConstants)
 !  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_computeGlobalConstants)
 !  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getGlobalRowCopy)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getgblRowView)
+!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getGlobalRowView)
 !
   call comm%release()
 
@@ -62,16 +62,15 @@ contains
     type(TpetraMap) :: Map
     type(ParameterList) :: params
     type(TpetraCrsGraph) :: Graph
-    integer(local_ordinal_type) :: row, indices(1)
-    integer(size_type), parameter :: izero=0, ione=1
+    integer :: row, indices(1)
 
     OUT0("Starting TpetraCrsGraph_ActiveFillLocal!")
 
     ! create Map
-    Map = TpetraMap(TPETRA_GLOBAL_INVALID, ione, comm); TEST_IERR()
+    Map = TpetraMap(TPETRA_GLOBAL_INVALID, 1, comm); TEST_IERR()
 
     params = ParameterList("ANONYMOUS")
-    Graph = TpetraCrsGraph(Map, Map, izero, TpetraDynamicProfile)
+    Graph = TpetraCrsGraph(Map, Map, 0_size_type, TpetraDynamicProfile)
     TEST_ASSERT(Graph%isFillActive())
     TEST_ASSERT((.not. Graph%isFillComplete()))
 
@@ -93,7 +92,7 @@ contains
     call params%release()
 
     params = ParameterList("ANONYMOUS")
-    Graph = TpetraCrsGraph(Map, Map, izero, TpetraDynamicProfile)
+    Graph = TpetraCrsGraph(Map, Map, 0_size_type, TpetraDynamicProfile)
 
     TEST_ASSERT(Graph%isFillActive())
     TEST_ASSERT((.not. Graph%isFillComplete()))
@@ -128,16 +127,15 @@ contains
     type(TpetraMap) :: Map
     type(ParameterList) :: params
     type(TpetraCrsGraph) :: Graph
-    integer(local_ordinal_type) :: row, indices(1)
-    integer(size_type), parameter :: izero=0, ione=1
+    integer :: row, indices(1)
 
     OUT0("Starting TpetraCrsGraph_Parameters!")
 
     ! create Map
-    Map = TpetraMap(TPETRA_GLOBAL_INVALID, ione, comm); TEST_IERR()
+    Map = TpetraMap(TPETRA_GLOBAL_INVALID, 1, comm); TEST_IERR()
 
     params = ParameterList("ANONYMOUS")
-    Graph = TpetraCrsGraph(Map, Map, izero, TpetraDynamicProfile)
+    Graph = TpetraCrsGraph(Map, Map, 0_size_type, TpetraDynamicProfile)
     params = Graph%getValidParameters()
     call Graph%setParameterList(params)
 
@@ -158,11 +156,10 @@ contains
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_WithColMap)
     type(TpetraMap) :: rmap, cmap, tmpmap
     type(TpetraCrsGraph) :: Graph
-    integer(size_type) :: num_procs, num_local, num_ent_per_row
-    integer(local_ordinal_type) :: lclrow
+    integer(size_type) :: num_procs, num_ent_per_row
+    integer :: num_local, lclrow
     integer(global_ordinal_type) :: myrowind
     integer(global_ordinal_type), allocatable :: indices(:)
-    integer(size_type), parameter :: ione=1
 
     OUT0("Starting TpetraCrsGraph_WithColMap!")
 
@@ -201,7 +198,7 @@ contains
     TEST_EQUALITY(tmpmap%getNodeNumElements(), rmap%getNodeNumElements())
     tmpmap = Graph%getColMap()
     TEST_EQUALITY(tmpmap%getNodeNumElements(), cmap%getNodeNumElements())
-    TEST_EQUALITY(Graph%getNumEntriesInGlobalRow(myrowind), ione)
+    TEST_EQUALITY(Graph%getNumEntriesInGlobalRow(myrowind), 1_size_type)
 
     call tmpmap%release()
     call Graph%release()
@@ -216,9 +213,10 @@ contains
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_TwoArraysESFC)
     type(TpetraMap) :: rmap, tmpmap
     type(TpetraCrsGraph) :: Graph
-    integer(size_type) :: num_procs, num_local
+    integer(size_type) :: num_procs
+    integer :: num_local
     integer(size_type), allocatable :: rowptr(:)
-    integer(local_ordinal_type), allocatable :: colind(:)
+    integer, allocatable :: colind(:)
     integer(global_ordinal_type), allocatable :: indices(:)
 
     OUT0("Starting TpetraCrsGraph_TwoArraysESFC!")
@@ -261,11 +259,11 @@ contains
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_SetAllIndices)
     type(TpetraMap) :: rmap, tmpmap
     type(TpetraCrsGraph) :: Graph
-    integer(size_type) :: num_procs, num_local
+    integer(size_type) :: num_procs
+    integer :: num_local
     integer(size_type), allocatable :: rowptr(:)
-    integer(local_ordinal_type), allocatable :: colind(:)
+    integer, allocatable :: colind(:)
     integer(global_ordinal_type), allocatable :: indices(:)
-    integer(size_type), parameter :: izero=0
 
     OUT0("Starting TpetraCrsGraph_SetAllIndices!")
     num_procs = comm%getSize()
@@ -278,7 +276,7 @@ contains
     rowptr(1:3) = [1, 2, 3]
     colind(1:2) = [1, 2]
 
-    Graph = TpetraCrsGraph(rmap, rmap, izero, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rmap, rmap, 0_size_type, TpetraStaticProfile)
 
     TEST_NOTHROW(call Graph%setAllIndices(rowptr, colind))
     TEST_ASSERT(Graph%hasColMap())
@@ -307,14 +305,14 @@ contains
     type(TpetraMap) :: map
     type(TpetraCrsGraph) :: Graph
     type(ParameterList) :: params
-    integer(size_type) :: num_procs, num_local, nument
+    integer(size_type) :: kk, num_procs, nument
+    integer :: num_local
     integer(size_type), allocatable :: rowptr(:)
     logical :: sorting_check
-    integer(size_type), parameter :: izero=0
     integer(global_ordinal_type) :: j, jj, jstart, jfinish, firstind, lastind
     integer(global_ordinal_type), allocatable :: jinds(:)
-    integer(local_ordinal_type) :: k, kk, kstart, kfinish
-    integer(local_ordinal_type), allocatable :: kinds(:)
+    integer :: k, kstart, kfinish
+    integer, allocatable :: kinds(:)
 
     OUT0("Starting TpetraCrsGraph_SortingTests!")
 
@@ -430,8 +428,7 @@ contains
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_EmptyFillComplete)
     type(TpetraMap) :: map
     type(TpetraCrsGraph) :: Graph
-    integer(size_type) :: num_local
-    integer(size_type), parameter :: ione=1
+    integer :: num_local
 
     OUT0("Starting TpetraCrsGraph_EmptyFillComplete!")
 
@@ -441,13 +438,13 @@ contains
 
     ! create static-profile graph, fill-complete without inserting
     ! (and therefore, without allocating)
-    Graph = TpetraCrsGraph(map, ione, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(map, 1_size_type, TpetraStaticProfile)
     call Graph%fillComplete()
     call Graph%release()
 
     ! create TpetraDynamic-profile graph, fill-complete without inserting
     ! (and therefore, without allocating)
-    Graph = TpetraCrsGraph(map, ione, TpetraDynamicProfile)
+    Graph = TpetraCrsGraph(map, 1_size_type, TpetraDynamicProfile)
     call Graph%fillComplete()
     call Graph%release()
 
@@ -461,12 +458,11 @@ contains
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_GetEntities)
     type(TpetraMap) :: rmap, cmap
     type(TpetraCrsGraph) :: Graph
-    integer(size_type) :: num_procs, num_local, num_ent_per_row
-    integer(local_ordinal_type) :: lclrow
+    integer(size_type) :: num_procs, num_ent_per_row, i_LO
+    integer :: num_local, lclrow
     integer(global_ordinal_type) :: myrowind
     integer(global_ordinal_type), allocatable :: indices(:)
-    integer(local_ordinal_type) :: i_LO, commsize
-    integer(local_ordinal_type), parameter :: ione=1
+    integer :: commsize
 
     OUT0("Starting TpetraCrsGraph_GetEntities!")
 
@@ -502,27 +498,27 @@ contains
 
     commsize = comm%getSize()
     i_LO = Graph%getNodeNumRows()
-    TEST_EQUALITY(i_LO, ione)
+    TEST_EQUALITY(i_LO, 1_size_type)
     i_LO = Graph%getNodeNumCols()
-    TEST_EQUALITY(i_LO, ione)
+    TEST_EQUALITY(i_LO, 1_size_type)
     i_LO = Graph%getGlobalNumEntries()
-    TEST_EQUALITY(i_LO, commsize)
+    TEST_EQUALITY(i_LO, int(commsize, kind=size_type))
     i_LO = Graph%getNodeNumEntries()
-    TEST_EQUALITY(i_LO, ione)
+    TEST_EQUALITY(i_LO, 1_size_type)
     i_LO = Graph%getNodeAllocationSize()
-    TEST_EQUALITY(i_LO, ione)
+    TEST_EQUALITY(i_LO, 1_size_type)
     i_LO = Graph%getNumAllocatedEntriesInGlobalRow(myrowind)
-    TEST_EQUALITY(i_LO, ione)
+    TEST_EQUALITY(i_LO, 1_size_type)
     i_LO = Graph%getNumAllocatedEntriesInLocalRow(lclrow)
-    TEST_EQUALITY(i_LO, ione)
+    TEST_EQUALITY(i_LO, 1_size_type)
     i_LO = Graph%getGlobalNumDiags()
-    TEST_EQUALITY(i_LO, commsize)
+    TEST_EQUALITY(i_LO, int(commsize, kind=size_type))
     i_LO = Graph%getNodeNumDiags()
-    TEST_EQUALITY(i_LO, ione)
+    TEST_EQUALITY(i_LO, 1_size_type)
     i_LO = Graph%getGlobalMaxNumRowEntries()
-    TEST_EQUALITY(i_LO, ione)
+    TEST_EQUALITY(i_LO, 1_size_type)
     i_LO = Graph%getNodeMaxNumRowEntries()
-    TEST_EQUALITY(i_LO, ione)
+    TEST_EQUALITY(i_LO, 1_size_type)
 
     call Graph%release()
     call rmap%release()
@@ -532,6 +528,7 @@ contains
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_GetEntities)
 
+#if 0
   ! ---------------------------------getComm---------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getComm)
     type(TpetraCrsGraph) :: Obj
@@ -898,27 +895,28 @@ contains
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getGlobalRowCopy)
 
-  ! ------------------------------getgblRowView------------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getgblRowView)
+  ! ------------------------------getGlobalRowView------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getGlobalRowView)
     type(TpetraCrsGraph) :: Obj
     integer(C_LONG_LONG) :: gblrow
     integer(C_LONG_LONG), allocatable :: lclcolinds(:)
-    OUT0("Starting TpetraCrsGraph_getgblRowView!")
+    OUT0("Starting TpetraCrsGraph_getGlobalRowView!")
 
     success = .false.
 
     gblrow = 0
     !allocate(lclcolinds(:)(0))
     !Obj = TpetraCrsGraph(); TEST_IERR()
-    !call Obj%getgblRowView(gblrow, lclcolinds(:)); TEST_IERR()
+    !call Obj%getGlobalRowView(gblrow, lclcolinds(:)); TEST_IERR()
 
     !deallocate(lclcolinds(:))
     !call Obj%release(); TEST_IERR()
 
-    write(*,*) 'TpetraCrsGraph_getgblRowView: Test not yet implemented'
+    write(*,*) 'TpetraCrsGraph_getGlobalRowView: Test not yet implemented'
 
-    OUT0("Finished TpetraCrsGraph_getgblRowView!")
+    OUT0("Finished TpetraCrsGraph_getGlobalRowView!")
 
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getgblRowView)
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getGlobalRowView)
+#endif
 
 end program test_TpetraCrsGraph

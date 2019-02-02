@@ -24,6 +24,7 @@ program test_TpetraImportExport
 
   ADD_SUBTEST_AND_RUN(TpetraImportExport_Basic)
   ADD_SUBTEST_AND_RUN(TpetraImportExport_GetNeighborsForward)
+  !ADD_SUBTEST_AND_RUN(TpetraImportExport_AbsMax)
 
   !ADD_SUBTEST_AND_RUN(TpetraImport_isLocallyComplete)
   !ADD_SUBTEST_AND_RUN(TpetraImport_createRemoteOnlyImport)
@@ -38,14 +39,13 @@ contains
   FORTRILINOS_UNIT_TEST(TpetraImportExport_Basic)
     type(TpetraMap) :: src, tgt
     type(TpetraImport) :: importer
-    integer(size_type), parameter :: ten=10, five=5
     integer(size_type) :: same, permute, remote, expected_sum, the_sum
 
     OUT0("Starting TpetraImportExport_Basic!")
 
     ! create Maps
-    src = TpetraMap(TPETRA_GLOBAL_INVALID, ten, comm)
-    tgt = TpetraMap(TPETRA_GLOBAL_INVALID, five, comm)
+    src = TpetraMap(TPETRA_GLOBAL_INVALID, 10, comm)
+    tgt = TpetraMap(TPETRA_GLOBAL_INVALID, 5, comm)
 
     ! create Import object
     importer = TpetraImport(src, tgt)
@@ -71,11 +71,9 @@ contains
     type(TpetraMultiVector) :: mine_parent, neigh_parent
     real(scalar_type), allocatable :: val(:)
     real(scalar_type), pointer :: a(:)
-    real(scalar_type), parameter :: zero=0
-    integer(size_type), parameter :: ten=10, five=5
-    integer(size_type) :: num_images, my_image_id, num_local, num_vecs
+    integer(size_type) :: num_images, my_image_id, num_vecs
     integer(size_type) :: tnum, j, n
-    integer(local_ordinal_type) :: lclrow
+    integer :: lclrow, num_local
     integer(global_ordinal_type), allocatable :: neighbors(:), cols(:)
 
     OUT0("Starting TpetraImportExport_GetNeighborsForward!")
@@ -185,15 +183,15 @@ contains
       end do
 
       ! export values, test
-      call mv_mine%putScalar(zero)
+      call mv_mine%putScalar(0d0)
       call mv_mine%doExport(mv_with_neighbors, exporter, TpetraADD)
       do j = 1, num_vecs
         a => mv_mine%getData(j)
         if (my_image_id == 0 .or. my_image_id == num_images-1) then
           ! contribution from me and one neighbor: double original value
-          val(1) = real(2.0*(my_image_id+j*num_images), kind=scalar_type)
+          val(1) = real(2*(my_image_id+j*num_images), kind=scalar_type)
         else
-          val(1) = real(3.0*(my_image_id+j*num_images), kind=scalar_type)
+          val(1) = real(3*(my_image_id+j*num_images), kind=scalar_type)
         end if
         TEST_FLOATING_EQUALITY(a(1), val(1), epsilon(val(1)))
       end do
@@ -215,6 +213,7 @@ contains
 
   END_FORTRILINOS_UNIT_TEST(TpetraImportExport_GetNeighborsForward)
 
+#if 0
   ! --------------------------------- AbsMax --------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraImportExport_AbsMax)
     type(TpetraMap) :: smap, dmap
@@ -223,7 +222,7 @@ contains
     type(TpetraMultiVector) :: svec, dvec
     integer(size_type) :: num_images
     real(scalar_type), pointer :: a(:)
-    integer(local_ordinal_type) :: lclrow
+    integer :: lclrow
     integer(global_ordinal_type) :: my_only_gid, cols(2)
     integer(size_type), parameter :: one=1
     integer(global_ordinal_type), parameter :: twog=2
@@ -305,5 +304,6 @@ contains
     OUT0("Finished TpetraImport_createRemoteOnlyImport!")
 
   END_FORTRILINOS_UNIT_TEST(TpetraImport_createRemoteOnlyImport)
+#endif
 
 end program test_TpetraImportExport

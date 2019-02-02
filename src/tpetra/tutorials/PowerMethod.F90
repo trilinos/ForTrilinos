@@ -26,9 +26,6 @@ use mpi
 
 implicit none
 
-! -- Parameters
-real(scalar_type), parameter :: one=1., two=2., neg_one=-1.
-
 ! -- ForTrilinos objects
 type(TeuchosComm) :: comm
 type(TpetraMap) :: map
@@ -38,10 +35,10 @@ type(TpetraCrsMatrix) :: A
 integer :: ierr
 real(scalar_type) :: lambda
 integer(global_size_type) :: num_gbl_indices
-integer(size_type) :: my_rank
+integer :: my_rank
 integer(size_type) :: num_entries_in_row, max_entries_per_row, i
-integer(local_ordinal_type) lcl_row, row_nnz, n
-integer(local_ordinal_type) num_my_elements, col, iconv
+integer :: lcl_row, row_nnz, n
+integer :: num_my_elements, col, iconv
 integer(global_ordinal_type) gbl_row, id_of_first_row
 
 ! -- Arrays
@@ -99,17 +96,17 @@ fill: do lcl_row = 1, num_my_elements
     ! A(1, 1:2) = [2, -1]
     row_nnz = 2
     cols(1:2) = [gbl_row, gbl_row+1]
-    vals(1:2) = [two, neg_one]
+    vals(1:2) = [2d0, -1d0]
   else if (gbl_row == num_gbl_indices) then
     ! A(N, N-1:N) = [-1, 2]
     row_nnz = 2
     cols(1:2) = [gbl_row-1, gbl_row]
-    vals(1:2) = [neg_one, two]
+    vals(1:2) = [-1d0, 2d0]
   else
     ! A(i, i-1:i+1) = [-1, 2, -1]
     row_nnz = 3
     cols(1:3) = [gbl_row-1, gbl_row, gbl_row+1]
-    vals(1:3) = [neg_one, two, neg_one]
+    vals(1:3) = [-1d0, 2d0, -1d0]
   end if
   call A%insertGlobalValues(gbl_row, cols(1:row_nnz), vals(1:row_nnz))
 end do fill
