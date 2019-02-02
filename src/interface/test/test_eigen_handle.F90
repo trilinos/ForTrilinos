@@ -25,7 +25,7 @@ program main
   integer(int_type) :: my_rank, num_procs
 
   integer(global_size_type) :: n_global
-  integer(size_type) :: n, max_entries_per_row, lda
+  integer(size_type) :: n, max_entries_per_row
   integer(size_type) :: num_eigen = 1, num_found_eigen
   integer(int_type) :: num_eigen_int
   integer(int_type) :: row_nnz
@@ -33,7 +33,6 @@ program main
   integer :: ierr
   integer(local_ordinal_type) :: i
   integer(global_ordinal_type) :: offset
-  real(scalar_type) :: one = 1.0
 
   type(TeuchosComm) :: comm
   type(ParameterList) :: plist

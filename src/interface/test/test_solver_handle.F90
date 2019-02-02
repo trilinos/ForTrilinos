@@ -177,7 +177,6 @@ program main
   integer(local_ordinal_type) :: i
   integer(global_ordinal_type) :: offset
   real(scalar_type) :: one = 1.0
-  real(norm_type) :: norm
 
   type(TeuchosComm) :: comm
   type(ParameterList) :: plist, linear_solver_list, belos_list, solver_list, krylov_list

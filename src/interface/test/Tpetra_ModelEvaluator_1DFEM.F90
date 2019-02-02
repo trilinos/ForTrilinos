@@ -455,8 +455,6 @@ contains
     integer(size_type), parameter :: ione=1
     real(scalar_type), dimension(:), pointer :: xdata
     real(scalar_type), dimension(:), pointer :: udata
-    type(TpetraMultiVector) :: diag
-    integer(size_type) :: num_vecs=1
     integer :: my_rank
     real(scalar_type) :: xx(2), uu(2), vals(1)
     ! ------------------------------------------------------------------------ !

@@ -187,7 +187,7 @@ contains
     type(TpetraMap) :: Map, row_map
     type(TpetraCrsMatrix) :: A
     type(TpetraMultiVector) :: ones, threes
-    integer(size_type), parameter :: izero=0, ione=1, ithree=3
+    integer(size_type), parameter :: izero=0, ione=1
     integer(size_type) :: num_images, my_image_id, numindices
     integer(local_ordinal_type) :: nnz
     real(scalar_type), parameter :: zero=0., one=1., two=2., negthree=-3.
@@ -298,7 +298,7 @@ contains
     type(TpetraMap) :: Map
     type(TpetraCrsMatrix) :: Mat
     type(TpetraMultiVector) :: X, Y, Z
-    integer(size_type), parameter :: ione=1, ithree=3, numvecs=1
+    integer(size_type), parameter :: numvecs=1
     real(scalar_type), parameter :: zero=0., one=1.
     real(scalar_type) :: alpha, beta
     integer(size_type) :: my_image_id
@@ -310,11 +310,11 @@ contains
     my_image_id = comm%getRank()
 
     ! create a Map
-    map = TpetraMap(TPETRA_GLOBAL_INVALID, ithree, comm); TEST_IERR()
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, 3_size_type, comm); TEST_IERR()
 
     ! Create the identity matrix, three rows per proc
     base = 3 * my_image_id;
-    Mat = TpetraCrsMatrix(Map, ione, TpetraDynamicProfile); TEST_IERR()
+    Mat = TpetraCrsMatrix(Map, 1_size_type, TpetraDynamicProfile); TEST_IERR()
     do i = 1, 3
       gblrow = base + i
       cols(1) = gblrow
@@ -498,8 +498,8 @@ contains
     row = 1; cols(1) = 1; vals(1) = zero;
     call Mat%insertLocalValues(row, cols, vals); TEST_IERR()
 
-    params = ParameterList("ANONOMOUS"); TEST_IERR()
-    !call params%set("Optimize Storage", .false.); TEST_IERR() ! FIXME: boolean parameters
+    params = ParameterList("ANONYMOUS"); TEST_IERR()
+    call params%set("Optimize Storage", .false.); TEST_IERR()
     call Mat%fillComplete(params); TEST_IERR()
     TEST_ASSERT((.not. Mat%isFillActive()))
     TEST_ASSERT(Mat%isFillComplete())
@@ -527,7 +527,6 @@ contains
     OUT0("Finished TpetraCrsMatrix_ActiveFillLocal!")
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_ActiveFillLocal)
-#endif
 
   ! -------------------------------getCrsGraph-------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_getCrsGraph)
@@ -862,6 +861,7 @@ contains
     OUT0("Finished TpetraCrsMatrix_removeEmptyProcessesInPlace")
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_removeEmptyProcessesInPlace)
+#endif
 
 
 end program test_TpetraCrsMatrix
