@@ -656,13 +656,11 @@ extern "C" {
 SWIGEXPORT SwigClassWrapper _wrap_new_TeuchosArrayInt(SwigArrayWrapper *farg1) {
   SwigClassWrapper fresult ;
   Teuchos::ArrayView< int const > *arg1 = 0 ;
-  int const *tempbegin1 ;
-  Teuchos::ArrayView< int const > temparr1 ;
+  Teuchos::ArrayView< int const > tmparr1 ;
   Teuchos::Array< int > *result = 0 ;
   
-  tempbegin1 = static_cast<int const*>(farg1->data);
-  temparr1 = Teuchos::ArrayView<int const>(tempbegin1, farg1->size);
-  arg1 = &temparr1;
+  tmparr1 = Teuchos::ArrayView<int const>(static_cast<int const*>(farg1->data), farg1->size);
+  arg1 = &tmparr1;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::Array< int >::Array(Teuchos::ArrayView< int const > const &)");;
@@ -771,13 +769,11 @@ SWIGEXPORT void _wrap_assign_TeuchosArrayInt(SwigClassWrapper * self, SwigClassW
 SWIGEXPORT SwigClassWrapper _wrap_new_TeuchosArrayDbl(SwigArrayWrapper *farg1) {
   SwigClassWrapper fresult ;
   Teuchos::ArrayView< double const > *arg1 = 0 ;
-  double const *tempbegin1 ;
-  Teuchos::ArrayView< double const > temparr1 ;
+  Teuchos::ArrayView< double const > tmparr1 ;
   Teuchos::Array< double > *result = 0 ;
   
-  tempbegin1 = static_cast<double const*>(farg1->data);
-  temparr1 = Teuchos::ArrayView<double const>(tempbegin1, farg1->size);
-  arg1 = &temparr1;
+  tmparr1 = Teuchos::ArrayView<double const>(static_cast<double const*>(farg1->data), farg1->size);
+  arg1 = &tmparr1;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::Array< double >::Array(Teuchos::ArrayView< double const > const &)");;
@@ -886,13 +882,11 @@ SWIGEXPORT void _wrap_assign_TeuchosArrayDbl(SwigClassWrapper * self, SwigClassW
 SWIGEXPORT SwigClassWrapper _wrap_new_TeuchosArrayLongLong(SwigArrayWrapper *farg1) {
   SwigClassWrapper fresult ;
   Teuchos::ArrayView< long long const > *arg1 = 0 ;
-  long long const *tempbegin1 ;
-  Teuchos::ArrayView< long long const > temparr1 ;
+  Teuchos::ArrayView< long long const > tmparr1 ;
   Teuchos::Array< long long > *result = 0 ;
   
-  tempbegin1 = static_cast<long long const*>(farg1->data);
-  temparr1 = Teuchos::ArrayView<long long const>(tempbegin1, farg1->size);
-  arg1 = &temparr1;
+  tmparr1 = Teuchos::ArrayView<long long const>(static_cast<long long const*>(farg1->data), farg1->size);
+  arg1 = &tmparr1;
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::Array< long long >::Array(Teuchos::ArrayView< long long const > const &)");;

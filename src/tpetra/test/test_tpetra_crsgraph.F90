@@ -321,7 +321,7 @@ contains
     map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm)
 
     nument = 4
-    Graph = TpetraCrsGraph(map, map, nument);
+    Graph = TpetraCrsGraph(map, map, nument); TEST_IERR()
     TEST_ASSERT(graph%isSorted())
 
     ! insert entries; shouldn't be sorted anymore
@@ -339,7 +339,7 @@ contains
       if (map%isNodeGlobalElement(lastind)) then
         jinds(jj) = lastind; jj = jj + 1
       end if
-      call Graph%insertGlobalIndices(j, jinds(1:jj-1))
+      call Graph%insertGlobalIndices(j, jinds(1:jj-1)); TEST_IERR()
     end do
     TEST_ASSERT((.not. Graph%isSorted()))
     deallocate(jinds)
@@ -355,7 +355,8 @@ contains
     do k = kstart, kfinish
       nument = Graph%getNumEntriesInLocalRow(k)
       allocate(kinds(nument))
-      call Graph%getLocalRowCopy(k, kinds, nument);
+      write (*,*) "Allocated", nument, "for k=", k
+      call Graph%getLocalRowCopy(k, kinds, nument); TEST_IERR()
       do kk = 2, nument
         if (kinds(kk-1) > kinds(kk)) then
           sorting_check = .false.
@@ -367,7 +368,7 @@ contains
     end do
 
     ! resume fill; should still be sorted
-    call Graph%resumeFill()
+    call Graph%resumeFill(); TEST_IERR()
     TEST_ASSERT(graph%isSorted())
 
     sorting_check = .true.
@@ -376,7 +377,7 @@ contains
     do k = kstart, kfinish
       nument = Graph%getNumEntriesInLocalRow(k)
       allocate(kinds(nument))
-      call Graph%getLocalRowCopy(k, kinds, nument);
+      call Graph%getLocalRowCopy(k, kinds, nument); TEST_IERR()
       do kk = 2, nument
         if (kinds(kk-1) > kinds(kk)) then
           sorting_check = .false.
@@ -392,7 +393,7 @@ contains
     k = 1
     allocate(kinds(1))
     kinds(1) = 1
-    call Graph%insertLocalIndices(k, kinds)
+    call Graph%insertLocalIndices(k, kinds); TEST_IERR()
     TEST_ASSERT((.not. graph%isSorted()))
     deallocate(kinds)
 
@@ -406,7 +407,7 @@ contains
     do k = kstart, kfinish
       nument = Graph%getNumEntriesInLocalRow(k)
       allocate(kinds(nument))
-      call Graph%getLocalRowCopy(k, kinds, nument);
+      call Graph%getLocalRowCopy(k, kinds, nument); TEST_IERR()
       do kk = 2, nument
         if (kinds(kk-1) > kinds(kk)) then
           sorting_check = .false.

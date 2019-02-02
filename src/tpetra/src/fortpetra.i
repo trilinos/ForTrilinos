@@ -67,6 +67,7 @@ public :: norm_type
 #include <type_traits>
 %}
 
+// *Input* fortran indices
 %typemap(in, fragment="<type_traits>", noblock=1) const Teuchos::ArrayView<const int>& INDEX
     ($1_basetype::value_type* tmpbegin,
      Teuchos::Array<std::remove_const<$1_basetype::value_type>::type> tmparr,
@@ -77,9 +78,15 @@ public :: norm_type
   for (int i = 0; i < tmparr.size(); i++)
     tmparr[i] = tmpbegin[i] - 1;
   tmpview = tmparr();
-
-  // Make the input argument point to our temporary vector
   $1 = &tmpview;
+}
+
+// *Return* by reference fortran indices. This modifies the return values after
+// calling the wrapped C++ function.
+%typemap(freearg, noblock=1) const Teuchos::ArrayView<int>& INDEX
+{
+  for (int i = 0; i < tmparr$argnum.size(); i++)
+    tmparr$argnum[i] += 1;
 }
 
 // All enums should be prefaced with Tpetra

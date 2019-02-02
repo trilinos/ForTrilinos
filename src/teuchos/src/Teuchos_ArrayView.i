@@ -22,15 +22,13 @@ class ArrayView
     // Add native wrapping typemaps to convert to/from Teuchos array
     %fortran_array_pointer(_Tp, ArrayView<_Tp>)
 
-    %typemap(in, noblock=1) ArrayView<_Tp> (_Tp* tempbegin) {
-      tempbegin = static_cast<_Tp*>($input->data);
-      $1 = Teuchos::ArrayView<_Tp>(tempbegin, $input->size);
+    %typemap(in, noblock=1) ArrayView<_Tp> {
+      $1 = Teuchos::ArrayView<_Tp>(static_cast<_Tp*>($input->data), $input->size);
     }
 
-    %typemap(in, noblock=1) const ArrayView<_Tp> & (_Tp* tempbegin, Teuchos::ArrayView<_Tp> temparr) {
-      tempbegin = static_cast<_Tp*>($input->data);
-      temparr = Teuchos::ArrayView<_Tp>(tempbegin, $input->size);
-      $1 = &temparr;
+    %typemap(in, noblock=1) const ArrayView<_Tp> & (Teuchos::ArrayView<_Tp> tmparr) {
+      tmparr = Teuchos::ArrayView<_Tp>(static_cast<_Tp*>($input->data), $input->size);
+      $1 = &tmparr;
     }
 
     %typemap(out, noblock=1) ArrayView<_Tp> {
