@@ -111,23 +111,23 @@
       for (int i = 0; i < colsArray.size(); i++)
         colsArray[i] = cols[i] - 1;
       Teuchos::ArrayView<const SC> valsView = Teuchos::arrayView(vals.getRawPtr(), vals.size());
-      self->insertLocalValues(localRow, colsArray, valsView);
+      $self->insertLocalValues(localRow, colsArray, valsView);
     }
     LO replaceLocalValues(const LO localRow, Teuchos::ArrayView<const LO> cols, Teuchos::ArrayView<const SC> vals) const {
       Teuchos::Array<LO> colsArray(cols.size());
       for (int i = 0; i < colsArray.size(); i++)
         colsArray[i] = cols[i] - 1;
-      return self->replaceLocalValues(localRow, colsArray, vals);
+      return $self->replaceLocalValues(localRow, colsArray, vals);
     }
     LO sumIntoGlobalValues(const GO globalRow, Teuchos::ArrayView<const GO> cols, Teuchos::ArrayView<const SC> vals) {
-      return self->sumIntoGlobalValues(globalRow, cols, vals, false); // TODO: for now, we only run in serial, no atomics necessary
+      return $self->sumIntoGlobalValues(globalRow, cols, vals, false); // TODO: for now, we only run in serial, no atomics necessary
     }
     LO sumIntoLocalValues(const LO localRow, Teuchos::ArrayView<const LO> cols, Teuchos::ArrayView<const SC> vals) const {
       Teuchos::Array<LO> colsArray(cols.size());
       for (int i = 0; i < colsArray.size(); i++)
         colsArray[i] = cols[i] - 1;
       Teuchos::ArrayView<const SC> valsView = Teuchos::arrayView(vals.getRawPtr(), vals.size());
-      return self->sumIntoLocalValues(localRow, colsArray, valsView, false/*atomic*/); // TODO: for now, we only run in serial, no atomics necessary
+      return $self->sumIntoLocalValues(localRow, colsArray, valsView, false/*atomic*/); // TODO: for now, we only run in serial, no atomics necessary
     }
     void setAllValues(Teuchos::ArrayView<size_t> ptr, Teuchos::ArrayView<LO> ind, Teuchos::ArrayView<SC> val) {
       Teuchos::ArrayRCP<size_t> ptrArrayRCP(ptr.size());
@@ -137,14 +137,14 @@
       for (int i = 0; i < indArrayRCP.size(); i++)
         indArrayRCP[i] = ind[i]-1;
       Teuchos::ArrayRCP<SC> valArrayRCP(val.getRawPtr(), 0, val.size(), false/*has_ownership*/);
-      self->setAllValues(arcpFromArrayView(ptr), arcpFromArrayView(ind), arcpFromArrayView(val));
+      $self->setAllValues(arcpFromArrayView(ptr), arcpFromArrayView(ind), arcpFromArrayView(val));
     }
     // NOTE: This is semantically different function from Tpetra. Here, we *require* that user already allocated the arrays to store the data
     void getAllValues(Teuchos::ArrayView<size_t> rowPointers, Teuchos::ArrayView<LO> columnIndices, Teuchos::ArrayView<SC> values) const {
       Teuchos::ArrayRCP<const size_t> rowPointersArrayRCP;
       Teuchos::ArrayRCP<const LO>     columnIndicesArrayRCP;
       Teuchos::ArrayRCP<const SC>     valuesArrayRCP;
-      self->getAllValues(rowPointersArrayRCP, columnIndicesArrayRCP, valuesArrayRCP);
+      $self->getAllValues(rowPointersArrayRCP, columnIndicesArrayRCP, valuesArrayRCP);
       TEUCHOS_TEST_FOR_EXCEPTION(rowPointersArrayRCP.size()   != rowPointers.size(),    std::runtime_error, "Wrong rowPointers size");
       TEUCHOS_TEST_FOR_EXCEPTION(columnIndicesArrayRCP.size() != columnIndices.size(),  std::runtime_error, "Wrong columnIndices size");
       TEUCHOS_TEST_FOR_EXCEPTION(valuesArrayRCP.size()        != values.size(),         std::runtime_error, "Wrong values size");
@@ -158,22 +158,22 @@
       }
     }
     void getLocalRowCopy(LO localRow, Teuchos::ArrayView<LO> colInds, Teuchos::ArrayView<SC> vals, size_t &NumIndices) const {
-      self->getLocalRowCopy(localRow, colInds, vals, NumIndices);
+      $self->getLocalRowCopy(localRow, colInds, vals, NumIndices);
 
       for (int i = 0; i < colInds.size(); i++)
         colInds[i]++;
     }
     void doImport (const Tpetra::CrsMatrix<SC,LO,GO,NO> &source, const Tpetra::Import< LO, GO, NO > &importer, CombineMode CM) {
-      self->doImport(source, importer, CM);
+      $self->doImport(source, importer, CM);
     }
     void doImport (const Tpetra::CrsMatrix<SC,LO,GO,NO> &source, const Tpetra::Export< LO, GO, NO > &exporter, CombineMode CM) {
-      self->doImport(source, exporter, CM);
+      $self->doImport(source, exporter, CM);
     }
     void doExport (const Tpetra::CrsMatrix<SC,LO,GO,NO> &source, const Tpetra::Export< LO, GO, NO > &exporter, CombineMode CM) {
-      self->doExport(source, exporter, CM);
+      $self->doExport(source, exporter, CM);
     }
     void doExport (const Tpetra::CrsMatrix<SC,LO,GO,NO> &source, const Tpetra::Import< LO, GO, NO > &importer, CombineMode CM) {
-      self->doExport(source, importer, CM);
+      $self->doExport(source, importer, CM);
     }
 }
 %ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap,
