@@ -66,25 +66,6 @@
 %ignore Tpetra::getMultiVectorWhichVectors;
 
 %extend Tpetra::MultiVector<SC,LO,GO,NO> {
-    Teuchos::RCP<Tpetra::MultiVector<SC,LO,GO,NO> > subCopy(std::pair<const size_t*,size_t> cols) const {
-      Teuchos::Array<size_t> colsArray(cols.second);
-      for (int i = 0; i < colsArray.size(); i++)
-        colsArray[i] = cols.first[i]-1;
-      return self->subCopy(colsArray);
-    }
-    Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO> > subView(std::pair<const size_t*,size_t> cols) const {
-      Teuchos::Array<size_t> colsArray(cols.second);
-      for (int i = 0; i < colsArray.size(); i++)
-        colsArray[i] = cols.first[i]-1;
-      return self->subView(colsArray);
-    }
-    Teuchos::RCP<Tpetra::MultiVector<SC,LO,GO,NO> > subViewNonConst(std::pair<const size_t*,size_t> cols) {
-      Teuchos::Array<size_t> colsArray(cols.second);
-      for (int i = 0; i < colsArray.size(); i++)
-        colsArray[i] = cols.first[i]-1;
-      return self->subViewNonConst(colsArray);
-    }
-
     void doImport (const Tpetra::MultiVector<SC,LO,GO,NO> &source, const Tpetra::Import< LO, GO, NO > &importer, CombineMode CM) {
       self->doImport(source, importer, CM);
     }
@@ -99,15 +80,9 @@
     }
 }
 
-%ignore Tpetra::MultiVector::subCopy(const Teuchos::ArrayView< const size_t > &cols) const;
-%ignore Tpetra::MultiVector::subView(const Teuchos::ArrayView< const size_t > &cols) const;
-%ignore Tpetra::MultiVector::subViewNonConst(const Teuchos::ArrayView< const size_t > &cols);
-
 // Fix ±1 issues
-// =======================================================================
-%typemap(in)  size_t j %{$1 = *$input - 1;%}
-%typemap(in)  size_t col %{$1 = *$input - 1;%}
-%typemap(in)  int lclRow %{$1 = *$input - 1;%} /* int = LocalOrdinal */
+%apply int INDEX { size_t j, size_t col, int lclRow }
+%apply const Teuchos::ArrayView<const int>& INDEX { const Teuchos::ArrayView<const size_t>& cols }
 
 /* Include the multivector *before* the RCP declaration so that
  * SWIG becomes aware of the default template arguments */

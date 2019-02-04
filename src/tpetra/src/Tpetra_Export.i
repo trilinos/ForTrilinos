@@ -22,12 +22,12 @@ using Tpetra::Import;
 // =======================================================================
 // Postpone temporarily
 // =======================================================================
-%ignore Tpetra::Export::Export(const Teuchos::RCP< const map_type > &source, \
-        const Teuchos::RCP< const map_type > &target, \
+%ignore Tpetra::Export::Export(const Teuchos::RCP< const map_type > &source,
+        const Teuchos::RCP< const map_type > &target,
         const Teuchos::RCP< Teuchos::FancyOStream > &out);      // needs Teuchos::FancyOStream
-%ignore Tpetra::Export::Export(const Teuchos::RCP< const map_type > &source, \
-        const Teuchos::RCP< const map_type > &target, \
-        const Teuchos::RCP< Teuchos::FancyOStream > &out, \
+%ignore Tpetra::Export::Export(const Teuchos::RCP< const map_type > &source,
+        const Teuchos::RCP< const map_type > &target,
+        const Teuchos::RCP< Teuchos::FancyOStream > &out,
         const Teuchos::RCP< Teuchos::ParameterList > &plist);   // needs Teuchos::FancyOStream
 %ignore Tpetra::Export::getPermuteFromLIDs;     // ±1 issue
 %ignore Tpetra::Export::getPermuteToLIDs;       // ±1 issue

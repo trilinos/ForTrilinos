@@ -32,7 +32,7 @@ typedef char                                    Packet;
 %}
 
 // NOTE: with the latest SWIG, these will *not* show up in downstream
-// %imported modules even if %insert is replaced with %fragment.
+// %imported modules.
 %insert("fuse") {
  use, intrinsic :: iso_c_binding, only : &
    c_bool, &
@@ -59,6 +59,29 @@ public :: mag_type
 public :: norm_type
 }
 
+// Define typemap for converting Fortran indexing to C indexing
+%typemap(in) int INDEX "$1 = *$input - 1;"
+%typemap(out) int INDEX "$result = $1 + 1;"
+
+%fragment("<type_traits>", "header") %{
+#include <type_traits>
+%}
+
+%typemap(in, fragment="<type_traits>", noblock=1) const Teuchos::ArrayView<const int>& INDEX
+    ($1_basetype::value_type* tmpbegin,
+     Teuchos::Array<std::remove_const<$1_basetype::value_type>::type> tmparr,
+     $1_basetype tmpview)
+{
+  tmpbegin = static_cast<$1_basetype::value_type*>($input->data);
+  tmparr.resize($input->size);
+  for (int i = 0; i < tmparr.size(); i++)
+    tmparr[i] = tmpbegin[i] - 1;
+  tmpview = tmparr();
+
+  // Make the input argument point to our temporary vector
+  $1 = &tmpview;
+}
+
 // All enums should be prefaced with Tpetra
 %rename("Tpetra%s", %$isenumitem) "";
 %rename("Tpetra%s", %$isenum)     "";
@@ -66,7 +89,7 @@ public :: norm_type
 
 %include "Tpetra_ConfigDefs.i"
 
-// ignore indexBase (Map, CrsGraph, CrsMatrix)
+// Ignore indexBase (Map, CrsGraph, CrsMatrix)
 %ignore getIndexBase;
 
 // Order matters!!!

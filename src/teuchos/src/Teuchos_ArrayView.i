@@ -53,6 +53,10 @@ class ArrayView
 %template() Teuchos::ArrayView<double>;
 %template() Teuchos::ArrayView<long long>;
 
+%template() Teuchos::ArrayView<unsigned int>;
+%template() Teuchos::ArrayView<unsigned long>;
+%template() Teuchos::ArrayView<unsigned long long>;
+
 %template() Teuchos::ArrayView<const int>;
 %template() Teuchos::ArrayView<const double>;
 %template() Teuchos::ArrayView<const long long>;

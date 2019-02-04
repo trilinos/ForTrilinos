@@ -113,16 +113,16 @@ contains
       ! for tnum=1, these are contiguously allocated multivectors
       ! for tnum=2, these are non-contiguous views of multivectors
       if (tnum == 1) then
-        mv_mine = TpetraMultiVector(src, num_vecs)
-        mv_with_neighbors = TpetraMultiVector(tgt, num_vecs)
+        mv_mine = TpetraMultiVector(src, num_vecs); TEST_IERR()
+        mv_with_neighbors = TpetraMultiVector(tgt, num_vecs); TEST_IERR()
       else
         allocate(cols(5))
         cols(:) = [1,7,4,5,6]
-        mine_parent = TpetraMultiVector(src, num_vecs+2)
-        neigh_parent = TpetraMultiVector(tgt, num_vecs+2)
-        TEST_ASSERT((num_vecs == 5))
-        mv_mine = mine_parent%subViewNonConst(cols)
-        mv_with_neighbors = neigh_parent%subViewNonConst(cols)
+        mine_parent = TpetraMultiVector(src, num_vecs+2); TEST_IERR()
+        neigh_parent = TpetraMultiVector(tgt, num_vecs+2); TEST_IERR()
+        TEST_ASSERT((num_vecs == 5)); TEST_IERR()
+        mv_mine = mine_parent%subViewNonConst(cols); TEST_IERR()
+        mv_with_neighbors = neigh_parent%subViewNonConst(cols); TEST_IERR()
       end if
 
       ! mv_mine = [my_image_id  my_image_id+num_images ... my_image_id+4*num_images]
