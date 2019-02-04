@@ -405,13 +405,9 @@ public :: init_ForTpetraOperator
   procedure :: getNodeAllocationSize => swigf_TpetraCrsGraph_getNodeAllocationSize
   procedure :: getNumAllocatedEntriesInGlobalRow => swigf_TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow
   procedure :: getNumAllocatedEntriesInLocalRow => swigf_TpetraCrsGraph_getNumAllocatedEntriesInLocalRow
-  procedure :: getGlobalNumDiags => swigf_TpetraCrsGraph_getGlobalNumDiags
-  procedure :: getNodeNumDiags => swigf_TpetraCrsGraph_getNodeNumDiags
   procedure :: getGlobalMaxNumRowEntries => swigf_TpetraCrsGraph_getGlobalMaxNumRowEntries
   procedure :: getNodeMaxNumRowEntries => swigf_TpetraCrsGraph_getNodeMaxNumRowEntries
   procedure :: hasColMap => swigf_TpetraCrsGraph_hasColMap
-  procedure :: isLowerTriangular => swigf_TpetraCrsGraph_isLowerTriangular
-  procedure :: isUpperTriangular => swigf_TpetraCrsGraph_isUpperTriangular
   procedure :: isLocallyIndexed => swigf_TpetraCrsGraph_isLocallyIndexed
   procedure :: isGloballyIndexed => swigf_TpetraCrsGraph_isGloballyIndexed
   procedure :: isFillComplete => swigf_TpetraCrsGraph_isFillComplete
@@ -528,13 +524,9 @@ public :: init_ForTpetraOperator
   procedure :: getNodeNumEntries => swigf_TpetraCrsMatrix_getNodeNumEntries
   procedure :: getNumEntriesInGlobalRow => swigf_TpetraCrsMatrix_getNumEntriesInGlobalRow
   procedure :: getNumEntriesInLocalRow => swigf_TpetraCrsMatrix_getNumEntriesInLocalRow
-  procedure :: getGlobalNumDiags => swigf_TpetraCrsMatrix_getGlobalNumDiags
-  procedure :: getNodeNumDiags => swigf_TpetraCrsMatrix_getNodeNumDiags
   procedure :: getGlobalMaxNumRowEntries => swigf_TpetraCrsMatrix_getGlobalMaxNumRowEntries
   procedure :: getNodeMaxNumRowEntries => swigf_TpetraCrsMatrix_getNodeMaxNumRowEntries
   procedure :: hasColMap => swigf_TpetraCrsMatrix_hasColMap
-  procedure :: isLowerTriangular => swigf_TpetraCrsMatrix_isLowerTriangular
-  procedure :: isUpperTriangular => swigf_TpetraCrsMatrix_isUpperTriangular
   procedure :: isLocallyIndexed => swigf_TpetraCrsMatrix_isLocallyIndexed
   procedure :: isGloballyIndexed => swigf_TpetraCrsMatrix_isGloballyIndexed
   procedure :: isFillComplete => swigf_TpetraCrsMatrix_isFillComplete
@@ -2603,24 +2595,6 @@ integer(C_INT), intent(in) :: farg2
 integer(C_INT) :: fresult
 end function
 
-function swigc_TpetraCrsGraph_getGlobalNumDiags(farg1) &
-bind(C, name="_wrap_TpetraCrsGraph_getGlobalNumDiags") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-integer(C_LONG) :: fresult
-end function
-
-function swigc_TpetraCrsGraph_getNodeNumDiags(farg1) &
-bind(C, name="_wrap_TpetraCrsGraph_getNodeNumDiags") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-integer(C_SIZE_T) :: fresult
-end function
-
 function swigc_TpetraCrsGraph_getGlobalMaxNumRowEntries(farg1) &
 bind(C, name="_wrap_TpetraCrsGraph_getGlobalMaxNumRowEntries") &
 result(fresult)
@@ -2641,24 +2615,6 @@ end function
 
 function swigc_TpetraCrsGraph_hasColMap(farg1) &
 bind(C, name="_wrap_TpetraCrsGraph_hasColMap") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-integer(C_INT) :: fresult
-end function
-
-function swigc_TpetraCrsGraph_isLowerTriangular(farg1) &
-bind(C, name="_wrap_TpetraCrsGraph_isLowerTriangular") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-integer(C_INT) :: fresult
-end function
-
-function swigc_TpetraCrsGraph_isUpperTriangular(farg1) &
-bind(C, name="_wrap_TpetraCrsGraph_isUpperTriangular") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
@@ -3579,24 +3535,6 @@ integer(C_INT), intent(in) :: farg2
 integer(C_INT) :: fresult
 end function
 
-function swigc_TpetraCrsMatrix_getGlobalNumDiags(farg1) &
-bind(C, name="_wrap_TpetraCrsMatrix_getGlobalNumDiags") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-integer(C_LONG) :: fresult
-end function
-
-function swigc_TpetraCrsMatrix_getNodeNumDiags(farg1) &
-bind(C, name="_wrap_TpetraCrsMatrix_getNodeNumDiags") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-integer(C_SIZE_T) :: fresult
-end function
-
 function swigc_TpetraCrsMatrix_getGlobalMaxNumRowEntries(farg1) &
 bind(C, name="_wrap_TpetraCrsMatrix_getGlobalMaxNumRowEntries") &
 result(fresult)
@@ -3617,24 +3555,6 @@ end function
 
 function swigc_TpetraCrsMatrix_hasColMap(farg1) &
 bind(C, name="_wrap_TpetraCrsMatrix_hasColMap") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-integer(C_INT) :: fresult
-end function
-
-function swigc_TpetraCrsMatrix_isLowerTriangular(farg1) &
-bind(C, name="_wrap_TpetraCrsMatrix_isLowerTriangular") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-integer(C_INT) :: fresult
-end function
-
-function swigc_TpetraCrsMatrix_isUpperTriangular(farg1) &
-bind(C, name="_wrap_TpetraCrsMatrix_isUpperTriangular") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
@@ -8255,34 +8175,6 @@ fresult = swigc_TpetraCrsGraph_getNumAllocatedEntriesInLocalRow(farg1, farg2)
 swig_result = int(fresult)
 end function
 
-function swigf_TpetraCrsGraph_getGlobalNumDiags(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: swig_result
-class(TpetraCrsGraph), intent(in) :: self
-
-integer(C_LONG) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraCrsGraph_getGlobalNumDiags(farg1)
-swig_result = fresult
-end function
-
-function swigf_TpetraCrsGraph_getNodeNumDiags(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-integer(C_SIZE_T) :: swig_result
-class(TpetraCrsGraph), intent(in) :: self
-
-integer(C_SIZE_T) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraCrsGraph_getNodeNumDiags(farg1)
-swig_result = fresult
-end function
-
 function swigf_TpetraCrsGraph_getGlobalMaxNumRowEntries(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
@@ -8322,34 +8214,6 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsGraph_hasColMap(farg1)
-swig_result = SWIG_int_to_logical(fresult)
-end function
-
-function swigf_TpetraCrsGraph_isLowerTriangular(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-logical :: swig_result
-class(TpetraCrsGraph), intent(in) :: self
-
-integer(C_INT) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraCrsGraph_isLowerTriangular(farg1)
-swig_result = SWIG_int_to_logical(fresult)
-end function
-
-function swigf_TpetraCrsGraph_isUpperTriangular(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-logical :: swig_result
-class(TpetraCrsGraph), intent(in) :: self
-
-integer(C_INT) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraCrsGraph_isUpperTriangular(farg1)
 swig_result = SWIG_int_to_logical(fresult)
 end function
 
@@ -10158,34 +10022,6 @@ fresult = swigc_TpetraCrsMatrix_getNumEntriesInLocalRow(farg1, farg2)
 swig_result = int(fresult)
 end function
 
-function swigf_TpetraCrsMatrix_getGlobalNumDiags(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-integer(C_LONG) :: swig_result
-class(TpetraCrsMatrix), intent(in) :: self
-
-integer(C_LONG) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraCrsMatrix_getGlobalNumDiags(farg1)
-swig_result = fresult
-end function
-
-function swigf_TpetraCrsMatrix_getNodeNumDiags(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-integer(C_SIZE_T) :: swig_result
-class(TpetraCrsMatrix), intent(in) :: self
-
-integer(C_SIZE_T) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraCrsMatrix_getNodeNumDiags(farg1)
-swig_result = fresult
-end function
-
 function swigf_TpetraCrsMatrix_getGlobalMaxNumRowEntries(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
@@ -10225,34 +10061,6 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_hasColMap(farg1)
-swig_result = SWIG_int_to_logical(fresult)
-end function
-
-function swigf_TpetraCrsMatrix_isLowerTriangular(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-logical :: swig_result
-class(TpetraCrsMatrix), intent(in) :: self
-
-integer(C_INT) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraCrsMatrix_isLowerTriangular(farg1)
-swig_result = SWIG_int_to_logical(fresult)
-end function
-
-function swigf_TpetraCrsMatrix_isUpperTriangular(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-logical :: swig_result
-class(TpetraCrsMatrix), intent(in) :: self
-
-integer(C_INT) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraCrsMatrix_isUpperTriangular(farg1)
 swig_result = SWIG_int_to_logical(fresult)
 end function
 

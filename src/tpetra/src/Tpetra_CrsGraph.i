@@ -18,6 +18,7 @@
 // =======================================================================
 // Ignore permanently
 // =======================================================================
+
 %ignore Tpetra::CrsGraph::checkSizes;
 %ignore Tpetra::CrsGraph::copyAndPermute;
 %ignore Tpetra::CrsGraph::packAndPrepare;
@@ -26,6 +27,12 @@
 %ignore Tpetra::CrsGraph::unpackAndCombine;
 %ignore Tpetra::CrsGraph::SLocalGlobalViews;
 %ignore Tpetra::CrsGraph::SLocalGlobalNCViews;
+
+// Depreceated functions
+%ignore Tpetra::CrsGraph::getGlobalNumDiags;
+%ignore Tpetra::CrsGraph::getNodeNumDiags;
+%ignore Tpetra::CrsGraph::isLowerTriangular;
+%ignore Tpetra::CrsGraph::isUpperTriangular;
 
 // =======================================================================
 // Postpone temporarily

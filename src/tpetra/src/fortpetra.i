@@ -110,8 +110,14 @@ public :: norm_type
 %include "Tpetra_ConfigDefs.i"
 
 // Ignore indexBase, getNode (Map, CrsGraph, CrsMatrix)
-%ignore getIndexBase;
-%ignore getNode;
+%ignore *::getIndexBase;
+%ignore *::getNode;
+
+// Ignore depreceated functions (CrsGraph, CrsMatrix)
+%ignore *::getGlobalNumDiags;
+%ignore *::getNodeNumDiags;
+%ignore *::isLowerTriangular;
+%ignore *::isUpperTriangular;
 
 // Order matters!!!
 %include "Tpetra_Map.i"

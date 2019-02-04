@@ -98,8 +98,6 @@ contains
     TEST_ASSERT(Mat%getGlobalNumCols()==num_images*num_local)
     TEST_ASSERT(Mat%getNodeNumRows()==num_local)
     TEST_ASSERT(Mat%getNodeNumCols()==num_local)
-    TEST_ASSERT(Mat%getGlobalNumDiags()==num_images*num_local)
-    TEST_ASSERT(Mat%getNodeNumDiags()==num_local)
     TEST_ASSERT(Mat%getGlobalMaxNumRowEntries()==1)
     TEST_ASSERT(Mat%getNodeMaxNumRowEntries()==1)
     TEST_ASSERT(Mat%isFillComplete())
@@ -248,8 +246,6 @@ contains
     TEST_ASSERT(A%getGlobalNumRows()==num_images)
     TEST_ASSERT(A%getNodeNumRows()==1)
     TEST_ASSERT(A%getNodeNumCols()==nnz)
-    TEST_ASSERT(A%getGlobalNumDiags()==num_images)
-    TEST_ASSERT(A%getNodeNumDiags()==1)
     if (num_images > 2) then
       TEST_ASSERT(A%getGlobalMaxNumRowEntries()==3)
     else
