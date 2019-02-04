@@ -148,7 +148,7 @@ namespace ForTrilinos {
     std::vector<int>&                eIndex  = solution.index;
 
     size_t numConverged = std::min(eNum, numEigenvalues_);
-    TEUCHOS_TEST_FOR_EXCEPTION(eigenValues.size() < numConverged, std::runtime_error,
+    TEUCHOS_TEST_FOR_EXCEPTION(2 * eigenValues.size() < numConverged, std::runtime_error,
       "Insufficient space to store eigenvalues. Please provide at least two times the desired number of eigenvalues.");
     TEUCHOS_TEST_FOR_EXCEPTION(eigenIndex.size() < numConverged, std::runtime_error,
       "Insufficient space to store index. Please provide at least two times the desired number of eigenvalues.");

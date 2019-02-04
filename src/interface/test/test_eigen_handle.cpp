@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
     A->fillComplete();
 
     // The eigen solution
-    std::vector<double> evalues(1);
+    std::vector<double> evalues(2);
     std::vector<int>    eindex(1);
     Teuchos::RCP<MultiVector> X = Teuchos::rcp(new MultiVector(rowMap, 1));
 
