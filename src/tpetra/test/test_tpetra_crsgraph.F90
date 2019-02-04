@@ -217,7 +217,6 @@ contains
     integer :: num_local
     integer(size_type), allocatable :: rowptr(:)
     integer, allocatable :: colind(:)
-    integer(global_ordinal_type), allocatable :: indices(:)
 
     OUT0("Starting TpetraCrsGraph_TwoArraysESFC!")
 
@@ -305,9 +304,8 @@ contains
     type(TpetraMap) :: map
     type(TpetraCrsGraph) :: Graph
     type(ParameterList) :: params
-    integer(size_type) :: kk, num_procs, nument
+    integer(size_type) :: kk, nument
     integer :: num_local
-    integer(size_type), allocatable :: rowptr(:)
     logical :: sorting_check
     integer(global_ordinal_type) :: j, jj, jstart, jfinish, firstind, lastind
     integer(global_ordinal_type), allocatable :: jinds(:)

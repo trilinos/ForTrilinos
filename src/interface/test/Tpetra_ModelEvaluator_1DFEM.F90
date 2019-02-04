@@ -139,7 +139,6 @@ contains
     integer(global_ordinal_type) :: min_overlap_GID, gid
     integer(size_type) :: num_vecs=1
     integer(global_ordinal_type), allocatable :: node_gids(:)
-    type(TpetraCrsGraph) :: graph
     ! ------------------------------------------------------------------------ !
 
     self = ForModelEvaluator()

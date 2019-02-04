@@ -38,7 +38,7 @@ integer(global_size_type) :: num_gbl_indices
 integer :: my_rank
 integer(size_type) :: num_entries_in_row, max_entries_per_row, i
 integer :: lcl_row, row_nnz, n
-integer :: num_my_elements, col, iconv
+integer :: num_my_elements, iconv
 integer(global_ordinal_type) gbl_row, id_of_first_row
 
 ! -- Arrays

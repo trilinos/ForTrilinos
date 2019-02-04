@@ -56,15 +56,12 @@ contains
 
   ! -----------------------------ZeroScaleUpdate------------------------------ !
   FORTRILINOS_UNIT_TEST(TpetraMultiVector_ZeroScaleUpdate)
-    integer :: i
     type(TpetraMap) :: map
     type(TpetraMultiVector) :: A, B, A2, C
     integer(size_type), parameter :: num_vecs=2, LDA=2
     integer, parameter :: num_local=2
-    integer :: lclrow
     logical :: zeroout
     real(scalar_type) :: norms(num_vecs), zeros(num_vecs), values(6)
-    integer(global_ordinal_type) :: gblrow, num_global
 
     zeros = 0.d0
 
@@ -271,7 +268,6 @@ contains
 
   ! ----------------------------------Abs------------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMultiVector_Abs)
-    integer :: i
     type(TpetraMap) :: map
     type(TpetraMultiVector) :: A, B, A2
     integer(size_type), parameter :: num_vecs=2
@@ -310,7 +306,6 @@ contains
     character(kind=C_CHAR, len=:), allocatable :: description
     integer(size_type), parameter :: num_vecs=2
     integer, parameter :: num_local=10
-    integer(global_ordinal_type) :: num_global
     map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
     Vec = TpetraMultiVector(map, num_vecs)
     description = Vec%description(); TEST_IERR()
@@ -356,7 +351,6 @@ contains
     type(TpetraMultiVector) :: mv3nx2, mv3nx3, mv2x2, mv2x3, mv3x2, mv3x3
     real(scalar_type), parameter :: S0=0., S1=1.
     integer(int_type) :: num_images
-    integer(global_size_type) :: num_global
     real(scalar_type) :: check(9)
 
     OUT0("Starting Multiply")
@@ -442,7 +436,6 @@ contains
 
   ! ----------------------------replaceGlobalValue---------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMultiVector_ReplaceGlobalValue)
-    integer :: i
     type(TpetraMap) :: map
     type(TpetraMultiVector) :: Vec, OneV
     integer(size_type) :: col
