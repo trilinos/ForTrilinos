@@ -15,10 +15,8 @@
 #include "Tpetra_Map.hpp"
 %}
 
-%insert("fdecl") %{
-  integer(global_ordinal_type), parameter, public :: TPETRA_GLOBAL_INVALID = -1
-  integer, parameter, public :: TPETRA_LOCAL_INVALID  = 0
-%}
+%constant GO TPETRA_GLOBAL_INVALID = -1;
+%constant LO TPETRA_LOCAL_INVALID = 0;
 
 // =======================================================================
 // Ignore permanently

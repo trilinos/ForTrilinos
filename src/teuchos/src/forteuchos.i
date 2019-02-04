@@ -9,6 +9,9 @@
 %include <copyright.i>
 %include <extern_forerror.i>
 
+// By default, wrap all constants as Fortran literals
+%fortranconst;
+
 %include "ForTrilinosTeuchos_config.hpp"
 
 // Typedefs

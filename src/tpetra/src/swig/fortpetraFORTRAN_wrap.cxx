@@ -918,16 +918,6 @@ SWIGINTERN void Tpetra_MatrixMarket_Writer_Sl_CMT_Sg__writeDenseFile__SWIG_1(std
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGEXPORT SWIGEXTERN int const _wrap_TPETRA_THROWS_EFFICIENCY_WARNINGS = static_cast< int >(0);
-
-SWIGEXPORT SWIGEXTERN int const _wrap_TPETRA_PRINTS_EFFICIENCY_WARNINGS = static_cast< int >(0);
-
-SWIGEXPORT SWIGEXTERN int const _wrap_TPETRA_THROWS_ABUSE_WARNINGS = static_cast< int >(0);
-
-SWIGEXPORT SWIGEXTERN int const _wrap_TPETRA_PRINTS_ABUSE_WARNINGS = static_cast< int >(0);
-
-SWIGEXPORT SWIGEXTERN int const _wrap_TPETRA_USE_KOKKOS_DISTOBJECT = static_cast< int >(0);
-
 SWIGEXPORT void _wrap_setCombineModeParameter(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   Teuchos::ParameterList *arg1 = 0 ;
   std::string *arg2 = 0 ;

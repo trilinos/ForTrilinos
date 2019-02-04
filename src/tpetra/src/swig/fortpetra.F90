@@ -42,14 +42,10 @@ public :: int_type
 public :: mag_type
 public :: norm_type
 
- integer(C_INT), protected, public, &
-   bind(C, name="_wrap_TPETRA_THROWS_EFFICIENCY_WARNINGS") :: TPETRA_THROWS_EFFICIENCY_WARNINGS
- integer(C_INT), protected, public, &
-   bind(C, name="_wrap_TPETRA_PRINTS_EFFICIENCY_WARNINGS") :: TPETRA_PRINTS_EFFICIENCY_WARNINGS
- integer(C_INT), protected, public, &
-   bind(C, name="_wrap_TPETRA_THROWS_ABUSE_WARNINGS") :: TPETRA_THROWS_ABUSE_WARNINGS
- integer(C_INT), protected, public, &
-   bind(C, name="_wrap_TPETRA_PRINTS_ABUSE_WARNINGS") :: TPETRA_PRINTS_ABUSE_WARNINGS
+ integer(C_INT), parameter, public :: TPETRA_THROWS_EFFICIENCY_WARNINGS = 0_C_INT
+ integer(C_INT), parameter, public :: TPETRA_PRINTS_EFFICIENCY_WARNINGS = 0_C_INT
+ integer(C_INT), parameter, public :: TPETRA_THROWS_ABUSE_WARNINGS = 0_C_INT
+ integer(C_INT), parameter, public :: TPETRA_PRINTS_ABUSE_WARNINGS = 0_C_INT
  ! enum Tpetra::LocalGlobal
  enum, bind(c)
   enumerator :: TpetraLocallyReplicated
@@ -86,8 +82,7 @@ public :: norm_type
  end enum
  integer, parameter, public :: TpetraESweepDirection = kind(TpetraForward)
  public :: TpetraForward, TpetraBackward, TpetraSymmetric
- integer(C_INT), protected, public, &
-   bind(C, name="_wrap_TPETRA_USE_KOKKOS_DISTOBJECT") :: TPETRA_USE_KOKKOS_DISTOBJECT
+ integer(C_INT), parameter, public :: TPETRA_USE_KOKKOS_DISTOBJECT = 0_C_INT
  ! enum Tpetra::CombineMode
  enum, bind(c)
   enumerator :: TpetraADD
@@ -116,10 +111,8 @@ public :: norm_type
  end type
  public :: setCombineModeParameter
  public :: combineModeToString
-
-  integer(global_ordinal_type), parameter, public :: TPETRA_GLOBAL_INVALID = -1
-  integer, parameter, public :: TPETRA_LOCAL_INVALID  = 0
-
+ integer(C_LONG_LONG), parameter, public :: TPETRA_GLOBAL_INVALID = -1_C_LONG_LONG
+ integer(C_INT), parameter, public :: TPETRA_LOCAL_INVALID = 0_C_INT
  ! class Tpetra::Map< LO,GO,NO >
  type, public :: TpetraMap
   type(SwigClassWrapper), public :: swigdata
