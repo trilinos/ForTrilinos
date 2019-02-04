@@ -65,20 +65,8 @@
 %ignore Tpetra::deep_copy;
 %ignore Tpetra::getMultiVectorWhichVectors;
 
-%extend Tpetra::MultiVector<SC,LO,GO,NO> {
-    void doImport (const Tpetra::MultiVector<SC,LO,GO,NO> &source, const Tpetra::Import< LO, GO, NO > &importer, CombineMode CM) {
-      $self->doImport(source, importer, CM);
-    }
-    void doImport (const Tpetra::MultiVector<SC,LO,GO,NO> &source, const Tpetra::Export< LO, GO, NO > &exporter, CombineMode CM) {
-      $self->doImport(source, exporter, CM);
-    }
-    void doExport (const Tpetra::MultiVector<SC,LO,GO,NO> &source, const Tpetra::Export< LO, GO, NO > &exporter, CombineMode CM) {
-      $self->doExport(source, exporter, CM);
-    }
-    void doExport (const Tpetra::MultiVector<SC,LO,GO,NO> &source, const Tpetra::Import< LO, GO, NO > &importer, CombineMode CM) {
-      $self->doExport(source, importer, CM);
-    }
-}
+// Add doImport and doExport
+%tpetra_extend_with_import_export(Tpetra::MultiVector<SC,LO,GO,NO>)
 
 // Fix ±1 issues
 %apply int INDEX { size_t j, size_t col, int lclRow }

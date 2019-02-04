@@ -11,6 +11,10 @@
 
 %import <forteuchos.i>
 
+// =======================================================================
+// Type definition
+// =======================================================================
+
 #define HAVE_TPETRA_INST_INT_LONG_LONG
 // From teuchos/kokkoscompat/src/KokkosCompat_ClassicNodeAPI_Wrapper.hpp
 %ignore KokkosSerialWrapperNode;
@@ -59,6 +63,10 @@ public :: mag_type
 public :: norm_type
 }
 
+// =======================================================================
+// Typemaps
+// =======================================================================
+
 // Define typemap for converting Fortran indexing to C indexing
 %typemap(in) int INDEX "$1 = *$input - 1;"
 %typemap(out) int INDEX "$result = $1 + 1;"
@@ -89,6 +97,10 @@ public :: norm_type
     tmparr$argnum[i] += 1;
 }
 
+// =======================================================================
+// Wrap
+// =======================================================================
+
 // All enums should be prefaced with Tpetra
 %rename("Tpetra%s", %$isenumitem) "";
 %rename("Tpetra%s", %$isenum)     "";
@@ -101,8 +113,7 @@ public :: norm_type
 
 // Order matters!!!
 %include "Tpetra_Map.i"
-%include "Tpetra_Export.i"
-%include "Tpetra_Import.i"
+%include "Tpetra_Import_Export.i"
 /* %include "Tpetra_DistObject.i" */
 %include "Tpetra_MultiVector.i"
 /* %include "Tpetra_Vector.i" */        // needs better support for inheritance

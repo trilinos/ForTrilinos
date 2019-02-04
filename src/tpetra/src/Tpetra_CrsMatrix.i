@@ -143,19 +143,11 @@
         values       [i] = valuesArrayRCP[i];
       }
     }
-    void doImport (const Tpetra::CrsMatrix<SC,LO,GO,NO> &source, const Tpetra::Import< LO, GO, NO > &importer, CombineMode CM) {
-      $self->doImport(source, importer, CM);
-    }
-    void doImport (const Tpetra::CrsMatrix<SC,LO,GO,NO> &source, const Tpetra::Export< LO, GO, NO > &exporter, CombineMode CM) {
-      $self->doImport(source, exporter, CM);
-    }
-    void doExport (const Tpetra::CrsMatrix<SC,LO,GO,NO> &source, const Tpetra::Export< LO, GO, NO > &exporter, CombineMode CM) {
-      $self->doExport(source, exporter, CM);
-    }
-    void doExport (const Tpetra::CrsMatrix<SC,LO,GO,NO> &source, const Tpetra::Import< LO, GO, NO > &importer, CombineMode CM) {
-      $self->doExport(source, importer, CM);
-    }
 }
+
+// Add doImport and doExport
+%tpetra_extend_with_import_export(Tpetra::CrsGraph<LO,GO,NO>)
+
 %ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap,
                const Teuchos::ArrayRCP<const size_t>& NumEntriesPerRowToAlloc,
                ProfileType pftype = DynamicProfile,

@@ -584,12 +584,8 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
 }
 
 
-#include "Tpetra_Export.hpp"
-// !FIXME
-using Tpetra::Import;
-
-
 #include "Tpetra_Import.hpp"
+#include "Tpetra_Export.hpp"
 
 
 #include "Tpetra_MultiVector.hpp"
@@ -725,15 +721,6 @@ SWIGINTERN Tpetra::CrsGraph< LO,GO,NO > *new_Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_S
       return new Tpetra::CrsGraph<LO,GO,NO>(rowMap, colMap,
         Teuchos::arcpFromArray(rowPointersArray), Teuchos::arcpFromArray(columnIndicesArray), params);
     }
-SWIGINTERN void Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__setAllIndices(Tpetra::CrsGraph< LO,GO,NO > *self,Teuchos::ArrayView< std::size_t > rowPointers,Teuchos::ArrayView< LO > columnIndices,Teuchos::ArrayView< SC > val){
-      Teuchos::ArrayRCP<size_t> rowPointersArrayRCP(rowPointers.size());
-      for (int i = 0; i < rowPointersArrayRCP.size(); i++)
-        rowPointersArrayRCP[i] = rowPointers[i]-1;
-      Teuchos::ArrayRCP<LO> columnIndicesArrayRCP(columnIndices.size());
-      for (int i = 0; i < columnIndicesArrayRCP.size(); i++)
-        columnIndicesArrayRCP[i] = columnIndices[i]-1;
-      self->setAllIndices(rowPointersArrayRCP, columnIndicesArrayRCP);
-    }
 SWIGINTERN void Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__getNodeRowPtrs(Tpetra::CrsGraph< LO,GO,NO > const *self,Teuchos::ArrayView< std::size_t > rowPointers){
       auto rowPointersArrayRCP = self->getNodeRowPtrs();
       TEUCHOS_TEST_FOR_EXCEPTION(rowPointersArrayRCP.size() != rowPointers.size(), std::runtime_error, "Wrong rowPointers size");
@@ -804,18 +791,6 @@ SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getAllValues(Tpetra
         columnIndices[i] = columnIndicesArrayRCP[i]+1;
         values       [i] = valuesArrayRCP[i];
       }
-    }
-SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__doImport__SWIG_0(Tpetra::CrsMatrix< SC,LO,GO,NO > *self,Tpetra::CrsMatrix< SC,LO,GO,NO > const &source,Tpetra::Import< LO,GO,NO > const &importer,Tpetra::CombineMode CM){
-      self->doImport(source, importer, CM);
-    }
-SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__doImport__SWIG_1(Tpetra::CrsMatrix< SC,LO,GO,NO > *self,Tpetra::CrsMatrix< SC,LO,GO,NO > const &source,Tpetra::Export< LO,GO,NO > const &exporter,Tpetra::CombineMode CM){
-      self->doImport(source, exporter, CM);
-    }
-SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__doExport__SWIG_0(Tpetra::CrsMatrix< SC,LO,GO,NO > *self,Tpetra::CrsMatrix< SC,LO,GO,NO > const &source,Tpetra::Export< LO,GO,NO > const &exporter,Tpetra::CombineMode CM){
-      self->doExport(source, exporter, CM);
-    }
-SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__doExport__SWIG_1(Tpetra::CrsMatrix< SC,LO,GO,NO > *self,Tpetra::CrsMatrix< SC,LO,GO,NO > const &source,Tpetra::Import< LO,GO,NO > const &importer,Tpetra::CombineMode CM){
-      self->doExport(source, importer, CM);
     }
 
 #include "Tpetra_CrsMatrix.hpp"
@@ -2403,492 +2378,6 @@ SWIGEXPORT void _wrap_assign_TpetraMap(SwigClassWrapper * self, SwigClassWrapper
 }
 
 
-SWIGEXPORT SwigClassWrapper _wrap_new_TpetraExport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
-  SwigClassWrapper fresult ;
-  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
-  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
-  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > tempnull1 ;
-  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > tempnull2 ;
-  Tpetra::Export< LO,GO,NO > *result = 0 ;
-  
-  arg1 = farg1->cptr ? static_cast< Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > * >(farg1->cptr) : &tempnull1;
-  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > * >(farg2->cptr) : &tempnull2;
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      result = (Tpetra::Export< LO,GO,NO > *)new Tpetra::Export< LO,GO,NO >((Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)*arg1,(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)*arg2);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
-    }
-  }
-  fresult.cptr = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
-  return fresult;
-}
-
-
-SWIGEXPORT SwigClassWrapper _wrap_new_TpetraExport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
-  SwigClassWrapper fresult ;
-  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
-  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
-  Teuchos::RCP< Teuchos::ParameterList > *arg3 = 0 ;
-  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > tempnull1 ;
-  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > tempnull2 ;
-  Teuchos::RCP< Teuchos::ParameterList > tempnull3 ;
-  Tpetra::Export< LO,GO,NO > *result = 0 ;
-  
-  arg1 = farg1->cptr ? static_cast< Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > * >(farg1->cptr) : &tempnull1;
-  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > * >(farg2->cptr) : &tempnull2;
-  arg3 = farg3->cptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg3->cptr) : &tempnull3;
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      result = (Tpetra::Export< LO,GO,NO > *)new Tpetra::Export< LO,GO,NO >((Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)*arg1,(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
-    }
-  }
-  fresult.cptr = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
-  return fresult;
-}
-
-
-SWIGEXPORT SwigClassWrapper _wrap_new_TpetraExport__SWIG_2(SwigClassWrapper const *farg1) {
-  SwigClassWrapper fresult ;
-  Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
-  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
-  Tpetra::Export< LO,GO,NO > *result = 0 ;
-  
-  SWIG_check_sp_nonnull(farg1, "Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraExport", "Tpetra::Export< LO,GO,NO >::Export(Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", return SwigClassWrapper_uninitialized())
-  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
-  arg1 = const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get());
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      result = (Tpetra::Export< LO,GO,NO > *)new Tpetra::Export< LO,GO,NO >((Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg1);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
-    }
-  }
-  fresult.cptr = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
-  return fresult;
-}
-
-
-SWIGEXPORT SwigClassWrapper _wrap_new_TpetraExport__SWIG_3(SwigClassWrapper const *farg1) {
-  SwigClassWrapper fresult ;
-  Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
-  Tpetra::Export< LO,GO,NO > *result = 0 ;
-  
-  SWIG_check_nonnull(*farg1, "Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &", "SWIGTYPE_ImportT_int_long_long_Kokkos__Compat__KokkosSeri1YW4XR", "Tpetra::Export< LO,GO,NO >::Export(Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", return SwigClassWrapper_uninitialized());
-  arg1 = static_cast< Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > * >(farg1->cptr);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      result = (Tpetra::Export< LO,GO,NO > *)new Tpetra::Export< LO,GO,NO >((Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg1);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
-    }
-  }
-  fresult.cptr = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
-  return fresult;
-}
-
-
-SWIGEXPORT void _wrap_delete_TpetraExport(SwigClassWrapper const *farg1) {
-  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Export< LO,GO,NO > > *smartarg1 ;
-  
-  smartarg1 = static_cast< Teuchos::RCP< Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
-  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::~Export()");;
-    try
-    {
-      // Attempt the wrapped function call
-      (void)arg1; delete smartarg1; 
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::~Export()", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::~Export()", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::~Export()", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
-  
-}
-
-
-SWIGEXPORT void _wrap_TpetraExport_setParameterList(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
-  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
-  Teuchos::RCP< Tpetra::Export< LO,GO,NO > > *smartarg1 ;
-  Teuchos::RCP< Teuchos::ParameterList > tempnull2 ;
-  
-  smartarg1 = static_cast< Teuchos::RCP< Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
-  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
-  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg2->cptr) : &tempnull2;
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::setParameterList(Teuchos::RCP< Teuchos::ParameterList > const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      (arg1)->setParameterList((Teuchos::RCP< Teuchos::ParameterList > const &)*arg2);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::setParameterList(Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::setParameterList(Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::setParameterList(Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
-  
-}
-
-
-SWIGEXPORT size_t _wrap_TpetraExport_getNumSameIDs(SwigClassWrapper const *farg1) {
-  size_t fresult ;
-  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
-  size_t result;
-  
-  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
-  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::getNumSameIDs() const");;
-    try
-    {
-      // Attempt the wrapped function call
-      result = (size_t)((Tpetra::Export< LO,GO,NO > const *)arg1)->getNumSameIDs();
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumSameIDs() const", SWIG_IndexError, e.what(), return 0);
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumSameIDs() const", SWIG_RuntimeError, e.what(), return 0);
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumSameIDs() const", SWIG_UnknownError, "An unknown exception occurred", return 0);
-    }
-  }
-  fresult = static_cast< size_t >(result);
-  return fresult;
-}
-
-
-SWIGEXPORT size_t _wrap_TpetraExport_getNumPermuteIDs(SwigClassWrapper const *farg1) {
-  size_t fresult ;
-  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
-  size_t result;
-  
-  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
-  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::getNumPermuteIDs() const");;
-    try
-    {
-      // Attempt the wrapped function call
-      result = (size_t)((Tpetra::Export< LO,GO,NO > const *)arg1)->getNumPermuteIDs();
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumPermuteIDs() const", SWIG_IndexError, e.what(), return 0);
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumPermuteIDs() const", SWIG_RuntimeError, e.what(), return 0);
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumPermuteIDs() const", SWIG_UnknownError, "An unknown exception occurred", return 0);
-    }
-  }
-  fresult = static_cast< size_t >(result);
-  return fresult;
-}
-
-
-SWIGEXPORT size_t _wrap_TpetraExport_getNumRemoteIDs(SwigClassWrapper const *farg1) {
-  size_t fresult ;
-  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
-  size_t result;
-  
-  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
-  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::getNumRemoteIDs() const");;
-    try
-    {
-      // Attempt the wrapped function call
-      result = (size_t)((Tpetra::Export< LO,GO,NO > const *)arg1)->getNumRemoteIDs();
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumRemoteIDs() const", SWIG_IndexError, e.what(), return 0);
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumRemoteIDs() const", SWIG_RuntimeError, e.what(), return 0);
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumRemoteIDs() const", SWIG_UnknownError, "An unknown exception occurred", return 0);
-    }
-  }
-  fresult = static_cast< size_t >(result);
-  return fresult;
-}
-
-
-SWIGEXPORT size_t _wrap_TpetraExport_getNumExportIDs(SwigClassWrapper const *farg1) {
-  size_t fresult ;
-  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
-  size_t result;
-  
-  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
-  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::getNumExportIDs() const");;
-    try
-    {
-      // Attempt the wrapped function call
-      result = (size_t)((Tpetra::Export< LO,GO,NO > const *)arg1)->getNumExportIDs();
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumExportIDs() const", SWIG_IndexError, e.what(), return 0);
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumExportIDs() const", SWIG_RuntimeError, e.what(), return 0);
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumExportIDs() const", SWIG_UnknownError, "An unknown exception occurred", return 0);
-    }
-  }
-  fresult = static_cast< size_t >(result);
-  return fresult;
-}
-
-
-SWIGEXPORT SwigClassWrapper _wrap_TpetraExport_getSourceMap(SwigClassWrapper const *farg1) {
-  SwigClassWrapper fresult ;
-  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
-  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > result;
-  
-  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
-  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::getSourceMap() const");;
-    try
-    {
-      // Attempt the wrapped function call
-      result = ((Tpetra::Export< LO,GO,NO > const *)arg1)->getSourceMap();
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getSourceMap() const", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getSourceMap() const", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getSourceMap() const", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
-    }
-  }
-  fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
-  return fresult;
-}
-
-
-SWIGEXPORT SwigClassWrapper _wrap_TpetraExport_getTargetMap(SwigClassWrapper const *farg1) {
-  SwigClassWrapper fresult ;
-  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
-  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > result;
-  
-  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
-  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::getTargetMap() const");;
-    try
-    {
-      // Attempt the wrapped function call
-      result = ((Tpetra::Export< LO,GO,NO > const *)arg1)->getTargetMap();
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getTargetMap() const", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getTargetMap() const", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getTargetMap() const", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
-    }
-  }
-  fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
-  return fresult;
-}
-
-
-SWIGEXPORT int _wrap_TpetraExport_isLocallyComplete(SwigClassWrapper const *farg1) {
-  int fresult ;
-  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
-  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
-  bool result;
-  
-  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
-  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::isLocallyComplete() const");;
-    try
-    {
-      // Attempt the wrapped function call
-      result = (bool)((Tpetra::Export< LO,GO,NO > const *)arg1)->isLocallyComplete();
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::isLocallyComplete() const", SWIG_IndexError, e.what(), return 0);
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::isLocallyComplete() const", SWIG_RuntimeError, e.what(), return 0);
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::isLocallyComplete() const", SWIG_UnknownError, "An unknown exception occurred", return 0);
-    }
-  }
-  fresult = (result ? 1 : 0);
-  return fresult;
-}
-
-
-SWIGEXPORT void _wrap_assign_TpetraExport(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Tpetra::Export<LO,GO,NO> > swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR | swig::IS_COPY_ASSIGN);
-}
-
-
 SWIGEXPORT SwigClassWrapper _wrap_new_TpetraImport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
   SwigClassWrapper fresult ;
   Teuchos::RCP< Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
@@ -3490,6 +2979,494 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraImport_createRemoteOnlyImport(SwigClassW
 
 SWIGEXPORT void _wrap_assign_TpetraImport(SwigClassWrapper * self, SwigClassWrapper const * other) {
   typedef Teuchos::RCP< Tpetra::Import<LO,GO,NO> > swig_lhs_classtype;
+  SWIG_assign(swig_lhs_classtype, self,
+    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
+    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR | swig::IS_COPY_ASSIGN);
+}
+
+
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraExport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+  SwigClassWrapper fresult ;
+  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > tempnull1 ;
+  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > tempnull2 ;
+  Tpetra::Export< LO,GO,NO > *result = 0 ;
+  
+  arg1 = farg1->cptr ? static_cast< Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > * >(farg1->cptr) : &tempnull1;
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > * >(farg2->cptr) : &tempnull2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::Export< LO,GO,NO > *)new Tpetra::Export< LO,GO,NO >((Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)*arg1,(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
+    }
+  }
+  fresult.cptr = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
+  fresult.mem = SWIG_MOVE;
+  return fresult;
+}
+
+
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraExport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
+  SwigClassWrapper fresult ;
+  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > *arg2 = 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg3 = 0 ;
+  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > tempnull1 ;
+  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > tempnull2 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull3 ;
+  Tpetra::Export< LO,GO,NO > *result = 0 ;
+  
+  arg1 = farg1->cptr ? static_cast< Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > * >(farg1->cptr) : &tempnull1;
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > * >(farg2->cptr) : &tempnull2;
+  arg3 = farg3->cptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg3->cptr) : &tempnull3;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::Export< LO,GO,NO > *)new Tpetra::Export< LO,GO,NO >((Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)*arg1,(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)*arg2,(Teuchos::RCP< Teuchos::ParameterList > const &)*arg3);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
+    }
+  }
+  fresult.cptr = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
+  fresult.mem = SWIG_MOVE;
+  return fresult;
+}
+
+
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraExport__SWIG_2(SwigClassWrapper const *farg1) {
+  SwigClassWrapper fresult ;
+  Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
+  Tpetra::Export< LO,GO,NO > *result = 0 ;
+  
+  SWIG_check_sp_nonnull(farg1, "Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraExport", "Tpetra::Export< LO,GO,NO >::Export(Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", return SwigClassWrapper_uninitialized())
+  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
+  arg1 = const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get());
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::Export< LO,GO,NO > *)new Tpetra::Export< LO,GO,NO >((Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg1);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
+    }
+  }
+  fresult.cptr = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
+  fresult.mem = SWIG_MOVE;
+  return fresult;
+}
+
+
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraExport__SWIG_3(SwigClassWrapper const *farg1) {
+  SwigClassWrapper fresult ;
+  Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *arg1 = 0 ;
+  Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 ;
+  Tpetra::Export< LO,GO,NO > *result = 0 ;
+  
+  SWIG_check_sp_nonnull(farg1, "Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > *", "TpetraImport", "Tpetra::Export< LO,GO,NO >::Export(Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", return SwigClassWrapper_uninitialized())
+  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Import<LO,GO,NO> >* >(farg1->cptr);
+  arg1 = const_cast< Tpetra::Import<LO,GO,NO>* >(smartarg1->get());
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::Export< LO,GO,NO > *)new Tpetra::Export< LO,GO,NO >((Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg1);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::Export(Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
+    }
+  }
+  fresult.cptr = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
+  fresult.mem = SWIG_MOVE;
+  return fresult;
+}
+
+
+SWIGEXPORT void _wrap_delete_TpetraExport(SwigClassWrapper const *farg1) {
+  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
+  Teuchos::RCP< Tpetra::Export< LO,GO,NO > > *smartarg1 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP< Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::~Export()");;
+    try
+    {
+      // Attempt the wrapped function call
+      (void)arg1; delete smartarg1; 
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::~Export()", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::~Export()", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::~Export()", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT void _wrap_TpetraExport_setParameterList(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
+  Teuchos::RCP< Teuchos::ParameterList > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::Export< LO,GO,NO > > *smartarg1 ;
+  Teuchos::RCP< Teuchos::ParameterList > tempnull2 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP< Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< Teuchos::ParameterList > * >(farg2->cptr) : &tempnull2;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::setParameterList(Teuchos::RCP< Teuchos::ParameterList > const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      (arg1)->setParameterList((Teuchos::RCP< Teuchos::ParameterList > const &)*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::setParameterList(Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::setParameterList(Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::setParameterList(Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
+  
+}
+
+
+SWIGEXPORT size_t _wrap_TpetraExport_getNumSameIDs(SwigClassWrapper const *farg1) {
+  size_t fresult ;
+  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
+  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
+  size_t result;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::getNumSameIDs() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (size_t)((Tpetra::Export< LO,GO,NO > const *)arg1)->getNumSameIDs();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumSameIDs() const", SWIG_IndexError, e.what(), return 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumSameIDs() const", SWIG_RuntimeError, e.what(), return 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumSameIDs() const", SWIG_UnknownError, "An unknown exception occurred", return 0);
+    }
+  }
+  fresult = static_cast< size_t >(result);
+  return fresult;
+}
+
+
+SWIGEXPORT size_t _wrap_TpetraExport_getNumPermuteIDs(SwigClassWrapper const *farg1) {
+  size_t fresult ;
+  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
+  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
+  size_t result;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::getNumPermuteIDs() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (size_t)((Tpetra::Export< LO,GO,NO > const *)arg1)->getNumPermuteIDs();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumPermuteIDs() const", SWIG_IndexError, e.what(), return 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumPermuteIDs() const", SWIG_RuntimeError, e.what(), return 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumPermuteIDs() const", SWIG_UnknownError, "An unknown exception occurred", return 0);
+    }
+  }
+  fresult = static_cast< size_t >(result);
+  return fresult;
+}
+
+
+SWIGEXPORT size_t _wrap_TpetraExport_getNumRemoteIDs(SwigClassWrapper const *farg1) {
+  size_t fresult ;
+  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
+  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
+  size_t result;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::getNumRemoteIDs() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (size_t)((Tpetra::Export< LO,GO,NO > const *)arg1)->getNumRemoteIDs();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumRemoteIDs() const", SWIG_IndexError, e.what(), return 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumRemoteIDs() const", SWIG_RuntimeError, e.what(), return 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumRemoteIDs() const", SWIG_UnknownError, "An unknown exception occurred", return 0);
+    }
+  }
+  fresult = static_cast< size_t >(result);
+  return fresult;
+}
+
+
+SWIGEXPORT size_t _wrap_TpetraExport_getNumExportIDs(SwigClassWrapper const *farg1) {
+  size_t fresult ;
+  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
+  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
+  size_t result;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::getNumExportIDs() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (size_t)((Tpetra::Export< LO,GO,NO > const *)arg1)->getNumExportIDs();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumExportIDs() const", SWIG_IndexError, e.what(), return 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumExportIDs() const", SWIG_RuntimeError, e.what(), return 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getNumExportIDs() const", SWIG_UnknownError, "An unknown exception occurred", return 0);
+    }
+  }
+  fresult = static_cast< size_t >(result);
+  return fresult;
+}
+
+
+SWIGEXPORT SwigClassWrapper _wrap_TpetraExport_getSourceMap(SwigClassWrapper const *farg1) {
+  SwigClassWrapper fresult ;
+  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
+  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
+  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > result;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::getSourceMap() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((Tpetra::Export< LO,GO,NO > const *)arg1)->getSourceMap();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getSourceMap() const", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getSourceMap() const", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getSourceMap() const", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
+    }
+  }
+  fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
+  fresult.mem = SWIG_MOVE;
+  return fresult;
+}
+
+
+SWIGEXPORT SwigClassWrapper _wrap_TpetraExport_getTargetMap(SwigClassWrapper const *farg1) {
+  SwigClassWrapper fresult ;
+  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
+  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
+  Teuchos::RCP< Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > result;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::getTargetMap() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = ((Tpetra::Export< LO,GO,NO > const *)arg1)->getTargetMap();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getTargetMap() const", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getTargetMap() const", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::getTargetMap() const", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
+    }
+  }
+  fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
+  fresult.mem = SWIG_MOVE;
+  return fresult;
+}
+
+
+SWIGEXPORT int _wrap_TpetraExport_isLocallyComplete(SwigClassWrapper const *farg1) {
+  int fresult ;
+  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
+  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
+  bool result;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::isLocallyComplete() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (bool)((Tpetra::Export< LO,GO,NO > const *)arg1)->isLocallyComplete();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::isLocallyComplete() const", SWIG_IndexError, e.what(), return 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::isLocallyComplete() const", SWIG_RuntimeError, e.what(), return 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::isLocallyComplete() const", SWIG_UnknownError, "An unknown exception occurred", return 0);
+    }
+  }
+  fresult = (result ? 1 : 0);
+  return fresult;
+}
+
+
+SWIGEXPORT void _wrap_assign_TpetraExport(SwigClassWrapper * self, SwigClassWrapper const * other) {
+  typedef Teuchos::RCP< Tpetra::Export<LO,GO,NO> > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
     swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
     0 | swig::IS_DESTR | swig::IS_COPY_CONSTR | swig::IS_COPY_ASSIGN);
@@ -10041,45 +10018,6 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_13(SwigClassWrapper c
 }
 
 
-SWIGEXPORT void _wrap_TpetraCrsGraph_setAllIndices(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
-  Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
-  Teuchos::ArrayView< std::size_t > arg2 ;
-  Teuchos::ArrayView< LO > arg3 ;
-  Teuchos::ArrayView< SC > arg4 ;
-  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > > *smartarg1 ;
-  
-  smartarg1 = static_cast< Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >* >(farg1->cptr);
-  arg1 = smartarg1 ? const_cast< Tpetra::CrsGraph<LO,GO,NO>* >(smartarg1->get()) : NULL;
-  arg2 = Teuchos::ArrayView<unsigned long>(static_cast<unsigned long*>(farg2->data), farg2->size);
-  arg3 = Teuchos::ArrayView<int>(static_cast<int*>(farg3->data), farg3->size);
-  arg4 = Teuchos::ArrayView<double>(static_cast<double*>(farg4->data), farg4->size);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::setAllIndices(Teuchos::ArrayView< std::size_t >,Teuchos::ArrayView< LO >,Teuchos::ArrayView< SC >)");;
-    try
-    {
-      // Attempt the wrapped function call
-      Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__setAllIndices(arg1,arg2,arg3,arg4);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::setAllIndices(Teuchos::ArrayView< std::size_t >,Teuchos::ArrayView< LO >,Teuchos::ArrayView< SC >)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::setAllIndices(Teuchos::ArrayView< std::size_t >,Teuchos::ArrayView< LO >,Teuchos::ArrayView< SC >)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::setAllIndices(Teuchos::ArrayView< std::size_t >,Teuchos::ArrayView< LO >,Teuchos::ArrayView< SC >)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
-  
-}
-
-
 SWIGEXPORT void _wrap_TpetraCrsGraph_getNodeRowPtrs(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::ArrayView< std::size_t > arg2 ;
@@ -14330,186 +14268,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_getAllValues(SwigClassWrapper const *farg1
     catch (...)
     {
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getAllValues(Teuchos::ArrayView< std::size_t >,Teuchos::ArrayView< LO >,Teuchos::ArrayView< SC >) const", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
-  
-}
-
-
-SWIGEXPORT void _wrap_TpetraCrsMatrix_doImport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
-  Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
-  Tpetra::CrsMatrix< SC,LO,GO,NO > *arg2 = 0 ;
-  Tpetra::Import< LO,GO,NO > *arg3 = 0 ;
-  Tpetra::CombineMode arg4 ;
-  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > > *smartarg1 ;
-  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg2 ;
-  Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg3 ;
-  
-  smartarg1 = static_cast< Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >* >(farg1->cptr);
-  arg1 = smartarg1 ? const_cast< Tpetra::CrsMatrix<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
-  SWIG_check_sp_nonnull(farg2, "Tpetra::CrsMatrix< SC,LO,GO,NO > *", "TpetraCrsMatrix", "Tpetra::CrsMatrix< SC,LO,GO,NO >::doImport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Import< LO,GO,NO > const &,Tpetra::CombineMode)", return )
-  smartarg2 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO> >* >(farg2->cptr);
-  arg2 = const_cast< Tpetra::CrsMatrix<SC,LO,GO,NO>* >(smartarg2->get());
-  SWIG_check_sp_nonnull(farg3, "Tpetra::Import< LO,GO,NO > *", "TpetraImport", "Tpetra::CrsMatrix< SC,LO,GO,NO >::doImport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Import< LO,GO,NO > const &,Tpetra::CombineMode)", return )
-  smartarg3 = static_cast< Teuchos::RCP<const Tpetra::Import<LO,GO,NO> >* >(farg3->cptr);
-  arg3 = const_cast< Tpetra::Import<LO,GO,NO>* >(smartarg3->get());
-  arg4 = static_cast< Tpetra::CombineMode >(*farg4);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::doImport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Import< LO,GO,NO > const &,Tpetra::CombineMode)");;
-    try
-    {
-      // Attempt the wrapped function call
-      Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__doImport__SWIG_0(arg1,(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2,(Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg3,arg4);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::doImport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Import< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::doImport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Import< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::doImport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Import< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
-  
-}
-
-
-SWIGEXPORT void _wrap_TpetraCrsMatrix_doImport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
-  Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
-  Tpetra::CrsMatrix< SC,LO,GO,NO > *arg2 = 0 ;
-  Tpetra::Export< LO,GO,NO > *arg3 = 0 ;
-  Tpetra::CombineMode arg4 ;
-  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > > *smartarg1 ;
-  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg2 ;
-  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg3 ;
-  
-  smartarg1 = static_cast< Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >* >(farg1->cptr);
-  arg1 = smartarg1 ? const_cast< Tpetra::CrsMatrix<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
-  SWIG_check_sp_nonnull(farg2, "Tpetra::CrsMatrix< SC,LO,GO,NO > *", "TpetraCrsMatrix", "Tpetra::CrsMatrix< SC,LO,GO,NO >::doImport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Export< LO,GO,NO > const &,Tpetra::CombineMode)", return )
-  smartarg2 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO> >* >(farg2->cptr);
-  arg2 = const_cast< Tpetra::CrsMatrix<SC,LO,GO,NO>* >(smartarg2->get());
-  SWIG_check_sp_nonnull(farg3, "Tpetra::Export< LO,GO,NO > *", "TpetraExport", "Tpetra::CrsMatrix< SC,LO,GO,NO >::doImport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Export< LO,GO,NO > const &,Tpetra::CombineMode)", return )
-  smartarg3 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg3->cptr);
-  arg3 = const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg3->get());
-  arg4 = static_cast< Tpetra::CombineMode >(*farg4);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::doImport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Export< LO,GO,NO > const &,Tpetra::CombineMode)");;
-    try
-    {
-      // Attempt the wrapped function call
-      Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__doImport__SWIG_1(arg1,(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2,(Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg3,arg4);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::doImport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Export< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::doImport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Export< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::doImport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Export< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
-  
-}
-
-
-SWIGEXPORT void _wrap_TpetraCrsMatrix_doExport__SWIG_0(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
-  Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
-  Tpetra::CrsMatrix< SC,LO,GO,NO > *arg2 = 0 ;
-  Tpetra::Export< LO,GO,NO > *arg3 = 0 ;
-  Tpetra::CombineMode arg4 ;
-  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > > *smartarg1 ;
-  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg2 ;
-  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg3 ;
-  
-  smartarg1 = static_cast< Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >* >(farg1->cptr);
-  arg1 = smartarg1 ? const_cast< Tpetra::CrsMatrix<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
-  SWIG_check_sp_nonnull(farg2, "Tpetra::CrsMatrix< SC,LO,GO,NO > *", "TpetraCrsMatrix", "Tpetra::CrsMatrix< SC,LO,GO,NO >::doExport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Export< LO,GO,NO > const &,Tpetra::CombineMode)", return )
-  smartarg2 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO> >* >(farg2->cptr);
-  arg2 = const_cast< Tpetra::CrsMatrix<SC,LO,GO,NO>* >(smartarg2->get());
-  SWIG_check_sp_nonnull(farg3, "Tpetra::Export< LO,GO,NO > *", "TpetraExport", "Tpetra::CrsMatrix< SC,LO,GO,NO >::doExport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Export< LO,GO,NO > const &,Tpetra::CombineMode)", return )
-  smartarg3 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg3->cptr);
-  arg3 = const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg3->get());
-  arg4 = static_cast< Tpetra::CombineMode >(*farg4);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::doExport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Export< LO,GO,NO > const &,Tpetra::CombineMode)");;
-    try
-    {
-      // Attempt the wrapped function call
-      Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__doExport__SWIG_0(arg1,(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2,(Tpetra::Export< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg3,arg4);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::doExport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Export< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::doExport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Export< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::doExport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Export< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
-  
-}
-
-
-SWIGEXPORT void _wrap_TpetraCrsMatrix_doExport__SWIG_1(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, int const *farg4) {
-  Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
-  Tpetra::CrsMatrix< SC,LO,GO,NO > *arg2 = 0 ;
-  Tpetra::Import< LO,GO,NO > *arg3 = 0 ;
-  Tpetra::CombineMode arg4 ;
-  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > > *smartarg1 ;
-  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg2 ;
-  Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg3 ;
-  
-  smartarg1 = static_cast< Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >* >(farg1->cptr);
-  arg1 = smartarg1 ? const_cast< Tpetra::CrsMatrix<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
-  SWIG_check_sp_nonnull(farg2, "Tpetra::CrsMatrix< SC,LO,GO,NO > *", "TpetraCrsMatrix", "Tpetra::CrsMatrix< SC,LO,GO,NO >::doExport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Import< LO,GO,NO > const &,Tpetra::CombineMode)", return )
-  smartarg2 = static_cast< Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO> >* >(farg2->cptr);
-  arg2 = const_cast< Tpetra::CrsMatrix<SC,LO,GO,NO>* >(smartarg2->get());
-  SWIG_check_sp_nonnull(farg3, "Tpetra::Import< LO,GO,NO > *", "TpetraImport", "Tpetra::CrsMatrix< SC,LO,GO,NO >::doExport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Import< LO,GO,NO > const &,Tpetra::CombineMode)", return )
-  smartarg3 = static_cast< Teuchos::RCP<const Tpetra::Import<LO,GO,NO> >* >(farg3->cptr);
-  arg3 = const_cast< Tpetra::Import<LO,GO,NO>* >(smartarg3->get());
-  arg4 = static_cast< Tpetra::CombineMode >(*farg4);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::doExport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Import< LO,GO,NO > const &,Tpetra::CombineMode)");;
-    try
-    {
-      // Attempt the wrapped function call
-      Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__doExport__SWIG_1(arg1,(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg2,(Tpetra::Import< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)*arg3,arg4);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::doExport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Import< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::doExport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Import< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::doExport(Tpetra::CrsMatrix< SC,LO,GO,NO > const &,Tpetra::Import< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
   
