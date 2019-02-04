@@ -104,12 +104,14 @@ public :: norm_type
 // All enums should be prefaced with Tpetra
 %rename("Tpetra%s", %$isenumitem) "";
 %rename("Tpetra%s", %$isenum)     "";
+// Ignore implementation functions
 %rename("$ignore", regextarget=1) "Impl$";
 
 %include "Tpetra_ConfigDefs.i"
 
-// Ignore indexBase (Map, CrsGraph, CrsMatrix)
+// Ignore indexBase, getNode (Map, CrsGraph, CrsMatrix)
 %ignore getIndexBase;
+%ignore getNode;
 
 // Order matters!!!
 %include "Tpetra_Map.i"

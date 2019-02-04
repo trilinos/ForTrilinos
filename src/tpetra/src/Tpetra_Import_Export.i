@@ -34,9 +34,6 @@
 %ignore Tpetra::Export::getExportLIDs;          // ±1 issue
 %ignore Tpetra::Export::getExportPIDs;          // ±1 issue
 %ignore Tpetra::Export::getDistributor;         // needs Tpetra::Distributor
-%ignore Tpetra::Export::operator=;              // needs operator=
-%ignore Tpetra::Export::describe;               // needs Teuchos::FancyOStream
-%ignore Tpetra::Export::print;                  // needs std::ostream
 
 %ignore Tpetra::Import::Import(const Teuchos::RCP< const map_type > &source,
         const Teuchos::RCP< const map_type > &target,
@@ -72,9 +69,6 @@
 %ignore Tpetra::Import::getExportPIDs;          // ±1 issue
 %ignore Tpetra::Import::findUnionTargetGIDs;    // ±1 issue
 %ignore Tpetra::Import::getDistributor;         // needs Tpetra::Distributor
-%ignore Tpetra::Import::operator=;              // needs operator=
-%ignore Tpetra::Import::describe;               // needs Teuchos::FancyOStream
-%ignore Tpetra::Import::print;                  // needs std::ostream
 
 // =======================================================================
 // Instantiate

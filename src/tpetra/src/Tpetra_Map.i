@@ -24,7 +24,6 @@
 %ignore Tpetra::Map::Map(const global_size_t numGlobalElements, const GlobalOrdinal indexList[],
          const LocalOrdinal indexListSize, const GlobalOrdinal indexBase,
          const Teuchos::RCP< const Teuchos::Comm< int > > &comm);       // superseded by Teuchos::ArrayView version
-%ignore Tpetra::Map::getNode;
 
 // =======================================================================
 // Postpone temporarily
@@ -33,7 +32,6 @@
          const Kokkos::View<const GlobalOrdinal*, device_type>& indexList,
          const GlobalOrdinal indexBase,
          const Teuchos::RCP<const Teuchos::Comm<int> >& comm); // needs Kokkos::View
-%ignore Tpetra::Map::describe;                  // needs Teuchos::FancyOStream
 %ignore Tpetra::Map::getLocalMap;               // no need to expose this yet
 %ignore Tpetra::Map::getMyGlobalIndices;        // return type is not exposed externally, requires using `auto`; for now, use getNodeElementList
 

@@ -19,7 +19,6 @@
 // Ignore Details namespace
 %ignore Details;
 %ignore Tpetra::CrsMatrix::pack_functor;
-%ignore Tpetra::CrsMatrix::getNode;
 // Ignore implementation details
 %ignore Tpetra::CrsMatrix::checkSizes;
 %ignore Tpetra::CrsMatrix::copyAndPermute;
@@ -62,8 +61,6 @@
 %ignore Tpetra::CrsMatrix::sumIntoGlobalValues (const GlobalOrdinal globalRow, const LocalOrdinal numEnt, const Scalar vals[], const GlobalOrdinal cols[], const bool atomic=useAtomicUpdatesByDefault); // prefer ArrayView variant
 %ignore Tpetra::CrsMatrix::sumIntoLocalValues (const LocalOrdinal localRow, const typename UnmanagedView< LocalIndicesViewType >::type &inputInds, const typename UnmanagedView< ImplScalarViewType >::type &inputVals, const bool atomic=useAtomicUpdatesByDefault) const; // needs Kokkos::UnmanagedView
 %ignore Tpetra::CrsMatrix::sumIntoLocalValues (const LocalOrdinal localRow, const LocalOrdinal numEnt, const Scalar vals[], const LocalOrdinal cols[], const bool atomic=useAtomicUpdatesByDefault) const; // prefer ArrayView variant
-%ignore Tpetra::CrsMatrix::operator();                      // needs operator() treatment
-%ignore Tpetra::CrsMatrix::describe;                        // needs Teuchos::FancyOStream
 %ignore Tpetra::CrsMatrix::add;                             // needs Tpetra::RowMatrix
 %ignore Tpetra::CrsMatrix::getGraph;                        // needs Tpetra::RowGraph
 %ignore Tpetra::CrsMatrix::getLocalDiagCopy;                // needs Tpetra::Vector

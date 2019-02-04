@@ -9,6 +9,13 @@
 %include <copyright.i>
 %include <extern_forerror.i>
 
+// Convert all std::string references/values to and from Fortran strings
+%include <std_string.i>
+
+// =======================================================================
+// Global treatments
+// =======================================================================
+
 // By default, wrap all constants as Fortran literals
 %fortranconst;
 
@@ -23,21 +30,22 @@ typedef int Teuchos_Ordinal;
 %typemap(fin) int "$1 = int($input, C_INT)"
 %typemap(fout) int "$result = int($1)"
 
-// Convert all std::string references/values to and from Fortran strings
-%include <std_string.i>
+// Ignore methods that require non-implemented types or operators
+%ignore *::describe;
+%ignore *::print(std::ostream& os);
+%ignore *::operator=;
+%ignore *::operator<<;
+%ignore *::operator();
 
-// Declare and ignore some traits classes
-namespace Teuchos {
-  template<typename O, typename T> class SerializationTraits;
-  template<typename T> class TypeNameTraits;
-}
-%ignore Teuchos::SerializationTraits;
-%ignore Teuchos::TypeNameTraits;
+// =======================================================================
+// Wrap
+// =======================================================================
 
 // Prefix all enums with Teuchos
 %rename("Teuchos%s",%$isenumitem) "";
 %rename("Teuchos%s",%$isenum) "";
 
+%include "Teuchos_Traits.i"
 %include "Teuchos_Types.i"
 %include "Teuchos_Exceptions.i"
 %include "Teuchos_RCP.i"

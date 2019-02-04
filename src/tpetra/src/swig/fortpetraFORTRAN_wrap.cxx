@@ -2977,6 +2977,42 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraImport_createRemoteOnlyImport(SwigClassW
 }
 
 
+SWIGEXPORT void _wrap_TpetraImport_print(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+  Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
+  std::ostream *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::Import< LO,GO,NO > const > *smartarg1 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Import<LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::Import<LO,GO,NO>* >(smartarg1->get()) : NULL;
+  SWIG_check_mutable_nonnull(*farg2, "std::ostream &", "SWIGTYPE_std__ostream", "Tpetra::Import< LO,GO,NO >::print(std::ostream &) const", return );
+  arg2 = static_cast< std::ostream * >(farg2->cptr);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Import< LO,GO,NO >::print(std::ostream &) const");;
+    try
+    {
+      // Attempt the wrapped function call
+      ((Tpetra::Import< LO,GO,NO > const *)arg1)->print(*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Import< LO,GO,NO >::print(std::ostream &) const", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Import< LO,GO,NO >::print(std::ostream &) const", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Import< LO,GO,NO >::print(std::ostream &) const", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
+  
+}
+
+
 SWIGEXPORT void _wrap_assign_TpetraImport(SwigClassWrapper * self, SwigClassWrapper const * other) {
   typedef Teuchos::RCP< Tpetra::Import<LO,GO,NO> > swig_lhs_classtype;
   SWIG_assign(swig_lhs_classtype, self,
@@ -3462,6 +3498,42 @@ SWIGEXPORT int _wrap_TpetraExport_isLocallyComplete(SwigClassWrapper const *farg
   }
   fresult = (result ? 1 : 0);
   return fresult;
+}
+
+
+SWIGEXPORT void _wrap_TpetraExport_print(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
+  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
+  std::ostream *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::Export< LO,GO,NO > const > *smartarg1 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
+  SWIG_check_mutable_nonnull(*farg2, "std::ostream &", "SWIGTYPE_std__ostream", "Tpetra::Export< LO,GO,NO >::print(std::ostream &) const", return );
+  arg2 = static_cast< std::ostream * >(farg2->cptr);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::print(std::ostream &) const");;
+    try
+    {
+      // Attempt the wrapped function call
+      ((Tpetra::Export< LO,GO,NO > const *)arg1)->print(*arg2);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::print(std::ostream &) const", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::print(std::ostream &) const", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::print(std::ostream &) const", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
+  
 }
 
 

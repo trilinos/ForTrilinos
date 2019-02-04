@@ -162,6 +162,9 @@ public :: norm_type
   module procedure new_TpetraMap__SWIG_6
   module procedure new_TpetraMap__SWIG_7
  end interface
+ type, public :: SWIGTYPE_std__ostream
+  type(SwigClassWrapper), public :: swigdata
+ end type
  ! class Tpetra::Import< LO,GO,NO >
  type, public :: TpetraImport
   type(SwigClassWrapper), public :: swigdata
@@ -178,6 +181,7 @@ public :: norm_type
   procedure, private :: setUnion__SWIG_0 => swigf_TpetraImport_setUnion__SWIG_0
   procedure, private :: setUnion__SWIG_1 => swigf_TpetraImport_setUnion__SWIG_1
   procedure :: createRemoteOnlyImport => swigf_TpetraImport_createRemoteOnlyImport
+  procedure :: print => swigf_TpetraImport_print
   procedure, private :: swigf_assignment_TpetraImport
   generic :: assignment(=) => swigf_assignment_TpetraImport
   generic :: setUnion => setUnion__SWIG_0, setUnion__SWIG_1
@@ -201,6 +205,7 @@ public :: norm_type
   procedure :: getSourceMap => swigf_TpetraExport_getSourceMap
   procedure :: getTargetMap => swigf_TpetraExport_getTargetMap
   procedure :: isLocallyComplete => swigf_TpetraExport_isLocallyComplete
+  procedure :: print => swigf_TpetraExport_print
   procedure, private :: swigf_assignment_TpetraExport
   generic :: assignment(=) => swigf_assignment_TpetraExport
  end type TpetraExport
@@ -1221,6 +1226,14 @@ type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: fresult
 end function
 
+subroutine swigc_TpetraImport_print(farg1, farg2) &
+bind(C, name="_wrap_TpetraImport_print")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: farg2
+end subroutine
+
   subroutine swigc_assignment_TpetraImport(self, other) &
      bind(C, name="_wrap_assign_TpetraImport")
    use, intrinsic :: ISO_C_BINDING
@@ -1344,6 +1357,14 @@ import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
+
+subroutine swigc_TpetraExport_print(farg1, farg2) &
+bind(C, name="_wrap_TpetraExport_print")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: farg2
+end subroutine
 
   subroutine swigc_assignment_TpetraExport(self, other) &
      bind(C, name="_wrap_assign_TpetraExport")
@@ -5674,6 +5695,20 @@ fresult = swigc_TpetraImport_createRemoteOnlyImport(farg1, farg2)
 swig_result%swigdata = fresult
 end function
 
+subroutine swigf_TpetraImport_print(self, os)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraImport), intent(in) :: self
+
+class(SWIGTYPE_std__ostream), intent(inout) :: os
+
+type(SwigClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+
+farg1 = self%swigdata
+farg2 = os%swigdata
+call swigc_TpetraImport_print(farg1, farg2)
+end subroutine
+
   subroutine swigf_assignment_TpetraImport(self, other)
    use, intrinsic :: ISO_C_BINDING
    class(TpetraImport), intent(inout) :: self
@@ -5873,6 +5908,20 @@ farg1 = self%swigdata
 fresult = swigc_TpetraExport_isLocallyComplete(farg1)
 swig_result = SWIG_int_to_logical(fresult)
 end function
+
+subroutine swigf_TpetraExport_print(self, os)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraExport), intent(in) :: self
+
+class(SWIGTYPE_std__ostream), intent(inout) :: os
+
+type(SwigClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+
+farg1 = self%swigdata
+farg2 = os%swigdata
+call swigc_TpetraExport_print(farg1, farg2)
+end subroutine
 
   subroutine swigf_assignment_TpetraExport(self, other)
    use, intrinsic :: ISO_C_BINDING

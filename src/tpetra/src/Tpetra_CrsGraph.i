@@ -18,7 +18,6 @@
 // =======================================================================
 // Ignore permanently
 // =======================================================================
-%ignore Tpetra::CrsGraph::getNode;
 %ignore Tpetra::CrsGraph::checkSizes;
 %ignore Tpetra::CrsGraph::copyAndPermute;
 %ignore Tpetra::CrsGraph::packAndPrepare;
@@ -56,7 +55,6 @@
         const Teuchos::RCP< const map_type > &rangeMap=Teuchos::null,
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);    // needs Kokkos::StaticCrsGraph
 %ignore Tpetra::CrsGraph::insertLocalIndices(const LocalOrdinal localRow, const LocalOrdinal numEnt, const LocalOrdinal inds[]);    // prefer ArrayView variant
-%ignore Tpetra::CrsGraph::describe;                           // needs Teuchos::FancyOStream
 %ignore Tpetra::CrsGraph::getLocalDiagOffsets (const Kokkos::View< size_t *, device_type, Kokkos::MemoryUnmanaged > &offsets) const;    // needs Kokkos::View
 %ignore Tpetra::CrsGraph::getNumEntriesPerLocalRowUpperBound; // needs Teuchos::ArrayRCP
 %ignore Tpetra::CrsGraph::getLocalGraph;                      // needs Kokkos::StaticCrsGraph
@@ -64,6 +62,8 @@
 
 // Returns ArrayView by reference
 %ignore Tpetra::CrsGraph::getGlobalRowView;
+// "should never be called by user code"
+%ignore Tpetra::CrsGraph::setAllIndices;
 
 // =======================================================================
 // Fix ±1 issues
@@ -107,15 +107,6 @@
         columnIndicesArray[i] = columnIndices[i]-1;
       return new Tpetra::CrsGraph<LO,GO,NO>(rowMap, colMap,
         Teuchos::arcpFromArray(rowPointersArray), Teuchos::arcpFromArray(columnIndicesArray), params);
-    }
-    void setAllIndices(Teuchos::ArrayView<size_t> rowPointers, Teuchos::ArrayView<LO> columnIndices, Teuchos::ArrayView<SC> val) {
-      Teuchos::ArrayRCP<size_t> rowPointersArrayRCP(rowPointers.size());
-      for (int i = 0; i < rowPointersArrayRCP.size(); i++)
-        rowPointersArrayRCP[i] = rowPointers[i]-1;
-      Teuchos::ArrayRCP<LO> columnIndicesArrayRCP(columnIndices.size());
-      for (int i = 0; i < columnIndicesArrayRCP.size(); i++)
-        columnIndicesArrayRCP[i] = columnIndices[i]-1;
-      $self->setAllIndices(rowPointersArrayRCP, columnIndicesArrayRCP);
     }
     // NOTE: This is semantically different function from Tpetra. Here, we *require* that user already allocated the arrays to store the data
     void getNodeRowPtrs(Teuchos::ArrayView<size_t> rowPointers) const {

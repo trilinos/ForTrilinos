@@ -20,7 +20,7 @@
 // =======================================================================
 // Ignore permanently
 // =======================================================================
-// Ignore everything as all require std::string, and carefully extend
+
 %ignore Tpetra::MatrixMarket::Reader::readSparseGraph;
 %ignore Tpetra::MatrixMarket::Reader::readSparse;
 %ignore Tpetra::MatrixMarket::Reader::readDense;
@@ -85,6 +85,7 @@
       Tpetra::MatrixMarket::Writer<CMT>::writeDenseFile(filename, X);
     }
 }
+
 %ignore Tpetra::MatrixMarket::Reader::readSparseGraphFile;
 %ignore Tpetra::MatrixMarket::Reader::readSparseFile;
 %ignore Tpetra::MatrixMarket::Reader::readDenseFile;

@@ -20,8 +20,6 @@
 // =======================================================================
 // Postpone temporarily
 // =======================================================================
-%ignore Tpetra::DistObject::print;                  // needs std::ostream
-%ignore Tpetra::DistObject::describe;               // needs Teuchos::FancyOStream
 
 %teuchos_rcp(Tpetra::SrcDistObject);
 %include "Tpetra_SrcDistObject.hpp"
