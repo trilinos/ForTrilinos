@@ -134,10 +134,9 @@ contains
     type(TeuchosComm), intent(in) :: comm
     integer(global_size_type), intent(in) :: num_global_elems
     real(scalar_type), intent(in) :: z_min, z_max
-    integer :: i
+    integer :: i, num_overlap_nodes
     integer(global_size_type) :: num_nodes
     integer(global_ordinal_type) :: min_overlap_GID, gid
-    integer(size_type) :: num_overlap_nodes
     integer(size_type) :: num_vecs=1
     integer(global_ordinal_type), allocatable :: node_gids(:)
     type(TpetraCrsGraph) :: graph

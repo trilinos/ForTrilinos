@@ -37,41 +37,26 @@
 %ignore Tpetra::Map::getLocalMap;               // no need to expose this yet
 %ignore Tpetra::Map::getMyGlobalIndices;        // return type is not exposed externally, requires using `auto`; for now, use getNodeElementList
 
+// =======================================================================
+// Typemaps
+// =======================================================================
+
 // Function signatures for local quantities are incorrectly declared as size_t
 %apply LO { size_t getNodeNumElements,
             size_t numLocalElements };
 
-// =======================================================================
-// Fix ±1 issues
-// =======================================================================
-%typemap(in)  int localIndex        %{$1 = *$input - 1;%}
-%typemap(out) int getMinLocalIndex  %{$result = $1 + 1;%}
-%typemap(out) int getMaxLocalIndex  %{$result = $1 + 1;%}
-%typemap(out) int getLocalElement   %{$result = $1 + 1;%}
-%typemap(argout) const Teuchos::ArrayView<int>& nodeIDList %{
-  for (int i = 0; i < $1->size(); i++)
-    (*$1)[i]++;
-%}
-%typemap(argout) const Teuchos::ArrayView<int>& LIDList %{
-  for (int i = 0; i < $1->size(); i++)
-    (*$1)[i]++;
-%}
+// Convert from C to/from Fortran indices
+%apply int INDEX { int localIndex, int getMinLocalIndex, int getMaxLocalIndex,
+int getLocalElement};
 
-%extend Tpetra::Map<LO,GO,NO> {
-    Map(global_size_t numGlobalElements, const Teuchos::RCP<const Teuchos::Comm<int> > &comm, LocalGlobal lg=GloballyDistributed) {
-      return new Tpetra::Map<LO,GO,NO>(numGlobalElements, 1/*indexBase*/, comm, lg);
-    }
-    Map(global_size_t numGlobalElements, size_t numLocalElements, const Teuchos::RCP<const Teuchos::Comm<int> > &comm) {
-      return new Tpetra::Map<LO,GO,NO>(numGlobalElements, numLocalElements, 1/*indexBase*/, comm);
-    }
-    Map(const global_size_t numGlobalElements, Teuchos::ArrayView<const GO> indexList, const Teuchos::RCP< const Teuchos::Comm< int > > &comm) {
-      return new Tpetra::Map<LO,GO,NO>(numGlobalElements, indexList, 1/*indexBase*/, comm);
-    }
+%apply const Teuchos::ArrayView<const int>& INDEX { const Teuchos::ArrayView<const LO>& indices }
+
+%apply const Teuchos::ArrayView<int>& INDEX { const Teuchos::ArrayView<LO>& nodeIDList, const Teuchos::ArrayView<LO>& LIDList  }
+
+// Set indexBase to 1 (Fortran) and don't pass it to the user
+%typemap(in,numinputs=0) long long indexBase {
+	$1 = 1;
 }
-
-%ignore Tpetra::Map::Map(global_size_t numGlobalElements, GlobalOrdinal indexBase, const Teuchos::RCP<const Teuchos::Comm<int> > &comm, LocalGlobal lg=GloballyDistributed, const Teuchos::RCP<Node> &node=defaultArgNode<Node>());
-%ignore Tpetra::Map::Map(global_size_t numGlobalElements, size_t numLocalElements, GlobalOrdinal indexBase, const Teuchos::RCP<const Teuchos::Comm<int> > &comm, const Teuchos::RCP<Node> &node=defaultArgNode<Node>());
-%ignore Tpetra::Map::Map(const global_size_t numGlobalElements, const Teuchos::ArrayView< const GlobalOrdinal > &indexList, const GlobalOrdinal indexBase, const Teuchos::RCP< const Teuchos::Comm< int > > &comm, const Teuchos::RCP< Node > &node=defaultArgNode< Node >());
 
 %include "Tpetra_Map_decl.hpp"
 

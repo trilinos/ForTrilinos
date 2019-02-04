@@ -76,16 +76,25 @@
 %ignore Tpetra::importAndFillCompleteCrsMatrix;
 %ignore Tpetra::exportAndFillCompleteCrsMatrix;
 
+%ignore Tpetra::CrsMatrix::getLocalRowView;                 // ±1 issue
+%ignore Tpetra::CrsMatrix::transformLocalValues;            // ±1 issue
+
 // =======================================================================
 // Fix ±1 issues
 // =======================================================================
-%apply int INDEX { int localRow };
+%apply int INDEX { int localRow, int LocalRow };
 
-%ignore Tpetra::CrsMatrix::getLocalRowView;                 // ±1 issue
-%ignore Tpetra::CrsMatrix::reorderedLocalGaussSeidel;       // ±1 issue
-%ignore Tpetra::CrsMatrix::replaceLocalValues;              // ±1 issue
-%ignore Tpetra::CrsMatrix::sumIntoLocalValues;              // ±1 issue
-%ignore Tpetra::CrsMatrix::transformLocalValues;            // ±1 issue
+%apply const Teuchos::ArrayView<const int>& INDEX {
+    const Teuchos::ArrayView<const LO>& indices,
+    const Teuchos::ArrayView<const LO>& cols,
+    Teuchos::ArrayView<const LO> cols}
+
+%apply const Teuchos::ArrayView<int>& INDEX { const Teuchos::ArrayView<LO>& colInds }
+
+// Don't use atomics for value summation
+%typemap(in,numinputs=0) bool atomic {
+  $1 = false;
+}
 
 // =======================================================================
 // Make interface more Fortran friendly
@@ -105,29 +114,6 @@
       for (int i = 0; i < columnIndicesArrayRCP.size(); i++)
         columnIndicesArrayRCP[i] = columnIndices[i]-1;
       return new Tpetra::CrsMatrix<SC,LO,GO,NO>(rowMap, colMap, rowPointersArrayRCP, columnIndicesArrayRCP, arcpFromArrayView(values), params);
-    }
-    void insertLocalValues(const LO localRow, Teuchos::ArrayView<const LO> cols, Teuchos::ArrayView<const SC> vals) {
-      Teuchos::Array<LO> colsArray(cols.size());
-      for (int i = 0; i < colsArray.size(); i++)
-        colsArray[i] = cols[i] - 1;
-      Teuchos::ArrayView<const SC> valsView = Teuchos::arrayView(vals.getRawPtr(), vals.size());
-      $self->insertLocalValues(localRow, colsArray, valsView);
-    }
-    LO replaceLocalValues(const LO localRow, Teuchos::ArrayView<const LO> cols, Teuchos::ArrayView<const SC> vals) const {
-      Teuchos::Array<LO> colsArray(cols.size());
-      for (int i = 0; i < colsArray.size(); i++)
-        colsArray[i] = cols[i] - 1;
-      return $self->replaceLocalValues(localRow, colsArray, vals);
-    }
-    LO sumIntoGlobalValues(const GO globalRow, Teuchos::ArrayView<const GO> cols, Teuchos::ArrayView<const SC> vals) {
-      return $self->sumIntoGlobalValues(globalRow, cols, vals, false); // TODO: for now, we only run in serial, no atomics necessary
-    }
-    LO sumIntoLocalValues(const LO localRow, Teuchos::ArrayView<const LO> cols, Teuchos::ArrayView<const SC> vals) const {
-      Teuchos::Array<LO> colsArray(cols.size());
-      for (int i = 0; i < colsArray.size(); i++)
-        colsArray[i] = cols[i] - 1;
-      Teuchos::ArrayView<const SC> valsView = Teuchos::arrayView(vals.getRawPtr(), vals.size());
-      return $self->sumIntoLocalValues(localRow, colsArray, valsView, false/*atomic*/); // TODO: for now, we only run in serial, no atomics necessary
     }
     void setAllValues(Teuchos::ArrayView<size_t> ptr, Teuchos::ArrayView<LO> ind, Teuchos::ArrayView<SC> val) {
       Teuchos::ArrayRCP<size_t> ptrArrayRCP(ptr.size());
@@ -157,12 +143,6 @@
         values       [i] = valuesArrayRCP[i];
       }
     }
-    void getLocalRowCopy(LO localRow, Teuchos::ArrayView<LO> colInds, Teuchos::ArrayView<SC> vals, size_t &NumIndices) const {
-      $self->getLocalRowCopy(localRow, colInds, vals, NumIndices);
-
-      for (int i = 0; i < colInds.size(); i++)
-        colInds[i]++;
-    }
     void doImport (const Tpetra::CrsMatrix<SC,LO,GO,NO> &source, const Tpetra::Import< LO, GO, NO > &importer, CombineMode CM) {
       $self->doImport(source, importer, CM);
     }
@@ -191,18 +171,12 @@
                const Teuchos::ArrayRCP<LocalOrdinal>& columnIndices,
                const Teuchos::ArrayRCP<Scalar>& values,
                const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);         // needs Teuchos::ArrayRCP
-%ignore Tpetra::CrsMatrix::insertLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals);
-%ignore Tpetra::CrsMatrix::replaceLocalValues(const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals) const;
-%ignore Tpetra::CrsMatrix::sumIntoGlobalValues(const GlobalOrdinal globalRow, const Teuchos::ArrayView< const GlobalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals, const bool atomic=useAtomicUpdatesByDefault);
 %ignore Tpetra::CrsMatrix::setAllValues(const Teuchos::ArrayRCP< size_t > &ptr, const Teuchos::ArrayRCP< LocalOrdinal > &ind, const Teuchos::ArrayRCP< Scalar > &val);
 %ignore Tpetra::CrsMatrix::getAllValues(Teuchos::ArrayRCP< const size_t > &rowPointers, Teuchos::ArrayRCP< const LocalOrdinal > &columnIndices, Teuchos::ArrayRCP< const Scalar > &values) const;
-%ignore Tpetra::CrsMatrix::getLocalRowCopy(LocalOrdinal localRow, const Teuchos::ArrayView< LocalOrdinal > &colInds, const Teuchos::ArrayView< Scalar > &vals, size_t &numEntries) const;
-%ignore Tpetra::CrsMatrix::getLocalRowView(LocalOrdinal LocalRow, Teuchos::ArrayView< const LocalOrdinal > &indices, Teuchos::ArrayView< const Scalar > &values) const;
 %ignore Tpetra::CrsMatrix::getLocalRowViewRaw(const LocalOrdinal lclRow, LocalOrdinal &numEnt, const LocalOrdinal *&lclColInds, const Scalar *&vals) const;
 %ignore Tpetra::CrsMatrix::getAllValues (Teuchos::ArrayRCP<const size_t>& rowPointers, Teuchos::ArrayRCP<const LocalOrdinal>& columnIndices, Teuchos::ArrayRCP<const Scalar>& values) const;
 %ignore Tpetra::CrsMatrix::getLocalDiagOffsets;             // needs Teuchos::ArrayRCP
 %ignore Tpetra::CrsMatrix::sumIntoLocalValues (const LocalOrdinal localRow, const typename UnmanagedView< LocalIndicesViewType >::type &inputInds, const typename UnmanagedView< ImplScalarViewType >::type &inputVals, const bool atomic=useAtomicUpdatesByDefault) const;
-%ignore Tpetra::CrsMatrix::sumIntoLocalValues (const LocalOrdinal localRow, const Teuchos::ArrayView< const LocalOrdinal > &cols, const Teuchos::ArrayView< const Scalar > &vals, const bool atomic=useAtomicUpdatesByDefault) const;
 %ignore Tpetra::CrsMatrix::sumIntoLocalValues (const LocalOrdinal localRow, const LocalOrdinal numEnt, const Scalar vals[], const LocalOrdinal cols[], const bool atomic=useAtomicUpdatesByDefault);
 
 
