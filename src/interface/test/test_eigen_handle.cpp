@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
     handle.setup_solver(Teuchos::rcpFromRef(paramList));
 
     // Step 4: solve the system
-    handle.solve(std::make_pair(evalues.data(), 1), X, std::make_pair(eindex.data(), 1));
+    handle.solve(Teuchos::arrayViewFromVector(evalues), X, Teuchos::arrayViewFromVector(eindex));
 
     // TODO: Check the solution
 

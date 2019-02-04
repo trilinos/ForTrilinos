@@ -128,9 +128,9 @@ namespace ForTrilinos {
     status_ = SOLVER_SETUP;
   }
 
-  int TrilinosEigenSolver::solve(std::pair<SC*, size_t> eigenValues,
+  int TrilinosEigenSolver::solve(Teuchos::ArrayView<SC> eigenValues,
                                  Teuchos::RCP<MultiVector>& eigenVectors,
-                                 std::pair<int*, size_t> eigenIndex) const {
+                                 Teuchos::ArrayView<int> eigenIndex) const {
     using Teuchos::RCP;
     using Teuchos::ArrayRCP;
 
@@ -148,18 +148,18 @@ namespace ForTrilinos {
     std::vector<int>&                eIndex  = solution.index;
 
     size_t numConverged = std::min(eNum, numEigenvalues_);
-    TEUCHOS_TEST_FOR_EXCEPTION(eigenValues.second < numConverged, std::runtime_error,
+    TEUCHOS_TEST_FOR_EXCEPTION(eigenValues.size() < numConverged, std::runtime_error,
       "Insufficient space to store eigenvalues. Please provide at least two times the desired number of eigenvalues.");
-    TEUCHOS_TEST_FOR_EXCEPTION(eigenIndex.second < numConverged, std::runtime_error,
+    TEUCHOS_TEST_FOR_EXCEPTION(eigenIndex.size() < numConverged, std::runtime_error,
       "Insufficient space to store index. Please provide at least two times the desired number of eigenvalues.");
 
     for (size_t i = 0; i < eValues.size(); i++) {
-      eigenValues.first[2*i+0] = eValues[i].realpart;
-      eigenValues.first[2*i+1] = eValues[i].imagpart;
+      eigenValues[2*i+0] = eValues[i].realpart;
+      eigenValues[2*i+1] = eValues[i].imagpart;
     }
 
     for (size_t i = 0; i < eIndex.size(); i++)
-      eigenIndex.first[i] = eIndex[i];
+      eigenIndex[i] = eIndex[i];
 
     eigenVectors = solution.Evecs;
 

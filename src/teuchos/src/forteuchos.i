@@ -23,13 +23,6 @@ typedef int Teuchos_Ordinal;
 %typemap(fin) int "$1 = int($input, C_INT)"
 %typemap(fout) int "$result = int($1)"
 
-// pair<int> typemaps: (TODO: these should be deprecated)
-%include <typemaps.i>
-%fortran_view(int)
-%fortran_view(long long)
-%fortran_view(double)
-%fortran_view(size_t)
-
 // Convert all std::string references/values to and from Fortran strings
 %include <std_string.i>
 
