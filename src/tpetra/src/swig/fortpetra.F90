@@ -599,7 +599,7 @@ public :: init_ForTpetraOperator
  end interface
  public :: operator_to_matrix
  public :: matrix_to_operator
- ! class Tpetra::MatrixMarket::Reader< CMT >
+ ! class Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > >
  type, public :: TpetraReader
   type(SwigClassWrapper), public :: swigdata
  contains
@@ -608,71 +608,38 @@ public :: init_ForTpetraOperator
   procedure, private, nopass :: readSparseGraphFile__SWIG_2 => TpetraReader_readSparseGraphFile__SWIG_2
   procedure, private, nopass :: readSparseGraphFile__SWIG_3 => TpetraReader_readSparseGraphFile__SWIG_3
   procedure, private, nopass :: readSparseGraphFile__SWIG_4 => TpetraReader_readSparseGraphFile__SWIG_4
-  procedure, private, nopass :: readSparseGraphFile__SWIG_5 => TpetraReader_readSparseGraphFile__SWIG_5
-  procedure, private, nopass :: readSparseGraphFile__SWIG_6 => TpetraReader_readSparseGraphFile__SWIG_6
-  procedure, private, nopass :: readSparseGraphFile__SWIG_7 => TpetraReader_readSparseGraphFile__SWIG_7
-  procedure, private, nopass :: readSparseGraphFile__SWIG_8 => TpetraReader_readSparseGraphFile__SWIG_8
-  procedure, private, nopass :: readSparseGraphFile__SWIG_9 => TpetraReader_readSparseGraphFile__SWIG_9
-  procedure, private, nopass :: readSparseGraphFile__SWIG_10 => TpetraReader_readSparseGraphFile__SWIG_10
   procedure, private, nopass :: readSparseFile__SWIG_0 => TpetraReader_readSparseFile__SWIG_0
   procedure, private, nopass :: readSparseFile__SWIG_1 => TpetraReader_readSparseFile__SWIG_1
   procedure, private, nopass :: readSparseFile__SWIG_2 => TpetraReader_readSparseFile__SWIG_2
   procedure, private, nopass :: readSparseFile__SWIG_3 => TpetraReader_readSparseFile__SWIG_3
   procedure, private, nopass :: readSparseFile__SWIG_4 => TpetraReader_readSparseFile__SWIG_4
-  procedure, private, nopass :: readSparseFile__SWIG_5 => TpetraReader_readSparseFile__SWIG_5
-  procedure, private, nopass :: readSparseFile__SWIG_6 => TpetraReader_readSparseFile__SWIG_6
-  procedure, private, nopass :: readSparseFile__SWIG_7 => TpetraReader_readSparseFile__SWIG_7
-  procedure, private, nopass :: readSparseFile__SWIG_8 => TpetraReader_readSparseFile__SWIG_8
-  procedure, private, nopass :: readSparseFile__SWIG_9 => TpetraReader_readSparseFile__SWIG_9
-  procedure, private, nopass :: readSparseFile__SWIG_10 => TpetraReader_readSparseFile__SWIG_10
-  procedure, private, nopass :: readDenseFile__SWIG_0 => TpetraReader_readDenseFile__SWIG_0
-  procedure, private, nopass :: readDenseFile__SWIG_1 => TpetraReader_readDenseFile__SWIG_1
-  procedure, private, nopass :: readDenseFile__SWIG_2 => TpetraReader_readDenseFile__SWIG_2
-  procedure, private, nopass :: readMapFile__SWIG_0 => TpetraReader_readMapFile__SWIG_0
-  procedure, private, nopass :: readMapFile__SWIG_1 => TpetraReader_readMapFile__SWIG_1
-  procedure, private, nopass :: readMapFile__SWIG_2 => TpetraReader_readMapFile__SWIG_2
+  procedure, nopass :: readDenseFile => TpetraReader_readDenseFile
+  procedure, nopass :: readMapFile => TpetraReader_readMapFile
   procedure :: release => delete_TpetraReader
   procedure, private :: swigf_assignment_TpetraReader
   generic :: assignment(=) => swigf_assignment_TpetraReader
   generic :: readSparseGraphFile => readSparseGraphFile__SWIG_0, readSparseGraphFile__SWIG_1, readSparseGraphFile__SWIG_2, &
-    readSparseGraphFile__SWIG_3, readSparseGraphFile__SWIG_4, readSparseGraphFile__SWIG_5, readSparseGraphFile__SWIG_6, &
-    readSparseGraphFile__SWIG_7, readSparseGraphFile__SWIG_8, readSparseGraphFile__SWIG_9, readSparseGraphFile__SWIG_10
+    readSparseGraphFile__SWIG_3, readSparseGraphFile__SWIG_4
   generic :: readSparseFile => readSparseFile__SWIG_0, readSparseFile__SWIG_1, readSparseFile__SWIG_2, readSparseFile__SWIG_3, &
-    readSparseFile__SWIG_4, readSparseFile__SWIG_5, readSparseFile__SWIG_6, readSparseFile__SWIG_7, readSparseFile__SWIG_8, &
-    readSparseFile__SWIG_9, readSparseFile__SWIG_10
-  generic :: readDenseFile => readDenseFile__SWIG_0, readDenseFile__SWIG_1, readDenseFile__SWIG_2
-  generic :: readMapFile => readMapFile__SWIG_0, readMapFile__SWIG_1, readMapFile__SWIG_2
+    readSparseFile__SWIG_4
  end type TpetraReader
- interface TpetraReader
-  module procedure new_TpetraReader
- end interface
- ! class Tpetra::MatrixMarket::Writer< CMT >
+ ! class Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > >
  type, public :: TpetraWriter
   type(SwigClassWrapper), public :: swigdata
  contains
-  procedure, nopass :: writeMapFile => TpetraWriter_writeMapFile
   procedure, private, nopass :: writeSparseFile__SWIG_0 => TpetraWriter_writeSparseFile__SWIG_0
   procedure, private, nopass :: writeSparseFile__SWIG_1 => TpetraWriter_writeSparseFile__SWIG_1
-  procedure, private, nopass :: writeSparseFile__SWIG_2 => TpetraWriter_writeSparseFile__SWIG_2
-  procedure, private, nopass :: writeSparseFile__SWIG_3 => TpetraWriter_writeSparseFile__SWIG_3
   procedure, private, nopass :: writeSparseGraphFile__SWIG_0 => TpetraWriter_writeSparseGraphFile__SWIG_0
   procedure, private, nopass :: writeSparseGraphFile__SWIG_1 => TpetraWriter_writeSparseGraphFile__SWIG_1
-  procedure, private, nopass :: writeSparseGraphFile__SWIG_2 => TpetraWriter_writeSparseGraphFile__SWIG_2
-  procedure, private, nopass :: writeSparseGraphFile__SWIG_3 => TpetraWriter_writeSparseGraphFile__SWIG_3
   procedure, private, nopass :: writeDenseFile__SWIG_0 => TpetraWriter_writeDenseFile__SWIG_0
   procedure, private, nopass :: writeDenseFile__SWIG_1 => TpetraWriter_writeDenseFile__SWIG_1
   procedure :: release => delete_TpetraWriter
   procedure, private :: swigf_assignment_TpetraWriter
   generic :: assignment(=) => swigf_assignment_TpetraWriter
-  generic :: writeSparseGraphFile => writeSparseGraphFile__SWIG_0, writeSparseGraphFile__SWIG_1, writeSparseGraphFile__SWIG_2, &
-    writeSparseGraphFile__SWIG_3
-  generic :: writeSparseFile => writeSparseFile__SWIG_0, writeSparseFile__SWIG_1, writeSparseFile__SWIG_2, &
-    writeSparseFile__SWIG_3
+  generic :: writeSparseGraphFile => writeSparseGraphFile__SWIG_0, writeSparseGraphFile__SWIG_1
+  generic :: writeSparseFile => writeSparseFile__SWIG_0, writeSparseFile__SWIG_1
   generic :: writeDenseFile => writeDenseFile__SWIG_0, writeDenseFile__SWIG_1
  end type TpetraWriter
- interface TpetraWriter
-  module procedure new_TpetraWriter
- end interface
  interface TpetraMatrixMatrixAdd
   module procedure TpetraMatrixMatrixAdd__SWIG_0, TpetraMatrixMatrixAdd__SWIG_1
  end interface
@@ -4041,7 +4008,7 @@ type(SwigClassWrapper) :: farg1
 type(SwigClassWrapper) :: fresult
 end function
 
-function swigc_TpetraReader_readSparseGraphFile__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
+function swigc_TpetraReader_readSparseGraphFile__SWIG_0(farg1, farg2, farg3) &
 bind(C, name="_wrap_TpetraReader_readSparseGraphFile__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
@@ -4050,12 +4017,10 @@ import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
 integer(C_INT), intent(in) :: farg3
-integer(C_INT), intent(in) :: farg4
-integer(C_INT), intent(in) :: farg5
 type(SwigClassWrapper) :: fresult
 end function
 
-function swigc_TpetraReader_readSparseGraphFile__SWIG_1(farg1, farg2, farg3, farg4) &
+function swigc_TpetraReader_readSparseGraphFile__SWIG_1(farg1, farg2) &
 bind(C, name="_wrap_TpetraReader_readSparseGraphFile__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
@@ -4063,12 +4028,10 @@ import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-integer(C_INT), intent(in) :: farg3
-integer(C_INT), intent(in) :: farg4
 type(SwigClassWrapper) :: fresult
 end function
 
-function swigc_TpetraReader_readSparseGraphFile__SWIG_2(farg1, farg2, farg3) &
+function swigc_TpetraReader_readSparseGraphFile__SWIG_2(farg1, farg2, farg3, farg4) &
 bind(C, name="_wrap_TpetraReader_readSparseGraphFile__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
@@ -4076,11 +4039,12 @@ import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-integer(C_INT), intent(in) :: farg3
+type(SwigClassWrapper) :: farg3
+type(SwigClassWrapper) :: farg4
 type(SwigClassWrapper) :: fresult
 end function
 
-function swigc_TpetraReader_readSparseGraphFile__SWIG_3(farg1, farg2) &
+function swigc_TpetraReader_readSparseGraphFile__SWIG_3(farg1, farg2, farg3, farg4, farg5, farg6) &
 bind(C, name="_wrap_TpetraReader_readSparseGraphFile__SWIG_3") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
@@ -4088,10 +4052,14 @@ import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
+type(SwigClassWrapper) :: farg3
+type(SwigClassWrapper) :: farg4
+type(SwigClassWrapper) :: farg5
+integer(C_INT), intent(in) :: farg6
 type(SwigClassWrapper) :: fresult
 end function
 
-function swigc_TpetraReader_readSparseGraphFile__SWIG_4(farg1, farg2, farg3, farg4, farg5, farg6) &
+function swigc_TpetraReader_readSparseGraphFile__SWIG_4(farg1, farg2, farg3, farg4, farg5) &
 bind(C, name="_wrap_TpetraReader_readSparseGraphFile__SWIG_4") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
@@ -4101,101 +4069,11 @@ type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
 type(SwigClassWrapper) :: farg4
-integer(C_INT), intent(in) :: farg5
-integer(C_INT), intent(in) :: farg6
-type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_TpetraReader_readSparseGraphFile__SWIG_5(farg1, farg2, farg3, farg4, farg5) &
-bind(C, name="_wrap_TpetraReader_readSparseGraphFile__SWIG_5") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-import :: swigarraywrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-type(SwigClassWrapper) :: farg3
-type(SwigClassWrapper) :: farg4
-integer(C_INT), intent(in) :: farg5
-type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_TpetraReader_readSparseGraphFile__SWIG_6(farg1, farg2, farg3, farg4) &
-bind(C, name="_wrap_TpetraReader_readSparseGraphFile__SWIG_6") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-import :: swigarraywrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-type(SwigClassWrapper) :: farg3
-type(SwigClassWrapper) :: farg4
-type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_TpetraReader_readSparseGraphFile__SWIG_7(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8) &
-bind(C, name="_wrap_TpetraReader_readSparseGraphFile__SWIG_7") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-import :: swigarraywrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-type(SwigClassWrapper) :: farg3
-type(SwigClassWrapper) :: farg4
-type(SwigClassWrapper) :: farg5
-integer(C_INT), intent(in) :: farg6
-integer(C_INT), intent(in) :: farg7
-integer(C_INT), intent(in) :: farg8
-type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_TpetraReader_readSparseGraphFile__SWIG_8(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
-bind(C, name="_wrap_TpetraReader_readSparseGraphFile__SWIG_8") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-import :: swigarraywrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-type(SwigClassWrapper) :: farg3
-type(SwigClassWrapper) :: farg4
-type(SwigClassWrapper) :: farg5
-integer(C_INT), intent(in) :: farg6
-integer(C_INT), intent(in) :: farg7
-type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_TpetraReader_readSparseGraphFile__SWIG_9(farg1, farg2, farg3, farg4, farg5, farg6) &
-bind(C, name="_wrap_TpetraReader_readSparseGraphFile__SWIG_9") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-import :: swigarraywrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-type(SwigClassWrapper) :: farg3
-type(SwigClassWrapper) :: farg4
-type(SwigClassWrapper) :: farg5
-integer(C_INT), intent(in) :: farg6
-type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_TpetraReader_readSparseGraphFile__SWIG_10(farg1, farg2, farg3, farg4, farg5) &
-bind(C, name="_wrap_TpetraReader_readSparseGraphFile__SWIG_10") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-import :: swigarraywrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-type(SwigClassWrapper) :: farg3
-type(SwigClassWrapper) :: farg4
 type(SwigClassWrapper) :: farg5
 type(SwigClassWrapper) :: fresult
 end function
 
-function swigc_TpetraReader_readSparseFile__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
+function swigc_TpetraReader_readSparseFile__SWIG_0(farg1, farg2, farg3) &
 bind(C, name="_wrap_TpetraReader_readSparseFile__SWIG_0") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
@@ -4204,12 +4082,10 @@ import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
 integer(C_INT), intent(in) :: farg3
-integer(C_INT), intent(in) :: farg4
-integer(C_INT), intent(in) :: farg5
 type(SwigClassWrapper) :: fresult
 end function
 
-function swigc_TpetraReader_readSparseFile__SWIG_1(farg1, farg2, farg3, farg4) &
+function swigc_TpetraReader_readSparseFile__SWIG_1(farg1, farg2) &
 bind(C, name="_wrap_TpetraReader_readSparseFile__SWIG_1") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
@@ -4217,12 +4093,10 @@ import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-integer(C_INT), intent(in) :: farg3
-integer(C_INT), intent(in) :: farg4
 type(SwigClassWrapper) :: fresult
 end function
 
-function swigc_TpetraReader_readSparseFile__SWIG_2(farg1, farg2, farg3) &
+function swigc_TpetraReader_readSparseFile__SWIG_2(farg1, farg2, farg3, farg4) &
 bind(C, name="_wrap_TpetraReader_readSparseFile__SWIG_2") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
@@ -4230,11 +4104,12 @@ import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-integer(C_INT), intent(in) :: farg3
+type(SwigClassWrapper) :: farg3
+type(SwigClassWrapper) :: farg4
 type(SwigClassWrapper) :: fresult
 end function
 
-function swigc_TpetraReader_readSparseFile__SWIG_3(farg1, farg2) &
+function swigc_TpetraReader_readSparseFile__SWIG_3(farg1, farg2, farg3, farg4, farg5, farg6) &
 bind(C, name="_wrap_TpetraReader_readSparseFile__SWIG_3") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
@@ -4242,10 +4117,14 @@ import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
+type(SwigClassWrapper) :: farg3
+type(SwigClassWrapper) :: farg4
+type(SwigClassWrapper) :: farg5
+integer(C_INT), intent(in) :: farg6
 type(SwigClassWrapper) :: fresult
 end function
 
-function swigc_TpetraReader_readSparseFile__SWIG_4(farg1, farg2, farg3, farg4, farg5, farg6) &
+function swigc_TpetraReader_readSparseFile__SWIG_4(farg1, farg2, farg3, farg4, farg5) &
 bind(C, name="_wrap_TpetraReader_readSparseFile__SWIG_4") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
@@ -4255,129 +4134,12 @@ type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
 type(SwigClassWrapper) :: farg4
-integer(C_INT), intent(in) :: farg5
-integer(C_INT), intent(in) :: farg6
-type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_TpetraReader_readSparseFile__SWIG_5(farg1, farg2, farg3, farg4, farg5) &
-bind(C, name="_wrap_TpetraReader_readSparseFile__SWIG_5") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-import :: swigarraywrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-type(SwigClassWrapper) :: farg3
-type(SwigClassWrapper) :: farg4
-integer(C_INT), intent(in) :: farg5
-type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_TpetraReader_readSparseFile__SWIG_6(farg1, farg2, farg3, farg4) &
-bind(C, name="_wrap_TpetraReader_readSparseFile__SWIG_6") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-import :: swigarraywrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-type(SwigClassWrapper) :: farg3
-type(SwigClassWrapper) :: farg4
-type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_TpetraReader_readSparseFile__SWIG_7(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8) &
-bind(C, name="_wrap_TpetraReader_readSparseFile__SWIG_7") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-import :: swigarraywrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-type(SwigClassWrapper) :: farg3
-type(SwigClassWrapper) :: farg4
-type(SwigClassWrapper) :: farg5
-integer(C_INT), intent(in) :: farg6
-integer(C_INT), intent(in) :: farg7
-integer(C_INT), intent(in) :: farg8
-type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_TpetraReader_readSparseFile__SWIG_8(farg1, farg2, farg3, farg4, farg5, farg6, farg7) &
-bind(C, name="_wrap_TpetraReader_readSparseFile__SWIG_8") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-import :: swigarraywrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-type(SwigClassWrapper) :: farg3
-type(SwigClassWrapper) :: farg4
-type(SwigClassWrapper) :: farg5
-integer(C_INT), intent(in) :: farg6
-integer(C_INT), intent(in) :: farg7
-type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_TpetraReader_readSparseFile__SWIG_9(farg1, farg2, farg3, farg4, farg5, farg6) &
-bind(C, name="_wrap_TpetraReader_readSparseFile__SWIG_9") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-import :: swigarraywrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-type(SwigClassWrapper) :: farg3
-type(SwigClassWrapper) :: farg4
-type(SwigClassWrapper) :: farg5
-integer(C_INT), intent(in) :: farg6
-type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_TpetraReader_readSparseFile__SWIG_10(farg1, farg2, farg3, farg4, farg5) &
-bind(C, name="_wrap_TpetraReader_readSparseFile__SWIG_10") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-import :: swigarraywrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-type(SwigClassWrapper) :: farg3
-type(SwigClassWrapper) :: farg4
 type(SwigClassWrapper) :: farg5
 type(SwigClassWrapper) :: fresult
 end function
 
-function swigc_TpetraReader_readDenseFile__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
-bind(C, name="_wrap_TpetraReader_readDenseFile__SWIG_0") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-import :: swigarraywrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-type(SwigClassWrapper) :: farg3
-integer(C_INT), intent(in) :: farg4
-integer(C_INT), intent(in) :: farg5
-type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_TpetraReader_readDenseFile__SWIG_1(farg1, farg2, farg3, farg4) &
-bind(C, name="_wrap_TpetraReader_readDenseFile__SWIG_1") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-import :: swigarraywrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-type(SwigClassWrapper) :: farg3
-integer(C_INT), intent(in) :: farg4
-type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_TpetraReader_readDenseFile__SWIG_2(farg1, farg2, farg3) &
-bind(C, name="_wrap_TpetraReader_readDenseFile__SWIG_2") &
+function swigc_TpetraReader_readDenseFile(farg1, farg2, farg3) &
+bind(C, name="_wrap_TpetraReader_readDenseFile") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
@@ -4388,47 +4150,14 @@ type(SwigClassWrapper) :: farg3
 type(SwigClassWrapper) :: fresult
 end function
 
-function swigc_TpetraReader_readMapFile__SWIG_0(farg1, farg2, farg3, farg4) &
-bind(C, name="_wrap_TpetraReader_readMapFile__SWIG_0") &
+function swigc_TpetraReader_readMapFile(farg1, farg2) &
+bind(C, name="_wrap_TpetraReader_readMapFile") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 import :: swigarraywrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-integer(C_INT), intent(in) :: farg3
-integer(C_INT), intent(in) :: farg4
-type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_TpetraReader_readMapFile__SWIG_1(farg1, farg2, farg3) &
-bind(C, name="_wrap_TpetraReader_readMapFile__SWIG_1") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-import :: swigarraywrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-integer(C_INT), intent(in) :: farg3
-type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_TpetraReader_readMapFile__SWIG_2(farg1, farg2) &
-bind(C, name="_wrap_TpetraReader_readMapFile__SWIG_2") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-import :: swigarraywrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-type(SwigClassWrapper) :: fresult
-end function
-
-function swigc_new_TpetraReader() &
-bind(C, name="_wrap_new_TpetraReader") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
 type(SwigClassWrapper) :: fresult
 end function
 
@@ -4446,16 +4175,7 @@ end subroutine
    type(SwigClassWrapper), intent(inout) :: self
    type(SwigClassWrapper), intent(in) :: other
   end subroutine
-subroutine swigc_TpetraWriter_writeMapFile(farg1, farg2) &
-bind(C, name="_wrap_TpetraWriter_writeMapFile")
-use, intrinsic :: ISO_C_BINDING
-import :: swigarraywrapper
-import :: swigclasswrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-end subroutine
-
-subroutine swigc_TpetraWriter_writeSparseFile__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
+subroutine swigc_TpetraWriter_writeSparseFile__SWIG_0(farg1, farg2, farg3, farg4) &
 bind(C, name="_wrap_TpetraWriter_writeSparseFile__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
 import :: swigarraywrapper
@@ -4464,40 +4184,18 @@ type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
 type(SwigArrayWrapper) :: farg3
 type(SwigArrayWrapper) :: farg4
-integer(C_INT), intent(in) :: farg5
 end subroutine
 
-subroutine swigc_TpetraWriter_writeSparseFile__SWIG_1(farg1, farg2, farg3, farg4) &
+subroutine swigc_TpetraWriter_writeSparseFile__SWIG_1(farg1, farg2) &
 bind(C, name="_wrap_TpetraWriter_writeSparseFile__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
 import :: swigarraywrapper
 import :: swigclasswrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
-type(SwigArrayWrapper) :: farg3
-type(SwigArrayWrapper) :: farg4
 end subroutine
 
-subroutine swigc_TpetraWriter_writeSparseFile__SWIG_2(farg1, farg2, farg3) &
-bind(C, name="_wrap_TpetraWriter_writeSparseFile__SWIG_2")
-use, intrinsic :: ISO_C_BINDING
-import :: swigarraywrapper
-import :: swigclasswrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-integer(C_INT), intent(in) :: farg3
-end subroutine
-
-subroutine swigc_TpetraWriter_writeSparseFile__SWIG_3(farg1, farg2) &
-bind(C, name="_wrap_TpetraWriter_writeSparseFile__SWIG_3")
-use, intrinsic :: ISO_C_BINDING
-import :: swigarraywrapper
-import :: swigclasswrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-end subroutine
-
-subroutine swigc_TpetraWriter_writeSparseGraphFile__SWIG_0(farg1, farg2, farg3, farg4, farg5) &
+subroutine swigc_TpetraWriter_writeSparseGraphFile__SWIG_0(farg1, farg2, farg3, farg4) &
 bind(C, name="_wrap_TpetraWriter_writeSparseGraphFile__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
 import :: swigarraywrapper
@@ -4506,32 +4204,10 @@ type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
 type(SwigArrayWrapper) :: farg3
 type(SwigArrayWrapper) :: farg4
-integer(C_INT), intent(in) :: farg5
 end subroutine
 
-subroutine swigc_TpetraWriter_writeSparseGraphFile__SWIG_1(farg1, farg2, farg3, farg4) &
+subroutine swigc_TpetraWriter_writeSparseGraphFile__SWIG_1(farg1, farg2) &
 bind(C, name="_wrap_TpetraWriter_writeSparseGraphFile__SWIG_1")
-use, intrinsic :: ISO_C_BINDING
-import :: swigarraywrapper
-import :: swigclasswrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-type(SwigArrayWrapper) :: farg3
-type(SwigArrayWrapper) :: farg4
-end subroutine
-
-subroutine swigc_TpetraWriter_writeSparseGraphFile__SWIG_2(farg1, farg2, farg3) &
-bind(C, name="_wrap_TpetraWriter_writeSparseGraphFile__SWIG_2")
-use, intrinsic :: ISO_C_BINDING
-import :: swigarraywrapper
-import :: swigclasswrapper
-type(SwigArrayWrapper) :: farg1
-type(SwigClassWrapper) :: farg2
-integer(C_INT), intent(in) :: farg3
-end subroutine
-
-subroutine swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(farg1, farg2) &
-bind(C, name="_wrap_TpetraWriter_writeSparseGraphFile__SWIG_3")
 use, intrinsic :: ISO_C_BINDING
 import :: swigarraywrapper
 import :: swigclasswrapper
@@ -4558,14 +4234,6 @@ import :: swigclasswrapper
 type(SwigArrayWrapper) :: farg1
 type(SwigClassWrapper) :: farg2
 end subroutine
-
-function swigc_new_TpetraWriter() &
-bind(C, name="_wrap_new_TpetraWriter") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: fresult
-end function
 
 subroutine swigc_delete_TpetraWriter(farg1) &
 bind(C, name="_wrap_delete_TpetraWriter")
@@ -11057,60 +10725,7 @@ fresult = swigc_matrix_to_operator(farg1)
 swig_result%swigdata = fresult
 end function
 
-function TpetraReader_readSparseGraphFile__SWIG_0(filename, pcomm, callfillcomplete, tolerant, debug) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-type(TpetraCrsGraph) :: swig_result
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TeuchosComm), intent(in) :: pcomm
-
-logical, intent(in) :: callfillcomplete
-logical, intent(in) :: tolerant
-logical, intent(in) :: debug
-
-type(SwigClassWrapper) :: fresult 
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-integer(C_INT) :: farg3 
-integer(C_INT) :: farg4 
-integer(C_INT) :: farg5 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = pcomm%swigdata
-farg3 = SWIG_logical_to_int(callfillcomplete)
-farg4 = SWIG_logical_to_int(tolerant)
-farg5 = SWIG_logical_to_int(debug)
-fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_0(farg1, farg2, farg3, farg4, farg5)
-swig_result%swigdata = fresult
-end function
-
-function TpetraReader_readSparseGraphFile__SWIG_1(filename, pcomm, callfillcomplete, tolerant) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-type(TpetraCrsGraph) :: swig_result
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TeuchosComm), intent(in) :: pcomm
-
-logical, intent(in) :: callfillcomplete
-logical, intent(in) :: tolerant
-
-type(SwigClassWrapper) :: fresult 
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-integer(C_INT) :: farg3 
-integer(C_INT) :: farg4 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = pcomm%swigdata
-farg3 = SWIG_logical_to_int(callfillcomplete)
-farg4 = SWIG_logical_to_int(tolerant)
-fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_1(farg1, farg2, farg3, farg4)
-swig_result%swigdata = fresult
-end function
-
-function TpetraReader_readSparseGraphFile__SWIG_2(filename, pcomm, callfillcomplete) &
+function TpetraReader_readSparseGraphFile__SWIG_0(filename, pcomm, callfillcomplete) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraCrsGraph) :: swig_result
@@ -11128,11 +10743,11 @@ integer(C_INT) :: farg3
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pcomm%swigdata
 farg3 = SWIG_logical_to_int(callfillcomplete)
-fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_2(farg1, farg2, farg3)
+fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_0(farg1, farg2, farg3)
 swig_result%swigdata = fresult
 end function
 
-function TpetraReader_readSparseGraphFile__SWIG_3(filename, pcomm) &
+function TpetraReader_readSparseGraphFile__SWIG_1(filename, pcomm) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraCrsGraph) :: swig_result
@@ -11146,74 +10761,11 @@ type(SwigClassWrapper) :: farg2
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pcomm%swigdata
-fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_3(farg1, farg2)
+fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_1(farg1, farg2)
 swig_result%swigdata = fresult
 end function
 
-function TpetraReader_readSparseGraphFile__SWIG_4(filename, pcomm, constructorparams, fillcompleteparams, tolerant, debug) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-type(TpetraCrsGraph) :: swig_result
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TeuchosComm), intent(in) :: pcomm
-
-class(ParameterList), intent(in) :: constructorparams
-
-class(ParameterList), intent(in) :: fillcompleteparams
-
-logical, intent(in) :: tolerant
-logical, intent(in) :: debug
-
-type(SwigClassWrapper) :: fresult 
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-type(SwigClassWrapper) :: farg3 
-type(SwigClassWrapper) :: farg4 
-integer(C_INT) :: farg5 
-integer(C_INT) :: farg6 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = pcomm%swigdata
-farg3 = constructorparams%swigdata
-farg4 = fillcompleteparams%swigdata
-farg5 = SWIG_logical_to_int(tolerant)
-farg6 = SWIG_logical_to_int(debug)
-fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_4(farg1, farg2, farg3, farg4, farg5, farg6)
-swig_result%swigdata = fresult
-end function
-
-function TpetraReader_readSparseGraphFile__SWIG_5(filename, pcomm, constructorparams, fillcompleteparams, tolerant) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-type(TpetraCrsGraph) :: swig_result
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TeuchosComm), intent(in) :: pcomm
-
-class(ParameterList), intent(in) :: constructorparams
-
-class(ParameterList), intent(in) :: fillcompleteparams
-
-logical, intent(in) :: tolerant
-
-type(SwigClassWrapper) :: fresult 
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-type(SwigClassWrapper) :: farg3 
-type(SwigClassWrapper) :: farg4 
-integer(C_INT) :: farg5 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = pcomm%swigdata
-farg3 = constructorparams%swigdata
-farg4 = fillcompleteparams%swigdata
-farg5 = SWIG_logical_to_int(tolerant)
-fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_5(farg1, farg2, farg3, farg4, farg5)
-swig_result%swigdata = fresult
-end function
-
-function TpetraReader_readSparseGraphFile__SWIG_6(filename, pcomm, constructorparams, fillcompleteparams) &
+function TpetraReader_readSparseGraphFile__SWIG_2(filename, pcomm, constructorparams, fillcompleteparams) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraCrsGraph) :: swig_result
@@ -11235,89 +10787,11 @@ call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pcomm%swigdata
 farg3 = constructorparams%swigdata
 farg4 = fillcompleteparams%swigdata
-fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_6(farg1, farg2, farg3, farg4)
+fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_2(farg1, farg2, farg3, farg4)
 swig_result%swigdata = fresult
 end function
 
-function TpetraReader_readSparseGraphFile__SWIG_7(filename, rowmap, colmap, domainmap, rangemap, callfillcomplete, tolerant, &
-  debug) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-type(TpetraCrsGraph) :: swig_result
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TpetraMap), intent(in) :: rowmap
-
-class(TpetraMap), intent(inout) :: colmap
-
-class(TpetraMap), intent(in) :: domainmap
-
-class(TpetraMap), intent(in) :: rangemap
-
-logical, intent(in) :: callfillcomplete
-logical, intent(in) :: tolerant
-logical, intent(in) :: debug
-
-type(SwigClassWrapper) :: fresult 
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-type(SwigClassWrapper) :: farg3 
-type(SwigClassWrapper) :: farg4 
-type(SwigClassWrapper) :: farg5 
-integer(C_INT) :: farg6 
-integer(C_INT) :: farg7 
-integer(C_INT) :: farg8 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = rowmap%swigdata
-farg3 = colmap%swigdata
-farg4 = domainmap%swigdata
-farg5 = rangemap%swigdata
-farg6 = SWIG_logical_to_int(callfillcomplete)
-farg7 = SWIG_logical_to_int(tolerant)
-farg8 = SWIG_logical_to_int(debug)
-fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_7(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8)
-swig_result%swigdata = fresult
-end function
-
-function TpetraReader_readSparseGraphFile__SWIG_8(filename, rowmap, colmap, domainmap, rangemap, callfillcomplete, tolerant) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-type(TpetraCrsGraph) :: swig_result
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TpetraMap), intent(in) :: rowmap
-
-class(TpetraMap), intent(inout) :: colmap
-
-class(TpetraMap), intent(in) :: domainmap
-
-class(TpetraMap), intent(in) :: rangemap
-
-logical, intent(in) :: callfillcomplete
-logical, intent(in) :: tolerant
-
-type(SwigClassWrapper) :: fresult 
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-type(SwigClassWrapper) :: farg3 
-type(SwigClassWrapper) :: farg4 
-type(SwigClassWrapper) :: farg5 
-integer(C_INT) :: farg6 
-integer(C_INT) :: farg7 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = rowmap%swigdata
-farg3 = colmap%swigdata
-farg4 = domainmap%swigdata
-farg5 = rangemap%swigdata
-farg6 = SWIG_logical_to_int(callfillcomplete)
-farg7 = SWIG_logical_to_int(tolerant)
-fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_8(farg1, farg2, farg3, farg4, farg5, farg6, farg7)
-swig_result%swigdata = fresult
-end function
-
-function TpetraReader_readSparseGraphFile__SWIG_9(filename, rowmap, colmap, domainmap, rangemap, callfillcomplete) &
+function TpetraReader_readSparseGraphFile__SWIG_3(filename, rowmap, colmap, domainmap, rangemap, callfillcomplete) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraCrsGraph) :: swig_result
@@ -11347,11 +10821,11 @@ farg3 = colmap%swigdata
 farg4 = domainmap%swigdata
 farg5 = rangemap%swigdata
 farg6 = SWIG_logical_to_int(callfillcomplete)
-fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_9(farg1, farg2, farg3, farg4, farg5, farg6)
+fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_3(farg1, farg2, farg3, farg4, farg5, farg6)
 swig_result%swigdata = fresult
 end function
 
-function TpetraReader_readSparseGraphFile__SWIG_10(filename, rowmap, colmap, domainmap, rangemap) &
+function TpetraReader_readSparseGraphFile__SWIG_4(filename, rowmap, colmap, domainmap, rangemap) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraCrsGraph) :: swig_result
@@ -11377,64 +10851,11 @@ farg2 = rowmap%swigdata
 farg3 = colmap%swigdata
 farg4 = domainmap%swigdata
 farg5 = rangemap%swigdata
-fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_10(farg1, farg2, farg3, farg4, farg5)
+fresult = swigc_TpetraReader_readSparseGraphFile__SWIG_4(farg1, farg2, farg3, farg4, farg5)
 swig_result%swigdata = fresult
 end function
 
-function TpetraReader_readSparseFile__SWIG_0(filename, pcomm, callfillcomplete, tolerant, debug) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-type(TpetraCrsMatrix) :: swig_result
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TeuchosComm), intent(in) :: pcomm
-
-logical, intent(in) :: callfillcomplete
-logical, intent(in) :: tolerant
-logical, intent(in) :: debug
-
-type(SwigClassWrapper) :: fresult 
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-integer(C_INT) :: farg3 
-integer(C_INT) :: farg4 
-integer(C_INT) :: farg5 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = pcomm%swigdata
-farg3 = SWIG_logical_to_int(callfillcomplete)
-farg4 = SWIG_logical_to_int(tolerant)
-farg5 = SWIG_logical_to_int(debug)
-fresult = swigc_TpetraReader_readSparseFile__SWIG_0(farg1, farg2, farg3, farg4, farg5)
-swig_result%swigdata = fresult
-end function
-
-function TpetraReader_readSparseFile__SWIG_1(filename, pcomm, callfillcomplete, tolerant) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-type(TpetraCrsMatrix) :: swig_result
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TeuchosComm), intent(in) :: pcomm
-
-logical, intent(in) :: callfillcomplete
-logical, intent(in) :: tolerant
-
-type(SwigClassWrapper) :: fresult 
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-integer(C_INT) :: farg3 
-integer(C_INT) :: farg4 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = pcomm%swigdata
-farg3 = SWIG_logical_to_int(callfillcomplete)
-farg4 = SWIG_logical_to_int(tolerant)
-fresult = swigc_TpetraReader_readSparseFile__SWIG_1(farg1, farg2, farg3, farg4)
-swig_result%swigdata = fresult
-end function
-
-function TpetraReader_readSparseFile__SWIG_2(filename, pcomm, callfillcomplete) &
+function TpetraReader_readSparseFile__SWIG_0(filename, pcomm, callfillcomplete) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraCrsMatrix) :: swig_result
@@ -11452,11 +10873,11 @@ integer(C_INT) :: farg3
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pcomm%swigdata
 farg3 = SWIG_logical_to_int(callfillcomplete)
-fresult = swigc_TpetraReader_readSparseFile__SWIG_2(farg1, farg2, farg3)
+fresult = swigc_TpetraReader_readSparseFile__SWIG_0(farg1, farg2, farg3)
 swig_result%swigdata = fresult
 end function
 
-function TpetraReader_readSparseFile__SWIG_3(filename, pcomm) &
+function TpetraReader_readSparseFile__SWIG_1(filename, pcomm) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraCrsMatrix) :: swig_result
@@ -11470,74 +10891,11 @@ type(SwigClassWrapper) :: farg2
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pcomm%swigdata
-fresult = swigc_TpetraReader_readSparseFile__SWIG_3(farg1, farg2)
+fresult = swigc_TpetraReader_readSparseFile__SWIG_1(farg1, farg2)
 swig_result%swigdata = fresult
 end function
 
-function TpetraReader_readSparseFile__SWIG_4(filename, pcomm, constructorparams, fillcompleteparams, tolerant, debug) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-type(TpetraCrsMatrix) :: swig_result
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TeuchosComm), intent(in) :: pcomm
-
-class(ParameterList), intent(in) :: constructorparams
-
-class(ParameterList), intent(in) :: fillcompleteparams
-
-logical, intent(in) :: tolerant
-logical, intent(in) :: debug
-
-type(SwigClassWrapper) :: fresult 
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-type(SwigClassWrapper) :: farg3 
-type(SwigClassWrapper) :: farg4 
-integer(C_INT) :: farg5 
-integer(C_INT) :: farg6 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = pcomm%swigdata
-farg3 = constructorparams%swigdata
-farg4 = fillcompleteparams%swigdata
-farg5 = SWIG_logical_to_int(tolerant)
-farg6 = SWIG_logical_to_int(debug)
-fresult = swigc_TpetraReader_readSparseFile__SWIG_4(farg1, farg2, farg3, farg4, farg5, farg6)
-swig_result%swigdata = fresult
-end function
-
-function TpetraReader_readSparseFile__SWIG_5(filename, pcomm, constructorparams, fillcompleteparams, tolerant) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-type(TpetraCrsMatrix) :: swig_result
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TeuchosComm), intent(in) :: pcomm
-
-class(ParameterList), intent(in) :: constructorparams
-
-class(ParameterList), intent(in) :: fillcompleteparams
-
-logical, intent(in) :: tolerant
-
-type(SwigClassWrapper) :: fresult 
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-type(SwigClassWrapper) :: farg3 
-type(SwigClassWrapper) :: farg4 
-integer(C_INT) :: farg5 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = pcomm%swigdata
-farg3 = constructorparams%swigdata
-farg4 = fillcompleteparams%swigdata
-farg5 = SWIG_logical_to_int(tolerant)
-fresult = swigc_TpetraReader_readSparseFile__SWIG_5(farg1, farg2, farg3, farg4, farg5)
-swig_result%swigdata = fresult
-end function
-
-function TpetraReader_readSparseFile__SWIG_6(filename, pcomm, constructorparams, fillcompleteparams) &
+function TpetraReader_readSparseFile__SWIG_2(filename, pcomm, constructorparams, fillcompleteparams) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraCrsMatrix) :: swig_result
@@ -11559,88 +10917,11 @@ call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pcomm%swigdata
 farg3 = constructorparams%swigdata
 farg4 = fillcompleteparams%swigdata
-fresult = swigc_TpetraReader_readSparseFile__SWIG_6(farg1, farg2, farg3, farg4)
+fresult = swigc_TpetraReader_readSparseFile__SWIG_2(farg1, farg2, farg3, farg4)
 swig_result%swigdata = fresult
 end function
 
-function TpetraReader_readSparseFile__SWIG_7(filename, rowmap, colmap, domainmap, rangemap, callfillcomplete, tolerant, debug) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-type(TpetraCrsMatrix) :: swig_result
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TpetraMap), intent(in) :: rowmap
-
-class(TpetraMap), intent(inout) :: colmap
-
-class(TpetraMap), intent(in) :: domainmap
-
-class(TpetraMap), intent(in) :: rangemap
-
-logical, intent(in) :: callfillcomplete
-logical, intent(in) :: tolerant
-logical, intent(in) :: debug
-
-type(SwigClassWrapper) :: fresult 
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-type(SwigClassWrapper) :: farg3 
-type(SwigClassWrapper) :: farg4 
-type(SwigClassWrapper) :: farg5 
-integer(C_INT) :: farg6 
-integer(C_INT) :: farg7 
-integer(C_INT) :: farg8 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = rowmap%swigdata
-farg3 = colmap%swigdata
-farg4 = domainmap%swigdata
-farg5 = rangemap%swigdata
-farg6 = SWIG_logical_to_int(callfillcomplete)
-farg7 = SWIG_logical_to_int(tolerant)
-farg8 = SWIG_logical_to_int(debug)
-fresult = swigc_TpetraReader_readSparseFile__SWIG_7(farg1, farg2, farg3, farg4, farg5, farg6, farg7, farg8)
-swig_result%swigdata = fresult
-end function
-
-function TpetraReader_readSparseFile__SWIG_8(filename, rowmap, colmap, domainmap, rangemap, callfillcomplete, tolerant) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-type(TpetraCrsMatrix) :: swig_result
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TpetraMap), intent(in) :: rowmap
-
-class(TpetraMap), intent(inout) :: colmap
-
-class(TpetraMap), intent(in) :: domainmap
-
-class(TpetraMap), intent(in) :: rangemap
-
-logical, intent(in) :: callfillcomplete
-logical, intent(in) :: tolerant
-
-type(SwigClassWrapper) :: fresult 
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-type(SwigClassWrapper) :: farg3 
-type(SwigClassWrapper) :: farg4 
-type(SwigClassWrapper) :: farg5 
-integer(C_INT) :: farg6 
-integer(C_INT) :: farg7 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = rowmap%swigdata
-farg3 = colmap%swigdata
-farg4 = domainmap%swigdata
-farg5 = rangemap%swigdata
-farg6 = SWIG_logical_to_int(callfillcomplete)
-farg7 = SWIG_logical_to_int(tolerant)
-fresult = swigc_TpetraReader_readSparseFile__SWIG_8(farg1, farg2, farg3, farg4, farg5, farg6, farg7)
-swig_result%swigdata = fresult
-end function
-
-function TpetraReader_readSparseFile__SWIG_9(filename, rowmap, colmap, domainmap, rangemap, callfillcomplete) &
+function TpetraReader_readSparseFile__SWIG_3(filename, rowmap, colmap, domainmap, rangemap, callfillcomplete) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraCrsMatrix) :: swig_result
@@ -11670,11 +10951,11 @@ farg3 = colmap%swigdata
 farg4 = domainmap%swigdata
 farg5 = rangemap%swigdata
 farg6 = SWIG_logical_to_int(callfillcomplete)
-fresult = swigc_TpetraReader_readSparseFile__SWIG_9(farg1, farg2, farg3, farg4, farg5, farg6)
+fresult = swigc_TpetraReader_readSparseFile__SWIG_3(farg1, farg2, farg3, farg4, farg5, farg6)
 swig_result%swigdata = fresult
 end function
 
-function TpetraReader_readSparseFile__SWIG_10(filename, rowmap, colmap, domainmap, rangemap) &
+function TpetraReader_readSparseFile__SWIG_4(filename, rowmap, colmap, domainmap, rangemap) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraCrsMatrix) :: swig_result
@@ -11700,66 +10981,11 @@ farg2 = rowmap%swigdata
 farg3 = colmap%swigdata
 farg4 = domainmap%swigdata
 farg5 = rangemap%swigdata
-fresult = swigc_TpetraReader_readSparseFile__SWIG_10(farg1, farg2, farg3, farg4, farg5)
+fresult = swigc_TpetraReader_readSparseFile__SWIG_4(farg1, farg2, farg3, farg4, farg5)
 swig_result%swigdata = fresult
 end function
 
-function TpetraReader_readDenseFile__SWIG_0(filename, comm, map, tolerant, debug) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-type(TpetraMultiVector) :: swig_result
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TeuchosComm), intent(in) :: comm
-
-class(TpetraMap), intent(inout) :: map
-
-logical, intent(in) :: tolerant
-logical, intent(in) :: debug
-
-type(SwigClassWrapper) :: fresult 
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-type(SwigClassWrapper) :: farg3 
-integer(C_INT) :: farg4 
-integer(C_INT) :: farg5 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = comm%swigdata
-farg3 = map%swigdata
-farg4 = SWIG_logical_to_int(tolerant)
-farg5 = SWIG_logical_to_int(debug)
-fresult = swigc_TpetraReader_readDenseFile__SWIG_0(farg1, farg2, farg3, farg4, farg5)
-swig_result%swigdata = fresult
-end function
-
-function TpetraReader_readDenseFile__SWIG_1(filename, comm, map, tolerant) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-type(TpetraMultiVector) :: swig_result
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TeuchosComm), intent(in) :: comm
-
-class(TpetraMap), intent(inout) :: map
-
-logical, intent(in) :: tolerant
-
-type(SwigClassWrapper) :: fresult 
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-type(SwigClassWrapper) :: farg3 
-integer(C_INT) :: farg4 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = comm%swigdata
-farg3 = map%swigdata
-farg4 = SWIG_logical_to_int(tolerant)
-fresult = swigc_TpetraReader_readDenseFile__SWIG_1(farg1, farg2, farg3, farg4)
-swig_result%swigdata = fresult
-end function
-
-function TpetraReader_readDenseFile__SWIG_2(filename, comm, map) &
+function TpetraReader_readDenseFile(filename, comm, map) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraMultiVector) :: swig_result
@@ -11777,58 +11003,11 @@ type(SwigClassWrapper) :: farg3
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = comm%swigdata
 farg3 = map%swigdata
-fresult = swigc_TpetraReader_readDenseFile__SWIG_2(farg1, farg2, farg3)
+fresult = swigc_TpetraReader_readDenseFile(farg1, farg2, farg3)
 swig_result%swigdata = fresult
 end function
 
-function TpetraReader_readMapFile__SWIG_0(filename, comm, tolerant, debug) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-type(TpetraMap) :: swig_result
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TeuchosComm), intent(in) :: comm
-
-logical, intent(in) :: tolerant
-logical, intent(in) :: debug
-
-type(SwigClassWrapper) :: fresult 
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-integer(C_INT) :: farg3 
-integer(C_INT) :: farg4 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = comm%swigdata
-farg3 = SWIG_logical_to_int(tolerant)
-farg4 = SWIG_logical_to_int(debug)
-fresult = swigc_TpetraReader_readMapFile__SWIG_0(farg1, farg2, farg3, farg4)
-swig_result%swigdata = fresult
-end function
-
-function TpetraReader_readMapFile__SWIG_1(filename, comm, tolerant) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-type(TpetraMap) :: swig_result
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TeuchosComm), intent(in) :: comm
-
-logical, intent(in) :: tolerant
-
-type(SwigClassWrapper) :: fresult 
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-integer(C_INT) :: farg3 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = comm%swigdata
-farg3 = SWIG_logical_to_int(tolerant)
-fresult = swigc_TpetraReader_readMapFile__SWIG_1(farg1, farg2, farg3)
-swig_result%swigdata = fresult
-end function
-
-function TpetraReader_readMapFile__SWIG_2(filename, comm) &
+function TpetraReader_readMapFile(filename, comm) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraMap) :: swig_result
@@ -11842,19 +11021,8 @@ type(SwigClassWrapper) :: farg2
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = comm%swigdata
-fresult = swigc_TpetraReader_readMapFile__SWIG_2(farg1, farg2)
+fresult = swigc_TpetraReader_readMapFile(farg1, farg2)
 swig_result%swigdata = fresult
-end function
-
-function new_TpetraReader() &
-result(self)
-use, intrinsic :: ISO_C_BINDING
-type(TpetraReader) :: self
-
-type(SwigClassWrapper) :: fresult 
-
-fresult = swigc_new_TpetraReader()
-self%swigdata = fresult
 end function
 
 subroutine delete_TpetraReader(self)
@@ -11877,47 +11045,7 @@ end subroutine
    type(TpetraReader), intent(in) :: other
    call swigc_assignment_TpetraReader(self%swigdata, other%swigdata)
   end subroutine
-subroutine TpetraWriter_writeMapFile(filename, map)
-use, intrinsic :: ISO_C_BINDING
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TpetraMap), intent(in) :: map
-
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = map%swigdata
-call swigc_TpetraWriter_writeMapFile(farg1, farg2)
-end subroutine
-
-subroutine TpetraWriter_writeSparseFile__SWIG_0(filename, pmatrix, matrixname, matrixdescription, debug)
-use, intrinsic :: ISO_C_BINDING
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TpetraCrsMatrix), intent(in) :: pmatrix
-
-character(kind=C_CHAR, len=*), target :: matrixname
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg3_chars
-character(kind=C_CHAR, len=*), target :: matrixdescription
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg4_chars
-logical, intent(in) :: debug
-
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-type(SwigArrayWrapper) :: farg3 
-type(SwigArrayWrapper) :: farg4 
-integer(C_INT) :: farg5 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = pmatrix%swigdata
-call SWIG_string_to_chararray(matrixname, farg3_chars, farg3)
-call SWIG_string_to_chararray(matrixdescription, farg4_chars, farg4)
-farg5 = SWIG_logical_to_int(debug)
-call swigc_TpetraWriter_writeSparseFile__SWIG_0(farg1, farg2, farg3, farg4, farg5)
-end subroutine
-
-subroutine TpetraWriter_writeSparseFile__SWIG_1(filename, pmatrix, matrixname, matrixdescription)
+subroutine TpetraWriter_writeSparseFile__SWIG_0(filename, pmatrix, matrixname, matrixdescription)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=*), target :: filename
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
@@ -11937,28 +11065,10 @@ call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pmatrix%swigdata
 call SWIG_string_to_chararray(matrixname, farg3_chars, farg3)
 call SWIG_string_to_chararray(matrixdescription, farg4_chars, farg4)
-call swigc_TpetraWriter_writeSparseFile__SWIG_1(farg1, farg2, farg3, farg4)
+call swigc_TpetraWriter_writeSparseFile__SWIG_0(farg1, farg2, farg3, farg4)
 end subroutine
 
-subroutine TpetraWriter_writeSparseFile__SWIG_2(filename, pmatrix, debug)
-use, intrinsic :: ISO_C_BINDING
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TpetraCrsMatrix), intent(in) :: pmatrix
-
-logical, intent(in) :: debug
-
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-integer(C_INT) :: farg3 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = pmatrix%swigdata
-farg3 = SWIG_logical_to_int(debug)
-call swigc_TpetraWriter_writeSparseFile__SWIG_2(farg1, farg2, farg3)
-end subroutine
-
-subroutine TpetraWriter_writeSparseFile__SWIG_3(filename, pmatrix)
+subroutine TpetraWriter_writeSparseFile__SWIG_1(filename, pmatrix)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=*), target :: filename
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
@@ -11969,36 +11079,10 @@ type(SwigClassWrapper) :: farg2
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pmatrix%swigdata
-call swigc_TpetraWriter_writeSparseFile__SWIG_3(farg1, farg2)
+call swigc_TpetraWriter_writeSparseFile__SWIG_1(farg1, farg2)
 end subroutine
 
-subroutine TpetraWriter_writeSparseGraphFile__SWIG_0(filename, pgraph, graphname, graphdescription, debug)
-use, intrinsic :: ISO_C_BINDING
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TpetraCrsGraph), intent(in) :: pgraph
-
-character(kind=C_CHAR, len=*), target :: graphname
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg3_chars
-character(kind=C_CHAR, len=*), target :: graphdescription
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg4_chars
-logical, intent(in) :: debug
-
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-type(SwigArrayWrapper) :: farg3 
-type(SwigArrayWrapper) :: farg4 
-integer(C_INT) :: farg5 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = pgraph%swigdata
-call SWIG_string_to_chararray(graphname, farg3_chars, farg3)
-call SWIG_string_to_chararray(graphdescription, farg4_chars, farg4)
-farg5 = SWIG_logical_to_int(debug)
-call swigc_TpetraWriter_writeSparseGraphFile__SWIG_0(farg1, farg2, farg3, farg4, farg5)
-end subroutine
-
-subroutine TpetraWriter_writeSparseGraphFile__SWIG_1(filename, pgraph, graphname, graphdescription)
+subroutine TpetraWriter_writeSparseGraphFile__SWIG_0(filename, pgraph, graphname, graphdescription)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=*), target :: filename
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
@@ -12018,28 +11102,10 @@ call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pgraph%swigdata
 call SWIG_string_to_chararray(graphname, farg3_chars, farg3)
 call SWIG_string_to_chararray(graphdescription, farg4_chars, farg4)
-call swigc_TpetraWriter_writeSparseGraphFile__SWIG_1(farg1, farg2, farg3, farg4)
+call swigc_TpetraWriter_writeSparseGraphFile__SWIG_0(farg1, farg2, farg3, farg4)
 end subroutine
 
-subroutine TpetraWriter_writeSparseGraphFile__SWIG_2(filename, pgraph, debug)
-use, intrinsic :: ISO_C_BINDING
-character(kind=C_CHAR, len=*), target :: filename
-character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-class(TpetraCrsGraph), intent(in) :: pgraph
-
-logical, intent(in) :: debug
-
-type(SwigArrayWrapper) :: farg1 
-type(SwigClassWrapper) :: farg2 
-integer(C_INT) :: farg3 
-
-call SWIG_string_to_chararray(filename, farg1_chars, farg1)
-farg2 = pgraph%swigdata
-farg3 = SWIG_logical_to_int(debug)
-call swigc_TpetraWriter_writeSparseGraphFile__SWIG_2(farg1, farg2, farg3)
-end subroutine
-
-subroutine TpetraWriter_writeSparseGraphFile__SWIG_3(filename, pgraph)
+subroutine TpetraWriter_writeSparseGraphFile__SWIG_1(filename, pgraph)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=*), target :: filename
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
@@ -12050,7 +11116,7 @@ type(SwigClassWrapper) :: farg2
 
 call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = pgraph%swigdata
-call swigc_TpetraWriter_writeSparseGraphFile__SWIG_3(farg1, farg2)
+call swigc_TpetraWriter_writeSparseGraphFile__SWIG_1(farg1, farg2)
 end subroutine
 
 subroutine TpetraWriter_writeDenseFile__SWIG_0(filename, x, matrixname, matrixdescription)
@@ -12089,17 +11155,6 @@ call SWIG_string_to_chararray(filename, farg1_chars, farg1)
 farg2 = x%swigdata
 call swigc_TpetraWriter_writeDenseFile__SWIG_1(farg1, farg2)
 end subroutine
-
-function new_TpetraWriter() &
-result(self)
-use, intrinsic :: ISO_C_BINDING
-type(TpetraWriter) :: self
-
-type(SwigClassWrapper) :: fresult 
-
-fresult = swigc_new_TpetraWriter()
-self%swigdata = fresult
-end function
 
 subroutine delete_TpetraWriter(self)
 use, intrinsic :: ISO_C_BINDING
