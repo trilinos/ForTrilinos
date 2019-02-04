@@ -621,9 +621,14 @@ integer(C_INT), pointer :: farg1_view
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 
+if (size(arg0) > 0) then
 farg1_view => arg0(1)
 farg1%data = c_loc(farg1_view)
 farg1%size = size(arg0)
+else
+farg1%data = c_null_ptr
+farg1%size = 0
+end if
 fresult = swigc_new_TeuchosArrayInt(farg1)
 self%swigdata = fresult
 end function
@@ -639,7 +644,11 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = self%swigdata
 fresult = swigc_TeuchosArrayInt_view(farg1)
+if (fresult%size > 0) then
 call c_f_pointer(fresult%data, swig_result, [fresult%size])
+else
+swig_result => NULL()
+endif
 end function
 
 subroutine delete_TeuchosArrayInt(self)
@@ -672,9 +681,14 @@ real(C_DOUBLE), pointer :: farg1_view
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 
+if (size(arg0) > 0) then
 farg1_view => arg0(1)
 farg1%data = c_loc(farg1_view)
 farg1%size = size(arg0)
+else
+farg1%data = c_null_ptr
+farg1%size = 0
+end if
 fresult = swigc_new_TeuchosArrayDbl(farg1)
 self%swigdata = fresult
 end function
@@ -690,7 +704,11 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = self%swigdata
 fresult = swigc_TeuchosArrayDbl_view(farg1)
+if (fresult%size > 0) then
 call c_f_pointer(fresult%data, swig_result, [fresult%size])
+else
+swig_result => NULL()
+endif
 end function
 
 subroutine delete_TeuchosArrayDbl(self)
@@ -723,9 +741,14 @@ integer(C_LONG_LONG), pointer :: farg1_view
 type(SwigClassWrapper) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 
+if (size(arg0) > 0) then
 farg1_view => arg0(1)
 farg1%data = c_loc(farg1_view)
 farg1%size = size(arg0)
+else
+farg1%data = c_null_ptr
+farg1%size = 0
+end if
 fresult = swigc_new_TeuchosArrayLongLong(farg1)
 self%swigdata = fresult
 end function
@@ -741,7 +764,11 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = self%swigdata
 fresult = swigc_TeuchosArrayLongLong_view(farg1)
+if (fresult%size > 0) then
 call c_f_pointer(fresult%data, swig_result, [fresult%size])
+else
+swig_result => NULL()
+endif
 end function
 
 subroutine delete_TeuchosArrayLongLong(self)
@@ -1100,9 +1127,14 @@ type(SwigArrayWrapper) :: farg3
 
 farg1 = self%swigdata
 call SWIG_string_to_chararray(name, farg2_chars, farg2)
+if (size(value) > 0) then
 farg3_view => value(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(value)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
 call swigc_ParameterList_set__SWIG_6(farg1, farg2, farg3)
 end subroutine
 
@@ -1121,9 +1153,14 @@ type(SwigArrayWrapper) :: farg3
 
 farg1 = self%swigdata
 call SWIG_string_to_chararray(name, farg2_chars, farg2)
+if (size(value) > 0) then
 farg3_view => value(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(value)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
 call swigc_ParameterList_set__SWIG_7(farg1, farg2, farg3)
 end subroutine
 
@@ -1142,9 +1179,14 @@ type(SwigArrayWrapper) :: farg3
 
 farg1 = self%swigdata
 call SWIG_string_to_chararray(name, farg2_chars, farg2)
+if (size(value) > 0) then
 farg3_view => value(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(value)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
 call swigc_ParameterList_set__SWIG_8(farg1, farg2, farg3)
 end subroutine
 
@@ -1253,7 +1295,7 @@ subroutine SWIG_chararray_to_string(wrap, string)
   allocate(character(kind=C_CHAR, len=wrap%size) :: string)
   do i=1, wrap%size
     string(i:i) = chars(i)
-  enddo
+  end do
 end subroutine
 
 function swigf_ParameterList_get_string(self, name) &
@@ -1291,7 +1333,11 @@ type(SwigArrayWrapper) :: farg2
 farg1 = self%swigdata
 call SWIG_string_to_chararray(name, farg2_chars, farg2)
 fresult = swigc_ParameterList_get_arr_real(farg1, farg2)
+if (fresult%size > 0) then
 call c_f_pointer(fresult%data, swig_result, [fresult%size])
+else
+swig_result => NULL()
+endif
 end function
 
 function swigf_ParameterList_get_arr_integer(self, name) &
@@ -1310,7 +1356,11 @@ type(SwigArrayWrapper) :: farg2
 farg1 = self%swigdata
 call SWIG_string_to_chararray(name, farg2_chars, farg2)
 fresult = swigc_ParameterList_get_arr_integer(farg1, farg2)
+if (fresult%size > 0) then
 call c_f_pointer(fresult%data, swig_result, [fresult%size])
+else
+swig_result => NULL()
+endif
 end function
 
 function swigf_ParameterList_get_arr_longlong(self, name) &
@@ -1329,7 +1379,11 @@ type(SwigArrayWrapper) :: farg2
 farg1 = self%swigdata
 call SWIG_string_to_chararray(name, farg2_chars, farg2)
 fresult = swigc_ParameterList_get_arr_longlong(farg1, farg2)
+if (fresult%size > 0) then
 call c_f_pointer(fresult%data, swig_result, [fresult%size])
+else
+swig_result => NULL()
+endif
 end function
 
 subroutine delete_ParameterList(self)
