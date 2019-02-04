@@ -60,7 +60,7 @@ fi
 # build
 make -j"${NPROC}" -i
 # run the unit tests
-ctest -j"${NPROC}" --no-compress-output -T Test
+ctest -j"${NPROC}" --no-compress-output --output-on-failure -T Test
 # upload code coverage only once
 if [ "${BUILD_TYPE}" == "gcc54-mpi"  ]
 then
