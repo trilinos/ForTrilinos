@@ -128,9 +128,9 @@ namespace ForTrilinos {
     status_ = SOLVER_SETUP;
   }
 
-  size_t TrilinosEigenSolver::solve(std::pair<SC*, size_t> eigenValues,
-                                    Teuchos::RCP<MultiVector>& eigenVectors,
-                                    std::pair<int*, size_t> eigenIndex) const {
+  int TrilinosEigenSolver::solve(std::pair<SC*, size_t> eigenValues,
+                                 Teuchos::RCP<MultiVector>& eigenVectors,
+                                 std::pair<int*, size_t> eigenIndex) const {
     using Teuchos::RCP;
     using Teuchos::ArrayRCP;
 

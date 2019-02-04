@@ -27,8 +27,7 @@ program main
   integer(global_size_type) :: n_global
   integer:: i, n
   integer(size_type) :: max_entries_per_row
-  integer(size_type) :: num_eigen = 1, num_found_eigen
-  integer(int_type) :: num_eigen_int
+  integer :: num_eigen = 1, num_found_eigen
   integer(int_type) :: row_nnz
 
   integer :: ierr
@@ -70,8 +69,7 @@ program main
   plist = ParameterList("Anasazi"); FORTRILINOS_CHECK_IERR()
   call load_from_xml(plist, "davidson.xml"); FORTRILINOS_CHECK_IERR()
 
-  num_eigen_int = num_eigen
-  call plist%set("NumEV", num_eigen_int); FORTRILINOS_CHECK_IERR()
+  call plist%set("NumEV", num_eigen); FORTRILINOS_CHECK_IERR()
 
   ! ------------------------------------------------------------------
   ! Step 0: Construct tri-diagonal matrix

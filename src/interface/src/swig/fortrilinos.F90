@@ -300,7 +300,7 @@ type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2
 type(SwigClassWrapper) :: farg3
 type(SwigArrayWrapper) :: farg4
-integer(C_SIZE_T) :: fresult
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_TrilinosEigenSolver_finalize(farg1) &
@@ -779,7 +779,7 @@ end subroutine
 function swigf_TrilinosEigenSolver_solve(self, eigenvalues, eigenvectors, eigenindex) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_SIZE_T) :: swig_result
+integer :: swig_result
 class(TrilinosEigenSolver), intent(in) :: self
 
 real(C_DOUBLE), dimension(:), target :: eigenvalues
@@ -789,7 +789,7 @@ class(TpetraMultiVector), intent(inout) :: eigenvectors
 integer(C_INT), dimension(:), target :: eigenindex
 integer(C_INT), pointer :: farg4_view
 
-integer(C_SIZE_T) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
@@ -804,7 +804,7 @@ farg4_view => eigenindex(1)
 farg4%data = c_loc(farg4_view)
 farg4%size = size(eigenindex)
 fresult = swigc_TrilinosEigenSolver_solve(farg1, farg2, farg3, farg4)
-swig_result = fresult
+swig_result = int(fresult)
 end function
 
 subroutine swigf_TrilinosEigenSolver_finalize(self)
