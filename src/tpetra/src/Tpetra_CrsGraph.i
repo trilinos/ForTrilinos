@@ -79,7 +79,13 @@
 
 %apply const Teuchos::ArrayView<const int>& INDEX { const Teuchos::ArrayView<const LO>& indices }
 
-%apply const Teuchos::ArrayView<int>& INDEX { const Teuchos::ArrayView<LO>& indices }
+%apply const Teuchos::ArrayView<int>& INDEX {
+    const Teuchos::ArrayView<LO>& indices }
+
+%apply const Teuchos::ArrayRCP<const int>& INDEX {
+    const Teuchos::ArrayRCP<size_t>& rowPointers,
+    const Teuchos::ArrayRCP<int>& columnIndices
+}
 
 %apply int { size_t getNumEntriesInLocalRow,
              size_t getNumAllocatedEntriesInLocalRow}
@@ -88,33 +94,6 @@
 // Make interface more Fortran friendly
 // =======================================================================
 %extend Tpetra::CrsGraph<LO,GO,NO> {
-    CrsGraph(const Teuchos::RCP< const map_type > &rowMap,
-        Teuchos::ArrayView<const size_t> numEntPerRow,
-        const ProfileType pftype=DynamicProfile,
-        const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null) {
-      return new Tpetra::CrsGraph<LO,GO,NO>(rowMap, arcpFromArrayView(numEntPerRow), pftype, params);
-    }
-    CrsGraph(const Teuchos::RCP< const map_type > &rowMap,
-        const Teuchos::RCP< const map_type > &colMap,
-        Teuchos::ArrayView<const size_t> numEntPerRow,
-        const ProfileType pftype=DynamicProfile,
-        const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null) {
-      return new Tpetra::CrsGraph<LO,GO,NO>(rowMap, colMap, arcpFromArrayView(numEntPerRow), pftype, params);
-    }
-    CrsGraph(const Teuchos::RCP< const map_type > &rowMap,
-        const Teuchos::RCP< const map_type > &colMap,
-        Teuchos::ArrayView<size_t> rowPointers,
-        Teuchos::ArrayView<LO> columnIndices,
-        const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null) {
-      Teuchos::Array<size_t> rowPointersArray(rowPointers.size());
-      for (size_t i = 0; i < rowPointers.size(); i++)
-        rowPointersArray[i] = rowPointers[i]-1;
-      Teuchos::Array<LO> columnIndicesArray(columnIndices.size());
-      for (size_t i = 0; i < columnIndices.size(); i++)
-        columnIndicesArray[i] = columnIndices[i]-1;
-      return new Tpetra::CrsGraph<LO,GO,NO>(rowMap, colMap,
-        Teuchos::arcpFromArray(rowPointersArray), Teuchos::arcpFromArray(columnIndicesArray), params);
-    }
     // NOTE: This is semantically different function from Tpetra. Here, we *require* that user already allocated the arrays to store the data
     void getNodeRowPtrs(Teuchos::ArrayView<size_t> rowPointers) const {
       auto rowPointersArrayRCP = $self->getNodeRowPtrs();
@@ -135,23 +114,9 @@
 // Add doImport and doExport
 %tpetra_extend_with_import_export(Tpetra::CrsGraph<LO,GO,NO>)
 
-%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap,
-        const Teuchos::ArrayRCP< const size_t > &numEntPerRow,
-        const ProfileType pftype=DynamicProfile,
-        const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);
-%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP<const map_type>& rowMap,                                                                                    const Teuchos::RCP<const map_type>& colMap,
-        const Teuchos::ArrayRCP<const size_t>& numEntPerRow,
-        const ProfileType pftype = DynamicProfile,
-        const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);
-%ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap,
-        const Teuchos::RCP< const map_type > &colMap,
-        const Teuchos::ArrayRCP< size_t > &rowPointers,
-        const Teuchos::ArrayRCP< LocalOrdinal > &columnIndices,
-        const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);    // needs Teuchos::ArrayRCP; ±1 issue
 %ignore Tpetra::CrsGraph::getNodeRowPtrs() const;
 %ignore Tpetra::CrsGraph::getNodePackedIndices() const;
 %ignore Tpetra::CrsGraph::getLocalDiagOffsets;
-%ignore Tpetra::CrsGraph::setAllIndices (const Teuchos::ArrayRCP< size_t > &rowPointers, const Teuchos::ArrayRCP< LocalOrdinal > &columnIndices);
 %ignore Tpetra::CrsGraph::setAllIndices (const typename local_graph_type::row_map_type &rowPointers, const typename local_graph_type::entries_type::non_const_type &columnIndices);
 
 

@@ -51,6 +51,7 @@ typedef int Teuchos_Ordinal;
 %include "Teuchos_RCP.i"
 
 %include "Teuchos_ArrayView.i"
+%include "Teuchos_ArrayRCP.i"
 %include "Teuchos_Array.i"
 %include "Teuchos_Comm.i"
 %include "Teuchos_ParameterList.i"

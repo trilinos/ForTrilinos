@@ -88,6 +88,13 @@
 
 %apply const Teuchos::ArrayView<int>& INDEX { const Teuchos::ArrayView<LO>& colInds }
 
+%apply const Teuchos::ArrayRCP<const int>& INDEX {
+    const Teuchos::ArrayRCP<size_t>& rowPointers,
+    const Teuchos::ArrayRCP<int>& columnIndices,
+    const Teuchos::ArrayRCP<size_t>& ptr,
+    const Teuchos::ArrayRCP<int>& ind
+}
+
 // Don't use atomics for value summation
 %typemap(in,numinputs=0) bool atomic {
   $1 = false;
@@ -97,31 +104,6 @@
 // Make interface more Fortran friendly
 // =======================================================================
 %extend Tpetra::CrsMatrix<SC,LO,GO,NO> {
-    CrsMatrix(const Teuchos::RCP<const map_type>& rowMap, Teuchos::ArrayView<const size_t> NumEntriesPerRowToAlloc, ProfileType pftype = DynamicProfile, const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null) {
-      return new Tpetra::CrsMatrix<SC,LO,GO,NO>(rowMap, arcpFromArrayView(NumEntriesPerRowToAlloc), pftype, params);
-    }
-    CrsMatrix(const Teuchos::RCP<const map_type>& rowMap, const Teuchos::RCP<const map_type>& colMap, Teuchos::ArrayView<const size_t> NumEntriesPerRowToAlloc, ProfileType pftype = DynamicProfile, const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null) {
-      return new Tpetra::CrsMatrix<SC,LO,GO,NO>(rowMap, colMap, arcpFromArrayView(NumEntriesPerRowToAlloc), pftype, params);
-    }
-    CrsMatrix (const Teuchos::RCP<const map_type>& rowMap, const Teuchos::RCP<const map_type>& colMap, Teuchos::ArrayView<size_t> rowPointers, Teuchos::ArrayView<LO> columnIndices, Teuchos::ArrayView<SC> values, const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null) {
-      Teuchos::ArrayRCP<size_t> rowPointersArrayRCP(rowPointers.size());
-      for (int i = 0; i < rowPointersArrayRCP.size(); i++)
-        rowPointersArrayRCP[i] = rowPointers[i]-1;
-      Teuchos::ArrayRCP<LO> columnIndicesArrayRCP(columnIndices.size());
-      for (int i = 0; i < columnIndicesArrayRCP.size(); i++)
-        columnIndicesArrayRCP[i] = columnIndices[i]-1;
-      return new Tpetra::CrsMatrix<SC,LO,GO,NO>(rowMap, colMap, rowPointersArrayRCP, columnIndicesArrayRCP, arcpFromArrayView(values), params);
-    }
-    void setAllValues(Teuchos::ArrayView<size_t> ptr, Teuchos::ArrayView<LO> ind, Teuchos::ArrayView<SC> val) {
-      Teuchos::ArrayRCP<size_t> ptrArrayRCP(ptr.size());
-      for (int i = 0; i < ptrArrayRCP.size(); i++)
-        ptrArrayRCP[i] = ptr[i]-1;
-      Teuchos::ArrayRCP<LO> indArrayRCP(ind.size());
-      for (int i = 0; i < indArrayRCP.size(); i++)
-        indArrayRCP[i] = ind[i]-1;
-      Teuchos::ArrayRCP<SC> valArrayRCP(val.getRawPtr(), 0, val.size(), false/*has_ownership*/);
-      $self->setAllValues(arcpFromArrayView(ptr), arcpFromArrayView(ind), arcpFromArrayView(val));
-    }
     // NOTE: This is semantically different function from Tpetra. Here, we *require* that user already allocated the arrays to store the data
     void getAllValues(Teuchos::ArrayView<size_t> rowPointers, Teuchos::ArrayView<LO> columnIndices, Teuchos::ArrayView<SC> values) const {
       Teuchos::ArrayRCP<const size_t> rowPointersArrayRCP;
@@ -145,26 +127,9 @@
 // Add doImport and doExport
 %tpetra_extend_with_import_export(Tpetra::CrsGraph<LO,GO,NO>)
 
-%ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap,
-               const Teuchos::ArrayRCP<const size_t>& NumEntriesPerRowToAlloc,
-               ProfileType pftype = DynamicProfile,
-               const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);         // needs ArrayRCP
-%ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap,
-               const Teuchos::RCP<const map_type>& colMap,
-               const Teuchos::ArrayRCP<const size_t>& NumEntriesPerRowToAlloc,
-               ProfileType pftype = DynamicProfile,
-               const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);         // needs ArrayRCP
-%ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap,
-               const Teuchos::RCP<const map_type>& colMap,
-               const Teuchos::ArrayRCP<size_t>& rowPointers,
-               const Teuchos::ArrayRCP<LocalOrdinal>& columnIndices,
-               const Teuchos::ArrayRCP<Scalar>& values,
-               const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);         // needs Teuchos::ArrayRCP
-%ignore Tpetra::CrsMatrix::setAllValues(const Teuchos::ArrayRCP< size_t > &ptr, const Teuchos::ArrayRCP< LocalOrdinal > &ind, const Teuchos::ArrayRCP< Scalar > &val);
 %ignore Tpetra::CrsMatrix::getAllValues(Teuchos::ArrayRCP< const size_t > &rowPointers, Teuchos::ArrayRCP< const LocalOrdinal > &columnIndices, Teuchos::ArrayRCP< const Scalar > &values) const;
 %ignore Tpetra::CrsMatrix::getLocalRowViewRaw(const LocalOrdinal lclRow, LocalOrdinal &numEnt, const LocalOrdinal *&lclColInds, const Scalar *&vals) const;
 %ignore Tpetra::CrsMatrix::getAllValues (Teuchos::ArrayRCP<const size_t>& rowPointers, Teuchos::ArrayRCP<const LocalOrdinal>& columnIndices, Teuchos::ArrayRCP<const Scalar>& values) const;
-%ignore Tpetra::CrsMatrix::getLocalDiagOffsets;             // needs Teuchos::ArrayRCP
 %ignore Tpetra::CrsMatrix::sumIntoLocalValues (const LocalOrdinal localRow, const typename UnmanagedView< LocalIndicesViewType >::type &inputInds, const typename UnmanagedView< ImplScalarViewType >::type &inputVals, const bool atomic=useAtomicUpdatesByDefault) const;
 %ignore Tpetra::CrsMatrix::sumIntoLocalValues (const LocalOrdinal localRow, const LocalOrdinal numEnt, const Scalar vals[], const LocalOrdinal cols[], const bool atomic=useAtomicUpdatesByDefault);
 

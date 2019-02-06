@@ -89,6 +89,20 @@ public :: norm_type
   $1 = &tmpview;
 }
 
+// *Input* fortran indices as an RCP
+%typemap(in, fragment="<type_traits>", noblock=1) const Teuchos::ArrayRCP<const int>& INDEX
+    ($1_basetype::value_type* tmpbegin,
+     Teuchos::ArrayRCP<std::remove_const<$1_basetype::value_type>::type> tmparr,
+     $1_basetype tmprcp)
+{
+  tmpbegin = static_cast<$1_basetype::value_type*>($input->data);
+  tmparr.resize($input->size);
+  for (int i = 0; i < tmparr.size(); i++)
+    tmparr[i] = tmpbegin[i] - 1;
+  tmprcp = tmparr;
+  $1 = &tmprcp;
+}
+
 // Passing a *mutable* array view by const reference: increment the result
 // before returning
 %typemap(argout, noblock=1) const Teuchos::ArrayView<int>& INDEX
