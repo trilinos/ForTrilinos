@@ -89,12 +89,12 @@ public :: norm_type
   $1 = &tmpview;
 }
 
-// *Return* by reference fortran indices. This modifies the return values after
-// calling the wrapped C++ function.
-%typemap(freearg, noblock=1) const Teuchos::ArrayView<int>& INDEX
+// Passing a *mutable* array view by const reference: increment the result
+// before returning
+%typemap(argout, noblock=1) const Teuchos::ArrayView<int>& INDEX
 {
-  for (int i = 0; i < tmparr$argnum.size(); i++)
-    tmparr$argnum[i] += 1;
+  for (int i = 0; i < tmpview$argnum.size(); i++)
+    tmpview$argnum[i] += 1;
 }
 
 // =======================================================================

@@ -475,12 +475,6 @@ public :: init_ForTpetraOperator
  type, public :: SWIGTYPE_KokkosSparse__CrsMatrixT_Tpetra__CrsMatrixT_doub1E12GN
   type(SwigClassWrapper), public :: swigdata
  end type
- type, public :: SWIGTYPE_Teuchos__ArrayViewT_long_long_const_t
-  type(SwigClassWrapper), public :: swigdata
- end type
- type, public :: SWIGTYPE_Teuchos__ArrayViewT_double_const_t
-  type(SwigClassWrapper), public :: swigdata
- end type
  ! class Tpetra::CrsMatrix< SC,LO,GO,NO >
  type, public :: TpetraCrsMatrix
   type(SwigClassWrapper), public :: swigdata
@@ -3638,10 +3632,11 @@ subroutine swigc_TpetraCrsMatrix_getGlobalRowView(farg1, farg2, farg3, farg4) &
 bind(C, name="_wrap_TpetraCrsMatrix_getGlobalRowView")
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
+import :: swigarraywrapper
 type(SwigClassWrapper) :: farg1
 integer(C_LONG_LONG), intent(in) :: farg2
-type(SwigClassWrapper) :: farg3
-type(SwigClassWrapper) :: farg4
+type(SwigArrayWrapper) :: farg3
+type(SwigArrayWrapper) :: farg4
 end subroutine
 
 subroutine swigc_TpetraCrsMatrix_apply__SWIG_0(farg1, farg2, farg3, farg4, farg5, farg6) &
@@ -4374,7 +4369,7 @@ subroutine SWIG_chararray_to_string(wrap, string)
   allocate(character(kind=C_CHAR, len=wrap%size) :: string)
   do i=1, wrap%size
     string(i:i) = chars(i)
-  enddo
+  end do
 end subroutine
 
 function combineModeToString(combinemode) &
@@ -4516,9 +4511,14 @@ type(SwigClassWrapper) :: farg4
 type(SwigClassWrapper) :: farg5 
 
 farg1 = numglobalelements
+if (size(indexlist) > 0) then
 farg2_view => indexlist(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(indexlist)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 farg4 = comm%swigdata
 farg5 = node%swigdata
 fresult = swigc_new_TpetraMap__SWIG_5(farg1, farg2, farg4, farg5)
@@ -4540,9 +4540,14 @@ type(SwigArrayWrapper) :: farg2
 type(SwigClassWrapper) :: farg4 
 
 farg1 = numglobalelements
+if (size(indexlist) > 0) then
 farg2_view => indexlist(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(indexlist)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 farg4 = comm%swigdata
 fresult = swigc_new_TpetraMap__SWIG_6(farg1, farg2, farg4)
 self%swigdata = fresult
@@ -4768,15 +4773,30 @@ type(SwigArrayWrapper) :: farg3
 type(SwigArrayWrapper) :: farg4 
 
 farg1 = self%swigdata
+if (size(gidlist) > 0) then
 farg2_view => gidlist(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(gidlist)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
+if (size(nodeidlist) > 0) then
 farg3_view => nodeidlist(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(nodeidlist)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
+if (size(lidlist) > 0) then
 farg4_view => lidlist(1)
 farg4%data = c_loc(farg4_view)
 farg4%size = size(lidlist)
+else
+farg4%data = c_null_ptr
+farg4%size = 0
+end if
 fresult = swigc_TpetraMap_getRemoteIndexList__SWIG_0(farg1, farg2, farg3, farg4)
 swig_result = fresult
 end function
@@ -4798,12 +4818,22 @@ type(SwigArrayWrapper) :: farg2
 type(SwigArrayWrapper) :: farg3 
 
 farg1 = self%swigdata
+if (size(gidlist) > 0) then
 farg2_view => gidlist(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(gidlist)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
+if (size(nodeidlist) > 0) then
 farg3_view => nodeidlist(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(nodeidlist)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
 fresult = swigc_TpetraMap_getRemoteIndexList__SWIG_1(farg1, farg2, farg3)
 swig_result = fresult
 end function
@@ -4819,7 +4849,11 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = self%swigdata
 fresult = swigc_TpetraMap_getNodeElementList(farg1)
+if (fresult%size > 0) then
 call c_f_pointer(fresult%data, swig_result, [fresult%size])
+else
+swig_result => NULL()
+endif
 end function
 
 function swigf_TpetraMap_isNodeLocalElement(self, localindex) &
@@ -5630,9 +5664,14 @@ integer(C_SIZE_T) :: farg3
 integer(C_SIZE_T) :: farg4 
 
 farg1 = map%swigdata
+if (size(a) > 0) then
 farg2_view => a(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(a)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 farg3 = lda
 farg4 = numvectors
 fresult = swigc_new_TpetraMultiVector__SWIG_5(farg1, farg2, farg3, farg4)
@@ -5912,9 +5951,14 @@ type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
+if (size(cols) > 0) then
 farg2_view => cols(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(cols)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 fresult = swigc_TpetraMultiVector_subCopy(farg1, farg2)
 swig_result%swigdata = fresult
 end function
@@ -5933,9 +5977,14 @@ type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
+if (size(cols) > 0) then
 farg2_view => cols(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(cols)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 fresult = swigc_TpetraMultiVector_subView(farg1, farg2)
 swig_result%swigdata = fresult
 end function
@@ -5954,9 +6003,14 @@ type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
+if (size(cols) > 0) then
 farg2_view => cols(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(cols)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 fresult = swigc_TpetraMultiVector_subViewNonConst(farg1, farg2)
 swig_result%swigdata = fresult
 end function
@@ -6020,7 +6074,11 @@ integer(C_SIZE_T) :: farg2
 farg1 = self%swigdata
 farg2 = j
 fresult = swigc_TpetraMultiVector_getData(farg1, farg2)
+if (fresult%size > 0) then
 call c_f_pointer(fresult%data, swig_result, [fresult%size])
+else
+swig_result => NULL()
+endif
 end function
 
 function swigf_TpetraMultiVector_getDataNonConst(self, j) &
@@ -6038,7 +6096,11 @@ integer(C_SIZE_T) :: farg2
 farg1 = self%swigdata
 farg2 = j
 fresult = swigc_TpetraMultiVector_getDataNonConst(farg1, farg2)
+if (fresult%size > 0) then
 call c_f_pointer(fresult%data, swig_result, [fresult%size])
+else
+swig_result => NULL()
+endif
 end function
 
 subroutine swigf_TpetraMultiVector_get1dCopy(self, a, lda)
@@ -6054,9 +6116,14 @@ type(SwigArrayWrapper) :: farg2
 integer(C_SIZE_T) :: farg3 
 
 farg1 = self%swigdata
+if (size(a) > 0) then
 farg2_view => a(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(a)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 farg3 = lda
 call swigc_TpetraMultiVector_get1dCopy(farg1, farg2, farg3)
 end subroutine
@@ -6072,7 +6139,11 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = self%swigdata
 fresult = swigc_TpetraMultiVector_get1dView(farg1)
+if (fresult%size > 0) then
 call c_f_pointer(fresult%data, swig_result, [fresult%size])
+else
+swig_result => NULL()
+endif
 end function
 
 function swigf_TpetraMultiVector_get1dViewNonConst(self) &
@@ -6086,7 +6157,11 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = self%swigdata
 fresult = swigc_TpetraMultiVector_get1dViewNonConst(farg1)
+if (fresult%size > 0) then
 call c_f_pointer(fresult%data, swig_result, [fresult%size])
+else
+swig_result => NULL()
+endif
 end function
 
 subroutine swigf_TpetraMultiVector_sync_host(self)
@@ -6172,9 +6247,14 @@ type(SwigArrayWrapper) :: farg3
 
 farg1 = self%swigdata
 farg2 = a%swigdata
+if (size(dots) > 0) then
 farg3_view => dots(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(dots)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
 call swigc_TpetraMultiVector_dot__SWIG_0(farg1, farg2, farg3)
 end subroutine
 
@@ -6249,9 +6329,14 @@ type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
+if (size(alpha) > 0) then
 farg2_view => alpha(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(alpha)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 call swigc_TpetraMultiVector_scale__SWIG_1(farg1, farg2)
 end subroutine
 
@@ -6346,9 +6431,14 @@ type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
+if (size(norms) > 0) then
 farg2_view => norms(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(norms)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 call swigc_TpetraMultiVector_norm1__SWIG_3(farg1, farg2)
 end subroutine
 
@@ -6377,9 +6467,14 @@ type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
+if (size(norms) > 0) then
 farg2_view => norms(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(norms)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 call swigc_TpetraMultiVector_norm2__SWIG_3(farg1, farg2)
 end subroutine
 
@@ -6408,9 +6503,14 @@ type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
+if (size(norms) > 0) then
 farg2_view => norms(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(norms)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 call swigc_TpetraMultiVector_normInf__SWIG_3(farg1, farg2)
 end subroutine
 
@@ -6425,9 +6525,14 @@ type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
+if (size(means) > 0) then
 farg2_view => means(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(means)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 call swigc_TpetraMultiVector_meanValue(farg1, farg2)
 end subroutine
 
@@ -7321,9 +7426,14 @@ type(SwigArrayWrapper) :: farg3
 
 farg1 = self%swigdata
 farg2 = globalrow
+if (size(indices) > 0) then
 farg3_view => indices(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(indices)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
 call swigc_TpetraCrsGraph_insertGlobalIndices__SWIG_0(farg1, farg2, farg3)
 end subroutine
 
@@ -7361,9 +7471,14 @@ type(SwigArrayWrapper) :: farg3
 
 farg1 = self%swigdata
 farg2 = int(localrow, C_INT)
+if (size(indices) > 0) then
 farg3_view => indices(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(indices)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
 call swigc_TpetraCrsGraph_insertLocalIndices(farg1, farg2, farg3)
 end subroutine
 
@@ -7999,9 +8114,14 @@ type(C_PTR) :: farg4
 
 farg1 = self%swigdata
 farg2 = globalrow
+if (size(indices) > 0) then
 farg3_view => indices(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(indices)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
 farg4 = c_loc(numindices)
 call swigc_TpetraCrsGraph_getGlobalRowCopy(farg1, farg2, farg3, farg4)
 end subroutine
@@ -8022,9 +8142,14 @@ type(C_PTR) :: farg4
 
 farg1 = self%swigdata
 farg2 = int(localrow, C_INT)
+if (size(indices) > 0) then
 farg3_view => indices(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(indices)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
 farg4 = c_loc(numindices)
 call swigc_TpetraCrsGraph_getLocalRowCopy(farg1, farg2, farg3, farg4)
 end subroutine
@@ -8426,9 +8551,14 @@ integer(C_INT) :: farg3
 type(SwigClassWrapper) :: farg4 
 
 farg1 = rowmap%swigdata
+if (size(numentperrow) > 0) then
 farg2_view => numentperrow(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(numentperrow)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 farg3 = pftype
 farg4 = params%swigdata
 fresult = swigc_new_TpetraCrsGraph__SWIG_6(farg1, farg2, farg3, farg4)
@@ -8451,9 +8581,14 @@ type(SwigArrayWrapper) :: farg2
 integer(C_INT) :: farg3 
 
 farg1 = rowmap%swigdata
+if (size(numentperrow) > 0) then
 farg2_view => numentperrow(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(numentperrow)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 farg3 = pftype
 fresult = swigc_new_TpetraCrsGraph__SWIG_7(farg1, farg2, farg3)
 self%swigdata = fresult
@@ -8473,9 +8608,14 @@ type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = rowmap%swigdata
+if (size(numentperrow) > 0) then
 farg2_view => numentperrow(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(numentperrow)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 fresult = swigc_new_TpetraCrsGraph__SWIG_8(farg1, farg2)
 self%swigdata = fresult
 end function
@@ -8502,9 +8642,14 @@ type(SwigClassWrapper) :: farg5
 
 farg1 = rowmap%swigdata
 farg2 = colmap%swigdata
+if (size(numentperrow) > 0) then
 farg3_view => numentperrow(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(numentperrow)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
 farg4 = pftype
 farg5 = params%swigdata
 fresult = swigc_new_TpetraCrsGraph__SWIG_9(farg1, farg2, farg3, farg4, farg5)
@@ -8531,9 +8676,14 @@ integer(C_INT) :: farg4
 
 farg1 = rowmap%swigdata
 farg2 = colmap%swigdata
+if (size(numentperrow) > 0) then
 farg3_view => numentperrow(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(numentperrow)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
 farg4 = pftype
 fresult = swigc_new_TpetraCrsGraph__SWIG_10(farg1, farg2, farg3, farg4)
 self%swigdata = fresult
@@ -8557,9 +8707,14 @@ type(SwigArrayWrapper) :: farg3
 
 farg1 = rowmap%swigdata
 farg2 = colmap%swigdata
+if (size(numentperrow) > 0) then
 farg3_view => numentperrow(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(numentperrow)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
 fresult = swigc_new_TpetraCrsGraph__SWIG_11(farg1, farg2, farg3)
 self%swigdata = fresult
 end function
@@ -8587,12 +8742,22 @@ type(SwigClassWrapper) :: farg5
 
 farg1 = rowmap%swigdata
 farg2 = colmap%swigdata
+if (size(rowpointers) > 0) then
 farg3_view => rowpointers(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(rowpointers)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
+if (size(columnindices) > 0) then
 farg4_view => columnindices(1)
 farg4%data = c_loc(farg4_view)
 farg4%size = size(columnindices)
+else
+farg4%data = c_null_ptr
+farg4%size = 0
+end if
 farg5 = params%swigdata
 fresult = swigc_new_TpetraCrsGraph__SWIG_12(farg1, farg2, farg3, farg4, farg5)
 self%swigdata = fresult
@@ -8619,12 +8784,22 @@ type(SwigArrayWrapper) :: farg4
 
 farg1 = rowmap%swigdata
 farg2 = colmap%swigdata
+if (size(rowpointers) > 0) then
 farg3_view => rowpointers(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(rowpointers)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
+if (size(columnindices) > 0) then
 farg4_view => columnindices(1)
 farg4%data = c_loc(farg4_view)
 farg4%size = size(columnindices)
+else
+farg4%data = c_null_ptr
+farg4%size = 0
+end if
 fresult = swigc_new_TpetraCrsGraph__SWIG_13(farg1, farg2, farg3, farg4)
 self%swigdata = fresult
 end function
@@ -8640,9 +8815,14 @@ type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
+if (size(rowpointers) > 0) then
 farg2_view => rowpointers(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(rowpointers)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 call swigc_TpetraCrsGraph_getNodeRowPtrs(farg1, farg2)
 end subroutine
 
@@ -8657,9 +8837,14 @@ type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = self%swigdata
+if (size(columnindices) > 0) then
 farg2_view => columnindices(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(columnindices)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 call swigc_TpetraCrsGraph_getNodePackedIndices(farg1, farg2)
 end subroutine
 
@@ -8998,12 +9183,22 @@ type(SwigArrayWrapper) :: farg4
 
 farg1 = self%swigdata
 farg2 = globalrow
+if (size(cols) > 0) then
 farg3_view => cols(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(cols)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
+if (size(vals) > 0) then
 farg4_view => vals(1)
 farg4%data = c_loc(farg4_view)
 farg4%size = size(vals)
+else
+farg4%data = c_null_ptr
+farg4%size = 0
+end if
 call swigc_TpetraCrsMatrix_insertGlobalValues(farg1, farg2, farg3, farg4)
 end subroutine
 
@@ -9024,12 +9219,22 @@ type(SwigArrayWrapper) :: farg4
 
 farg1 = self%swigdata
 farg2 = int(localrow, C_INT)
+if (size(cols) > 0) then
 farg3_view => cols(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(cols)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
+if (size(vals) > 0) then
 farg4_view => vals(1)
 farg4%data = c_loc(farg4_view)
 farg4%size = size(vals)
+else
+farg4%data = c_null_ptr
+farg4%size = 0
+end if
 call swigc_TpetraCrsMatrix_insertLocalValues(farg1, farg2, farg3, farg4)
 end subroutine
 
@@ -9053,12 +9258,22 @@ type(SwigArrayWrapper) :: farg4
 
 farg1 = self%swigdata
 farg2 = globalrow
+if (size(cols) > 0) then
 farg3_view => cols(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(cols)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
+if (size(vals) > 0) then
 farg4_view => vals(1)
 farg4%data = c_loc(farg4_view)
 farg4%size = size(vals)
+else
+farg4%data = c_null_ptr
+farg4%size = 0
+end if
 fresult = swigc_TpetraCrsMatrix_replaceGlobalValues(farg1, farg2, farg3, farg4)
 swig_result = int(fresult)
 end function
@@ -9083,12 +9298,22 @@ type(SwigArrayWrapper) :: farg4
 
 farg1 = self%swigdata
 farg2 = int(localrow, C_INT)
+if (size(cols) > 0) then
 farg3_view => cols(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(cols)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
+if (size(vals) > 0) then
 farg4_view => vals(1)
 farg4%data = c_loc(farg4_view)
 farg4%size = size(vals)
+else
+farg4%data = c_null_ptr
+farg4%size = 0
+end if
 fresult = swigc_TpetraCrsMatrix_replaceLocalValues__SWIG_1(farg1, farg2, farg3, farg4)
 swig_result = int(fresult)
 end function
@@ -9140,12 +9365,22 @@ type(SwigArrayWrapper) :: farg4
 
 farg1 = self%swigdata
 farg2 = globalrow
+if (size(cols) > 0) then
 farg3_view => cols(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(cols)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
+if (size(vals) > 0) then
 farg4_view => vals(1)
 farg4%data = c_loc(farg4_view)
 farg4%size = size(vals)
+else
+farg4%data = c_null_ptr
+farg4%size = 0
+end if
 fresult = swigc_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_0(farg1, farg2, farg3, farg4)
 swig_result = int(fresult)
 end function
@@ -9170,12 +9405,22 @@ type(SwigArrayWrapper) :: farg4
 
 farg1 = self%swigdata
 farg2 = int(localrow, C_INT)
+if (size(cols) > 0) then
 farg3_view => cols(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(cols)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
+if (size(vals) > 0) then
 farg4_view => vals(1)
 farg4%data = c_loc(farg4_view)
 farg4%size = size(vals)
+else
+farg4%data = c_null_ptr
+farg4%size = 0
+end if
 fresult = swigc_TpetraCrsMatrix_sumIntoLocalValues__SWIG_0(farg1, farg2, farg3, farg4)
 swig_result = int(fresult)
 end function
@@ -9877,12 +10122,22 @@ type(C_PTR) :: farg5
 
 farg1 = self%swigdata
 farg2 = globalrow
+if (size(indices) > 0) then
 farg3_view => indices(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(indices)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
+if (size(values) > 0) then
 farg4_view => values(1)
 farg4%data = c_loc(farg4_view)
 farg4%size = size(values)
+else
+farg4%data = c_null_ptr
+farg4%size = 0
+end if
 farg5 = c_loc(numentries)
 call swigc_TpetraCrsMatrix_getGlobalRowCopy(farg1, farg2, farg3, farg4, farg5)
 end subroutine
@@ -9906,12 +10161,22 @@ type(C_PTR) :: farg5
 
 farg1 = self%swigdata
 farg2 = int(localrow, C_INT)
+if (size(colinds) > 0) then
 farg3_view => colinds(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(colinds)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
+if (size(vals) > 0) then
 farg4_view => vals(1)
 farg4%data = c_loc(farg4_view)
 farg4%size = size(vals)
+else
+farg4%data = c_null_ptr
+farg4%size = 0
+end if
 farg5 = c_loc(numentries)
 call swigc_TpetraCrsMatrix_getLocalRowCopy(farg1, farg2, farg3, farg4, farg5)
 end subroutine
@@ -9921,20 +10186,41 @@ use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsMatrix), intent(in) :: self
 
 integer(C_LONG_LONG), intent(in) :: globalrow
-class(SWIGTYPE_Teuchos__ArrayViewT_long_long_const_t), intent(inout) :: indices
-
-class(SWIGTYPE_Teuchos__ArrayViewT_double_const_t), intent(inout) :: values
+integer(C_LONG_LONG), dimension(:), pointer, intent(inout) :: indices
+real(C_DOUBLE), dimension(:), pointer, intent(inout) :: values
 
 type(SwigClassWrapper) :: farg1 
 integer(C_LONG_LONG) :: farg2 
-type(SwigClassWrapper) :: farg3 
-type(SwigClassWrapper) :: farg4 
+type(SwigArrayWrapper) :: farg3 
+type(SwigArrayWrapper) :: farg4 
 
 farg1 = self%swigdata
 farg2 = globalrow
-farg3 = indices%swigdata
-farg4 = values%swigdata
+if (size(indices) > 0) then
+farg3%data = c_loc(indices)
+farg3%size = size(indices)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
+if (size(values) > 0) then
+farg4%data = c_loc(values)
+farg4%size = size(values)
+else
+farg4%data = c_null_ptr
+farg4%size = 0
+end if
 call swigc_TpetraCrsMatrix_getGlobalRowView(farg1, farg2, farg3, farg4)
+if (farg3%size > 0) then
+call c_f_pointer(farg3%data, indices, [farg3%size])
+else
+indices => NULL()
+endif
+if (farg4%size > 0) then
+call c_f_pointer(farg4%data, values, [farg4%size])
+else
+values => NULL()
+endif
 end subroutine
 
 subroutine swigf_TpetraCrsMatrix_apply__SWIG_0(self, x, y, mode, alpha, beta)
@@ -10418,9 +10704,14 @@ integer(C_INT) :: farg3
 type(SwigClassWrapper) :: farg4 
 
 farg1 = rowmap%swigdata
+if (size(numentriesperrowtoalloc) > 0) then
 farg2_view => numentriesperrowtoalloc(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(numentriesperrowtoalloc)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 farg3 = pftype
 farg4 = params%swigdata
 fresult = swigc_new_TpetraCrsMatrix__SWIG_10(farg1, farg2, farg3, farg4)
@@ -10443,9 +10734,14 @@ type(SwigArrayWrapper) :: farg2
 integer(C_INT) :: farg3 
 
 farg1 = rowmap%swigdata
+if (size(numentriesperrowtoalloc) > 0) then
 farg2_view => numentriesperrowtoalloc(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(numentriesperrowtoalloc)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 farg3 = pftype
 fresult = swigc_new_TpetraCrsMatrix__SWIG_11(farg1, farg2, farg3)
 self%swigdata = fresult
@@ -10465,9 +10761,14 @@ type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2 
 
 farg1 = rowmap%swigdata
+if (size(numentriesperrowtoalloc) > 0) then
 farg2_view => numentriesperrowtoalloc(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(numentriesperrowtoalloc)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 fresult = swigc_new_TpetraCrsMatrix__SWIG_12(farg1, farg2)
 self%swigdata = fresult
 end function
@@ -10494,9 +10795,14 @@ type(SwigClassWrapper) :: farg5
 
 farg1 = rowmap%swigdata
 farg2 = colmap%swigdata
+if (size(numentriesperrowtoalloc) > 0) then
 farg3_view => numentriesperrowtoalloc(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(numentriesperrowtoalloc)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
 farg4 = pftype
 farg5 = params%swigdata
 fresult = swigc_new_TpetraCrsMatrix__SWIG_13(farg1, farg2, farg3, farg4, farg5)
@@ -10523,9 +10829,14 @@ integer(C_INT) :: farg4
 
 farg1 = rowmap%swigdata
 farg2 = colmap%swigdata
+if (size(numentriesperrowtoalloc) > 0) then
 farg3_view => numentriesperrowtoalloc(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(numentriesperrowtoalloc)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
 farg4 = pftype
 fresult = swigc_new_TpetraCrsMatrix__SWIG_14(farg1, farg2, farg3, farg4)
 self%swigdata = fresult
@@ -10549,9 +10860,14 @@ type(SwigArrayWrapper) :: farg3
 
 farg1 = rowmap%swigdata
 farg2 = colmap%swigdata
+if (size(numentriesperrowtoalloc) > 0) then
 farg3_view => numentriesperrowtoalloc(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(numentriesperrowtoalloc)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
 fresult = swigc_new_TpetraCrsMatrix__SWIG_15(farg1, farg2, farg3)
 self%swigdata = fresult
 end function
@@ -10582,15 +10898,30 @@ type(SwigClassWrapper) :: farg6
 
 farg1 = rowmap%swigdata
 farg2 = colmap%swigdata
+if (size(rowpointers) > 0) then
 farg3_view => rowpointers(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(rowpointers)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
+if (size(columnindices) > 0) then
 farg4_view => columnindices(1)
 farg4%data = c_loc(farg4_view)
 farg4%size = size(columnindices)
+else
+farg4%data = c_null_ptr
+farg4%size = 0
+end if
+if (size(values) > 0) then
 farg5_view => values(1)
 farg5%data = c_loc(farg5_view)
 farg5%size = size(values)
+else
+farg5%data = c_null_ptr
+farg5%size = 0
+end if
 farg6 = params%swigdata
 fresult = swigc_new_TpetraCrsMatrix__SWIG_16(farg1, farg2, farg3, farg4, farg5, farg6)
 self%swigdata = fresult
@@ -10620,15 +10951,30 @@ type(SwigArrayWrapper) :: farg5
 
 farg1 = rowmap%swigdata
 farg2 = colmap%swigdata
+if (size(rowpointers) > 0) then
 farg3_view => rowpointers(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(rowpointers)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
+if (size(columnindices) > 0) then
 farg4_view => columnindices(1)
 farg4%data = c_loc(farg4_view)
 farg4%size = size(columnindices)
+else
+farg4%data = c_null_ptr
+farg4%size = 0
+end if
+if (size(values) > 0) then
 farg5_view => values(1)
 farg5%data = c_loc(farg5_view)
 farg5%size = size(values)
+else
+farg5%data = c_null_ptr
+farg5%size = 0
+end if
 fresult = swigc_new_TpetraCrsMatrix__SWIG_17(farg1, farg2, farg3, farg4, farg5)
 self%swigdata = fresult
 end function
@@ -10650,15 +10996,30 @@ type(SwigArrayWrapper) :: farg3
 type(SwigArrayWrapper) :: farg4 
 
 farg1 = self%swigdata
+if (size(ptr) > 0) then
 farg2_view => ptr(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(ptr)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
+if (size(ind) > 0) then
 farg3_view => ind(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(ind)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
+if (size(val) > 0) then
 farg4_view => val(1)
 farg4%data = c_loc(farg4_view)
 farg4%size = size(val)
+else
+farg4%data = c_null_ptr
+farg4%size = 0
+end if
 call swigc_TpetraCrsMatrix_setAllValues(farg1, farg2, farg3, farg4)
 end subroutine
 
@@ -10679,15 +11040,30 @@ type(SwigArrayWrapper) :: farg3
 type(SwigArrayWrapper) :: farg4 
 
 farg1 = self%swigdata
+if (size(rowpointers) > 0) then
 farg2_view => rowpointers(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(rowpointers)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
+if (size(columnindices) > 0) then
 farg3_view => columnindices(1)
 farg3%data = c_loc(farg3_view)
 farg3%size = size(columnindices)
+else
+farg3%data = c_null_ptr
+farg3%size = 0
+end if
+if (size(values) > 0) then
 farg4_view => values(1)
 farg4%data = c_loc(farg4_view)
 farg4%size = size(values)
+else
+farg4%data = c_null_ptr
+farg4%size = 0
+end if
 call swigc_TpetraCrsMatrix_getAllValues(farg1, farg2, farg3, farg4)
 end subroutine
 

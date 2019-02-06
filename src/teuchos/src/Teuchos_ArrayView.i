@@ -17,6 +17,7 @@ class ArrayView
 {
     public:
     typedef _Tp value_type;
+    typedef _Tp* pointer;
     typedef std::size_t size_type;
 
     // Add native wrapping typemaps to convert to/from Teuchos array
@@ -26,23 +27,33 @@ class ArrayView
       $1 = Teuchos::ArrayView<_Tp>(static_cast<_Tp*>($input->data), $input->size);
     }
 
-    %typemap(in, noblock=1) const ArrayView<_Tp> & (Teuchos::ArrayView<_Tp> tmparr) {
-      tmparr = Teuchos::ArrayView<_Tp>(static_cast<_Tp*>($input->data), $input->size);
-      $1 = &tmparr;
-    }
-
     %typemap(out, noblock=1) ArrayView<_Tp> {
       $result.data = (void*)$1.getRawPtr();
       $result.size = $1.size();
     }
 
-    // XXX: %apply only works for *NAME-INSTANTIATED* types, not %template()
-    // types, so we have to manually copy these typemaps.
-    %typemap(ctype) const ArrayView<_Tp> & = ArrayView<_Tp>;
-    %typemap(imtype) const ArrayView<_Tp> & = ArrayView<_Tp>;
-    %typemap(ftype) const ArrayView<_Tp> & = ArrayView<_Tp>;
-    %typemap(fin) const ArrayView<_Tp> & = ArrayView<_Tp>;
-    %typemap(findecl) const ArrayView<_Tp> & = ArrayView<_Tp>;
+    %apply ArrayView<_Tp> { const ArrayView<_Tp> & }
+
+    %typemap(in, noblock=1) const ArrayView<_Tp> & (Teuchos::ArrayView<_Tp> tmpview) {
+      tmpview = Teuchos::ArrayView<_Tp>(static_cast<_Tp*>($input->data), $input->size);
+      $1 = &tmpview;
+    }
+  %typemap(out, noblock=1) const ArrayView<_Tp>& {
+    $result.data = (void*)($1->getRawPtr());
+    $result.size = $1->size();
+  }
+
+    // ...and by reference, modifying an incoming pointer
+    %fortran_array_handle(_Tp, ArrayView<_Tp>)
+  %typemap(in, noblock=1) ArrayView<_Tp>& (ArrayView<_Tp> tmpview) {
+    tmpview = $1_basetype(static_cast<$1_basetype::pointer>($input->data), $input->size);
+    $1 = &tmpview;
+  }
+  %typemap(argout, noblock=1, match="in") ArrayView<_Tp>& {
+    $input->data = (void*)tmpview$argnum.getRawPtr();
+    $input->size = tmpview$argnum.size();
+  }
+
 };
 }
 

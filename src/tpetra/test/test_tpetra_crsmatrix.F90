@@ -597,13 +597,14 @@ contains
     integer(TpetraProfileType) :: pftype
     integer(size_type) :: num_images, my_image_id, numentries
     integer :: nnz
-    integer :: T, j
+    integer :: T, i
     integer, parameter :: lclrow=1
     logical :: opt_storage
-    real(norm_type) :: norms(1)
-    real(scalar_type) :: scopy(4), csview(4)
-    integer :: lcopy(4), clview(4), i
-    integer(global_ordinal_type) :: gcopy(4), cgview(4)
+    real(scalar_type) :: scopy(4)
+    integer :: lcopy(4)
+    integer(global_ordinal_type) :: gcopy(4)
+    integer(global_ordinal_type), pointer :: cgptr(:)
+    real(scalar_type), pointer :: csptr(:)
     integer(global_ordinal_type) :: gblrow
     integer, allocatable :: linds(:)
     integer(global_ordinal_type), allocatable :: ginds(:), mask(:)
@@ -664,7 +665,7 @@ contains
       ! at this point, the graph has not allocated data as global or local, so
       ! we can do views/copies for either local or global
       call A%getLocalRowCopy(lclrow, lcopy, scopy, numentries)
-      !call A%getLocalRowView(lclrow, clview, csview)
+      !call A%getLocalRowView(lclrow, clview, csptr)
       call A%getGlobalRowCopy(gblrow, gcopy, scopy, numentries)
 
       call A%insertGlobalValues(gblrow, ginds, values)
@@ -672,23 +673,23 @@ contains
       ! check values before calling fillComplete
       allocate(mask(nnz))
       mask = -1
-      call A%getGlobalRowView(gblrow, cgview(1:nnz), csview(1:nnz))
+      call A%getGlobalRowView(gblrow, cgptr, csptr)
       do i=1, nnz;
-        where(ginds(i)==cgview) mask = i
+        where(ginds(i)==cgptr) mask = i
       end do
       TEST_ASSERT((.not. any(mask==-1)))
-      TEST_ARRAY_EQUALITY(cgview(mask), ginds)
-      TEST_FLOATING_ARRAY_EQUALITY(csview(mask), values, epsilon(0.d0))
+      TEST_ARRAY_EQUALITY(cgptr(mask), ginds)
+      TEST_FLOATING_ARRAY_EQUALITY(csptr(mask), values, epsilon(0.d0))
       deallocate(mask)
 
       call A%fillComplete(params);
 
       ! check for throws and no-throws/values
-      TEST_THROW(call A%getGlobalRowView(gblrow, cgview, csview))
+      TEST_THROW(call A%getGlobalRowView(gblrow, cgptr, csptr))
 
-      !TEST_NOTHROW(call A%getLocalRowView(lclrow, clview, csview))
+      !TEST_NOTHROW(call A%getLocalRowView(lclrow, clview, csptr))
       !TEST_ARRAY_EQUALITY(clview, linds)
-      !TEST_FLOATING_ARRAY_EQUALITY(csview, values, epsilon(0.d0))
+      !TEST_FLOATING_ARRAY_EQUALITY(csptr, values, epsilon(0.d0))
 
       TEST_NOTHROW(call A%getLocalRowCopy(lclrow, lcopy, scopy, numentries))
       TEST_ARRAY_EQUALITY(lcopy(1:numentries), linds)

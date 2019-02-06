@@ -244,7 +244,7 @@ subroutine SWIG_chararray_to_string(wrap, string)
   allocate(character(kind=C_CHAR, len=wrap%size) :: string)
   do i=1, wrap%size
     string(i:i) = chars(i)
-  enddo
+  end do
 end subroutine
 
 function convertReturnTypeToString(result) &

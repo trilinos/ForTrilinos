@@ -796,13 +796,23 @@ type(SwigClassWrapper) :: farg3
 type(SwigArrayWrapper) :: farg4 
 
 farg1 = self%swigdata
+if (size(eigenvalues) > 0) then
 farg2_view => eigenvalues(1)
 farg2%data = c_loc(farg2_view)
 farg2%size = size(eigenvalues)
+else
+farg2%data = c_null_ptr
+farg2%size = 0
+end if
 farg3 = eigenvectors%swigdata
+if (size(eigenindex) > 0) then
 farg4_view => eigenindex(1)
 farg4%data = c_loc(farg4_view)
 farg4%size = size(eigenindex)
+else
+farg4%data = c_null_ptr
+farg4%size = 0
+end if
 fresult = swigc_TrilinosEigenSolver_solve(farg1, farg2, farg3, farg4)
 swig_result = int(fresult)
 end function
