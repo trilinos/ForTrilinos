@@ -10545,14 +10545,14 @@ type(SwigArrayWrapper) :: farg4
 
 farg1 = self%swigdata
 farg2 = globalrow
-if (size(indices) > 0) then
+if (associated(indices) .and. size(indices) > 0) then
 farg3%data = c_loc(indices)
 farg3%size = size(indices)
 else
 farg3%data = c_null_ptr
 farg3%size = 0
 end if
-if (size(values) > 0) then
+if (associated(values) .and. size(values) > 0) then
 farg4%data = c_loc(values)
 farg4%size = size(values)
 else

@@ -603,8 +603,8 @@ contains
     real(scalar_type) :: scopy(4)
     integer :: lcopy(4)
     integer(global_ordinal_type) :: gcopy(4)
-    integer(global_ordinal_type), pointer :: cgptr(:)
-    real(scalar_type), pointer :: csptr(:)
+    integer(global_ordinal_type), pointer :: cgptr(:) => NULL()
+    real(scalar_type), pointer :: csptr(:) => NULL()
     integer(global_ordinal_type) :: gblrow
     integer, allocatable :: linds(:)
     integer(global_ordinal_type), allocatable :: ginds(:), mask(:)
