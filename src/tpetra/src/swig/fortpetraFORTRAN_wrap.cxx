@@ -237,7 +237,7 @@ struct assignment_flags;
 
 
 #define SWIG_assign(LEFTTYPE, LEFT, RIGHTTYPE, RIGHT, FLAGS) \
-    SWIG_assign_impl<LEFTTYPE , RIGHTTYPE, swig::assignment_flags<LEFTTYPE, FLAGS >::value >(LEFT, RIGHT);
+    SWIG_assign_impl<LEFTTYPE, RIGHTTYPE, swig::assignment_flags<LEFTTYPE, FLAGS >::value >(LEFT, RIGHT);
 
 
 #define SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
@@ -486,7 +486,7 @@ struct AssignmentTraits {
 
 
 template<class T1, class T2, int AFlags>
-SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other) {
+SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, const SwigClassWrapper* other) {
   typedef swig::AssignmentTraits<T1, AFlags> Traits_t;
   T1* pself  = static_cast<T1*>(self->cptr);
   T2* pother = static_cast<T2*>(other->cptr);
@@ -499,9 +499,7 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
           break;
         case SWIG_MOVE: /* capture pointer from RHS */
           self->cptr = other->cptr;
-          other->cptr = NULL;
           self->mem = SWIG_OWN;
-          other->mem = SWIG_NULL;
           break;
         case SWIG_OWN: /* copy from RHS */
           self->cptr = Traits_t::copy_construct(pother);
@@ -527,8 +525,6 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
           /* Move RHS into LHS; delete RHS */
           Traits_t::move_assign(pself, pother);
           Traits_t::destruct(pother);
-          other->cptr = NULL;
-          other->mem = SWIG_NULL;
           break;
         case SWIG_OWN:
         case SWIG_REF:
@@ -556,8 +552,6 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
            * same. */
           Traits_t::move_assign(pself, pother);
           Traits_t::destruct(pother);
-          other->cptr = NULL;
-          other->mem = SWIG_NULL;
           break;
         case SWIG_OWN:
         case SWIG_REF:
@@ -815,7 +809,6 @@ SWIGEXPORT void _wrap_setCombineModeParameter(SwigClassWrapper const *farg1, Swi
       SWIG_exception_impl("Tpetra::setCombineModeParameter(Teuchos::ParameterList &,std::string const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -1211,7 +1204,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_7() {
 }
 
 
-SWIGEXPORT void _wrap_delete_TpetraMap(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_TpetraMap(SwigClassWrapper *farg1) {
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > > *smartarg1 ;
   
@@ -1240,7 +1233,6 @@ SWIGEXPORT void _wrap_delete_TpetraMap(SwigClassWrapper const *farg1) {
       SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::~Map()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -2283,11 +2275,38 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraMap_replaceCommWithSubset(SwigClassWrapp
 }
 
 
-SWIGEXPORT void _wrap_assign_TpetraMap(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Tpetra::Map<LO,GO,NO> > swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+SWIGEXPORT void _wrap_TpetraMap_op_assign__(SwigClassWrapper *farg1, SwigClassWrapper const *farg2) {
+  Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
+  Tpetra::Map< LO,GO,NO > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::Map< LO,GO,NO > > *smartarg1 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP< Tpetra::Map<LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::Map<LO,GO,NO>* >(smartarg1->get()) : NULL;
+  (void)sizeof(arg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::operator =(Tpetra::Map< LO,GO,NO > const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      typedef Teuchos::RCP< Tpetra::Map<LO,GO,NO> > swig_lhs_classtype;
+      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::operator =(Tpetra::Map< LO,GO,NO > const &)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::operator =(Tpetra::Map< LO,GO,NO > const &)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::operator =(Tpetra::Map< LO,GO,NO > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
 }
 
 
@@ -2448,7 +2467,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraImport__SWIG_3(SwigClassWrapper cons
 }
 
 
-SWIGEXPORT void _wrap_delete_TpetraImport(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_TpetraImport(SwigClassWrapper *farg1) {
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > > *smartarg1 ;
   
@@ -2477,7 +2496,6 @@ SWIGEXPORT void _wrap_delete_TpetraImport(SwigClassWrapper const *farg1) {
       SWIG_exception_impl("Tpetra::Import< LO,GO,NO >::~Import()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -2513,7 +2531,6 @@ SWIGEXPORT void _wrap_TpetraImport_setParameterList(SwigClassWrapper const *farg
       SWIG_exception_impl("Tpetra::Import< LO,GO,NO >::setParameterList(Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -2922,15 +2939,41 @@ SWIGEXPORT void _wrap_TpetraImport_print(SwigClassWrapper const *farg1, SwigClas
       SWIG_exception_impl("Tpetra::Import< LO,GO,NO >::print(std::ostream &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
-SWIGEXPORT void _wrap_assign_TpetraImport(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Tpetra::Import<LO,GO,NO> > swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR | swig::IS_COPY_ASSIGN);
+SWIGEXPORT void _wrap_TpetraImport_op_assign__(SwigClassWrapper *farg1, SwigClassWrapper const *farg2) {
+  Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
+  Tpetra::Import< LO,GO,NO > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::Import< LO,GO,NO > > *smartarg1 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP< Tpetra::Import<LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::Import<LO,GO,NO>* >(smartarg1->get()) : NULL;
+  (void)sizeof(arg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Import< LO,GO,NO >::operator =(Tpetra::Import< LO,GO,NO > const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      typedef Teuchos::RCP< Tpetra::Import<LO,GO,NO> > swig_lhs_classtype;
+      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR | swig::IS_COPY_ASSIGN);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Import< LO,GO,NO >::operator =(Tpetra::Import< LO,GO,NO > const &)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Import< LO,GO,NO >::operator =(Tpetra::Import< LO,GO,NO > const &)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Import< LO,GO,NO >::operator =(Tpetra::Import< LO,GO,NO > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
 }
 
 
@@ -3091,7 +3134,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraExport__SWIG_3(SwigClassWrapper cons
 }
 
 
-SWIGEXPORT void _wrap_delete_TpetraExport(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_TpetraExport(SwigClassWrapper *farg1) {
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > > *smartarg1 ;
   
@@ -3120,7 +3163,6 @@ SWIGEXPORT void _wrap_delete_TpetraExport(SwigClassWrapper const *farg1) {
       SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::~Export()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -3156,7 +3198,6 @@ SWIGEXPORT void _wrap_TpetraExport_setParameterList(SwigClassWrapper const *farg
       SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::setParameterList(Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -3446,15 +3487,41 @@ SWIGEXPORT void _wrap_TpetraExport_print(SwigClassWrapper const *farg1, SwigClas
       SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::print(std::ostream &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
-SWIGEXPORT void _wrap_assign_TpetraExport(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Tpetra::Export<LO,GO,NO> > swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR | swig::IS_COPY_ASSIGN);
+SWIGEXPORT void _wrap_TpetraExport_op_assign__(SwigClassWrapper *farg1, SwigClassWrapper const *farg2) {
+  Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
+  Tpetra::Export< LO,GO,NO > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::Export< LO,GO,NO > > *smartarg1 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP< Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
+  (void)sizeof(arg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::operator =(Tpetra::Export< LO,GO,NO > const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      typedef Teuchos::RCP< Tpetra::Export<LO,GO,NO> > swig_lhs_classtype;
+      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR | swig::IS_COPY_ASSIGN);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::operator =(Tpetra::Export< LO,GO,NO > const &)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::operator =(Tpetra::Export< LO,GO,NO > const &)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::operator =(Tpetra::Export< LO,GO,NO > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
 }
 
 
@@ -3813,11 +3880,10 @@ SWIGEXPORT void _wrap_TpetraMultiVector_swap(SwigClassWrapper const *farg1, Swig
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::swap(Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
-SWIGEXPORT void _wrap_delete_TpetraMultiVector(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_TpetraMultiVector(SwigClassWrapper *farg1) {
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > > *smartarg1 ;
   
@@ -3846,7 +3912,6 @@ SWIGEXPORT void _wrap_delete_TpetraMultiVector(SwigClassWrapper const *farg1) {
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::~MultiVector()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -3887,7 +3952,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_replaceGlobalValue(SwigClassWrapper cons
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::replaceGlobalValue(long long const,size_t const,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::impl_scalar_type const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -3930,7 +3994,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_sumIntoGlobalValue__SWIG_0(SwigClassWrap
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::sumIntoGlobalValue(long long const,size_t const,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::impl_scalar_type const &,bool const) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -3971,7 +4034,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_sumIntoGlobalValue__SWIG_1(SwigClassWrap
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::sumIntoGlobalValue(long long const,size_t const,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::impl_scalar_type const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -4012,7 +4074,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_replaceLocalValue(SwigClassWrapper const
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::replaceLocalValue(int const,size_t const,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::impl_scalar_type const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -4055,7 +4116,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_sumIntoLocalValue__SWIG_0(SwigClassWrapp
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::sumIntoLocalValue(int const,size_t const,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::impl_scalar_type const &,bool const) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -4096,7 +4156,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_sumIntoLocalValue__SWIG_1(SwigClassWrapp
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::sumIntoLocalValue(int const,size_t const,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::impl_scalar_type const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -4133,7 +4192,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_putScalar(SwigClassWrapper const *farg1,
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::putScalar(double const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -4166,7 +4224,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_randomize__SWIG_0(SwigClassWrapper const
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::randomize()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -4207,7 +4264,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_randomize__SWIG_1(SwigClassWrapper const
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::randomize(double const &,double const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -4243,7 +4299,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_replaceMap(SwigClassWrapper const *farg1
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::replaceMap(Teuchos::RCP< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -4276,7 +4331,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_reduce(SwigClassWrapper const *farg1) {
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::reduce()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -4618,7 +4672,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_get1dCopy(SwigClassWrapper const *farg1,
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::get1dCopy(Teuchos::ArrayView< double > const &,size_t const) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -4725,7 +4778,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_sync_host(SwigClassWrapper const *farg1)
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::sync_host()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -4758,7 +4810,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_sync_device(SwigClassWrapper const *farg
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::sync_device()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -4863,7 +4914,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_modify_device(SwigClassWrapper const *fa
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::modify_device()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -4896,7 +4946,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_modify_host(SwigClassWrapper const *farg
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::modify_host()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -4938,7 +4987,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_dot__SWIG_0(SwigClassWrapper const *farg
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::dot(Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,Teuchos::ArrayView< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::dot_type > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -4979,7 +5027,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_dot__SWIG_3(SwigClassWrapper const *farg
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::dot(Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,Kokkos::View< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::dot_type *,Kokkos::HostSpace > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -5017,7 +5064,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_abs(SwigClassWrapper const *farg1, SwigC
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::abs(Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -5055,7 +5101,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_reciprocal(SwigClassWrapper const *farg1
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::reciprocal(Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -5092,7 +5137,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_scale__SWIG_0(SwigClassWrapper const *fa
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::scale(double const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -5129,7 +5173,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_scale__SWIG_1(SwigClassWrapper const *fa
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::scale(Teuchos::ArrayView< double const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -5171,7 +5214,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_scale__SWIG_2(SwigClassWrapper const *fa
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::scale(double const &,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -5217,7 +5259,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_update__SWIG_0(SwigClassWrapper const *f
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::update(double const &,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,double const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -5272,7 +5313,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_update__SWIG_1(SwigClassWrapper const *f
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::update(double const &,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,double const &,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,double const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -5308,7 +5348,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_norm1__SWIG_1(SwigClassWrapper const *fa
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::norm1(Kokkos::View< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::mag_type *,Kokkos::HostSpace > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -5345,7 +5384,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_norm1__SWIG_3(SwigClassWrapper const *fa
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::norm1(Teuchos::ArrayView< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::mag_type > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -5381,7 +5419,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_norm2__SWIG_1(SwigClassWrapper const *fa
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::norm2(Kokkos::View< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::mag_type *,Kokkos::HostSpace > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -5418,7 +5455,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_norm2__SWIG_3(SwigClassWrapper const *fa
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::norm2(Teuchos::ArrayView< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::mag_type > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -5454,7 +5490,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_normInf__SWIG_1(SwigClassWrapper const *
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::normInf(Kokkos::View< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::mag_type *,Kokkos::HostSpace > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -5491,7 +5526,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_normInf__SWIG_3(SwigClassWrapper const *
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::normInf(Teuchos::ArrayView< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::mag_type > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -5528,7 +5562,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_meanValue(SwigClassWrapper const *farg1,
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::meanValue(Teuchos::ArrayView< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::impl_scalar_type > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -5583,7 +5616,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_multiply(SwigClassWrapper const *farg1, 
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::multiply(Teuchos::ETransp,Teuchos::ETransp,double const &,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,double const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -5841,7 +5873,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_removeEmptyProcessesInPlace(SwigClassWra
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::removeEmptyProcessesInPlace(Teuchos::RCP< Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -5876,7 +5907,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_setCopyOrView(SwigClassWrapper const *fa
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::setCopyOrView(Teuchos::DataAccess const)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -5998,7 +6028,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_doImport__SWIG_0(SwigClassWrapper const 
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::doImport(Tpetra::MultiVector< SC,LO,GO,NO > const &,Tpetra::Import< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -6043,7 +6072,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_doImport__SWIG_1(SwigClassWrapper const 
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::doImport(Tpetra::MultiVector< SC,LO,GO,NO > const &,Tpetra::Export< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -6088,7 +6116,6 @@ SWIGEXPORT void _wrap_TpetraMultiVector_doExport__SWIG_0(SwigClassWrapper const 
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::doExport(Tpetra::MultiVector< SC,LO,GO,NO > const &,Tpetra::Export< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -6133,19 +6160,45 @@ SWIGEXPORT void _wrap_TpetraMultiVector_doExport__SWIG_1(SwigClassWrapper const 
       SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::doExport(Tpetra::MultiVector< SC,LO,GO,NO > const &,Tpetra::Import< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
+}
+
+
+SWIGEXPORT void _wrap_TpetraMultiVector_op_assign__(SwigClassWrapper *farg1, SwigClassWrapper const *farg2) {
+  Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
+  Tpetra::MultiVector< SC,LO,GO,NO > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > > *smartarg1 ;
   
+  smartarg1 = static_cast< Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::MultiVector<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
+  (void)sizeof(arg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::operator =(Tpetra::MultiVector< SC,LO,GO,NO > const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      typedef Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> > swig_lhs_classtype;
+      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR | swig::IS_COPY_ASSIGN);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::operator =(Tpetra::MultiVector< SC,LO,GO,NO > const &)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::operator =(Tpetra::MultiVector< SC,LO,GO,NO > const &)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::operator =(Tpetra::MultiVector< SC,LO,GO,NO > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
 }
 
 
-SWIGEXPORT void _wrap_assign_TpetraMultiVector(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> > swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR | swig::IS_COPY_ASSIGN);
-}
-
-
-SWIGEXPORT void _wrap_delete_TpetraOperator(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_TpetraOperator(SwigClassWrapper *farg1) {
   Tpetra::Operator< SC,LO,GO,NO > *arg1 = (Tpetra::Operator< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Operator< SC,LO,GO,NO > > *smartarg1 ;
   
@@ -6174,15 +6227,41 @@ SWIGEXPORT void _wrap_delete_TpetraOperator(SwigClassWrapper const *farg1) {
       SWIG_exception_impl("Tpetra::Operator< SC,LO,GO,NO >::~Operator()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
-SWIGEXPORT void _wrap_assign_TpetraOperator(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> > swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+SWIGEXPORT void _wrap_TpetraOperator_op_assign__(SwigClassWrapper *farg1, SwigClassWrapper const *farg2) {
+  Tpetra::Operator< SC,LO,GO,NO > *arg1 = (Tpetra::Operator< SC,LO,GO,NO > *) 0 ;
+  Tpetra::Operator< SC,LO,GO,NO > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::Operator< SC,LO,GO,NO > > *smartarg1 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::Operator<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
+  (void)sizeof(arg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::Operator< SC,LO,GO,NO >::operator =(Tpetra::Operator< SC,LO,GO,NO > const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      typedef Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> > swig_lhs_classtype;
+      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Operator< SC,LO,GO,NO >::operator =(Tpetra::Operator< SC,LO,GO,NO > const &)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::Operator< SC,LO,GO,NO >::operator =(Tpetra::Operator< SC,LO,GO,NO > const &)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::Operator< SC,LO,GO,NO >::operator =(Tpetra::Operator< SC,LO,GO,NO > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
 }
 
 
@@ -6253,7 +6332,6 @@ SWIGEXPORT void _wrap_ForTpetraOperator_init(SwigClassWrapper const *farg1, void
       SWIG_exception_impl("ForTpetraOperator::init(void *)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -6409,11 +6487,10 @@ SWIGEXPORT void _wrap_ForTpetraOperator_apply(SwigClassWrapper const *farg1, Swi
       SWIG_exception_impl("ForTpetraOperator::apply(ForTpetraOperator::vector_type const &,ForTpetraOperator::vector_type &,Teuchos::ETransp,SC,SC) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
-SWIGEXPORT void _wrap_delete_ForTpetraOperator(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_ForTpetraOperator(SwigClassWrapper *farg1) {
   ForTpetraOperator *arg1 = (ForTpetraOperator *) 0 ;
   Teuchos::RCP< ForTpetraOperator > *smartarg1 ;
   
@@ -6442,15 +6519,44 @@ SWIGEXPORT void _wrap_delete_ForTpetraOperator(SwigClassWrapper const *farg1) {
       SWIG_exception_impl("ForTpetraOperator::~ForTpetraOperator()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
-SWIGEXPORT void _wrap_assign_ForTpetraOperator(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< ForTpetraOperator > swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+SWIGEXPORT void _wrap_ForTpetraOperator_op_assign__(SwigClassWrapper *farg1, SwigClassWrapper const *farg2) {
+  ForTpetraOperator *arg1 = (ForTpetraOperator *) 0 ;
+  ForTpetraOperator *arg2 = 0 ;
+  Teuchos::RCP< ForTpetraOperator > *smartarg1 ;
+  Teuchos::RCP< ForTpetraOperator const > *smartarg2 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP< ForTpetraOperator >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< ForTpetraOperator* >(smartarg1->get()) : NULL;
+  SWIG_check_sp_nonnull(farg2, "ForTpetraOperator *", "ForTpetraOperator", "ForTpetraOperator::operator =(ForTpetraOperator const &)", return )
+  smartarg2 = static_cast< Teuchos::RCP<const ForTpetraOperator >* >(farg2->cptr);
+  arg2 = const_cast< ForTpetraOperator* >(smartarg2->get());
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("ForTpetraOperator::operator =(ForTpetraOperator const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      typedef Teuchos::RCP< ForTpetraOperator > swig_lhs_classtype;
+      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTpetraOperator::operator =(ForTpetraOperator const &)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTpetraOperator::operator =(ForTpetraOperator const &)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("ForTpetraOperator::operator =(ForTpetraOperator const &)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
 }
 
 
@@ -6462,7 +6568,6 @@ SWIGEXPORT void _wrap_RowInfo_localRow_set(SwigClassWrapper const *farg1, size_t
   arg1 = static_cast< Tpetra::RowInfo * >(farg1->cptr);
   arg2 = static_cast< size_t >(*farg2);
   if (arg1) (arg1)->localRow = arg2;
-  
 }
 
 
@@ -6487,7 +6592,6 @@ SWIGEXPORT void _wrap_RowInfo_allocSize_set(SwigClassWrapper const *farg1, size_
   arg1 = static_cast< Tpetra::RowInfo * >(farg1->cptr);
   arg2 = static_cast< size_t >(*farg2);
   if (arg1) (arg1)->allocSize = arg2;
-  
 }
 
 
@@ -6512,7 +6616,6 @@ SWIGEXPORT void _wrap_RowInfo_numEntries_set(SwigClassWrapper const *farg1, size
   arg1 = static_cast< Tpetra::RowInfo * >(farg1->cptr);
   arg2 = static_cast< size_t >(*farg2);
   if (arg1) (arg1)->numEntries = arg2;
-  
 }
 
 
@@ -6537,7 +6640,6 @@ SWIGEXPORT void _wrap_RowInfo_offset1D_set(SwigClassWrapper const *farg1, size_t
   arg1 = static_cast< Tpetra::RowInfo * >(farg1->cptr);
   arg2 = static_cast< size_t >(*farg2);
   if (arg1) (arg1)->offset1D = arg2;
-  
 }
 
 
@@ -6587,11 +6689,10 @@ SWIGEXPORT SwigClassWrapper _wrap_new_RowInfo() {
 }
 
 
-SWIGEXPORT void _wrap_delete_RowInfo(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_RowInfo(SwigClassWrapper *farg1) {
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   
-  SWIG_check_mutable_nonnull(*farg1, "Tpetra::RowInfo *", "RowInfo", "Tpetra::RowInfo::~RowInfo()", return );
-  arg1 = static_cast< Tpetra::RowInfo * >(farg1->cptr);
+  (void)sizeof(farg1);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Tpetra::RowInfo::~RowInfo()");;
@@ -6615,15 +6716,39 @@ SWIGEXPORT void _wrap_delete_RowInfo(SwigClassWrapper const *farg1) {
       SWIG_exception_impl("Tpetra::RowInfo::~RowInfo()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
-SWIGEXPORT void _wrap_assign_RowInfo(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Tpetra::RowInfo swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+SWIGEXPORT void _wrap_RowInfo_op_assign__(SwigClassWrapper *farg1, SwigClassWrapper const *farg2) {
+  Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
+  Tpetra::RowInfo *arg2 = 0 ;
+  
+  (void)sizeof(arg1);
+  (void)sizeof(arg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::RowInfo::operator =(Tpetra::RowInfo const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      typedef Tpetra::RowInfo swig_lhs_classtype;
+      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::RowInfo::operator =(Tpetra::RowInfo const &)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::RowInfo::operator =(Tpetra::RowInfo const &)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::RowInfo::operator =(Tpetra::RowInfo const &)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
 }
 
 
@@ -7262,7 +7387,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_13(SwigClassWrapper c
 }
 
 
-SWIGEXPORT void _wrap_delete_TpetraCrsGraph(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_TpetraCrsGraph(SwigClassWrapper *farg1) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > > *smartarg1 ;
   
@@ -7291,7 +7416,6 @@ SWIGEXPORT void _wrap_delete_TpetraCrsGraph(SwigClassWrapper const *farg1) {
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::~CrsGraph()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -7329,7 +7453,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_swap(SwigClassWrapper const *farg1, SwigCla
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::swap(Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -7406,7 +7529,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_setParameterList(SwigClassWrapper const *fa
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::setParameterList(Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -7482,7 +7604,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_insertGlobalIndices__SWIG_0(SwigClassWrappe
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::insertGlobalIndices(long long const,Teuchos::ArrayView< long long const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -7521,7 +7642,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_insertGlobalIndices__SWIG_1(SwigClassWrappe
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::insertGlobalIndices(long long const,int const,long long const [])", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -7566,7 +7686,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_insertLocalIndices(SwigClassWrapper const *
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::insertLocalIndices(int const,Teuchos::ArrayView< int const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -7601,7 +7720,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_removeLocalIndices(SwigClassWrapper const *
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::removeLocalIndices(int)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -7634,7 +7752,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_globalAssemble(SwigClassWrapper const *farg
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::globalAssemble()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -7670,7 +7787,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_resumeFill__SWIG_0(SwigClassWrapper const *
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::resumeFill(Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -7703,7 +7819,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_resumeFill__SWIG_1(SwigClassWrapper const *
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::resumeFill()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -7745,7 +7860,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_fillComplete__SWIG_0(SwigClassWrapper const
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::fillComplete(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -7784,7 +7898,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_fillComplete__SWIG_1(SwigClassWrapper const
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::fillComplete(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -7820,7 +7933,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_fillComplete__SWIG_2(SwigClassWrapper const
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::fillComplete(Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -7853,7 +7965,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_fillComplete__SWIG_3(SwigClassWrapper const
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::fillComplete()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -7901,7 +8012,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_expertStaticFillComplete__SWIG_0(SwigClassW
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::expertStaticFillComplete(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -7946,7 +8056,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_expertStaticFillComplete__SWIG_1(SwigClassW
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::expertStaticFillComplete(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -7988,7 +8097,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_expertStaticFillComplete__SWIG_2(SwigClassW
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::expertStaticFillComplete(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -8027,7 +8135,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_expertStaticFillComplete__SWIG_3(SwigClassW
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::expertStaticFillComplete(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -9091,7 +9198,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_getGlobalRowCopy(SwigClassWrapper const *fa
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::getGlobalRowCopy(long long,Teuchos::ArrayView< long long > const &,size_t &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -9132,7 +9238,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_getLocalRowCopy(SwigClassWrapper const *far
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::getLocalRowCopy(int,Teuchos::ArrayView< int > const &,size_t &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
   for (int i = 0; i < tmpview3.size(); i++)
   tmpview3[i] += 1;
 }
@@ -9248,7 +9353,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_replaceColMap(SwigClassWrapper const *farg1
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::replaceColMap(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -9289,7 +9393,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_reindexColumns__SWIG_0(SwigClassWrapper con
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::reindexColumns(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const > const &,bool const)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -9328,7 +9431,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_reindexColumns__SWIG_1(SwigClassWrapper con
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::reindexColumns(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -9364,7 +9466,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_reindexColumns__SWIG_2(SwigClassWrapper con
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::reindexColumns(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -9403,7 +9504,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_replaceDomainMapAndImporter(SwigClassWrappe
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::replaceDomainMapAndImporter(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -9439,7 +9539,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_removeEmptyProcessesInPlace(SwigClassWrappe
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::removeEmptyProcessesInPlace(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -9489,7 +9588,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_importAndFillComplete__SWIG_0(SwigClassWrap
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::importAndFillComplete(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > &,Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -9536,7 +9634,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_importAndFillComplete__SWIG_1(SwigClassWrap
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::importAndFillComplete(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > &,Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -9591,7 +9688,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_importAndFillComplete__SWIG_2(SwigClassWrap
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::importAndFillComplete(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > &,Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const &,Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -9641,7 +9737,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_exportAndFillComplete__SWIG_0(SwigClassWrap
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::exportAndFillComplete(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > &,Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -9688,7 +9783,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_exportAndFillComplete__SWIG_1(SwigClassWrap
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::exportAndFillComplete(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > &,Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -9732,7 +9826,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_exportAndFillComplete__SWIG_2(SwigClassWrap
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::exportAndFillComplete(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > &,Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -9773,7 +9866,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_exportAndFillComplete__SWIG_3(SwigClassWrap
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::exportAndFillComplete(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > &,Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -9828,7 +9920,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_exportAndFillComplete__SWIG_4(SwigClassWrap
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::exportAndFillComplete(Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > &,Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type const &,Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -9899,7 +9990,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_computeGlobalConstants(SwigClassWrapper con
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::computeGlobalConstants(bool const)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -9934,7 +10024,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_getNodeRowPtrs(SwigClassWrapper const *farg
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::getNodeRowPtrs(Teuchos::ArrayView< std::size_t >) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -9969,7 +10058,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_getNodePackedIndices(SwigClassWrapper const
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::getNodePackedIndices(Teuchos::ArrayView< std::size_t >) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -10014,7 +10102,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_doImport__SWIG_0(SwigClassWrapper const *fa
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::doImport(Tpetra::CrsGraph< LO,GO,NO > const &,Tpetra::Import< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -10059,7 +10146,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_doImport__SWIG_1(SwigClassWrapper const *fa
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::doImport(Tpetra::CrsGraph< LO,GO,NO > const &,Tpetra::Export< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -10104,7 +10190,6 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_doExport__SWIG_0(SwigClassWrapper const *fa
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::doExport(Tpetra::CrsGraph< LO,GO,NO > const &,Tpetra::Export< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -10149,15 +10234,41 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_doExport__SWIG_1(SwigClassWrapper const *fa
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::doExport(Tpetra::CrsGraph< LO,GO,NO > const &,Tpetra::Import< LO,GO,NO > const &,Tpetra::CombineMode)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
-SWIGEXPORT void _wrap_assign_TpetraCrsGraph(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> > swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+SWIGEXPORT void _wrap_TpetraCrsGraph_op_assign__(SwigClassWrapper *farg1, SwigClassWrapper const *farg2) {
+  Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
+  Tpetra::CrsGraph< LO,GO,NO > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > > *smartarg1 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::CrsGraph<LO,GO,NO>* >(smartarg1->get()) : NULL;
+  (void)sizeof(arg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::operator =(Tpetra::CrsGraph< LO,GO,NO > const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      typedef Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> > swig_lhs_classtype;
+      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::operator =(Tpetra::CrsGraph< LO,GO,NO > const &)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::operator =(Tpetra::CrsGraph< LO,GO,NO > const &)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::operator =(Tpetra::CrsGraph< LO,GO,NO > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
 }
 
 
@@ -10960,7 +11071,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_17(SwigClassWrapper 
 }
 
 
-SWIGEXPORT void _wrap_delete_TpetraCrsMatrix(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_TpetraCrsMatrix(SwigClassWrapper *farg1) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > > *smartarg1 ;
   
@@ -10989,7 +11100,6 @@ SWIGEXPORT void _wrap_delete_TpetraCrsMatrix(SwigClassWrapper const *farg1) {
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::~CrsMatrix()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -11032,7 +11142,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_insertGlobalValues(SwigClassWrapper const 
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::insertGlobalValues(long long const,Teuchos::ArrayView< long long const > const &,Teuchos::ArrayView< double const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -11081,7 +11190,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_insertLocalValues(SwigClassWrapper const *
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::insertLocalValues(int const,Teuchos::ArrayView< int const > const &,Teuchos::ArrayView< double const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -11366,7 +11474,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_setAllToScalar(SwigClassWrapper const *far
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::setAllToScalar(double const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -11403,7 +11510,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_scale(SwigClassWrapper const *farg1, doubl
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::scale(double const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -11460,7 +11566,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_setAllValues(SwigClassWrapper const *farg1
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::setAllValues(Teuchos::ArrayRCP< std::size_t > const &,Teuchos::ArrayRCP< int > const &,Teuchos::ArrayRCP< double > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -11493,7 +11598,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_globalAssemble(SwigClassWrapper const *far
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::globalAssemble()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -11529,7 +11633,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_resumeFill__SWIG_0(SwigClassWrapper const 
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::resumeFill(Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -11562,7 +11665,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_resumeFill__SWIG_1(SwigClassWrapper const 
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::resumeFill()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -11604,7 +11706,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_fillComplete__SWIG_0(SwigClassWrapper cons
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::fillComplete(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -11643,7 +11744,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_fillComplete__SWIG_1(SwigClassWrapper cons
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::fillComplete(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -11679,7 +11779,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_fillComplete__SWIG_2(SwigClassWrapper cons
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::fillComplete(Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -11712,7 +11811,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_fillComplete__SWIG_3(SwigClassWrapper cons
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::fillComplete()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -11760,7 +11858,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_expertStaticFillComplete__SWIG_0(SwigClass
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::expertStaticFillComplete(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -11805,7 +11902,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_expertStaticFillComplete__SWIG_1(SwigClass
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::expertStaticFillComplete(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -11847,7 +11943,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_expertStaticFillComplete__SWIG_2(SwigClass
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::expertStaticFillComplete(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -11886,7 +11981,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_expertStaticFillComplete__SWIG_3(SwigClass
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::expertStaticFillComplete(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -11922,7 +12016,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_replaceColMap(SwigClassWrapper const *farg
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::replaceColMap(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -11967,7 +12060,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_reindexColumns__SWIG_0(SwigClassWrapper co
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::reindexColumns(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::crs_graph_type *const,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const > const &,bool const)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -12010,7 +12102,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_reindexColumns__SWIG_1(SwigClassWrapper co
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::reindexColumns(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::crs_graph_type *const,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -12050,7 +12141,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_reindexColumns__SWIG_2(SwigClassWrapper co
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::reindexColumns(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::crs_graph_type *const,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -12089,7 +12179,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_replaceDomainMapAndImporter(SwigClassWrapp
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::replaceDomainMapAndImporter(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const > &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -12125,7 +12214,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_removeEmptyProcessesInPlace(SwigClassWrapp
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::removeEmptyProcessesInPlace(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -13042,7 +13130,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_getGlobalRowCopy(SwigClassWrapper const *f
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getGlobalRowCopy(long long,Teuchos::ArrayView< long long > const &,Teuchos::ArrayView< double > const &,size_t &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -13087,7 +13174,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_getLocalRowCopy(SwigClassWrapper const *fa
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getLocalRowCopy(int,Teuchos::ArrayView< int > const &,Teuchos::ArrayView< double > const &,size_t &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
   for (int i = 0; i < tmpview3.size(); i++)
   tmpview3[i] += 1;
 }
@@ -13132,7 +13218,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_getGlobalRowView(SwigClassWrapper const *f
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getGlobalRowView(long long,Teuchos::ArrayView< long long const > &,Teuchos::ArrayView< double const > &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
   farg3->data = (void*)tmpview3.getRawPtr();
   farg3->size = tmpview3.size();
   farg4->data = (void*)tmpview4.getRawPtr();
@@ -13172,7 +13257,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_getLocalDiagOffsets(SwigClassWrapper const
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getLocalDiagOffsets(Teuchos::ArrayRCP< std::size_t > &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -13221,7 +13305,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_apply__SWIG_0(SwigClassWrapper const *farg
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::apply(Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,Teuchos::ETransp,double,double) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -13268,7 +13351,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_apply__SWIG_1(SwigClassWrapper const *farg
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::apply(Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,Teuchos::ETransp,double) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -13313,7 +13395,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_apply__SWIG_2(SwigClassWrapper const *farg
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::apply(Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,Teuchos::ETransp) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -13356,7 +13437,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_apply__SWIG_3(SwigClassWrapper const *farg
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::apply(Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -13522,7 +13602,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_gaussSeidel(SwigClassWrapper const *farg1,
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::gaussSeidel(Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,double const &,Tpetra::ESweepDirection const,int const) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -13580,7 +13659,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_gaussSeidelCopy(SwigClassWrapper const *fa
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::gaussSeidelCopy(Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,Tpetra::MultiVector< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,double const &,Tpetra::ESweepDirection const,int const,bool const) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -13672,7 +13750,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_importAndFillComplete__SWIG_0(SwigClassWra
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::importAndFillComplete(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > &,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -13719,7 +13796,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_importAndFillComplete__SWIG_1(SwigClassWra
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::importAndFillComplete(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > &,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -13774,7 +13850,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_importAndFillComplete__SWIG_2(SwigClassWra
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::importAndFillComplete(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > &,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const &,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::import_type const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -13824,7 +13899,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_exportAndFillComplete__SWIG_0(SwigClassWra
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::exportAndFillComplete(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > &,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -13871,7 +13945,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_exportAndFillComplete__SWIG_1(SwigClassWra
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::exportAndFillComplete(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > &,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -13915,7 +13988,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_exportAndFillComplete__SWIG_2(SwigClassWra
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::exportAndFillComplete(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > &,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -13956,7 +14028,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_exportAndFillComplete__SWIG_3(SwigClassWra
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::exportAndFillComplete(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > &,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -14011,7 +14082,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_exportAndFillComplete__SWIG_4(SwigClassWra
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::exportAndFillComplete(Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > &,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type const &,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::export_type const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::map_type const > const &,Teuchos::RCP< Teuchos::ParameterList > const &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -14044,7 +14114,6 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_computeGlobalConstants(SwigClassWrapper co
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::computeGlobalConstants()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -14119,15 +14188,41 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_getAllValues(SwigClassWrapper const *farg1
       SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getAllValues(Teuchos::ArrayView< std::size_t >,Teuchos::ArrayView< LO >,Teuchos::ArrayView< SC >) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
-SWIGEXPORT void _wrap_assign_TpetraCrsMatrix(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> > swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_DESTR);
+SWIGEXPORT void _wrap_TpetraCrsMatrix_op_assign__(SwigClassWrapper *farg1, SwigClassWrapper const *farg2) {
+  Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
+  Tpetra::CrsMatrix< SC,LO,GO,NO > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > > *smartarg1 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::CrsMatrix<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
+  (void)sizeof(arg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::operator =(Tpetra::CrsMatrix< SC,LO,GO,NO > const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      typedef Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> > swig_lhs_classtype;
+      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::operator =(Tpetra::CrsMatrix< SC,LO,GO,NO > const &)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::operator =(Tpetra::CrsMatrix< SC,LO,GO,NO > const &)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::operator =(Tpetra::CrsMatrix< SC,LO,GO,NO > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
 }
 
 
@@ -14740,7 +14835,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readMapFile(SwigArrayWrapper *far
 }
 
 
-SWIGEXPORT void _wrap_delete_TpetraReader(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_TpetraReader(SwigClassWrapper *farg1) {
   Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > *arg1 = (Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > *) 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > > *smartarg1 ;
   
@@ -14769,15 +14864,41 @@ SWIGEXPORT void _wrap_delete_TpetraReader(SwigClassWrapper const *farg1) {
       SWIG_exception_impl("Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > >::~Reader()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
-SWIGEXPORT void _wrap_assign_TpetraReader(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Tpetra::MatrixMarket::Reader<Tpetra::CrsMatrix<SC,LO,GO,NO> > > swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+SWIGEXPORT void _wrap_TpetraReader_op_assign__(SwigClassWrapper *farg1, SwigClassWrapper const *farg2) {
+  Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > *arg1 = (Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > *) 0 ;
+  Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > > *smartarg1 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader<Tpetra::CrsMatrix<SC,LO,GO,NO> > >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::MatrixMarket::Reader<Tpetra::CrsMatrix<SC,LO,GO,NO> >* >(smartarg1->get()) : NULL;
+  (void)sizeof(arg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > >::operator =(Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      typedef Teuchos::RCP< Tpetra::MatrixMarket::Reader<Tpetra::CrsMatrix<SC,LO,GO,NO> > > swig_lhs_classtype;
+      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > >::operator =(Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > const &)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > >::operator =(Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > const &)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > >::operator =(Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
 }
 
 
@@ -14821,7 +14942,6 @@ SWIGEXPORT void _wrap_TpetraWriter_writeSparseFile__SWIG_0(SwigArrayWrapper *far
       SWIG_exception_impl("Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > >::writeSparseFile(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > >::sparse_matrix_type const > const &,std::string const &,std::string const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -14857,7 +14977,6 @@ SWIGEXPORT void _wrap_TpetraWriter_writeSparseFile__SWIG_1(SwigArrayWrapper *far
       SWIG_exception_impl("Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > >::writeSparseFile(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > >::sparse_matrix_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -14901,7 +15020,6 @@ SWIGEXPORT void _wrap_TpetraWriter_writeSparseGraphFile__SWIG_0(SwigArrayWrapper
       SWIG_exception_impl("Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > >::writeSparseGraphFile(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > >::crs_graph_type const > const &,std::string const &,std::string const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -14937,7 +15055,6 @@ SWIGEXPORT void _wrap_TpetraWriter_writeSparseGraphFile__SWIG_1(SwigArrayWrapper
       SWIG_exception_impl("Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > >::writeSparseGraphFile(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > >::crs_graph_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -14981,7 +15098,6 @@ SWIGEXPORT void _wrap_TpetraWriter_writeDenseFile__SWIG_0(SwigArrayWrapper *farg
       SWIG_exception_impl("Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > >::writeDenseFile(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > >::multivector_type const > const &,std::string const &,std::string const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -15017,11 +15133,10 @@ SWIGEXPORT void _wrap_TpetraWriter_writeDenseFile__SWIG_1(SwigArrayWrapper *farg
       SWIG_exception_impl("Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > >::writeDenseFile(std::string const &,Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > >::multivector_type const > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
-SWIGEXPORT void _wrap_delete_TpetraWriter(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_TpetraWriter(SwigClassWrapper *farg1) {
   Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > *arg1 = (Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > *) 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > > *smartarg1 ;
   
@@ -15050,15 +15165,41 @@ SWIGEXPORT void _wrap_delete_TpetraWriter(SwigClassWrapper const *farg1) {
       SWIG_exception_impl("Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > >::~Writer()", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
-SWIGEXPORT void _wrap_assign_TpetraWriter(SwigClassWrapper * self, SwigClassWrapper const * other) {
-  typedef Teuchos::RCP< Tpetra::MatrixMarket::Writer<Tpetra::CrsMatrix<SC,LO,GO,NO> > > swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+SWIGEXPORT void _wrap_TpetraWriter_op_assign__(SwigClassWrapper *farg1, SwigClassWrapper const *farg2) {
+  Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > *arg1 = (Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > *) 0 ;
+  Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > *arg2 = 0 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > > *smartarg1 ;
+  
+  smartarg1 = static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Writer<Tpetra::CrsMatrix<SC,LO,GO,NO> > >* >(farg1->cptr);
+  arg1 = smartarg1 ? const_cast< Tpetra::MatrixMarket::Writer<Tpetra::CrsMatrix<SC,LO,GO,NO> >* >(smartarg1->get()) : NULL;
+  (void)sizeof(arg2);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > >::operator =(Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > const &)");;
+    try
+    {
+      // Attempt the wrapped function call
+      typedef Teuchos::RCP< Tpetra::MatrixMarket::Writer<Tpetra::CrsMatrix<SC,LO,GO,NO> > > swig_lhs_classtype;
+      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > >::operator =(Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > const &)", SWIG_IndexError, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > >::operator =(Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > const &)", SWIG_RuntimeError, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > >::operator =(Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
+    }
+  }
 }
 
 
@@ -15115,7 +15256,6 @@ SWIGEXPORT void _wrap_TpetraMatrixMatrixMultiply__SWIG_0(SwigClassWrapper const 
       SWIG_exception_impl("Tpetra::MatrixMatrix::Multiply< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,bool,std::string const &,Teuchos::RCP< Teuchos::ParameterList > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -15169,7 +15309,6 @@ SWIGEXPORT void _wrap_TpetraMatrixMatrixMultiply__SWIG_1(SwigClassWrapper const 
       SWIG_exception_impl("Tpetra::MatrixMatrix::Multiply< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,bool,std::string const &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -15219,7 +15358,6 @@ SWIGEXPORT void _wrap_TpetraMatrixMatrixMultiply__SWIG_2(SwigClassWrapper const 
       SWIG_exception_impl("Tpetra::MatrixMatrix::Multiply< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,bool)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -15267,7 +15405,6 @@ SWIGEXPORT void _wrap_TpetraMatrixMatrixMultiply__SWIG_3(SwigClassWrapper const 
       SWIG_exception_impl("Tpetra::MatrixMatrix::Multiply< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -15312,7 +15449,6 @@ SWIGEXPORT void _wrap_TpetraMatrixMatrixAdd__SWIG_0(SwigClassWrapper const *farg
       SWIG_exception_impl("Tpetra::MatrixMatrix::Add< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,double,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > &,double)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 
@@ -15361,7 +15497,6 @@ SWIGEXPORT void _wrap_TpetraMatrixMatrixAdd__SWIG_1(SwigClassWrapper const *farg
       SWIG_exception_impl("Tpetra::MatrixMatrix::Add< SC,LO,GO,NO >(Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,double,Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > const &,bool,double,Teuchos::RCP< Tpetra::CrsMatrix< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > >)", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
-  
 }
 
 

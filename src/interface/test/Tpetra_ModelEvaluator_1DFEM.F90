@@ -281,7 +281,7 @@ contains
     ! ------------------------------------------------------------------------ !
     class(TpetraModelEvaluator1DFEM), intent(in) :: self
     class(TpetraMultiVector), intent(in) :: x
-    class(TpetraMultiVector), intent(inout) :: f
+    class(TpetraMultiVector), intent(in) :: f
     type(Linear2NodeFEBasis) :: basis
     integer :: num_my_elems, ne, gp, i, lclrow
     integer(size_type) :: col
@@ -353,7 +353,7 @@ contains
     ! ------------------------------------------------------------------------ !
     class(TpetraMultiVector), intent(in) :: x
     class(TpetraModelEvaluator1DFEM), intent(in) :: self
-    class(TpetraOperator), intent(inout) :: J
+    class(TpetraOperator), intent(in) :: J
     type(TpetraCrsMatrix) :: Jmat
     type(Linear2NodeFEBasis) :: basis
     integer :: ne, num_my_elems, gp, i, jj
@@ -443,7 +443,7 @@ contains
     ! ------------------------------------------------------------------------ !
     class(TpetraModelEvaluator1DFEM), intent(in) :: self
     class(TpetraMultiVector), intent(in) :: x
-    class(TpetraOperator), intent(inout) :: M
+    class(TpetraOperator), intent(in) :: M
     type(TpetraCrsMatrix) :: Mmat
     type(TpetraMap) :: row_map, col_map
     type(Linear2NodeFEBasis) :: basis

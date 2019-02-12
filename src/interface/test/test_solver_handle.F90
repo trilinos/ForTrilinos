@@ -37,7 +37,7 @@ contains
     implicit none
     class(TriDiagOperator), intent(in) :: self
     class(TpetraMultiVector), intent(in) :: x
-    class(TpetraMultiVector), intent(inout) :: y
+    class(TpetraMultiVector), intent(in) :: y
     integer(kind(TeuchosETransp)), intent(in) :: mode
     real(scalar_type), intent(in) :: alpha
     real(scalar_type), intent(in) :: beta

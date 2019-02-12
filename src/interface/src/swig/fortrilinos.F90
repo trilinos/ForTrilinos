@@ -34,17 +34,17 @@ module fortrilinos
  type, public :: TrilinosSolver
   type(SwigClassWrapper), public :: swigdata
  contains
-  procedure, private :: init__SWIG_0 => swigf_TrilinosSolver_init__SWIG_0
-  procedure, private :: init__SWIG_1 => swigf_TrilinosSolver_init__SWIG_1
+  procedure, private :: swigf_TrilinosSolver_op_assign__
+  procedure, private :: swigf_TrilinosSolver_init__SWIG_0
+  procedure, private :: swigf_TrilinosSolver_init__SWIG_1
   procedure :: setup_matrix => swigf_TrilinosSolver_setup_matrix
   procedure :: setup_operator => swigf_TrilinosSolver_setup_operator
   procedure :: setup_solver => swigf_TrilinosSolver_setup_solver
   procedure :: solve => swigf_TrilinosSolver_solve
   procedure :: finalize => swigf_TrilinosSolver_finalize
   procedure :: release => delete_TrilinosSolver
-  procedure, private :: swigf_assignment_TrilinosSolver
-  generic :: init => init__SWIG_0, init__SWIG_1
-  generic :: assignment(=) => swigf_assignment_TrilinosSolver
+  generic :: assignment(=) => swigf_TrilinosSolver_op_assign__
+  generic :: init => swigf_TrilinosSolver_init__SWIG_0, swigf_TrilinosSolver_init__SWIG_1
  end type TrilinosSolver
  interface TrilinosSolver
   module procedure new_TrilinosSolver
@@ -57,8 +57,9 @@ module fortrilinos
  type, public :: TrilinosEigenSolver
   type(SwigClassWrapper), public :: swigdata
  contains
-  procedure, private :: init__SWIG_0 => swigf_TrilinosEigenSolver_init__SWIG_0
-  procedure, private :: init__SWIG_1 => swigf_TrilinosEigenSolver_init__SWIG_1
+  procedure, private :: swigf_TrilinosEigenSolver_op_assign__
+  procedure, private :: swigf_TrilinosEigenSolver_init__SWIG_0
+  procedure, private :: swigf_TrilinosEigenSolver_init__SWIG_1
   procedure :: setup_matrix => swigf_TrilinosEigenSolver_setup_matrix
   procedure :: setup_matrix_rhs => swigf_TrilinosEigenSolver_setup_matrix_rhs
   procedure :: setup_operator => swigf_TrilinosEigenSolver_setup_operator
@@ -67,13 +68,15 @@ module fortrilinos
   procedure :: solve => swigf_TrilinosEigenSolver_solve
   procedure :: finalize => swigf_TrilinosEigenSolver_finalize
   procedure :: release => delete_TrilinosEigenSolver
-  procedure, private :: swigf_assignment_TrilinosEigenSolver
-  generic :: init => init__SWIG_0, init__SWIG_1
-  generic :: assignment(=) => swigf_assignment_TrilinosEigenSolver
+  generic :: assignment(=) => swigf_TrilinosEigenSolver_op_assign__
+  generic :: init => swigf_TrilinosEigenSolver_init__SWIG_0, swigf_TrilinosEigenSolver_init__SWIG_1
  end type TrilinosEigenSolver
  interface TrilinosEigenSolver
   module procedure new_TrilinosEigenSolver
  end interface
+ type, public :: SWIGTYPE_ForTrilinos__ModelEvaluatorT_SC_LO_GO_NO_t
+  type(SwigClassWrapper), public :: swigdata
+ end type
  ! class ForTrilinos::ModelEvaluator< SC,LO,GO,NO >
  type, public :: ForTrilinosModelEvaluator
   type(SwigClassWrapper), public :: swigdata
@@ -86,8 +89,8 @@ module fortrilinos
   procedure :: create_operator => swigf_ForTrilinosModelEvaluator_create_operator
   procedure :: setup => swigf_ForTrilinosModelEvaluator_setup
   procedure :: release => delete_ForTrilinosModelEvaluator
-  procedure, private :: swigf_assignment_ForTrilinosModelEvaluator
-  generic :: assignment(=) => swigf_assignment_ForTrilinosModelEvaluator
+  procedure, private :: swigf_ForTrilinosModelEvaluator_op_assign__
+  generic :: assignment(=) => swigf_ForTrilinosModelEvaluator_op_assign__
  end type ForTrilinosModelEvaluator
  ! class ForModelEvaluator
  type, extends(ForTrilinosModelEvaluator), public :: ForModelEvaluator
@@ -102,8 +105,8 @@ module fortrilinos
   procedure :: get_f_map => swigf_ForModelEvaluator_get_f_map
   procedure :: create_operator => swigf_ForModelEvaluator_create_operator
   procedure :: release => delete_ForModelEvaluator
-  procedure, private :: swigf_assignment_ForModelEvaluator
-  generic :: assignment(=) => swigf_assignment_ForModelEvaluator
+  procedure, private :: swigf_ForModelEvaluator_op_assign__
+  generic :: assignment(=) => swigf_ForModelEvaluator_op_assign__
  end type ForModelEvaluator
  interface ForModelEvaluator
   module procedure new_ForModelEvaluator
@@ -117,6 +120,9 @@ module fortrilinos
 public :: init_ForModelEvaluator
 
 integer, parameter, public :: SWIGTYPE_NOX__StatusTest__StatusType = C_INT
+ type, public :: SWIGTYPE_ForTrilinos__NOXSolverT_SC_LO_GO_NO_t
+  type(SwigClassWrapper), public :: swigdata
+ end type
  ! class ForTrilinos::NOXSolver< SC,LO,GO,NO >
  type, public :: NOXSolver
   type(SwigClassWrapper), public :: swigdata
@@ -124,8 +130,8 @@ integer, parameter, public :: SWIGTYPE_NOX__StatusTest__StatusType = C_INT
   procedure :: setup => swigf_NOXSolver_setup
   procedure :: solve => swigf_NOXSolver_solve
   procedure :: release => delete_NOXSolver
-  procedure, private :: swigf_assignment_NOXSolver
-  generic :: assignment(=) => swigf_assignment_NOXSolver
+  procedure, private :: swigf_NOXSolver_op_assign__
+  generic :: assignment(=) => swigf_NOXSolver_op_assign__
  end type NOXSolver
  interface NOXSolver
   module procedure new_NOXSolver
@@ -157,6 +163,14 @@ use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: fresult
 end function
+
+subroutine swigc_TrilinosSolver_op_assign__(farg1, farg2) &
+bind(C, name="_wrap_TrilinosSolver_op_assign__")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper), intent(inout) :: farg1
+type(SwigClassWrapper) :: farg2
+end subroutine
 
 subroutine swigc_TrilinosSolver_init__SWIG_0(farg1) &
 bind(C, name="_wrap_TrilinosSolver_init__SWIG_0")
@@ -217,16 +231,9 @@ subroutine swigc_delete_TrilinosSolver(farg1) &
 bind(C, name="_wrap_delete_TrilinosSolver")
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper), intent(inout) :: farg1
 end subroutine
 
-  subroutine swigc_assignment_TrilinosSolver(self, other) &
-     bind(C, name="_wrap_assign_TrilinosSolver")
-   use, intrinsic :: ISO_C_BINDING
-   import :: SwigClassWrapper
-   type(SwigClassWrapper), intent(inout) :: self
-   type(SwigClassWrapper), intent(in) :: other
-  end subroutine
 function swigc_new_TrilinosEigenSolver() &
 bind(C, name="_wrap_new_TrilinosEigenSolver") &
 result(fresult)
@@ -234,6 +241,14 @@ use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: fresult
 end function
+
+subroutine swigc_TrilinosEigenSolver_op_assign__(farg1, farg2) &
+bind(C, name="_wrap_TrilinosEigenSolver_op_assign__")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper), intent(inout) :: farg1
+type(SwigClassWrapper) :: farg2
+end subroutine
 
 subroutine swigc_TrilinosEigenSolver_init__SWIG_0(farg1) &
 bind(C, name="_wrap_TrilinosEigenSolver_init__SWIG_0")
@@ -314,16 +329,9 @@ subroutine swigc_delete_TrilinosEigenSolver(farg1) &
 bind(C, name="_wrap_delete_TrilinosEigenSolver")
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper), intent(inout) :: farg1
 end subroutine
 
-  subroutine swigc_assignment_TrilinosEigenSolver(self, other) &
-     bind(C, name="_wrap_assign_TrilinosEigenSolver")
-   use, intrinsic :: ISO_C_BINDING
-   import :: SwigClassWrapper
-   type(SwigClassWrapper), intent(inout) :: self
-   type(SwigClassWrapper), intent(in) :: other
-  end subroutine
 subroutine swigc_ForTrilinosModelEvaluator_evaluate_residual(farg1, farg2, farg3) &
 bind(C, name="_wrap_ForTrilinosModelEvaluator_evaluate_residual")
 use, intrinsic :: ISO_C_BINDING
@@ -390,16 +398,17 @@ subroutine swigc_delete_ForTrilinosModelEvaluator(farg1) &
 bind(C, name="_wrap_delete_ForTrilinosModelEvaluator")
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper), intent(inout) :: farg1
 end subroutine
 
-  subroutine swigc_assignment_ForTrilinosModelEvaluator(self, other) &
-     bind(C, name="_wrap_assign_ForTrilinosModelEvaluator")
-   use, intrinsic :: ISO_C_BINDING
-   import :: SwigClassWrapper
-   type(SwigClassWrapper), intent(inout) :: self
-   type(SwigClassWrapper), intent(in) :: other
-  end subroutine
+subroutine swigc_ForTrilinosModelEvaluator_op_assign__(farg1, farg2) &
+bind(C, name="_wrap_ForTrilinosModelEvaluator_op_assign__")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper), intent(inout) :: farg1
+type(SwigClassWrapper) :: farg2
+end subroutine
+
 function swigc_ForModelEvaluator_fhandle(farg1) &
 bind(C, name="_wrap_ForModelEvaluator_fhandle") &
 result(fresult)
@@ -491,16 +500,17 @@ subroutine swigc_delete_ForModelEvaluator(farg1) &
 bind(C, name="_wrap_delete_ForModelEvaluator")
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper), intent(inout) :: farg1
 end subroutine
 
-  subroutine swigc_assignment_ForModelEvaluator(self, other) &
-     bind(C, name="_wrap_assign_ForModelEvaluator")
-   use, intrinsic :: ISO_C_BINDING
-   import :: SwigClassWrapper
-   type(SwigClassWrapper), intent(inout) :: self
-   type(SwigClassWrapper), intent(in) :: other
-  end subroutine
+subroutine swigc_ForModelEvaluator_op_assign__(farg1, farg2) &
+bind(C, name="_wrap_ForModelEvaluator_op_assign__")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper), intent(inout) :: farg1
+type(SwigClassWrapper) :: farg2
+end subroutine
+
 function swigc_new_NOXSolver(farg1) &
 bind(C, name="_wrap_new_NOXSolver") &
 result(fresult)
@@ -531,16 +541,17 @@ subroutine swigc_delete_NOXSolver(farg1) &
 bind(C, name="_wrap_delete_NOXSolver")
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper), intent(inout) :: farg1
 end subroutine
 
-  subroutine swigc_assignment_NOXSolver(self, other) &
-     bind(C, name="_wrap_assign_NOXSolver")
-   use, intrinsic :: ISO_C_BINDING
-   import :: SwigClassWrapper
-   type(SwigClassWrapper), intent(inout) :: self
-   type(SwigClassWrapper), intent(in) :: other
-  end subroutine
+subroutine swigc_NOXSolver_op_assign__(farg1, farg2) &
+bind(C, name="_wrap_NOXSolver_op_assign__")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper), intent(inout) :: farg1
+type(SwigClassWrapper) :: farg2
+end subroutine
+
 end interface
 
 
@@ -550,17 +561,28 @@ function new_TrilinosSolver() &
 result(self)
 use, intrinsic :: ISO_C_BINDING
 type(TrilinosSolver) :: self
-
 type(SwigClassWrapper) :: fresult 
 
 fresult = swigc_new_TrilinosSolver()
 self%swigdata = fresult
 end function
 
-subroutine swigf_TrilinosSolver_init__SWIG_0(self)
+subroutine swigf_TrilinosSolver_op_assign__(self, other)
 use, intrinsic :: ISO_C_BINDING
 class(TrilinosSolver), intent(inout) :: self
+type(TrilinosSolver), intent(in) :: other
+type(SwigClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
 
+farg1 = self%swigdata
+farg2 = other%swigdata
+call swigc_TrilinosSolver_op_assign__(farg1, farg2)
+self%swigdata = farg1
+end subroutine
+
+subroutine swigf_TrilinosSolver_init__SWIG_0(self)
+use, intrinsic :: ISO_C_BINDING
+class(TrilinosSolver), intent(in) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
@@ -569,10 +591,8 @@ end subroutine
 
 subroutine swigf_TrilinosSolver_init__SWIG_1(self, comm)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosSolver), intent(inout) :: self
-
+class(TrilinosSolver), intent(in) :: self
 class(TeuchosComm), intent(in) :: comm
-
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -583,10 +603,8 @@ end subroutine
 
 subroutine swigf_TrilinosSolver_setup_matrix(self, a)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosSolver), intent(inout) :: self
-
+class(TrilinosSolver), intent(in) :: self
 class(TpetraCrsMatrix), intent(in) :: a
-
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -597,10 +615,8 @@ end subroutine
 
 subroutine swigf_TrilinosSolver_setup_operator(self, a)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosSolver), intent(inout) :: self
-
+class(TrilinosSolver), intent(in) :: self
 class(TpetraOperator), intent(in) :: a
-
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -611,10 +627,8 @@ end subroutine
 
 subroutine swigf_TrilinosSolver_setup_solver(self, paramlist)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosSolver), intent(inout) :: self
-
+class(TrilinosSolver), intent(in) :: self
 class(ParameterList), intent(in) :: paramlist
-
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -626,11 +640,8 @@ end subroutine
 subroutine swigf_TrilinosSolver_solve(self, rhs, lhs)
 use, intrinsic :: ISO_C_BINDING
 class(TrilinosSolver), intent(in) :: self
-
 class(TpetraMultiVector), intent(in) :: rhs
-
-class(TpetraMultiVector), intent(inout) :: lhs
-
+class(TpetraMultiVector), intent(in) :: lhs
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
@@ -643,8 +654,7 @@ end subroutine
 
 subroutine swigf_TrilinosSolver_finalize(self)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosSolver), intent(inout) :: self
-
+class(TrilinosSolver), intent(in) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
@@ -654,7 +664,6 @@ end subroutine
 subroutine delete_TrilinosSolver(self)
 use, intrinsic :: ISO_C_BINDING
 class(TrilinosSolver), intent(inout) :: self
-
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
@@ -665,27 +674,32 @@ self%swigdata%cptr = C_NULL_PTR
 self%swigdata%mem = SWIG_NULL
 end subroutine
 
-  subroutine swigf_assignment_TrilinosSolver(self, other)
-   use, intrinsic :: ISO_C_BINDING
-   class(TrilinosSolver), intent(inout) :: self
-   type(TrilinosSolver), intent(in) :: other
-   call swigc_assignment_TrilinosSolver(self%swigdata, other%swigdata)
-  end subroutine
 function new_TrilinosEigenSolver() &
 result(self)
 use, intrinsic :: ISO_C_BINDING
 type(TrilinosEigenSolver) :: self
-
 type(SwigClassWrapper) :: fresult 
 
 fresult = swigc_new_TrilinosEigenSolver()
 self%swigdata = fresult
 end function
 
-subroutine swigf_TrilinosEigenSolver_init__SWIG_0(self)
+subroutine swigf_TrilinosEigenSolver_op_assign__(self, other)
 use, intrinsic :: ISO_C_BINDING
 class(TrilinosEigenSolver), intent(inout) :: self
+type(TrilinosEigenSolver), intent(in) :: other
+type(SwigClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
 
+farg1 = self%swigdata
+farg2 = other%swigdata
+call swigc_TrilinosEigenSolver_op_assign__(farg1, farg2)
+self%swigdata = farg1
+end subroutine
+
+subroutine swigf_TrilinosEigenSolver_init__SWIG_0(self)
+use, intrinsic :: ISO_C_BINDING
+class(TrilinosEigenSolver), intent(in) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
@@ -694,10 +708,8 @@ end subroutine
 
 subroutine swigf_TrilinosEigenSolver_init__SWIG_1(self, comm)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver), intent(inout) :: self
-
+class(TrilinosEigenSolver), intent(in) :: self
 class(TeuchosComm), intent(in) :: comm
-
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -708,10 +720,8 @@ end subroutine
 
 subroutine swigf_TrilinosEigenSolver_setup_matrix(self, a)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver), intent(inout) :: self
-
+class(TrilinosEigenSolver), intent(in) :: self
 class(TpetraCrsMatrix), intent(in) :: a
-
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -722,10 +732,8 @@ end subroutine
 
 subroutine swigf_TrilinosEigenSolver_setup_matrix_rhs(self, m)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver), intent(inout) :: self
-
+class(TrilinosEigenSolver), intent(in) :: self
 class(TpetraCrsMatrix), intent(in) :: m
-
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -736,10 +744,8 @@ end subroutine
 
 subroutine swigf_TrilinosEigenSolver_setup_operator(self, a)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver), intent(inout) :: self
-
+class(TrilinosEigenSolver), intent(in) :: self
 class(TpetraOperator), intent(in) :: a
-
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -750,10 +756,8 @@ end subroutine
 
 subroutine swigf_TrilinosEigenSolver_setup_operator_rhs(self, m)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver), intent(inout) :: self
-
+class(TrilinosEigenSolver), intent(in) :: self
 class(TpetraOperator), intent(in) :: m
-
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -764,10 +768,8 @@ end subroutine
 
 subroutine swigf_TrilinosEigenSolver_setup_solver(self, paramlist)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver), intent(inout) :: self
-
+class(TrilinosEigenSolver), intent(in) :: self
 class(ParameterList), intent(in) :: paramlist
-
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -781,14 +783,11 @@ result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 integer :: swig_result
 class(TrilinosEigenSolver), intent(in) :: self
-
 real(C_DOUBLE), dimension(:), target :: eigenvalues
 real(C_DOUBLE), pointer :: farg2_view
-class(TpetraMultiVector), intent(inout) :: eigenvectors
-
+class(TpetraMultiVector), intent(in) :: eigenvectors
 integer(C_INT), dimension(:), target :: eigenindex
 integer(C_INT), pointer :: farg4_view
-
 integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigArrayWrapper) :: farg2 
@@ -819,8 +818,7 @@ end function
 
 subroutine swigf_TrilinosEigenSolver_finalize(self)
 use, intrinsic :: ISO_C_BINDING
-class(TrilinosEigenSolver), intent(inout) :: self
-
+class(TrilinosEigenSolver), intent(in) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
@@ -830,7 +828,6 @@ end subroutine
 subroutine delete_TrilinosEigenSolver(self)
 use, intrinsic :: ISO_C_BINDING
 class(TrilinosEigenSolver), intent(inout) :: self
-
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
@@ -841,20 +838,11 @@ self%swigdata%cptr = C_NULL_PTR
 self%swigdata%mem = SWIG_NULL
 end subroutine
 
-  subroutine swigf_assignment_TrilinosEigenSolver(self, other)
-   use, intrinsic :: ISO_C_BINDING
-   class(TrilinosEigenSolver), intent(inout) :: self
-   type(TrilinosEigenSolver), intent(in) :: other
-   call swigc_assignment_TrilinosEigenSolver(self%swigdata, other%swigdata)
-  end subroutine
 subroutine swigf_ForTrilinosModelEvaluator_evaluate_residual(self, x, f)
 use, intrinsic :: ISO_C_BINDING
 class(ForTrilinosModelEvaluator), intent(in) :: self
-
 class(TpetraMultiVector), intent(in) :: x
-
-class(TpetraMultiVector), intent(inout) :: f
-
+class(TpetraMultiVector), intent(in) :: f
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
@@ -868,11 +856,8 @@ end subroutine
 subroutine swigf_ForTrilinosModelEvaluator_evaluate_jacobian(self, x, j)
 use, intrinsic :: ISO_C_BINDING
 class(ForTrilinosModelEvaluator), intent(in) :: self
-
 class(TpetraMultiVector), intent(in) :: x
-
-class(TpetraOperator), intent(inout) :: j
-
+class(TpetraOperator), intent(in) :: j
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
@@ -886,11 +871,8 @@ end subroutine
 subroutine swigf_ForTrilinosModelEvaluator_evaluate_preconditioner(self, x, m)
 use, intrinsic :: ISO_C_BINDING
 class(ForTrilinosModelEvaluator), intent(in) :: self
-
 class(TpetraMultiVector), intent(in) :: x
-
-class(TpetraOperator), intent(inout) :: m
-
+class(TpetraOperator), intent(in) :: m
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
@@ -906,7 +888,6 @@ result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraMap) :: swig_result
 class(ForTrilinosModelEvaluator), intent(in) :: self
-
 type(SwigClassWrapper) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
@@ -920,7 +901,6 @@ result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraMap) :: swig_result
 class(ForTrilinosModelEvaluator), intent(in) :: self
-
 type(SwigClassWrapper) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
@@ -934,7 +914,6 @@ result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraOperator) :: swig_result
 class(ForTrilinosModelEvaluator), intent(in) :: self
-
 type(SwigClassWrapper) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
@@ -945,10 +924,8 @@ end function
 
 subroutine swigf_ForTrilinosModelEvaluator_setup(self, plist)
 use, intrinsic :: ISO_C_BINDING
-class(ForTrilinosModelEvaluator), intent(inout) :: self
-
-class(ParameterList), intent(inout) :: plist
-
+class(ForTrilinosModelEvaluator), intent(in) :: self
+class(ParameterList), intent(in) :: plist
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -960,7 +937,6 @@ end subroutine
 subroutine delete_ForTrilinosModelEvaluator(self)
 use, intrinsic :: ISO_C_BINDING
 class(ForTrilinosModelEvaluator), intent(inout) :: self
-
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
@@ -971,18 +947,24 @@ self%swigdata%cptr = C_NULL_PTR
 self%swigdata%mem = SWIG_NULL
 end subroutine
 
-  subroutine swigf_assignment_ForTrilinosModelEvaluator(self, other)
-   use, intrinsic :: ISO_C_BINDING
-   class(ForTrilinosModelEvaluator), intent(inout) :: self
-   type(ForTrilinosModelEvaluator), intent(in) :: other
-   call swigc_assignment_ForTrilinosModelEvaluator(self%swigdata, other%swigdata)
-  end subroutine
+subroutine swigf_ForTrilinosModelEvaluator_op_assign__(self, other)
+use, intrinsic :: ISO_C_BINDING
+class(ForTrilinosModelEvaluator), intent(inout) :: self
+type(SWIGTYPE_ForTrilinos__ModelEvaluatorT_SC_LO_GO_NO_t), intent(in) :: other
+type(SwigClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+
+farg1 = self%swigdata
+farg2 = other%swigdata
+call swigc_ForTrilinosModelEvaluator_op_assign__(farg1, farg2)
+self%swigdata = farg1
+end subroutine
+
 function swigf_ForModelEvaluator_fhandle(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(C_PTR) :: swig_result
 class(ForModelEvaluator), intent(in) :: self
-
 type(C_PTR) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
@@ -993,10 +975,8 @@ end function
 
 subroutine swigf_ForModelEvaluator_init(self, fh)
 use, intrinsic :: ISO_C_BINDING
-class(ForModelEvaluator), intent(inout) :: self
-
+class(ForModelEvaluator), intent(in) :: self
 type(C_PTR) :: fh
-
 type(SwigClassWrapper) :: farg1 
 type(C_PTR) :: farg2 
 
@@ -1007,10 +987,8 @@ end subroutine
 
 subroutine swigf_ForModelEvaluator_setup(self, plist)
 use, intrinsic :: ISO_C_BINDING
-class(ForModelEvaluator), intent(inout) :: self
-
-class(ParameterList), intent(inout) :: plist
-
+class(ForModelEvaluator), intent(in) :: self
+class(ParameterList), intent(in) :: plist
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -1022,11 +1000,8 @@ end subroutine
 subroutine swigf_ForModelEvaluator_evaluate_residual(self, x, f)
 use, intrinsic :: ISO_C_BINDING
 class(ForModelEvaluator), intent(in) :: self
-
 class(TpetraMultiVector), intent(in) :: x
-
-class(TpetraMultiVector), intent(inout) :: f
-
+class(TpetraMultiVector), intent(in) :: f
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
@@ -1040,11 +1015,8 @@ end subroutine
 subroutine swigf_ForModelEvaluator_evaluate_jacobian(self, x, j)
 use, intrinsic :: ISO_C_BINDING
 class(ForModelEvaluator), intent(in) :: self
-
 class(TpetraMultiVector), intent(in) :: x
-
-class(TpetraOperator), intent(inout) :: j
-
+class(TpetraOperator), intent(in) :: j
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
@@ -1058,11 +1030,8 @@ end subroutine
 subroutine swigf_ForModelEvaluator_evaluate_preconditioner(self, x, m)
 use, intrinsic :: ISO_C_BINDING
 class(ForModelEvaluator), intent(in) :: self
-
 class(TpetraMultiVector), intent(in) :: x
-
-class(TpetraOperator), intent(inout) :: m
-
+class(TpetraOperator), intent(in) :: m
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
@@ -1078,7 +1047,6 @@ result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraMap) :: swig_result
 class(ForModelEvaluator), intent(in) :: self
-
 type(SwigClassWrapper) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
@@ -1092,7 +1060,6 @@ result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraMap) :: swig_result
 class(ForModelEvaluator), intent(in) :: self
-
 type(SwigClassWrapper) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
@@ -1106,7 +1073,6 @@ result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraOperator) :: swig_result
 class(ForModelEvaluator), intent(in) :: self
-
 type(SwigClassWrapper) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
@@ -1119,7 +1085,6 @@ function new_ForModelEvaluator() &
 result(self)
 use, intrinsic :: ISO_C_BINDING
 type(ForModelEvaluator) :: self
-
 type(SwigClassWrapper) :: fresult 
 
 fresult = swigc_new_ForModelEvaluator()
@@ -1129,7 +1094,6 @@ end function
 subroutine delete_ForModelEvaluator(self)
 use, intrinsic :: ISO_C_BINDING
 class(ForModelEvaluator), intent(inout) :: self
-
 type(SwigClassWrapper) :: farg1 
 
 
@@ -1148,12 +1112,19 @@ self%swigdata%mem = SWIG_NULL
 deallocate(handle)
 end subroutine
 
-  subroutine swigf_assignment_ForModelEvaluator(self, other)
-   use, intrinsic :: ISO_C_BINDING
-   class(ForModelEvaluator), intent(inout) :: self
-   type(ForModelEvaluator), intent(in) :: other
-   call swigc_assignment_ForModelEvaluator(self%swigdata, other%swigdata)
-  end subroutine
+subroutine swigf_ForModelEvaluator_op_assign__(self, other)
+use, intrinsic :: ISO_C_BINDING
+class(ForModelEvaluator), intent(inout) :: self
+type(ForModelEvaluator), intent(in) :: other
+type(SwigClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+
+farg1 = self%swigdata
+farg2 = other%swigdata
+call swigc_ForModelEvaluator_op_assign__(farg1, farg2)
+self%swigdata = farg1
+end subroutine
+
 
 ! Convert a ISO-C class pointer struct into a user Fortran native pointer
 subroutine c_f_pointer_ForModelEvaluator(clswrap, fptr)
@@ -1298,7 +1269,7 @@ function swigd_ForModelEvaluator_create_operator(fself) &
   type(SwigClassWrapper) :: fresult
 
   class(ForModelEvaluator), pointer :: self
-  type(ForTpetraOperator) :: result
+  type(TpetraOperator) :: result
 
   ! Get pointer to Fortran object from class Handle
   call c_f_pointer_ForModelEvaluator(fself, self)
@@ -1324,7 +1295,6 @@ result(self)
 use, intrinsic :: ISO_C_BINDING
 type(NOXSolver) :: self
 class(ForTrilinosModelEvaluator), intent(in) :: model
-
 type(SwigClassWrapper) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
@@ -1335,10 +1305,8 @@ end function
 
 subroutine swigf_NOXSolver_setup(self, plist)
 use, intrinsic :: ISO_C_BINDING
-class(NOXSolver), intent(inout) :: self
-
-class(ParameterList), intent(inout) :: plist
-
+class(NOXSolver), intent(in) :: self
+class(ParameterList), intent(in) :: plist
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -1351,8 +1319,7 @@ function swigf_NOXSolver_solve(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 integer(SWIGTYPE_NOX__StatusTest__StatusType) :: swig_result
-class(NOXSolver), intent(inout) :: self
-
+class(NOXSolver), intent(in) :: self
 integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
@@ -1364,7 +1331,6 @@ end function
 subroutine delete_NOXSolver(self)
 use, intrinsic :: ISO_C_BINDING
 class(NOXSolver), intent(inout) :: self
-
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
@@ -1375,11 +1341,18 @@ self%swigdata%cptr = C_NULL_PTR
 self%swigdata%mem = SWIG_NULL
 end subroutine
 
-  subroutine swigf_assignment_NOXSolver(self, other)
-   use, intrinsic :: ISO_C_BINDING
-   class(NOXSolver), intent(inout) :: self
-   type(NOXSolver), intent(in) :: other
-   call swigc_assignment_NOXSolver(self%swigdata, other%swigdata)
-  end subroutine
+subroutine swigf_NOXSolver_op_assign__(self, other)
+use, intrinsic :: ISO_C_BINDING
+class(NOXSolver), intent(inout) :: self
+type(SWIGTYPE_ForTrilinos__NOXSolverT_SC_LO_GO_NO_t), intent(in) :: other
+type(SwigClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+
+farg1 = self%swigdata
+farg2 = other%swigdata
+call swigc_NOXSolver_op_assign__(farg1, farg2)
+self%swigdata = farg1
+end subroutine
+
 
 end module

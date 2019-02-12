@@ -62,7 +62,6 @@ function fortrilinos_get_serr() &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=:), allocatable :: swig_result
-
 type(SwigArrayWrapper) :: fresult 
 
 fresult = swigc_fortrilinos_get_serr()

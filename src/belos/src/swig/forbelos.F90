@@ -138,8 +138,8 @@ module forbelos
   type(SwigClassWrapper), public :: swigdata
  contains
   procedure :: release => delete_DefaultSolverParameters
-  procedure, private :: swigf_assignment_DefaultSolverParameters
-  generic :: assignment(=) => swigf_assignment_DefaultSolverParameters
+  procedure, private :: swigf_DefaultSolverParameters_op_assign__
+  generic :: assignment(=) => swigf_DefaultSolverParameters_op_assign__
  end type DefaultSolverParameters
  interface DefaultSolverParameters
   module procedure new_DefaultSolverParameters
@@ -218,16 +218,17 @@ subroutine swigc_delete_DefaultSolverParameters(farg1) &
 bind(C, name="_wrap_delete_DefaultSolverParameters")
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper), intent(inout) :: farg1
 end subroutine
 
-  subroutine swigc_assignment_DefaultSolverParameters(self, other) &
-     bind(C, name="_wrap_assign_DefaultSolverParameters")
-   use, intrinsic :: ISO_C_BINDING
-   import :: SwigClassWrapper
-   type(SwigClassWrapper), intent(inout) :: self
-   type(SwigClassWrapper), intent(in) :: other
-  end subroutine
+subroutine swigc_DefaultSolverParameters_op_assign__(farg1, farg2) &
+bind(C, name="_wrap_DefaultSolverParameters_op_assign__")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper), intent(inout) :: farg1
+type(SwigClassWrapper) :: farg2
+end subroutine
+
 end interface
 
 
@@ -252,7 +253,6 @@ result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=:), allocatable :: swig_result
 integer(BelosReturnType), intent(in) :: result
-
 type(SwigArrayWrapper) :: fresult 
 integer(C_INT) :: farg1 
 
@@ -267,7 +267,6 @@ result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=:), allocatable :: swig_result
 integer(BelosStatusType), intent(in) :: status
-
 type(SwigArrayWrapper) :: fresult 
 integer(C_INT) :: farg1 
 
@@ -301,7 +300,6 @@ use, intrinsic :: ISO_C_BINDING
 integer(BelosStatusType) :: swig_result
 character(kind=C_CHAR, len=*), target :: status
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-
 integer(C_INT) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 
@@ -316,7 +314,6 @@ use, intrinsic :: ISO_C_BINDING
 integer(BelosScaleType) :: swig_result
 character(kind=C_CHAR, len=*), target :: scaletype
 character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
-
 integer(C_INT) :: fresult 
 type(SwigArrayWrapper) :: farg1 
 
@@ -330,7 +327,6 @@ result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=:), allocatable :: swig_result
 integer(BelosScaleType), intent(in) :: scaletype
-
 type(SwigArrayWrapper) :: fresult 
 integer(C_INT) :: farg1 
 
@@ -345,7 +341,6 @@ result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 character(kind=C_CHAR, len=:), allocatable :: swig_result
 integer(BelosMsgType), intent(in) :: msgtype
-
 type(SwigArrayWrapper) :: fresult 
 integer(C_INT) :: farg1 
 
@@ -359,7 +354,6 @@ function new_DefaultSolverParameters() &
 result(self)
 use, intrinsic :: ISO_C_BINDING
 type(DefaultSolverParameters) :: self
-
 type(SwigClassWrapper) :: fresult 
 
 fresult = swigc_new_DefaultSolverParameters()
@@ -369,7 +363,6 @@ end function
 subroutine delete_DefaultSolverParameters(self)
 use, intrinsic :: ISO_C_BINDING
 class(DefaultSolverParameters), intent(inout) :: self
-
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
@@ -380,11 +373,18 @@ self%swigdata%cptr = C_NULL_PTR
 self%swigdata%mem = SWIG_NULL
 end subroutine
 
-  subroutine swigf_assignment_DefaultSolverParameters(self, other)
-   use, intrinsic :: ISO_C_BINDING
-   class(DefaultSolverParameters), intent(inout) :: self
-   type(DefaultSolverParameters), intent(in) :: other
-   call swigc_assignment_DefaultSolverParameters(self%swigdata, other%swigdata)
-  end subroutine
+subroutine swigf_DefaultSolverParameters_op_assign__(self, other)
+use, intrinsic :: ISO_C_BINDING
+class(DefaultSolverParameters), intent(inout) :: self
+type(DefaultSolverParameters), intent(in) :: other
+type(SwigClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+
+farg1 = self%swigdata
+farg2 = other%swigdata
+call swigc_DefaultSolverParameters_op_assign__(farg1, farg2)
+self%swigdata = farg1
+end subroutine
+
 
 end module

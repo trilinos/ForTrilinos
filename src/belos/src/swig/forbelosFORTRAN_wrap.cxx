@@ -205,28 +205,6 @@ void SWIG_store_exception(const char* decl, int errcode, const char *msg);
     SWIG_store_exception(DECL, CODE, MSG); RETURNNULL;
 
 
-#define SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
-    if ((SWIG_CLASS_WRAPPER).mem == SWIG_CREF) { \
-        SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
-            "Cannot pass const " TYPENAME " (class " FNAME ") " \
-            "as a mutable reference", \
-            RETURNNULL); \
-    }
-
-
-#define SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
-  if ((SWIG_CLASS_WRAPPER).mem == SWIG_NULL) { \
-    SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
-                        "Cannot pass null " TYPENAME " (class " FNAME ") " \
-                        "as a reference", RETURNNULL); \
-  }
-
-
-#define SWIG_check_mutable_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
-    SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL); \
-    SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL);
-
-
 namespace swig {
 
 enum AssignmentFlags {
@@ -243,7 +221,7 @@ struct assignment_flags;
 
 
 #define SWIG_assign(LEFTTYPE, LEFT, RIGHTTYPE, RIGHT, FLAGS) \
-    SWIG_assign_impl<LEFTTYPE , RIGHTTYPE, swig::assignment_flags<LEFTTYPE, FLAGS >::value >(LEFT, RIGHT);
+    SWIG_assign_impl<LEFTTYPE, RIGHTTYPE, swig::assignment_flags<LEFTTYPE, FLAGS >::value >(LEFT, RIGHT);
 
 
 #include <stdexcept>
@@ -458,7 +436,7 @@ struct AssignmentTraits {
 
 
 template<class T1, class T2, int AFlags>
-SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other) {
+SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, const SwigClassWrapper* other) {
   typedef swig::AssignmentTraits<T1, AFlags> Traits_t;
   T1* pself  = static_cast<T1*>(self->cptr);
   T2* pother = static_cast<T2*>(other->cptr);
@@ -471,9 +449,7 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
           break;
         case SWIG_MOVE: /* capture pointer from RHS */
           self->cptr = other->cptr;
-          other->cptr = NULL;
           self->mem = SWIG_OWN;
-          other->mem = SWIG_NULL;
           break;
         case SWIG_OWN: /* copy from RHS */
           self->cptr = Traits_t::copy_construct(pother);
@@ -499,8 +475,6 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
           /* Move RHS into LHS; delete RHS */
           Traits_t::move_assign(pself, pother);
           Traits_t::destruct(pother);
-          other->cptr = NULL;
-          other->mem = SWIG_NULL;
           break;
         case SWIG_OWN:
         case SWIG_REF:
@@ -528,8 +502,6 @@ SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, SwigClassWrapper* other
            * same. */
           Traits_t::move_assign(pself, pother);
           Traits_t::destruct(pother);
-          other->cptr = NULL;
-          other->mem = SWIG_NULL;
           break;
         case SWIG_OWN:
         case SWIG_REF:
@@ -705,21 +677,22 @@ SWIGEXPORT SwigClassWrapper _wrap_new_DefaultSolverParameters() {
 }
 
 
-SWIGEXPORT void _wrap_delete_DefaultSolverParameters(SwigClassWrapper const *farg1) {
+SWIGEXPORT void _wrap_delete_DefaultSolverParameters(SwigClassWrapper *farg1) {
   Belos::DefaultSolverParameters *arg1 = (Belos::DefaultSolverParameters *) 0 ;
   
-  SWIG_check_mutable_nonnull(*farg1, "Belos::DefaultSolverParameters *", "DefaultSolverParameters", "Belos::DefaultSolverParameters::~DefaultSolverParameters()", return );
-  arg1 = static_cast< Belos::DefaultSolverParameters * >(farg1->cptr);
+  (void)sizeof(farg1);
   delete arg1;
-  
 }
 
 
-SWIGEXPORT void _wrap_assign_DefaultSolverParameters(SwigClassWrapper * self, SwigClassWrapper const * other) {
+SWIGEXPORT void _wrap_DefaultSolverParameters_op_assign__(SwigClassWrapper *farg1, SwigClassWrapper const *farg2) {
+  Belos::DefaultSolverParameters *arg1 = (Belos::DefaultSolverParameters *) 0 ;
+  Belos::DefaultSolverParameters *arg2 = 0 ;
+  
+  (void)sizeof(arg1);
+  (void)sizeof(arg2);
   typedef Belos::DefaultSolverParameters swig_lhs_classtype;
-  SWIG_assign(swig_lhs_classtype, self,
-    swig_lhs_classtype, const_cast<SwigClassWrapper*>(other),
-    0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
+  SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
 }
 
 
