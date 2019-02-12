@@ -348,7 +348,7 @@ function swigd_ForModelEvaluator_create_operator(fself) &
   type(SwigClassWrapper) :: fresult
 
   class(ForModelEvaluator), pointer :: self
-  type(ForTpetraOperator) :: result
+  type(TpetraOperator) :: result
 
   ! Get pointer to Fortran object from class Handle
   call c_f_pointer_ForModelEvaluator(fself, self)
