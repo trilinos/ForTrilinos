@@ -311,9 +311,7 @@ SWIGEXPORT void SWIG_store_exception(const char *decl,
 }
 }
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 SWIGEXPORT SwigArrayWrapper _wrap_fortrilinos_get_serr() {
   SwigArrayWrapper fresult ;
   char *result = 0 ;
@@ -325,7 +323,5 @@ SWIGEXPORT SwigArrayWrapper _wrap_fortrilinos_get_serr() {
 }
 
 
-#ifdef __cplusplus
-}
-#endif
+} // extern
 

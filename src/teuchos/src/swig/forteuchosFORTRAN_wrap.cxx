@@ -205,8 +205,15 @@ void SWIG_store_exception(const char* decl, int errcode, const char *msg);
     SWIG_store_exception(DECL, CODE, MSG); RETURNNULL;
 
 
+enum SwigMemFlags {
+    SWIG_MEM_OWN = 0x01,
+    SWIG_MEM_RVALUE = 0x02,
+    SWIG_MEM_CONST = 0x04
+};
+
+
 #define SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
-    if ((SWIG_CLASS_WRAPPER).mem == SWIG_CREF) { \
+    if ((SWIG_CLASS_WRAPPER).cmemflags & SWIG_MEM_CONST) { \
         SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
             "Cannot pass const " TYPENAME " (class " FNAME ") " \
             "as a mutable reference", \
@@ -215,7 +222,7 @@ void SWIG_store_exception(const char* decl, int errcode, const char *msg);
 
 
 #define SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
-  if ((SWIG_CLASS_WRAPPER).mem == SWIG_NULL) { \
+  if (!(SWIG_CLASS_WRAPPER).cptr) { \
     SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
                         "Cannot pass null " TYPENAME " (class " FNAME ") " \
                         "as a reference", RETURNNULL); \
@@ -228,22 +235,12 @@ void SWIG_store_exception(const char* decl, int errcode, const char *msg);
 
 
 namespace swig {
-
-enum AssignmentFlags {
-  IS_DESTR       = 0x01,
-  IS_COPY_CONSTR = 0x02,
-  IS_COPY_ASSIGN = 0x04,
-  IS_MOVE_CONSTR = 0x08,
-  IS_MOVE_ASSIGN = 0x10
+enum AssignmentType {
+  ASSIGNMENT_DEFAULT,
+  ASSIGNMENT_NODESTRUCT,
+  ASSIGNMENT_SMARTPTR
 };
-
-template<class T, int Flags>
-struct assignment_flags;
 }
-
-
-#define SWIG_assign(LEFTTYPE, LEFT, RIGHTTYPE, RIGHT, FLAGS) \
-    SWIG_assign_impl<LEFTTYPE, RIGHTTYPE, swig::assignment_flags<LEFTTYPE, FLAGS >::value >(LEFT, RIGHT);
 
 
 #define SWIG_check_sp_nonnull(INPUT, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
@@ -253,6 +250,15 @@ struct assignment_flags;
                         "as a reference", RETURNNULL); \
   }
 
+#define SWIG_constsp_mem_flags SWIG_MEM_CONST
+#define SWIG_sp_mem_flags 0
+
+
+#define SWIGPOLICY_Teuchos__ArrayT_int_t swig::ASSIGNMENT_DEFAULT
+#define SWIGPOLICY_Teuchos__ArrayT_double_t swig::ASSIGNMENT_DEFAULT
+#define SWIGPOLICY_Teuchos__ArrayT_long_long_t swig::ASSIGNMENT_DEFAULT
+#define SWIGPOLICY_Teuchos__CommT_int_t swig::ASSIGNMENT_SMARTPTR
+#define SWIGPOLICY_Teuchos__ParameterList swig::ASSIGNMENT_SMARTPTR
 
 #include <stdexcept>
 
@@ -296,25 +302,16 @@ struct assignment_flags;
 #include "Teuchos_Array.hpp"
 
 
-enum SwigMemState {
-    SWIG_NULL,
-    SWIG_OWN,
-    SWIG_MOVE,
-    SWIG_REF,
-    SWIG_CREF
-};
-
-
 struct SwigClassWrapper {
     void* cptr;
-    SwigMemState mem;
+    int cmemflags;
 };
 
 
 SWIGINTERN SwigClassWrapper SwigClassWrapper_uninitialized() {
     SwigClassWrapper result;
     result.cptr = NULL;
-    result.mem = SWIG_NULL;
+    result.cmemflags = 0;
     return result;
 }
 
@@ -347,229 +344,107 @@ SWIGINTERN Teuchos::ArrayView< int > Teuchos_Array_Sl_int_Sg__view(Teuchos::Arra
             return (*self)();
         }
 
-#include <utility>
+namespace swig {
+
+template<class T, AssignmentType A>
+struct DestructorPolicy {
+  static SwigClassWrapper destruct(SwigClassWrapper self) {
+    delete static_cast<T*>(self.cptr);
+    return SwigClassWrapper_uninitialized();
+  }
+};
+template<class T>
+struct DestructorPolicy<T, ASSIGNMENT_NODESTRUCT> {
+  static SwigClassWrapper destruct(SwigClassWrapper self) {
+    SWIG_exception_impl("assignment", SWIG_TypeError, "Invalid assignment: class type has private destructor", return SwigClassWrapper_uninitialized());
+  }
+};
+}
 
 
 namespace swig {
 
-// Define our own switching struct to support pre-c++11 builds
-template<bool Val>
-struct bool_constant {};
-typedef bool_constant<true>  true_type;
-typedef bool_constant<false> false_type;
-
-// Deletion
-template<class T>
-SWIGINTERN void destruct_impl(T* self, true_type) {
-  delete self;
-}
-template<class T>
-SWIGINTERN T* destruct_impl(T* , false_type) {
-  SWIG_exception_impl("assignment", SWIG_TypeError,
-                      "Invalid assignment: class type has no destructor",
-                      return NULL);
-}
-
-// Copy construction and assignment
-template<class T, class U>
-SWIGINTERN T* copy_construct_impl(const U* other, true_type) {
-  return new T(*other);
-}
-template<class T, class U>
-SWIGINTERN void copy_assign_impl(T* self, const U* other, true_type) {
-  *self = *other;
-}
-
-// Disabled construction and assignment
-template<class T, class U>
-SWIGINTERN T* copy_construct_impl(const U* , false_type) {
-  SWIG_exception_impl("assignment", SWIG_TypeError,
-                      "Invalid assignment: class type has no copy constructor",
-                      return NULL);
-}
-template<class T, class U>
-SWIGINTERN void copy_assign_impl(T* , const U* , false_type) {
-  SWIG_exception_impl("assignment", SWIG_TypeError,
-                      "Invalid assignment: class type has no copy assignment",
-                      return);
-}
-
-#if __cplusplus >= 201103L
-#include <utility>
-#include <type_traits>
-
-// Move construction and assignment
-template<class T, class U>
-SWIGINTERN T* move_construct_impl(U* other, true_type) {
-  return new T(std::move(*other));
-}
-template<class T, class U>
-SWIGINTERN void move_assign_impl(T* self, U* other, true_type) {
-  *self = std::move(*other);
-}
-
-// Disabled move construction and assignment
-template<class T, class U>
-SWIGINTERN T* move_construct_impl(U*, false_type) {
-  SWIG_exception_impl("assignment", SWIG_TypeError,
-                      "Invalid assignment: class type has no move constructor",
-                      return NULL);
-}
-template<class T, class U>
-SWIGINTERN void move_assign_impl(T*, U*, false_type) {
-  SWIG_exception_impl("assignment", SWIG_TypeError,
-                      "Invalid assignment: class type has no move assignment",
-                      return);
-}
-
-template<class T, int Flags>
-struct assignment_flags {
-  constexpr static int value =
-             (std::is_destructible<T>::value       ? IS_DESTR       : 0)
-           | (std::is_copy_constructible<T>::value ? IS_COPY_CONSTR : 0)
-           | (std::is_copy_assignable<T>::value    ? IS_COPY_ASSIGN : 0)
-           | (std::is_move_constructible<T>::value ? IS_MOVE_CONSTR : 0)
-           | (std::is_move_assignable<T>::value    ? IS_MOVE_ASSIGN : 0);
+template<class T, AssignmentType A>
+struct AssignmentPolicy {
+  static SwigClassWrapper destruct(SwigClassWrapper self) {
+    return DestructorPolicy<T, A>::destruct(self);
+  }
+  static SwigClassWrapper alias(SwigClassWrapper other) {
+    SwigClassWrapper self;
+    self.cptr = other.cptr;
+    self.cmemflags = other.cmemflags & ~SWIG_MEM_OWN;
+    return self;
+  }
+  static SwigClassWrapper move_alias(SwigClassWrapper self, SwigClassWrapper other) {
+    if (self.cmemflags & SWIG_MEM_OWN) {
+      destruct(self);
+    }
+    self.cptr = other.cptr;
+    self.cmemflags = other.cmemflags & ~SWIG_MEM_RVALUE;
+    return self;
+  }
+  static SwigClassWrapper copy_alias(SwigClassWrapper self, SwigClassWrapper other) {
+    if (self.cmemflags & SWIG_MEM_OWN) {
+      destruct(self);
+    }
+    self.cptr = other.cptr;
+    self.cmemflags = other.cmemflags & ~SWIG_MEM_OWN;
+    return self;
+  }
 };
 
-#else
-
-template<class T, int Flags>
-struct assignment_flags {
-  enum { value = Flags };
-};
-
-#endif
-
-template<class T, int Flags>
-struct AssignmentTraits {
-  static void destruct(T* self) {
-    destruct_impl<T>(self, bool_constant<Flags & IS_DESTR>());
+template<class T>
+struct AssignmentPolicy<T, ASSIGNMENT_SMARTPTR> {
+  static SwigClassWrapper destruct(SwigClassWrapper self) {
+    return DestructorPolicy<T, ASSIGNMENT_SMARTPTR>::destruct(self);
   }
-
-  template<class U>
-  static T* copy_construct(const U* other) {
-    return copy_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_COPY_CONSTR)>());
+  static SwigClassWrapper alias(SwigClassWrapper other) {
+    SwigClassWrapper self;
+    self.cptr = new T(*static_cast<T*>(other.cptr));
+    self.cmemflags = other.cmemflags | SWIG_MEM_OWN;
+    return self;
   }
-
-  template<class U>
-  static void copy_assign(T* self, const U* other) {
-    copy_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_COPY_ASSIGN)>());
+  static SwigClassWrapper move_alias(SwigClassWrapper self, SwigClassWrapper other) {
+    self = copy_alias(self, other);
+    self.cmemflags = other.cmemflags & ~SWIG_MEM_RVALUE;
+    destruct(other);
+    return self;
   }
-
-#if __cplusplus >= 201103L
-  template<class U>
-  static T* move_construct(U* other) {
-    return move_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_MOVE_CONSTR)>());
+  static SwigClassWrapper copy_alias(SwigClassWrapper self, SwigClassWrapper other) {
+    // LHS and RHS should both 'own' their shared pointers
+    T *pself = static_cast<T*>(self.cptr);
+    T *pother = static_cast<T*>(other.cptr);
+    *pself = *pother;
+    return self;
   }
-  template<class U>
-  static void move_assign(T* self, U* other) {
-    move_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_MOVE_ASSIGN)>());
-  }
-#else
-  template<class U>
-  static T* move_construct(U* other) {
-    return copy_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_COPY_CONSTR)>());
-  }
-  template<class U>
-  static void move_assign(T* self, U* other) {
-    copy_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_COPY_ASSIGN)>());
-  }
-#endif
 };
 
 } // end namespace swig
 
+template<class T, swig::AssignmentType A>
+SWIGINTERN void SWIG_assign(SwigClassWrapper* self, SwigClassWrapper other) {
+  typedef swig::AssignmentPolicy<T, A> Policy_t;
 
-template<class T1, class T2, int AFlags>
-SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, const SwigClassWrapper* other) {
-  typedef swig::AssignmentTraits<T1, AFlags> Traits_t;
-  T1* pself  = static_cast<T1*>(self->cptr);
-  T2* pother = static_cast<T2*>(other->cptr);
-
-  switch (self->mem) {
-    case SWIG_NULL:
-      /* LHS is unassigned */
-      switch (other->mem) {
-        case SWIG_NULL: /* null op */
-          break;
-        case SWIG_MOVE: /* capture pointer from RHS */
-          self->cptr = other->cptr;
-          self->mem = SWIG_OWN;
-          break;
-        case SWIG_OWN: /* copy from RHS */
-          self->cptr = Traits_t::copy_construct(pother);
-          self->mem = SWIG_OWN;
-          break;
-        case SWIG_REF: /* pointer to RHS */
-        case SWIG_CREF:
-          self->cptr = other->cptr;
-          self->mem = other->mem;
-          break;
-      }
-      break;
-    case SWIG_OWN:
-      /* LHS owns memory */
-      switch (other->mem) {
-        case SWIG_NULL:
-          /* Delete LHS */
-          Traits_t::destruct(pself);
-          self->cptr = NULL;
-          self->mem = SWIG_NULL;
-          break;
-        case SWIG_MOVE:
-          /* Move RHS into LHS; delete RHS */
-          Traits_t::move_assign(pself, pother);
-          Traits_t::destruct(pother);
-          break;
-        case SWIG_OWN:
-        case SWIG_REF:
-        case SWIG_CREF:
-          /* Copy RHS to LHS */
-          Traits_t::copy_assign(pself, pother);
-          break;
-      }
-      break;
-    case SWIG_MOVE:
-      SWIG_exception_impl("assignment", SWIG_RuntimeError,
-        "Left-hand side of assignment should never be in a 'MOVE' state",
-        return);
-      break;
-    case SWIG_REF:
-      /* LHS is a reference */
-      switch (other->mem) {
-        case SWIG_NULL:
-          /* Remove LHS reference */
-          self->cptr = NULL;
-          self->mem = SWIG_NULL;
-          break;
-        case SWIG_MOVE:
-          /* Move RHS into LHS; delete RHS. The original ownership stays the
-           * same. */
-          Traits_t::move_assign(pself, pother);
-          Traits_t::destruct(pother);
-          break;
-        case SWIG_OWN:
-        case SWIG_REF:
-        case SWIG_CREF:
-          /* Copy RHS to LHS */
-          Traits_t::copy_assign(pself, pother);
-          break;
-      }
-      break;
-    case SWIG_CREF:
-      switch (other->mem) {
-        case SWIG_NULL:
-          /* Remove LHS reference */
-          self->cptr = NULL;
-          self->mem = SWIG_NULL;
-          break;
-        default:
-          SWIG_exception_impl("assignment", SWIG_RuntimeError,
-              "Cannot assign to a const reference", return);
-          break;
-      }
-      break;
+  if (self->cptr == NULL) {
+    /* LHS is unassigned */
+    if (other.cmemflags & SWIG_MEM_RVALUE) {
+      /* Capture pointer from RHS, clear 'moving' flag */
+      self->cptr = other.cptr;
+      self->cmemflags = other.cmemflags & (~SWIG_MEM_RVALUE);
+    } else {
+      /* Aliasing another class; clear ownership or copy smart pointer */
+      *self = Policy_t::alias(other);
+    }
+  } else if (other.cptr == NULL) {
+    /* Replace LHS with a null pointer */
+    *self = Policy_t::destruct(*self);
+  } else if (other.cmemflags & SWIG_MEM_RVALUE) {
+    /* Transferred ownership from a variable that's about to be lost.
+     * Move-assign and delete the transient data */
+    *self = Policy_t::move_alias(*self, other);
+  } else {
+    /* RHS shouldn't be deleted, alias to LHS */
+    *self = Policy_t::copy_alias(*self, other);
   }
 }
 
@@ -635,9 +510,7 @@ void save_to_xml(const Teuchos::ParameterList& plist,
     Teuchos::writeParameterListToXmlFile(plist, xml_path);
 }
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 SWIGEXPORT SwigClassWrapper _wrap_new_TeuchosArrayInt(SwigArrayWrapper *farg1) {
   SwigClassWrapper fresult ;
   Teuchos::ArrayView< int const > *arg1 = 0 ;
@@ -670,7 +543,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TeuchosArrayInt(SwigArrayWrapper *farg1) {
     }
   }
   fresult.cptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
+  fresult.cmemflags = SWIG_MEM_RVALUE | (1 ? SWIG_MEM_OWN : 0);
   return fresult;
 }
 
@@ -714,7 +587,8 @@ SWIGEXPORT SwigArrayWrapper _wrap_TeuchosArrayInt_view(SwigClassWrapper const *f
 SWIGEXPORT void _wrap_delete_TeuchosArrayInt(SwigClassWrapper *farg1) {
   Teuchos::Array< int > *arg1 = (Teuchos::Array< int > *) 0 ;
   
-  (void)sizeof(farg1);
+  SWIG_check_mutable(*farg1, "Teuchos::Array< int > *", "TeuchosArrayInt", "Teuchos::Array< int >::~Array()", return );
+  arg1 = static_cast< Teuchos::Array< int > * >(farg1->cptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::Array< int >::~Array()");;
@@ -747,30 +621,8 @@ SWIGEXPORT void _wrap_TeuchosArrayInt_op_assign__(SwigClassWrapper *farg1, SwigC
   
   (void)sizeof(arg1);
   (void)sizeof(arg2);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Teuchos::Array< int >::operator =(Teuchos::Array< int > const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      typedef Teuchos::Array< int > swig_lhs_classtype;
-      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Teuchos::Array< int >::operator =(Teuchos::Array< int > const &)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Teuchos::Array< int >::operator =(Teuchos::Array< int > const &)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Teuchos::Array< int >::operator =(Teuchos::Array< int > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
+  SWIG_assign<Teuchos::Array< int >, SWIGPOLICY_Teuchos__ArrayT_int_t>(farg1, *farg2);
+  
 }
 
 
@@ -806,7 +658,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TeuchosArrayDbl(SwigArrayWrapper *farg1) {
     }
   }
   fresult.cptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
+  fresult.cmemflags = SWIG_MEM_RVALUE | (1 ? SWIG_MEM_OWN : 0);
   return fresult;
 }
 
@@ -850,7 +702,8 @@ SWIGEXPORT SwigArrayWrapper _wrap_TeuchosArrayDbl_view(SwigClassWrapper const *f
 SWIGEXPORT void _wrap_delete_TeuchosArrayDbl(SwigClassWrapper *farg1) {
   Teuchos::Array< double > *arg1 = (Teuchos::Array< double > *) 0 ;
   
-  (void)sizeof(farg1);
+  SWIG_check_mutable(*farg1, "Teuchos::Array< double > *", "TeuchosArrayDbl", "Teuchos::Array< double >::~Array()", return );
+  arg1 = static_cast< Teuchos::Array< double > * >(farg1->cptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::Array< double >::~Array()");;
@@ -883,30 +736,8 @@ SWIGEXPORT void _wrap_TeuchosArrayDbl_op_assign__(SwigClassWrapper *farg1, SwigC
   
   (void)sizeof(arg1);
   (void)sizeof(arg2);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Teuchos::Array< double >::operator =(Teuchos::Array< double > const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      typedef Teuchos::Array< double > swig_lhs_classtype;
-      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Teuchos::Array< double >::operator =(Teuchos::Array< double > const &)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Teuchos::Array< double >::operator =(Teuchos::Array< double > const &)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Teuchos::Array< double >::operator =(Teuchos::Array< double > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
+  SWIG_assign<Teuchos::Array< double >, SWIGPOLICY_Teuchos__ArrayT_double_t>(farg1, *farg2);
+  
 }
 
 
@@ -942,7 +773,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TeuchosArrayLongLong(SwigArrayWrapper *far
     }
   }
   fresult.cptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
+  fresult.cmemflags = SWIG_MEM_RVALUE | (1 ? SWIG_MEM_OWN : 0);
   return fresult;
 }
 
@@ -986,7 +817,8 @@ SWIGEXPORT SwigArrayWrapper _wrap_TeuchosArrayLongLong_view(SwigClassWrapper con
 SWIGEXPORT void _wrap_delete_TeuchosArrayLongLong(SwigClassWrapper *farg1) {
   Teuchos::Array< long long > *arg1 = (Teuchos::Array< long long > *) 0 ;
   
-  (void)sizeof(farg1);
+  SWIG_check_mutable(*farg1, "Teuchos::Array< long long > *", "TeuchosArrayLongLong", "Teuchos::Array< long long >::~Array()", return );
+  arg1 = static_cast< Teuchos::Array< long long > * >(farg1->cptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Teuchos::Array< long long >::~Array()");;
@@ -1019,30 +851,8 @@ SWIGEXPORT void _wrap_TeuchosArrayLongLong_op_assign__(SwigClassWrapper *farg1, 
   
   (void)sizeof(arg1);
   (void)sizeof(arg2);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Teuchos::Array< long long >::operator =(Teuchos::Array< long long > const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      typedef Teuchos::Array< long long > swig_lhs_classtype;
-      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Teuchos::Array< long long >::operator =(Teuchos::Array< long long > const &)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Teuchos::Array< long long >::operator =(Teuchos::Array< long long > const &)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Teuchos::Array< long long >::operator =(Teuchos::Array< long long > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
+  SWIG_assign<Teuchos::Array< long long >, SWIGPOLICY_Teuchos__ArrayT_long_long_t>(farg1, *farg2);
+  
 }
 
 
@@ -1184,7 +994,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TeuchosComm__SWIG_0(int const *farg1) {
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -1217,7 +1027,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TeuchosComm__SWIG_1() {
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Teuchos::Comm<int> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -1298,34 +1108,15 @@ SWIGEXPORT void _wrap_TeuchosComm_op_assign__(SwigClassWrapper *farg1, SwigClass
   Teuchos::Comm< int > *arg1 = (Teuchos::Comm< int > *) 0 ;
   Teuchos::Comm< int > *arg2 = 0 ;
   Teuchos::RCP< Teuchos::Comm< int > > *smartarg1 ;
+  Teuchos::RCP< Teuchos::Comm< int > > *smartarg2 ;
   
   smartarg1 = static_cast< Teuchos::RCP< Teuchos::Comm<int> >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< Teuchos::Comm<int>* >(smartarg1->get()) : NULL;
-  (void)sizeof(arg2);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Teuchos::Comm< int >::operator =(Teuchos::Comm< int > const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      typedef Teuchos::RCP< Teuchos::Comm<int> > swig_lhs_classtype;
-      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Teuchos::Comm< int >::operator =(Teuchos::Comm< int > const &)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Teuchos::Comm< int >::operator =(Teuchos::Comm< int > const &)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Teuchos::Comm< int >::operator =(Teuchos::Comm< int > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
+  SWIG_check_sp_nonnull(farg2, "Teuchos::Comm< int > *", "TeuchosComm", "Teuchos::Comm< int >::operator =(Teuchos::Comm< int > &)", return )
+  smartarg2 = static_cast< Teuchos::RCP< Teuchos::Comm<int> >* >(farg2->cptr);
+  arg2 = const_cast< Teuchos::Comm<int>* >(smartarg2->get());
+  SWIG_assign<Teuchos::RCP< Teuchos::Comm<int> >, SWIGPOLICY_Teuchos__CommT_int_t>(farg1, *farg2);
+  
 }
 
 
@@ -1357,7 +1148,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_ParameterList__SWIG_0() {
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -1394,7 +1185,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_ParameterList__SWIG_1(SwigArrayWrapper *fa
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -1544,7 +1335,7 @@ SWIGEXPORT SwigClassWrapper _wrap_ParameterList_sublist(SwigClassWrapper const *
   }
   {
     fresult.cptr = new Teuchos::RCP< Teuchos::ParameterList >(result SWIG_NO_NULL_DELETER_0);
-    fresult.mem = SWIG_MOVE;
+    fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   }
   return fresult;
 }
@@ -2277,37 +2068,15 @@ SWIGEXPORT void _wrap_ParameterList_op_assign__(SwigClassWrapper *farg1, SwigCla
   Teuchos::ParameterList *arg1 = (Teuchos::ParameterList *) 0 ;
   Teuchos::ParameterList *arg2 = 0 ;
   Teuchos::RCP< Teuchos::ParameterList > *smartarg1 ;
-  Teuchos::RCP< Teuchos::ParameterList const > *smartarg2 ;
+  Teuchos::RCP< Teuchos::ParameterList > *smartarg2 ;
   
   smartarg1 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< Teuchos::ParameterList* >(smartarg1->get()) : NULL;
-  SWIG_check_sp_nonnull(farg2, "Teuchos::ParameterList *", "ParameterList", "Teuchos::ParameterList::operator =(Teuchos::ParameterList const &)", return )
-  smartarg2 = static_cast< Teuchos::RCP<const Teuchos::ParameterList >* >(farg2->cptr);
+  SWIG_check_sp_nonnull(farg2, "Teuchos::ParameterList *", "ParameterList", "Teuchos::ParameterList::operator =(Teuchos::ParameterList &)", return )
+  smartarg2 = static_cast< Teuchos::RCP< Teuchos::ParameterList >* >(farg2->cptr);
   arg2 = const_cast< Teuchos::ParameterList* >(smartarg2->get());
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Teuchos::ParameterList::operator =(Teuchos::ParameterList const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      typedef Teuchos::RCP< Teuchos::ParameterList > swig_lhs_classtype;
-      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Teuchos::ParameterList::operator =(Teuchos::ParameterList const &)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Teuchos::ParameterList::operator =(Teuchos::ParameterList const &)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Teuchos::ParameterList::operator =(Teuchos::ParameterList const &)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
+  SWIG_assign<Teuchos::RCP< Teuchos::ParameterList >, SWIGPOLICY_Teuchos__ParameterList>(farg1, *farg2);
+  
 }
 
 
@@ -2383,7 +2152,5 @@ SWIGEXPORT void _wrap_save_to_xml(SwigClassWrapper const *farg1, SwigArrayWrappe
 }
 
 
-#ifdef __cplusplus
-}
-#endif
+} // extern
 

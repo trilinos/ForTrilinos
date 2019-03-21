@@ -65,70 +65,54 @@ module forteuchos
  end enum
  integer, parameter, public :: TeuchosDataAccess = kind(TeuchosCopy)
  public :: TeuchosCopy, TeuchosView
- enum, bind(c)
-  enumerator :: SWIG_NULL
-  enumerator :: SWIG_OWN
-  enumerator :: SWIG_MOVE
-  enumerator :: SWIG_REF
-  enumerator :: SWIG_CREF
- end enum
- integer, parameter :: SwigMemState = kind(SWIG_NULL)
+
+ integer, parameter :: swig_cmem_own_bit = 0
+ integer, parameter :: swig_cmem_rvalue_bit = 1
+ integer, parameter :: swig_cmem_const_bit = 2
  type, bind(C) :: SwigClassWrapper
   type(C_PTR), public :: cptr = C_NULL_PTR
-  integer(C_INT), public :: mem = SWIG_NULL
+  integer(C_INT), public :: cmemflags = 0
  end type
  type, bind(C) :: SwigArrayWrapper
   type(C_PTR), public :: data = C_NULL_PTR
   integer(C_SIZE_T), public :: size = 0
- end type
- type, public :: SWIGTYPE_Teuchos__ArrayT_int_t
-  type(SwigClassWrapper), public :: swigdata
  end type
  ! class Teuchos::Array< int >
  type, public :: TeuchosArrayInt
   type(SwigClassWrapper), public :: swigdata
  contains
   procedure :: view => swigf_TeuchosArrayInt_view
-  procedure :: release => delete_TeuchosArrayInt
+  procedure :: release => swigf_release_TeuchosArrayInt
   procedure, private :: swigf_TeuchosArrayInt_op_assign__
   generic :: assignment(=) => swigf_TeuchosArrayInt_op_assign__
  end type TeuchosArrayInt
  interface TeuchosArrayInt
-  module procedure new_TeuchosArrayInt
+  module procedure swigf_create_TeuchosArrayInt
  end interface
- type, public :: SWIGTYPE_Teuchos__ArrayT_double_t
-  type(SwigClassWrapper), public :: swigdata
- end type
  ! class Teuchos::Array< double >
  type, public :: TeuchosArrayDbl
   type(SwigClassWrapper), public :: swigdata
  contains
   procedure :: view => swigf_TeuchosArrayDbl_view
-  procedure :: release => delete_TeuchosArrayDbl
+  procedure :: release => swigf_release_TeuchosArrayDbl
   procedure, private :: swigf_TeuchosArrayDbl_op_assign__
   generic :: assignment(=) => swigf_TeuchosArrayDbl_op_assign__
  end type TeuchosArrayDbl
  interface TeuchosArrayDbl
-  module procedure new_TeuchosArrayDbl
+  module procedure swigf_create_TeuchosArrayDbl
  end interface
- type, public :: SWIGTYPE_Teuchos__ArrayT_long_long_t
-  type(SwigClassWrapper), public :: swigdata
- end type
  ! class Teuchos::Array< long long >
  type, public :: TeuchosArrayLongLong
   type(SwigClassWrapper), public :: swigdata
  contains
   procedure :: view => swigf_TeuchosArrayLongLong_view
-  procedure :: release => delete_TeuchosArrayLongLong
+  procedure :: release => swigf_release_TeuchosArrayLongLong
   procedure, private :: swigf_TeuchosArrayLongLong_op_assign__
   generic :: assignment(=) => swigf_TeuchosArrayLongLong_op_assign__
  end type TeuchosArrayLongLong
  interface TeuchosArrayLongLong
-  module procedure new_TeuchosArrayLongLong
+  module procedure swigf_create_TeuchosArrayLongLong
  end interface
- type, public :: SWIGTYPE_Teuchos__CommT_int_t
-  type(SwigClassWrapper), public :: swigdata
- end type
  ! class Teuchos::Comm< int >
  type, public :: TeuchosComm
   type(SwigClassWrapper), public :: swigdata
@@ -137,7 +121,7 @@ module forteuchos
   procedure :: getSize => swigf_TeuchosComm_getSize
   procedure :: barrier => swigf_TeuchosComm_barrier
   procedure :: getRawMpiComm => swigf_TeuchosComm_getRawMpiComm
-  procedure :: release => delete_TeuchosComm
+  procedure :: release => swigf_release_TeuchosComm
   procedure, private :: swigf_TeuchosComm_op_assign__
   generic :: assignment(=) => swigf_TeuchosComm_op_assign__
  end type TeuchosComm
@@ -170,7 +154,7 @@ module forteuchos
   procedure :: get_arr_real => swigf_ParameterList_get_arr_real
   procedure :: get_arr_integer => swigf_ParameterList_get_arr_integer
   procedure :: get_arr_longlong => swigf_ParameterList_get_arr_longlong
-  procedure :: release => delete_ParameterList
+  procedure :: release => swigf_release_ParameterList
   procedure, private :: swigf_ParameterList_op_assign__
   generic :: assignment(=) => swigf_ParameterList_op_assign__
   generic :: set => swigf_ParameterList_set__SWIG_1, swigf_ParameterList_set__SWIG_2, swigf_ParameterList_set__SWIG_3, &
@@ -629,7 +613,7 @@ end interface
 
 contains
  ! MODULE SUBPROGRAMS
-function new_TeuchosArrayInt(arg0) &
+function swigf_create_TeuchosArrayInt(arg0) &
 result(self)
 use, intrinsic :: ISO_C_BINDING
 type(TeuchosArrayInt) :: self
@@ -667,23 +651,24 @@ swig_result => NULL()
 endif
 end function
 
-subroutine delete_TeuchosArrayInt(self)
+subroutine swigf_release_TeuchosArrayInt(self)
 use, intrinsic :: ISO_C_BINDING
 class(TeuchosArrayInt), intent(inout) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIG_OWN) then
+if (btest(farg1%cmemflags, swig_cmem_own_bit)) then
 call swigc_delete_TeuchosArrayInt(farg1)
-end if
-self%swigdata%cptr = C_NULL_PTR
-self%swigdata%mem = SWIG_NULL
+endif
+farg1%cptr = C_NULL_PTR
+farg1%cmemflags = 0
+self%swigdata = farg1
 end subroutine
 
 subroutine swigf_TeuchosArrayInt_op_assign__(self, other)
 use, intrinsic :: ISO_C_BINDING
 class(TeuchosArrayInt), intent(inout) :: self
-type(SWIGTYPE_Teuchos__ArrayT_int_t), intent(in) :: other
+type(TeuchosArrayInt), intent(in) :: other
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -693,7 +678,7 @@ call swigc_TeuchosArrayInt_op_assign__(farg1, farg2)
 self%swigdata = farg1
 end subroutine
 
-function new_TeuchosArrayDbl(arg0) &
+function swigf_create_TeuchosArrayDbl(arg0) &
 result(self)
 use, intrinsic :: ISO_C_BINDING
 type(TeuchosArrayDbl) :: self
@@ -731,23 +716,24 @@ swig_result => NULL()
 endif
 end function
 
-subroutine delete_TeuchosArrayDbl(self)
+subroutine swigf_release_TeuchosArrayDbl(self)
 use, intrinsic :: ISO_C_BINDING
 class(TeuchosArrayDbl), intent(inout) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIG_OWN) then
+if (btest(farg1%cmemflags, swig_cmem_own_bit)) then
 call swigc_delete_TeuchosArrayDbl(farg1)
-end if
-self%swigdata%cptr = C_NULL_PTR
-self%swigdata%mem = SWIG_NULL
+endif
+farg1%cptr = C_NULL_PTR
+farg1%cmemflags = 0
+self%swigdata = farg1
 end subroutine
 
 subroutine swigf_TeuchosArrayDbl_op_assign__(self, other)
 use, intrinsic :: ISO_C_BINDING
 class(TeuchosArrayDbl), intent(inout) :: self
-type(SWIGTYPE_Teuchos__ArrayT_double_t), intent(in) :: other
+type(TeuchosArrayDbl), intent(in) :: other
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -757,7 +743,7 @@ call swigc_TeuchosArrayDbl_op_assign__(farg1, farg2)
 self%swigdata = farg1
 end subroutine
 
-function new_TeuchosArrayLongLong(arg0) &
+function swigf_create_TeuchosArrayLongLong(arg0) &
 result(self)
 use, intrinsic :: ISO_C_BINDING
 type(TeuchosArrayLongLong) :: self
@@ -795,23 +781,24 @@ swig_result => NULL()
 endif
 end function
 
-subroutine delete_TeuchosArrayLongLong(self)
+subroutine swigf_release_TeuchosArrayLongLong(self)
 use, intrinsic :: ISO_C_BINDING
 class(TeuchosArrayLongLong), intent(inout) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIG_OWN) then
+if (btest(farg1%cmemflags, swig_cmem_own_bit)) then
 call swigc_delete_TeuchosArrayLongLong(farg1)
-end if
-self%swigdata%cptr = C_NULL_PTR
-self%swigdata%mem = SWIG_NULL
+endif
+farg1%cptr = C_NULL_PTR
+farg1%cmemflags = 0
+self%swigdata = farg1
 end subroutine
 
 subroutine swigf_TeuchosArrayLongLong_op_assign__(self, other)
 use, intrinsic :: ISO_C_BINDING
 class(TeuchosArrayLongLong), intent(inout) :: self
-type(SWIGTYPE_Teuchos__ArrayT_long_long_t), intent(in) :: other
+type(TeuchosArrayLongLong), intent(in) :: other
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -892,23 +879,24 @@ fresult = swigc_TeuchosComm_getRawMpiComm(farg1)
 swig_result = int(fresult)
 end function
 
-subroutine delete_TeuchosComm(self)
+subroutine swigf_release_TeuchosComm(self)
 use, intrinsic :: ISO_C_BINDING
 class(TeuchosComm), intent(inout) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIG_OWN) then
+if (btest(farg1%cmemflags, swig_cmem_own_bit)) then
 call swigc_delete_TeuchosComm(farg1)
-end if
-self%swigdata%cptr = C_NULL_PTR
-self%swigdata%mem = SWIG_NULL
+endif
+farg1%cptr = C_NULL_PTR
+farg1%cmemflags = 0
+self%swigdata = farg1
 end subroutine
 
 subroutine swigf_TeuchosComm_op_assign__(self, other)
 use, intrinsic :: ISO_C_BINDING
 class(TeuchosComm), intent(inout) :: self
-type(SWIGTYPE_Teuchos__CommT_int_t), intent(in) :: other
+type(TeuchosComm), intent(in) :: other
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -1373,17 +1361,18 @@ swig_result => NULL()
 endif
 end function
 
-subroutine delete_ParameterList(self)
+subroutine swigf_release_ParameterList(self)
 use, intrinsic :: ISO_C_BINDING
 class(ParameterList), intent(inout) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIG_OWN) then
+if (btest(farg1%cmemflags, swig_cmem_own_bit)) then
 call swigc_delete_ParameterList(farg1)
-end if
-self%swigdata%cptr = C_NULL_PTR
-self%swigdata%mem = SWIG_NULL
+endif
+farg1%cptr = C_NULL_PTR
+farg1%cmemflags = 0
+self%swigdata = farg1
 end subroutine
 
 subroutine swigf_ParameterList_op_assign__(self, other)

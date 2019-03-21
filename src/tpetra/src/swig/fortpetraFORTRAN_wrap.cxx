@@ -205,6 +205,13 @@ void SWIG_store_exception(const char* decl, int errcode, const char *msg);
     SWIG_store_exception(DECL, CODE, MSG); RETURNNULL;
 
 
+enum SwigMemFlags {
+    SWIG_MEM_OWN = 0x01,
+    SWIG_MEM_RVALUE = 0x02,
+    SWIG_MEM_CONST = 0x04
+};
+
+
 #define SWIG_check_sp_nonnull(INPUT, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
   if (!(INPUT)) { \
     SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
@@ -212,9 +219,13 @@ void SWIG_store_exception(const char* decl, int errcode, const char *msg);
                         "as a reference", RETURNNULL); \
   }
 
+#define SWIG_constsp_mem_flags SWIG_MEM_CONST
+#define SWIG_sp_mem_flags 0
+
+
 
 #define SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
-  if ((SWIG_CLASS_WRAPPER).mem == SWIG_NULL) { \
+  if (!(SWIG_CLASS_WRAPPER).cptr) { \
     SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
                         "Cannot pass null " TYPENAME " (class " FNAME ") " \
                         "as a reference", RETURNNULL); \
@@ -222,26 +233,16 @@ void SWIG_store_exception(const char* decl, int errcode, const char *msg);
 
 
 namespace swig {
-
-enum AssignmentFlags {
-  IS_DESTR       = 0x01,
-  IS_COPY_CONSTR = 0x02,
-  IS_COPY_ASSIGN = 0x04,
-  IS_MOVE_CONSTR = 0x08,
-  IS_MOVE_ASSIGN = 0x10
+enum AssignmentType {
+  ASSIGNMENT_DEFAULT,
+  ASSIGNMENT_NODESTRUCT,
+  ASSIGNMENT_SMARTPTR
 };
-
-template<class T, int Flags>
-struct assignment_flags;
 }
 
 
-#define SWIG_assign(LEFTTYPE, LEFT, RIGHTTYPE, RIGHT, FLAGS) \
-    SWIG_assign_impl<LEFTTYPE, RIGHTTYPE, swig::assignment_flags<LEFTTYPE, FLAGS >::value >(LEFT, RIGHT);
-
-
 #define SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
-    if ((SWIG_CLASS_WRAPPER).mem == SWIG_CREF) { \
+    if ((SWIG_CLASS_WRAPPER).cmemflags & SWIG_MEM_CONST) { \
         SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
             "Cannot pass const " TYPENAME " (class " FNAME ") " \
             "as a mutable reference", \
@@ -253,6 +254,17 @@ struct assignment_flags;
     SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL); \
     SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL);
 
+#define SWIGPOLICY_Tpetra__MapT_int_long_long_Kokkos__Compat__KokkosSerialWrapperNode_t swig::ASSIGNMENT_SMARTPTR
+#define SWIGPOLICY_Tpetra__ImportT_int_long_long_Kokkos__Compat__KokkosSerialWrapperNode_t swig::ASSIGNMENT_SMARTPTR
+#define SWIGPOLICY_Tpetra__ExportT_int_long_long_Kokkos__Compat__KokkosSerialWrapperNode_t swig::ASSIGNMENT_SMARTPTR
+#define SWIGPOLICY_Tpetra__MultiVectorT_double_int_long_long_Kokkos__Compat__KokkosSerialWrapperNode_t swig::ASSIGNMENT_SMARTPTR
+#define SWIGPOLICY_Tpetra__OperatorT_double_int_long_long_Kokkos__Compat__KokkosSerialWrapperNode_t swig::ASSIGNMENT_SMARTPTR
+#define SWIGPOLICY_ForTpetraOperator swig::ASSIGNMENT_SMARTPTR
+#define SWIGPOLICY_Tpetra__RowInfo swig::ASSIGNMENT_DEFAULT
+#define SWIGPOLICY_Tpetra__CrsGraphT_int_long_long_Kokkos__Compat__KokkosSerialWrapperNode_t swig::ASSIGNMENT_SMARTPTR
+#define SWIGPOLICY_Tpetra__CrsMatrixT_double_int_long_long_Kokkos__Compat__KokkosSerialWrapperNode_t swig::ASSIGNMENT_SMARTPTR
+#define SWIGPOLICY_Tpetra__MatrixMarket__ReaderT_Tpetra__CrsMatrixT_SC_LO_GO_NO_t_t swig::ASSIGNMENT_SMARTPTR
+#define SWIGPOLICY_Tpetra__MatrixMarket__WriterT_Tpetra__CrsMatrixT_SC_LO_GO_NO_t_t swig::ASSIGNMENT_SMARTPTR
 
 #include <stdexcept>
 
@@ -290,25 +302,16 @@ typedef char                                    Packet;
 #include "Tpetra_CombineMode.hpp"
 
 
-enum SwigMemState {
-    SWIG_NULL,
-    SWIG_OWN,
-    SWIG_MOVE,
-    SWIG_REF,
-    SWIG_CREF
-};
-
-
 struct SwigClassWrapper {
     void* cptr;
-    SwigMemState mem;
+    int cmemflags;
 };
 
 
 SWIGINTERN SwigClassWrapper SwigClassWrapper_uninitialized() {
     SwigClassWrapper result;
     result.cptr = NULL;
-    result.mem = SWIG_NULL;
+    result.cmemflags = 0;
     return result;
 }
 
@@ -351,229 +354,107 @@ SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
 #define SWIG_NO_NULL_DELETER_SWIG_POINTER_OWN
 
 
-#include <utility>
+namespace swig {
+
+template<class T, AssignmentType A>
+struct DestructorPolicy {
+  static SwigClassWrapper destruct(SwigClassWrapper self) {
+    delete static_cast<T*>(self.cptr);
+    return SwigClassWrapper_uninitialized();
+  }
+};
+template<class T>
+struct DestructorPolicy<T, ASSIGNMENT_NODESTRUCT> {
+  static SwigClassWrapper destruct(SwigClassWrapper self) {
+    SWIG_exception_impl("assignment", SWIG_TypeError, "Invalid assignment: class type has private destructor", return SwigClassWrapper_uninitialized());
+  }
+};
+}
 
 
 namespace swig {
 
-// Define our own switching struct to support pre-c++11 builds
-template<bool Val>
-struct bool_constant {};
-typedef bool_constant<true>  true_type;
-typedef bool_constant<false> false_type;
-
-// Deletion
-template<class T>
-SWIGINTERN void destruct_impl(T* self, true_type) {
-  delete self;
-}
-template<class T>
-SWIGINTERN T* destruct_impl(T* , false_type) {
-  SWIG_exception_impl("assignment", SWIG_TypeError,
-                      "Invalid assignment: class type has no destructor",
-                      return NULL);
-}
-
-// Copy construction and assignment
-template<class T, class U>
-SWIGINTERN T* copy_construct_impl(const U* other, true_type) {
-  return new T(*other);
-}
-template<class T, class U>
-SWIGINTERN void copy_assign_impl(T* self, const U* other, true_type) {
-  *self = *other;
-}
-
-// Disabled construction and assignment
-template<class T, class U>
-SWIGINTERN T* copy_construct_impl(const U* , false_type) {
-  SWIG_exception_impl("assignment", SWIG_TypeError,
-                      "Invalid assignment: class type has no copy constructor",
-                      return NULL);
-}
-template<class T, class U>
-SWIGINTERN void copy_assign_impl(T* , const U* , false_type) {
-  SWIG_exception_impl("assignment", SWIG_TypeError,
-                      "Invalid assignment: class type has no copy assignment",
-                      return);
-}
-
-#if __cplusplus >= 201103L
-#include <utility>
-#include <type_traits>
-
-// Move construction and assignment
-template<class T, class U>
-SWIGINTERN T* move_construct_impl(U* other, true_type) {
-  return new T(std::move(*other));
-}
-template<class T, class U>
-SWIGINTERN void move_assign_impl(T* self, U* other, true_type) {
-  *self = std::move(*other);
-}
-
-// Disabled move construction and assignment
-template<class T, class U>
-SWIGINTERN T* move_construct_impl(U*, false_type) {
-  SWIG_exception_impl("assignment", SWIG_TypeError,
-                      "Invalid assignment: class type has no move constructor",
-                      return NULL);
-}
-template<class T, class U>
-SWIGINTERN void move_assign_impl(T*, U*, false_type) {
-  SWIG_exception_impl("assignment", SWIG_TypeError,
-                      "Invalid assignment: class type has no move assignment",
-                      return);
-}
-
-template<class T, int Flags>
-struct assignment_flags {
-  constexpr static int value =
-             (std::is_destructible<T>::value       ? IS_DESTR       : 0)
-           | (std::is_copy_constructible<T>::value ? IS_COPY_CONSTR : 0)
-           | (std::is_copy_assignable<T>::value    ? IS_COPY_ASSIGN : 0)
-           | (std::is_move_constructible<T>::value ? IS_MOVE_CONSTR : 0)
-           | (std::is_move_assignable<T>::value    ? IS_MOVE_ASSIGN : 0);
+template<class T, AssignmentType A>
+struct AssignmentPolicy {
+  static SwigClassWrapper destruct(SwigClassWrapper self) {
+    return DestructorPolicy<T, A>::destruct(self);
+  }
+  static SwigClassWrapper alias(SwigClassWrapper other) {
+    SwigClassWrapper self;
+    self.cptr = other.cptr;
+    self.cmemflags = other.cmemflags & ~SWIG_MEM_OWN;
+    return self;
+  }
+  static SwigClassWrapper move_alias(SwigClassWrapper self, SwigClassWrapper other) {
+    if (self.cmemflags & SWIG_MEM_OWN) {
+      destruct(self);
+    }
+    self.cptr = other.cptr;
+    self.cmemflags = other.cmemflags & ~SWIG_MEM_RVALUE;
+    return self;
+  }
+  static SwigClassWrapper copy_alias(SwigClassWrapper self, SwigClassWrapper other) {
+    if (self.cmemflags & SWIG_MEM_OWN) {
+      destruct(self);
+    }
+    self.cptr = other.cptr;
+    self.cmemflags = other.cmemflags & ~SWIG_MEM_OWN;
+    return self;
+  }
 };
 
-#else
-
-template<class T, int Flags>
-struct assignment_flags {
-  enum { value = Flags };
-};
-
-#endif
-
-template<class T, int Flags>
-struct AssignmentTraits {
-  static void destruct(T* self) {
-    destruct_impl<T>(self, bool_constant<Flags & IS_DESTR>());
+template<class T>
+struct AssignmentPolicy<T, ASSIGNMENT_SMARTPTR> {
+  static SwigClassWrapper destruct(SwigClassWrapper self) {
+    return DestructorPolicy<T, ASSIGNMENT_SMARTPTR>::destruct(self);
   }
-
-  template<class U>
-  static T* copy_construct(const U* other) {
-    return copy_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_COPY_CONSTR)>());
+  static SwigClassWrapper alias(SwigClassWrapper other) {
+    SwigClassWrapper self;
+    self.cptr = new T(*static_cast<T*>(other.cptr));
+    self.cmemflags = other.cmemflags | SWIG_MEM_OWN;
+    return self;
   }
-
-  template<class U>
-  static void copy_assign(T* self, const U* other) {
-    copy_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_COPY_ASSIGN)>());
+  static SwigClassWrapper move_alias(SwigClassWrapper self, SwigClassWrapper other) {
+    self = copy_alias(self, other);
+    self.cmemflags = other.cmemflags & ~SWIG_MEM_RVALUE;
+    destruct(other);
+    return self;
   }
-
-#if __cplusplus >= 201103L
-  template<class U>
-  static T* move_construct(U* other) {
-    return move_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_MOVE_CONSTR)>());
+  static SwigClassWrapper copy_alias(SwigClassWrapper self, SwigClassWrapper other) {
+    // LHS and RHS should both 'own' their shared pointers
+    T *pself = static_cast<T*>(self.cptr);
+    T *pother = static_cast<T*>(other.cptr);
+    *pself = *pother;
+    return self;
   }
-  template<class U>
-  static void move_assign(T* self, U* other) {
-    move_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_MOVE_ASSIGN)>());
-  }
-#else
-  template<class U>
-  static T* move_construct(U* other) {
-    return copy_construct_impl<T,U>(other, bool_constant<bool(Flags & IS_COPY_CONSTR)>());
-  }
-  template<class U>
-  static void move_assign(T* self, U* other) {
-    copy_assign_impl<T,U>(self, other, bool_constant<bool(Flags & IS_COPY_ASSIGN)>());
-  }
-#endif
 };
 
 } // end namespace swig
 
+template<class T, swig::AssignmentType A>
+SWIGINTERN void SWIG_assign(SwigClassWrapper* self, SwigClassWrapper other) {
+  typedef swig::AssignmentPolicy<T, A> Policy_t;
 
-template<class T1, class T2, int AFlags>
-SWIGINTERN void SWIG_assign_impl(SwigClassWrapper* self, const SwigClassWrapper* other) {
-  typedef swig::AssignmentTraits<T1, AFlags> Traits_t;
-  T1* pself  = static_cast<T1*>(self->cptr);
-  T2* pother = static_cast<T2*>(other->cptr);
-
-  switch (self->mem) {
-    case SWIG_NULL:
-      /* LHS is unassigned */
-      switch (other->mem) {
-        case SWIG_NULL: /* null op */
-          break;
-        case SWIG_MOVE: /* capture pointer from RHS */
-          self->cptr = other->cptr;
-          self->mem = SWIG_OWN;
-          break;
-        case SWIG_OWN: /* copy from RHS */
-          self->cptr = Traits_t::copy_construct(pother);
-          self->mem = SWIG_OWN;
-          break;
-        case SWIG_REF: /* pointer to RHS */
-        case SWIG_CREF:
-          self->cptr = other->cptr;
-          self->mem = other->mem;
-          break;
-      }
-      break;
-    case SWIG_OWN:
-      /* LHS owns memory */
-      switch (other->mem) {
-        case SWIG_NULL:
-          /* Delete LHS */
-          Traits_t::destruct(pself);
-          self->cptr = NULL;
-          self->mem = SWIG_NULL;
-          break;
-        case SWIG_MOVE:
-          /* Move RHS into LHS; delete RHS */
-          Traits_t::move_assign(pself, pother);
-          Traits_t::destruct(pother);
-          break;
-        case SWIG_OWN:
-        case SWIG_REF:
-        case SWIG_CREF:
-          /* Copy RHS to LHS */
-          Traits_t::copy_assign(pself, pother);
-          break;
-      }
-      break;
-    case SWIG_MOVE:
-      SWIG_exception_impl("assignment", SWIG_RuntimeError,
-        "Left-hand side of assignment should never be in a 'MOVE' state",
-        return);
-      break;
-    case SWIG_REF:
-      /* LHS is a reference */
-      switch (other->mem) {
-        case SWIG_NULL:
-          /* Remove LHS reference */
-          self->cptr = NULL;
-          self->mem = SWIG_NULL;
-          break;
-        case SWIG_MOVE:
-          /* Move RHS into LHS; delete RHS. The original ownership stays the
-           * same. */
-          Traits_t::move_assign(pself, pother);
-          Traits_t::destruct(pother);
-          break;
-        case SWIG_OWN:
-        case SWIG_REF:
-        case SWIG_CREF:
-          /* Copy RHS to LHS */
-          Traits_t::copy_assign(pself, pother);
-          break;
-      }
-      break;
-    case SWIG_CREF:
-      switch (other->mem) {
-        case SWIG_NULL:
-          /* Remove LHS reference */
-          self->cptr = NULL;
-          self->mem = SWIG_NULL;
-          break;
-        default:
-          SWIG_exception_impl("assignment", SWIG_RuntimeError,
-              "Cannot assign to a const reference", return);
-          break;
-      }
-      break;
+  if (self->cptr == NULL) {
+    /* LHS is unassigned */
+    if (other.cmemflags & SWIG_MEM_RVALUE) {
+      /* Capture pointer from RHS, clear 'moving' flag */
+      self->cptr = other.cptr;
+      self->cmemflags = other.cmemflags & (~SWIG_MEM_RVALUE);
+    } else {
+      /* Aliasing another class; clear ownership or copy smart pointer */
+      *self = Policy_t::alias(other);
+    }
+  } else if (other.cptr == NULL) {
+    /* Replace LHS with a null pointer */
+    *self = Policy_t::destruct(*self);
+  } else if (other.cmemflags & SWIG_MEM_RVALUE) {
+    /* Transferred ownership from a variable that's about to be lost.
+     * Move-assign and delete the transient data */
+    *self = Policy_t::move_alias(*self, other);
+  } else {
+    /* RHS shouldn't be deleted, alias to LHS */
+    *self = Policy_t::copy_alias(*self, other);
   }
 }
 
@@ -642,7 +523,7 @@ SwigClassWrapper swigd_ForTpetraOperator_getRangeMap(
              const_cast<ForTpetraOperator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
       self.cptr = &tempthis;
-      self.mem = SWIG_CREF; // since this function is const
+      self.cmemflags = SWIG_MEM_CONST;
 
       SwigClassWrapper fresult = swigd_ForTpetraOperator_getDomainMap(&self);
 
@@ -656,7 +537,7 @@ SwigClassWrapper swigd_ForTpetraOperator_getRangeMap(
              const_cast<ForTpetraOperator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
       self.cptr = &tempthis;
-      self.mem = SWIG_CREF; // since this function is const
+      self.cmemflags = SWIG_MEM_CONST;
 
       SwigClassWrapper fresult = swigd_ForTpetraOperator_getRangeMap(&self);
 
@@ -672,20 +553,20 @@ SwigClassWrapper swigd_ForTpetraOperator_getRangeMap(
              const_cast<ForTpetraOperator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
       self.cptr = &tempthis;
-      self.mem = SWIG_CREF; // since this function is const
+      self.cmemflags = SWIG_MEM_CONST;
 
       /* convert X -> class wrapper */
       Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO> > temprcp1(&X SWIG_NO_NULL_DELETER_0);
 
       SwigClassWrapper farg1;
       farg1.cptr = &temprcp1;
-      farg1.mem = SWIG_CREF; // X is const
+      farg1.cmemflags = SWIG_MEM_CONST;
 
       Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> > temprcp2(&Y SWIG_NO_NULL_DELETER_0);
 
       SwigClassWrapper farg2;
       farg2.cptr = &temprcp2;
-      farg2.mem = SWIG_REF; // Y is mutable
+      farg2.cmemflags = 0;
 
       /* convert scalars to wrappers */
       int farg3 = mode;
@@ -772,9 +653,7 @@ namespace ForTrilinos {
 #include "Teuchos_RCP.hpp"
 #include "TpetraExt_MatrixMatrix.hpp"
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 SWIGEXPORT void _wrap_setCombineModeParameter(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {
   Teuchos::ParameterList *arg1 = 0 ;
   std::string *arg2 = 0 ;
@@ -894,7 +773,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_0(long const *farg1, SwigC
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -938,7 +817,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_1(long const *farg1, SwigC
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -980,7 +859,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_2(long const *farg1, SwigC
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -1027,7 +906,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_3(long const *farg1, int c
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -1071,7 +950,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_4(long const *farg1, int c
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -1120,7 +999,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_5(long const *farg1, SwigA
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -1166,7 +1045,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_6(long const *farg1, SwigA
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -1199,7 +1078,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_7() {
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -2151,7 +2030,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraMap_getComm(SwigClassWrapper const *farg
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Teuchos::Comm<int> >(static_cast< const Teuchos::RCP<const Teuchos::Comm<int> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -2230,7 +2109,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraMap_removeEmptyProcesses(SwigClassWrappe
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -2270,7 +2149,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraMap_replaceCommWithSubset(SwigClassWrapp
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -2279,34 +2158,15 @@ SWIGEXPORT void _wrap_TpetraMap_op_assign__(SwigClassWrapper *farg1, SwigClassWr
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Tpetra::Map< LO,GO,NO > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > > *smartarg1 ;
+  Teuchos::RCP< Tpetra::Map< LO,GO,NO > > *smartarg2 ;
   
   smartarg1 = static_cast< Teuchos::RCP< Tpetra::Map<LO,GO,NO> >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< Tpetra::Map<LO,GO,NO>* >(smartarg1->get()) : NULL;
-  (void)sizeof(arg2);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::operator =(Tpetra::Map< LO,GO,NO > const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      typedef Teuchos::RCP< Tpetra::Map<LO,GO,NO> > swig_lhs_classtype;
-      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::operator =(Tpetra::Map< LO,GO,NO > const &)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::operator =(Tpetra::Map< LO,GO,NO > const &)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::operator =(Tpetra::Map< LO,GO,NO > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
+  SWIG_check_sp_nonnull(farg2, "Tpetra::Map< LO,GO,NO > *", "TpetraMap", "Tpetra::Map< LO,GO,NO >::operator =(Tpetra::Map< LO,GO,NO > &)", return )
+  smartarg2 = static_cast< Teuchos::RCP< Tpetra::Map<LO,GO,NO> >* >(farg2->cptr);
+  arg2 = const_cast< Tpetra::Map<LO,GO,NO>* >(smartarg2->get());
+  SWIG_assign<Teuchos::RCP< Tpetra::Map<LO,GO,NO> >, SWIGPOLICY_Tpetra__MapT_int_long_long_Kokkos__Compat__KokkosSerialWrapperNode_t>(farg1, *farg2);
+  
 }
 
 
@@ -2344,7 +2204,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraImport__SWIG_0(SwigClassWrapper cons
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -2386,7 +2246,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraImport__SWIG_1(SwigClassWrapper cons
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -2424,7 +2284,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraImport__SWIG_2(SwigClassWrapper cons
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -2462,7 +2322,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraImport__SWIG_3(SwigClassWrapper cons
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::Import<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -2710,7 +2570,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraImport_getSourceMap(SwigClassWrapper con
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -2747,7 +2607,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraImport_getTargetMap(SwigClassWrapper con
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -2825,7 +2685,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraImport_setUnion__SWIG_0(SwigClassWrapper
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Import<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Import<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -2862,7 +2722,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraImport_setUnion__SWIG_1(SwigClassWrapper
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Import<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Import<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -2902,7 +2762,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraImport_createRemoteOnlyImport(SwigClassW
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Import<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Import<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -2946,34 +2806,15 @@ SWIGEXPORT void _wrap_TpetraImport_op_assign__(SwigClassWrapper *farg1, SwigClas
   Tpetra::Import< LO,GO,NO > *arg1 = (Tpetra::Import< LO,GO,NO > *) 0 ;
   Tpetra::Import< LO,GO,NO > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Import< LO,GO,NO > > *smartarg1 ;
+  Teuchos::RCP< Tpetra::Import< LO,GO,NO > > *smartarg2 ;
   
   smartarg1 = static_cast< Teuchos::RCP< Tpetra::Import<LO,GO,NO> >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< Tpetra::Import<LO,GO,NO>* >(smartarg1->get()) : NULL;
-  (void)sizeof(arg2);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Import< LO,GO,NO >::operator =(Tpetra::Import< LO,GO,NO > const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      typedef Teuchos::RCP< Tpetra::Import<LO,GO,NO> > swig_lhs_classtype;
-      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR | swig::IS_COPY_ASSIGN);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Import< LO,GO,NO >::operator =(Tpetra::Import< LO,GO,NO > const &)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Import< LO,GO,NO >::operator =(Tpetra::Import< LO,GO,NO > const &)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::Import< LO,GO,NO >::operator =(Tpetra::Import< LO,GO,NO > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
+  SWIG_check_sp_nonnull(farg2, "Tpetra::Import< LO,GO,NO > *", "TpetraImport", "Tpetra::Import< LO,GO,NO >::operator =(Tpetra::Import< LO,GO,NO > &)", return )
+  smartarg2 = static_cast< Teuchos::RCP< Tpetra::Import<LO,GO,NO> >* >(farg2->cptr);
+  arg2 = const_cast< Tpetra::Import<LO,GO,NO>* >(smartarg2->get());
+  SWIG_assign<Teuchos::RCP< Tpetra::Import<LO,GO,NO> >, SWIGPOLICY_Tpetra__ImportT_int_long_long_Kokkos__Compat__KokkosSerialWrapperNode_t>(farg1, *farg2);
+  
 }
 
 
@@ -3011,7 +2852,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraExport__SWIG_0(SwigClassWrapper cons
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -3053,7 +2894,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraExport__SWIG_1(SwigClassWrapper cons
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -3091,7 +2932,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraExport__SWIG_2(SwigClassWrapper cons
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -3129,7 +2970,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraExport__SWIG_3(SwigClassWrapper cons
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::Export<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -3377,7 +3218,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraExport_getSourceMap(SwigClassWrapper con
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -3414,7 +3255,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraExport_getTargetMap(SwigClassWrapper con
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -3494,34 +3335,15 @@ SWIGEXPORT void _wrap_TpetraExport_op_assign__(SwigClassWrapper *farg1, SwigClas
   Tpetra::Export< LO,GO,NO > *arg1 = (Tpetra::Export< LO,GO,NO > *) 0 ;
   Tpetra::Export< LO,GO,NO > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Export< LO,GO,NO > > *smartarg1 ;
+  Teuchos::RCP< Tpetra::Export< LO,GO,NO > > *smartarg2 ;
   
   smartarg1 = static_cast< Teuchos::RCP< Tpetra::Export<LO,GO,NO> >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg1->get()) : NULL;
-  (void)sizeof(arg2);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Export< LO,GO,NO >::operator =(Tpetra::Export< LO,GO,NO > const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      typedef Teuchos::RCP< Tpetra::Export<LO,GO,NO> > swig_lhs_classtype;
-      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR | swig::IS_COPY_ASSIGN);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::operator =(Tpetra::Export< LO,GO,NO > const &)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::operator =(Tpetra::Export< LO,GO,NO > const &)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::Export< LO,GO,NO >::operator =(Tpetra::Export< LO,GO,NO > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
+  SWIG_check_sp_nonnull(farg2, "Tpetra::Export< LO,GO,NO > *", "TpetraExport", "Tpetra::Export< LO,GO,NO >::operator =(Tpetra::Export< LO,GO,NO > &)", return )
+  smartarg2 = static_cast< Teuchos::RCP< Tpetra::Export<LO,GO,NO> >* >(farg2->cptr);
+  arg2 = const_cast< Tpetra::Export<LO,GO,NO>* >(smartarg2->get());
+  SWIG_assign<Teuchos::RCP< Tpetra::Export<LO,GO,NO> >, SWIGPOLICY_Tpetra__ExportT_int_long_long_Kokkos__Compat__KokkosSerialWrapperNode_t>(farg1, *farg2);
+  
 }
 
 
@@ -3553,7 +3375,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMultiVector__SWIG_0() {
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -3593,7 +3415,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMultiVector__SWIG_1(SwigClassWrapper
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -3631,7 +3453,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMultiVector__SWIG_2(SwigClassWrapper
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -3669,7 +3491,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMultiVector__SWIG_3(SwigClassWrapper
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -3709,7 +3531,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMultiVector__SWIG_4(SwigClassWrapper
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -3753,7 +3575,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMultiVector__SWIG_5(SwigClassWrapper
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -3798,7 +3620,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMultiVector__SWIG_7(SwigClassWrapper
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -3841,7 +3663,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMultiVector__SWIG_8(SwigClassWrapper
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -4376,7 +4198,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraMultiVector_subCopy(SwigClassWrapper con
     }
   }
   fresult.cptr = (new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -4423,7 +4245,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraMultiVector_subView(SwigClassWrapper con
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -4470,7 +4292,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraMultiVector_subViewNonConst(SwigClassWra
     }
   }
   fresult.cptr = (new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -4512,7 +4334,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraMultiVector_offsetView(SwigClassWrapper 
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -4554,7 +4376,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraMultiVector_offsetViewNonConst(SwigClass
     }
   }
   fresult.cptr = (new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -6167,34 +5989,15 @@ SWIGEXPORT void _wrap_TpetraMultiVector_op_assign__(SwigClassWrapper *farg1, Swi
   Tpetra::MultiVector< SC,LO,GO,NO > *arg1 = (Tpetra::MultiVector< SC,LO,GO,NO > *) 0 ;
   Tpetra::MultiVector< SC,LO,GO,NO > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > > *smartarg1 ;
+  Teuchos::RCP< Tpetra::MultiVector< SC,LO,GO,NO > > *smartarg2 ;
   
   smartarg1 = static_cast< Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< Tpetra::MultiVector<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
-  (void)sizeof(arg2);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::operator =(Tpetra::MultiVector< SC,LO,GO,NO > const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      typedef Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> > swig_lhs_classtype;
-      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR | swig::IS_COPY_ASSIGN);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::operator =(Tpetra::MultiVector< SC,LO,GO,NO > const &)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::operator =(Tpetra::MultiVector< SC,LO,GO,NO > const &)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::MultiVector< SC,LO,GO,NO >::operator =(Tpetra::MultiVector< SC,LO,GO,NO > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
+  SWIG_check_sp_nonnull(farg2, "Tpetra::MultiVector< SC,LO,GO,NO > *", "TpetraMultiVector", "Tpetra::MultiVector< SC,LO,GO,NO >::operator =(Tpetra::MultiVector< SC,LO,GO,NO > &)", return )
+  smartarg2 = static_cast< Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >* >(farg2->cptr);
+  arg2 = const_cast< Tpetra::MultiVector<SC,LO,GO,NO>* >(smartarg2->get());
+  SWIG_assign<Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >, SWIGPOLICY_Tpetra__MultiVectorT_double_int_long_long_Kokkos__Compat__KokkosSerialWrapperNode_t>(farg1, *farg2);
+  
 }
 
 
@@ -6234,34 +6037,15 @@ SWIGEXPORT void _wrap_TpetraOperator_op_assign__(SwigClassWrapper *farg1, SwigCl
   Tpetra::Operator< SC,LO,GO,NO > *arg1 = (Tpetra::Operator< SC,LO,GO,NO > *) 0 ;
   Tpetra::Operator< SC,LO,GO,NO > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Operator< SC,LO,GO,NO > > *smartarg1 ;
+  Teuchos::RCP< Tpetra::Operator< SC,LO,GO,NO > > *smartarg2 ;
   
   smartarg1 = static_cast< Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< Tpetra::Operator<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
-  (void)sizeof(arg2);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Operator< SC,LO,GO,NO >::operator =(Tpetra::Operator< SC,LO,GO,NO > const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      typedef Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> > swig_lhs_classtype;
-      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Operator< SC,LO,GO,NO >::operator =(Tpetra::Operator< SC,LO,GO,NO > const &)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Operator< SC,LO,GO,NO >::operator =(Tpetra::Operator< SC,LO,GO,NO > const &)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::Operator< SC,LO,GO,NO >::operator =(Tpetra::Operator< SC,LO,GO,NO > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
+  SWIG_check_sp_nonnull(farg2, "Tpetra::Operator< SC,LO,GO,NO > *", "TpetraOperator", "Tpetra::Operator< SC,LO,GO,NO >::operator =(Tpetra::Operator< SC,LO,GO,NO > &)", return )
+  smartarg2 = static_cast< Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> >* >(farg2->cptr);
+  arg2 = const_cast< Tpetra::Operator<SC,LO,GO,NO>* >(smartarg2->get());
+  SWIG_assign<Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> >, SWIGPOLICY_Tpetra__OperatorT_double_int_long_long_Kokkos__Compat__KokkosSerialWrapperNode_t>(farg1, *farg2);
+  
 }
 
 
@@ -6363,7 +6147,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_ForTpetraOperator() {
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< ForTpetraOperator >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -6400,7 +6184,7 @@ SWIGEXPORT SwigClassWrapper _wrap_ForTpetraOperator_getDomainMap(SwigClassWrappe
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -6437,7 +6221,7 @@ SWIGEXPORT SwigClassWrapper _wrap_ForTpetraOperator_getRangeMap(SwigClassWrapper
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -6526,37 +6310,15 @@ SWIGEXPORT void _wrap_ForTpetraOperator_op_assign__(SwigClassWrapper *farg1, Swi
   ForTpetraOperator *arg1 = (ForTpetraOperator *) 0 ;
   ForTpetraOperator *arg2 = 0 ;
   Teuchos::RCP< ForTpetraOperator > *smartarg1 ;
-  Teuchos::RCP< ForTpetraOperator const > *smartarg2 ;
+  Teuchos::RCP< ForTpetraOperator > *smartarg2 ;
   
   smartarg1 = static_cast< Teuchos::RCP< ForTpetraOperator >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< ForTpetraOperator* >(smartarg1->get()) : NULL;
-  SWIG_check_sp_nonnull(farg2, "ForTpetraOperator *", "ForTpetraOperator", "ForTpetraOperator::operator =(ForTpetraOperator const &)", return )
-  smartarg2 = static_cast< Teuchos::RCP<const ForTpetraOperator >* >(farg2->cptr);
+  SWIG_check_sp_nonnull(farg2, "ForTpetraOperator *", "ForTpetraOperator", "ForTpetraOperator::operator =(ForTpetraOperator &)", return )
+  smartarg2 = static_cast< Teuchos::RCP< ForTpetraOperator >* >(farg2->cptr);
   arg2 = const_cast< ForTpetraOperator* >(smartarg2->get());
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("ForTpetraOperator::operator =(ForTpetraOperator const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      typedef Teuchos::RCP< ForTpetraOperator > swig_lhs_classtype;
-      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("ForTpetraOperator::operator =(ForTpetraOperator const &)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("ForTpetraOperator::operator =(ForTpetraOperator const &)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("ForTpetraOperator::operator =(ForTpetraOperator const &)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
+  SWIG_assign<Teuchos::RCP< ForTpetraOperator >, SWIGPOLICY_ForTpetraOperator>(farg1, *farg2);
+  
 }
 
 
@@ -6684,7 +6446,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_RowInfo() {
     }
   }
   fresult.cptr = result;
-  fresult.mem = (1 ? SWIG_MOVE : SWIG_REF);
+  fresult.cmemflags = SWIG_MEM_RVALUE | (1 ? SWIG_MEM_OWN : 0);
   return fresult;
 }
 
@@ -6692,7 +6454,8 @@ SWIGEXPORT SwigClassWrapper _wrap_new_RowInfo() {
 SWIGEXPORT void _wrap_delete_RowInfo(SwigClassWrapper *farg1) {
   Tpetra::RowInfo *arg1 = (Tpetra::RowInfo *) 0 ;
   
-  (void)sizeof(farg1);
+  SWIG_check_mutable(*farg1, "Tpetra::RowInfo *", "RowInfo", "Tpetra::RowInfo::~RowInfo()", return );
+  arg1 = static_cast< Tpetra::RowInfo * >(farg1->cptr);
   {
     // Make sure no unhandled exceptions exist before performing a new action
     SWIG_check_unhandled_exception_impl("Tpetra::RowInfo::~RowInfo()");;
@@ -6725,30 +6488,8 @@ SWIGEXPORT void _wrap_RowInfo_op_assign__(SwigClassWrapper *farg1, SwigClassWrap
   
   (void)sizeof(arg1);
   (void)sizeof(arg2);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::RowInfo::operator =(Tpetra::RowInfo const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      typedef Tpetra::RowInfo swig_lhs_classtype;
-      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::RowInfo::operator =(Tpetra::RowInfo const &)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::RowInfo::operator =(Tpetra::RowInfo const &)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::RowInfo::operator =(Tpetra::RowInfo const &)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
+  SWIG_assign<Tpetra::RowInfo, SWIGPOLICY_Tpetra__RowInfo>(farg1, *farg2);
+  
 }
 
 
@@ -6790,7 +6531,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_0(SwigClassWrapper co
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -6830,7 +6571,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_1(SwigClassWrapper co
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -6868,7 +6609,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_2(SwigClassWrapper co
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -6913,7 +6654,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_3(SwigClassWrapper co
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -6955,7 +6696,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_4(SwigClassWrapper co
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -6995,7 +6736,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_5(SwigClassWrapper co
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -7041,7 +6782,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_6(SwigClassWrapper co
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -7084,7 +6825,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_7(SwigClassWrapper co
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -7125,7 +6866,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_8(SwigClassWrapper co
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -7173,7 +6914,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_9(SwigClassWrapper co
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -7218,7 +6959,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_10(SwigClassWrapper c
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -7261,7 +7002,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_11(SwigClassWrapper c
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -7323,7 +7064,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_12(SwigClassWrapper c
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -7382,7 +7123,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsGraph__SWIG_13(SwigClassWrapper c
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -7564,7 +7305,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsGraph_getValidParameters(SwigClassWra
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Teuchos::ParameterList >(static_cast< const Teuchos::RCP<const Teuchos::ParameterList >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -8170,7 +7911,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsGraph_getComm(SwigClassWrapper const 
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Teuchos::Comm<int> >(static_cast< const Teuchos::RCP<const Teuchos::Comm<int> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -8207,7 +7948,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsGraph_getRowMap(SwigClassWrapper cons
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -8244,7 +7985,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsGraph_getColMap(SwigClassWrapper cons
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -8281,7 +8022,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsGraph_getDomainMap(SwigClassWrapper c
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -8318,7 +8059,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsGraph_getRangeMap(SwigClassWrapper co
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -8355,7 +8096,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsGraph_getImporter(SwigClassWrapper co
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Import<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Import<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -8392,7 +8133,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsGraph_getExporter(SwigClassWrapper co
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Export<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -10241,34 +9982,15 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_op_assign__(SwigClassWrapper *farg1, SwigCl
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   Tpetra::CrsGraph< LO,GO,NO > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > > *smartarg1 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > > *smartarg2 ;
   
   smartarg1 = static_cast< Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< Tpetra::CrsGraph<LO,GO,NO>* >(smartarg1->get()) : NULL;
-  (void)sizeof(arg2);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::operator =(Tpetra::CrsGraph< LO,GO,NO > const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      typedef Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> > swig_lhs_classtype;
-      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::operator =(Tpetra::CrsGraph< LO,GO,NO > const &)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::operator =(Tpetra::CrsGraph< LO,GO,NO > const &)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::operator =(Tpetra::CrsGraph< LO,GO,NO > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
+  SWIG_check_sp_nonnull(farg2, "Tpetra::CrsGraph< LO,GO,NO > *", "TpetraCrsGraph", "Tpetra::CrsGraph< LO,GO,NO >::operator =(Tpetra::CrsGraph< LO,GO,NO > &)", return )
+  smartarg2 = static_cast< Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >* >(farg2->cptr);
+  arg2 = const_cast< Tpetra::CrsGraph<LO,GO,NO>* >(smartarg2->get());
+  SWIG_assign<Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >, SWIGPOLICY_Tpetra__CrsGraphT_int_long_long_Kokkos__Compat__KokkosSerialWrapperNode_t>(farg1, *farg2);
+  
 }
 
 
@@ -10310,7 +10032,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_0(SwigClassWrapper c
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -10350,7 +10072,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_1(SwigClassWrapper c
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -10388,7 +10110,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_2(SwigClassWrapper c
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -10433,7 +10155,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_3(SwigClassWrapper c
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -10475,7 +10197,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_4(SwigClassWrapper c
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -10515,7 +10237,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_5(SwigClassWrapper c
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -10561,7 +10283,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_6(SwigClassWrapper c
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -10604,7 +10326,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_7(SwigClassWrapper c
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -10645,7 +10367,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_8(SwigClassWrapper c
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -10693,7 +10415,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_9(SwigClassWrapper c
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -10738,7 +10460,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_10(SwigClassWrapper 
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -10781,7 +10503,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_11(SwigClassWrapper 
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -10820,7 +10542,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_12(SwigClassWrapper 
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -10856,7 +10578,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_13(SwigClassWrapper 
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -10898,7 +10620,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_14(SwigClassWrapper 
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -10937,7 +10659,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_15(SwigClassWrapper 
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -11003,7 +10725,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_16(SwigClassWrapper 
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -11066,7 +10788,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraCrsMatrix__SWIG_17(SwigClassWrapper 
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -12249,7 +11971,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsMatrix_getComm(SwigClassWrapper const
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Teuchos::Comm<int> >(static_cast< const Teuchos::RCP<const Teuchos::Comm<int> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -12286,7 +12008,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsMatrix_getRowMap(SwigClassWrapper con
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -12323,7 +12045,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsMatrix_getColMap(SwigClassWrapper con
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -12360,7 +12082,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsMatrix_getCrsGraph(SwigClassWrapper c
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -13508,7 +13230,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsMatrix_getDomainMap(SwigClassWrapper 
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -13545,7 +13267,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraCrsMatrix_getRangeMap(SwigClassWrapper c
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -14195,34 +13917,15 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_op_assign__(SwigClassWrapper *farg1, SwigC
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > > *smartarg1 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > > *smartarg2 ;
   
   smartarg1 = static_cast< Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< Tpetra::CrsMatrix<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
-  (void)sizeof(arg2);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::operator =(Tpetra::CrsMatrix< SC,LO,GO,NO > const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      typedef Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> > swig_lhs_classtype;
-      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::operator =(Tpetra::CrsMatrix< SC,LO,GO,NO > const &)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::operator =(Tpetra::CrsMatrix< SC,LO,GO,NO > const &)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::operator =(Tpetra::CrsMatrix< SC,LO,GO,NO > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
+  SWIG_check_sp_nonnull(farg2, "Tpetra::CrsMatrix< SC,LO,GO,NO > *", "TpetraCrsMatrix", "Tpetra::CrsMatrix< SC,LO,GO,NO >::operator =(Tpetra::CrsMatrix< SC,LO,GO,NO > &)", return )
+  smartarg2 = static_cast< Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >* >(farg2->cptr);
+  arg2 = const_cast< Tpetra::CrsMatrix<SC,LO,GO,NO>* >(smartarg2->get());
+  SWIG_assign<Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >, SWIGPOLICY_Tpetra__CrsMatrixT_double_int_long_long_Kokkos__Compat__KokkosSerialWrapperNode_t>(farg1, *farg2);
+  
 }
 
 
@@ -14256,7 +13959,7 @@ SWIGEXPORT SwigClassWrapper _wrap_operator_to_matrix(SwigClassWrapper const *far
     }
   }
   fresult.cptr = (new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -14291,7 +13994,7 @@ SWIGEXPORT SwigClassWrapper _wrap_matrix_to_operator(SwigClassWrapper const *far
     }
   }
   fresult.cptr = (new Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::Operator<SC,LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -14333,7 +14036,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseGraphFile__SWIG_0(SwigA
     }
   }
   fresult.cptr = (new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -14373,7 +14076,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseGraphFile__SWIG_1(SwigA
     }
   }
   fresult.cptr = (new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -14419,7 +14122,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseGraphFile__SWIG_2(SwigA
     }
   }
   fresult.cptr = (new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -14470,7 +14173,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseGraphFile__SWIG_3(SwigA
     }
   }
   fresult.cptr = (new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -14519,7 +14222,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseGraphFile__SWIG_4(SwigA
     }
   }
   fresult.cptr = (new Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -14561,7 +14264,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseFile__SWIG_0(SwigArrayW
     }
   }
   fresult.cptr = (new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -14601,7 +14304,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseFile__SWIG_1(SwigArrayW
     }
   }
   fresult.cptr = (new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -14647,7 +14350,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseFile__SWIG_2(SwigArrayW
     }
   }
   fresult.cptr = (new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -14698,7 +14401,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseFile__SWIG_3(SwigArrayW
     }
   }
   fresult.cptr = (new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -14747,7 +14450,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readSparseFile__SWIG_4(SwigArrayW
     }
   }
   fresult.cptr = (new Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::CrsMatrix<SC,LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -14790,7 +14493,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readDenseFile(SwigArrayWrapper *f
     }
   }
   fresult.cptr = (new Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >(static_cast< const Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_sp_mem_flags;
   return fresult;
 }
 
@@ -14830,7 +14533,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraReader_readMapFile(SwigArrayWrapper *far
     }
   }
   fresult.cptr = (new Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >(static_cast< const Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >& >(result)));
-  fresult.mem = SWIG_MOVE;
+  fresult.cmemflags = SWIG_MEM_OWN | SWIG_MEM_RVALUE | SWIG_constsp_mem_flags;
   return fresult;
 }
 
@@ -14871,34 +14574,15 @@ SWIGEXPORT void _wrap_TpetraReader_op_assign__(SwigClassWrapper *farg1, SwigClas
   Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > *arg1 = (Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > *) 0 ;
   Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > > *smartarg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > > *smartarg2 ;
   
   smartarg1 = static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader<Tpetra::CrsMatrix<SC,LO,GO,NO> > >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< Tpetra::MatrixMarket::Reader<Tpetra::CrsMatrix<SC,LO,GO,NO> >* >(smartarg1->get()) : NULL;
-  (void)sizeof(arg2);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > >::operator =(Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      typedef Teuchos::RCP< Tpetra::MatrixMarket::Reader<Tpetra::CrsMatrix<SC,LO,GO,NO> > > swig_lhs_classtype;
-      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > >::operator =(Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > const &)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > >::operator =(Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > const &)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > >::operator =(Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
+  SWIG_check_sp_nonnull(farg2, "Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > *", "TpetraReader", "Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > >::operator =(Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > > &)", return )
+  smartarg2 = static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Reader<Tpetra::CrsMatrix<SC,LO,GO,NO> > >* >(farg2->cptr);
+  arg2 = const_cast< Tpetra::MatrixMarket::Reader<Tpetra::CrsMatrix<SC,LO,GO,NO> >* >(smartarg2->get());
+  SWIG_assign<Teuchos::RCP< Tpetra::MatrixMarket::Reader<Tpetra::CrsMatrix<SC,LO,GO,NO> > >, SWIGPOLICY_Tpetra__MatrixMarket__ReaderT_Tpetra__CrsMatrixT_SC_LO_GO_NO_t_t>(farg1, *farg2);
+  
 }
 
 
@@ -15172,34 +14856,15 @@ SWIGEXPORT void _wrap_TpetraWriter_op_assign__(SwigClassWrapper *farg1, SwigClas
   Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > *arg1 = (Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > *) 0 ;
   Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > > *smartarg1 ;
+  Teuchos::RCP< Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > > *smartarg2 ;
   
   smartarg1 = static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Writer<Tpetra::CrsMatrix<SC,LO,GO,NO> > >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< Tpetra::MatrixMarket::Writer<Tpetra::CrsMatrix<SC,LO,GO,NO> >* >(smartarg1->get()) : NULL;
-  (void)sizeof(arg2);
-  {
-    // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > >::operator =(Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > const &)");;
-    try
-    {
-      // Attempt the wrapped function call
-      typedef Teuchos::RCP< Tpetra::MatrixMarket::Writer<Tpetra::CrsMatrix<SC,LO,GO,NO> > > swig_lhs_classtype;
-      SWIG_assign(swig_lhs_classtype, farg1, swig_lhs_classtype, farg2, 0 | swig::IS_DESTR | swig::IS_COPY_CONSTR);
-    }
-    catch (const std::range_error& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > >::operator =(Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > const &)", SWIG_IndexError, e.what(), return );
-    }
-    catch (const std::exception& e)
-    {
-      // Store a C++ exception
-      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > >::operator =(Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > const &)", SWIG_RuntimeError, e.what(), return );
-    }
-    catch (...)
-    {
-      SWIG_exception_impl("Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > >::operator =(Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > const &)", SWIG_UnknownError, "An unknown exception occurred", return );
-    }
-  }
+  SWIG_check_sp_nonnull(farg2, "Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > *", "TpetraWriter", "Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > >::operator =(Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > > &)", return )
+  smartarg2 = static_cast< Teuchos::RCP< Tpetra::MatrixMarket::Writer<Tpetra::CrsMatrix<SC,LO,GO,NO> > >* >(farg2->cptr);
+  arg2 = const_cast< Tpetra::MatrixMarket::Writer<Tpetra::CrsMatrix<SC,LO,GO,NO> >* >(smartarg2->get());
+  SWIG_assign<Teuchos::RCP< Tpetra::MatrixMarket::Writer<Tpetra::CrsMatrix<SC,LO,GO,NO> > >, SWIGPOLICY_Tpetra__MatrixMarket__WriterT_Tpetra__CrsMatrixT_SC_LO_GO_NO_t_t>(farg1, *farg2);
+  
 }
 
 
@@ -15500,7 +15165,5 @@ SWIGEXPORT void _wrap_TpetraMatrixMatrixAdd__SWIG_1(SwigClassWrapper const *farg
 }
 
 
-#ifdef __cplusplus
-}
-#endif
+} // extern
 

@@ -93,17 +93,13 @@ public :: norm_type
  end enum
  integer, parameter, public :: TpetraCombineMode = kind(TpetraADD)
  public :: TpetraADD, TpetraINSERT, TpetraREPLACE, TpetraABSMAX, TpetraZERO
- enum, bind(c)
-  enumerator :: SWIG_NULL
-  enumerator :: SWIG_OWN
-  enumerator :: SWIG_MOVE
-  enumerator :: SWIG_REF
-  enumerator :: SWIG_CREF
- end enum
- integer, parameter :: SwigMemState = kind(SWIG_NULL)
+
+ integer, parameter :: swig_cmem_own_bit = 0
+ integer, parameter :: swig_cmem_rvalue_bit = 1
+ integer, parameter :: swig_cmem_const_bit = 2
  type, bind(C) :: SwigClassWrapper
   type(C_PTR), public :: cptr = C_NULL_PTR
-  integer(C_INT), public :: mem = SWIG_NULL
+  integer(C_INT), public :: cmemflags = 0
  end type
  type, bind(C) :: SwigArrayWrapper
   type(C_PTR), public :: data = C_NULL_PTR
@@ -116,14 +112,11 @@ public :: norm_type
  type, public :: SWIGTYPE_Teuchos__RCPT_Kokkos__Compat__KokkosSerialWrapper9ZCDM
   type(SwigClassWrapper), public :: swigdata
  end type
- type, public :: SWIGTYPE_Tpetra__MapT_LO_GO_NO_t
-  type(SwigClassWrapper), public :: swigdata
- end type
  ! class Tpetra::Map< LO,GO,NO >
  type, public :: TpetraMap
   type(SwigClassWrapper), public :: swigdata
  contains
-  procedure :: release => delete_TpetraMap
+  procedure :: release => swigf_release_TpetraMap
   procedure :: isOneToOne => swigf_TpetraMap_isOneToOne
   procedure :: getGlobalNumElements => swigf_TpetraMap_getGlobalNumElements
   procedure :: getNodeNumElements => swigf_TpetraMap_getNodeNumElements
@@ -168,14 +161,11 @@ public :: norm_type
  type, public :: SWIGTYPE_std__ostream
   type(SwigClassWrapper), public :: swigdata
  end type
- type, public :: SWIGTYPE_Tpetra__ImportT_LO_GO_NO_t
-  type(SwigClassWrapper), public :: swigdata
- end type
  ! class Tpetra::Import< LO,GO,NO >
  type, public :: TpetraImport
   type(SwigClassWrapper), public :: swigdata
  contains
-  procedure :: release => delete_TpetraImport
+  procedure :: release => swigf_release_TpetraImport
   procedure :: setParameterList => swigf_TpetraImport_setParameterList
   procedure :: getNumSameIDs => swigf_TpetraImport_getNumSameIDs
   procedure :: getNumPermuteIDs => swigf_TpetraImport_getNumPermuteIDs
@@ -198,14 +188,11 @@ public :: norm_type
   module procedure swigf_new_TpetraImport__SWIG_2
   module procedure swigf_new_TpetraImport__SWIG_3
  end interface
- type, public :: SWIGTYPE_Tpetra__ExportT_LO_GO_NO_t
-  type(SwigClassWrapper), public :: swigdata
- end type
  ! class Tpetra::Export< LO,GO,NO >
  type, public :: TpetraExport
   type(SwigClassWrapper), public :: swigdata
  contains
-  procedure :: release => delete_TpetraExport
+  procedure :: release => swigf_release_TpetraExport
   procedure :: setParameterList => swigf_TpetraExport_setParameterList
   procedure :: getNumSameIDs => swigf_TpetraExport_getNumSameIDs
   procedure :: getNumPermuteIDs => swigf_TpetraExport_getNumPermuteIDs
@@ -227,15 +214,12 @@ public :: norm_type
  type, public :: SWIGTYPE_Kokkos__ViewT_double_p_Kokkos__HostSpace_t
   type(SwigClassWrapper), public :: swigdata
  end type
- type, public :: SWIGTYPE_Tpetra__MultiVectorT_SC_LO_GO_NO_t
-  type(SwigClassWrapper), public :: swigdata
- end type
  ! class Tpetra::MultiVector< SC,LO,GO,NO >
  type, public :: TpetraMultiVector
   type(SwigClassWrapper), public :: swigdata
  contains
   procedure :: swap => swigf_TpetraMultiVector_swap
-  procedure :: release => delete_TpetraMultiVector
+  procedure :: release => swigf_release_TpetraMultiVector
   procedure :: replaceGlobalValue => swigf_TpetraMultiVector_replaceGlobalValue
   procedure, private :: swigf_TpetraMultiVector_sumIntoGlobalValue__SWIG_0
   procedure, private :: swigf_TpetraMultiVector_sumIntoGlobalValue__SWIG_1
@@ -321,14 +305,11 @@ public :: norm_type
   module procedure swigf_new_TpetraMultiVector__SWIG_7
   module procedure swigf_new_TpetraMultiVector__SWIG_8
  end interface
- type, public :: SWIGTYPE_Tpetra__OperatorT_SC_LO_GO_NO_t
-  type(SwigClassWrapper), public :: swigdata
- end type
  ! class Tpetra::Operator< SC,LO,GO,NO >
  type, public :: TpetraOperator
   type(SwigClassWrapper), public :: swigdata
  contains
-  procedure :: release => delete_TpetraOperator
+  procedure :: release => swigf_release_TpetraOperator
   procedure, private :: swigf_TpetraOperator_op_assign__
   generic :: assignment(=) => swigf_TpetraOperator_op_assign__
  end type TpetraOperator
@@ -340,12 +321,12 @@ public :: norm_type
   procedure :: getDomainMap => swigf_ForTpetraOperator_getDomainMap
   procedure :: getRangeMap => swigf_ForTpetraOperator_getRangeMap
   procedure :: apply => swigf_ForTpetraOperator_apply
-  procedure :: release => delete_ForTpetraOperator
+  procedure :: release => swigf_release_ForTpetraOperator
   procedure, private :: swigf_ForTpetraOperator_op_assign__
   generic :: assignment(=) => swigf_ForTpetraOperator_op_assign__
  end type ForTpetraOperator
  interface ForTpetraOperator
-  module procedure new_ForTpetraOperator
+  module procedure swigf_create_ForTpetraOperator
  end interface
 
   type :: ForTpetraOperatorHandle
@@ -367,12 +348,12 @@ public :: init_ForTpetraOperator
   procedure :: get_numEntries => swigf_RowInfo_numEntries_get
   procedure :: set_offset1D => swigf_RowInfo_offset1D_set
   procedure :: get_offset1D => swigf_RowInfo_offset1D_get
-  procedure :: release => delete_RowInfo
+  procedure :: release => swigf_release_RowInfo
   procedure, private :: swigf_RowInfo_op_assign__
   generic :: assignment(=) => swigf_RowInfo_op_assign__
  end type RowInfo
  interface RowInfo
-  module procedure new_RowInfo
+  module procedure swigf_create_RowInfo
  end interface
  ! enum Tpetra::ELocalGlobal
  enum, bind(c)
@@ -381,14 +362,11 @@ public :: init_ForTpetraOperator
  end enum
  integer, parameter, public :: TpetraELocalGlobal = kind(TpetraLocalIndices)
  public :: TpetraLocalIndices, TpetraGlobalIndices
- type, public :: SWIGTYPE_Tpetra__CrsGraphT_LO_GO_NO_t
-  type(SwigClassWrapper), public :: swigdata
- end type
  ! class Tpetra::CrsGraph< LO,GO,NO >
  type, public :: TpetraCrsGraph
   type(SwigClassWrapper), public :: swigdata
  contains
-  procedure :: release => delete_TpetraCrsGraph
+  procedure :: release => swigf_release_TpetraCrsGraph
   procedure :: swap => swigf_TpetraCrsGraph_swap
   procedure :: isIdenticalTo => swigf_TpetraCrsGraph_isIdenticalTo
   procedure :: setParameterList => swigf_TpetraCrsGraph_setParameterList
@@ -504,14 +482,11 @@ public :: init_ForTpetraOperator
  type, public :: SWIGTYPE_Teuchos__ArrayRCPT_unsigned_long_t
   type(SwigClassWrapper), public :: swigdata
  end type
- type, public :: SWIGTYPE_Tpetra__CrsMatrixT_SC_LO_GO_NO_t
-  type(SwigClassWrapper), public :: swigdata
- end type
  ! class Tpetra::CrsMatrix< SC,LO,GO,NO >
  type, public :: TpetraCrsMatrix
   type(SwigClassWrapper), public :: swigdata
  contains
-  procedure :: release => delete_TpetraCrsMatrix
+  procedure :: release => swigf_release_TpetraCrsMatrix
   procedure :: insertGlobalValues => swigf_TpetraCrsMatrix_insertGlobalValues
   procedure :: insertLocalValues => swigf_TpetraCrsMatrix_insertLocalValues
   procedure :: replaceGlobalValues => swigf_TpetraCrsMatrix_replaceGlobalValues
@@ -632,9 +607,6 @@ public :: init_ForTpetraOperator
  end interface
  public :: operator_to_matrix
  public :: matrix_to_operator
- type, public :: SWIGTYPE_Tpetra__MatrixMarket__ReaderT_Tpetra__CrsMatrixT_KG2R9
-  type(SwigClassWrapper), public :: swigdata
- end type
  ! class Tpetra::MatrixMarket::Reader< Tpetra::CrsMatrix< SC,LO,GO,NO > >
  type, public :: TpetraReader
   type(SwigClassWrapper), public :: swigdata
@@ -651,7 +623,7 @@ public :: init_ForTpetraOperator
   procedure, private, nopass :: swigf_TpetraReader_readSparseFile__SWIG_4
   procedure, nopass :: readDenseFile => swigf_TpetraReader_readDenseFile
   procedure, nopass :: readMapFile => swigf_TpetraReader_readMapFile
-  procedure :: release => delete_TpetraReader
+  procedure :: release => swigf_release_TpetraReader
   procedure, private :: swigf_TpetraReader_op_assign__
   generic :: assignment(=) => swigf_TpetraReader_op_assign__
   generic :: readSparseGraphFile => swigf_TpetraReader_readSparseGraphFile__SWIG_0, &
@@ -661,9 +633,6 @@ public :: init_ForTpetraOperator
     swigf_TpetraReader_readSparseFile__SWIG_2, swigf_TpetraReader_readSparseFile__SWIG_3, &
     swigf_TpetraReader_readSparseFile__SWIG_4
  end type TpetraReader
- type, public :: SWIGTYPE_Tpetra__MatrixMarket__WriterT_Tpetra__CrsMatrixT_KG2R9
-  type(SwigClassWrapper), public :: swigdata
- end type
  ! class Tpetra::MatrixMarket::Writer< Tpetra::CrsMatrix< SC,LO,GO,NO > >
  type, public :: TpetraWriter
   type(SwigClassWrapper), public :: swigdata
@@ -674,7 +643,7 @@ public :: init_ForTpetraOperator
   procedure, private, nopass :: swigf_TpetraWriter_writeSparseGraphFile__SWIG_1
   procedure, private, nopass :: swigf_TpetraWriter_writeDenseFile__SWIG_0
   procedure, private, nopass :: swigf_TpetraWriter_writeDenseFile__SWIG_1
-  procedure :: release => delete_TpetraWriter
+  procedure :: release => swigf_release_TpetraWriter
   procedure, private :: swigf_TpetraWriter_op_assign__
   generic :: assignment(=) => swigf_TpetraWriter_op_assign__
   generic :: writeSparseGraphFile => swigf_TpetraWriter_writeSparseGraphFile__SWIG_0, &
@@ -4616,17 +4585,18 @@ fresult = swigc_new_TpetraMap__SWIG_7()
 self%swigdata = fresult
 end function
 
-subroutine delete_TpetraMap(self)
+subroutine swigf_release_TpetraMap(self)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraMap), intent(inout) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIG_OWN) then
+if (btest(farg1%cmemflags, swig_cmem_own_bit)) then
 call swigc_delete_TpetraMap(farg1)
-end if
-self%swigdata%cptr = C_NULL_PTR
-self%swigdata%mem = SWIG_NULL
+endif
+farg1%cptr = C_NULL_PTR
+farg1%cmemflags = 0
+self%swigdata = farg1
 end subroutine
 
 
@@ -5083,7 +5053,7 @@ end function
 subroutine swigf_TpetraMap_op_assign__(self, other)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraMap), intent(inout) :: self
-type(SWIGTYPE_Tpetra__MapT_LO_GO_NO_t), intent(in) :: other
+type(TpetraMap), intent(in) :: other
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -5154,17 +5124,18 @@ fresult = swigc_new_TpetraImport__SWIG_3(farg1)
 self%swigdata = fresult
 end function
 
-subroutine delete_TpetraImport(self)
+subroutine swigf_release_TpetraImport(self)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraImport), intent(inout) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIG_OWN) then
+if (btest(farg1%cmemflags, swig_cmem_own_bit)) then
 call swigc_delete_TpetraImport(farg1)
-end if
-self%swigdata%cptr = C_NULL_PTR
-self%swigdata%mem = SWIG_NULL
+endif
+farg1%cptr = C_NULL_PTR
+farg1%cmemflags = 0
+self%swigdata = farg1
 end subroutine
 
 subroutine swigf_TpetraImport_setParameterList(self, plist)
@@ -5330,7 +5301,7 @@ end subroutine
 subroutine swigf_TpetraImport_op_assign__(self, other)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraImport), intent(inout) :: self
-type(SWIGTYPE_Tpetra__ImportT_LO_GO_NO_t), intent(in) :: other
+type(TpetraImport), intent(in) :: other
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -5401,17 +5372,18 @@ fresult = swigc_new_TpetraExport__SWIG_3(farg1)
 self%swigdata = fresult
 end function
 
-subroutine delete_TpetraExport(self)
+subroutine swigf_release_TpetraExport(self)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraExport), intent(inout) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIG_OWN) then
+if (btest(farg1%cmemflags, swig_cmem_own_bit)) then
 call swigc_delete_TpetraExport(farg1)
-end if
-self%swigdata%cptr = C_NULL_PTR
-self%swigdata%mem = SWIG_NULL
+endif
+farg1%cptr = C_NULL_PTR
+farg1%cmemflags = 0
+self%swigdata = farg1
 end subroutine
 
 subroutine swigf_TpetraExport_setParameterList(self, plist)
@@ -5532,7 +5504,7 @@ end subroutine
 subroutine swigf_TpetraExport_op_assign__(self, other)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraExport), intent(inout) :: self
-type(SWIGTYPE_Tpetra__ExportT_LO_GO_NO_t), intent(in) :: other
+type(TpetraExport), intent(in) :: other
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -5706,17 +5678,18 @@ farg2 = mv%swigdata
 call swigc_TpetraMultiVector_swap(farg1, farg2)
 end subroutine
 
-subroutine delete_TpetraMultiVector(self)
+subroutine swigf_release_TpetraMultiVector(self)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraMultiVector), intent(inout) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIG_OWN) then
+if (btest(farg1%cmemflags, swig_cmem_own_bit)) then
 call swigc_delete_TpetraMultiVector(farg1)
-end if
-self%swigdata%cptr = C_NULL_PTR
-self%swigdata%mem = SWIG_NULL
+endif
+farg1%cptr = C_NULL_PTR
+farg1%cmemflags = 0
+self%swigdata = farg1
 end subroutine
 
 subroutine swigf_TpetraMultiVector_replaceGlobalValue(self, gblrow, col, value)
@@ -6660,7 +6633,7 @@ end subroutine
 subroutine swigf_TpetraMultiVector_op_assign__(self, other)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraMultiVector), intent(inout) :: self
-type(SWIGTYPE_Tpetra__MultiVectorT_SC_LO_GO_NO_t), intent(in) :: other
+type(TpetraMultiVector), intent(in) :: other
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -6670,23 +6643,24 @@ call swigc_TpetraMultiVector_op_assign__(farg1, farg2)
 self%swigdata = farg1
 end subroutine
 
-subroutine delete_TpetraOperator(self)
+subroutine swigf_release_TpetraOperator(self)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraOperator), intent(inout) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIG_OWN) then
+if (btest(farg1%cmemflags, swig_cmem_own_bit)) then
 call swigc_delete_TpetraOperator(farg1)
-end if
-self%swigdata%cptr = C_NULL_PTR
-self%swigdata%mem = SWIG_NULL
+endif
+farg1%cptr = C_NULL_PTR
+farg1%cmemflags = 0
+self%swigdata = farg1
 end subroutine
 
 subroutine swigf_TpetraOperator_op_assign__(self, other)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraOperator), intent(inout) :: self
-type(SWIGTYPE_Tpetra__OperatorT_SC_LO_GO_NO_t), intent(in) :: other
+type(TpetraOperator), intent(in) :: other
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -6721,7 +6695,7 @@ farg2 = fh
 call swigc_ForTpetraOperator_init(farg1, farg2)
 end subroutine
 
-function new_ForTpetraOperator() &
+function swigf_create_ForTpetraOperator() &
 result(self)
 use, intrinsic :: ISO_C_BINDING
 type(ForTpetraOperator) :: self
@@ -6781,7 +6755,7 @@ farg6 = beta
 call swigc_ForTpetraOperator_apply(farg1, farg2, farg3, farg4, farg5, farg6)
 end subroutine
 
-subroutine delete_ForTpetraOperator(self)
+subroutine swigf_release_ForTpetraOperator(self)
 use, intrinsic :: ISO_C_BINDING
 class(ForTpetraOperator), intent(inout) :: self
 type(SwigClassWrapper) :: farg1 
@@ -6792,11 +6766,12 @@ type(ForTpetraOperatorHandle), pointer :: handle
 fself_ptr = swigc_ForTpetraOperator_fhandle(self%swigdata)
 call c_f_pointer(cptr=fself_ptr, fptr=handle)
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIG_OWN) then
+if (btest(farg1%cmemflags, swig_cmem_own_bit)) then
 call swigc_delete_ForTpetraOperator(farg1)
-end if
-self%swigdata%cptr = C_NULL_PTR
-self%swigdata%mem = SWIG_NULL
+endif
+farg1%cptr = C_NULL_PTR
+farg1%cmemflags = 0
+self%swigdata = farg1
 
 ! Release the allocated handle
 deallocate(handle)
@@ -7023,7 +6998,7 @@ fresult = swigc_RowInfo_offset1D_get(farg1)
 swig_result = fresult
 end function
 
-function new_RowInfo() &
+function swigf_create_RowInfo() &
 result(self)
 use, intrinsic :: ISO_C_BINDING
 type(RowInfo) :: self
@@ -7033,17 +7008,18 @@ fresult = swigc_new_RowInfo()
 self%swigdata = fresult
 end function
 
-subroutine delete_RowInfo(self)
+subroutine swigf_release_RowInfo(self)
 use, intrinsic :: ISO_C_BINDING
 class(RowInfo), intent(inout) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIG_OWN) then
+if (btest(farg1%cmemflags, swig_cmem_own_bit)) then
 call swigc_delete_RowInfo(farg1)
-end if
-self%swigdata%cptr = C_NULL_PTR
-self%swigdata%mem = SWIG_NULL
+endif
+farg1%cptr = C_NULL_PTR
+farg1%cmemflags = 0
+self%swigdata = farg1
 end subroutine
 
 subroutine swigf_RowInfo_op_assign__(self, other)
@@ -7432,17 +7408,18 @@ fresult = swigc_new_TpetraCrsGraph__SWIG_13(farg1, farg2, farg3, farg4)
 self%swigdata = fresult
 end function
 
-subroutine delete_TpetraCrsGraph(self)
+subroutine swigf_release_TpetraCrsGraph(self)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsGraph), intent(inout) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIG_OWN) then
+if (btest(farg1%cmemflags, swig_cmem_own_bit)) then
 call swigc_delete_TpetraCrsGraph(farg1)
-end if
-self%swigdata%cptr = C_NULL_PTR
-self%swigdata%mem = SWIG_NULL
+endif
+farg1%cptr = C_NULL_PTR
+farg1%cmemflags = 0
+self%swigdata = farg1
 end subroutine
 
 subroutine swigf_TpetraCrsGraph_swap(self, graph)
@@ -8594,7 +8571,7 @@ end subroutine
 subroutine swigf_TpetraCrsGraph_op_assign__(self, other)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsGraph), intent(inout) :: self
-type(SWIGTYPE_Tpetra__CrsGraphT_LO_GO_NO_t), intent(in) :: other
+type(TpetraCrsGraph), intent(in) :: other
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -9063,17 +9040,18 @@ fresult = swigc_new_TpetraCrsMatrix__SWIG_17(farg1, farg2, farg3, farg4, farg5)
 self%swigdata = fresult
 end function
 
-subroutine delete_TpetraCrsMatrix(self)
+subroutine swigf_release_TpetraCrsMatrix(self)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsMatrix), intent(inout) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIG_OWN) then
+if (btest(farg1%cmemflags, swig_cmem_own_bit)) then
 call swigc_delete_TpetraCrsMatrix(farg1)
-end if
-self%swigdata%cptr = C_NULL_PTR
-self%swigdata%mem = SWIG_NULL
+endif
+farg1%cptr = C_NULL_PTR
+farg1%cmemflags = 0
+self%swigdata = farg1
 end subroutine
 
 subroutine swigf_TpetraCrsMatrix_insertGlobalValues(self, globalrow, cols, vals)
@@ -10520,7 +10498,7 @@ end subroutine
 subroutine swigf_TpetraCrsMatrix_op_assign__(self, other)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsMatrix), intent(inout) :: self
-type(SWIGTYPE_Tpetra__CrsMatrixT_SC_LO_GO_NO_t), intent(in) :: other
+type(TpetraCrsMatrix), intent(in) :: other
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -10823,23 +10801,24 @@ fresult = swigc_TpetraReader_readMapFile(farg1, farg2)
 swig_result%swigdata = fresult
 end function
 
-subroutine delete_TpetraReader(self)
+subroutine swigf_release_TpetraReader(self)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraReader), intent(inout) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIG_OWN) then
+if (btest(farg1%cmemflags, swig_cmem_own_bit)) then
 call swigc_delete_TpetraReader(farg1)
-end if
-self%swigdata%cptr = C_NULL_PTR
-self%swigdata%mem = SWIG_NULL
+endif
+farg1%cptr = C_NULL_PTR
+farg1%cmemflags = 0
+self%swigdata = farg1
 end subroutine
 
 subroutine swigf_TpetraReader_op_assign__(self, other)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraReader), intent(inout) :: self
-type(SWIGTYPE_Tpetra__MatrixMarket__ReaderT_Tpetra__CrsMatrixT_KG2R9), intent(in) :: other
+type(TpetraReader), intent(in) :: other
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -10951,23 +10930,24 @@ farg2 = x%swigdata
 call swigc_TpetraWriter_writeDenseFile__SWIG_1(farg1, farg2)
 end subroutine
 
-subroutine delete_TpetraWriter(self)
+subroutine swigf_release_TpetraWriter(self)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraWriter), intent(inout) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIG_OWN) then
+if (btest(farg1%cmemflags, swig_cmem_own_bit)) then
 call swigc_delete_TpetraWriter(farg1)
-end if
-self%swigdata%cptr = C_NULL_PTR
-self%swigdata%mem = SWIG_NULL
+endif
+farg1%cptr = C_NULL_PTR
+farg1%cmemflags = 0
+self%swigdata = farg1
 end subroutine
 
 subroutine swigf_TpetraWriter_op_assign__(self, other)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraWriter), intent(inout) :: self
-type(SWIGTYPE_Tpetra__MatrixMarket__WriterT_Tpetra__CrsMatrixT_KG2R9), intent(in) :: other
+type(TpetraWriter), intent(in) :: other
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 

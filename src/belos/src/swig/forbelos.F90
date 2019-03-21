@@ -111,17 +111,13 @@ module forbelos
    bind(C, name="_wrap_BelosDebug") :: BelosDebug
  integer, parameter, public :: BelosMsgType = C_INT
  public :: convertMsgTypeToString
- enum, bind(c)
-  enumerator :: SWIG_NULL
-  enumerator :: SWIG_OWN
-  enumerator :: SWIG_MOVE
-  enumerator :: SWIG_REF
-  enumerator :: SWIG_CREF
- end enum
- integer, parameter :: SwigMemState = kind(SWIG_NULL)
+
+ integer, parameter :: swig_cmem_own_bit = 0
+ integer, parameter :: swig_cmem_rvalue_bit = 1
+ integer, parameter :: swig_cmem_const_bit = 2
  type, bind(C) :: SwigClassWrapper
   type(C_PTR), public :: cptr = C_NULL_PTR
-  integer(C_INT), public :: mem = SWIG_NULL
+  integer(C_INT), public :: cmemflags = 0
  end type
  real(C_DOUBLE), protected, public, &
    bind(C, name="_wrap_DefaultSolverParameters_convTol") :: DefaultSolverParameters_convTol
@@ -137,12 +133,12 @@ module forbelos
  type, public :: DefaultSolverParameters
   type(SwigClassWrapper), public :: swigdata
  contains
-  procedure :: release => delete_DefaultSolverParameters
+  procedure :: release => swigf_release_DefaultSolverParameters
   procedure, private :: swigf_DefaultSolverParameters_op_assign__
   generic :: assignment(=) => swigf_DefaultSolverParameters_op_assign__
  end type DefaultSolverParameters
  interface DefaultSolverParameters
-  module procedure new_DefaultSolverParameters
+  module procedure swigf_create_DefaultSolverParameters
  end interface
 
 ! WRAPPER DECLARATIONS
@@ -350,7 +346,7 @@ call SWIG_chararray_to_string(fresult, swig_result)
 call SWIG_free(fresult%data)
 end function
 
-function new_DefaultSolverParameters() &
+function swigf_create_DefaultSolverParameters() &
 result(self)
 use, intrinsic :: ISO_C_BINDING
 type(DefaultSolverParameters) :: self
@@ -360,17 +356,18 @@ fresult = swigc_new_DefaultSolverParameters()
 self%swigdata = fresult
 end function
 
-subroutine delete_DefaultSolverParameters(self)
+subroutine swigf_release_DefaultSolverParameters(self)
 use, intrinsic :: ISO_C_BINDING
 class(DefaultSolverParameters), intent(inout) :: self
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
-if (self%swigdata%mem == SWIG_OWN) then
+if (btest(farg1%cmemflags, swig_cmem_own_bit)) then
 call swigc_delete_DefaultSolverParameters(farg1)
-end if
-self%swigdata%cptr = C_NULL_PTR
-self%swigdata%mem = SWIG_NULL
+endif
+farg1%cptr = C_NULL_PTR
+farg1%cmemflags = 0
+self%swigdata = farg1
 end subroutine
 
 subroutine swigf_DefaultSolverParameters_op_assign__(self, other)
