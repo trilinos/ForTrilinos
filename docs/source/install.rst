@@ -26,9 +26,9 @@ The following third party libraries (TPLs) are used by ForTrilinos:
 Building ForTrilinos
 --------------------
 
-ForTrilinos is configured and built using `TriBITS <https://tribits.org>`_. ForTrilinos builds
-within Trilinos effectively as an internal package. The following steps are
-required to build and install ForTrilinos:
+ForTrilinos is configured and built using `TriBITS <https://tribits.org>`_.
+ForTrilinos builds within Trilinos effectively as an external package. The
+following steps are required to build and install ForTrilinos:
 
 1. Download Trilinos version
 
@@ -48,7 +48,7 @@ required to build and install ForTrilinos:
 
   Here, ``$TRILINOS_DIR`` is the name you want give to the repository.
 
-2. Download and link ForTrilinos into the Trilinos packages directory
+2. Download and link ForTrilinos into the Trilinos directory
 
   .. code::
 
