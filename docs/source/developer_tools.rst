@@ -61,7 +61,7 @@ configuration of the build must include
     -D ForTrilinos_ENABLE_DeveloperMode=ON
 
 It also requires a SWIG installation in the ``$PATH`` with Fortran generator enabled. It is available at
-`sethrj/swig <https://github.com/sethrj/swig>`_ in the ``fortran`` branch.
+`swig-fortran/swig <https://github.com/swig-fortran/swig>`_.
 
 If one does simultaneous development in both SWIG and ForTrilinos, it is convenient to skip the ``make install`` step.
 This can be done by adding the following configuration options to the script (assuming you build swig in-source):
