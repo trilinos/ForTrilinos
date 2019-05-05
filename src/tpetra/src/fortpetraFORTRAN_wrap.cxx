@@ -714,10 +714,13 @@ void swigd_ForTpetraOperator_apply(
         double const *farg4,
         double const *farg5
         );
-SwigClassWrapper swigd_ForTpetraOperator_getDomainMap(
-        SwigClassWrapper const *fself
-        );
-SwigClassWrapper swigd_ForTpetraOperator_getRangeMap(
+//SwigClassWrapper swigd_ForTpetraOperator_getDomainMap(
+//        SwigClassWrapper const *fself
+//        );
+void swigd_ForTpetraOperator_getDomainMap(SwigClassWrapper* fresult, SwigClassWrapper const *fself);
+
+void swigd_ForTpetraOperator_getRangeMap(
+        SwigClassWrapper *fresult,
         SwigClassWrapper const *fself
         );
 }
@@ -745,7 +748,9 @@ SwigClassWrapper swigd_ForTpetraOperator_getRangeMap(
       self.ptr = &tempthis;
       self.mem = SWIG_CREF; // since this function is const
 
-      SwigClassWrapper fresult = swigd_ForTpetraOperator_getDomainMap(&self);
+      //SwigClassWrapper fresult = swigd_ForTpetraOperator_getDomainMap(&self);
+      SwigClassWrapper fresult;
+      swigd_ForTpetraOperator_getDomainMap(&fresult,&self);
 
       Teuchos::RCP<const map_type>* smartresult = static_cast< Teuchos::RCP<const map_type>* >(fresult.ptr);
       return *smartresult;
@@ -759,7 +764,8 @@ SwigClassWrapper swigd_ForTpetraOperator_getRangeMap(
       self.ptr = &tempthis;
       self.mem = SWIG_CREF; // since this function is const
 
-      SwigClassWrapper fresult = swigd_ForTpetraOperator_getRangeMap(&self);
+      SwigClassWrapper fresult;
+      swigd_ForTpetraOperator_getRangeMap(&fresult,&self);
 
       Teuchos::RCP<const map_type>* smartresult = static_cast< Teuchos::RCP<const map_type>* >(fresult.ptr);
       return *smartresult;
