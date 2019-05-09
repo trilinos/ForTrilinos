@@ -23,6 +23,12 @@ program test_TeuchosComm
 
   ADD_SUBTEST_AND_RUN(TeuchosComm_Basic)
 
+  ! Unit tests, assume user has MPI enabled
+  ADD_SUBTEST_AND_RUN(TeuchosComm_getRank)
+  ADD_SUBTEST_AND_RUN(TeuchosComm_getSize)
+  ADD_SUBTEST_AND_RUN(TeuchosComm_barrier)
+  ADD_SUBTEST_AND_RUN(TeuchosComm_getRawMpiComm)
+
   TEARDOWN_TEST()
 contains
 
@@ -63,5 +69,82 @@ contains
     call comm%release()
 
   END_FORTRILINOS_UNIT_TEST(TeuchosComm_Basic)
+
+  ! ---------------------------------getRank---------------------------------- !
+  FORTRILINOS_UNIT_TEST(TeuchosComm_getRank)
+    type(TeuchosComm) :: comm
+    integer :: myrank_t, myrank_m, ierr
+    OUT0("Starting TeuchosComm_getRank!")
+
+#ifdef HAVE_MPI
+    comm = TeuchosComm(MPI_COMM_WORLD); TEST_IERR()
+    myrank_t = comm%getRank(); TEST_IERR()
+    call MPI_COMM_RANK(MPI_COMM_WORLD, myrank_m, ierr)
+
+    TEST_EQUALITY(myrank_t, myrank_m)
+
+    call comm%release(); TEST_IERR()
+#else
+    return
+#endif
+
+    OUT0("Finished TeuchosComm_getRank!")
+
+  END_FORTRILINOS_UNIT_TEST(TeuchosComm_getRank)
+
+  ! ---------------------------------getSize---------------------------------- !
+  FORTRILINOS_UNIT_TEST(TeuchosComm_getSize)
+    type(TeuchosComm) :: comm
+    integer :: mysize_t, mysize_m, ierr
+    OUT0("Starting TeuchosComm_getSize!")
+
+#ifdef HAVE_MPI
+    comm = TeuchosComm(MPI_COMM_WORLD); TEST_IERR()
+    mysize_t = comm%getSize(); TEST_IERR()
+    call MPI_COMM_SIZE(MPI_COMM_WORLD, mysize_m, ierr)
+
+    TEST_EQUALITY(mysize_t, mysize_m)
+
+    call comm%release(); TEST_IERR()
+#else
+    return
+#endif
+    OUT0("Finished TeuchosComm_getSize!")
+
+  END_FORTRILINOS_UNIT_TEST(TeuchosComm_getSize)
+
+  ! ---------------------------------barrier---------------------------------- !
+  FORTRILINOS_UNIT_TEST(TeuchosComm_barrier)
+    type(TeuchosComm) :: comm
+    OUT0("Starting TeuchosComm_barrier!")
+
+#ifdef HAVE_MPI
+    comm = TeuchosComm(MPI_COMM_WORLD); TEST_IERR()
+    TEST_NOTHROW(call comm%barrier())
+
+    call comm%release(); TEST_IERR()
+#else
+    return
+#endif
+    OUT0("Finished TeuchosComm_barrier!")
+
+  END_FORTRILINOS_UNIT_TEST(TeuchosComm_barrier)
+
+  ! ------------------------------getRawMpiComm------------------------------- !
+  FORTRILINOS_UNIT_TEST(TeuchosComm_getRawMpiComm)
+    type(TeuchosComm) :: comm
+    OUT0("Starting TeuchosComm_getRawMpiComm!")
+
+#ifdef HAVE_MPI
+    comm = TeuchosComm(MPI_COMM_WORLD); TEST_IERR()
+    TEST_EQUALITY(MPI_COMM_WORLD, comm%getRawMpiComm())
+
+    call comm%release(); TEST_IERR()
+#else
+    return
+#endif
+    OUT0("Finished TeuchosComm_getRawMpiComm!")
+
+  END_FORTRILINOS_UNIT_TEST(TeuchosComm_getRawMpiComm)
 
 end program test_TeuchosComm

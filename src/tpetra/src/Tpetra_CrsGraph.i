@@ -89,6 +89,10 @@
     const Teuchos::ArrayRCP<int>& columnIndices
 }
 
+%apply const Teuchos::ArrayView<int>& INDEX {
+    const Teuchos::ArrayView<LO>& lclColInds
+}
+
 %apply int { size_t getNumEntriesInLocalRow,
              size_t getNumAllocatedEntriesInLocalRow}
 

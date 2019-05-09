@@ -1,7 +1,7 @@
 ! Copyright 2017-2018, UT-Battelle, LLC
 !
 ! SPDX-License-Identifier: BSD-3-Clause
-! License-Filename: LICENSE
+! License-Filename: LIeENSE
 program test_TpetraMultiVector
 #include "ForTrilinosTpetra_config.hpp"
 #include "FortranTestUtilities.h"
@@ -9,9 +9,11 @@ program test_TpetraMultiVector
   use, intrinsic :: iso_c_binding
   use forteuchos
   use fortpetra
+  use test_Tpetra_multivector_helper
 
   implicit none
   type(TeuchosComm) :: comm
+  integer, parameter :: dp = kind(0.d0)
   character(len=256), parameter :: FILENAME="test_tpetra_multivector.f90"
 
   SETUP_TEST()
@@ -22,23 +24,48 @@ program test_TpetraMultiVector
   comm = TeuchosComm(); FORTRILINOS_CHECK_IERR()
 #endif
 
-  ADD_SUBTEST_AND_RUN(TpetraMultiVector_ZeroScaleUpdate)
-  ADD_SUBTEST_AND_RUN(TpetraMultiVector_CountNormInf)
-  ADD_SUBTEST_AND_RUN(TpetraMultiVector_Norm2)
-  ADD_SUBTEST_AND_RUN(TpetraMultiVector_ReplaceMap)
-  ADD_SUBTEST_AND_RUN(TpetraMultiVector_Reciprocal)
-  ADD_SUBTEST_AND_RUN(TpetraMultiVector_Abs)
-  ADD_SUBTEST_AND_RUN(TpetraMultiVector_Description)
-  ADD_SUBTEST_AND_RUN(TpetraMultiVector_MeanValue)
-  ADD_SUBTEST_AND_RUN(TpetraMultiVector_Multiply)
-  ADD_SUBTEST_AND_RUN(TpetraMultiVector_Basic)
-  ADD_SUBTEST_AND_RUN(TpetraMultiVector_Reduce)
-  ADD_SUBTEST_AND_RUN(TpetraMultiVector_ReplaceGlobalValue)
-  ADD_SUBTEST_AND_RUN(TpetraMultiVector_ReplaceLocalValue)
-  ADD_SUBTEST_AND_RUN(TpetraMultiVector_Get1dCopy)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_basic)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_zeroScaleUpdate)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_countNormInf)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_norm2)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_replaceMap)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_reciprocal)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_abs)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_description)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_meanValue)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_multiply)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_reduce)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_replaceGlobalValue)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_replaceLocalValue)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_get1dCopy)
 
-  ! TODO: The following tests have only skeletons
-  !ADD_SUBTEST_AND_RUN(TpetraMultiVector_offsetViewNonConst)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_swap)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_putScalar)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_subCopy)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_subView)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_subViewNonConst)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_offsetView)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_offsetViewNonConst)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_getData)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_getDataNonConst)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_get1dView)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_get1dViewNonConst)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_getNumVectors)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_getLocalLength)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_getGlobalLength)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_getStride)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_isConstantStride)
+  ADD_SUBTEST_AND_RUN(TpetraMultiVector_isSameSize)
+
+  ! These tests are Cuda so will develop them on the new
+  ! multi-node branch and merge it all later.
+  ! ADD_SUBTEST_AND_RUN(TpetraMultiVector_sync_host)
+  ! ADD_SUBTEST_AND_RUN(TpetraMultiVector_sync_device)
+  ! ADD_SUBTEST_AND_RUN(TpetraMultiVector_need_sync_host)
+  ! ADD_SUBTEST_AND_RUN(TpetraMultiVector_need_sync_device)
+  ! ADD_SUBTEST_AND_RUN(TpetraMultiVector_modify_device)
+  ! ADD_SUBTEST_AND_RUN(TpetraMultiVector_modify_host)
+
 
   ! The following methods are deprecated
   !ADD_SUBTEST_AND_RUN(TpetraMultiVector_normWeighted)
@@ -48,11 +75,31 @@ program test_TpetraMultiVector
   !ADD_SUBTEST_AND_RUN(TpetraMultiVector_getCopyOrView)
   !ADD_SUBTEST_AND_RUN(TpetraMultiVector_removeEmptyProcessesInPlace)
 
-  call comm%release()
+  call comm%release();  TEST_IERR()
 
   TEARDOWN_TEST()
 
 contains
+
+  ! --------------------------------Basic------------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_Basic)
+    Type(TpetraMap) :: map
+    type(TpetraMultiVector) :: Vec
+    integer(size_type), parameter :: num_vecs=12
+    integer, parameter :: num_local=2
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
+    Vec = TpetraMultiVector(map, num_vecs); TEST_IERR()
+
+    TEST_EQUALITY(Vec%getNumVectors(), num_vecs)
+    TEST_EQUALITY(Vec%getLocalLength(), num_local)
+    TEST_EQUALITY(Vec%getGlobalLength(),
+                  int(num_local*comm%getSize(), size_type))
+    TEST_EQUALITY(Vec%getStride(), int(num_local, size_type))
+    TEST_ASSERT(Vec%isConstantStride())
+
+    call Vec%release(); TEST_IERR()
+    call map%release(); TEST_IERR()
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_Basic)
 
   ! -----------------------------ZeroScaleUpdate------------------------------ !
   FORTRILINOS_UNIT_TEST(TpetraMultiVector_ZeroScaleUpdate)
@@ -99,7 +146,7 @@ contains
     call A2%update(-1.d0, B, 1.0d0)
     call A2%norm1(norms)
     TEST_FLOATING_ARRAY_EQUALITY(norms, zeros, epsilon(0.d0))
-    call A2%release()
+    call A2%release();  TEST_IERR()
 
     ! set A2 = A
     ! check that it equals B: scale, subtraction in situ
@@ -107,7 +154,7 @@ contains
     call A2%update(-1.d0, B, 2.d0)
     call A2%norm1(norms)
     TEST_FLOATING_ARRAY_EQUALITY(norms, zeros, epsilon(0.d0))
-    call A2%release()
+    call A2%release();  TEST_IERR()
 
     ! set C random
     ! set it to zero by combination with A,B
@@ -117,7 +164,7 @@ contains
     call C%update(-1.d0, B, 2.d0, A, 0.d0)
     call C%norm1(norms)
     TEST_FLOATING_ARRAY_EQUALITY(norms, zeros, epsilon(0.d0))
-    call C%release()
+    call C%release();  TEST_IERR()
 
     ! set C random
     ! scale it ex-situ
@@ -127,7 +174,7 @@ contains
     call C%update(1.0d0, B, -1.d0)
     call C%norm1(norms)
     TEST_FLOATING_ARRAY_EQUALITY(norms, zeros, epsilon(0.d0))
-    call C%release()
+    call C%release();  TEST_IERR()
 
     ! Clean up
     call A%release(); TEST_IERR()
@@ -159,8 +206,8 @@ contains
     ! do the dots
     call Vec%normInf(norms)
 
-    call Vec%release()
-    call map%release()
+    call Vec%release();  TEST_IERR()
+    call map%release();  TEST_IERR()
 
     ! check the answers
     TEST_FLOATING_ARRAY_EQUALITY(norms, answer, epsilon(answer(1)))
@@ -198,8 +245,8 @@ contains
     TEST_FLOATING_ARRAY_INEQUALITY(norms_rand, 0.d0, epsilon(0.d0))
     TEST_FLOATING_ARRAY_EQUALITY(norms_zero, 0.d0, epsilon(0.d0))
 
-    call Vec%release()
-    call map%release()
+    call Vec%release();  TEST_IERR()
+    call map%release();  TEST_IERR()
 
     OUT0("Finished Norm2!")
 
@@ -229,9 +276,9 @@ contains
     ! Check the answers
     TEST_FLOATING_ARRAY_EQUALITY(dots, 1.0d0*num_local*comm%getSize(), epsilon(1.0d0))
 
-    call A%release()
-    call B%release()
-    call map%release()
+    call A%release();  TEST_IERR()
+    call B%release();  TEST_IERR()
+    call map%release();  TEST_IERR()
 
     OUT0("Finished Reciprocal!")
 
@@ -290,10 +337,10 @@ contains
     call A2%norm1(norms)
     TEST_FLOATING_ARRAY_EQUALITY(norms, 0.d0, epsilon(0.d0))
 
-    call A2%release()
-    call B%release()
-    call A%release()
-    call map%release()
+    call A2%release();  TEST_IERR()
+    call B%release();  TEST_IERR()
+    call A%release();  TEST_IERR()
+    call map%release();  TEST_IERR()
 
     OUT0("Finished Abs")
 
@@ -396,26 +443,6 @@ contains
 
   END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_Multiply)
 
-  ! --------------------------------Basic------------------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraMultiVector_Basic)
-    type(TpetraMap) :: map
-    type(TpetraMultiVector) :: Vec
-    integer(size_type), parameter :: num_vecs=12
-    integer, parameter :: num_local=2
-    map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
-    Vec = TpetraMultiVector(map, num_vecs); TEST_IERR()
-
-    TEST_EQUALITY(Vec%getNumVectors(), num_vecs)
-    TEST_EQUALITY(Vec%getLocalLength(), num_local)
-    TEST_EQUALITY(Vec%getGlobalLength(),
-                  int(num_local*comm%getSize(), size_type))
-    TEST_EQUALITY(Vec%getStride(), int(num_local, size_type))
-    TEST_ASSERT(Vec%isConstantStride())
-
-    call Vec%release(); TEST_IERR()
-    call map%release(); TEST_IERR()
-  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_Basic)
-
   ! ----------------------------------Reduce---------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMultiVector_Reduce)
     type(TpetraMap) :: map
@@ -503,7 +530,7 @@ contains
 
     call Vec%release(); TEST_IERR()
     call OneV%release(); TEST_IERR()
-    call map%release()
+    call map%release();  TEST_IERR()
 
     OUT0("Finished ReplaceLocalValue!")
 
@@ -537,26 +564,554 @@ contains
 
   END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_Get1dCopy)
 
+  ! -----------------------------------swap----------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_swap)
+    type(TpetraMultiVector) :: A, B
+    integer, parameter :: num_local = 4
+    integer(size_type), parameter :: num_vecs = 2
+    real(scalar_type) :: normsA(num_vecs), normsB(num_vecs)
 
-#if 0
+    OUT0("Starting TpetraMultiVector_swap!")
+
+    ! Create test vectors, fill one of them with 1.0
+    call Tpetra_MV_Create(comm, num_local, num_vecs, A)
+    call Tpetra_MV_Create(comm, num_local, num_vecs, B, 1.0_dp)
+
+    ! Check the entries are what they should be
+    call A%norm2(normsA)
+    call B%norm2(normsB)
+    TEST_FLOATING_ARRAY_EQUALITY(normsA, 0.0_dp, epsilon(0.0_dp))
+    TEST_FLOATING_ARRAY_INEQUALITY(normsB, 0.0_dp, epsilon(0.0_dp))
+
+    ! Swap entries and ensure it went through
+    call A%swap(B)
+    call A%norm2(normsA)
+    call B%norm2(normsB)
+    TEST_FLOATING_ARRAY_INEQUALITY(normsA, 0.0_dp, epsilon(0.0_dp))
+    TEST_FLOATING_ARRAY_EQUALITY(normsB, 0.0_dp, epsilon(0.0_dp))
+
+    call A%release(); TEST_IERR()
+    call B%release(); TEST_IERR()
+
+    OUT0("Finished TpetraMultiVector_swap!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_swap)
+
+  ! --------------------------------putScalar--------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_putScalar)
+    type(TpetraMultiVector) :: vec
+    integer, parameter :: num_local = 4
+    integer(size_type), parameter :: num_vecs = 2
+    real(dp) :: val, expect
+    real(scalar_type) :: mynorms(num_vecs)
+
+    OUT0("Starting TpetraMultiVector_putScalar!")
+
+    val = 1.0_dp
+    call Tpetra_MV_Create(comm, num_local, num_vecs, vec)
+    call vec%norm1(mynorms)
+    TEST_FLOATING_ARRAY_EQUALITY(mynorms, 0.0_dp, epsilon(0.0_dp))
+
+    call vec%putScalar(val)
+    call vec%norm1(mynorms)
+    expect = 1.0_dp * real(num_local, kind = dp) * comm%getSize()
+    TEST_FLOATING_ARRAY_EQUALITY(mynorms, expect, epsilon(expect))
+
+    call vec%release(); TEST_IERR()
+
+    OUT0("Finished TpetraMultiVector_putScalar!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_putScalar)
+
+  ! ---------------------------------subCopy---------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_subCopy)
+    type(TpetraMultiVector) :: vec, res
+    integer, parameter :: num_local = 4
+    integer(size_type), parameter :: num_vecs = 2
+    integer(size_type) :: cols(1)
+    real(dp) :: resNorm(1), expect
+
+    OUT0("Starting TpetraMultiVector_subCopy!")
+
+    cols(1) = 1
+    call Tpetra_MV_Create(comm, num_local, num_vecs, vec)
+    res = vec%subCopy(cols)
+
+    TEST_EQUALITY(res%getNumVectors(), 1_size_type)
+    TEST_EQUALITY(res%getLocalLength(), num_local)
+    call res%norm1(resNorm)
+    TEST_FLOATING_ARRAY_EQUALITY(resNorm, 0.0_dp, epsilon(0.0_dp))
+
+    call vec%putScalar(1.0_dp)
+    call res%norm1(resNorm)
+    ! vec's data changed, but res is its own vector, so no change to norm
+    TEST_FLOATING_ARRAY_EQUALITY(resNorm, 0.0_dp, epsilon(0.0_dp))
+
+    call vec%release(); TEST_IERR()
+    call res%release(); TEST_IERR()
+
+    OUT0("Finished TpetraMultiVector_subCopy!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_subCopy)
+
+  ! ---------------------------------subView---------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_subView)
+    type(TpetraMultiVector) :: vec, res
+    integer, parameter :: num_local = 4
+    integer(size_type), parameter :: num_vecs = 2
+    integer(size_type) :: cols(1)
+    real(dp) :: resNorm(1), vecNorm(1), expect
+
+    OUT0("Starting TpetraMultiVector_subView!")
+
+    cols(1) = 1
+    call Tpetra_MV_Create(comm, num_local, num_vecs, vec)
+    res = vec%subView(cols)
+
+    TEST_EQUALITY(res%getNumVectors(), 1_size_type)
+    TEST_EQUALITY(res%getLocalLength(), num_local)
+    call res%norm1(resNorm)
+    TEST_FLOATING_ARRAY_EQUALITY(resNorm, 0.0_dp, epsilon(0.0_dp))
+
+    call vec%putScalar(1.0_dp)
+    expect = 1.0_dp * num_local * comm%getSize()
+    call res%norm1(resNorm)
+    ! vec's data changed, so res should change with it
+    TEST_FLOATING_ARRAY_EQUALITY(resNorm, expect, epsilon(expect))
+
+    call res%putScalar(0.0_dp)
+    call vec%norm1(vecNorm)
+    TEST_FLOATING_ARRAY_EQUALITY(vecNorm, 0.0_dp, epsilon(0.0_dp))
+
+    call vec%release(); TEST_IERR()
+    call res%release(); TEST_IERR()
+
+    OUT0("Finished TpetraMultiVector_subView!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_subView)
+
+  ! -----------------------------subViewNonConst------------------------------ !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_subViewNonConst)
+    type(TpetraMultiVector) :: vec, res
+    integer, parameter :: num_local = 4
+    integer(size_type), parameter :: num_vecs = 2
+    integer(size_type) :: cols(1)
+    real(dp) :: resNorm(1), vecNorm(1), expect
+
+    OUT0("Starting TpetraMultiVector_subViewNonConst!")
+
+    cols(1) = 1
+    call Tpetra_MV_Create(comm, num_local, num_vecs, vec)
+    res = vec%subViewNonConst(cols)
+
+    TEST_EQUALITY(res%getNumVectors(), 1_size_type)
+    TEST_EQUALITY(res%getLocalLength(), num_local)
+    call res%norm1(resNorm)
+
+    TEST_FLOATING_ARRAY_EQUALITY(resNorm, 0.0_dp, epsilon(0.0_dp))
+
+    call vec%putScalar(1.0_dp)
+    expect = 1.0_dp * num_local * comm%getSize()
+    call res%norm1(resNorm)
+    ! vec's data changed, so res should change with it
+    TEST_FLOATING_ARRAY_EQUALITY(resNorm, expect, epsilon(expect))
+
+    call res%putScalar(0.0_dp)
+    call vec%norm1(vecNorm)
+    TEST_FLOATING_ARRAY_EQUALITY(vecNorm, 0.0_dp, epsilon(0.0_dp))
+
+    call vec%release(); TEST_IERR()
+    call res%release(); TEST_IERR()
+
+    OUT0("Finished TpetraMultiVector_subViewNonConst!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_subViewNonConst)
+
+  ! --------------------------------offsetView-------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_offsetView)
+    type(TpetraMultiVector) :: vec, res1, res2
+    type(TpetraMap) :: split
+    integer, parameter :: num_local = 4, num_split = 2
+    integer(size_type), parameter :: num_vecs = 2
+    integer(size_type) :: offset
+    real(dp) :: res1Norm(2), res2Norm(2), expect
+
+    OUT0("Starting TpetraMultiVector_offsetView!")
+
+    call Tpetra_MV_Create(comm, num_local, num_vecs, vec)
+    split = TpetraMap(TPETRA_GLOBAL_INVALID, num_split, comm)
+
+    res1 = vec%offsetView(split, 0_size_type)
+    res2 = vec%offsetView(split, int(res1%getLocalLength(), kind = size_type))
+
+    TEST_EQUALITY(res1%getLocalLength() + res2%getLocalLength(), vec%getLocalLength())
+    TEST_EQUALITY(res1%getNumVectors(), vec%getNumVectors())
+    TEST_EQUALITY(res2%getNumVectors(), vec%getNumVectors())
+
+    call vec%putScalar(1.0_dp)
+    call res1%norm1(res1Norm)
+    call res2%norm1(res2Norm)
+
+    expect = 1.0_dp * num_split * comm%getSize()
+    TEST_FLOATING_ARRAY_EQUALITY(res1Norm, expect, epsilon(expect))
+    TEST_FLOATING_ARRAY_EQUALITY(res2Norm, expect, epsilon(expect))
+
+    call vec%release(); TEST_IERR()
+    call res1%release(); TEST_IERR()
+    call res2%release(); TEST_IERR()
+    call split%release(); TEST_IERR()
+
+    OUT0("Finished TpetraMultiVector_offsetView!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_offsetView)
+
   ! ----------------------------offsetViewNonConst---------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMultiVector_offsetViewNonConst)
-    type(TpetraMultiVector) :: Obj
-    type(TpetraMap) :: submap
+
+    type(TpetraMultiVector) :: vec, res1, res2
+    type(TpetraMap) :: split
+    integer, parameter :: num_local = 4, num_split = 2
+    integer(size_type), parameter :: num_vecs = 2
     integer(size_type) :: offset
+    real(dp) :: res1Norm(2), res2Norm(2), expect
+
+    OUT0("Starting TpetraMultiVector_offsetViewNonConst!")
+
+    call Tpetra_MV_Create(comm, num_local, num_vecs, vec)
+    split = TpetraMap(TPETRA_GLOBAL_INVALID, num_split, comm)
+
+    res1 = vec%offsetView(split, 0_size_type)
+    res2 = vec%offsetView(split, int(res1%getLocalLength(), kind = size_type))
+
+    TEST_EQUALITY(res1%getLocalLength() + res2%getLocalLength(), vec%getLocalLength())
+    TEST_EQUALITY(res1%getNumVectors(), vec%getNumVectors())
+    TEST_EQUALITY(res2%getNumVectors(), vec%getNumVectors())
+
+    call vec%putScalar(1.0_dp)
+    call res1%norm1(res1Norm)
+    call res2%norm1(res2Norm)
+
+    expect = 1.0_dp * num_split * comm%getSize()
+    TEST_FLOATING_ARRAY_EQUALITY(res1Norm, expect, epsilon(expect))
+    TEST_FLOATING_ARRAY_EQUALITY(res2Norm, expect, epsilon(expect))
+
+    call vec%release(); TEST_IERR()
+    call res1%release(); TEST_IERR()
+    call res2%release(); TEST_IERR()
+    call split%release(); TEST_IERR()
+
+    OUT0("Finished TpetraMultiVector_offsetViewNonConst!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_offsetViewNonConst)
+
+  ! ---------------------------------getData---------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_getData)
+    type(TpetraMultiVector) :: vec
+    integer, parameter :: num_local = 4
+    integer(size_type), parameter :: num_vecs = 2
+    real(dp) :: a(num_local), vecNorm(num_vecs), expect(num_vecs)
+    integer(size_type) :: i, j
+
+    OUT0("Starting TpetraMultiVector_getData!")
+
+    j = 1
+    call Tpetra_MV_Create(comm, num_local, num_vecs, vec)
+    a = vec%getData(j)
+
+    a = 1.0_dp
+
+    call vec%norm1(vecNorm)
+    expect = 0.0_dp
+    expect(1) = 1.0_dp * num_local * comm%getSize()
+
+    TEST_FLOATING_ARRAY_EQUALITY(vecNorm, expect, epsilon(expect(1)))
+
+    call vec%release(); TEST_IERR()
+
+    OUT0("Finished TpetraMultiVector_getData!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_getData)
+
+  ! -----------------------------getDataNonConst------------------------------ !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_getDataNonConst)
+    type(TpetraMultiVector) :: vec
+    integer, parameter :: num_local = 4
+    integer(size_type), parameter :: num_vecs = 2
+    real(dp) :: a(num_local), vecNorm(num_vecs), expect(num_vecs)
+    integer(size_type) :: j
+
+    OUT0("Starting TpetraMultiVector_getDataNonConst!")
+
+    j = 1
+    call Tpetra_MV_Create(comm, num_local, num_vecs, vec)
+    a = vec%getDataNonConst(j)
+
+    a = 1.0_dp
+
+    call vec%norm1(vecNorm)
+    expect = 0.0_dp
+    expect(1) = 1.0_dp * num_local * comm%getSize()
+
+    TEST_FLOATING_ARRAY_EQUALITY(vecNorm, expect, epsilon(expect(1)))
+
+    call vec%release(); TEST_IERR()
+
+    OUT0("Finished TpetraMultiVector_getDataNonConst!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_getDataNonConst)
+
+  ! --------------------------------get1dView--------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_get1dView)
+    type(TpetraMultiVector) :: vec
+    integer, parameter :: num_local = 4
+    integer(size_type), parameter :: num_vecs = 2
+    real(dp) :: a(num_local * num_vecs), vecNorm(num_vecs), expect(num_vecs)
+
+    OUT0("Starting TpetraMultiVector_get1dView!")
+
+    call Tpetra_MV_Create(comm, num_local, num_vecs, vec, 1.0_dp)
+    a = vec%get1dView()
+
+    TEST_FLOATING_ARRAY_EQUALITY(a, 1.0_dp, epsilon(1.0_dp))
+
+    call vec%release(); TEST_IERR()
+
+    OUT0("Finished TpetraMultiVector_get1dView!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_get1dView)
+
+  ! ----------------------------get1dViewNonConst----------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_get1dViewNonConst)
+    type(TpetraMultiVector) :: vec
+    integer, parameter :: num_local = 4
+    integer(size_type), parameter :: num_vecs = 2
+    real(dp) :: a(num_local * num_vecs), vecNorm(num_vecs), expect(num_vecs)
+
+    OUT0("Starting TpetraMultiVector_get1dViewNonConst!")
+
+    call Tpetra_MV_Create(comm, num_local, num_vecs, vec, 1.0_dp)
+    a = vec%get1dViewNonConst()
+
+    TEST_FLOATING_ARRAY_EQUALITY(a, 1.0_dp, epsilon(1.0_dp))
+
+    call vec%release(); TEST_IERR()
+
+    OUT0("Finished TpetraMultiVector_get1dViewNonConst!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_get1dViewNonConst)
+
+  ! --------------------------------sync_host--------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_sync_host)
+    type(TpetraMultiVector) :: Obj
+    OUT0("Starting TpetraMultiVector_sync_host!")
 
     success = .false.
 
-    !submap = TpetraMap(); TEST_IERR()
-    offset = 0
-    !Obj = TpetraMultiVector(); TEST_IERR()
-    !fresult = Obj%offsetViewNonConst(submap, offset); TEST_IERR()
-    !call submap%release(); TEST_IERR()
+    !call Obj%create(); TEST_IERR()
+    !call Obj%sync_host(); TEST_IERR()
+
     !call Obj%release(); TEST_IERR()
 
-    write(*,*) 'offsetViewNonConst: Test not yet implemented'
+    write(*,*) 'TpetraMultiVector_sync_host: Test not yet implemented'
 
-  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_offsetViewNonConst)
+    OUT0("Finished TpetraMultiVector_sync_host!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_sync_host)
+
+  ! -------------------------------sync_device-------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_sync_device)
+    type(TpetraMultiVector) :: Obj
+    OUT0("Starting TpetraMultiVector_sync_device!")
+
+    success = .false.
+
+    !call Obj%create(); TEST_IERR()
+    !call Obj%sync_device(); TEST_IERR()
+
+    !call Obj%release(); TEST_IERR()
+
+    write(*,*) 'TpetraMultiVector_sync_device: Test not yet implemented'
+
+    OUT0("Finished TpetraMultiVector_sync_device!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_sync_device)
+
+  ! ------------------------------need_sync_host------------------------------ !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_need_sync_host)
+    type(TpetraMultiVector) :: Obj
+    OUT0("Starting TpetraMultiVector_need_sync_host!")
+
+    success = .false.
+
+    !call Obj%create(); TEST_IERR()
+    !fresult = Obj%need_sync_host(); TEST_IERR()
+
+    !call Obj%release(); TEST_IERR()
+
+    write(*,*) 'TpetraMultiVector_need_sync_host: Test not yet implemented'
+
+    OUT0("Finished TpetraMultiVector_need_sync_host!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_need_sync_host)
+
+  ! -----------------------------need_sync_device----------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_need_sync_device)
+    type(TpetraMultiVector) :: Obj
+    OUT0("Starting TpetraMultiVector_need_sync_device!")
+    success = .false.
+
+    !call Obj%create(); TEST_IERR()
+    !fresult = Obj%need_sync_device(); TEST_IERR()
+
+    !call Obj%release(); TEST_IERR()
+
+    write(*,*) 'TpetraMultiVector_need_sync_device: Test not yet implemented'
+
+    OUT0("Finished TpetraMultiVector_need_sync_device!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_need_sync_device)
+
+  ! ------------------------------modify_device------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_modify_device)
+    type(TpetraMultiVector) :: Obj
+
+    OUT0("Starting TpetraMultiVector_modify_device!")
+
+    success = .false.
+
+    !call Obj%create(); TEST_IERR()
+    !fresult = Obj%modify_device(); TEST_IERR()
+
+    !call Obj%release(); TEST_IERR()
+
+    write(*,*) 'TpetraMultiVector_need_sync_device: Test not yet implemented'
+
+    OUT0("Finished TpetraMultiVector_modify_device!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_modify_device)
+
+  ! -------------------------------modify_host-------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_modify_host)
+    type(TpetraMultiVector) :: Obj
+
+    OUT0("Starting TpetraMultiVector_modify_host!")
+
+    success = .false.
+
+    !call Obj%create(); TEST_IERR()
+    !fresult = Obj%modify_host(); TEST_IERR()
+
+    !call Obj%release(); TEST_IERR()
+
+    write(*,*) 'TpetraMultiVector_need_sync_device: Test not yet implemented'
+
+    OUT0("Finished TpetraMultiVector_modify_host!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_modify_host)
+
+  ! ------------------------------getNumVectors------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_getNumVectors)
+    type(TpetraMultiVector) :: vec
+    integer, parameter :: num_local = 4
+    integer(size_type), parameter :: num_vecs = 2
+
+    OUT0("Starting TpetraMultiVector_getNumVectors!")
+
+    call Tpetra_MV_Create(comm, num_local, num_vecs, vec)
+    TEST_EQUALITY(num_vecs, vec%getNumVectors())
+    call vec%release(); TEST_IERR()
+
+    OUT0("Finished TpetraMultiVector_getNumVectors!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_getNumVectors)
+
+  ! ------------------------------getLocalLength------------------------------ !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_getLocalLength)
+    type(TpetraMultiVector) :: vec
+    integer, parameter :: num_local = 4
+    integer(size_type), parameter :: num_vecs =	2
+
+    OUT0("Starting TpetraMultiVector_getLocalLength!")
+
+    call Tpetra_MV_Create(comm, num_local, num_vecs, vec)
+    TEST_EQUALITY(num_local, vec%getLocalLength())
+    call vec%release();	TEST_IERR()
+
+    OUT0("Finished TpetraMultiVector_getLocalLength!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_getLocalLength)
+
+  ! -----------------------------getGlobalLength------------------------------ !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_getGlobalLength)
+    type(TpetraMultiVector) :: vec
+    integer, parameter :: num_local = 4
+    integer(size_type), parameter :: num_vecs = 2
+
+    OUT0("Starting TpetraMultiVector_getGlobalLength!")
+
+    call Tpetra_MV_Create(comm, num_local, num_vecs, vec)
+    TEST_EQUALITY(int(num_local * comm%getSize(), kind = size_type), vec%getGlobalLength())
+    call vec%release(); TEST_IERR()
+
+    OUT0("Finished TpetraMultiVector_getGlobalLength!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_getGlobalLength)
+
+  ! --------------------------------getStride--------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_getStride)
+    type(TpetraMultiVector) :: vec
+    integer, parameter :: num_local = 4
+    integer(size_type), parameter :: num_vecs = 2
+
+    OUT0("Starting TpetraMultiVector_getStride!")
+
+    call Tpetra_MV_Create(comm, num_local, num_vecs, vec)
+    TEST_EQUALITY(int(num_local, kind = size_type), vec%getStride())
+    call vec%release(); TEST_IERR()
+
+    OUT0("Finished TpetraMultiVector_getStride!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_getStride)
+
+  ! -----------------------------isConstantStride----------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_isConstantStride)
+    type(TpetraMultiVector) :: vec
+    integer, parameter :: num_local = 4
+    integer(size_type), parameter :: num_vecs = 2
+
+    OUT0("Starting TpetraMultiVector_isConstantStride!")
+
+    call Tpetra_MV_Create(comm, num_local, num_vecs, vec)
+    TEST_ASSERT(vec%isConstantStride())
+    call vec%release(); TEST_IERR()
+
+    OUT0("Finished TpetraMultiVector_isConstantStride!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_isConstantStride)
+
+  ! --------------------------------isSameSize-------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMultiVector_isSameSize)
+    type(TpetraMultiVector) :: vec1, vec2
+    integer, parameter :: num_local = 4, bad_local = 6
+    integer(size_type), parameter :: num_vecs = 2
+
+    OUT0("Starting TpetraMultiVector_isSameSize!")
+
+    call Tpetra_MV_Create(comm, num_local, num_vecs, vec1)
+    call Tpetra_MV_Create(comm, num_local, num_vecs, vec2)
+    TEST_ASSERT(vec1%isSameSize(vec2))
+
+    call vec2%release(); TEST_IERR()
+    call Tpetra_MV_Create(comm, bad_local, num_vecs, vec2)
+    TEST_ASSERT(.not. vec1%isSameSize(vec2))
+
+    call vec1%release(); TEST_IERR()
+    call vec2%release(); TEST_IERR()
+    OUT0("Finished TpetraMultiVector_isSameSize!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_isSameSize)
+
+#if 0
 
   ! -------------------------------normWeighted------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMultiVector_normWeighted)

@@ -7,6 +7,8 @@
 ## TESTS
 ##---------------------------------------------------------------------------##
 
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+
 SET(TESTS
   test_tpetra_map.F90
   test_tpetra_crsgraph.F90
@@ -14,6 +16,18 @@ SET(TESTS
   test_tpetra_multivector.F90
   test_tpetra_import_export.F90
   )
+SET(TEST_HELPERS
+  test_tpetra_crsgraph_helper.F90
+  test_tpetra_crsmatrix_helper.F90
+  test_tpetra_import_export_helper.F90
+  test_tpetra_multivector_helper.F90
+  )
+
+TRIBITS_ADD_LIBRARY(
+  fortpetra_helpers
+  SOURCES ${TEST_HELPERS}
+  DEPLIBS fortpetra
+)
 
 FOREACH(test ${TESTS})
     GET_FILENAME_COMPONENT(name ${test} NAME_WE)

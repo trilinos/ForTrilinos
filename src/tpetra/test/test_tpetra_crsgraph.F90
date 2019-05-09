@@ -9,6 +9,7 @@ program test_TpetraCrsGraph
   use, intrinsic :: iso_c_binding
   use forteuchos
   use fortpetra
+  use test_tpetra_crsgraph_helper
 
   implicit none
   type(TeuchosComm) :: comm
@@ -22,40 +23,70 @@ program test_TpetraCrsGraph
   comm = TeuchosComm()
 #endif
 
+  !Fatter tests
   ADD_SUBTEST_AND_RUN(TpetraCrsGraph_ActiveFillLocal)
-  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_Parameters)
-  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_WithColmap)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_WithColMap)
   ADD_SUBTEST_AND_RUN(TpetraCrsGraph_TwoArraysESFC)
   ADD_SUBTEST_AND_RUN(TpetraCrsGraph_SortingTests)
   ADD_SUBTEST_AND_RUN(TpetraCrsGraph_EmptyFillComplete)
   ADD_SUBTEST_AND_RUN(TpetraCrsGraph_GetEntities)
 
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getComm)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getDomainMap)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getRangeMap)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getImporter)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getExporter)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_isLowerTriangular)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_isUpperTriangular)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_isLocallyIndexed)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_isGloballyIndexed)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_isStorageOptimized)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_supportsRowViews)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_description)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_replaceColMap)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_replaceDomainMapAndImporter)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_removeEmptyProcessesInPlace)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_haveGlobalConstants)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_computeGlobalConstants)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getGlobalRowCopy)
-!  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getGlobalRowView)
-!
-  call comm%release()
+  !Unit tests consistent with scripts/autogen_tests.py
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_isIdenticalTo)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_insertGlobalIndices)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_insertLocalIndices)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_removeLocalIndices)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getComm)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getRowMap)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getColMap)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getDomainMap)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getRangeMap)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getImporter)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getExporter)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getGlobalNumRows)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getGlobalNumCols)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getGlobalNumEntries)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getGlobalMaxNumRowEntries)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getNodeNumRows)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getNodeNumCols)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getNodeNumEntries)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getNodeMaxNumRowEntries)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getNumEntriesInGlobalRow)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getNumEntriesInLocalRow)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getNodeAllocationSize)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getNumAllocatedEntriesInLocalRow)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getProfileType)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getGlobalRowCopy)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getLocalRowCopy)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getNodeRowPtrs)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getNodePackedIndices)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_hasColMap)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_isGloballyIndexed)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_isLocallyIndexed)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_isFillComplete)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_isFillActive)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_isSorted)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_isStorageOptimized)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_supportsRowViews)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_description)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_replaceColMap)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_replaceDomainMapAndImporter)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_removeEmptyProcessesInPlace)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_haveGlobalConstants)
+  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_computeGlobalConstants)
+
+  ! In the wrapper but not wanting to really expose for users
+  !ADD_SUBTEST_AND_RUN(TpetraCrsGraph_setParameterList)
+  !ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getValidParameters)
+  !ADD_SUBTEST_AND_RUN(TpetraCrsGraph_globalAssemble)
+
+  ! Deprecated
+  call comm%release(); TEST_IERR()
 
   TEARDOWN_TEST()
 
 contains
-
 
   ! ----------------------------- ActiveFill --------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_ActiveFillLocal)
@@ -85,7 +116,6 @@ contains
     TEST_ASSERT(graph%isFillComplete())
     TEST_THROW(call graph%insertLocalIndices(row, indices))
     TEST_THROW(call graph%removeLocalIndices(row))
-    TEST_THROW(call Graph%globalAssemble())
     TEST_THROW(call Graph%fillComplete())
 
     call Graph%resumeFill()
@@ -98,43 +128,13 @@ contains
     TEST_ASSERT((.not. graph%isFillActive()))
     TEST_ASSERT(graph%isFillComplete())
 
-    call Graph%release()
-    call Map%release()
-    call params%release()
+    call Graph%release(); TEST_IERR()
+    call Map%release(); TEST_IERR()
+    call params%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_ActiveFillLocal!")
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_ActiveFillLocal)
-
-  ! ----------------------------getValidParameters---------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_Parameters)
-    type(TpetraMap) :: Map
-    type(ParameterList) :: params
-    type(TpetraCrsGraph) :: Graph
-    integer :: row, indices(1)
-
-    OUT0("Starting TpetraCrsGraph_Parameters!")
-
-    ! create Map
-    Map = TpetraMap(TPETRA_GLOBAL_INVALID, 1, comm); TEST_IERR()
-
-    params = ParameterList("ANONYMOUS")
-    Graph = TpetraCrsGraph(Map, Map, 1_size_type, TpetraStaticProfile)
-    params = Graph%getValidParameters()
-    call Graph%setParameterList(params)
-
-    row = 1
-    indices(1) = 1
-    call Graph%insertLocalIndices(row, indices)
-    call graph%fillComplete(params)
-
-    call params%release()
-    call Graph%release()
-    call Map%release()
-
-    OUT0("Finished TpetraCrsGraph_Parameters!")
-
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_Parameters)
 
   ! ------------------------------- WithColMap ------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_WithColMap)
@@ -184,10 +184,10 @@ contains
     TEST_EQUALITY(tmpmap%getNodeNumElements(), cmap%getNodeNumElements())
     TEST_EQUALITY(Graph%getNumEntriesInGlobalRow(myrowind), 1_size_type)
 
-    call tmpmap%release()
-    call Graph%release()
-    call rmap%release()
-    call cmap%release()
+    call tmpmap%release(); TEST_IERR()
+    call Graph%release(); TEST_IERR()
+    call rmap%release(); TEST_IERR()
+    call cmap%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_WithColMap!")
 
@@ -228,60 +228,14 @@ contains
     TEST_EQUALITY(tmpmap%getNodeNumElements(), rmap%getNodeNumElements())
 
     deallocate(rowptr, colind)
-    call tmpmap%release()
-    call Graph%release()
-    call rmap%release()
+    call tmpmap%release(); TEST_IERR()
+    call Graph%release(); TEST_IERR()
+    call rmap%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_TwoArraysESFC!")
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_TwoArraysESFC)
 
-#if 0
-  ! TODO: Implement setAllIndices
-  ! ------------------------------ SetAllIndices ----------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_SetAllIndices)
-    type(TpetraMap) :: rmap, tmpmap
-    type(TpetraCrsGraph) :: Graph
-    integer(size_type) :: num_procs
-    integer :: num_local
-    integer(size_type), allocatable :: rowptr(:)
-    integer, allocatable :: colind(:)
-    integer(global_ordinal_type), allocatable :: indices(:)
-
-    OUT0("Starting TpetraCrsGraph_SetAllIndices!")
-    num_procs = comm%getSize()
-    !if (num_procs <= 1) return
-
-    num_local = 2
-    rmap = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm)
-    allocate(rowptr(num_local+1))
-    allocate(colind(num_local)) ! one unknown per row
-    rowptr(1:3) = [1, 2, 3]
-    colind(1:2) = [1, 2]
-
-    Graph = TpetraCrsGraph(rmap, rmap, 0_size_type, TpetraStaticProfile)
-
-    TEST_NOTHROW(call Graph%setAllIndices(rowptr, colind))
-    TEST_ASSERT(Graph%hasColMap())
-
-    TEST_NOTHROW(call Graph%expertStaticFillComplete(rmap,rmap))
-
-    tmpmap = TpetraMap()
-    tmpmap = Graph%getRowMap()
-    TEST_EQUALITY(tmpmap%getNodeNumElements(), rmap%getNodeNumElements())
-
-    tmpmap = Graph%getColMap()
-    TEST_EQUALITY(tmpmap%getNodeNumElements(), rmap%getNodeNumElements())
-
-    deallocate(rowptr, colind)
-    call tmpmap%release()
-    call Graph%release()
-    call rmap%release()
-
-    OUT0("Finished TpetraCrsGraph_SetAllIndices!")
-
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_SetAllIndices)
-#endif
 
   ! ------------------------------ SortingTests ------------------------------ !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_SortingTests)
@@ -337,7 +291,7 @@ contains
     do k = kstart, kfinish
       nument = Graph%getNumEntriesInLocalRow(k)
       allocate(kinds(nument))
-      write (*,*) "Allocated", nument, "for k=", k
+      !write (*,*) "Allocated", nument, "for k=", k
       call Graph%getLocalRowCopy(k, kinds, nument); TEST_IERR()
       do kk = 2, nument
         if (kinds(kk-1) > kinds(kk)) then
@@ -400,9 +354,9 @@ contains
       deallocate(kinds)
     end do
 
-    call Graph%release()
-    call map%release()
-    call params%release()
+    call Graph%release(); TEST_IERR()
+    call map%release(); TEST_IERR()
+    call params%release(); TEST_IERR()
     OUT0("Finished TpetraCrsGraph_SortingTests!")
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_SortingTests)
@@ -423,9 +377,9 @@ contains
     ! (and therefore, without allocating)
     Graph = TpetraCrsGraph(map, 1_size_type, TpetraStaticProfile)
     call Graph%fillComplete()
-    call Graph%release()
+    call Graph%release(); TEST_IERR()
 
-    call map%release()
+    call map%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_EmptyFillComplete!")
 
@@ -493,46 +447,296 @@ contains
     i_LO = Graph%getNodeMaxNumRowEntries()
     TEST_EQUALITY(i_LO, 1_size_type)
 
-    call Graph%release()
-    call rmap%release()
-    call cmap%release()
+    call Graph%release(); TEST_IERR()
+    call rmap%release(); TEST_IERR()
+    call cmap%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_GetEntities!")
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_GetEntities)
 
-#if 0
+  ! ------------------------------isIdenticalTo------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_isIdenticalTo)
+    type(TpetraMap) :: Map
+    type(TpetraCrsGraph) :: Graph1, Graph2
+    integer(global_ordinal_type) :: num_global
+    integer(size_type), parameter :: izero=0, ione=1
+    logical :: fresult
+
+    OUT0("Starting TpetraCrsGraph_isIdenticalTo!")
+
+    ! create Map and Graph
+    num_global = 4*comm%getSize()
+    Map = TpetraMap(num_global, comm); TEST_IERR()
+    Graph1 = TpetraCrsGraph(Map, Map, ione, TpetraStaticProfile)
+    Graph2 = TpetraCrsGraph(Map, Map, ione, TpetraStaticProfile)
+
+    call Graph1%fillComplete()
+    call Graph2%fillComplete()
+
+    TEST_ASSERT(Graph1%isIdenticalTo(Graph2))
+
+    call Graph1%release(); TEST_IERR()
+    call Graph2%release(); TEST_IERR()
+    call Map%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_isIdenticalTo!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_isIdenticalTo)
+
+  ! ----------------------------insertLocalIndices---------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_insertLocalIndices)
+    type(TpetraCrsGraph) :: Graph
+    type(TpetraMap) :: rowMap, colMap
+    integer(int_type) :: lclNumRows, lclNumCols, lclRow
+    integer(global_ordinal_type) gblNumRows
+    integer(int_type) :: numProcs
+    integer(int_type), dimension(:), allocatable :: lclColInds
+    integer(int_type), dimension(:), allocatable :: curLclColInds
+    integer(size_type), parameter :: max_entries_per_row=3
+    integer(size_type) :: numEnt=0
+
+    OUT0("Starting TpetraCrsGraph_insertLocalIndices!")
+
+    numProcs = comm%getSize()
+    lclNumRows = 10
+    gblNumRows = lclNumRows * numProcs
+    rowMap = TpetraMap(gblNumRows, lclNumRows, comm)
+    lclNumCols = lclNumRows
+    colMap = rowMap
+    Graph = TpetraCrsGraph(rowMap, colMap, max_entries_per_row, TpetraStaticProfile)
+
+    allocate(lclColInds(2))
+
+    do lclRow = 1, lclNumRows
+      lclColInds(1) = 1 + modulo(lclRow + 0, lclNumCols)
+      lclColInds(2) = 1 + modulo(lclRow + 1, lclNumCols)
+      TEST_NOTHROW(call Graph%insertLocalIndices(lclRow, lclColInds))
+    end do
+
+    ! Make the arrays bigger than necessary, just to make sure that
+    ! the methods behave correctly.
+    allocate(curLclColInds(5))
+
+    do lclRow = 1, lclNumRows
+      TEST_NOTHROW(call Graph%getLocalRowCopy(lclRow, curLclColInds, numEnt))
+      TEST_EQUALITY(int(numEnt), 2)
+
+      TEST_EQUALITY(curLclColInds(1), 1 + modulo(lclRow + 0, lclNumCols));
+      TEST_EQUALITY(curLclColInds(2), 1 + modulo(lclRow + 1, lclNumCols));
+    enddo
+
+    call Graph%release(); TEST_IERR()
+    call rowMap%release(); TEST_IERR()
+    call colMap%release(); TEST_IERR()
+    deallocate(lclColInds)
+    deallocate(curLclColInds)
+
+    OUT0("Finished TpetraCrsGraph_insertLocalIndices!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_insertLocalIndices)
+
+  ! ----------------------------insertGlobalIndices---------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_insertGlobalIndices)
+    type(TpetraCrsGraph) :: Graph
+    type(TpetraMap) :: rmap
+    integer :: irow, nnz
+    integer(size_type) :: nument;
+    integer(global_ordinal_type), allocatable :: cols_expected(:)
+    integer(global_ordinal_type), allocatable :: cols(:)
+    integer(global_ordinal_type) :: gblrow
+
+    OUT0("Starting TpetraCrsGraph_insertGlobalIndices!")
+
+    ! Duplicate Tpetra_CrsGraph_CreateTestGraph_A here because
+    ! we want insertGlobalIndices to appear explicitly.
+    rmap = TpetraMap(Tpetra_GLOBAL_INVALID, test_graph_num_row(), comm)
+    Graph = TpetraCrsGraph(rmap, test_graph_max_entries_per_row(), TpetraStaticProfile)
+
+    do irow=1,test_graph_num_row()
+      call Tpetra_CrsGraph_GetTestGraphRow_A(comm, irow, gblrow, cols_expected, nnz)
+      call Graph%insertGlobalIndices(gblrow, cols_expected)
+      deallocate(cols_expected)
+    enddo
+
+    !---------------------------------------------------------------
+    ! CHECK results
+    !---------------------------------------------------------------
+    do irow=1,test_graph_num_row()
+      call Tpetra_CrsGraph_GetTestGraphRow_A(comm, irow, gblrow, cols_expected, nnz)
+      allocate(cols(nnz))
+      call Graph%getGlobalRowCopy(gblrow, cols, nument)
+      TEST_EQUALITY(nnz, int(nument))
+      TEST_ARRAY_EQUALITY(cols, cols_expected)
+      deallocate(cols_expected)
+      deallocate(cols)
+    enddo
+
+    call Graph%release(); TEST_IERR()
+    call rmap%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_insertGlobalIndices!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_insertGlobalIndices)
+
+  ! ----------------------------removeLocalIndices---------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_removeLocalIndices)
+    type(TpetraCrsGraph) :: Graph
+    type(TpetraMap) :: rowMap, colMap
+    integer(int_type) :: lclNumRows, lclNumCols, lclRow
+    integer(global_ordinal_type) gblNumRows
+    integer(int_type) :: numProcs
+    integer(int_type), dimension(:), allocatable :: lclColInds
+    integer(int_type), dimension(:), allocatable :: curLclColInds
+    integer(size_type), parameter :: max_entries_per_row=3
+    integer(size_type) :: numEnt=0
+
+    OUT0("Starting TpetraCrsGraph_removeLocalIndices!")
+
+    numProcs = comm%getSize()
+    lclNumRows = 10
+    gblNumRows = lclNumRows * numProcs
+    rowMap = TpetraMap(gblNumRows, lclNumRows, comm)
+    lclNumCols = lclNumRows
+    colMap = rowMap
+    Graph = TpetraCrsGraph(rowMap, colMap, max_entries_per_row, TpetraStaticProfile)
+
+    allocate(lclColInds(2))
+
+    do lclRow = 1, lclNumRows
+      lclColInds(1) = 1 + modulo(lclRow + 0, lclNumCols)
+      lclColInds(2) = 1 + modulo(lclRow + 1, lclNumCols)
+      TEST_NOTHROW(call Graph%insertLocalIndices(lclRow, lclColInds))
+    end do
+
+    ! Now remove just row 5
+    lclRow = 5
+    TEST_NOTHROW(call Graph%removeLocalIndices(lclRow))
+
+    ! Make the arrays bigger than necessary, just to make sure that
+    ! the methods behave correctly.
+    allocate(curLclColInds(5))
+
+    do lclRow = 1, lclNumRows
+      TEST_NOTHROW(call Graph%getLocalRowCopy(lclRow, curLclColInds, numEnt))
+
+      ! We should have this row only to be empty
+      if(lclRow .EQ. 5) then
+        TEST_EQUALITY(int(numEnt), 0)
+      else
+        TEST_EQUALITY(int(numEnt), 2)
+
+      TEST_EQUALITY(curLclColInds(1), 1 + modulo(lclRow + 0, lclNumCols));
+      TEST_EQUALITY(curLclColInds(2), 1 + modulo(lclRow + 1, lclNumCols));
+      endif
+
+    enddo
+
+    call Graph%release(); TEST_IERR()
+    call rowMap%release(); TEST_IERR()
+    call colMap%release(); TEST_IERR()
+    deallocate(lclColInds)
+    deallocate(curLclColInds)
+
+    OUT0("Finished TpetraCrsGraph_removeLocalIndices!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_removeLocalIndices)
+
   ! ---------------------------------getComm---------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getComm)
-    type(TpetraCrsGraph) :: Obj
+    type(TpetraCrsGraph) :: Graph
+    type(TeuchosComm) :: gcomm
+
     OUT0("Starting TpetraCrsGraph_getComm!")
 
-    success = .false.
+    call Tpetra_CrsGraph_CreateBasic(comm, Graph)
 
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !fresult = Obj%getComm(); TEST_IERR()
+    gcomm = Graph%getComm(); TEST_IERR()
 
-    !call Obj%release(); TEST_IERR()
+    ! We only test the comm returned has the same rank and size.  More
+    ! comprehensive testing is (assumed to be) done in Teuchos itself.
+    TEST_ASSERT(gcomm%getRank() == comm%getRank())
+    TEST_ASSERT(gcomm%getSize() == comm%getSize())
 
-    write(*,*) 'TpetraCrsGraph_getComm: Test not yet implemented'
+    call gcomm%release(); TEST_IERR()
+    call Graph%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_getComm!")
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getComm)
 
+  ! --------------------------------getRowMap--------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getRowMap)
+    type(TpetraMap) :: rmap, tmpmap
+    type(TpetraCrsGraph) :: Graph
+
+    OUT0("Starting TpetraCrsGraph_getRowMap!")
+
+    ! Consistent with Tpetra_CrsGraph_CreateTestGraph_B
+    rmap = TpetraMap(TPETRA_GLOBAL_INVALID, test_graph_num_local(), comm)
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm,Graph)
+    call Graph%fillComplete()
+
+    tmpmap = Graph%getRowMap()
+
+    TEST_EQUALITY(tmpmap%getNodeNumElements(), rmap%getNodeNumElements())
+    TEST_ASSERT(tmpmap%isSameAs(rmap))
+
+    call tmpmap%release(); TEST_IERR()
+    call rmap%release(); TEST_IERR()
+    call Graph%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_getRowMap!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getRowMap)
+
+  ! --------------------------------getColMap--------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getColMap)
+    type(TpetraMap) :: cmap, tmpmap
+    type(TpetraCrsGraph) :: Graph
+
+    OUT0("Starting TpetraCrsGraph_getColMap!")
+
+    ! Consistent with Tpetra_CrsGraph_CreateTestGraph_B
+    cmap = TpetraMap(TPETRA_GLOBAL_INVALID, test_graph_num_local(), comm)
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+    call Graph%fillComplete()
+    tmpmap = Graph%getColMap()
+
+    TEST_EQUALITY(tmpmap%getNodeNumElements(), cmap%getNodeNumElements())
+    TEST_ASSERT(tmpmap%isSameAs(cmap))
+
+    call tmpmap%release(); TEST_IERR()
+    call Graph%release(); TEST_IERR();
+    call cmap%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_getColMap!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getColMap)
+
   ! -------------------------------getDomainMap------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getDomainMap)
-    type(TpetraCrsGraph) :: Obj
+    type(TpetraMap) :: Map, tmpmap
+    type(TpetraCrsGraph) :: Graph
+    integer(global_ordinal_type) :: num_global
+
     OUT0("Starting TpetraCrsGraph_getDomainMap!")
 
-    success = .false.
+    ! create Map and Graph
+    num_global = test_graph_num_local()*comm%getSize()
+    ! Consistent with Tpetra_CrsGraph_CreateTestGraph_B
+    Map = TpetraMap(num_global, comm); TEST_IERR()
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+    call Graph%fillComplete()
 
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !fresult = Obj%getDomainMap(); TEST_IERR()
+    tmpmap = Graph%getDomainMap(); TEST_IERR()
+    TEST_ASSERT(tmpmap%isSameAs(Map))
 
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraCrsGraph_getDomainMap: Test not yet implemented'
+    call tmpmap%release(); TEST_IERR()
+    call Graph%release(); TEST_IERR()
+    call Map%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_getDomainMap!")
 
@@ -540,17 +744,26 @@ contains
 
   ! -------------------------------getRangeMap-------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getRangeMap)
-    type(TpetraCrsGraph) :: Obj
+    type(TpetraMap) :: Map, tmpmap
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type), parameter :: izero=0, ione=1
+    integer(global_ordinal_type) :: num_global
+
     OUT0("Starting TpetraCrsGraph_getRangeMap!")
 
-    success = .false.
+    ! create Map and Graph
+    num_global = test_graph_num_local()*comm%getSize()
+    ! Consistent with Tpetra_CrsGraph_CreateTestGraph_B
+    Map = TpetraMap(num_global, comm); TEST_IERR()
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+    call Graph%fillComplete()
 
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !fresult = Obj%getRangeMap(); TEST_IERR()
+    tmpmap = Graph%getRangeMap(); TEST_IERR()
+    TEST_ASSERT(tmpmap%isSameAs(Map))
 
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraCrsGraph_getRangeMap: Test not yet implemented'
+    call tmpmap%release(); TEST_IERR()
+    call Graph%release(); TEST_IERR()
+    call Map%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_getRangeMap!")
 
@@ -558,17 +771,32 @@ contains
 
   ! -------------------------------getImporter-------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getImporter)
-    type(TpetraCrsGraph) :: Obj
+    type(TpetraMap) :: rmap, cmap, imprmap, impcmap
+    type(TpetraCrsGraph) :: Graph
+    type(TpetraImport) :: importer
+    integer(size_type) :: num_ent_per_row
+
     OUT0("Starting TpetraCrsGraph_getImporter!")
 
-    success = .false.
+    rmap = TpetraMap(TPETRA_GLOBAL_INVALID, test_graph_num_local(), comm); TEST_IERR()
+    cmap = TpetraMap(TPETRA_GLOBAL_INVALID, 2*test_graph_num_local(), comm); TEST_IERR()
+    ! must allocate enough for all submitted indices.
+    num_ent_per_row = 2
+    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row)
+    call Graph%fillComplete()
 
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !fresult = Obj%getImporter(); TEST_IERR()
+    importer = Graph%getImporter()
+    imprmap = importer%getSourceMap()
+    TEST_ASSERT(rmap%isSameAs(imprmap))
+    impcmap = importer%getTargetMap()
+    TEST_ASSERT(cmap%isSameAs(impcmap))
 
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraCrsGraph_getImporter: Test not yet implemented'
+    call imprmap%release(); TEST_IERR()
+    call impcmap%release(); TEST_IERR()
+    call importer%release(); TEST_IERR()
+    call Graph%release(); TEST_IERR()
+    call rmap%release(); TEST_IERR()
+    call cmap%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_getImporter!")
 
@@ -576,71 +804,477 @@ contains
 
   ! -------------------------------getExporter-------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getExporter)
-    type(TpetraCrsGraph) :: Obj
+    type(TpetraMap) :: rmap, cmap, expmap
+    type(TpetraCrsGraph) :: Graph
+    type(TpetraExport) :: exporter
+    integer(size_type) :: num_ent_per_row
+
     OUT0("Starting TpetraCrsGraph_getExporter!")
 
-    success = .false.
+    rmap = TpetraMap(TPETRA_GLOBAL_INVALID, test_graph_num_local(), comm); TEST_IERR()
+    cmap = TpetraMap(TPETRA_GLOBAL_INVALID, 2*test_graph_num_local(), comm); TEST_IERR()
+    ! must allocate enough for all submitted indices.
+    num_ent_per_row = 2
+    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row)
 
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !fresult = Obj%getExporter(); TEST_IERR()
+    ! make range map different so exporter will exist
+    call Graph%fillComplete(rmap, cmap)
 
-    !call Obj%release(); TEST_IERR()
+    exporter = Graph%getExporter()
+    expmap = exporter%getSourceMap()
+    TEST_ASSERT(rmap%isSameAs(expmap))
 
-    write(*,*) 'TpetraCrsGraph_getExporter: Test not yet implemented'
+    call exporter%release(); TEST_IERR()
+    call Graph%release(); TEST_IERR()
+    call rmap%release(); TEST_IERR()
+    call cmap%release(); TEST_IERR()
+    call expmap%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_getExporter!")
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getExporter)
 
-  ! ----------------------------isLowerTriangular----------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_isLowerTriangular)
-    type(TpetraCrsGraph) :: Obj
-    OUT0("Starting TpetraCrsGraph_isLowerTriangular!")
+  ! -----------------------------getGlobalNumRows----------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getGlobalNumRows)
+    type(TpetraMap) :: rmap, cmap
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type) :: num_ent_per_row, ires
+    integer :: num_local
+    integer :: commsize
 
-    success = .false.
+    OUT0("Starting TpetraCrsGraph_getGlobalNumRows!")
 
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !fresult = Obj%isLowerTriangular(); TEST_IERR()
+    num_local = 1
+    rmap = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
+    cmap = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
+    ! must allocate enough for all submitted indices.
+    num_ent_per_row = 2
+    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row, TpetraStaticProfile)
 
-    !call Obj%release(); TEST_IERR()
+    commsize = comm%getSize()
+    ires = Graph%getGlobalNumRows()
+    TEST_EQUALITY(ires, int(commsize,size_type))
 
-    write(*,*) 'TpetraCrsGraph_isLowerTriangular: Test not yet implemented'
+    call Graph%release(); TEST_IERR()
+    call rmap%release(); TEST_IERR()
+    call cmap%release(); TEST_IERR()
 
-    OUT0("Finished TpetraCrsGraph_isLowerTriangular!")
+    OUT0("Finished TpetraCrsGraph_getGlobalNumRows!")
 
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_isLowerTriangular)
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getGlobalNumRows)
 
-  ! ----------------------------isUpperTriangular----------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_isUpperTriangular)
-    type(TpetraCrsGraph) :: Obj
-    OUT0("Starting TpetraCrsGraph_isUpperTriangular!")
+  ! -----------------------------getGlobalNumCols----------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getGlobalNumCols)
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type) :: ires
 
-    success = .false.
+    OUT0("Starting TpetraCrsGraph_getGlobalNumCols!")
 
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !fresult = Obj%isUpperTriangular(); TEST_IERR()
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+    call Graph%fillComplete()
 
-    !call Obj%release(); TEST_IERR()
+    ires = Graph%getGlobalNumCols()
+    TEST_EQUALITY(ires, int(test_graph_num_local()*comm%getSize(),size_type))
 
-    write(*,*) 'TpetraCrsGraph_isUpperTriangular: Test not yet implemented'
+    call Graph%release(); TEST_IERR()
 
-    OUT0("Finished TpetraCrsGraph_isUpperTriangular!")
+    OUT0("Finished TpetraCrsGraph_getGlobalNumCols!")
 
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_isUpperTriangular)
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getGlobalNumCols)
+
+  ! ---------------------------getGlobalNumEntries---------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getGlobalNumEntries)
+    type(TpetraMap) :: rmap, cmap
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type) :: ires
+
+    OUT0("Starting TpetraCrsGraph_getGlobalNumEntries!")
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+    call Graph%fillComplete()
+
+    ires = Graph%getGlobalNumEntries()
+    ! match num_ent_per_row in CreateTestGraph
+    TEST_EQUALITY(ires, int(2*comm%getSize(),size_type))
+
+    call Graph%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_getGlobalNumEntries!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getGlobalNumEntries)
+
+  ! ------------------------getGlobalMaxNumRowEntries------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getGlobalMaxNumRowEntries)
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type) ::  ires
+
+    OUT0("Starting TpetraCrsGraph_getGlobalMaxNumRowEntries!")
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+    call Graph%fillComplete()
+
+    ires = Graph%getGlobalMaxNumRowEntries()
+    ! match num_ent_per_row in CreateTestGraph
+    TEST_EQUALITY(ires, int(2,size_type))
+
+    call Graph%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_getGlobalMaxNumRowEntries!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getGlobalMaxNumRowEntries)
+
+  ! ------------------------------getNodeNumRows------------------------------ !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNodeNumRows)
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type) ::  ires
+
+    OUT0("Starting TpetraCrsGraph_getNodeNumRows!")
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+    call Graph%fillComplete()
+
+    ires = Graph%getNodeNumRows()
+    TEST_EQUALITY(ires, int(test_graph_num_local(), size_type))
+
+    call Graph%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_getNodeNumRows!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNodeNumRows)
+
+  ! ------------------------------getNodeNumCols------------------------------ !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNodeNumCols)
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type) :: ires
+
+    OUT0("Starting TpetraCrsGraph_getNodeNumCols!")
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+    call Graph%fillComplete()
+
+    ires = Graph%getNodeNumCols()
+    TEST_EQUALITY(ires, int(test_graph_num_local(), size_type))
+
+    call Graph%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_getNodeNumCols!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNodeNumCols)
+
+  ! ----------------------------getNodeNumEntries----------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNodeNumEntries)
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type) :: ires
+
+    OUT0("Starting TpetraCrsGraph_getNodeNumEntries!")
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+    call Graph%fillComplete()
+
+    ires = Graph%getNodeNumEntries()
+    TEST_EQUALITY(ires, int(2,size_type))
+
+    call Graph%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_getNodeNumEntries!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNodeNumEntries)
+
+  ! -------------------------getNodeMaxNumRowEntries-------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNodeMaxNumRowEntries)
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type) :: ires
+
+    OUT0("Starting TpetraCrsGraph_getNodeMaxNumRowEntries!")
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+    call Graph%fillComplete()
+
+    ires = Graph%getNodeMaxNumRowEntries()
+    TEST_EQUALITY(ires, int(2,size_type))
+
+    call Graph%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_getNodeMaxNumRowEntries!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNodeMaxNumRowEntries)
+
+  ! -------------------------getNumEntriesInGlobalRow------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNumEntriesInGlobalRow)
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type) :: ires
+    type(TpetraMap) :: rmap
+    integer(global_ordinal_type) :: myrowind
+    integer :: lclrow
+
+    OUT0("Starting TpetraCrsGraph_getNumEntriesInGlobalRow!")
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+    call Graph%fillComplete()
+
+    lclrow = 1
+    rmap = Graph%getRowMap()
+    myrowind = rmap%getGlobalElement(lclrow);
+    ires = Graph%getNumEntriesInGlobalRow(myrowind)
+    TEST_EQUALITY(ires, int(2,size_type))
+
+    call Graph%release(); TEST_IERR()
+    call rmap%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_getNumEntriesInGlobalRow!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNumEntriesInGlobalRow)
+
+  ! -------------------------getNumEntriesInLocalRow-------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNumEntriesInLocalRow)
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type) :: ires
+    integer :: lclrow
+
+    OUT0("Starting TpetraCrsGraph_getNumEntriesInLocalRow!")
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+    call Graph%fillComplete()
+
+    lclrow = 1
+    ires = Graph%getNumEntriesInLocalRow(lclrow)
+    TEST_EQUALITY(ires, int(2,size_type))
+
+    call Graph%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_getNumEntriesInLocalRow!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNumEntriesInLocalRow)
+
+  ! --------------------------getNodeAllocationSize--------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNodeAllocationSize)
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type) :: ires
+
+    OUT0("Starting TpetraCrsGraph_getNodeAllocationSize!")
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+    call Graph%fillComplete()
+
+    ires = Graph%getNodeAllocationSize()
+    ! match num_ent_per_row in CreateTestGraph
+    TEST_EQUALITY(ires, int(2,size_type))
+
+    call Graph%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_getNodeAllocationSize!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNodeAllocationSize)
+
+  ! --------------------getNumAllocatedEntriesInGlobalRow--------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow)
+    type(TpetraMap) :: rmap
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type) :: ires
+    integer(global_ordinal_type) :: myrowind
+    integer :: lclrow
+
+    OUT0("Starting TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow!")
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+    call Graph%fillComplete()
+
+    lclrow = 1
+    rmap = Graph%getRowMap()
+    myrowind = rmap%getGlobalElement(lclrow);
+    ires = Graph%getNumAllocatedEntriesInGlobalRow(myrowind)
+    TEST_EQUALITY(ires, int(2,size_type))
+
+    call Graph%release(); TEST_IERR()
+    call rmap%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow)
+
+  ! ---------------------getNumAllocatedEntriesInLocalRow--------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNumAllocatedEntriesInLocalRow)
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type) :: ires
+    integer :: lclrow
+
+    OUT0("Starting TpetraCrsGraph_getNumAllocatedEntriesInLocalRow!")
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+    call Graph%fillComplete()
+
+    lclrow = 1
+    ires = Graph%getNumAllocatedEntriesInLocalRow(lclrow)
+    TEST_EQUALITY(ires, int(2,size_type))
+
+    call Graph%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_getNumAllocatedEntriesInLocalRow!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNumAllocatedEntriesInLocalRow)
+
+  ! ------------------------------getProfileType------------------------------ !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getProfileType)
+    type(TpetraCrsGraph) :: Graph
+
+    OUT0("Starting TpetraCrsGraph_getProfileType!")
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+
+    TEST_ASSERT(graph%getProfileType() == TpetraStaticProfile)
+
+    call Graph%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_getProfileType!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getProfileType)
+
+  ! -----------------------------getGlobalRowCopy----------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getGlobalRowCopy)
+    type(TpetraCrsGraph) :: Graph
+    integer :: irow, nnz
+    integer(size_type) :: nument;
+    integer(global_ordinal_type), allocatable :: cols_expected(:)
+    integer(global_ordinal_type), allocatable :: cols(:)
+    integer(global_ordinal_type) :: gblrow
+
+    OUT0("Starting TpetraCrsGraph_getGlobalRowCopy!")
+
+    call Tpetra_CrsGraph_CreateTestGraph_A(comm, Graph)
+    do irow=1,test_graph_num_row()
+      call Tpetra_CrsGraph_GetTestGraphRow_A(comm, irow, gblrow, cols_expected, nnz)
+      allocate(cols(nnz))
+      call Graph%getGlobalRowCopy(gblrow, cols, nument)
+      TEST_EQUALITY(nnz, int(nument))
+      TEST_ARRAY_EQUALITY(cols, cols_expected)
+      deallocate(cols_expected)
+      deallocate(cols)
+    enddo
+
+    call Graph%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_getGlobalRowCopy!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getGlobalRowCopy)
+
+  ! -----------------------------getLocalRowCopy------------------------------ !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getLocalRowCopy)
+    type(TpetraCrsGraph) :: Graph
+    type(TpetraMap) :: rowMap, colMap
+    integer(int_type) :: lclNumRows, lclNumCols, lclRow
+    integer(global_ordinal_type) gblNumRows
+    integer(int_type) :: numProcs
+    integer(int_type), dimension(:), allocatable :: lclColInds
+    integer(int_type), dimension(:), allocatable :: curLclColInds
+    integer(size_type), parameter :: max_entries_per_row=3
+    integer(size_type) :: numEnt=0
+
+    OUT0("Finished TpetraCrsGraph_insertLocalIndices!")
+
+    numProcs = comm%getSize()
+    lclNumRows = 10
+    gblNumRows = lclNumRows * numProcs
+    rowMap = TpetraMap(gblNumRows, lclNumRows, comm)
+    lclNumCols = lclNumRows
+    colMap = rowMap
+    Graph = TpetraCrsGraph(rowMap, colMap, max_entries_per_row, TpetraStaticProfile)
+
+    allocate(lclColInds(2))
+
+    do lclRow = 1, lclNumRows
+      lclColInds(1) = 1 + modulo(lclRow + 0, lclNumCols)
+      lclColInds(2) = 1 + modulo(lclRow + 1, lclNumCols)
+      TEST_NOTHROW(call Graph%insertLocalIndices(lclRow, lclColInds))
+    end do
+
+    ! Make the arrays bigger than necessary, just to make sure that
+    ! the methods behave correctly.
+    allocate(curLclColInds(5))
+
+    do lclRow = 1, lclNumRows
+      TEST_NOTHROW(call Graph%getLocalRowCopy(lclRow, curLclColInds, numEnt))
+      TEST_EQUALITY(int(numEnt), 2)
+
+      TEST_EQUALITY(curLclColInds(1), 1 + modulo(lclRow + 0, lclNumCols));
+      TEST_EQUALITY(curLclColInds(2), 1 + modulo(lclRow + 1, lclNumCols));
+    enddo
+
+    call Graph%release(); TEST_IERR()
+    call rowMap%release(); TEST_IERR()
+    call colMap%release(); TEST_IERR()
+    deallocate(lclColInds)
+    deallocate(curLclColInds)
+
+    OUT0("Finished TpetraCrsGraph_getLocalRowCopy!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getLocalRowCopy)
+
+  ! ------------------------------getNodeRowPtrs------------------------------ !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNodeRowPtrs)
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type), allocatable :: rowpointers(:)
+
+    OUT0("Starting TpetraCrsGraph_getNodeRowPtrs!")
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+
+    allocate(rowpointers(1))
+    TEST_THROW(call Graph%getNodeRowPtrs(rowpointers(:)))
+
+    deallocate(rowpointers)
+    call Graph%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_getNodeRowPtrs!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNodeRowPtrs)
+
+  ! ---------------------------getNodePackedIndices--------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNodePackedIndices)
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type), allocatable :: columnindices(:)
+
+    OUT0("Starting TpetraCrsGraph_getNodePackedIndices!")
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+
+    allocate(columnindices(1))
+    TEST_THROW(call Graph%getNodePackedIndices(columnindices(:)))
+
+    deallocate(columnindices)
+    call Graph%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_getNodePackedIndices!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNodePackedIndices)
+
+  ! --------------------------------hasColMap--------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_hasColMap)
+    type(TpetraCrsGraph) :: Graph
+
+    OUT0("Starting TpetraCrsGraph_hasColMap!")
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+
+    TEST_ASSERT(Graph%hasColMap())
+
+    call Graph%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_hasColMap!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_hasColMap)
 
   ! -----------------------------isLocallyIndexed----------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_isLocallyIndexed)
-    type(TpetraCrsGraph) :: Obj
+    type(TpetraCrsGraph) :: Graph
+
     OUT0("Starting TpetraCrsGraph_isLocallyIndexed!")
 
-    success = .false.
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+    call Graph%fillComplete()
 
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !fresult = Obj%isLocallyIndexed(); TEST_IERR()
+    TEST_ASSERT(Graph%isLocallyIndexed())
 
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraCrsGraph_isLocallyIndexed: Test not yet implemented'
+    call Graph%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_isLocallyIndexed!")
 
@@ -648,35 +1282,92 @@ contains
 
   ! ----------------------------isGloballyIndexed----------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_isGloballyIndexed)
-    type(TpetraCrsGraph) :: Obj
+    type(TpetraCrsGraph) :: Graph
+
     OUT0("Starting TpetraCrsGraph_isGloballyIndexed!")
 
-    success = .false.
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
 
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !fresult = Obj%isGloballyIndexed(); TEST_IERR()
+    TEST_ASSERT(Graph%isGloballyIndexed())
 
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraCrsGraph_isGloballyIndexed: Test not yet implemented'
+    call Graph%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_isGloballyIndexed!")
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_isGloballyIndexed)
 
+  ! ------------------------------isFillComplete------------------------------ !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_isFillComplete)
+    type(TpetraCrsGraph) :: Graph
+
+    OUT0("Starting TpetraCrsGraph_isFillComplete!")
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+
+    TEST_ASSERT(.not. Graph%isFillComplete())
+    call Graph%fillComplete()
+    TEST_ASSERT(Graph%isFillComplete())
+
+    call Graph%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_isFillComplete!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_isFillComplete)
+
+  ! -------------------------------isFillActive------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_isFillActive)
+    type(TpetraCrsGraph) :: Graph
+
+    OUT0("Starting TpetraCrsGraph_isFillActive!")
+
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+
+    TEST_ASSERT(Graph%isFillActive())
+    call Graph%fillComplete()
+    TEST_ASSERT(.not. Graph%isFillActive())
+
+    call Graph%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_isFillActive!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_isFillActive)
+
+  ! ---------------------------------isSorted--------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_isSorted)
+    type(TpetraMap) :: map
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type) :: nument
+    integer :: num_local
+
+    OUT0("Starting TpetraCrsGraph_isSorted!")
+
+    ! create a Map
+    num_local = 10;
+    map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm)
+
+    nument = 4
+    Graph = TpetraCrsGraph(map, map, nument); TEST_IERR()
+    TEST_ASSERT(graph%isSorted())
+
+    call Graph%release(); TEST_IERR()
+    call map%release(); TEST_IERR()
+
+    OUT0("Finished TpetraCrsGraph_isSorted!")
+
+  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_isSorted)
+
   ! ----------------------------isStorageOptimized---------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_isStorageOptimized)
-    type(TpetraCrsGraph) :: Obj
+    type(TpetraCrsGraph) :: Graph
+
     OUT0("Starting TpetraCrsGraph_isStorageOptimized!")
 
-    success = .false.
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+    TEST_ASSERT(.not. Graph%isStorageOptimized())
+    call Graph%fillComplete()
+    TEST_ASSERT(Graph%isStorageOptimized())
 
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !fresult = Obj%isStorageOptimized(); TEST_IERR()
-
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraCrsGraph_isStorageOptimized: Test not yet implemented'
+    call Graph%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_isStorageOptimized!")
 
@@ -684,17 +1375,15 @@ contains
 
   ! -----------------------------supportsRowViews----------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_supportsRowViews)
-    type(TpetraCrsGraph) :: Obj
+    type(TpetraCrsGraph) :: Graph
+
     OUT0("Starting TpetraCrsGraph_supportsRowViews!")
 
-    success = .false.
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
 
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !fresult = Obj%supportsRowViews(); TEST_IERR()
+    TEST_ASSERT(Graph%supportsRowViews())
 
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraCrsGraph_supportsRowViews: Test not yet implemented'
+    call Graph%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_supportsRowViews!")
 
@@ -702,17 +1391,16 @@ contains
 
   ! -------------------------------description-------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_description)
-    type(TpetraCrsGraph) :: Obj
+    type(TpetraCrsGraph) :: Graph
+    character(kind=C_CHAR) :: fresult
+
     OUT0("Starting TpetraCrsGraph_description!")
 
-    success = .false.
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
 
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !fresult = Obj%description(); TEST_IERR()
+    TEST_NOTHROW(fresult = Graph%description())
 
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraCrsGraph_description: Test not yet implemented'
+    call Graph%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_description!")
 
@@ -720,20 +1408,25 @@ contains
 
   ! ------------------------------replaceColMap------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_replaceColMap)
-    type(TpetraCrsGraph) :: Obj
-    type(TpetraMap) :: newcolmap
+    type(TpetraMap) :: Map, newcolmap
+    type(TpetraExport) :: fresult
+    type(TpetraCrsGraph) :: Graph
+    integer(global_ordinal_type) :: num_global
+
     OUT0("Starting TpetraCrsGraph_replaceColMap!")
 
-    success = .false.
+    num_global = 4*comm%getSize()
+    Map = TpetraMap(num_global, comm); TEST_IERR()
+    Graph = TpetraCrsGraph(Map, Map, 1_size_type, TpetraStaticProfile)
 
-    !newcolmap = TpetraMap(); TEST_IERR()
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !call Obj%replaceColMap(newcolmap); TEST_IERR()
+    ! Make a new colmap
+    newcolmap = TpetraMap(num_global, comm); TEST_IERR()
 
-    !call newcolmap%release(); TEST_IERR()
-    !call Obj%release(); TEST_IERR()
+    TEST_NOTHROW(call Graph%replaceColMap(newcolmap))
 
-    write(*,*) 'TpetraCrsGraph_replaceColMap: Test not yet implemented'
+    call Graph%release(); TEST_IERR()
+    call Map%release(); TEST_IERR()
+    call newcolmap%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_replaceColMap!")
 
@@ -741,23 +1434,33 @@ contains
 
   ! -----------------------replaceDomainMapAndImporter------------------------ !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_replaceDomainMapAndImporter)
-    type(TpetraCrsGraph) :: Obj
-    type(TpetraMap) :: newdomainmap
+    type(TpetraMap) :: Map, newdomainmap, newcolmap
     type(TpetraImport) :: newimporter
+    type(TpetraExport) :: fresult
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type), parameter :: izero=0, ione=1
+    integer(global_ordinal_type) :: num_global
+
     OUT0("Starting TpetraCrsGraph_replaceDomainMapAndImporter!")
 
-    success = .false.
+    num_global = 4*comm%getSize()
+    Map = TpetraMap(num_global, comm); TEST_IERR()
+    Graph = TpetraCrsGraph(Map, Map, izero, TpetraStaticProfile)
+    call Graph%fillComplete()     ! Needed for gloStaticstants
 
-    !newdomainmap = TpetraMap(); TEST_IERR()
-    !newimporter = TpetraImport(); TEST_IERR()
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !call Obj%replaceDomainMapAndImporter(newdomainmap, newimporter); TEST_IERR()
+    ! Make a new colmap
+    num_global = 5*comm%getSize()
+    newdomainmap = TpetraMap(num_global, comm); TEST_IERR()
+    newcolmap =  Graph%getColMap(); TEST_IERR()
+    newimporter = TpetraImport(newdomainmap, newcolmap ); TEST_IERR()
 
-    !call newdomainmap%release(); TEST_IERR()
-    !call newimporter%release(); TEST_IERR()
-    !call Obj%release(); TEST_IERR()
+    TEST_NOTHROW(call Graph%replaceDomainMapAndImporter(newdomainmap, newimporter))
 
-    write(*,*) 'TpetraCrsGraph_replaceDomainMapAndImporter: Test not yet implemented'
+    call newimporter%release(); TEST_IERR()
+    call newdomainmap%release(); TEST_IERR()
+    call newcolmap%release(); TEST_IERR()
+    call Graph%release(); TEST_IERR()
+    call Map%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_replaceDomainMapAndImporter!")
 
@@ -765,20 +1468,22 @@ contains
 
   ! -----------------------removeEmptyProcessesInPlace------------------------ !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_removeEmptyProcessesInPlace)
-    type(TpetraCrsGraph) :: Obj
-    type(TpetraMap) :: newmap
+    type(TpetraMap) :: Map
+    type(TpetraCrsGraph) :: Graph
+    integer(size_type), parameter :: izero=0, ione=1
+    integer(global_ordinal_type) :: num_global
+
     OUT0("Starting TpetraCrsGraph_removeEmptyProcessesInPlace!")
 
-    success = .false.
+    ! create Map and Graph
+    num_global = 4*comm%getSize()
+    Map = TpetraMap(num_global, comm); TEST_IERR()
+    Graph = TpetraCrsGraph(Map, Map, izero, TpetraStaticProfile)
 
-    !newmap = TpetraMap(); TEST_IERR()
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !call Obj%removeEmptyProcessesInPlace(newmap); TEST_IERR()
+    TEST_NOTHROW(call Graph%removeEmptyProcessesInPlace(Map))
 
-    !call newmap%release(); TEST_IERR()
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraCrsGraph_removeEmptyProcessesInPlace: Test not yet implemented'
+    call Graph%release(); TEST_IERR()
+    call Map%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_removeEmptyProcessesInPlace!")
 
@@ -786,17 +1491,16 @@ contains
 
   ! ---------------------------haveGlobalConstants---------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_haveGlobalConstants)
-    type(TpetraCrsGraph) :: Obj
+    type(TpetraCrsGraph) :: Graph
+
     OUT0("Starting TpetraCrsGraph_haveGlobalConstants!")
 
-    success = .false.
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
+    call Graph%fillComplete()     ! Needed for global constants
 
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !fresult = Obj%haveGlobalConstants(); TEST_IERR()
+    TEST_ASSERT(Graph%haveGlobalConstants())
 
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraCrsGraph_haveGlobalConstants: Test not yet implemented'
+    call Graph%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_haveGlobalConstants!")
 
@@ -804,92 +1508,18 @@ contains
 
   ! --------------------------computeGlobalConstants-------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_computeGlobalConstants)
-    type(TpetraCrsGraph) :: Obj
+    type(TpetraCrsGraph) :: Graph
+
     OUT0("Starting TpetraCrsGraph_computeGlobalConstants!")
 
-    success = .false.
+    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
 
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !call Obj%computeGlobalConstants(); TEST_IERR()
+    TEST_NOTHROW(call Graph%computeGlobalConstants(.true.))
 
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraCrsGraph_computeGlobalConstants: Test not yet implemented'
+    call Graph%release(); TEST_IERR()
 
     OUT0("Finished TpetraCrsGraph_computeGlobalConstants!")
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_computeGlobalConstants)
 
-  ! ----------------------------insertLocalIndices---------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_insertLocalIndices)
-    type(TpetraCrsGraph) :: Obj
-    integer(C_INT) :: localrow
-    integer(C_INT), allocatable :: indices(:)
-    OUT0("Starting TpetraCrsGraph_insertLocalIndices!")
-
-    success = .false.
-
-    localrow = 0
-    !allocate(indices(:)(0))
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !call Obj%insertLocalIndices(localrow, indices(:)); TEST_IERR()
-
-    !deallocate(indices(:))
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraCrsGraph_insertLocalIndices: Test not yet implemented'
-
-    OUT0("Finished TpetraCrsGraph_insertLocalIndices!")
-
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_insertLocalIndices)
-
-  ! -----------------------------getGlobalRowCopy----------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getGlobalRowCopy)
-    type(TpetraCrsGraph) :: Obj
-    integer(C_LONG_LONG) :: globalrow
-    integer(C_LONG_LONG), allocatable :: indices(:)
-    integer(C_SIZE_T) :: numindices
-    OUT0("Starting TpetraCrsGraph_getGlobalRowCopy!")
-
-    success = .false.
-
-    globalrow = 0
-    !allocate(indices(:)(0))
-    numindices = 0
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !call Obj%getGlobalRowCopy(globalrow, indices(:), numindices); TEST_IERR()
-
-    !deallocate(indices(:))
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraCrsGraph_getGlobalRowCopy: Test not yet implemented'
-
-    OUT0("Finished TpetraCrsGraph_getGlobalRowCopy!")
-
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getGlobalRowCopy)
-
-  ! ------------------------------getGlobalRowView------------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getGlobalRowView)
-    type(TpetraCrsGraph) :: Obj
-    integer(C_LONG_LONG) :: gblrow
-    integer(C_LONG_LONG), allocatable :: lclcolinds(:)
-    OUT0("Starting TpetraCrsGraph_getGlobalRowView!")
-
-    success = .false.
-
-    gblrow = 0
-    !allocate(lclcolinds(:)(0))
-    !Obj = TpetraCrsGraph(); TEST_IERR()
-    !call Obj%getGlobalRowView(gblrow, lclcolinds(:)); TEST_IERR()
-
-    !deallocate(lclcolinds(:))
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraCrsGraph_getGlobalRowView: Test not yet implemented'
-
-    OUT0("Finished TpetraCrsGraph_getGlobalRowView!")
-
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getGlobalRowView)
-#endif
-
-end program test_TpetraCrsGraph
+end program test_tpetraCrsGraph
