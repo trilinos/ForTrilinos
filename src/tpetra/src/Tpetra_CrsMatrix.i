@@ -32,6 +32,10 @@
 %ignore Tpetra::CrsMatrix::unpackAndCombineNew;
 %ignore Tpetra::CrsMatrix::useNewInterface;
 
+// Don't warn about ignored overloads
+%warnfilter(SWIGWARN_LANG_OVERLOAD_IGNORED) Tpetra::CrsMatrix::sumIntoGlobalValues;
+%warnfilter(SWIGWARN_LANG_OVERLOAD_IGNORED) Tpetra::CrsMatrix::sumIntoLocalValues;
+
 // =======================================================================
 // Postpone temporarily
 // =======================================================================
