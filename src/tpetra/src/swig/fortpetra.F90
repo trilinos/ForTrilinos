@@ -109,7 +109,7 @@ public :: norm_type
  public :: combineModeToString
  integer(C_LONG_LONG), parameter, public :: TPETRA_GLOBAL_INVALID = -1_C_LONG_LONG
  integer(C_INT), parameter, public :: TPETRA_LOCAL_INVALID = 0_C_INT
- type, public :: SWIGTYPE_Teuchos__RCPT_Kokkos__Compat__KokkosSerialWrapper9ZCDM
+ type, public :: SWIGTYPE_p_Teuchos__RCPT_Kokkos__Compat__KokkosSerialWrappTF2SL
   type(SwigClassWrapper), public :: swigdata
  end type
  ! class Tpetra::Map< LO,GO,NO >
@@ -158,7 +158,7 @@ public :: norm_type
   module procedure swigf_new_TpetraMap__SWIG_6
   module procedure swigf_new_TpetraMap__SWIG_7
  end interface
- type, public :: SWIGTYPE_std__ostream
+ type, public :: SWIGTYPE_p_std__ostream
   type(SwigClassWrapper), public :: swigdata
  end type
  ! class Tpetra::Import< LO,GO,NO >
@@ -211,7 +211,7 @@ public :: norm_type
   module procedure swigf_new_TpetraExport__SWIG_2
   module procedure swigf_new_TpetraExport__SWIG_3
  end interface
- type, public :: SWIGTYPE_Kokkos__ViewT_double_p_Kokkos__HostSpace_t
+ type, public :: SWIGTYPE_p_Kokkos__ViewT_double_p_Kokkos__HostSpace_t
   type(SwigClassWrapper), public :: swigdata
  end type
  ! class Tpetra::MultiVector< SC,LO,GO,NO >
@@ -476,10 +476,10 @@ public :: init_ForTpetraOperator
   module procedure swigf_new_TpetraCrsGraph__SWIG_12
   module procedure swigf_new_TpetraCrsGraph__SWIG_13
  end interface
- type, public :: SWIGTYPE_KokkosSparse__CrsMatrixT_Tpetra__CrsMatrixT_doub1E12GN
+ type, public :: SWIGTYPE_p_KokkosSparse__CrsMatrixT_Tpetra__CrsMatrixT_douC8X8I
   type(SwigClassWrapper), public :: swigdata
  end type
- type, public :: SWIGTYPE_Teuchos__ArrayRCPT_unsigned_long_t
+ type, public :: SWIGTYPE_p_Teuchos__ArrayRCPT_unsigned_long_t
   type(SwigClassWrapper), public :: swigdata
  end type
  ! class Tpetra::CrsMatrix< SC,LO,GO,NO >
@@ -4427,7 +4427,7 @@ type(TpetraMap) :: self
 integer(C_LONG), intent(in) :: numglobalelements
 class(TeuchosComm), intent(in) :: comm
 integer(TpetraLocalGlobal), intent(in) :: lg
-class(SWIGTYPE_Teuchos__RCPT_Kokkos__Compat__KokkosSerialWrapper9ZCDM), intent(in) :: node
+class(SWIGTYPE_p_Teuchos__RCPT_Kokkos__Compat__KokkosSerialWrappTF2SL), intent(in) :: node
 type(SwigClassWrapper) :: fresult 
 integer(C_LONG) :: farg1 
 type(SwigClassWrapper) :: farg3 
@@ -4484,7 +4484,7 @@ type(TpetraMap) :: self
 integer(C_LONG), intent(in) :: numglobalelements
 integer, intent(in) :: numlocalelements
 class(TeuchosComm), intent(in) :: comm
-class(SWIGTYPE_Teuchos__RCPT_Kokkos__Compat__KokkosSerialWrapper9ZCDM), intent(in) :: node
+class(SWIGTYPE_p_Teuchos__RCPT_Kokkos__Compat__KokkosSerialWrappTF2SL), intent(in) :: node
 type(SwigClassWrapper) :: fresult 
 integer(C_LONG) :: farg1 
 integer(C_INT) :: farg2 
@@ -4526,7 +4526,7 @@ integer(C_LONG), intent(in) :: numglobalelements
 integer(C_LONG_LONG), dimension(:), target :: indexlist
 integer(C_LONG_LONG), pointer :: farg2_view
 class(TeuchosComm), intent(in) :: comm
-class(SWIGTYPE_Teuchos__RCPT_Kokkos__Compat__KokkosSerialWrapper9ZCDM), intent(in) :: node
+class(SWIGTYPE_p_Teuchos__RCPT_Kokkos__Compat__KokkosSerialWrappTF2SL), intent(in) :: node
 type(SwigClassWrapper) :: fresult 
 integer(C_LONG) :: farg1 
 type(SwigArrayWrapper) :: farg2 
@@ -5289,7 +5289,7 @@ end function
 subroutine swigf_TpetraImport_print(self, os)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraImport), intent(in) :: self
-class(SWIGTYPE_std__ostream), intent(in) :: os
+class(SWIGTYPE_p_std__ostream), intent(in) :: os
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -5492,7 +5492,7 @@ end function
 subroutine swigf_TpetraExport_print(self, os)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraExport), intent(in) :: self
-class(SWIGTYPE_std__ostream), intent(in) :: os
+class(SWIGTYPE_p_std__ostream), intent(in) :: os
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -6159,7 +6159,7 @@ subroutine swigf_TpetraMultiVector_dot__SWIG_3(self, a, norms)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraMultiVector), intent(in) :: self
 class(TpetraMultiVector), intent(in) :: a
-class(SWIGTYPE_Kokkos__ViewT_double_p_Kokkos__HostSpace_t), intent(in) :: norms
+class(SWIGTYPE_p_Kokkos__ViewT_double_p_Kokkos__HostSpace_t), intent(in) :: norms
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
@@ -6286,7 +6286,7 @@ end subroutine
 subroutine swigf_TpetraMultiVector_norm1__SWIG_1(self, norms)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraMultiVector), intent(in) :: self
-class(SWIGTYPE_Kokkos__ViewT_double_p_Kokkos__HostSpace_t), intent(in) :: norms
+class(SWIGTYPE_p_Kokkos__ViewT_double_p_Kokkos__HostSpace_t), intent(in) :: norms
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -6318,7 +6318,7 @@ end subroutine
 subroutine swigf_TpetraMultiVector_norm2__SWIG_1(self, norms)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraMultiVector), intent(in) :: self
-class(SWIGTYPE_Kokkos__ViewT_double_p_Kokkos__HostSpace_t), intent(in) :: norms
+class(SWIGTYPE_p_Kokkos__ViewT_double_p_Kokkos__HostSpace_t), intent(in) :: norms
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -6350,7 +6350,7 @@ end subroutine
 subroutine swigf_TpetraMultiVector_normInf__SWIG_1(self, norms)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraMultiVector), intent(in) :: self
-class(SWIGTYPE_Kokkos__ViewT_double_p_Kokkos__HostSpace_t), intent(in) :: norms
+class(SWIGTYPE_p_Kokkos__ViewT_double_p_Kokkos__HostSpace_t), intent(in) :: norms
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
@@ -8909,7 +8909,7 @@ result(self)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraCrsMatrix) :: self
 class(TpetraCrsGraph), intent(in) :: graph
-class(SWIGTYPE_KokkosSparse__CrsMatrixT_Tpetra__CrsMatrixT_doub1E12GN), intent(in) :: values
+class(SWIGTYPE_p_KokkosSparse__CrsMatrixT_Tpetra__CrsMatrixT_douC8X8I), intent(in) :: values
 class(ParameterList), intent(in) :: params
 type(SwigClassWrapper) :: fresult 
 type(SwigClassWrapper) :: farg1 
@@ -8928,7 +8928,7 @@ result(self)
 use, intrinsic :: ISO_C_BINDING
 type(TpetraCrsMatrix) :: self
 class(TpetraCrsGraph), intent(in) :: graph
-class(SWIGTYPE_KokkosSparse__CrsMatrixT_Tpetra__CrsMatrixT_doub1E12GN), intent(in) :: values
+class(SWIGTYPE_p_KokkosSparse__CrsMatrixT_Tpetra__CrsMatrixT_douC8X8I), intent(in) :: values
 type(SwigClassWrapper) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
@@ -10055,7 +10055,7 @@ end subroutine
 subroutine swigf_TpetraCrsMatrix_getLocalDiagOffsets(self, offsets)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsMatrix), intent(in) :: self
-class(SWIGTYPE_Teuchos__ArrayRCPT_unsigned_long_t), intent(in) :: offsets
+class(SWIGTYPE_p_Teuchos__ArrayRCPT_unsigned_long_t), intent(in) :: offsets
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 
