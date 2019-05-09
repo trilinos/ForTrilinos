@@ -39,25 +39,6 @@
 // =======================================================================
 // Postpone temporarily
 // =======================================================================
-%ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap,
-               const Teuchos::RCP<const map_type>& colMap,
-               const typename local_matrix_type::row_map_type& rowPointers,
-               const typename local_graph_type::entries_type::non_const_type& columnIndices,
-               const typename local_matrix_type::values_type& values,
-               const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);         // needs Kokkos containers
-%ignore Tpetra::CrsMatrix::CrsMatrix (const Teuchos::RCP<const map_type>& rowMap,
-               const Teuchos::RCP<const map_type>& colMap,
-               const local_matrix_type& lclMatrix,
-               const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);         // needs Kokkos containers
-%ignore Tpetra::CrsMatrix::CrsMatrix (const local_matrix_type& lclMatrix,
-               const Teuchos::RCP<const map_type>& rowMap,
-               const Teuchos::RCP<const map_type>& colMap = Teuchos::null,
-               const Teuchos::RCP<const map_type>& domainMap = Teuchos::null,
-               const Teuchos::RCP<const map_type>& rangeMap = Teuchos::null,
-               const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);         // needs Kokkos containers
-%ignore Tpetra::CrsMatrix::setAllValues(const typename local_matrix_type::row_map_type& ptr,
-               const typename local_graph_type::entries_type::non_const_type& ind,
-               const typename local_matrix_type::values_type& val);                         // needs Kokkos::View
 %ignore Tpetra::CrsMatrix::insertGlobalValues (const GlobalOrdinal globalRow, const LocalOrdinal numEnt, const Scalar vals[], const GlobalOrdinal inds[]); // prefer ArrayView version
 %ignore Tpetra::CrsMatrix::insertLocalValues (const LocalOrdinal localRow, const LocalOrdinal numEnt, const Scalar vals[], const LocalOrdinal cols[]); // prefer ArrayView version
 %ignore Tpetra::CrsMatrix::replaceGlobalValues (const GlobalOrdinal globalRow, const typename UnmanagedView< GlobalIndicesViewType >::type &inputInds, const typename UnmanagedView< ImplScalarViewType >::type &inputVals) const;  // needs Kokkos::UnmanagedView
