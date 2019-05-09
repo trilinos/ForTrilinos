@@ -11,6 +11,9 @@
 
 %import <forteuchos.i>
 
+// Hide functions that use any unknown types (Kokkos, std::ostream, etc.)
+%fortranonlywrapped;
+
 // =======================================================================
 // Type definition
 // =======================================================================
