@@ -143,6 +143,11 @@ module forbelos
 
 ! WRAPPER DECLARATIONS
 interface
+ subroutine SWIG_free(cptr) &
+  bind(C, name="free")
+ use, intrinsic :: ISO_C_BINDING
+ type(C_PTR), value :: cptr
+end subroutine
 function swigc_convertReturnTypeToString(farg1) &
 bind(C, name="_wrap_convertReturnTypeToString") &
 result(fresult)
@@ -152,11 +157,6 @@ integer(C_INT), intent(in) :: farg1
 type(SwigArrayWrapper) :: fresult
 end function
 
- subroutine SWIG_free(cptr) &
-  bind(C, name="free")
- use, intrinsic :: ISO_C_BINDING
- type(C_PTR), value :: cptr
-end subroutine
 function swigc_convertStatusTypeToString(farg1) &
 bind(C, name="_wrap_convertStatusTypeToString") &
 result(fresult)

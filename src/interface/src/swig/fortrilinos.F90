@@ -112,20 +112,6 @@ module fortrilinos
 
 public :: init_ForModelEvaluator
 
-integer, parameter, public :: SWIGTYPE_NOX__StatusTest__StatusType = C_INT
- ! class ForTrilinos::NOXSolver< SC,LO,GO,NO >
- type, public :: NOXSolver
-  type(SwigClassWrapper), public :: swigdata
- contains
-  procedure :: setup => swigf_NOXSolver_setup
-  procedure :: solve => swigf_NOXSolver_solve
-  procedure :: release => swigf_release_NOXSolver
-  procedure, private :: swigf_NOXSolver_op_assign__
-  generic :: assignment(=) => swigf_NOXSolver_op_assign__
- end type NOXSolver
- interface NOXSolver
-  module procedure swigf_create_NOXSolver
- end interface
  ! enum NOX::StatusTest::StatusType
  enum, bind(c)
   enumerator :: NOXUnevaluated = -2
@@ -143,6 +129,19 @@ integer, parameter, public :: SWIGTYPE_NOX__StatusTest__StatusType = C_INT
  end enum
  integer, parameter, public :: NOXCheckType = kind(NOXComplete)
  public :: NOXComplete, NOXMinimal, NOXNone
+ ! class ForTrilinos::NOXSolver< SC,LO,GO,NO >
+ type, public :: NOXSolver
+  type(SwigClassWrapper), public :: swigdata
+ contains
+  procedure :: setup => swigf_NOXSolver_setup
+  procedure :: solve => swigf_NOXSolver_solve
+  procedure :: release => swigf_release_NOXSolver
+  procedure, private :: swigf_NOXSolver_op_assign__
+  generic :: assignment(=) => swigf_NOXSolver_op_assign__
+ end type NOXSolver
+ interface NOXSolver
+  module procedure swigf_create_NOXSolver
+ end interface
 
 ! WRAPPER DECLARATIONS
 interface
@@ -1312,7 +1311,7 @@ end subroutine
 function swigf_NOXSolver_solve(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(SWIGTYPE_NOX__StatusTest__StatusType) :: swig_result
+integer(NOXStatusType) :: swig_result
 class(NOXSolver), intent(in) :: self
 integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 

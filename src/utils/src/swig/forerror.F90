@@ -26,6 +26,11 @@ module forerror
 
 ! WRAPPER DECLARATIONS
 interface
+ subroutine SWIG_free(cptr) &
+  bind(C, name="free")
+ use, intrinsic :: ISO_C_BINDING
+ type(C_PTR), value :: cptr
+end subroutine
 function swigc_fortrilinos_get_serr() &
 bind(C, name="_wrap_fortrilinos_get_serr") &
 result(fresult)
@@ -34,11 +39,6 @@ import :: swigarraywrapper
 type(SwigArrayWrapper) :: fresult
 end function
 
- subroutine SWIG_free(cptr) &
-  bind(C, name="free")
- use, intrinsic :: ISO_C_BINDING
- type(C_PTR), value :: cptr
-end subroutine
 end interface
 
 

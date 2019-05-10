@@ -370,15 +370,6 @@ subroutine init_ForModelEvaluator(self)
 end subroutine
 %}
 
-%{
-#include "nox_solver.hpp"
-%}
-
-%include "nox_solver.hpp"
-
-%teuchos_rcp(ForTrilinos::NOXSolver<SC,LO,GO,NO>)
-%template(NOXSolver) ForTrilinos::NOXSolver<SC,LO,GO,NO>;
-
 // All enums should be prefaced with NOX
 %rename("NOX%s", %$isenumitem) "";
 %rename("NOX%s", %$isenum)     "";
@@ -392,3 +383,12 @@ end subroutine
 %ignore NOX::StatusTest::operator<<;
 
 %include "NOX_StatusTest_Generic.H"
+
+%{
+#include "nox_solver.hpp"
+%}
+
+%include "nox_solver.hpp"
+
+%teuchos_rcp(ForTrilinos::NOXSolver<SC,LO,GO,NO>)
+%template(NOXSolver) ForTrilinos::NOXSolver<SC,LO,GO,NO>;

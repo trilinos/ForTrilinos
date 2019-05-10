@@ -605,10 +605,10 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
 #define SWIG_NO_NULL_DELETER_SWIG_POINTER_OWN
 
 
-#include "nox_solver.hpp"
-
-
 #include "NOX_StatusTest_Generic.H"
+
+
+#include "nox_solver.hpp"
 
 extern "C" {
 SWIGEXPORT SwigClassWrapper _wrap_new_TrilinosSolver() {

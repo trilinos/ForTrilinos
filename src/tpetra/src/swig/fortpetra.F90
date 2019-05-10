@@ -646,6 +646,11 @@ type(SwigClassWrapper) :: farg1
 type(SwigArrayWrapper) :: farg2
 end subroutine
 
+ subroutine SWIG_free(cptr) &
+  bind(C, name="free")
+ use, intrinsic :: ISO_C_BINDING
+ type(C_PTR), value :: cptr
+end subroutine
 function swigc_combineModeToString(farg1) &
 bind(C, name="_wrap_combineModeToString") &
 result(fresult)
@@ -655,11 +660,6 @@ integer(C_INT), intent(in) :: farg1
 type(SwigArrayWrapper) :: fresult
 end function
 
- subroutine SWIG_free(cptr) &
-  bind(C, name="free")
- use, intrinsic :: ISO_C_BINDING
- type(C_PTR), value :: cptr
-end subroutine
 function swigc_new_TpetraMap__SWIG_1(farg1, farg3, farg4) &
 bind(C, name="_wrap_new_TpetraMap__SWIG_1") &
 result(fresult)
