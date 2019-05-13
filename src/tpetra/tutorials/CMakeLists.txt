@@ -8,8 +8,8 @@
 ##---------------------------------------------------------------------------##
 
 SET(TESTS
-  PowerMethod.f90
-  MapsAndVectors.f90
+  PowerMethod.F90
+  MapsAndVectors.F90
   )
 
 FOREACH(test ${TESTS})

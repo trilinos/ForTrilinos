@@ -8,25 +8,21 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 IF (ForTrilinos_ENABLE_DeveloperMode)
   IF (ForTrilinos_EXPORT_SWIG)
     # Generate wrapper and proxy files since MPI is enabled
-    SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}")
+    SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}/swig")
   ENDIF()
 
-  LIST(APPEND CMAKE_SWIG_FLAGS -I${CMAKE_CURRENT_SOURCE_DIR}/../../utils/src/)
-  MAKE_SWIG(MODULE forteuchos
+  MAKE_SWIG_FORTRAN(MODULE forteuchos
     SOURCE forteuchos.i
-    DEPLIBS ${Trilinos_LIBRARIES}
-    EXTRASRC ${EXTRA_SOURCE}
     )
-
 ELSE()
   # Use pre-generated files
   SET(GEN_SOURCE
-    forteuchos.f90
-    forteuchosFORTRAN_wrap.cxx)
+    swig/forteuchos.F90
+    swig/forteuchosFORTRAN_wrap.cxx)
 
   TRIBITS_ADD_LIBRARY(
     forteuchos
-    SOURCES ${GEN_SOURCE} ${EXTRA_SOURCE})
+    SOURCES ${GEN_SOURCE})
 ENDIF()
 
 INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/forteuchos.mod DESTINATION include)

@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
     A->fillComplete();
 
     // The eigen solution
-    std::vector<double> evalues(1);
+    std::vector<double> evalues(2);
     std::vector<int>    eindex(1);
     Teuchos::RCP<MultiVector> X = Teuchos::rcp(new MultiVector(rowMap, 1));
 
@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
     handle.setup_solver(Teuchos::rcpFromRef(paramList));
 
     // Step 4: solve the system
-    handle.solve(std::make_pair(evalues.data(), 1), X, std::make_pair(eindex.data(), 1));
+    handle.solve(Teuchos::arrayViewFromVector(evalues), X, Teuchos::arrayViewFromVector(eindex));
 
     // TODO: Check the solution
 

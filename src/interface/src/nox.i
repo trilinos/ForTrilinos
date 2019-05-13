@@ -89,18 +89,18 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
       Teuchos::RCP<ForModelEvaluator> tempthis(
              const_cast<ForModelEvaluator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
-      self.ptr = &tempthis;
-      self.mem = SWIG_CREF; // since this function is const
+      self.cptr = &tempthis;
+      self.cmemflags = SWIG_MEM_CONST; // since this function is const
 
       /* convert x -> class wrapper */
       SwigClassWrapper farg1;
-      farg1.ptr = const_cast<Teuchos::RCP<const multivector_type>*>(&x);
-      farg1.mem = SWIG_CREF; // x is const
+      farg1.cptr = const_cast<Teuchos::RCP<const multivector_type>*>(&x);
+      farg1.cmemflags = SWIG_MEM_CONST; // x is const
 
       /* convert f -> class wrapper */
       SwigClassWrapper farg2;
-      farg2.ptr = &f;
-      farg2.mem = SWIG_REF; // f is mutable
+      farg2.cptr = &f;
+      farg2.cmemflags = 0; // f is mutable
 
       swigd_ForModelEvaluator_evaluate_residual(&self, &farg1, &farg2);
     }
@@ -111,18 +111,18 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
       Teuchos::RCP<ForModelEvaluator> tempthis(
              const_cast<ForModelEvaluator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
-      self.ptr = &tempthis;
-      self.mem = SWIG_CREF; // since this function is const
+      self.cptr = &tempthis;
+      self.cmemflags = SWIG_MEM_CONST; // since this function is const
 
       /* convert x -> class wrapper */
       SwigClassWrapper farg1;
-      farg1.ptr = const_cast<Teuchos::RCP<const multivector_type>*>(&x);
-      farg1.mem = SWIG_CREF; // x is const
+      farg1.cptr = const_cast<Teuchos::RCP<const multivector_type>*>(&x);
+      farg1.cmemflags = SWIG_MEM_CONST; // x is const
 
       /* convert J -> class wrapper */
       SwigClassWrapper farg2;
-      farg2.ptr = &J;
-      farg2.mem = SWIG_REF; // f is mutable
+      farg2.cptr = &J;
+      farg2.cmemflags = 0; // f is mutable
 
       swigd_ForModelEvaluator_evaluate_jacobian(&self, &farg1, &farg2);
     }
@@ -133,18 +133,18 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
       Teuchos::RCP<ForModelEvaluator> tempthis(
              const_cast<ForModelEvaluator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
-      self.ptr = &tempthis;
-      self.mem = SWIG_CREF; // since this function is const
+      self.cptr = &tempthis;
+      self.cmemflags = SWIG_MEM_CONST; // since this function is const
 
       /* convert x -> class wrapper */
       SwigClassWrapper farg1;
-      farg1.ptr = const_cast<Teuchos::RCP<const multivector_type>*>(&x);
-      farg1.mem = SWIG_CREF; // x is const
+      farg1.cptr = const_cast<Teuchos::RCP<const multivector_type>*>(&x);
+      farg1.cmemflags = SWIG_MEM_CONST; // x is const
 
       /* convert M -> class wrapper */
       SwigClassWrapper farg2;
-      farg2.ptr = &M;
-      farg2.mem = SWIG_REF; // f is mutable
+      farg2.cptr = &M;
+      farg2.cmemflags = 0; // f is mutable
 
       swigd_ForModelEvaluator_evaluate_preconditioner(&self, &farg1, &farg2);
     }
@@ -154,12 +154,12 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
       Teuchos::RCP<ForModelEvaluator> tempthis(
              const_cast<ForModelEvaluator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
-      self.ptr = &tempthis;
-      self.mem = SWIG_CREF; // since this function is const
+      self.cptr = &tempthis;
+      self.cmemflags = SWIG_MEM_CONST; // since this function is const
 
       SwigClassWrapper fresult = swigd_ForModelEvaluator_get_x_map(&self);
 
-      Teuchos::RCP<const map_type>* smartresult = static_cast< Teuchos::RCP<const map_type>* >(fresult.ptr);
+      Teuchos::RCP<const map_type>* smartresult = static_cast< Teuchos::RCP<const map_type>* >(fresult.cptr);
       return *smartresult;
     }
 
@@ -168,12 +168,12 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
       Teuchos::RCP<ForModelEvaluator> tempthis(
              const_cast<ForModelEvaluator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
-      self.ptr = &tempthis;
-      self.mem = SWIG_CREF; // since this function is const
+      self.cptr = &tempthis;
+      self.cmemflags = SWIG_MEM_CONST; // since this function is const
 
       SwigClassWrapper fresult = swigd_ForModelEvaluator_get_f_map(&self);
 
-      Teuchos::RCP<const map_type>* smartresult = static_cast< Teuchos::RCP<const map_type>* >(fresult.ptr);
+      Teuchos::RCP<const map_type>* smartresult = static_cast< Teuchos::RCP<const map_type>* >(fresult.cptr);
       return *smartresult;
     }
 
@@ -182,29 +182,29 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
       Teuchos::RCP<ForModelEvaluator> tempthis(
              const_cast<ForModelEvaluator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
-      self.ptr = &tempthis;
-      self.mem = SWIG_CREF; // since this function is const
+      self.cptr = &tempthis;
+      self.cmemflags = SWIG_MEM_CONST; // since this function is const
 
       SwigClassWrapper fresult = swigd_ForModelEvaluator_create_operator(&self);
 
-      Teuchos::RCP<operator_type>* smartresult = static_cast< Teuchos::RCP<operator_type>* >(fresult.ptr);
+      Teuchos::RCP<operator_type>* smartresult = static_cast< Teuchos::RCP<operator_type>* >(fresult.cptr);
       return *smartresult;
     }
   };
 #undef SWIG_NO_NULL_DELETER_0
 %}
 
-%insert("ftypes") %{
+%insert("fdecl") %{
   type :: ForModelEvaluatorHandle
     class(ForModelEvaluator), pointer :: data
   end type
 %}
 
-%insert("fpublic") %{
+%insert("fdecl") %{
 public :: init_ForModelEvaluator
 %}
 
-%insert("fwrapper") %{
+%insert("fsubprograms") %{
 ! Convert a ISO-C class pointer struct into a user Fortran native pointer
 subroutine c_f_pointer_ForModelEvaluator(clswrap, fptr)
   type(SwigClassWrapper), intent(in) :: clswrap
@@ -348,7 +348,7 @@ function swigd_ForModelEvaluator_create_operator(fself) &
   type(SwigClassWrapper) :: fresult
 
   class(ForModelEvaluator), pointer :: self
-  type(ForTpetraOperator) :: result
+  type(TpetraOperator) :: result
 
   ! Get pointer to Fortran object from class Handle
   call c_f_pointer_ForModelEvaluator(fself, self)
@@ -370,15 +370,6 @@ subroutine init_ForModelEvaluator(self)
 end subroutine
 %}
 
-%{
-#include "nox_solver.hpp"
-%}
-
-%include "nox_solver.hpp"
-
-%teuchos_rcp(ForTrilinos::NOXSolver<SC,LO,GO,NO>)
-%template(NOXSolver) ForTrilinos::NOXSolver<SC,LO,GO,NO>;
-
 // All enums should be prefaced with NOX
 %rename("NOX%s", %$isenumitem) "";
 %rename("NOX%s", %$isenum)     "";
@@ -392,3 +383,12 @@ end subroutine
 %ignore NOX::StatusTest::operator<<;
 
 %include "NOX_StatusTest_Generic.H"
+
+%{
+#include "nox_solver.hpp"
+%}
+
+%include "nox_solver.hpp"
+
+%teuchos_rcp(ForTrilinos::NOXSolver<SC,LO,GO,NO>)
+%template(NOXSolver) ForTrilinos::NOXSolver<SC,LO,GO,NO>;

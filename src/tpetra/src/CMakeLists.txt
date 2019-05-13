@@ -8,11 +8,11 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 IF (ForTrilinos_ENABLE_DeveloperMode)
   IF (ForTrilinos_EXPORT_SWIG)
     # Generate wrapper and proxy files since MPI is enabled
-    SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}")
+    SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}/swig")
   ENDIF()
 
   LIST(APPEND CMAKE_SWIG_FLAGS -I${CMAKE_CURRENT_SOURCE_DIR}/../../utils/src/)
-  MAKE_SWIG(MODULE fortpetra
+  MAKE_SWIG_FORTRAN(MODULE fortpetra
     SOURCE fortpetra.i
     DEPLIBS ${Trilinos_LIBRARIES}
     EXTRASRC ${EXTRA_SOURCE}
@@ -20,8 +20,8 @@ IF (ForTrilinos_ENABLE_DeveloperMode)
 ELSE()
   # Use pre-generated files
   SET(GEN_SOURCE
-    fortpetra.f90
-    fortpetraFORTRAN_wrap.cxx)
+    swig/fortpetra.F90
+    swig/fortpetraFORTRAN_wrap.cxx)
 
   TRIBITS_ADD_LIBRARY(
     fortpetra

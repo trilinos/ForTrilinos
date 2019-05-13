@@ -1,68 +1,19 @@
-##############################################################################
-# File  : SwigModules.cmake
-# Author: Seth Johnson
-# Date  : Wednesday July 18 17:5:36 2012
-#----------------------------------------------------------------------------#
-# Copyright (C) 2012 Oak Ridge National Laboratory, UT-Battelle, LLC.
-##############################################################################
-
-IF (NOT DEFINED SWIG_DIR)
-  MESSAGE(FATAL_ERROR "SWIG not loaded.")
-ENDIF()
-
-# Load SWIG and other modules we need
-INCLUDE(UseSWIG)
-INCLUDE(CMakeParseArguments)
-INCLUDE(CheckCXXCompilerFlag)
-
-# Tell SWIG to use modern Python code
-LIST(APPEND CMAKE_SWIG_PYTHON_FLAGS "-modern" "-noproxydel")
-
-# If python version is high enough, add -py3 flag
-IF(PYTHON_VERSION_STRING VERSION_GREATER 3.0)
-  LIST(APPEND CMAKE_SWIG_PYTHON_FLAGS "-py3")
-ENDIF()
-
-# Define extra output files
-set(SWIG_FORTRAN_EXTRA_FILE_EXTENSIONS ".f90")# new CMake
-
-##---------------------------------------------------------------------------##
-# Look through a header/SWIG file and find dependencies
-
-MACRO(get_swig_dependencies _RESULT_VAR _SOURCE)
-  # Search for dependencies in the SWIG file
-  FILE(STRINGS ${_SOURCE} HEADER_FILES
-    REGEX "^[ \t]*%include *\""
-    )
-  LIST(REMOVE_DUPLICATES HEADER_FILES)
-
-  # Set up test directories
-  SET(TEST_DIRS
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    )
-
-  # Get just the file names inside each "include"
-  SET(${_RESULT_VAR})
-  FOREACH(THEFILE ${HEADER_FILES})
-    STRING(REGEX REPLACE "^.*\"([^\"]+)\".*$" "\\1" THEFILE ${THEFILE})
-    IF( THEFILE )
-      FOREACH(TESTDIR ${TEST_DIRS})
-        IF(EXISTS ${TESTDIR}/${THEFILE})
-          LIST(APPEND ${_RESULT_VAR} ${TESTDIR}/${THEFILE})
-          BREAK()
-        ENDIF()
-      ENDFOREACH()
-    ENDIF()
-  ENDFOREACH()
-ENDMACRO()
+set(UseSWIG_MODULE_VERSION 2)
+if (CMAKE_VERSION VERSION_LESS 3.20)
+  # TODO: This is until Fortran support gets added to the upstream cmake script
+  include(UseSWIGFortran)
+else()
+  cmake_policy(SET CMP0078 "NEW")
+  cmake_policy(SET CMP0086 "NEW")
+  include(UseSWIG)
+endif()
 
 ##---------------------------------------------------------------------------##
 ## ADDING SWIG MODULES
 ##---------------------------------------------------------------------------##
-# MAKE_SWIG(
+# MAKE_SWIG_FORTRAN(
 #   MODULE module
 #   [C]
-#   [LANGUAGE fortran]
 #   [SOURCE src.i]
 #   [DEPLIBS lib1 [lib2 ...]]
 #   [DEPMODULES module1 [module2 ...]]
@@ -86,29 +37,19 @@ ENDMACRO()
 # The EXTRASRC argument allows additional sources to be compiled into the SWIG
 # module target.
 
-function(MAKE_SWIG)
+function(MAKE_SWIG_FORTRAN)
   cmake_parse_arguments(PARSE "C" "MODULE;LANGUAGE;SOURCE"
       "DEPLIBS;DEPMODULES;EXTRASRC" ${ARGN})
 
-  if(NOT PARSE_MODULE)
+  if (NOT PARSE_MODULE)
     message(SEND_ERROR "Cannot call MAKE_SWIG without MODULE")
   endif()
   set(PARSE_MODULE ${PARSE_MODULE})
 
-  if(NOT PARSE_LANGUAGE)
-    SET(PARSE_LANGUAGE FORTRAN)
-  endif()
-  string(TOUPPER "${PARSE_LANGUAGE}" PARSE_LANGUAGE)
-
-  if(PARSE_SOURCE)
+  if (PARSE_SOURCE)
     set(SRC_FILE "${PARSE_SOURCE}")
   else()
     set(SRC_FILE "${PARSE_MODULE}.i")
-  endif()
-
-  if(NOT CMAKE_SWIG_OUTDIR)
-    # XXX: turn this into an option passed into the function
-    set(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_BINARY_DIR}")
   endif()
 
   # Let SWIG know that we're compiling C++ files, and what the module is
@@ -120,145 +61,69 @@ function(MAKE_SWIG)
       CPLUSPLUS TRUE)
   endif()
 
-  IF ("${CMAKE_VERSION}" VERSION_LESS "3.11.0")
-    # Get dependencies of main SWIG source file and the files it includes.
-    # A similar feature was integrated into SWIG:
-    # https://gitlab.kitware.com/cmake/cmake/merge_requests/354
-    set(SUBDEPS ${SRC_FILE})
-    set(DEPENDENCIES)
-    foreach(RECURSION 0 1 2)
-      set(OLD_SUBDEPS ${SUBDEPS})
-      set(SUBDEPS)
-      foreach(DEPENDENCY ${OLD_SUBDEPS})
-        if(DEPENDENCY MATCHES "\\.i$")
-          get_swig_dependencies(SUBSUBDEPS ${DEPENDENCY})
-          list(APPEND SUBDEPS ${SUBSUBDEPS})
-        endif()
-      endforeach()
-      list(APPEND DEPENDENCIES ${SUBDEPS})
-    endforeach()
-
-    message("Extra dependencies for ${SRC_FILE}:\n ${DEPENDENCIES}" )
-    set(SWIG_MODULE_${PARSE_MODULE}_EXTRA_DEPS ${DEPENDENCIES} )
-  ENDIF()
-
-  if (PARSE_LANGUAGE STREQUAL "FORTRAN")
-    set(SWIG_FORTRAN_GENERATED_SRC "${CMAKE_SWIG_OUTDIR}/${PARSE_MODULE}.f90")
-    # Usually SWIG wrapper libraries need to be built as shared libraries that
-    # are never linked into the CMake dependencies themselves (the "MODULE"
-    # type); not the case with fortran. This relies on the patched UseSWIG.
-    if(BUILD_SHARED_LIBS)
-      set(SWIG_LIBRARY_TYPE SHARED)
-    else()
-      set(SWIG_LIBRARY_TYPE STATIC)
-    endif()
-  else()
-    set(SWIG_LIBRARY_TYPE MODULE)
-  endif()
-
-  # Set up compiler flags
-  set(_ORIG_CMAKE_SWIG_FLAGS ${CMAKE_SWIG_FLAGS})
-  list(APPEND CMAKE_SWIG_FLAGS "${CMAKE_SWIG_${PARSE_LANGUAGE}_FLAGS}")
-
-  # Create the SWIG module
-  if (DEFINED TRIBITS_CMAKE_MINIMUM_REQUIRED AND PARSE_LANGUAGE STREQUAL "FORTRAN")
-    # Special case for Tribits build systems is needed to propagate includes,
-    # rpaths, etc.
-
-    # XXX hack to set up link/include directories BEFORE the call to
-    # TRIBITS_ADD_LIBRARY
-    TRIBITS_SORT_AND_APPEND_PACKAGE_INCLUDE_AND_LINK_DIRS_AND_LIBS(
-      ${PACKAGE_NAME}  LIB  LINK_LIBS)
-
-    TRIBITS_SORT_AND_APPEND_TPL_INCLUDE_AND_LINK_DIRS_AND_LIBS(
-      ${PACKAGE_NAME}  LIB  LINK_LIBS)
-
-    PRINT_VAR(${PACKAGE_NAME}_INCLUDE_DIRS)
-    #     # Add TriBITS include directories to the SWIG commands (because the
-    #     # add_library call comes after the SWIG creation, the "include_directories"
-    #     # command hasn't been called at this point.)
-    #     FOREACH(dir ${${PACKAGE_NAME}_INCLUDE_DIRS})
-    #       LIST(APPEND CMAKE_SWIG_FLAGS "-I${dir}")
-    #     ENDFOREACH()
-
-    # Generate the SWIG commands and targets
-    SWIG_MODULE_INITIALIZE(${PARSE_MODULE} ${PARSE_LANGUAGE})
-    SWIG_ADD_SOURCE_TO_MODULE(${PARSE_MODULE} swig_wrapper_src ${SRC_FILE})
-    get_directory_property(swig_extra_clean_files ADDITIONAL_MAKE_CLEAN_FILES)
-    list(APPEND swig_extra_clean_files "${swig_wrapper_src}"
-      "${SWIG_FORTRAN_GENERATED_SRC}")
-    set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES
-                "${swig_extra_clean_files}")
-
-    # Add as a TriBITS library
-    TRIBITS_ADD_LIBRARY(${PARSE_MODULE}
-      SOURCES ${PARSE_EXTRASRC}
-              ${SWIG_FORTRAN_GENERATED_SRC}
-              ${swig_wrapper_src})
-  else()
-    swig_add_library(${PARSE_MODULE}
-      LANGUAGE ${PARSE_LANGUAGE}
-      TYPE ${SWIG_LIBRARY_TYPE}
-      SOURCES ${SRC_FILE} ${SWIG_FORTRAN_GENERATED_SRC} ${PARSE_EXTRASRC})
-  endif()
-
-  # Restore original SWIG flags
-  SET(CMAKE_SWIG_FLAGS _ORIG_CMAKE_SWIG_FLAGS)
-
-  # Mangled name of the SWIG target (export to parent)
-  set(BUILT_LIBRARY ${SWIG_MODULE_${PARSE_MODULE}_REAL_NAME})
-  set(SWIG_MODULE_${PARSE_MODULE}_REAL_NAME ${BUILT_LIBRARY} PARENT_SCOPE)
-
-  # It's not always necessary to link against python libraries, but doing so
-  # can turn unfortunate run-time errors (dlopen) into link-time errors.
-  if(PARSE_LANGUAGE STREQUAL "PYTHON" AND ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    if(NOT ${PYTHON_LIBRARIES} MATCHES ".framework")
-      # Turn off undefined symbol errors on Mac systems where
-      # Python is not installed as a framework
-      # see http://bugs.python.org/issue1602133 about _initposix issues
-      set_target_properties(${BUILT_LIBRARY}
-        PROPERTIES LINK_FLAGS "-undefined suppress -flat_namespace")
-    else()
-      # Otherwise, link against Python libraries
-      swig_link_libraries(${PARSE_MODULE} ${PYTHON_LIBRARIES})
-    endif()
-  endif()
+  # UseSWIG with "NEW" policy creates a target with the same name as the first
+  # argument to swig_add_library.
+  set(LIBRARY_NAME ${PARSE_MODULE})
+  swig_add_library(${LIBRARY_NAME}
+    LANGUAGE Fortran
+    TYPE USE_BUILD_SHARED_LIBS
+    SOURCES ${SRC_FILE} ${PARSE_EXTRASRC})
 
   # Link against other dependent libraries
-  IF (PARSE_DEPLIBS)
-    target_link_libraries(${BUILT_LIBRARY} ${PARSE_DEPLIBS})
-  ENDIF()
-
-  # Add intra-module dependencies
-  foreach(DEPMODULE ${PARSE_DEPMODULES})
-    add_dependencies(${BUILT_LIBRARY} _${DEPMODULE})
-  endforeach()
-
-  # Include the Python directory and current source directory for the SWIG
-  # targets (SWIG processor and compilation of the resulting CXX file.) We don't
-  # use the INCLUDE_DIRECTORIES command because because TriBITS will
-  # propagate the path if we use INCLUDE_DIRECTORIES.
-  # Apply SWIG_CXX_FLAGS to hide warnings and such.
-  get_target_property(INCL_DIR ${BUILT_LIBRARY} INCLUDE_DIRECTORIES)
-  IF(NOT INCL_DIR)
-    SET(INCL_DIR "")
-  ENDIF()
-  list(APPEND INCL_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-  if (PARSE_LANGUAGE STREQUAL "PYTHON")
-    list(APPEND INCL_DIR ${PYTHON_INCLUDE_DIRS})
+  if (PARSE_DEPLIBS)
+    target_link_libraries(${LIBRARY_NAME} ${PARSE_DEPLIBS})
   endif()
+  foreach(DEPMODULE ${PARSE_DEPMODULES})
+    add_dependencies(${LIBRARY_NAME} ${DEPMODULE})
+  endforeach()
+  set(LINK_LIBS)
+# XXX From TribitsLibraryMacros
+  TRIBITS_SORT_AND_APPEND_PACKAGE_INCLUDE_AND_LINK_DIRS_AND_LIBS(
+    ${PACKAGE_NAME}  LIB  LINK_LIBS)
+
+  TRIBITS_SORT_AND_APPEND_TPL_INCLUDE_AND_LINK_DIRS_AND_LIBS(
+    ${PACKAGE_NAME}  LIB  LINK_LIBS)
+# XXX END
+
+  # Set properties on the target.
+  get_target_property(INCL_DIR ${LIBRARY_NAME} INCLUDE_DIRECTORIES)
+  if (NOT INCL_DIR)
+    set(INCL_DIR)
+  endif()
+  list(APPEND INCL_DIR ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
   list(REMOVE_DUPLICATES INCL_DIR)
-  set_target_properties(${BUILT_LIBRARY} PROPERTIES
-    INCLUDE_DIRECTORIES "${INCL_DIR}"
+  set_target_properties(${LIBRARY_NAME} PROPERTIES
+    SWIG_INCLUDE_DIRECTORIES "${INCL_DIR}"
     COMPILE_FLAGS "${SWIG_CXX_FLAGS}")
+  target_link_libraries(${LIBRARY_NAME} ${LINK_LIBS})
 
-  # message(STATUS "Include directories on target ${PARSE_MODULE}: ${INCL_DIR}")
+# XXX From TribitsLibraryMacros
+  # Add to tribits library list
+  SET_PROPERTY(
+    TARGET ${LIBRARY_NAME}
+    APPEND PROPERTY
+    LABELS ${PACKAGE_NAME}Libs ${PARENT_PACKAGE_NAME}Libs
+    )
+  PREPEND_GLOBAL_SET(${PARENT_PACKAGE_NAME}_LIB_TARGETS ${LIBRARY_NAME})
+  PREPEND_GLOBAL_SET(${PARENT_PACKAGE_NAME}_ALL_TARGETS ${LIBRARY_NAME})
+  INSTALL(
+    TARGETS ${LIBRARY_NAME}
+    EXPORT ${PACKAGE_NAME}
+    RUNTIME DESTINATION "${${PROJECT_NAME}_INSTALL_RUNTIME_DIR}"
+    LIBRARY DESTINATION "${${PROJECT_NAME}_INSTALL_LIB_DIR}"
+    ARCHIVE DESTINATION "${${PROJECT_NAME}_INSTALL_LIB_DIR}"
+    COMPONENT ${PACKAGE_NAME}
+    )
+  PREPEND_GLOBAL_SET(${PACKAGE_NAME}_INCLUDE_DIRS  ${INCL_DIR})
+  PREPEND_GLOBAL_SET(${PACKAGE_NAME}_LIBRARY_DIRS  ${INCL_DIR})
+  PREPEND_GLOBAL_SET(${PACKAGE_NAME}_LIBRARIES  ${LIBRARY_NAME})
 
-  # define the install targets
-  if (PARSE_LANGUAGE STREQUAL "PYTHON")
-    install(TARGETS ${BUILT_LIBRARY}
-      DESTINATION python)
-    install(FILES ${CMAKE_SWIG_OUTDIR}/${PARSE_MODULE}.py
-      DESTINATION python)
-  endif ()
+  GLOBAL_SET(${PACKAGE_NAME}_HAS_NATIVE_LIBRARIES TRUE)
+# XXX END TriBits
+
+  # Install the built target module
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PARSE_MODULE}.mod
+    DESTINATION include)
 endfunction()
+
+
