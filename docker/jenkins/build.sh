@@ -32,23 +32,12 @@ mkdir build && cd build
 # move the build directory afterwards...
 # configure trilinos with fortrilinos
 
-# Load module environment
-for file in \
-    "/usr/share/modules/init/bash" \
-    "/usr/share/Modules/init/bash" \
-    ; do
-    [[ -s $file ]] && source $file
-done
-
-source "${SPACK_ROOT}/share/spack/setup-env.sh"
-spack load cmake
-
 if [ "${BUILD_TYPE}" == "gcc54-mpi" ]; then
   ../scripts/docker_cmake -D Trilinos_ENABLE_COVERAGE_TESTING=ON
 elif [ "${BUILD_TYPE}" == "gcc54-serial" ]; then
   ../scripts/docker_cmake_serial
-elif [ "${BUILD_TYPE}" == "flang50-mpi" ]; then
-  source ../scripts/docker_flang50_env.sh "${SPACK_ROOT}"
+elif [ "${BUILD_TYPE}" == "flang70-mpi" ]; then
+  source ../scripts/docker_flang70_env.sh
   # For now, we don't have openmpi installation using flang. The system
   # installation of openmpi produces incompatible .mod files.
   ../scripts/docker_cmake_serial
