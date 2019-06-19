@@ -207,7 +207,7 @@ contains
 
     ! Create the shell for the graph
     num_ent_per_row = 5
-    graph = TpetraCrsGraph(owned_map, ghosted_map, num_ent_per_row, TpetraDynamicProfile)
+    graph = TpetraCrsGraph(owned_map, ghosted_map, num_ent_per_row, TpetraStaticProfile)
 
     ! Declare required variables
     num_my_overlap_nodes = ghosted_map%getNodeNumElements()

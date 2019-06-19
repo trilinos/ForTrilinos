@@ -464,6 +464,20 @@ SWIGEXPORT int _wrap_convertStringToStatusType(SwigArrayWrapper *farg1) {
 }
 
 
+SWIGEXPORT int _wrap_convertStringToNormType(SwigArrayWrapper *farg1) {
+  int fresult ;
+  std::string *arg1 = 0 ;
+  std::string tempstr1 ;
+  Belos::NormType result;
+  
+  tempstr1 = std::string(static_cast<const char *>(farg1->data), farg1->size);
+  arg1 = &tempstr1;
+  result = (Belos::NormType)Belos::convertStringToNormType((std::string const &)*arg1);
+  fresult = static_cast< int >(result);
+  return fresult;
+}
+
+
 SWIGEXPORT int _wrap_convertStringToScaleType(SwigArrayWrapper *farg1) {
   int fresult ;
   std::string *arg1 = 0 ;
@@ -530,15 +544,55 @@ SWIGEXPORT SwigArrayWrapper _wrap_convertMsgTypeToString(int const *farg1) {
 }
 
 
-SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_convTol = static_cast< double >(Belos::DefaultSolverParameters::convTol);
+SWIGEXPORT double _wrap_DefaultSolverParameters_convTol_get() {
+  double fresult ;
+  double result;
+  
+  result = (double)(double)Belos::DefaultSolverParameters::convTol;
+  fresult = static_cast< double >(result);
+  return fresult;
+}
 
-SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_polyTol = static_cast< double >(Belos::DefaultSolverParameters::polyTol);
 
-SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_orthoKappa = static_cast< double >(Belos::DefaultSolverParameters::orthoKappa);
+SWIGEXPORT double _wrap_DefaultSolverParameters_polyTol_get() {
+  double fresult ;
+  double result;
+  
+  result = (double)(double)Belos::DefaultSolverParameters::polyTol;
+  fresult = static_cast< double >(result);
+  return fresult;
+}
 
-SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_resScaleFactor = static_cast< double >(Belos::DefaultSolverParameters::resScaleFactor);
 
-SWIGEXPORT SWIGEXTERN double const _wrap_DefaultSolverParameters_impTolScale = static_cast< double >(Belos::DefaultSolverParameters::impTolScale);
+SWIGEXPORT double _wrap_DefaultSolverParameters_orthoKappa_get() {
+  double fresult ;
+  double result;
+  
+  result = (double)(double)Belos::DefaultSolverParameters::orthoKappa;
+  fresult = static_cast< double >(result);
+  return fresult;
+}
+
+
+SWIGEXPORT double _wrap_DefaultSolverParameters_resScaleFactor_get() {
+  double fresult ;
+  double result;
+  
+  result = (double)(double)Belos::DefaultSolverParameters::resScaleFactor;
+  fresult = static_cast< double >(result);
+  return fresult;
+}
+
+
+SWIGEXPORT double _wrap_DefaultSolverParameters_impTolScale_get() {
+  double fresult ;
+  double result;
+  
+  result = (double)(double)Belos::DefaultSolverParameters::impTolScale;
+  fresult = static_cast< double >(result);
+  return fresult;
+}
+
 
 SWIGEXPORT SwigClassWrapper _wrap_new_DefaultSolverParameters() {
   SwigClassWrapper fresult ;

@@ -84,7 +84,7 @@ if (my_rank == 0) &
 ! numerical algorithms that use Tpetra objects to be templated on the type of
 ! the TpetraOperator specialization.
 max_entries_per_row = 3
-A = TpetraCrsMatrix(map, max_entries_per_row, TpetraDynamicProfile)
+A = TpetraCrsMatrix(map, max_entries_per_row, TpetraStaticProfile)
 
 ! Fill the sparse matrix, one row at a time.
 allocate(vals(3))

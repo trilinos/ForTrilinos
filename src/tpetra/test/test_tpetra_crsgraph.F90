@@ -70,7 +70,7 @@ contains
     Map = TpetraMap(TPETRA_GLOBAL_INVALID, 1, comm); TEST_IERR()
 
     params = ParameterList("ANONYMOUS")
-    Graph = TpetraCrsGraph(Map, Map, 0_size_type, TpetraDynamicProfile)
+    Graph = TpetraCrsGraph(Map, Map, 1_size_type, TpetraStaticProfile)
     TEST_ASSERT(Graph%isFillActive())
     TEST_ASSERT((.not. Graph%isFillComplete()))
 
@@ -88,26 +88,10 @@ contains
     TEST_THROW(call Graph%globalAssemble())
     TEST_THROW(call Graph%fillComplete())
 
-    call Graph%release()
-    call params%release()
-
-    params = ParameterList("ANONYMOUS")
-    Graph = TpetraCrsGraph(Map, Map, 0_size_type, TpetraDynamicProfile)
-
-    TEST_ASSERT(Graph%isFillActive())
-    TEST_ASSERT((.not. Graph%isFillComplete()))
-    row = 1
-    indices(1) = 1
-    call Graph%insertLocalIndices(row, indices)
-    call params%set("Optimize Storage", .false.)
-    call Graph%fillComplete(params);
-    TEST_ASSERT((.not. graph%isFillActive()))
-    TEST_ASSERT(graph%isFillComplete())
-
     call Graph%resumeFill()
     TEST_ASSERT(graph%isFillActive())
     TEST_ASSERT((.not. graph%isFillComplete()))
-    TEST_ASSERT(graph%getProfileType() == TpetraDynamicProfile)
+    TEST_ASSERT(graph%getProfileType() == TpetraStaticProfile)
     TEST_NOTHROW(call graph%insertLocalIndices(row, indices))
 
     TEST_NOTHROW(call graph%fillComplete())
@@ -135,7 +119,7 @@ contains
     Map = TpetraMap(TPETRA_GLOBAL_INVALID, 1, comm); TEST_IERR()
 
     params = ParameterList("ANONYMOUS")
-    Graph = TpetraCrsGraph(Map, Map, 0_size_type, TpetraDynamicProfile)
+    Graph = TpetraCrsGraph(Map, Map, 1_size_type, TpetraStaticProfile)
     params = Graph%getValidParameters()
     call Graph%setParameterList(params)
 
@@ -319,7 +303,7 @@ contains
     map = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm)
 
     nument = 4
-    Graph = TpetraCrsGraph(map, map, nument); TEST_IERR()
+    Graph = TpetraCrsGraph(map, map, nument*num_local); TEST_IERR()
     TEST_ASSERT(graph%isSorted())
 
     ! insert entries; shouldn't be sorted anymore
@@ -438,12 +422,6 @@ contains
     ! create static-profile graph, fill-complete without inserting
     ! (and therefore, without allocating)
     Graph = TpetraCrsGraph(map, 1_size_type, TpetraStaticProfile)
-    call Graph%fillComplete()
-    call Graph%release()
-
-    ! create TpetraDynamic-profile graph, fill-complete without inserting
-    ! (and therefore, without allocating)
-    Graph = TpetraCrsGraph(map, 1_size_type, TpetraDynamicProfile)
     call Graph%fillComplete()
     call Graph%release()
 

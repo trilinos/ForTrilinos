@@ -24,6 +24,8 @@
 %ignore Tpetra::Map::Map(const global_size_t numGlobalElements, const GlobalOrdinal indexList[],
          const LocalOrdinal indexListSize, const GlobalOrdinal indexBase,
          const Teuchos::RCP< const Teuchos::Comm< int > > &comm);       // superseded by Teuchos::ArrayView version
+%ignore Tpetra::Map::Map(Map<local_ordinal_type, global_ordinal_type, node_type>&&);        // move constructor
+%ignore Tpetra::Map::operator=(Map<local_ordinal_type, global_ordinal_type, node_type>&&);  // move assignment
 
 // =======================================================================
 // Postpone temporarily
