@@ -15,7 +15,7 @@ automated build on Jenkins, run:
     [host]$ docker-compose up -d # start the container
 
 This will mount the local ForTrilinos source directory into the container at
-``$TRILINOS_DIR/packages/ForTrilinos``. The environment variable ``TRILINOS_DIR``
+``$TRILINOS_DIR/ForTrilinos``. The environment variable ``TRILINOS_DIR``
 is already defined and contains the path to a version of Trilinos that
 has been downloaded into the ForTrilinos base image. The exact version of the
 Trilinos version is given by a hash in ``docker/trilinos_version``. We recommend
@@ -35,8 +35,7 @@ Patch, configure, build, and test as you would usually do:
 
 .. code:: bash
 
-    [container]$ cd $TRILINOS_DIR
-    [container]$ cd $TRILINOS_DIR/packages/ForTrilinos
+    [container]$ cd $TRILINOS_DIR/ForTrilinos
     [container]$ mkdir build && cd build
     [container]$ ../scripts/docker_cmake
     [container]$ make -j<N>
