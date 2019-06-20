@@ -294,10 +294,10 @@ program main
 
   ! Check the solution
   call X%update(-1.d0, Xtrue, 1.d0); FORTRILINOS_CHECK_IERR()
-  call X%norm2(norms); FORTRILINOS_CHECK_IERR()
+  call X%normInf(norms); FORTRILINOS_CHECK_IERR()
 
   ! TODO: Get the tolerance out of the parameter list
-  if (norms(1) > 1e-6) then
+  if (norms(1) > 1e-2) then
     write(error_unit, '(A)') 'The solver did not converge to the specified residual!'
     stop 1
   end if

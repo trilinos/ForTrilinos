@@ -10,7 +10,5 @@
   <Parameter name="Preconditioner Type" type="string" value="MueLu"/>
   <ParameterList name="MueLu">
     <Parameter name="verbosity" type="string" value="none"/>
-    <Parameter name="smoother: type" type="string" value="RILUK"/>
-    <Parameter name="coarse: type" type="string" value="RILUK"/>
   </ParameterList>
 </ParameterList>
