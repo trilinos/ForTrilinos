@@ -40,7 +40,7 @@ elif [ "${BUILD_TYPE}" == "flang70-mpi" ]; then
   source ../scripts/docker_flang70_env.sh
   # For now, we don't have openmpi installation using flang. The system
   # installation of openmpi produces incompatible .mod files.
-  ../scripts/docker_cmake_serial
+  ../scripts/docker_cmake_serial -DCMAKE_BUILD_TYPE="RelWithDebInfo"
 else
     echo "Unknown BUILD_TYPE"
     exit 1
