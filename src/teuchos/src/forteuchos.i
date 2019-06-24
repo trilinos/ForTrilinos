@@ -8,7 +8,7 @@
 
 %include <copyright.i>
 %include <extern_forerror.i>
-%include "Teuchos_dox.i"
+%include "teuchos_dox.i"
 
 // Convert all std::string references/values to and from Fortran strings
 %include <std_string.i>

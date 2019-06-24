@@ -20,7 +20,7 @@ CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/makedeps.py.in
 SET(ForTrilinos_DOCSTRINGS ON)
 
 SET(ForTrilinos_PACKAGES "")
-APPEND_SET(ForTrilinos_PACKAGES Teuchos)
+APPEND_SET(ForTrilinos_PACKAGES teuchos tpetra)
 
 FOREACH(Package ${ForTrilinos_PACKAGES})
 
@@ -35,7 +35,7 @@ FOREACH(Package ${ForTrilinos_PACKAGES})
           @ONLY
           )
         EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/docstrings.py
-          --doxygen=${DOXYGEN_EXECUTABLE} ${Package}
+          --doxygen=${DOXYGEN_EXECUTABLE} --outputdir=${PROJECT_SOURCE_DIR}/ForTrilinos/src/${Package}/src ${Package}
           WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
           ERROR_VARIABLE Doxy_CONVERT_ERROR)
         IF(Doxy_CONVERT_ERROR)

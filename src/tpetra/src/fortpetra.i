@@ -8,6 +8,7 @@
 
 %include <copyright.i>
 %include <extern_forerror.i>
+%include "tpetra_dox.i"
 
 %import <forteuchos.i>
 
