@@ -48,6 +48,11 @@ int main(int argc, char *argv[]) {
     ParameterList paramList;
     Teuchos::updateParametersFromXmlFileAndBroadcast("stratimikos.xml", Teuchos::Ptr<ParameterList>(&paramList), *comm);
 
+    // Get tolerance from the parameter list
+    const auto& solverList = paramList.sublist("Linear Solver Types").sublist(paramList.get<std::string>("Linear Solver Type"));
+    const auto& belosList = solverList.sublist("Solver Types").sublist(solverList.get<std::string>("Solver Type"));
+    auto tol = belosList.get<double>("Convergence Tolerance");
+
     // Set parameters
     const int numMyElements = 50;
     int numGlobalElements = numMyElements*comm->getSize();
@@ -86,12 +91,17 @@ int main(int argc, char *argv[]) {
     if (myRank == numProcs-1)
       data[numMyElements-1] = numGlobalElements;
 
-    RCP<MultiVector> lhs       = Teuchos::rcp(new MultiVector(rowMap, 1));
-    RCP<MultiVector> lhs_exact = Teuchos::rcp(new MultiVector(rowMap, 1));
+    RCP<MultiVector> lhs = Teuchos::rcp(new MultiVector(rowMap, 1));
     lhs->randomize();
-    data = lhs_exact->getDataNonConst(0);
-    for (int i = 0; i < numMyElements; i++)
-      data[i] = myRank*numMyElements + i;
+
+    // Calculate initial residual
+    Teuchos::Array<typename STS::magnitudeType> norms(1);
+    RCP<MultiVector> residual = Teuchos::rcp(new MultiVector(rowMap, 1, false));
+    A->apply(*lhs, *residual, Teuchos::NO_TRANS, 1., 0.);
+    residual->update(1., *rhs, -1.);
+    residual->norm2(norms);
+
+    auto r0 = norms[0];
 
     // Step 1: initialize a handle
     ForTrilinos::TrilinosSolver handle;
@@ -107,12 +117,11 @@ int main(int argc, char *argv[]) {
     handle.solve(rhs, lhs);
 
     // Check the solution
-    Teuchos::Array<typename STS::magnitudeType> norms(1);
-    lhs->update(-1.0, *lhs_exact, 1.0);
-    lhs->normInf(norms);
+    A->apply(*lhs, *residual, Teuchos::NO_TRANS, 1., 0.);
+    residual->update(1., *rhs, -1.);
+    residual->norm2(norms);
 
-    // TODO: This is not the best way to check, but enough for now
-    TEUCHOS_ASSERT(norms[0] < 1e-2);
+    TEUCHOS_ASSERT(norms[0]/r0 < tol);
 
     // Step 5: clean up
     handle.finalize();
