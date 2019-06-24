@@ -29,9 +29,10 @@ module forbelos
   enumerator :: BelosOneNorm
   enumerator :: BelosTwoNorm
   enumerator :: BelosInfNorm
+  enumerator :: BelosPreconditionerNorm
  end enum
  integer, parameter, public :: BelosNormType = kind(BelosOneNorm)
- public :: BelosOneNorm, BelosTwoNorm, BelosInfNorm
+ public :: BelosOneNorm, BelosTwoNorm, BelosInfNorm, BelosPreconditionerNorm
  ! enum Belos::ScaleType
  enum, bind(c)
   enumerator :: BelosNormOfRHS
@@ -83,6 +84,7 @@ module forbelos
  integer, parameter, public :: BelosResetType = C_INT
  public :: convertStatusTypeToString
  public :: convertStringToStatusType
+ public :: convertStringToNormType
  public :: convertStringToScaleType
  public :: convertScaleTypeToString
  ! enum Belos::ConjType
@@ -119,20 +121,15 @@ module forbelos
   type(C_PTR), public :: cptr = C_NULL_PTR
   integer(C_INT), public :: cmemflags = 0
  end type
- real(C_DOUBLE), protected, public, &
-   bind(C, name="_wrap_DefaultSolverParameters_convTol") :: DefaultSolverParameters_convTol
- real(C_DOUBLE), protected, public, &
-   bind(C, name="_wrap_DefaultSolverParameters_polyTol") :: DefaultSolverParameters_polyTol
- real(C_DOUBLE), protected, public, &
-   bind(C, name="_wrap_DefaultSolverParameters_orthoKappa") :: DefaultSolverParameters_orthoKappa
- real(C_DOUBLE), protected, public, &
-   bind(C, name="_wrap_DefaultSolverParameters_resScaleFactor") :: DefaultSolverParameters_resScaleFactor
- real(C_DOUBLE), protected, public, &
-   bind(C, name="_wrap_DefaultSolverParameters_impTolScale") :: DefaultSolverParameters_impTolScale
  ! struct Belos::DefaultSolverParameters
  type, public :: DefaultSolverParameters
   type(SwigClassWrapper), public :: swigdata
  contains
+  procedure, nopass :: get_convTol => swigf_DefaultSolverParameters_convTol_get
+  procedure, nopass :: get_polyTol => swigf_DefaultSolverParameters_polyTol_get
+  procedure, nopass :: get_orthoKappa => swigf_DefaultSolverParameters_orthoKappa_get
+  procedure, nopass :: get_resScaleFactor => swigf_DefaultSolverParameters_resScaleFactor_get
+  procedure, nopass :: get_impTolScale => swigf_DefaultSolverParameters_impTolScale_get
   procedure :: release => swigf_release_DefaultSolverParameters
   procedure, private :: swigf_DefaultSolverParameters_op_assign__
   generic :: assignment(=) => swigf_DefaultSolverParameters_op_assign__
@@ -175,6 +172,15 @@ type(SwigArrayWrapper) :: farg1
 integer(C_INT) :: fresult
 end function
 
+function swigc_convertStringToNormType(farg1) &
+bind(C, name="_wrap_convertStringToNormType") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigarraywrapper
+type(SwigArrayWrapper) :: farg1
+integer(C_INT) :: fresult
+end function
+
 function swigc_convertStringToScaleType(farg1) &
 bind(C, name="_wrap_convertStringToScaleType") &
 result(fresult)
@@ -200,6 +206,41 @@ use, intrinsic :: ISO_C_BINDING
 import :: swigarraywrapper
 integer(C_INT), intent(in) :: farg1
 type(SwigArrayWrapper) :: fresult
+end function
+
+function swigc_DefaultSolverParameters_convTol_get() &
+bind(C, name="_wrap_DefaultSolverParameters_convTol_get") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: fresult
+end function
+
+function swigc_DefaultSolverParameters_polyTol_get() &
+bind(C, name="_wrap_DefaultSolverParameters_polyTol_get") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: fresult
+end function
+
+function swigc_DefaultSolverParameters_orthoKappa_get() &
+bind(C, name="_wrap_DefaultSolverParameters_orthoKappa_get") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: fresult
+end function
+
+function swigc_DefaultSolverParameters_resScaleFactor_get() &
+bind(C, name="_wrap_DefaultSolverParameters_resScaleFactor_get") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: fresult
+end function
+
+function swigc_DefaultSolverParameters_impTolScale_get() &
+bind(C, name="_wrap_DefaultSolverParameters_impTolScale_get") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: fresult
 end function
 
 function swigc_new_DefaultSolverParameters() &
@@ -304,6 +345,20 @@ fresult = swigc_convertStringToStatusType(farg1)
 swig_result = fresult
 end function
 
+function convertStringToNormType(normtype) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(BelosNormType) :: swig_result
+character(kind=C_CHAR, len=*), target :: normtype
+character(kind=C_CHAR), dimension(:), allocatable, target :: farg1_chars
+integer(C_INT) :: fresult 
+type(SwigArrayWrapper) :: farg1 
+
+call SWIG_string_to_chararray(normtype, farg1_chars, farg1)
+fresult = swigc_convertStringToNormType(farg1)
+swig_result = fresult
+end function
+
 function convertStringToScaleType(scaletype) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
@@ -344,6 +399,56 @@ farg1 = msgtype
 fresult = swigc_convertMsgTypeToString(farg1)
 call SWIG_chararray_to_string(fresult, swig_result)
 call SWIG_free(fresult%data)
+end function
+
+function swigf_DefaultSolverParameters_convTol_get() &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: swig_result
+real(C_DOUBLE) :: fresult 
+
+fresult = swigc_DefaultSolverParameters_convTol_get()
+swig_result = fresult
+end function
+
+function swigf_DefaultSolverParameters_polyTol_get() &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: swig_result
+real(C_DOUBLE) :: fresult 
+
+fresult = swigc_DefaultSolverParameters_polyTol_get()
+swig_result = fresult
+end function
+
+function swigf_DefaultSolverParameters_orthoKappa_get() &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: swig_result
+real(C_DOUBLE) :: fresult 
+
+fresult = swigc_DefaultSolverParameters_orthoKappa_get()
+swig_result = fresult
+end function
+
+function swigf_DefaultSolverParameters_resScaleFactor_get() &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: swig_result
+real(C_DOUBLE) :: fresult 
+
+fresult = swigc_DefaultSolverParameters_resScaleFactor_get()
+swig_result = fresult
+end function
+
+function swigf_DefaultSolverParameters_impTolScale_get() &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: swig_result
+real(C_DOUBLE) :: fresult 
+
+fresult = swigc_DefaultSolverParameters_impTolScale_get()
+swig_result = fresult
 end function
 
 function swigf_create_DefaultSolverParameters() &

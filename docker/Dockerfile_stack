@@ -7,8 +7,10 @@ ARG NPROC=14
 # 1. Need gcc-7 to install pgmath using Spack (required by Flang)
 # 2. Do not install cmake as we'll need cmake 3.10+ for Trilinos
 # 3. Need gawk for pgmath as default mawk segfaults
+# 4. Need bc for kokkos build system (and other misc trilinos build)
 RUN apt-get update && apt-get install -y \
         autoconf \
+        bc \
         build-essential \
         curl \
         environment-modules \
@@ -56,37 +58,34 @@ RUN echo '#!/usr/bin/env bash' > /usr/local/bin/mpiexec && \
 
 ENV HOME=/root
 
-ENV SPACK_ROOT=${PREFIX}/spack
+# Install CMake
+ENV CMAKE_DIR=/opt/cmake
+RUN CMAKE_VERSION=3.13.4 && \
+    CMAKE_VERSION_SHORT=3.13 && \
+    CMAKE_URL=https://cmake.org/files/v${CMAKE_VERSION_SHORT}/cmake-${CMAKE_VERSION}-Linux-x86_64.sh && \
+    CMAKE_SCRIPT=cmake-${CMAKE_VERSION}-Linux-x86_64.sh && \
+    wget --quiet ${CMAKE_URL} --output-document=${CMAKE_SCRIPT} && \
+    mkdir -p ${CMAKE_DIR} && \
+    sh ${CMAKE_SCRIPT} --skip-license --prefix=${CMAKE_DIR} && \
+    rm ${CMAKE_SCRIPT}
+ENV PATH=${CMAKE_DIR}/bin:$PATH
 
-# Install Spack (v0.12.0 specific hash)
-RUN export SPACK_HASH=42962f2409fe7b46543dc5974c45bb6392fcea99 && \
-    export SPACK_URL="https://github.com/spack/spack/archive/${SPACK_HASH}.tar.gz" && \
-    export SPACK_INSTALL_DIR="${SPACK_ROOT}" && \
-    export SPACK_ARCHIVE="${PREFIX}/archive/spack-${SPACK_HASH}.tar.gz" && \
-    wget --quiet ${SPACK_URL} --output-document=${SPACK_ARCHIVE} && \
-    mkdir -p ${SPACK_INSTALL_DIR} && \
-    tar -xf ${SPACK_ARCHIVE} -C ${SPACK_INSTALL_DIR} --strip-components=1 && \
-    rm -rf ${SPACK_ARCHIVE} && \
-    mkdir -p ${HOME}/.spack
-
-# Load Spack
-ENV PATH="${SPACK_ROOT}/bin:${PATH}"
-RUN echo "source $SPACK_ROOT/share/spack/setup-env.sh" >> ${HOME}/.bashrc
-RUN echo "source /usr/share/modules/init/bash"         >> ${HOME}/.bashrc
-
-# Copy Spack package configuration
-COPY packages.yaml ${HOME}/.spack/
-
-# Install flang
-RUN spack spec -Il cmake@3.10.3%gcc@7.4.0   && \
-    spack install  cmake@3.10.3%gcc@7.4.0   && \
-    spack spec -Il flang@20180612%gcc@7.4.0 ^cmake@3.10.3 && \
-    spack install  flang@20180612%gcc@7.4.0 ^cmake@3.10.3 && \
-    spack clean -a
+# Install Flang
+ENV FLANG_DIR=/opt/flang
+RUN FLANG_VERSION=20190329 && \
+    FLANG_ARCHIVE=flang-${FLANG_VERSION}-x86-70.tgz && \
+    FLANG_URL=https://github.com/flang-compiler/flang/releases/download/flang_${FLANG_VERSION}/${FLANG_ARCHIVE} && \
+    wget --quiet ${FLANG_URL} --output-document=${FLANG_ARCHIVE} && \
+    mkdir -p ${FLANG_DIR} && \
+    tar -xvf ${FLANG_ARCHIVE} -C ${FLANG_DIR} && \
+    rm ${FLANG_ARCHIVE}
+ENV PATH=${FLANG_DIR}/bin:$PATH
+ENV LD_LIBRARY_PATH=${FLANG_DIR}/lib:$LD_LIBRARY_PATH
 
 # Download Trilinos (version specified in TrilinosVersion.cmake)
 COPY "trilinos_version" "${PREFIX}/"
 RUN export TRILINOS_HASH="$(cat ${PREFIX}/trilinos_version)" && \
+    export TRILINOS_VERSION="${TRILINOS_HASH}" && \
     export TRILINOS_URL="https://github.com/trilinos/Trilinos/archive/${TRILINOS_HASH}.tar.gz" && \
     export TRILINOS_ARCHIVE="${PREFIX}/archive/trilinos-${TRILINOS_HASH}.tar.gz" && \
     export TRILINOS_SOURCE_DIR="${PREFIX}/source/trilinos/${TRILINOS_HASH}" && \

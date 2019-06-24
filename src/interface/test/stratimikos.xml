@@ -7,7 +7,7 @@
         <ParameterList name="Block GMRES">
           <Parameter name="Block Size" type="int" value="1"/>
           <Parameter name="Convergence Tolerance" type="double" value="1e-4"/>
-          <Parameter name="Maximum Iterations" type="int" value="20"/>
+          <Parameter name="Maximum Iterations" type="int" value="1000"/>
           <Parameter name="Output Frequency" type="int" value="1"/>
           <Parameter name="Show Maximum Residual Norm Only" type="bool" value="1"/>
         </ParameterList>
@@ -16,4 +16,12 @@
   </ParameterList>
 
   <Parameter name="Preconditioner Type" type="string" value="Ifpack2"/>
+    <ParameterList name="Preconditioner Types">
+      <ParameterList name="Ifpack2">
+        <Parameter name="Prec Type" type="string" value="RELAXATION"/>
+        <ParameterList name="Ifpack2 Settings">
+          <Parameter name="relaxation: type" type="string" value="Symmetric Gauss-Seidel"/>
+        </ParameterList>
+      </ParameterList>
+    </ParameterList>
 </ParameterList>

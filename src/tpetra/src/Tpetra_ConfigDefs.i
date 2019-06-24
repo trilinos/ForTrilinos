@@ -26,6 +26,9 @@ namespace Kokkos {
     };
 
   }
+
+  // KokkosKernels also promotes it to non-Details namespace
+  using Details::ArithTraits;
 }
 %template() Kokkos::Details::ArithTraits<SC>;
 %template() Kokkos::Details::InnerProductSpaceTraits<SC>;

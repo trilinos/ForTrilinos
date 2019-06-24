@@ -4,7 +4,10 @@
     <Parameter name="Preconditioner Type" value="Ifpack2" type="string"/>
     <ParameterList name="Preconditioner Types">
       <ParameterList name="Ifpack2">
-        <Parameter name="Prec Type" value="ILUT" type="string"/>
+        <Parameter name="Prec Type" type="string" value="RELAXATION"/>
+        <ParameterList name="Ifpack2 Settings">
+          <Parameter name="relaxation: type" type="string" value="Symmetric Gauss-Seidel"/>
+        </ParameterList>
       </ParameterList>
     </ParameterList>
 

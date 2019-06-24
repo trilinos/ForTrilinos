@@ -70,6 +70,33 @@
 %ignore Tpetra::Import::findUnionTargetGIDs;    // ±1 issue
 %ignore Tpetra::Import::getDistributor;         // needs Tpetra::Distributor
 
+// Few functions from the base class of Import and Export (Tpetra::Details::Transfer)
+%define %tpetra_extend_with_transfer(CLS...)
+%extend CLS {
+  size_t getNumSameIDs() const {
+    return $self->getNumSameIDs();
+  }
+  size_t getNumPermuteIDs () const {
+    return $self->getNumPermuteIDs();
+  }
+  size_t getNumRemoteIDs () const {
+    return $self->getNumRemoteIDs();
+  }
+  size_t getNumExportIDs () const {
+    return $self->getNumExportIDs();
+  }
+  Teuchos::RCP<const map_type> getSourceMap () const {
+    return $self->getSourceMap();
+  }
+  Teuchos::RCP<const map_type> getTargetMap () const {
+    return $self->getTargetMap();
+  }
+}
+%enddef
+
+%tpetra_extend_with_transfer(Tpetra::Import<LO,GO,NO>)
+%tpetra_extend_with_transfer(Tpetra::Export<LO,GO,NO>)
+
 // =======================================================================
 // Instantiate
 // =======================================================================

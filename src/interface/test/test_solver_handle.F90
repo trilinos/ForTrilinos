@@ -182,13 +182,14 @@ program main
   type(TrilinosSolver) :: solver_handle
   type(TpetraMap) :: map
   type(TpetraCrsMatrix) :: A
-  type(TpetraMultiVector) :: B, X, Xtrue
+  type(TpetraMultiVector) :: B, X, residual
   class(ForTpetraOperator), allocatable :: op
 
   real(scalar_type), dimension(:), allocatable :: lhs, rhs
   real(norm_type), dimension(:), allocatable :: norms
   integer(global_ordinal_type), dimension(:), allocatable :: cols
   real(scalar_type), dimension(:), allocatable :: vals
+  real(scalar_type) :: r0, sone = 1., szero = 0., tol
 
   n = 10
 
@@ -212,13 +213,21 @@ program main
   plist = ParameterList("Stratimikos"); FORTRILINOS_CHECK_IERR()
   call load_from_xml(plist, "stratimikos.xml"); FORTRILINOS_CHECK_IERR()
 
+  ! Get tolerance from the parameter list
+  linear_solver_list = plist%sublist('Linear Solver Types')
+  belos_list = linear_solver_list%sublist(plist%get_string('Linear Solver Type'))
+  solver_list = belos_list%sublist('Solver Types')
+  krylov_list = solver_list%sublist(belos_list%get_string('Solver Type'))
+
+  tol = krylov_list%get_real("Convergence Tolerance")
+
   ! ------------------------------------------------------------------
   ! Step 0: Construct tri-diagonal matrix
   n_global = -1
   map = TpetraMap(n_global, n, comm); FORTRILINOS_CHECK_IERR()
 
   max_entries_per_row = 3
-  A = TpetraCrsMatrix(map, max_entries_per_row, TpetraDynamicProfile)
+  A = TpetraCrsMatrix(map, max_entries_per_row, TpetraStaticProfile)
 
   allocate(cols(max_entries_per_row))
   allocate(vals(max_entries_per_row))
@@ -243,9 +252,6 @@ program main
   end do
   call A%fillComplete(); FORTRILINOS_CHECK_IERR()
 
-  ! This automatically zeroes out X
-  X = TpetraMultiVector(map, num_vecs); FORTRILINOS_CHECK_IERR()
-
   ! The solution X(i) = i-1
   allocate(lhs(n))
   allocate(rhs(n))
@@ -262,13 +268,11 @@ program main
   do i = 2, n-1
     rhs(i) = 0.0
   end do
-  do i = 1, n
-    lhs(i) = offset + i-1
-  end do
   lda = n
 
-  Xtrue = TpetraMultiVector(map, lhs, lda, num_vecs); FORTRILINOS_CHECK_IERR()
-  B     = TpetraMultiVector(map, rhs, lda, num_vecs); FORTRILINOS_CHECK_IERR()
+  B = TpetraMultiVector(map, rhs, lda, num_vecs); FORTRILINOS_CHECK_IERR()
+  X = TpetraMultiVector(map, num_vecs); FORTRILINOS_CHECK_IERR()
+  residual = TpetraMultiVector(map, num_vecs, .false.); FORTRILINOS_CHECK_IERR()
 
   allocate(norms(1))
 
@@ -290,14 +294,19 @@ program main
 
   ! Step 4: solve the system
   call X%randomize()
+  ! Calculate initial residual
+  call A%apply(X, residual, TeuchosNO_TRANS, sone, szero); FORTRILINOS_CHECK_IERR()
+  call residual%update(sone, B, -sone); FORTRILINOS_CHECK_IERR()
+  call residual%norm2(norms); FORTRILINOS_CHECK_IERR()
+  r0 = norms(1)
   call solver_handle%solve(B, X); FORTRILINOS_CHECK_IERR()
 
   ! Check the solution
-  call X%update(-1.d0, Xtrue, 1.d0); FORTRILINOS_CHECK_IERR()
-  call X%norm2(norms); FORTRILINOS_CHECK_IERR()
+  call A%apply(X, residual, TeuchosNO_TRANS, sone, szero); FORTRILINOS_CHECK_IERR()
+  call residual%update(sone, B, -sone); FORTRILINOS_CHECK_IERR()
+  call residual%norm2(norms); FORTRILINOS_CHECK_IERR()
 
-  ! TODO: Get the tolerance out of the parameter list
-  if (norms(1) > 1e-6) then
+  if (norms(1)/r0 > tol) then
     write(error_unit, '(A)') 'The solver did not converge to the specified residual!'
     stop 1
   end if
@@ -312,10 +321,6 @@ program main
   ! the parameter list. We also adjust the number of iterations so that it is
   ! sufficient for convergence
   call plist%set('Preconditioner Type', 'None')
-  linear_solver_list = plist%sublist('Linear Solver Types')
-  belos_list = linear_solver_list%sublist(plist%get_string('Linear Solver Type'))
-  solver_list = belos_list%sublist('Solver Types')
-  krylov_list = solver_list%sublist(belos_list%get_string('Solver Type'))
   call krylov_list%set('Maximum Iterations', 333)
 
   allocate(op, source=TriDiagOperator(map, A%getColMap()))
@@ -336,13 +341,19 @@ program main
 
   ! Step 4: solve the system
   call X%randomize()
+  ! Calculate initial residual
+  call A%apply(X, residual, TeuchosNO_TRANS, sone, szero); FORTRILINOS_CHECK_IERR()
+  call residual%update(sone, B, -sone); FORTRILINOS_CHECK_IERR()
+  call residual%norm2(norms); FORTRILINOS_CHECK_IERR()
+  r0 = norms(1)
   call solver_handle%solve(B, X); FORTRILINOS_CHECK_IERR()
 
-  call X%update(-1.d0, Xtrue, 1.d0); FORTRILINOS_CHECK_IERR()
-  call X%norm2(norms); FORTRILINOS_CHECK_IERR()
-  if (norms(1) > 1e-10) then
-    write(error_unit, '(A)') 'The implicit result differs from explicit!'
-    write(error_unit, '(A, ES14.7)') '   diff_norm =', norms(1)
+  ! Check the solution
+  call A%apply(X, residual, TeuchosNO_TRANS, sone, szero); FORTRILINOS_CHECK_IERR()
+  call residual%update(sone, B, -sone); FORTRILINOS_CHECK_IERR()
+  call residual%norm2(norms); FORTRILINOS_CHECK_IERR()
+  if (norms(1)/r0 > tol) then
+    write(error_unit, '(A)') 'The solver did not converge to the specified residual!'
     stop 666
   end if
 
@@ -360,7 +371,6 @@ program main
   call solver_handle%release(); FORTRILINOS_CHECK_IERR()
   call plist%release(); FORTRILINOS_CHECK_IERR()
   call X%release(); FORTRILINOS_CHECK_IERR()
-  call Xtrue%release(); FORTRILINOS_CHECK_IERR()
   call B%release(); FORTRILINOS_CHECK_IERR()
   call A%release(); FORTRILINOS_CHECK_IERR()
   call map%release(); FORTRILINOS_CHECK_IERR()

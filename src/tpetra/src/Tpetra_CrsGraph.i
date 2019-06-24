@@ -39,12 +39,12 @@
 // =======================================================================
 %ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP< const map_type > &rowMap,
         const Kokkos::DualView< const size_t *, execution_space > &numEntPerRow,
-        const ProfileType pftype=DynamicProfile,
+        const ProfileType pftype = TPETRA_DEFAULT_PROFILE_TYPE,
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);    // needs Kokkos::DualView
 %ignore Tpetra::CrsGraph::CrsGraph (const Teuchos::RCP<const map_type>& rowMap,
         const Teuchos::RCP<const map_type>& colMap,
         const Kokkos::DualView<const size_t*, execution_space>& numEntPerRow,
-        const ProfileType pftype = DynamicProfile,
+        const ProfileType pftype = TPETRA_DEFAULT_PROFILE_TYPE,
         const Teuchos::RCP<Teuchos::ParameterList>& params = Teuchos::null);    // needs Kokkos::DualView
 %ignore Tpetra::CrsGraph::CrsGraph(const Teuchos::RCP< const map_type > &rowMap,
         const Teuchos::RCP< const map_type > &colMap,
@@ -61,7 +61,9 @@
         const Teuchos::RCP< const map_type > &domainMap=Teuchos::null,
         const Teuchos::RCP< const map_type > &rangeMap=Teuchos::null,
         const Teuchos::RCP< Teuchos::ParameterList > &params=Teuchos::null);    // needs Kokkos::StaticCrsGraph
-%ignore Tpetra::CrsGraph::insertLocalIndices(const LocalOrdinal localRow, const LocalOrdinal numEnt, const LocalOrdinal inds[]);    // prefer ArrayView variant
+%ignore Tpetra::CrsGraph::CrsGraph (CrsGraph<local_ordinal_type, global_ordinal_type, node_type>&&);    // move constructor
+%ignore Tpetra::CrsGraph::operator= (CrsGraph<local_ordinal_type, global_ordinal_type, node_type>&&);   // move assignment
+%ignore Tpetra::CrsGraph::insertLocalIndices(const local_ordinal_type localRow, const local_ordinal_type numEnt, const local_ordinal_type inds[]);    // prefer ArrayView variant
 %ignore Tpetra::CrsGraph::getLocalDiagOffsets (const Kokkos::View< size_t *, device_type, Kokkos::MemoryUnmanaged > &offsets) const;    // needs Kokkos::View
 %ignore Tpetra::CrsGraph::getNumEntriesPerLocalRowUpperBound; // needs Teuchos::ArrayRCP
 %ignore Tpetra::CrsGraph::getLocalGraph;                      // needs Kokkos::StaticCrsGraph
