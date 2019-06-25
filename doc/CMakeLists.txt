@@ -9,6 +9,6 @@
 # ***********************************************************************
 # @HEADER
 
-# Add the Doxygen directory, which builds the python documentation
+# Add the Doxygen directory, which builds the fortran documentation
 # strings from the source code Doxygen comments
 ADD_SUBDIRECTORY(Doxygen)
