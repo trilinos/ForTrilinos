@@ -32,31 +32,62 @@ mkdir build && cd build
 # move the build directory afterwards...
 # configure trilinos with fortrilinos
 
-if [ "${BUILD_TYPE}" == "gcc54-mpi" ]; then
+if [ "${BUILD_TYPE}" == "gcc74-mpi" ]; then
+  # Build 1: Serial
   ../scripts/docker_cmake -D Trilinos_ENABLE_COVERAGE_TESTING=ON
-elif [ "${BUILD_TYPE}" == "gcc54-serial" ]; then
-  ../scripts/docker_cmake_serial
-elif [ "${BUILD_TYPE}" == "flang70-mpi" ]; then
-  source ../scripts/docker_flang70_env.sh
-  # For now, we don't have openmpi installation using flang. The system
-  # installation of openmpi produces incompatible .mod files.
-  ../scripts/docker_cmake_serial -DCMAKE_BUILD_TYPE="RelWithDebInfo"
-else
-    echo "Unknown BUILD_TYPE"
-    exit 1
-fi
-
-# build
-make -j"${NPROC}" -i
-# run the unit tests
-ctest -j"${NPROC}" --no-compress-output --output-on-failure -T Test
-# upload code coverage only once
-if [ "${BUILD_TYPE}" == "gcc54-mpi"  ]
-then
+  # build
+  make -j"${NPROC}" -i
+  # run the unit tests
+  ctest -j"${NPROC}" --no-compress-output --output-on-failure -T Test
   # collect coverage data
   lcov --capture --directory ForTrilinos --output-file lcov.info
   # upload it to codecov
   curl -s https://codecov.io/bash -o codecov_bash_uploader
   chmod +x codecov_bash_uploader
   ./codecov_bash_uploader -Z -X gcov -f lcov.info
+
+  # Build 2: OpenMP
+  rm -rf *  # clean workspace
+  ../scripts/docker_cmake \
+    -D Trilinos_ENABLE_OpenMP=ON \
+    -D Kokkos_ENABLE_OpenMP=ON \
+    -D Tpetra_INST_OPENMP=ON
+  # build
+  make -j"${NPROC}" -i
+  # run the unit tests
+  ctest -j"${NPROC}" --no-compress-output --output-on-failure -T Test
+
+  # Build 3: Cuda
+  rm -rf *  # clean workspace
+  export OMPI_CXX="${TRILINOS_DIR}/packages/kokkos/bin/nvcc_wrapper"
+  ../scripts/docker_cmake \
+    -D TPL_ENABLE_CUDA=ON \
+    -D Trilinos_CXX11_FLAGS="-std=c++11 -expt-extended-lambda" \
+    -D KOKKOS_ARCH="Kepler35" \
+    -D Kokkos_ENABLE_Cuda=ON \
+    -D Kokkos_ENABLE_Cuda_UVM=ON \
+    -D Kokkos_ENABLE_Cuda_Lambda=ON \
+    -D Tpetra_INST_CUDA=ON
+  # build
+  make -j"${NPROC}" -i
+  # run the unit tests
+  ctest -j"${NPROC}" --no-compress-output --output-on-failure -T Test
+
+elif [ "${BUILD_TYPE}" == "flang70-serial" ]; then
+  source ../scripts/docker_flang70_env.sh
+  # - No MPI with Flang
+  #   The system installation of openmpi produces incompatible .mod files.
+  # - Use "RelWithDebInfo" build type
+  #   Flang does not compile in Debug mode. It produces spurious undefined
+  #   symbols ending at _tbp_, resulting in undefined references during
+  #   linking stage. This does not happen in RelWithDebInfo mode.
+  ../scripts/docker_cmake_serial -DCMAKE_BUILD_TYPE="RelWithDebInfo"
+  # build
+  make -j"${NPROC}" -i
+  # run the unit tests
+  ctest -j"${NPROC}" --no-compress-output --output-on-failure -T Test
+
+else
+  echo "Unknown BUILD_TYPE"
+  exit 1
 fi
