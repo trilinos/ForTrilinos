@@ -209,7 +209,7 @@ contains
        stop 1
     endif
     ! Check to make sure the second eigenvalue is 0
-    if (abs(real(0.,mag_type)- evalues(0)) >  epsilon(3.)) then
+    if (abs(real(0.,mag_type)- evalues(2)) >  epsilon(3.)) then
        write(*,*) "Eigenvalue solver failed"
        stop 1
     endif
