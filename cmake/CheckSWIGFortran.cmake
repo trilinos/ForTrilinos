@@ -13,8 +13,6 @@ if (NOT SWIG_CHECKED_FORTRAN)
     OUTPUT_VARIABLE SWIG_help_output
     ERROR_VARIABLE SWIG_help_output
     RESULT_VARIABLE SWIG_help_result)
-  MESSAGE(STATUS "SWIG_help_result: ${SWIG_help_result}")
-  MESSAGE(STATUS "SWIG_help_output: ${SWIG_help_output}")
   if (NOT SWIG_help_output MATCHES "Fortran")
     message(FATAL_ERROR "This version of SWIG does not support Fortran "
       "wrapping. Please install the version from "
