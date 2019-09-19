@@ -8,7 +8,6 @@
 ##---------------------------------------------------------------------------##
 
 TRIBITS_PACKAGE_DECL(ForTrilinos)
-set(ForTrilinos_PROJECT_SRCDIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 ##---------------------------------------------------------------------------##
 ## Set up package-specific options
