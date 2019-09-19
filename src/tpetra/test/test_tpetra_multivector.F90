@@ -660,7 +660,7 @@ contains
     integer, parameter :: num_local = 4
     integer(size_type), parameter :: num_vecs = 2
     integer(size_type) :: cols(1)
-    real(dp) :: resNorm(1), vecNorm(1), expect
+    real(dp) :: resNorm(1), vecNorm(num_vecs), expect
 
     OUT0("Starting TpetraMultiVector_subView!")
 
@@ -681,7 +681,8 @@ contains
 
     call res%putScalar(0.0_dp)
     call vec%norm1(vecNorm)
-    TEST_FLOATING_ARRAY_EQUALITY(vecNorm, 0.0_dp, epsilon(0.0_dp))
+    TEST_FLOATING_EQUALITY(vecNorm(1), 0.0_dp, epsilon(0.0_dp))
+    TEST_FLOATING_EQUALITY(vecNorm(2), expect, epsilon(0.0_dp))
 
     call vec%release(); TEST_IERR()
     call res%release(); TEST_IERR()
@@ -696,7 +697,7 @@ contains
     integer, parameter :: num_local = 4
     integer(size_type), parameter :: num_vecs = 2
     integer(size_type) :: cols(1)
-    real(dp) :: resNorm(1), vecNorm(1), expect
+    real(dp) :: resNorm(1), vecNorm(num_vecs), expect
 
     OUT0("Starting TpetraMultiVector_subViewNonConst!")
 
@@ -718,7 +719,8 @@ contains
 
     call res%putScalar(0.0_dp)
     call vec%norm1(vecNorm)
-    TEST_FLOATING_ARRAY_EQUALITY(vecNorm, 0.0_dp, epsilon(0.0_dp))
+    TEST_FLOATING_EQUALITY(vecNorm(1), 0.0_dp, epsilon(0.0_dp))
+    TEST_FLOATING_EQUALITY(vecNorm(2), expect, epsilon(0.0_dp))
 
     call vec%release(); TEST_IERR()
     call res%release(); TEST_IERR()

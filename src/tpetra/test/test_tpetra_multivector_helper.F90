@@ -27,6 +27,7 @@ contains
     end if
 
     call src%release()
+    write(*,*) vec%swigdata%cmemflags
   end subroutine Tpetra_MV_Create
 
 end module test_Tpetra_multivector_helper
