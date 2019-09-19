@@ -215,10 +215,10 @@ def main():
         if proc in ('create', 'release'):
             continue
 
-        if proc.startswith(('set_', 'get_')):
-            # Not sure about RowInfo right now
-            assert 'RowInfo' in proc2
-            continue
+        #if proc.startswith(('set_', 'get_')):
+        #    # Not sure about RowInfo right now
+        #    assert 'RowInfo' in proc2
+        #    continue
 
         namespace, proc2 = proc2.split('_', 1)
 

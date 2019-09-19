@@ -44,12 +44,13 @@ program test_TpetraMap
   ADD_SUBTEST_AND_RUN(TpetraMap_locallySameAs)
   ADD_SUBTEST_AND_RUN(TpetraMap_getComm)
   ADD_SUBTEST_AND_RUN(TpetraMap_description)
+  ADD_SUBTEST_AND_RUN(TpetraMap_isLocallyFitted)
 
   ! Methods listed below are marked as "may go away or change at any time"
-  ADD_SUBTEST_AND_RUN(TpetraMap_removeEmptyProcesses)
-  ADD_SUBTEST_AND_RUN(TpetraMap_replaceCommWithSubset)
+  !ADD_SUBTEST_AND_RUN(TpetraMap_removeEmptyProcesses)
+  !ADD_SUBTEST_AND_RUN(TpetraMap_replaceCommWithSubset)
 
-  call comm%release()
+  call comm%release();  TEST_IERR()
 
   TEARDOWN_TEST()
 
@@ -418,18 +419,16 @@ contains
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_description)
 
-! ----------------------------removeEmptyProcesses---------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraMap_removeEmptyProcesses)
-    ! TODO: Implement this test?
-    if (comm%getRank()==0) &
-      write(*,*) 'removeEmptyProcesses: Test is not yet Implemented'
-  END_FORTRILINOS_UNIT_TEST(TpetraMap_removeEmptyProcesses)
-
-! ---------------------------replaceCommWithSubset---------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraMap_replaceCommWithSubset)
-    ! TODO: Implement this test?
-    if (comm%getRank()==0) &
-      write(*,*) 'replaceCommWithSubset: Test is not yet implemented'
-  END_FORTRILINOS_UNIT_TEST(TpetraMap_replaceCommWithSubset)
+! ------------------------------isLocallyFitted------------------------------- !
+  FORTRILINOS_UNIT_TEST(TpetraMap_isLocallyFitted)
+    type(TpetraMap) :: map1, map2
+    integer(global_ordinal_type) :: num_global
+    num_global = 4*comm%getSize()
+    map1 = TpetraMap(num_global, comm); TEST_IERR()
+    map2 = TpetraMap(num_global, comm); TEST_IERR()
+    TEST_ASSERT(map1%isLocallyFitted(map2))
+    call map1%release(); TEST_IERR()
+    call map2%release(); TEST_IERR()
+  END_FORTRILINOS_UNIT_TEST(TpetraMap_isLocallyFitted)
 
 end program test_TpetraMap

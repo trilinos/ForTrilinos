@@ -23,7 +23,6 @@ program main
   implicit none
 
   integer :: my_rank, num_procs
-
   integer(global_size_type) :: n_global
   integer:: i, n
   integer(size_type) :: max_entries_per_row

@@ -8582,6 +8582,8 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_getLocalRowCopy(SwigClassWrapper const *far
       SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::getLocalRowCopy(Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::local_ordinal_type,Teuchos::ArrayView< Tpetra::CrsGraph< int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::local_ordinal_type > const &,size_t &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
+  for (int i = 0; i < tmpview3.size(); i++)
+  tmpview3[i] += 1;
 }
 
 

@@ -6,6 +6,8 @@ TRIBITS_COPY_FILES_TO_BINARY_DIR(Interface_cp
   SOURCE_FILES stratimikos.xml davidson.xml LHS_matrix.mat RHS_matrix.mat nox_params.xml
  )
 
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+
 IF (${PACKAGE_NAME}_ENABLE_Belos AND ${PACKAGE_NAME}_ENABLE_Ifpack2)
 
   TRIBITS_ADD_EXECUTABLE_AND_TEST(
@@ -20,6 +22,14 @@ IF (${PACKAGE_NAME}_ENABLE_Belos AND ${PACKAGE_NAME}_ENABLE_Ifpack2)
     LINKER_LANGUAGE Fortran
     COMM serial mpi
   )
+
+  TRIBITS_ADD_EXECUTABLE_AND_TEST(
+    test_solver_unit
+    SOURCES test_solver_unit.F90
+    LINKER_LANGUAGE Fortran
+    COMM serial mpi
+    NUM_MPI_PROCS 4
+    )
 
 ENDIF()
 
@@ -45,6 +55,14 @@ IF (${PACKAGE_NAME}_ENABLE_Anasazi)
     LINKER_LANGUAGE Fortran
     COMM serial mpi
     NUM_MPI_PROCS 1
+    )
+
+  TRIBITS_ADD_EXECUTABLE_AND_TEST(
+    test_eigen_unit
+    SOURCES test_eigen_unit.F90
+    LINKER_LANGUAGE Fortran
+    COMM serial mpi
+    NUM_MPI_PROCS 4
     )
 
   TRIBITS_ADD_EXECUTABLE_AND_TEST(

@@ -31,12 +31,15 @@ Then to launch an interactive Bash session inside that container, do:
 
     [host]$ docker-compose exec fortrilinos_dev bash
 
-Patch, configure, build, and test as you would usually do:
+The docker container supports building and testing with both gfortran and flang.
+Patch, configure, build, and test as you would usually do (ignore the flang step
+if using gfortran):
 
 .. code:: bash
 
     [container]$ cd $TRILINOS_DIR/ForTrilinos
     [container]$ mkdir build && cd build
+    [container]$ source ../scripts/docker_flang70_env.sh /scratch/spack # if flang
     [container]$ ../scripts/docker_cmake
     [container]$ make -j<N>
     [container]$ ctest -j<N>
@@ -78,5 +81,5 @@ This can be done by adding the following configuration options to the script (as
 
 
 .. .. warning::
-.. 
+..
     .. When using the developer mode, all of the patches ``scripts/patches`` directory of the ForTrilinos source tree must be applied.  If you previously used the ``scripts/patches/apply-patches`` script, this was done for you. Otherwise, be sure that all of the patches are applied.

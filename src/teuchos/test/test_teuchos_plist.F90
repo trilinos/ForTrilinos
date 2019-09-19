@@ -12,11 +12,24 @@ program test_TeuchosPList
 
   implicit none
   character(len=26), parameter :: FILENAME='test_teuchos_plist.F90'
-
+  integer, parameter :: dp = kind(0.d0)
 
   SETUP_TEST()
 
   ADD_SUBTEST_AND_RUN(TeuchosPList_Basic)
+
+  ADD_SUBTEST_AND_RUN(ParameterList_print)
+  ADD_SUBTEST_AND_RUN(ParameterList_remove)
+  ADD_SUBTEST_AND_RUN(ParameterList_is_parameter)
+  ADD_SUBTEST_AND_RUN(ParameterList_sublist)
+  ADD_SUBTEST_AND_RUN(ParameterList_get_real)
+  ADD_SUBTEST_AND_RUN(ParameterList_get_integer)
+  ADD_SUBTEST_AND_RUN(ParameterList_get_longlong)
+  ADD_SUBTEST_AND_RUN(ParameterList_get_logical)
+  ADD_SUBTEST_AND_RUN(ParameterList_get_string)
+  ADD_SUBTEST_AND_RUN(ParameterList_get_arr_real)
+  ADD_SUBTEST_AND_RUN(ParameterList_get_arr_integer)
+  ADD_SUBTEST_AND_RUN(ParameterList_get_arr_longlong)
 
   TEARDOWN_TEST()
 contains
@@ -43,7 +56,7 @@ contains
     TEST_THROW(call load_from_xml(plist, 'nonexistent_path.xml'))
     TEST_ASSERT(c_associated(plist%swigdata%cptr))
 
-    ! Get and set a vlaue
+    ! Get and set a value
     call plist%set('myint', 4)
     ival = plist%get_integer('myint')
     TEST_EQUALITY(ival, 4)
@@ -111,5 +124,216 @@ contains
     OUT0('Finished TeuchosPList_Basic!')
 
   END_FORTRILINOS_UNIT_TEST(TeuchosPList_Basic)
+
+  ! ----------------------------------print----------------------------------- !
+  FORTRILINOS_UNIT_TEST(ParameterList_print)
+    type(ParameterList) :: list
+    OUT0("Starting ParameterList_print!")
+
+    list = ParameterList('mylist'); TEST_IERR()
+    call list%set('someint', 1)
+    call list%set('somedouble', 2.5_dp)
+    call list%set('somestring', 'Hello World')
+    call list%print(); TEST_IERR()
+
+    call list%release(); TEST_IERR()
+
+    OUT0("Finished ParameterList_print!")
+
+  END_FORTRILINOS_UNIT_TEST(ParameterList_print)
+
+  ! ----------------------------------remove---------------------------------- !
+  FORTRILINOS_UNIT_TEST(ParameterList_remove)
+    type(ParameterList) :: list
+    OUT0("Starting ParameterList_remove!")
+
+    list = ParameterList('mylist'); TEST_IERR()
+    call list%set('test', 0)
+    TEST_ASSERT(list%is_parameter('test'))
+
+    call list%remove('test')
+    TEST_ASSERT(.not. list%is_parameter('test'))
+
+    call list%release(); TEST_IERR()
+
+    OUT0("Finished ParameterList_remove!")
+
+  END_FORTRILINOS_UNIT_TEST(ParameterList_remove)
+
+  ! -------------------------------is_parameter------------------------------- !
+  FORTRILINOS_UNIT_TEST(ParameterList_is_parameter)
+    type(ParameterList) :: list
+    OUT0("Starting ParameterList_is_parameter!")
+
+    list = ParameterList('mylist'); TEST_IERR()
+    call list%set('p1', 1)
+    call list%set('p2', 2)
+    TEST_ASSERT(list%is_parameter('p1') .and. list%is_parameter('p2'))
+    TEST_ASSERT(.not. list%is_parameter('p3'))
+
+    call list%release(); TEST_IERR()
+
+    OUT0("Finished ParameterList_is_parameter!")
+
+  END_FORTRILINOS_UNIT_TEST(ParameterList_is_parameter)
+
+  ! ---------------------------------sublist---------------------------------- !
+  FORTRILINOS_UNIT_TEST(ParameterList_sublist)
+    type(ParameterList) :: list, sub
+    OUT0("Starting ParameterList_sublist!")
+
+    list = ParameterList('mylist'); TEST_IERR()
+    sub = list%sublist('mysub'); TEST_IERR()
+    call sub%set('myint', 0)
+    TEST_ASSERT(sub%is_parameter('myint'))
+
+    call sub%release(); TEST_IERR()
+    call list%release(); TEST_IERR()
+
+    OUT0("Finished ParameterList_sublist!")
+
+  END_FORTRILINOS_UNIT_TEST(ParameterList_sublist)
+
+  ! ---------------------------------get_real--------------------------------- !
+  FORTRILINOS_UNIT_TEST(ParameterList_get_real)
+    type(ParameterList) :: list
+    real(dp) :: var
+    OUT0("Starting ParameterList_get_real!")
+
+    list = ParameterList('mylist'); TEST_IERR()
+    call list%set('myvar', 1.0_dp); TEST_IERR()
+    var = list%get_real('myvar')
+    TEST_FLOATING_EQUALITY(1.0_dp, var, epsilon(1.0_dp))
+
+    call list%release(); TEST_IERR()
+
+    OUT0("Finished ParameterList_get_real!")
+
+  END_FORTRILINOS_UNIT_TEST(ParameterList_get_real)
+
+  ! -------------------------------get_integer-------------------------------- !
+  FORTRILINOS_UNIT_TEST(ParameterList_get_integer)
+    type(ParameterList) :: list
+    integer :: var
+    OUT0("Starting ParameterList_get_integer!")
+
+    list = ParameterList('mylist'); TEST_IERR()
+    call list%set('myvar', 1); TEST_IERR()
+    var = list%get_integer('myvar')
+    TEST_EQUALITY(1, var)
+
+    call list%release(); TEST_IERR()
+
+    OUT0("Finished ParameterList_get_integer!")
+
+  END_FORTRILINOS_UNIT_TEST(ParameterList_get_integer)
+
+  ! -------------------------------get_longlong------------------------------- !
+  FORTRILINOS_UNIT_TEST(ParameterList_get_longlong)
+    type(ParameterList) :: list
+    integer, parameter :: intk = selected_int_kind(18)
+    integer(intk) :: var
+    OUT0("Starting ParameterList_get_longlong!")
+
+    list = ParameterList('mylist'); TEST_IERR()
+    call list%set('myvar', 1_intk); TEST_IERR()
+    var = list%get_longlong('myvar')
+    TEST_EQUALITY(1_intk, var)
+
+    call list%release(); TEST_IERR()
+
+    OUT0("Finished ParameterList_get_longlong!")
+
+  END_FORTRILINOS_UNIT_TEST(ParameterList_get_longlong)
+
+  ! -------------------------------get_logical-------------------------------- !
+  FORTRILINOS_UNIT_TEST(ParameterList_get_logical)
+    type(ParameterList) :: list
+    logical :: var
+    OUT0("Starting ParameterList_get_logical!")
+
+    list = ParameterList('mylist'); TEST_IERR()
+    call list%set('myvar', .true.); TEST_IERR()
+    var = list%get_logical('myvar')
+    TEST_ASSERT(var)
+
+    call list%release(); TEST_IERR()
+
+    OUT0("Finished ParameterList_get_logical!")
+
+  END_FORTRILINOS_UNIT_TEST(ParameterList_get_logical)
+
+  ! --------------------------------get_string-------------------------------- !
+  FORTRILINOS_UNIT_TEST(ParameterList_get_string)
+    type(ParameterList) :: list
+    character(kind=C_CHAR, len=:), allocatable :: var
+    OUT0("Starting ParameterList_get_string!")
+
+    list = ParameterList('mylist'); TEST_IERR()
+    call list%set('myvar', 'Test'); TEST_IERR()
+    var = list%get_string('myvar')
+    TEST_EQUALITY(var, 'Test')
+
+    deallocate(var)
+    call list%release(); TEST_IERR()
+
+    OUT0("Finished ParameterList_get_string!")
+
+  END_FORTRILINOS_UNIT_TEST(ParameterList_get_string)
+
+  ! -------------------------------get_arr_real------------------------------- !
+  FORTRILINOS_UNIT_TEST(ParameterList_get_arr_real)
+    type(ParameterList) :: list
+    real(dp), pointer :: var(:) => NULL()
+    real(dp), dimension(3) :: myvec = (/ -3.2_dp, 0.2_dp, 5.8_dp /)
+    OUT0("Starting ParameterList_get_arr_real!")
+
+    list = ParameterList('mylist'); TEST_IERR()
+    call list%set('rarr', myvec); TEST_IERR()
+    var => list%get_arr_real('rarr')
+    TEST_FLOATING_ARRAY_EQUALITY(var, myvec, epsilon(var(1)))
+
+    call list%release(); TEST_IERR()
+
+    OUT0("Finished ParameterList_get_arr_real!")
+
+  END_FORTRILINOS_UNIT_TEST(ParameterList_get_arr_real)
+
+  ! -----------------------------get_arr_integer------------------------------ !
+  FORTRILINOS_UNIT_TEST(ParameterList_get_arr_integer)
+    type(ParameterList) :: list
+    integer, pointer :: var(:) => NULL()
+    integer, dimension(3) :: myvec = (/ -3, 0, 6 /)
+    OUT0("Starting ParameterList_get_arr_integer!")
+
+    list = ParameterList('mylist'); TEST_IERR()
+    call list%set('iarr', myvec); TEST_IERR()
+    var => list%get_arr_integer('iarr')
+    TEST_ARRAY_EQUALITY(var, myvec)
+
+    call list%release(); TEST_IERR()
+
+    OUT0("Finished ParameterList_get_arr_integer!")
+
+  END_FORTRILINOS_UNIT_TEST(ParameterList_get_arr_integer)
+
+  ! -----------------------------get_arr_longlong----------------------------- !
+  FORTRILINOS_UNIT_TEST(ParameterList_get_arr_longlong)
+    type(ParameterList) :: list
+    integer, parameter :: intk = selected_int_kind(18)
+    integer(intk), pointer :: var(:) => NULL()
+    integer(intk), dimension(3) :: myvec = (/ -3, 0, 6 /)
+    OUT0("Starting ParameterList_get_arr_longlong!")
+
+    list = ParameterList('mylist'); TEST_IERR()
+    call list%set('larr', myvec); TEST_IERR()
+    var => list%get_arr_longlong('larr')
+    TEST_ARRAY_EQUALITY(var, myvec)
+
+    call list%release(); TEST_IERR()
+
+    OUT0("Finished ParameterList_get_arr_longlong!")
+
+  END_FORTRILINOS_UNIT_TEST(ParameterList_get_arr_longlong)
 
 end program test_TeuchosPList

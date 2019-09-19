@@ -1,3 +1,6 @@
-build
+build*
 *_autogen.f90
 *~
+.*.swp
+docker/.env
+TriBITS

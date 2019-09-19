@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
         A->insertGlobalValues (gblRow,
                                tuple<GO> (gblRow, gblRow + 1),
                                tuple<SC> (2.0, -1.0));
-      } else if (static_cast<Tpetra::global_size_t> (gblRow) == numGlobalElements - 1) {
+      } else if (static_cast<Tpetra::global_size_t> (gblRow) == static_cast<Tpetra::global_size_t>(numGlobalElements - 1)) {
         // A(N-1, N-2:N-1) = [-1, 2]
         A->insertGlobalValues (gblRow,
                                tuple<GO> (gblRow - 1, gblRow),
