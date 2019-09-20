@@ -16,6 +16,19 @@ TRIBITS_PACKAGE_DECL(ForTrilinos)
 TRIBITS_ADD_DEBUG_OPTION()
 TRIBITS_ADD_SHOW_DEPRECATED_WARNINGS_OPTION()
 
+# Pick a default node to compile for in order of Cuda -> OpenMP -> Serial
+# For now we just build for this one node which is selected based on the config.
+# This is an intermediate step and expected to change later for supporting
+# all nodes simultaneously.
+IF (KOKKOS_ENABLE_CUDA)
+  SET(Kokkos_NODE_TYPE "KokkosCudaWrapperNode")
+ELSEIF (KOKKOS_ENABLE_OPENMP)
+  SET(Kokkos_NODE_TYPE "KokkosOpenMPWrapperNode")
+ELSE ()
+  SET(Kokkos_NODE_TYPE "KokkosSerialWrapperNode")
+ENDIF()
+MESSAGE(STATUS "ForTrilinos default node type: ${Kokkos_NODE_TYPE}")
+
 # Enable unlimited-length lines
 if (CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
   SET(CMAKE_Fortran_FLAGS "-ffree-line-length-none ${CMAKE_Fortran_FLAGS}")

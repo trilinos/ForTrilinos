@@ -14,13 +14,15 @@
 
 %include "ForTrilinosInterface_config.hpp"
 
-%inline %{
+%{
 #include "Kokkos_DefaultNode.hpp"
-
+#include "ForTrilinos_DefaultNodeType.hpp"
+%}
+%inline %{
 typedef double                                  SC;
 typedef int                                     LO;
 typedef long long                               GO;
-typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
+typedef ForTrilinos::DefaultNodeType            NO;
 typedef char                                    Packet;
 %}
 

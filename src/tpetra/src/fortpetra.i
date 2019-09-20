@@ -20,21 +20,23 @@
 
 #define HAVE_TPETRA_INST_INT_LONG_LONG
 // From teuchos/kokkoscompat/src/KokkosCompat_ClassicNodeAPI_Wrapper.hpp
-%ignore KokkosSerialWrapperNode;
-namespace Kokkos { namespace Compat {
-struct KokkosSerialWrapperNode {
+
+%ignore ForTrilinos::DefaultNodeType;
+namespace ForTrilinos {
+struct DefaultNodeType { 
   static const bool classic = false;
 };
-} }
+}
 
 %{
 #include "Kokkos_DefaultNode.hpp"
+#include "ForTrilinos_DefaultNodeType.hpp"
 %}
 %inline %{
 typedef double                                  SC;
 typedef int                                     LO;
 typedef long long                               GO;
-typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
+typedef ForTrilinos::DefaultNodeType            NO;
 typedef char                                    Packet;
 %}
 

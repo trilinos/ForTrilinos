@@ -5,7 +5,11 @@
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/ForTrilinos_DefaultNodeType.hpp.in
+  ${CMAKE_CURRENT_BINARY_DIR}/ForTrilinos_DefaultNodeType.hpp @ONLY)
+ 
 IF (ForTrilinos_ENABLE_DeveloperMode)
+
   IF (ForTrilinos_EXPORT_SWIG)
     # Generate wrapper and proxy files since MPI is enabled
     SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}/swig")

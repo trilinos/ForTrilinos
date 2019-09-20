@@ -13,8 +13,8 @@
 #include "Tpetra_MultiVector.hpp"
 %}
 
-// Treat array RCP return values as array views (they won't reference count,
-// though, of course)
+// Treat array RCP return values as array views
+// (they will not reference count, though, of course)
 %apply Teuchos::ArrayView<double> { Teuchos::ArrayRCP<double> };
 %apply Teuchos::ArrayView<const double> { Teuchos::ArrayRCP<const double> };
 
@@ -60,6 +60,12 @@
 %ignore Tpetra::MultiVector::getVectorNonConst;     // needs Tpetra::Vector
 %ignore Tpetra::MultiVector::modify;                // templated on device type
 %ignore Tpetra::MultiVector::need_sync;             // templated on device type
+%ignore Tpetra::MultiVector::sync_host;             // not needed
+%ignore Tpetra::MultiVector::sync_device;           // not needed
+%ignore Tpetra::MultiVector::need_sync_host;        // not needed
+%ignore Tpetra::MultiVector::need_sync_device;      // not needed
+%ignore Tpetra::MultiVector::modify_device;         // not needed
+%ignore Tpetra::MultiVector::modify_host;           // not needed
 %ignore Tpetra::MultiVector::scale(const Kokkos::View<const impl_scalar_type*, device_type>& alpha);
 %ignore Tpetra::MultiVector::sync;                  // templated on device type
 %ignore Tpetra::MultiVector::operator=;

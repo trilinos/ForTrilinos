@@ -15,6 +15,7 @@ IF (${PACKAGE_NAME}_ENABLE_Anasazi)
 ENDIF()
 
 IF (ForTrilinos_ENABLE_DeveloperMode)
+
   IF (ForTrilinos_EXPORT_SWIG)
     # Generate wrapper and proxy files since MPI is enabled
     SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}/swig")
