@@ -33,32 +33,15 @@ mkdir build && cd build
 # configure trilinos with fortrilinos
 
 if [ "${BUILD_TYPE}" == "gcc74-mpi" ]; then
-  # Build 1: Serial
   ../scripts/docker_cmake -D Trilinos_ENABLE_COVERAGE_TESTING=ON
-  # build
-  make -j"${NPROC}" -i
-  # run the unit tests
-  ctest -j"${NPROC}" --no-compress-output --output-on-failure -T Test
-  # collect coverage data
-  lcov --capture --directory ForTrilinos --output-file lcov.info
-  # upload it to codecov
-  curl -s https://codecov.io/bash -o codecov_bash_uploader
-  chmod +x codecov_bash_uploader
-  ./codecov_bash_uploader -Z -X gcov -f lcov.info
 
-  # Build 2: OpenMP
-  rm -rf *  # clean workspace
+elif [ "${BUILD_TYPE}" == "gcc74-mpi-openmp" ]; then
   ../scripts/docker_cmake \
     -D Trilinos_ENABLE_OpenMP=ON \
     -D Kokkos_ENABLE_OpenMP=ON \
     -D Tpetra_INST_OPENMP=ON
-  # build
-  make -j"${NPROC}" -i
-  # run the unit tests
-  ctest -j"${NPROC}" --no-compress-output --output-on-failure -T Test
 
-  # Build 3: Cuda
-  rm -rf *  # clean workspace
+elif [ "${BUILD_TYPE}" == "gcc74-mpi-cuda" ]; then
   export OMPI_CXX="${TRILINOS_DIR}/packages/kokkos/bin/nvcc_wrapper"
   ../scripts/docker_cmake \
     -D TPL_ENABLE_CUDA=ON \
@@ -68,10 +51,6 @@ if [ "${BUILD_TYPE}" == "gcc74-mpi" ]; then
     -D Kokkos_ENABLE_Cuda_UVM=ON \
     -D Kokkos_ENABLE_Cuda_Lambda=ON \
     -D Tpetra_INST_CUDA=ON
-  # build
-  make -j"${NPROC}" -i
-  # run the unit tests
-  ctest -j"${NPROC}" --no-compress-output --output-on-failure -T Test
 
 elif [ "${BUILD_TYPE}" == "flang70-serial" ]; then
   source ../scripts/docker_flang70_env.sh
@@ -82,12 +61,22 @@ elif [ "${BUILD_TYPE}" == "flang70-serial" ]; then
   #   symbols ending at _tbp_, resulting in undefined references during
   #   linking stage. This does not happen in RelWithDebInfo mode.
   ../scripts/docker_cmake_serial -DCMAKE_BUILD_TYPE="RelWithDebInfo"
-  # build
-  make -j"${NPROC}" -i
-  # run the unit tests
-  ctest -j"${NPROC}" --no-compress-output --output-on-failure -T Test
 
 else
   echo "Unknown BUILD_TYPE"
   exit 1
+fi
+
+# build
+make -j"${NPROC}" -i
+# run the unit tests
+ctest -j"${NPROC}" --no-compress-output --output-on-failure -T Test
+# upload code coverage only once
+if [ "${BUILD_TYPE}" == "gcc74-mpi"  ]; then
+  # collect coverage data
+  lcov --capture --directory ForTrilinos --output-file lcov.info
+  # upload it to codecov
+  curl -s https://codecov.io/bash -o codecov_bash_uploader
+  chmod +x codecov_bash_uploader
+  ./codecov_bash_uploader -Z -X gcov -f lcov.info
 fi
