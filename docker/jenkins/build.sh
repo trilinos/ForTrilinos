@@ -63,7 +63,7 @@ if [ "${BUILD_TYPE}" == "gcc74-mpi" ]; then
   ../scripts/docker_cmake \
     -D TPL_ENABLE_CUDA=ON \
     -D Trilinos_CXX11_FLAGS="-std=c++11 -expt-extended-lambda" \
-    -D KOKKOS_ARCH="Kepler35" \
+    -D KOKKOS_ARCH="Volta70" \
     -D Kokkos_ENABLE_Cuda=ON \
     -D Kokkos_ENABLE_Cuda_UVM=ON \
     -D Kokkos_ENABLE_Cuda_Lambda=ON \
