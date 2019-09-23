@@ -224,12 +224,6 @@ public :: norm_type
   procedure :: get1dView => swigf_TpetraMultiVector_get1dView
   procedure :: get1dViewNonConst => swigf_TpetraMultiVector_get1dViewNonConst
   procedure :: clear_sync_state => swigf_TpetraMultiVector_clear_sync_state
-  procedure :: sync_host => swigf_TpetraMultiVector_sync_host
-  procedure :: sync_device => swigf_TpetraMultiVector_sync_device
-  procedure :: need_sync_host => swigf_TpetraMultiVector_need_sync_host
-  procedure :: need_sync_device => swigf_TpetraMultiVector_need_sync_device
-  procedure :: modify_device => swigf_TpetraMultiVector_modify_device
-  procedure :: modify_host => swigf_TpetraMultiVector_modify_host
   procedure, private :: swigf_TpetraMultiVector_dot__SWIG_0
   procedure :: abs => swigf_TpetraMultiVector_abs
   procedure :: reciprocal => swigf_TpetraMultiVector_reciprocal
@@ -1553,52 +1547,6 @@ end function
 
 subroutine swigc_TpetraMultiVector_clear_sync_state(farg1) &
 bind(C, name="_wrap_TpetraMultiVector_clear_sync_state")
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-end subroutine
-
-subroutine swigc_TpetraMultiVector_sync_host(farg1) &
-bind(C, name="_wrap_TpetraMultiVector_sync_host")
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-end subroutine
-
-subroutine swigc_TpetraMultiVector_sync_device(farg1) &
-bind(C, name="_wrap_TpetraMultiVector_sync_device")
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-end subroutine
-
-function swigc_TpetraMultiVector_need_sync_host(farg1) &
-bind(C, name="_wrap_TpetraMultiVector_need_sync_host") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-integer(C_INT) :: fresult
-end function
-
-function swigc_TpetraMultiVector_need_sync_device(farg1) &
-bind(C, name="_wrap_TpetraMultiVector_need_sync_device") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-integer(C_INT) :: fresult
-end function
-
-subroutine swigc_TpetraMultiVector_modify_device(farg1) &
-bind(C, name="_wrap_TpetraMultiVector_modify_device")
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(SwigClassWrapper) :: farg1
-end subroutine
-
-subroutine swigc_TpetraMultiVector_modify_host(farg1) &
-bind(C, name="_wrap_TpetraMultiVector_modify_host")
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
@@ -5840,68 +5788,6 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = self%swigdata
 call swigc_TpetraMultiVector_clear_sync_state(farg1)
-end subroutine
-
-subroutine swigf_TpetraMultiVector_sync_host(self)
-use, intrinsic :: ISO_C_BINDING
-class(TpetraMultiVector), intent(in) :: self
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-call swigc_TpetraMultiVector_sync_host(farg1)
-end subroutine
-
-subroutine swigf_TpetraMultiVector_sync_device(self)
-use, intrinsic :: ISO_C_BINDING
-class(TpetraMultiVector), intent(in) :: self
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-call swigc_TpetraMultiVector_sync_device(farg1)
-end subroutine
-
-function swigf_TpetraMultiVector_need_sync_host(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-logical :: swig_result
-class(TpetraMultiVector), intent(in) :: self
-integer(C_INT) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraMultiVector_need_sync_host(farg1)
-swig_result = SWIG_int_to_logical(fresult)
-end function
-
-function swigf_TpetraMultiVector_need_sync_device(self) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-logical :: swig_result
-class(TpetraMultiVector), intent(in) :: self
-integer(C_INT) :: fresult 
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-fresult = swigc_TpetraMultiVector_need_sync_device(farg1)
-swig_result = SWIG_int_to_logical(fresult)
-end function
-
-subroutine swigf_TpetraMultiVector_modify_device(self)
-use, intrinsic :: ISO_C_BINDING
-class(TpetraMultiVector), intent(in) :: self
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-call swigc_TpetraMultiVector_modify_device(farg1)
-end subroutine
-
-subroutine swigf_TpetraMultiVector_modify_host(self)
-use, intrinsic :: ISO_C_BINDING
-class(TpetraMultiVector), intent(in) :: self
-type(SwigClassWrapper) :: farg1 
-
-farg1 = self%swigdata
-call swigc_TpetraMultiVector_modify_host(farg1)
 end subroutine
 
 subroutine swigf_TpetraMultiVector_dot__SWIG_0(self, a, dots)

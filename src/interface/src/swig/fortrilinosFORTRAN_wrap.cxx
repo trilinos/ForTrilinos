@@ -256,9 +256,9 @@ enum AssignmentType {
 
 #define SWIGPOLICY_ForTrilinos__TrilinosSolver swig::ASSIGNMENT_DEFAULT
 #define SWIGPOLICY_ForTrilinos__TrilinosEigenSolver swig::ASSIGNMENT_DEFAULT
-#define SWIGPOLICY_ForTrilinos__ModelEvaluatorT_double_int_long_long_Kokkos__Compat__KokkosSerialWrapperNode_t swig::ASSIGNMENT_SMARTPTR
+#define SWIGPOLICY_ForTrilinos__ModelEvaluatorT_double_int_long_long_ForTrilinos__DefaultNodeType_t swig::ASSIGNMENT_SMARTPTR
 #define SWIGPOLICY_ForModelEvaluator swig::ASSIGNMENT_SMARTPTR
-#define SWIGPOLICY_ForTrilinos__NOXSolverT_double_int_long_long_Kokkos__Compat__KokkosSerialWrapperNode_t swig::ASSIGNMENT_SMARTPTR
+#define SWIGPOLICY_ForTrilinos__NOXSolverT_double_int_long_long_ForTrilinos__DefaultNodeType_t swig::ASSIGNMENT_SMARTPTR
 
 #include <stdexcept>
 
@@ -281,11 +281,13 @@ enum AssignmentType {
 
 
 #include "Kokkos_DefaultNode.hpp"
+#include "ForTrilinos_DefaultNodeType.hpp"
+
 
 typedef double                                  SC;
 typedef int                                     LO;
 typedef long long                               GO;
-typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
+typedef ForTrilinos::DefaultNodeType            NO;
 typedef char                                    Packet;
 
 
@@ -1306,37 +1308,37 @@ SWIGEXPORT void _wrap_TrilinosEigenSolver_op_assign__(SwigClassWrapper *farg1, S
 
 SWIGEXPORT void _wrap_ForTrilinosModelEvaluator_evaluate_residual(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
   ForTrilinos::ModelEvaluator< SC,LO,GO,NO > *arg1 = (ForTrilinos::ModelEvaluator< SC,LO,GO,NO > *) 0 ;
-  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > *arg2 = 0 ;
-  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector > *arg3 = 0 ;
+  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > *arg2 = 0 ;
+  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector > *arg3 = 0 ;
   Teuchos::RCP< ForTrilinos::ModelEvaluator< SC,LO,GO,NO > const > *smartarg1 ;
-  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > tempnull2 ;
-  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector > tempnull3 ;
+  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > tempnull2 ;
+  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector > tempnull3 ;
   
   smartarg1 = static_cast< Teuchos::RCP<const ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< ForTrilinos::ModelEvaluator<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
-  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > * >(farg2->cptr) : &tempnull2;
-  arg3 = farg3->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector > * >(farg3->cptr) : &tempnull3;
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > * >(farg2->cptr) : &tempnull2;
+  arg3 = farg3->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector > * >(farg3->cptr) : &tempnull3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_residual(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector > &) const");;
+    SWIG_check_unhandled_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_residual(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector > &) const");;
     try
     {
       // Attempt the wrapped function call
-      ((ForTrilinos::ModelEvaluator< SC,LO,GO,NO > const *)arg1)->evaluate_residual((Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > const &)*arg2,*arg3);
+      ((ForTrilinos::ModelEvaluator< SC,LO,GO,NO > const *)arg1)->evaluate_residual((Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > const &)*arg2,*arg3);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_residual(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector > &) const", SWIG_IndexError, e.what(), return );
+      SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_residual(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector > &) const", SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_residual(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector > &) const", SWIG_RuntimeError, e.what(), return );
+      SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_residual(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector > &) const", SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_residual(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector > &) const", SWIG_UnknownError, "An unknown exception occurred", return );
+      SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_residual(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector > &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
 }
@@ -1344,37 +1346,37 @@ SWIGEXPORT void _wrap_ForTrilinosModelEvaluator_evaluate_residual(SwigClassWrapp
 
 SWIGEXPORT void _wrap_ForTrilinosModelEvaluator_evaluate_jacobian(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
   ForTrilinos::ModelEvaluator< SC,LO,GO,NO > *arg1 = (ForTrilinos::ModelEvaluator< SC,LO,GO,NO > *) 0 ;
-  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > *arg2 = 0 ;
-  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > *arg3 = 0 ;
+  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > *arg2 = 0 ;
+  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::Operator > *arg3 = 0 ;
   Teuchos::RCP< ForTrilinos::ModelEvaluator< SC,LO,GO,NO > const > *smartarg1 ;
-  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > tempnull2 ;
-  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > tempnull3 ;
+  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > tempnull2 ;
+  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::Operator > tempnull3 ;
   
   smartarg1 = static_cast< Teuchos::RCP<const ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< ForTrilinos::ModelEvaluator<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
-  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > * >(farg2->cptr) : &tempnull2;
-  arg3 = farg3->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > * >(farg3->cptr) : &tempnull3;
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > * >(farg2->cptr) : &tempnull2;
+  arg3 = farg3->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::Operator > * >(farg3->cptr) : &tempnull3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_jacobian(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > &) const");;
+    SWIG_check_unhandled_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_jacobian(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::Operator > &) const");;
     try
     {
       // Attempt the wrapped function call
-      ((ForTrilinos::ModelEvaluator< SC,LO,GO,NO > const *)arg1)->evaluate_jacobian((Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > const &)*arg2,*arg3);
+      ((ForTrilinos::ModelEvaluator< SC,LO,GO,NO > const *)arg1)->evaluate_jacobian((Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > const &)*arg2,*arg3);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_jacobian(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > &) const", SWIG_IndexError, e.what(), return );
+      SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_jacobian(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::Operator > &) const", SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_jacobian(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > &) const", SWIG_RuntimeError, e.what(), return );
+      SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_jacobian(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::Operator > &) const", SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_jacobian(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > &) const", SWIG_UnknownError, "An unknown exception occurred", return );
+      SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_jacobian(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::Operator > &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
 }
@@ -1382,37 +1384,37 @@ SWIGEXPORT void _wrap_ForTrilinosModelEvaluator_evaluate_jacobian(SwigClassWrapp
 
 SWIGEXPORT void _wrap_ForTrilinosModelEvaluator_evaluate_preconditioner(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
   ForTrilinos::ModelEvaluator< SC,LO,GO,NO > *arg1 = (ForTrilinos::ModelEvaluator< SC,LO,GO,NO > *) 0 ;
-  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > *arg2 = 0 ;
-  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > *arg3 = 0 ;
+  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > *arg2 = 0 ;
+  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::Operator > *arg3 = 0 ;
   Teuchos::RCP< ForTrilinos::ModelEvaluator< SC,LO,GO,NO > const > *smartarg1 ;
-  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > tempnull2 ;
-  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > tempnull3 ;
+  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > tempnull2 ;
+  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::Operator > tempnull3 ;
   
   smartarg1 = static_cast< Teuchos::RCP<const ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< ForTrilinos::ModelEvaluator<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
-  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > * >(farg2->cptr) : &tempnull2;
-  arg3 = farg3->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > * >(farg3->cptr) : &tempnull3;
+  arg2 = farg2->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > * >(farg2->cptr) : &tempnull2;
+  arg3 = farg3->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::Operator > * >(farg3->cptr) : &tempnull3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_preconditioner(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > &) const");;
+    SWIG_check_unhandled_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_preconditioner(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::Operator > &) const");;
     try
     {
       // Attempt the wrapped function call
-      ((ForTrilinos::ModelEvaluator< SC,LO,GO,NO > const *)arg1)->evaluate_preconditioner((Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > const &)*arg2,*arg3);
+      ((ForTrilinos::ModelEvaluator< SC,LO,GO,NO > const *)arg1)->evaluate_preconditioner((Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > const &)*arg2,*arg3);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_preconditioner(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > &) const", SWIG_IndexError, e.what(), return );
+      SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_preconditioner(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::Operator > &) const", SWIG_IndexError, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_preconditioner(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > &) const", SWIG_RuntimeError, e.what(), return );
+      SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_preconditioner(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::Operator > &) const", SWIG_RuntimeError, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_preconditioner(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > &) const", SWIG_UnknownError, "An unknown exception occurred", return );
+      SWIG_exception_impl("ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::evaluate_preconditioner(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::MultiVector const > const &,Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::Operator > &) const", SWIG_UnknownError, "An unknown exception occurred", return );
     }
   }
 }
@@ -1422,7 +1424,7 @@ SWIGEXPORT SwigClassWrapper _wrap_ForTrilinosModelEvaluator_get_x_map(SwigClassW
   SwigClassWrapper fresult ;
   ForTrilinos::ModelEvaluator< SC,LO,GO,NO > *arg1 = (ForTrilinos::ModelEvaluator< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< ForTrilinos::ModelEvaluator< SC,LO,GO,NO > const > *smartarg1 ;
-  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Map const > result;
+  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::Map const > result;
   
   smartarg1 = static_cast< Teuchos::RCP<const ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< ForTrilinos::ModelEvaluator<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
@@ -1459,7 +1461,7 @@ SWIGEXPORT SwigClassWrapper _wrap_ForTrilinosModelEvaluator_get_f_map(SwigClassW
   SwigClassWrapper fresult ;
   ForTrilinos::ModelEvaluator< SC,LO,GO,NO > *arg1 = (ForTrilinos::ModelEvaluator< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< ForTrilinos::ModelEvaluator< SC,LO,GO,NO > const > *smartarg1 ;
-  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Map const > result;
+  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::Map const > result;
   
   smartarg1 = static_cast< Teuchos::RCP<const ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< ForTrilinos::ModelEvaluator<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
@@ -1496,7 +1498,7 @@ SWIGEXPORT SwigClassWrapper _wrap_ForTrilinosModelEvaluator_create_operator(Swig
   SwigClassWrapper fresult ;
   ForTrilinos::ModelEvaluator< SC,LO,GO,NO > *arg1 = (ForTrilinos::ModelEvaluator< SC,LO,GO,NO > *) 0 ;
   Teuchos::RCP< ForTrilinos::ModelEvaluator< SC,LO,GO,NO > const > *smartarg1 ;
-  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode >::Operator > result;
+  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType >::Operator > result;
   
   smartarg1 = static_cast< Teuchos::RCP<const ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg1->cptr);
   arg1 = smartarg1 ? const_cast< ForTrilinos::ModelEvaluator<SC,LO,GO,NO>* >(smartarg1->get()) : NULL;
@@ -1607,7 +1609,7 @@ SWIGEXPORT void _wrap_ForTrilinosModelEvaluator_op_assign__(SwigClassWrapper *fa
   SWIG_check_sp_nonnull(farg2, "ForTrilinos::ModelEvaluator< SC,LO,GO,NO > *", "ForTrilinosModelEvaluator", "ForTrilinos::ModelEvaluator< SC,LO,GO,NO >::operator =(ForTrilinos::ModelEvaluator< SC,LO,GO,NO > &)", return )
   smartarg2 = static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >* >(farg2->cptr);
   arg2 = const_cast< ForTrilinos::ModelEvaluator<SC,LO,GO,NO>* >(smartarg2->get());
-  SWIG_assign<Teuchos::RCP< ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >, SWIGPOLICY_ForTrilinos__ModelEvaluatorT_double_int_long_long_Kokkos__Compat__KokkosSerialWrapperNode_t>(farg1, *farg2);
+  SWIG_assign<Teuchos::RCP< ForTrilinos::ModelEvaluator<SC,LO,GO,NO> >, SWIGPOLICY_ForTrilinos__ModelEvaluatorT_double_int_long_long_ForTrilinos__DefaultNodeType_t>(farg1, *farg2);
   
 }
 
@@ -2025,32 +2027,32 @@ SWIGEXPORT void _wrap_ForModelEvaluator_op_assign__(SwigClassWrapper *farg1, Swi
 
 SWIGEXPORT SwigClassWrapper _wrap_new_NOXSolver(SwigClassWrapper const *farg1) {
   SwigClassWrapper fresult ;
-  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > *arg1 = 0 ;
-  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > tempnull1 ;
+  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType > > *arg1 = 0 ;
+  Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType > > tempnull1 ;
   ForTrilinos::NOXSolver< SC,LO,GO,NO > *result = 0 ;
   
-  arg1 = farg1->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > * >(farg1->cptr) : &tempnull1;
+  arg1 = farg1->cptr ? static_cast< Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType > > * >(farg1->cptr) : &tempnull1;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("ForTrilinos::NOXSolver< SC,LO,GO,NO >::NOXSolver(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > const &)");;
+    SWIG_check_unhandled_exception_impl("ForTrilinos::NOXSolver< SC,LO,GO,NO >::NOXSolver(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType > > const &)");;
     try
     {
       // Attempt the wrapped function call
-      result = (ForTrilinos::NOXSolver< SC,LO,GO,NO > *)new ForTrilinos::NOXSolver< SC,LO,GO,NO >((Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > const &)*arg1);
+      result = (ForTrilinos::NOXSolver< SC,LO,GO,NO > *)new ForTrilinos::NOXSolver< SC,LO,GO,NO >((Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType > > const &)*arg1);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("ForTrilinos::NOXSolver< SC,LO,GO,NO >::NOXSolver(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > const &)", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
+      SWIG_exception_impl("ForTrilinos::NOXSolver< SC,LO,GO,NO >::NOXSolver(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType > > const &)", SWIG_IndexError, e.what(), return SwigClassWrapper_uninitialized());
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("ForTrilinos::NOXSolver< SC,LO,GO,NO >::NOXSolver(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > const &)", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
+      SWIG_exception_impl("ForTrilinos::NOXSolver< SC,LO,GO,NO >::NOXSolver(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType > > const &)", SWIG_RuntimeError, e.what(), return SwigClassWrapper_uninitialized());
     }
     catch (...)
     {
-      SWIG_exception_impl("ForTrilinos::NOXSolver< SC,LO,GO,NO >::NOXSolver(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,Kokkos::Compat::KokkosSerialWrapperNode > > const &)", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
+      SWIG_exception_impl("ForTrilinos::NOXSolver< SC,LO,GO,NO >::NOXSolver(Teuchos::RCP< ForTrilinos::ModelEvaluator< double,int,long long,ForTrilinos::DefaultNodeType > > const &)", SWIG_UnknownError, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< ForTrilinos::NOXSolver<SC,LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
@@ -2173,7 +2175,7 @@ SWIGEXPORT void _wrap_NOXSolver_op_assign__(SwigClassWrapper *farg1, SwigClassWr
   SWIG_check_sp_nonnull(farg2, "ForTrilinos::NOXSolver< SC,LO,GO,NO > *", "NOXSolver", "ForTrilinos::NOXSolver< SC,LO,GO,NO >::operator =(ForTrilinos::NOXSolver< SC,LO,GO,NO > &)", return )
   smartarg2 = static_cast< Teuchos::RCP< ForTrilinos::NOXSolver<SC,LO,GO,NO> >* >(farg2->cptr);
   arg2 = const_cast< ForTrilinos::NOXSolver<SC,LO,GO,NO>* >(smartarg2->get());
-  SWIG_assign<Teuchos::RCP< ForTrilinos::NOXSolver<SC,LO,GO,NO> >, SWIGPOLICY_ForTrilinos__NOXSolverT_double_int_long_long_Kokkos__Compat__KokkosSerialWrapperNode_t>(farg1, *farg2);
+  SWIG_assign<Teuchos::RCP< ForTrilinos::NOXSolver<SC,LO,GO,NO> >, SWIGPOLICY_ForTrilinos__NOXSolverT_double_int_long_long_ForTrilinos__DefaultNodeType_t>(farg1, *farg2);
   
 }
 

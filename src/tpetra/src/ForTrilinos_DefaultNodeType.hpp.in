@@ -1,0 +1,8 @@
+#ifndef FORTRILINOS_DEFAULT_NODE_HPP
+#define FORTRILINOS_DEFAULT_NODE_HPP
+
+namespace ForTrilinos {
+typedef typename Kokkos::Compat::@Kokkos_NODE_TYPE@ DefaultNodeType;
+}
+
+#endif // FORTRILINOS_DEFAULT_NODE_HPP

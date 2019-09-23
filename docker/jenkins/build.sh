@@ -32,18 +32,39 @@ mkdir build && cd build
 # move the build directory afterwards...
 # configure trilinos with fortrilinos
 
-if [ "${BUILD_TYPE}" == "gcc54-mpi" ]; then
+if [ "${BUILD_TYPE}" == "gcc74-mpi" ]; then
   ../scripts/docker_cmake -D Trilinos_ENABLE_COVERAGE_TESTING=ON
-elif [ "${BUILD_TYPE}" == "gcc54-serial" ]; then
-  ../scripts/docker_cmake_serial
-elif [ "${BUILD_TYPE}" == "flang70-mpi" ]; then
+
+elif [ "${BUILD_TYPE}" == "gcc74-mpi-openmp" ]; then
+  ../scripts/docker_cmake \
+    -D Trilinos_ENABLE_OpenMP=ON \
+    -D Kokkos_ENABLE_OpenMP=ON \
+    -D Tpetra_INST_OPENMP=ON
+
+elif [ "${BUILD_TYPE}" == "gcc74-mpi-cuda" ]; then
+  export OMPI_CXX="${TRILINOS_DIR}/packages/kokkos/bin/nvcc_wrapper"
+  ../scripts/docker_cmake \
+    -D TPL_ENABLE_CUDA=ON \
+    -D Trilinos_CXX11_FLAGS="-std=c++11 -expt-extended-lambda" \
+    -D KOKKOS_ARCH="Volta70" \
+    -D Kokkos_ENABLE_Cuda=ON \
+    -D Kokkos_ENABLE_Cuda_UVM=ON \
+    -D Kokkos_ENABLE_Cuda_Lambda=ON \
+    -D Tpetra_INST_CUDA=ON
+
+elif [ "${BUILD_TYPE}" == "flang70-serial" ]; then
   source ../scripts/docker_flang70_env.sh
-  # For now, we don't have openmpi installation using flang. The system
-  # installation of openmpi produces incompatible .mod files.
+  # - No MPI with Flang
+  #   The system installation of openmpi produces incompatible .mod files.
+  # - Use "RelWithDebInfo" build type
+  #   Flang does not compile in Debug mode. It produces spurious undefined
+  #   symbols ending at _tbp_, resulting in undefined references during
+  #   linking stage. This does not happen in RelWithDebInfo mode.
   ../scripts/docker_cmake_serial -DCMAKE_BUILD_TYPE="RelWithDebInfo"
+
 else
-    echo "Unknown BUILD_TYPE"
-    exit 1
+  echo "Unknown BUILD_TYPE"
+  exit 1
 fi
 
 # build
@@ -51,8 +72,7 @@ make -j"${NPROC}" -i
 # run the unit tests
 ctest -j"${NPROC}" --no-compress-output --output-on-failure -T Test
 # upload code coverage only once
-if [ "${BUILD_TYPE}" == "gcc54-mpi"  ]
-then
+if [ "${BUILD_TYPE}" == "gcc74-mpi"  ]; then
   # collect coverage data
   lcov --capture --directory ForTrilinos --output-file lcov.info
   # upload it to codecov

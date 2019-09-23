@@ -1,9 +1,14 @@
 # Build command:
-#   $ docker build -t aprokop/fortrilinos-stack:latest -f Dockerfile_stack  .
-FROM ubuntu:16.04
+#   $ docker build -t aprokop/fortrilinos-stack:latest -f Dockerfile  .
+ARG BASE=nvidia/cuda:10.1-devel
+FROM $BASE
 
 ARG NPROC=14
 
+# Avoid tzdata dialog
+ARG DEBIAN_FRONTEND=noninteractive
+
+# 0. nvidia/cuda:10.1-devel has gcc-7
 # 1. Need gcc-7 to install pgmath using Spack (required by Flang)
 # 2. Do not install cmake as we'll need cmake 3.10+ for Trilinos
 # 3. Need gawk for pgmath as default mawk segfaults
@@ -12,36 +17,27 @@ RUN apt-get update && apt-get install -y \
         autoconf \
         bc \
         build-essential \
+        ccache \
+        clang-3.9 \
+        clang++-3.9 \
         curl \
         environment-modules \
+        gawk \
         gfortran \
         git \
         lcov \
         libatlas-base-dev \
         libbz2-dev \
-        libfreetype6-dev \
         libopenmpi-dev \
-        libpng-dev \
-        libsqlite3-dev \
-        libssl-dev \
-        libxft-dev \
         python2.7-dev \
         tmux \
         unzip \
         valgrind \
         vim \
         wget \
-        zlib1g-dev \
         && \
-    apt-get install -y gawk && \
-    apt-get install -y software-properties-common && \
-    add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
-    apt-get update && apt-get install -y \
-        gcc-7 \
-        g++-7 && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    ln -s /usr/bin/python2.7 /usr/bin/python
+    rm -rf /var/lib/apt/lists/*
 
 ENV PREFIX=/scratch
 RUN mkdir -p ${PREFIX} && \

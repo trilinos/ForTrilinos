@@ -9,6 +9,9 @@
 
 #include "ForTrilinosInterface_config.hpp"
 
+#include "Kokkos_DefaultNode.hpp"
+#include "ForTrilinos_DefaultNodeType.hpp"
+
 #include <Teuchos_Comm.hpp>
 #include <Teuchos_ParameterList.hpp>
 #include <Teuchos_RCP.hpp>
@@ -27,7 +30,7 @@ namespace ForTrilinos {
     typedef double                                  SC;
     typedef int                                     LO;
     typedef long long                               GO;
-    typedef Kokkos::Compat::KokkosSerialWrapperNode NO;
+    typedef ForTrilinos::DefaultNodeType            NO;
     typedef size_t                                  global_size_t;
 
     typedef Teuchos::ParameterList                  ParameterList;
