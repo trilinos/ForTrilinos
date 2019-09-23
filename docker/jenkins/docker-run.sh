@@ -2,20 +2,11 @@
 
 set -e
 
-if [ -z "${CUDA_VERSION}" ]; then
-    # Attempt to pull newer version of the image
-    docker-compose pull ci
-else
-    # Update the configuration extension that makes CI container GPU-aware if
-    # necessary.
-    make setup_nvidia_docker
-    # Attempt to pull a newer version of the image and rebuild (i.e. install
-    # CUDA toolchain on top of it)
-    docker-compose build --pull ci
-fi
-
 # View and validate the compose file
 docker-compose config
+
+# Attempt to pull newer version of the image
+docker-compose pull ci
 
 # Request codecov to detect CI environment to pass through to docker
 ci_env=`bash <(curl -s https://codecov.io/env)`
