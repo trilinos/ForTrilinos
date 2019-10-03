@@ -57,9 +57,9 @@ contains
     use fortrilinos
     use TpetraModelEvaluator1DFEM_module
     implicit none
-    integer :: ierr
-    type(TeuchosComm) :: comm
-    type(ParameterList) :: params
+    integer, intent(out) :: ierr
+    type(TeuchosComm), intent(in) :: comm
+    type(ParameterList), intent(in) :: params
     class(ForModelEvaluator), allocatable :: evaluator
     type(NOXSolver) :: nox_solver
     integer(global_size_type) :: num_global_elems
@@ -87,7 +87,6 @@ contains
     call evaluator%release(); FORTRILINOS_CHECK_IERR()
     deallocate(evaluator)
 
-    call params%release(); FORTRILINOS_CHECK_IERR()
     call nox_solver%release(); FORTRILINOS_CHECK_IERR()
 
   end subroutine main2

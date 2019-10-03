@@ -136,13 +136,10 @@ contains
     call self%domain_map%release()
     call self%range_map%release()
 
-#ifdef __GNUC__
-    ! FIXME This segfaults with Flang
     ! Call base class release()
     call self%ForTpetraOperator%release()
-#endif
-  end subroutine
 
+  end subroutine
 
 end module
 
@@ -371,6 +368,7 @@ program main
   call solver_handle%release(); FORTRILINOS_CHECK_IERR()
   call plist%release(); FORTRILINOS_CHECK_IERR()
   call X%release(); FORTRILINOS_CHECK_IERR()
+  call residual%release(); FORTRILINOS_CHECK_IERR()
   call B%release(); FORTRILINOS_CHECK_IERR()
   call A%release(); FORTRILINOS_CHECK_IERR()
   call map%release(); FORTRILINOS_CHECK_IERR()

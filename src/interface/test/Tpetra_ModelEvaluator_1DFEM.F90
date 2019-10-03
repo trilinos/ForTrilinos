@@ -585,12 +585,11 @@ contains
     call self%node_coords%release()
     call self%x%release()
     call self%J_diagonal%release()
+    call solnvec%release()
+    deallocate(solnvec)
 
-#ifdef __GNUC__
-    ! FIXME This segfaults with Flang
     ! Call base class release()
     call self%ForModelEvaluator%release()
-#endif
   end subroutine
 
 end module TpetraModelEvaluator1DFEM_module
