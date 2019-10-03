@@ -73,7 +73,7 @@ following steps are required to build and install ForTrilinos:
       EXTRA_ARGS=$@
 
       ARGS=(
-          -D CMAKE_BUILD_TYPE=Debug
+          -D CMAKE_BUILD_TYPE=RelWithDebInfo
 
           -D BUILD_SHARED_LIBS=ON
 
