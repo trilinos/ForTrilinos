@@ -37,15 +37,17 @@ namespace ForTrilinos {
   }
 
   void TrilinosSolver::setup_matrix(const Teuchos::RCP<Matrix>& A) {
-    TEUCHOS_ASSERT(status_ == INITIALIZED);
+    TEUCHOS_ASSERT(status_ >= INITIALIZED);
     A_ = Teuchos::rcp_dynamic_cast<Operator>(A);
-    status_ = MATRIX_SETUP;
+    if (status_ < MATRIX_SETUP)
+      status_ = MATRIX_SETUP;
   }
 
   void TrilinosSolver::setup_operator(const Teuchos::RCP<Operator>& A) {
-    TEUCHOS_ASSERT(status_ == INITIALIZED);
+    TEUCHOS_ASSERT(status_ >= INITIALIZED);
     A_ = A;
-    status_ = MATRIX_SETUP;
+    if (status_ < MATRIX_SETUP)
+      status_ = MATRIX_SETUP;
   }
 
   void TrilinosSolver::setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList) {
