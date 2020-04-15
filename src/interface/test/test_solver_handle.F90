@@ -283,6 +283,8 @@ program main
   ! Explicit setup and solve
   ! ------------------------------------------------------------------
 
+  ! Use case 1: setup and solve the problem
+
   ! Step 1: initialize a handle
   call solver_handle%init(comm); FORTRILINOS_CHECK_IERR()
 
@@ -311,8 +313,49 @@ program main
     stop 1
   end if
 
+  ! Use case 2: Reuse preconditioner with a different matrix
+  call A%resumeFill()
+  do i = 1, n
+    cols(1) = offset + i
+    vals(1) = 3.0
+    row_nnz = A%replaceGlobalValues(offset + i, cols(1:1), vals(1:1)); FORTRILINOS_CHECK_IERR()
+  end do
+  call A%fillComplete(); FORTRILINOS_CHECK_IERR()
+
+  ! Step 2a: setup the problem that has already been setup
+  call solver_handle%setup_matrix(A); FORTRILINOS_CHECK_IERR()
+
+  ! Step 4a: solve the system with the original preconditioner
+  call X%randomize()
+  ! Calculate initial residual
+  call A%apply(X, residual, TeuchosNO_TRANS, sone, szero); FORTRILINOS_CHECK_IERR()
+  call residual%update(sone, B, -sone); FORTRILINOS_CHECK_IERR()
+  call residual%norm2(norms); FORTRILINOS_CHECK_IERR()
+  r0 = norms(1)
+  call solver_handle%solve(B, X); FORTRILINOS_CHECK_IERR()
+
+  ! Check the solution
+  call A%apply(X, residual, TeuchosNO_TRANS, sone, szero); FORTRILINOS_CHECK_IERR()
+  call residual%update(sone, B, -sone); FORTRILINOS_CHECK_IERR()
+  call residual%norm2(norms); FORTRILINOS_CHECK_IERR()
+
+  if (norms(1)/r0 > tol) then
+    write(error_unit, '(A)') 'The solver did not converge to the specified residual!'
+    stop 1
+  end if
+
   ! Step 5: clean up
   call solver_handle%finalize(); FORTRILINOS_CHECK_IERR()
+
+
+  ! Change values back for implicit comparison
+  call A%resumeFill()
+  do i = 1, n
+    cols(1) = offset + i
+    vals(1) = 2.0
+    row_nnz = A%replaceGlobalValues(offset + i, cols(1:1), vals(1:1)); FORTRILINOS_CHECK_IERR()
+  end do
+  call A%fillComplete(); FORTRILINOS_CHECK_IERR()
 
   ! ------------------------------------------------------------------
   ! Implicit (inversion-of-control) setup [ no solve ]

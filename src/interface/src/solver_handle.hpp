@@ -74,10 +74,10 @@ namespace ForTrilinos {
     Teuchos::RCP<LOWS>                      thyraInverseA_;
 
     enum Status {
-      NOT_INITIALIZED,
-      INITIALIZED,
-      MATRIX_SETUP,
-      SOLVER_SETUP,
+      NOT_INITIALIZED = 0,
+      INITIALIZED = 1,
+      MATRIX_SETUP = 2,
+      SOLVER_SETUP = 3,
     } status_;
   };
 

@@ -104,6 +104,10 @@ int main(int argc, char *argv[]) {
 
     auto r0 = norms[0];
 
+    // =======================================
+    // Use case 1: setup and solve the problem
+    // =======================================
+
     // Step 1: initialize a handle
     ForTrilinos::TrilinosSolver handle;
     handle.init(comm);
@@ -123,6 +127,36 @@ int main(int argc, char *argv[]) {
     residual->norm2(norms);
 
     TEUCHOS_ASSERT(norms[0]/r0 < tol);
+
+    // ========================================================
+    // Use case 2: Reuse preconditioner with a different matrix
+    // ========================================================
+    A->resumeFill();
+    for (LO lclRow = 0; lclRow < static_cast<LO>(numMyElements); ++lclRow) {
+      const GO gblRow = rowMap->getGlobalElement (lclRow);
+
+      A->replaceGlobalValues(gblRow, tuple<GO>(gblRow), tuple<SC>(3.0));
+    }
+    A->fillComplete();
+    lhs->randomize();
+    A->apply(*lhs, *residual, Teuchos::NO_TRANS, 1., 0.);
+    residual->update(1., *rhs, -1.);
+    residual->norm2(norms);
+    r0 = norms[0];
+
+    // Step 2a: setup the problem that has already been setup
+    handle.setup_matrix(A);
+
+    // Step 4a: solve the system with the original preconditioner
+    handle.solve(rhs, lhs);
+
+    // Check the solution
+    A->apply(*lhs, *residual, Teuchos::NO_TRANS, 1., 0.);
+    residual->update(1., *rhs, -1.);
+    residual->norm2(norms);
+
+    TEUCHOS_ASSERT(norms[0]/r0 < tol);
+
 
     // Step 5: clean up
     handle.finalize();
