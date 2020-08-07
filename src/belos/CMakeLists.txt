@@ -2,26 +2,30 @@
 ##
 ## SPDX-License-Identifier: BSD-3-Clause
 ## License-Filename: LICENSE
-TRIBITS_SUBPACKAGE(Belos)
-
-##---------------------------------------------------------------------------##
-## Generate config file and add it to the list
-##---------------------------------------------------------------------------##
-TRIBITS_CONFIGURE_FILE(${PACKAGE_NAME}_config.hpp)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
-##---------------------------------------------------------------------------##
-## Add library, test, and examples.
-##---------------------------------------------------------------------------##
+IF (ForTrilinos_ENABLE_DeveloperMode)
+  IF (ForTrilinos_EXPORT_SWIG)
+    # Generate wrapper and proxy files since MPI is enabled
+    SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}/swig")
+  ENDIF()
 
-ADD_SUBDIRECTORY(src)
+  LIST(APPEND CMAKE_SWIG_FLAGS -I${CMAKE_CURRENT_SOURCE_DIR}/../../utils/src/)
+  MAKE_SWIG_FORTRAN(MODULE forbelos
+    SOURCE forbelos.i
+    EXTRASRC ${EXTRA_SOURCE}
+    )
 
-TRIBITS_ADD_TEST_DIRECTORIES(test)
+ELSE()
+  # Use pre-generated files
+  SET(GEN_SOURCE
+    swig/forbelos.F90
+    swig/forbelosFORTRAN_wrap.cxx)
 
-#TRIBITS_ADD_EXAMPLE_DIRECTORIES(example)
+  TRIBITS_ADD_LIBRARY(
+    forbelos
+    SOURCES ${GEN_SOURCE} ${EXTRA_SOURCE})
+ENDIF()
 
-##---------------------------------------------------------------------------##
-## D) Do standard postprocessing
-##---------------------------------------------------------------------------##
-
-TRIBITS_SUBPACKAGE_POSTPROCESS()
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/forbelos.mod DESTINATION include)

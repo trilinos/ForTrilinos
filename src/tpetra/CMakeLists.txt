@@ -2,63 +2,34 @@
 ##
 ## SPDX-License-Identifier: BSD-3-Clause
 ## License-Filename: LICENSE
-
-##---------------------------------------------------------------------------##
-## Define the package
-##---------------------------------------------------------------------------##
-
-TRIBITS_SUBPACKAGE(Tpetra)
-
-##---------------------------------------------------------------------------##
-## Assert that Tpetra has ETI on the required types
-##---------------------------------------------------------------------------##
-
-# Make sure that Tpetra actually defined these variables, even if they are
-# empty. This works even if ETI is off, as Tpetra defines these for running
-# tests. When ETI is off, the ForTrilinos' required combination is on.
-ASSERT_DEFINED(TpetraCore_ETI_SCALARS)
-ASSERT_DEFINED(TpetraCore_ETI_LORDS)
-ASSERT_DEFINED(TpetraCore_ETI_GORDS)
-ASSERT_DEFINED(TpetraCore_ETI_NODES)
-
-LIST (FIND TpetraCore_ETI_SCALARS "double" index)
-IF (-1 EQUAL index) # not in the list of integer types
-  MESSAGE(FATAL_ERROR "ForTrilinos requires Tpetra ETI for <double,int,long long,Kokkos::Compat::${Kokkos_NODE_TYPE}>")
-ENDIF ()
-LIST (FIND TpetraCore_ETI_LORDS "int" index)
-IF (-1 EQUAL index) # not in the list of integer types
-  MESSAGE(FATAL_ERROR "ForTrilinos requires Tpetra ETI for <double,int,long long,Kokkos::Compat::${Kokkos_NODE_TYPE}>")
-ENDIF ()
-LIST (FIND TpetraCore_ETI_GORDS "long long" index)
-IF (-1 EQUAL index) # not in the list of integer types
-  MESSAGE(FATAL_ERROR "ForTrilinos requires Tpetra ETI for <double,int,long long,Kokkos::Compat::${Kokkos_NODE_TYPE}>")
-ENDIF ()
-
-LIST (FIND TpetraCore_ETI_NODES "Kokkos::Compat::${Kokkos_NODE_TYPE}" index)
-IF (-1 EQUAL index) # not in the list of integer types
-  MESSAGE(FATAL_ERROR "ForTrilinos requires Tpetra ETI for <double,int,long long,Kokkos::Compat::${Kokkos_NODE_TYPE}>")
-ENDIF ()
-
-##---------------------------------------------------------------------------##
-## Generate config file and add it to the list
-##---------------------------------------------------------------------------##
-TRIBITS_CONFIGURE_FILE(${PACKAGE_NAME}_config.hpp)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
-##---------------------------------------------------------------------------##
-## Add library, test, and examples.
-##---------------------------------------------------------------------------##
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/ForTrilinos_DefaultNodeType.hpp.in
+  ${CMAKE_CURRENT_BINARY_DIR}/ForTrilinos_DefaultNodeType.hpp @ONLY)
+ 
+IF (ForTrilinos_ENABLE_DeveloperMode)
 
-ADD_SUBDIRECTORY(src)
+  IF (ForTrilinos_EXPORT_SWIG)
+    # Generate wrapper and proxy files since MPI is enabled
+    SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}/swig")
+  ENDIF()
 
-TRIBITS_ADD_TEST_DIRECTORIES(test)
+  LIST(APPEND CMAKE_SWIG_FLAGS -I${CMAKE_CURRENT_SOURCE_DIR}/../../utils/src/)
+  MAKE_SWIG_FORTRAN(MODULE fortpetra
+    SOURCE fortpetra.i
+    DEPLIBS ${Trilinos_LIBRARIES}
+    EXTRASRC ${EXTRA_SOURCE}
+    )
+ELSE()
+  # Use pre-generated files
+  SET(GEN_SOURCE
+    swig/fortpetra.F90
+    swig/fortpetraFORTRAN_wrap.cxx)
 
-TRIBITS_ADD_TEST_DIRECTORIES(tutorials)
+  TRIBITS_ADD_LIBRARY(
+    fortpetra
+    SOURCES ${GEN_SOURCE} ${EXTRA_SOURCE})
+ENDIF()
 
-#TRIBITS_ADD_EXAMPLE_DIRECTORIES(example)
-
-##---------------------------------------------------------------------------##
-## D) Do standard postprocessing
-##---------------------------------------------------------------------------##
-
-TRIBITS_SUBPACKAGE_POSTPROCESS()
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/fortpetra.mod DESTINATION include)
