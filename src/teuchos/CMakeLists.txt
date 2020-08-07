@@ -2,26 +2,27 @@
 ##
 ## SPDX-License-Identifier: BSD-3-Clause
 ## License-Filename: LICENSE
-TRIBITS_SUBPACKAGE(Teuchos)
-
-##---------------------------------------------------------------------------##
-## Generate config file and add it to the list
-##---------------------------------------------------------------------------##
-TRIBITS_CONFIGURE_FILE(${PACKAGE_NAME}_config.hpp)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
-##---------------------------------------------------------------------------##
-## Add library, test, and examples.
-##---------------------------------------------------------------------------##
+IF (ForTrilinos_ENABLE_DeveloperMode)
+  IF (ForTrilinos_EXPORT_SWIG)
+    # Generate wrapper and proxy files since MPI is enabled
+    SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}/swig")
+  ENDIF()
 
-ADD_SUBDIRECTORY(src)
+  MAKE_SWIG_FORTRAN(MODULE forteuchos
+    SOURCE forteuchos.i
+    )
+ELSE()
+  # Use pre-generated files
+  SET(GEN_SOURCE
+    swig/forteuchos.F90
+    swig/forteuchosFORTRAN_wrap.cxx)
 
-TRIBITS_ADD_TEST_DIRECTORIES(test)
+  TRIBITS_ADD_LIBRARY(
+    forteuchos
+    SOURCES ${GEN_SOURCE})
+ENDIF()
 
-#TRIBITS_ADD_EXAMPLE_DIRECTORIES(example)
-
-##---------------------------------------------------------------------------##
-## D) Do standard postprocessing
-##---------------------------------------------------------------------------##
-
-TRIBITS_SUBPACKAGE_POSTPROCESS()
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/forteuchos.mod DESTINATION include)

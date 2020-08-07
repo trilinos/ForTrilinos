@@ -2,26 +2,35 @@
 ##
 ## SPDX-License-Identifier: BSD-3-Clause
 ## License-Filename: LICENSE
-TRIBITS_SUBPACKAGE(Utils)
-
-##---------------------------------------------------------------------------##
-## Generate config file and add it to the list
-##---------------------------------------------------------------------------##
-TRIBITS_CONFIGURE_FILE(${PACKAGE_NAME}_config.hpp)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
-##---------------------------------------------------------------------------##
-## Add library, test, and examples.
-##---------------------------------------------------------------------------##
+IF (ForTrilinos_ENABLE_DeveloperMode)
+  IF (ForTrilinos_EXPORT_SWIG)
+    # Generate wrapper and proxy files since MPI is enabled
+    SET(CMAKE_SWIG_OUTDIR "${CMAKE_CURRENT_SOURCE_DIR}/swig")
+  ENDIF()
 
-ADD_SUBDIRECTORY(src)
+  MAKE_SWIG_FORTRAN(MODULE forerror
+    SOURCE forerror.i
+    EXTRASRC ${EXTRA_SOURCE}
+    )
+ELSE()
+  # Use pre-generated files
+  SET(GEN_SOURCE
+    swig/forerror.F90
+    swig/forerrorFORTRAN_wrap.cxx)
 
-# TRIBITS_ADD_TEST_DIRECTORIES(test)
+  TRIBITS_ADD_LIBRARY(
+    forerror
+    SOURCES ${GEN_SOURCE})
+ENDIF()
 
-#TRIBITS_ADD_EXAMPLE_DIRECTORIES(example)
+TRIBITS_ADD_LIBRARY(
+  forutils
+  NOINSTALLHEADERS FortranTestUtilities.h
+  SOURCES fortest.F90
+  DEPLIBS forerror
+)
 
-##---------------------------------------------------------------------------##
-## D) Do standard postprocessing
-##---------------------------------------------------------------------------##
-
-TRIBITS_SUBPACKAGE_POSTPROCESS()
+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/ForTrilinos.h DESTINATION include)
