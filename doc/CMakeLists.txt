@@ -2,9 +2,9 @@
 ##
 ## SPDX-License-Identifier: BSD-3-Clause
 ## License-Filename: LICENSE
-FIND_PACKAGE(Sphinx REQUIRED)
+find_package(Sphinx REQUIRED)
 
-ADD_CUSTOM_TARGET(docs ALL
+add_custom_target(docs ALL
     ${SPHINX_EXECUTABLE}
         -q -b html
         "${CMAKE_CURRENT_SOURCE_DIR}/source"
@@ -12,6 +12,6 @@ ADD_CUSTOM_TARGET(docs ALL
     COMMENT "Building HTML documentation with Sphinx"
 )
 
-INSTALL(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/html"
+install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/html"
     DESTINATION "${CMAKE_INSTALL_PREFIX}/docs"
 )
