@@ -43,7 +43,7 @@ namespace ForTrilinos {
         // Create the NOX::Thyra::Group
         nox_group = rcp(new NOX::Thyra::Group(*(model_->initial_guess), model_,
                                               model_->create_W_op(), model_->lows_factory,
-                                              Teuchos::null, Teuchos::null));
+                                              Teuchos::null, Teuchos::null, Teuchos::null));
 
       }
       else {
@@ -67,7 +67,7 @@ namespace ForTrilinos {
 
           // Create the NOX::Thyra::Group
           nox_group = rcp(new NOX::Thyra::Group(*(model_->initial_guess), thyra_model, jfnk_op,
-                                                model_->lows_factory, prec_op, Teuchos::null));
+                                                model_->lows_factory, prec_op, Teuchos::null, Teuchos::null));
 
         }
       }
@@ -76,7 +76,7 @@ namespace ForTrilinos {
       // Default to Analytic Jacobian
       nox_group = rcp(new NOX::Thyra::Group(*(model_->initial_guess), model_,
                                             model_->create_W_op(), model_->lows_factory,
-                                            Teuchos::null, Teuchos::null));
+                                            Teuchos::null, Teuchos::null, Teuchos::null));
     }
 
     if (nox_group.is_null())
