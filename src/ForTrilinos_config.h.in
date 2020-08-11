@@ -1,0 +1,21 @@
+/*
+ * Copyright 2017-2020, UT-Battelle, LLC
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * License-Filename: LICENSE
+ */
+#ifndef FORTRILINOS_CONFIG_H
+#define FORTRILINOS_CONFIG_H
+
+#cmakedefine01 FORTRILINOS_USE_MPI
+#cmakedefine01 FORTRILINOS_USE_BELOS
+#cmakedefine01 FORTRILINOS_USE_TPETRA
+#cmakedefine01 FORTRILINOS_USE_ANASAZI
+#cmakedefine01 FORTRILINOS_USE_NOX
+#cmakedefine01 FORTRILINOS_USE_STRATIMIKOS
+#cmakedefine01 FORTRILINOS_USE_THYRA
+#cmakedefine01 FORTRILINOS_USE_THYRATPETRA
+#cmakedefine01 FORTRILINOS_USE_IFPACK2
+#cmakedefine01 FORTRILINOS_USE_MUELU
+
+#endif /* FORTRILINOS_CONFIG_H */

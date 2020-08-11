@@ -1,24 +1,15 @@
-## Copyright 2017-2018, UT-Battelle, LLC
-##
-## SPDX-License-Identifier: BSD-3-Clause
-## License-Filename: LICENSE
+#---------------------------------*-CMake-*----------------------------------#
+# Copyright 2020 UT-Battelle, LLC
+# License-Filename: LICENSE
+# SPDX-License-Identifier: BSD-3-Clause
+#----------------------------------------------------------------------------#
 
-##---------------------------------------------------------------------------##
-## TESTS
-##---------------------------------------------------------------------------##
+function(fortrilinos_add_example target)
+  add_executable("${target}" ${ARGN})
+  target_link_libraries("${target}" ForTrilinos::ForTrilinos)
+endfunction()
 
-SET(TESTS
-  PowerMethod.F90
-  MapsAndVectors.F90
-  )
+fortrilinos_add_example(maps-and-vectors MapsAndVectors.F90)
+fortrilinos_add_example(power-method PowerMethod.F90)
 
-FOREACH(test ${TESTS})
-    GET_FILENAME_COMPONENT(name ${test} NAME_WE)
-    TRIBITS_ADD_EXECUTABLE_AND_TEST(
-        ${name}
-        SOURCES ${test}
-        LINKER_LANGUAGE Fortran
-        COMM serial mpi
-        NUM_MPI_PROCS 4
-    )
-ENDFOREACH()
+#---------------------------------------------------------------------------##
