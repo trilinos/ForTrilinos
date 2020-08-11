@@ -6,7 +6,7 @@
 ! Routines for creating matrices for testing
 ! Functions would be more elegant, but rcp errors occurred
 !
-#include "ForTrilinosTpetra_config.hpp"
+#include "ForTrilinos_config.h"
 module test_Tpetra_crsgraph_helper
   use iso_fortran_env
   use, intrinsic :: iso_c_binding

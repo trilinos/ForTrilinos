@@ -4,7 +4,7 @@
 ! License-Filename: LICENSE
 program main
 
-#include "ForTrilinosBelos_config.hpp"
+#include "ForTrilinos_config.h"
 
   use ISO_FORTRAN_ENV
   implicit none

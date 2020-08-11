@@ -9,7 +9,7 @@
 ! SPDX-License-Identifier: BSD-3-Clause
 ! License-Filename: LICENSE
 
-module fortrilinos
+module fortrilinos_hl
  use, intrinsic :: ISO_C_BINDING
  use forerror
  use forteuchos

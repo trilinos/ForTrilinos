@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
  */
-%module fortrilinos
+%module fortrilinos_hl
 
 %include <copyright.i>
 %include <extern_forerror.i>
@@ -28,8 +28,8 @@ typedef char                                    Packet;
 
 // Generate wrappers
 %{
-#include "solver_handle.hpp"
-#include "eigen_handle.hpp"
+#include "fortrilinos_hl/solver_handle.hpp"
+#include "fortrilinos_hl/eigen_handle.hpp"
 %}
 
 %include "solver_handle.hpp"

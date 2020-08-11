@@ -8,7 +8,7 @@
 %include <boost_shared_ptr.i>
 
 %{
-#include "model_evaluator.hpp"
+#include "fortrilinos_hl/model_evaluator.hpp"
 %}
 
 %include "model_evaluator.hpp"
@@ -385,7 +385,7 @@ end subroutine
 %include "NOX_StatusTest_Generic.H"
 
 %{
-#include "nox_solver.hpp"
+#include "fortrilinos_hl/nox_solver.hpp"
 %}
 
 %include "nox_solver.hpp"

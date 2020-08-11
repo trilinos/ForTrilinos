@@ -11,7 +11,7 @@
 
 #include <iostream>
 
-#include "eigen_handle.hpp"
+#include "fortrilinos_hl/eigen_handle.hpp"
 
 int main(int argc, char *argv[]) {
   bool success = false;

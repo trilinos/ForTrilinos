@@ -291,8 +291,8 @@ typedef ForTrilinos::DefaultNodeType            NO;
 typedef char                                    Packet;
 
 
-#include "solver_handle.hpp"
-#include "eigen_handle.hpp"
+#include "fortrilinos_hl/solver_handle.hpp"
+#include "fortrilinos_hl/eigen_handle.hpp"
 
 
 struct SwigClassWrapper {
@@ -439,7 +439,7 @@ SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
 }
 
 
-#include "model_evaluator.hpp"
+#include "fortrilinos_hl/model_evaluator.hpp"
 
 
 extern "C" {
@@ -610,7 +610,7 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
 #include "NOX_StatusTest_Generic.H"
 
 
-#include "nox_solver.hpp"
+#include "fortrilinos_hl/nox_solver.hpp"
 
 extern "C" {
 SWIGEXPORT SwigClassWrapper _wrap_new_TrilinosSolver() {
