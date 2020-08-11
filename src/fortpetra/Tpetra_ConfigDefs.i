@@ -35,7 +35,7 @@ namespace Kokkos {
 
 //---------------------------------------------------------------------------//
 %{
-#include "Tpetra_ConfigDefs.hpp"
+#include <Tpetra_ConfigDefs.hpp>
 %}
 
 // ignore these defines from TpetraCore_config.h
@@ -53,7 +53,7 @@ namespace Kokkos {
 
 //---------------------------------------------------------------------------//
 %{
-#include "Tpetra_CombineMode.hpp"
+#include <Tpetra_CombineMode.hpp>
 %}
 
 %include "Tpetra_CombineMode.hpp"

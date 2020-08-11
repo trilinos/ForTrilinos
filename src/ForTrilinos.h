@@ -3,8 +3,8 @@
 !
 ! SPDX-License-Identifier: BSD-3-Clause
 ! License-Filename: LICENSE
-#ifndef FORTILINOS_H
-#define FORTILINOS_H
+#ifndef FORTRILINOS_H
+#define FORTRILINOS_H
 
 use forerror
 

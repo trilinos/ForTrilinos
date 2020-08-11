@@ -4,7 +4,7 @@
 ! Do not make changes to this file unless you know what you are doing--modify
 ! the SWIG interface file instead.
 
-! Copyright 2017-2018, UT-Battelle, LLC
+! Copyright 2017-2020, UT-Battelle, LLC
 !
 ! SPDX-License-Identifier: BSD-3-Clause
 ! License-Filename: LICENSE

@@ -6,16 +6,16 @@
  */
 #include "model_evaluator.hpp"
 
-#include "Teuchos_AbstractFactoryStd.hpp"
+#include <Teuchos_AbstractFactoryStd.hpp>
 
 // Thyra support
-#include "Thyra_DefaultSpmdVectorSpace.hpp"
-#include "Thyra_DefaultSerialDenseLinearOpWithSolveFactory.hpp"
-#include "Thyra_DetachedMultiVectorView.hpp"
-#include "Thyra_DetachedVectorView.hpp"
-#include "Thyra_MultiVectorStdOps.hpp"
-#include "Thyra_VectorStdOps.hpp"
-#include "Thyra_PreconditionerBase.hpp"
+#include <Thyra_DefaultSpmdVectorSpace.hpp>
+#include <Thyra_DefaultSerialDenseLinearOpWithSolveFactory.hpp>
+#include <Thyra_DetachedMultiVectorView.hpp>
+#include <Thyra_DetachedVectorView.hpp>
+#include <Thyra_MultiVectorStdOps.hpp>
+#include <Thyra_VectorStdOps.hpp>
+#include <Thyra_PreconditionerBase.hpp>
 
 #include <BelosTypes.hpp>
 #include <Stratimikos_DefaultLinearSolverBuilder.hpp>
@@ -23,10 +23,10 @@
 #include <Thyra_Ifpack2PreconditionerFactory.hpp>
 
 // Tpetra support
-#include "Thyra_TpetraThyraWrappers.hpp"
+#include <Thyra_TpetraThyraWrappers.hpp>
 
 // Kokkos support
-#include "Kokkos_Core.hpp"
+#include <Kokkos_Core.hpp>
 
 namespace ForTrilinos {
 

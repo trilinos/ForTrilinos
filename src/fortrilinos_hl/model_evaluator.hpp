@@ -7,7 +7,7 @@
 #ifndef FORTRILINOS_MODEL_EVALUATOR_HPP
 #define FORTRILINOS_MODEL_EVALUATOR_HPP
 
-#include "ForTrilinosInterface_config.hpp"
+#include "ForTrilinos_config.h"
 
 #include <Thyra_StateFuncModelEvaluatorBase.hpp>
 

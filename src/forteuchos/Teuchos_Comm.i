@@ -5,13 +5,13 @@
  * License-Filename: LICENSE
  */
 %{
-#include "Teuchos_Comm.hpp"
-#ifdef HAVE_MPI
+#include <Teuchos_Comm.hpp>
+#if FORTRILINOS_USE_MPI
 # include "Teuchos_DefaultMpiComm.hpp"
 #else
   typedef int MPI_Comm;
 #endif
-#include "Teuchos_DefaultSerialComm.hpp"
+#include <Teuchos_DefaultSerialComm.hpp>
 %}
 
 %include <typemaps.i>
@@ -29,14 +29,14 @@
 }
 
 %typemap(in, noblock=1) MPI_Comm {
-%#ifdef HAVE_MPI
+%#if FORTRILINOS_USE_MPI
     $1 = MPI_Comm_f2c(%static_cast(*$input, MPI_Fint));
 %#else
     $1 = *$input;
 %#endif
 }
 %typemap(out, noblock=1) MPI_Comm {
-%#ifdef HAVE_MPI
+%#if FORTRILINOS_USE_MPI
     $result = %static_cast(MPI_Comm_c2f($1), int);
 %#else
     $result = $1;
@@ -65,7 +65,7 @@ class Comm
     // Add constructors
   %extend {
     Comm(MPI_Comm rawMpiComm) {
-%#ifdef HAVE_MPI
+%#if FORTRILINOS_USE_MPI
       return new Teuchos::MpiComm<Ordinal>(rawMpiComm);
 %#else
       throw std::runtime_error("MPI based constructor cannot be called when MPI is not enabled.");
@@ -73,7 +73,7 @@ class Comm
     }
 
     Comm() {
-%#ifdef HAVE_MPI
+%#if FORTRILINOS_USE_MPI
       return new Teuchos::MpiComm<Ordinal>(MPI_COMM_WORLD);
 %#else
       return new Teuchos::SerialComm<Ordinal>();
@@ -81,7 +81,7 @@ class Comm
     }
 
     MPI_Comm getRawMpiComm() {
-%#ifdef HAVE_MPI
+%#if FORTRILINOS_USE_MPI
       Teuchos::MpiComm<Ordinal>& comm = dynamic_cast<Teuchos::MpiComm<Ordinal>&>(*$self);
       return *comm.getRawMpiComm();
 %#else

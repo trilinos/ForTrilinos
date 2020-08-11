@@ -30,13 +30,13 @@ module fortest
 ! integers.  To circumvent this problem, macros <KIND>_IS_NOT_SAME_AS_LONG
 ! protect interfaces from multiply defining functions.
 
-#include "ForTrilinosUtils_config.hpp"
+#include "ForTrilinos_config.h"
 use forerror
 
 use iso_c_binding
 use iso_fortran_env
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
 use mpi
 #endif
 
@@ -140,14 +140,14 @@ contains
     logical, intent(in) :: local_success
     logical, intent(out) :: global_success
     integer :: local_error(1), global_error(1)
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
     integer ierror
 #endif
     ! ------------------------------------------------------------------------ !
 
     local_error(1) = merge(0, 1, local_success)
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
     call MPI_Allreduce(local_error, global_error, 1, &
                        MPI_INTEGER, MPI_MAX, MPI_COMM_WORLD, ierror)
 #else
@@ -169,7 +169,7 @@ contains
     ! Setup module variables for the test.  This should be called once at the
     ! beginning of a test program
     ! ------------------------------------------------------------------------ !
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
     integer :: ierror
 #endif
     ! ------------------------------------------------------------------------ !
@@ -183,7 +183,7 @@ contains
     total_tests = 0
 
     ! Initialize MPI
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
     ierror = 0
     call MPI_Init(ierror); \
     call MPI_Comm_Rank(MPI_COMM_WORLD, comm_rank, ierror)
@@ -202,7 +202,7 @@ contains
     ! ------------------------------------------------------------------------ !
     ! Tears down the test program.  For MPI builds, MPI_Finalize is called.
     ! ------------------------------------------------------------------------ !
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
     integer :: ierror
 #endif
     character(len=45) :: str
@@ -213,7 +213,7 @@ contains
       write(str, '(I3,A,I3,A)') failed_tests, " of ", total_tests, " tests FAILED"; \
     end if
     if (comm_rank == 0) write(0, '(A)') str
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
     call MPI_Finalize(ierror)
 #endif
     if (failed_tests > 0) then
@@ -245,13 +245,13 @@ contains
     character(len=*), intent(in) :: test_name
     logical, intent(in) :: success
     integer :: local_error(1), global_error(1)
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
     integer ierror
 #endif
     ! ------------------------------------------------------------------------ !
     local_error(1) = merge(0, 1, success)
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
     call MPI_Allreduce(local_error, global_error, 1, &
                        MPI_INTEGER, MPI_MAX, MPI_COMM_WORLD, ierror)
 #else

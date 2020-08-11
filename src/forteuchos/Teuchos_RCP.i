@@ -5,7 +5,7 @@
  * License-Filename: LICENSE
  */
 %{
-#include "Teuchos_RCP.hpp"
+#include <Teuchos_RCP.hpp>
 %}
 
 #define SWIG_SHARED_PTR_NAMESPACE Teuchos

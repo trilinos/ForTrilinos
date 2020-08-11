@@ -149,13 +149,13 @@ end module
 
 program main
 
-#include "ForTrilinosInterface_config.hpp"
+#include "ForTrilinos_config.h"
 #include "ForTrilinos.h"
 
   use ISO_FORTRAN_ENV
   use, intrinsic :: ISO_C_BINDING
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
   use mpi
 #endif
 
@@ -193,7 +193,7 @@ program main
 
   n = 10
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
   ! Initialize MPI subsystem
   call MPI_INIT(ierr)
   if (ierr /= 0) then
@@ -424,7 +424,7 @@ program main
   deallocate(lhs)
   deallocate(rhs)
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
   ! Finalize MPI must be called after releasing all handles
   call MPI_FINALIZE(ierr)
 #endif

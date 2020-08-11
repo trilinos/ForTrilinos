@@ -18,4 +18,4 @@
 #define SWIG_FORTRAN_ERROR_STR fortrilinos_get_serr
 
 %include <extern_exception.i>
-%import "forerror.i"
+%import "forerror/forerror.i"

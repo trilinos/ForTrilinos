@@ -18,7 +18,7 @@ program test_TpetraMultiVector
 
   SETUP_TEST()
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
   comm = TeuchosComm(MPI_COMM_WORLD); FORTRILINOS_CHECK_IERR()
 #else
   comm = TeuchosComm(); FORTRILINOS_CHECK_IERR()

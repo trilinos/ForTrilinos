@@ -375,7 +375,7 @@ end subroutine
 %rename("NOX%s", %$isenum)     "";
 
 %{
-#include "NOX_StatusTest_Generic.H"
+#include <NOX_StatusTest_Generic.H>
 %}
 
 %ignore NOX::Solver::Generic;

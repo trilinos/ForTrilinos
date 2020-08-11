@@ -5,12 +5,9 @@
  * License-Filename: LICENSE
  */
 
-// Dependencies
-%include "Teuchos_RCP.i"
-
 %{
-#include "Tpetra_Import.hpp"
-#include "Tpetra_Export.hpp"
+#include <Tpetra_Import.hpp>
+#include <Tpetra_Export.hpp>
 %}
 
 // =======================================================================

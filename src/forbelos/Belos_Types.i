@@ -4,7 +4,7 @@
  * License-Filename: LICENSE
  */
 %{
-#include "BelosTypes.hpp"
+#include <BelosTypes.hpp>
 %}
 
 %ignore Belos::toString;

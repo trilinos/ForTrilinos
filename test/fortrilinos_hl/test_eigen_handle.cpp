@@ -15,8 +15,7 @@
 
 #include <iostream>
 
-#include "fortrilinos_hl/eigen_handle.hpp"
-#include "ForTrilinos_DefaultNodeType.hpp"
+#include "fortpetra/ForTrilinos_DefaultNodeType.hpp"
 
 int main(int argc, char *argv[]) {
   bool success = false;

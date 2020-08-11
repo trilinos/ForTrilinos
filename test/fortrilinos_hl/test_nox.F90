@@ -6,13 +6,13 @@
 
 program main
   ! -------------------------------------------------------------------------- !
-#include "ForTrilinosInterface_config.hpp"
+#include "ForTrilinos_config.h"
 #include "ForTrilinos.h"
   use ISO_FORTRAN_ENV
   use, intrinsic :: ISO_C_BINDING
   use fortrilinos_hl
   use forteuchos
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
   use mpi
 #endif
   implicit none
@@ -21,7 +21,7 @@ program main
   type(ParameterList) :: params
   ! -------------------------------------------------------------------------- !
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
   ! Initialize MPI subsystem
   call MPI_INIT(ierr)
   if (ierr /= 0) then

@@ -6,10 +6,10 @@
  */
 %module fortpetra
 
-%include <copyright.i>
-%include <extern_forerror.i>
+%include "fortrilinos_copyright.i"
+%include "forerror/extern_forerror.i"
 
-%import <forteuchos.i>
+%import "forteuchos/forteuchos.i"
 
 // Hide functions that use any unknown types (Kokkos, std::ostream, etc.)
 %fortranonlywrapped;
@@ -29,8 +29,8 @@ struct DefaultNodeType {
 }
 
 %{
-#include "Kokkos_DefaultNode.hpp"
-#include "ForTrilinos_DefaultNodeType.hpp"
+#include <Kokkos_DefaultNode.hpp>
+#include "fortpetra/ForTrilinos_DefaultNodeType.hpp"
 %}
 %inline %{
 typedef double                                  SC;

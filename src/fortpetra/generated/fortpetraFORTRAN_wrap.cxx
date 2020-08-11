@@ -286,8 +286,8 @@ enum AssignmentType {
 #define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
 
 
-#include "Kokkos_DefaultNode.hpp"
-#include "ForTrilinos_DefaultNodeType.hpp"
+#include <Kokkos_DefaultNode.hpp>
+#include "fortpetra/ForTrilinos_DefaultNodeType.hpp"
 
 
 typedef double                                  SC;
@@ -297,10 +297,10 @@ typedef ForTrilinos::DefaultNodeType            NO;
 typedef char                                    Packet;
 
 
-#include "Tpetra_ConfigDefs.hpp"
+#include <Tpetra_ConfigDefs.hpp>
 
 
-#include "Tpetra_CombineMode.hpp"
+#include <Tpetra_CombineMode.hpp>
 
 
 struct SwigClassWrapper {
@@ -345,8 +345,7 @@ SWIGINTERN SwigArrayWrapper SwigArrayWrapper_uninitialized() {
 #include <string.h>
 
 
-#include "Teuchos_RCP.hpp"
-#include "Tpetra_Map.hpp"
+#include <Tpetra_Map.hpp>
 
 
 #define SWIG_NO_NULL_DELETER_0 , Teuchos::RCP_WEAK_NO_DEALLOC
@@ -460,8 +459,8 @@ SWIGINTERN void SWIG_assign(SwigClassWrapper* self, SwigClassWrapper other) {
 }
 
 
-#include "Tpetra_Import.hpp"
-#include "Tpetra_Export.hpp"
+#include <Tpetra_Import.hpp>
+#include <Tpetra_Export.hpp>
 
 SWIGINTERN size_t Tpetra_Import_Sl_LO_Sc_GO_Sc_NO_Sg__getNumSameIDs(Tpetra::Import< LO,GO,NO > const *self){
     return self->getNumSameIDs();
@@ -500,7 +499,7 @@ SWIGINTERN Teuchos::RCP< Tpetra::Export< int,long long,ForTrilinos::DefaultNodeT
     return self->getTargetMap();
   }
 
-#include "Tpetra_MultiVector.hpp"
+#include <Tpetra_MultiVector.hpp>
 
 
 #include <type_traits>
@@ -518,7 +517,7 @@ SWIGINTERN void Tpetra_MultiVector_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__doExport__SWIG_1(
       self->doExport(source, importer, CM);
     }
 
-#include "Tpetra_Operator.hpp"
+#include <Tpetra_Operator.hpp>
 
 
 extern "C" {
@@ -615,7 +614,7 @@ SwigClassWrapper swigd_ForTpetraOperator_getRangeMap(
   };
 
 
-#include "Tpetra_CrsGraph.hpp"
+#include <Tpetra_CrsGraph.hpp>
 
 SWIGINTERN void Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__getNodeRowPtrs(Tpetra::CrsGraph< LO,GO,NO > const *self,Teuchos::ArrayView< std::size_t > rowPointers){
       auto rowPointersArrayRCP = self->getNodeRowPtrs();
@@ -644,7 +643,7 @@ SWIGINTERN void Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__doExport__SWIG_1(Tpetra::C
       self->doExport(source, importer, CM);
     }
 
-#include "Tpetra_CrsMatrix.hpp"
+#include <Tpetra_CrsMatrix.hpp>
 
 SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getAllValues(Tpetra::CrsMatrix< SC,LO,GO,NO > const *self,Teuchos::ArrayView< std::size_t > rowPointers,Teuchos::ArrayView< LO > columnIndices,Teuchos::ArrayView< SC > values){
       Teuchos::ArrayRCP<const size_t> rowPointersArrayRCP;
@@ -664,7 +663,7 @@ SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getAllValues(Tpetra
       }
     }
 
-#include "Tpetra_CrsMatrix.hpp"
+#include <Tpetra_CrsMatrix.hpp>
 
 
 namespace ForTrilinos {
@@ -687,8 +686,8 @@ namespace ForTrilinos {
 #include "MatrixMarket_Tpetra.hpp"
 
 
-#include "Teuchos_RCP.hpp"
-#include "TpetraExt_MatrixMatrix.hpp"
+#include <Teuchos_RCP.hpp>
+#include <TpetraExt_MatrixMatrix.hpp>
 
 extern "C" {
 SWIGEXPORT void _wrap_setCombineModeParameter(SwigClassWrapper const *farg1, SwigArrayWrapper *farg2) {

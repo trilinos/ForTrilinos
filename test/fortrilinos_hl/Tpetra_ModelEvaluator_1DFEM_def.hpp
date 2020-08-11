@@ -8,7 +8,7 @@
 #define FORTRILINOS_TPETRA_MODELEVALUATOR_1DFEM_DEF_HPP
 
 // Kokkos support
-#include "Kokkos_Core.hpp"
+#include <Kokkos_Core.hpp>
 
 // Nonmember constuctors
 

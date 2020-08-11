@@ -6,17 +6,17 @@
  */
 %module fortrilinos_hl
 
-%include <copyright.i>
-%include <extern_forerror.i>
+%include "fortrilinos_copyright.i"
+%include "forerror/extern_forerror.i"
 
-%import <forteuchos.i>
-%import <fortpetra.i>
+%import "forteuchos/forteuchos.i"
+%import "fortpetra/fortpetra.i"
 
-%include "ForTrilinosInterface_config.hpp"
+%include "ForTrilinos_config.h"
 
 %{
-#include "Kokkos_DefaultNode.hpp"
-#include "ForTrilinos_DefaultNodeType.hpp"
+#include <Kokkos_DefaultNode.hpp>
+#include "fortpetra/ForTrilinos_DefaultNodeType.hpp"
 %}
 %inline %{
 typedef double                                  SC;

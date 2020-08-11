@@ -5,7 +5,7 @@
  * License-Filename: LICENSE
  */
 %{
-#include "Teuchos_ParameterList.hpp"
+#include <Teuchos_ParameterList.hpp>
 %}
 
 %include <std_string.i>

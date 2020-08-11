@@ -7,15 +7,15 @@
 #ifndef FORTRILINOS_TPETRA_MODELEVALUATOR_1DFEM_HPP
 #define FORTRILINOS_TPETRA_MODELEVALUATOR_1DFEM_HPP
 
-#include "Tpetra_Map.hpp"
-#include "Tpetra_Vector.hpp"
-#include "Tpetra_MultiVector.hpp"
-#include "Tpetra_Import.hpp"
-#include "Tpetra_CrsGraph.hpp"
-#include "Tpetra_CrsMatrix.hpp"
-#include "Teuchos_TimeMonitor.hpp"
+#include <Tpetra_Map.hpp>
+#include <Tpetra_Vector.hpp>
+#include <Tpetra_MultiVector.hpp>
+#include <Tpetra_Import.hpp>
+#include <Tpetra_CrsGraph.hpp>
+#include <Tpetra_CrsMatrix.hpp>
+#include <Teuchos_TimeMonitor.hpp>
 
-#include "model_evaluator.hpp"
+#include "fortrilinos_hl/model_evaluator.hpp"
 
 template<class SC, class LO, class GO, class NO>
 class TpetraModelEvaluator1DFEM;

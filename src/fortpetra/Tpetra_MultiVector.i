@@ -5,12 +5,8 @@
  * License-Filename: LICENSE
  */
 
-// Dependencies
-%include "Teuchos_RCP.i"
-%import <Teuchos_Comm.i>
-
 %{
-#include "Tpetra_MultiVector.hpp"
+#include <Tpetra_MultiVector.hpp>
 %}
 
 // Treat array RCP return values as array views

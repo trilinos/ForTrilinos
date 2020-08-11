@@ -5,7 +5,7 @@
  * License-Filename: LICENSE
  */
 %{
-#include "Teuchos_Exceptions.hpp"
+#include <Teuchos_Exceptions.hpp>
 %}
 
 %ignore Teuchos::ExceptionBase;
