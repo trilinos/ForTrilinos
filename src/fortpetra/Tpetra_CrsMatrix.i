@@ -5,12 +5,8 @@
  * License-Filename: LICENSE
  */
 
-// Dependencies
-%include "Teuchos_RCP.i"
-%import <Teuchos_Comm.i>
-
 %{
-#include "Tpetra_CrsMatrix.hpp"
+#include <Tpetra_CrsMatrix.hpp>
 %}
 
 // =======================================================================
@@ -126,7 +122,7 @@
 
 // Operator to Matrix conversion
 %{
-#include "Tpetra_CrsMatrix.hpp"
+#include <Tpetra_CrsMatrix.hpp>
 %}
 %inline %{
 namespace ForTrilinos {

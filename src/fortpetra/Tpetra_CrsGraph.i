@@ -5,12 +5,8 @@
  * License-Filename: LICENSE
  */
 
-// Dependencies
-%include "Teuchos_RCP.i"
-%import <Teuchos_Comm.i>
-
 %{
-#include "Tpetra_CrsGraph.hpp"
+#include <Tpetra_CrsGraph.hpp>
 %}
 
 %ignore Tpetra::Details::HasDeprecatedMethods2630_WarningThisClassIsNotForUsers;

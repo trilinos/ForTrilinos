@@ -14,10 +14,10 @@
 #include <AnasaziBasicEigenproblem.hpp>
 #include <AnasaziFactory.hpp>
 
-#ifdef HAVE_FORTRILINOSINTERFACE_IFPACK2
+#if FORTRILINOS_USE_IFPACK2
 #include <Ifpack2_Factory.hpp>
 #endif
-#ifdef HAVE_FORTRILINOSINTERFACE_MUELU
+#if FORTRILINOS_USE_MUELU
 #include <MueLu_CreateTpetraPreconditioner.hpp>
 #endif
 
@@ -78,7 +78,7 @@ namespace ForTrilinos {
 
       auto prec_type = paramList->get<std::string>("Preconditioner Type");
       if (prec_type != "MueLu") {
-#ifdef HAVE_FORTRILINOSINTERFACE_IFPACK2
+#if FORTRILINOS_USE_IFPACK2
         // Assume Ifpack2 type if not multigrid
         auto prec = Ifpack2::Factory::create(prec_type, A);
         if (paramList->isSublist(prec_type))
@@ -93,7 +93,7 @@ namespace ForTrilinos {
             "Cannot create Ifpack2 preconditioner as Ifpack2 is not enabled");
 #endif
       } else {
-#ifdef HAVE_FORTRILINOSINTERFACE_MUELU
+#if FORTRILINOS_USE_MUELU
         Teuchos::ParameterList dummyList;
         auto prec = MueLu::CreateTpetraPreconditioner(A_,
             (paramList->isSublist(prec_type) ? paramList->sublist(prec_type) : dummyList));

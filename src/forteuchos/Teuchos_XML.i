@@ -5,7 +5,7 @@
  * License-Filename: LICENSE
  */
 %{
-#include "Teuchos_XMLParameterListCoreHelpers.hpp"
+#include <Teuchos_XMLParameterListCoreHelpers.hpp>
 %}
 
 %inline %{

@@ -9,7 +9,7 @@
  * ----------------------------------------------------------------------------- */
 
 /*
- * Copyright 2017-2018, UT-Battelle, LLC
+ * Copyright 2017-2020, UT-Battelle, LLC
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
@@ -254,7 +254,7 @@ enum AssignmentType {
 #include <string>
 
 
-#include "BelosTypes.hpp"
+#include <BelosTypes.hpp>
 
 
 #include <stdlib.h>

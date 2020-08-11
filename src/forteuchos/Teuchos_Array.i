@@ -5,7 +5,7 @@
  * License-Filename: LICENSE
  */
 %{
-#include "Teuchos_Array.hpp"
+#include <Teuchos_Array.hpp>
 %}
 
 // Include typemap for const array references

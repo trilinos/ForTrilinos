@@ -6,8 +6,8 @@
  */
 %module forteuchos
 
-%include <copyright.i>
-%include <extern_forerror.i>
+%include "fortrilinos_copyright.i"
+%include "forerror/extern_forerror.i"
 
 // Convert all std::string references/values to and from Fortran strings
 %include <std_string.i>
@@ -19,7 +19,10 @@
 // By default, wrap all constants as Fortran literals
 %fortranconst;
 
-%include "ForTrilinosTeuchos_config.hpp"
+%{
+#include "ForTrilinos_config.h"
+%}
+%include "ForTrilinos_config.h"
 
 // Typedefs
 typedef int Teuchos_Ordinal;

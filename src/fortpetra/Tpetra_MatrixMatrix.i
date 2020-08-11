@@ -5,11 +5,9 @@
  * License-Filename: LICENSE
  */
 
-%import <std_string.i>
-
 %{
-#include "Teuchos_RCP.hpp"
-#include "TpetraExt_MatrixMatrix.hpp"
+#include <Teuchos_RCP.hpp>
+#include <TpetraExt_MatrixMatrix.hpp>
 %}
 
 // =======================================================================

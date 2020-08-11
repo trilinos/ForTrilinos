@@ -7,10 +7,12 @@
 #ifndef FORTRILINOS_EIGEN_HANDLE_HPP
 #define FORTRILINOS_EIGEN_HANDLE_HPP
 
-#include "ForTrilinosInterface_config.hpp"
+#include "ForTrilinos_config.h"
 
-#include "Kokkos_DefaultNode.hpp"
-#include "ForTrilinos_DefaultNodeType.hpp"
+#include <utility>
+
+#include <Kokkos_DefaultNode.hpp>
+#include "fortpetra/ForTrilinos_DefaultNodeType.hpp"
 
 #include <Teuchos_Comm.hpp>
 #include <Teuchos_ParameterList.hpp>
@@ -21,7 +23,6 @@
 
 #include <AnasaziSolverManager.hpp>
 
-#include <utility>
 
 namespace ForTrilinos {
 

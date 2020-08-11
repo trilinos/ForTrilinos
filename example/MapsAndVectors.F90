@@ -4,7 +4,7 @@
 ! License-Filename: LICENSE
 program main
 
-#include "ForTrilinosTpetra_config.hpp"
+#include "ForTrilinos_config.h"
 #include "ForTrilinos.h"
 
 use iso_fortran_env
@@ -12,7 +12,7 @@ use, intrinsic :: iso_c_binding
 use forteuchos
 use fortpetra
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
 use mpi
 #endif
 
@@ -42,7 +42,7 @@ integer(global_ordinal_type), allocatable :: element_list(:)
 
 
 ! Initialize MPI subsystem, if applicable
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
 call MPI_INIT(ierr)
 if (ierr /= 0) then
   stop "MPI failed to init"
@@ -225,7 +225,7 @@ call contig_map%release()
 call comm%release()
 deallocate(norms)
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
 ! Finalize MPI must be called after releasing all handles
 call MPI_FINALIZE(ierr)
 #endif

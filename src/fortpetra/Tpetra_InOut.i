@@ -5,10 +5,6 @@
  * License-Filename: LICENSE
  */
 
-// Dependencies
-%include "Teuchos_RCP.i"
-%import <std_string.i>
-
 %{
 #include "MatrixMarket_Tpetra.hpp"
 %}

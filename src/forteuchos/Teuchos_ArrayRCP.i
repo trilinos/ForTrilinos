@@ -5,7 +5,7 @@
  * License-Filename: LICENSE
  */
 %{
-#include "Teuchos_ArrayRCP.hpp"
+#include <Teuchos_ArrayRCP.hpp>
 %}
 
 %include <fortranarray.swg>

@@ -5,12 +5,8 @@
  * License-Filename: LICENSE
  */
 
-// Dependencies
-%include "Teuchos_RCP.i"
-%import <Teuchos_Comm.i>
-
 %{
-#include "Tpetra_RowMatrix.hpp"
+#include <Tpetra_RowMatrix.hpp>
 %}
 
 // =======================================================================

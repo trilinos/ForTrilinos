@@ -5,12 +5,8 @@
  * License-Filename: LICENSE
  */
 
-// Dependencies
-%import <Teuchos_Comm.i>
-%import <Tpetra_MultiVector.i>
-
 %{
-#include "Tpetra_Operator.hpp"
+#include <Tpetra_Operator.hpp>
 %}
 
 // =======================================================================

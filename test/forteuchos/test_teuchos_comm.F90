@@ -7,7 +7,7 @@ program test_TeuchosComm
 #include "ForTrilinos_config.h"
   use iso_fortran_env
   use, intrinsic :: iso_c_binding
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
     use mpi
 #endif
 
@@ -37,7 +37,7 @@ contains
     integer :: comm_rank_f, comm_rank_c
     integer :: comm_size_f, comm_size_c
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
     comm = TeuchosComm(MPI_COMM_WORLD); TEST_IERR()
     TEST_ASSERT(c_associated(comm%swigdata%cptr))
 
@@ -58,7 +58,7 @@ contains
     TEST_EQUALITY(comm_size_f, comm_size_c)
 
     mpicomm = comm%getRawMpiComm()
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
     TEST_EQUALITY(MPI_COMM_WORLD, mpicomm)
 #else
     ! Should have thrown an error
@@ -76,7 +76,7 @@ contains
     integer :: myrank_t, myrank_m, ierr
     OUT0("Starting TeuchosComm_getRank!")
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
     comm = TeuchosComm(MPI_COMM_WORLD); TEST_IERR()
     myrank_t = comm%getRank(); TEST_IERR()
     call MPI_COMM_RANK(MPI_COMM_WORLD, myrank_m, ierr)
@@ -98,7 +98,7 @@ contains
     integer :: mysize_t, mysize_m, ierr
     OUT0("Starting TeuchosComm_getSize!")
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
     comm = TeuchosComm(MPI_COMM_WORLD); TEST_IERR()
     mysize_t = comm%getSize(); TEST_IERR()
     call MPI_COMM_SIZE(MPI_COMM_WORLD, mysize_m, ierr)
@@ -118,7 +118,7 @@ contains
     type(TeuchosComm) :: comm
     OUT0("Starting TeuchosComm_barrier!")
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
     comm = TeuchosComm(MPI_COMM_WORLD); TEST_IERR()
     TEST_NOTHROW(call comm%barrier())
 
@@ -135,7 +135,7 @@ contains
     type(TeuchosComm) :: comm
     OUT0("Starting TeuchosComm_getRawMpiComm!")
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
     comm = TeuchosComm(MPI_COMM_WORLD); TEST_IERR()
     TEST_EQUALITY(MPI_COMM_WORLD, comm%getRawMpiComm())
 

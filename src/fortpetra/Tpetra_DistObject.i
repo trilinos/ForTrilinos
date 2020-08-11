@@ -5,11 +5,8 @@
  * License-Filename: LICENSE
  */
 
-// Dependencies
-%include "Teuchos_RCP.i"
-
 %{
-#include "Tpetra_DistObject.hpp"
+#include <Tpetra_DistObject.hpp>
 %}
 
 // =======================================================================

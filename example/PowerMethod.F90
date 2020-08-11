@@ -11,7 +11,7 @@ program main
 ! package provides them.  You should instead see this class as a surrogate
 ! for a ForTrilinos interface to the Tpetra package.
 ! --------------------------------------------------------------------------- !
-#include "ForTrilinosTpetra_config.hpp"
+#include "ForTrilinos_config.h"
 
 use iso_fortran_env
 use, intrinsic :: iso_c_binding
@@ -20,7 +20,7 @@ use, intrinsic :: iso_c_binding
 use forteuchos
 use fortpetra
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
 use mpi
 #endif
 
@@ -48,7 +48,7 @@ real(scalar_type), allocatable :: vals(:)
 
 
 ! Initialize MPI subsystem, if applicable
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
 call MPI_INIT(ierr)
 if (ierr /= 0) then
   stop "MPI failed to init"
@@ -196,7 +196,7 @@ call A%release()
 call map%release()
 call comm%release()
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
 ! Finalize MPI must be called after releasing all handles
 call MPI_FINALIZE(ierr)
 #endif

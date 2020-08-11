@@ -16,7 +16,7 @@
 #include <Tpetra_CrsMatrix.hpp>
 #include <Tpetra_MultiVector.hpp>
 
-#include "ForTrilinos_DefaultNodeType.hpp"
+#include "fortpetra/ForTrilinos_DefaultNodeType.hpp"
 
 int main(int argc, char *argv[]) {
   bool success = false;

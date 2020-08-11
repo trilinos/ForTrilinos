@@ -9,7 +9,7 @@
  * ----------------------------------------------------------------------------- */
 
 /*
- * Copyright 2017-2018, UT-Battelle, LLC
+ * Copyright 2017-2020, UT-Battelle, LLC
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
@@ -280,8 +280,8 @@ enum AssignmentType {
 #define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
 
 
-#include "Kokkos_DefaultNode.hpp"
-#include "ForTrilinos_DefaultNodeType.hpp"
+#include <Kokkos_DefaultNode.hpp>
+#include "fortpetra/ForTrilinos_DefaultNodeType.hpp"
 
 
 typedef double                                  SC;
@@ -607,7 +607,7 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
 #define SWIG_NO_NULL_DELETER_SWIG_POINTER_OWN
 
 
-#include "NOX_StatusTest_Generic.H"
+#include <NOX_StatusTest_Generic.H>
 
 
 #include "fortrilinos_hl/nox_solver.hpp"

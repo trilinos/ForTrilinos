@@ -4,7 +4,7 @@
 !License-Filename: LICENSE
 program test_TrilinosEigenSolver
 
-#include "ForTrilinosInterface_config.hpp"
+#include "ForTrilinos_config.h"
 #include "ForTrilinos.h"
 #include "FortranTestUtilities.h"
   use iso_fortran_env
@@ -21,7 +21,7 @@ program test_TrilinosEigenSolver
 
   SETUP_TEST()
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
   comm = TeuchosComm(MPI_COMM_WORLD); FORTRILINOS_CHECK_IERR()
 #else
   comm = TeuchosComm(); FORTRILINOS_CHECK_IERR()

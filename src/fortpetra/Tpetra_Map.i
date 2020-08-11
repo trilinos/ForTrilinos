@@ -5,14 +5,8 @@
  * License-Filename: LICENSE
  */
 
-// Dependencies
-%include "Teuchos_RCP.i"
-%import <std_string.i>
-%import <Teuchos_Comm.i>
-
 %{
-#include "Teuchos_RCP.hpp"
-#include "Tpetra_Map.hpp"
+#include <Tpetra_Map.hpp>
 %}
 
 %constant GO TPETRA_GLOBAL_INVALID = -1;

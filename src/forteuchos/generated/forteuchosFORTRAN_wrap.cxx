@@ -9,7 +9,7 @@
  * ----------------------------------------------------------------------------- */
 
 /*
- * Copyright 2017-2018, UT-Battelle, LLC
+ * Copyright 2017-2020, UT-Battelle, LLC
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
@@ -283,23 +283,26 @@ enum AssignmentType {
 #include <string>
 
 
-#include "Teuchos_BLAS_types.hpp"
-#include "Teuchos_DataAccess.hpp"
+#include "ForTrilinos_config.h"
 
 
-#include "Teuchos_Exceptions.hpp"
+#include <Teuchos_BLAS_types.hpp>
+#include <Teuchos_DataAccess.hpp>
 
 
-#include "Teuchos_RCP.hpp"
+#include <Teuchos_Exceptions.hpp>
 
 
-#include "Teuchos_ArrayView.hpp"
+#include <Teuchos_RCP.hpp>
 
 
-#include "Teuchos_ArrayRCP.hpp"
+#include <Teuchos_ArrayView.hpp>
 
 
-#include "Teuchos_Array.hpp"
+#include <Teuchos_ArrayRCP.hpp>
+
+
+#include <Teuchos_Array.hpp>
 
 
 struct SwigClassWrapper {
@@ -455,16 +458,16 @@ SWIGINTERN Teuchos::ArrayView< long long > Teuchos_Array_Sl_long_SS_long_Sg__vie
             return (*self)();
         }
 
-#include "Teuchos_Comm.hpp"
-#ifdef HAVE_MPI
+#include <Teuchos_Comm.hpp>
+#if FORTRILINOS_USE_MPI
 # include "Teuchos_DefaultMpiComm.hpp"
 #else
   typedef int MPI_Comm;
 #endif
-#include "Teuchos_DefaultSerialComm.hpp"
+#include <Teuchos_DefaultSerialComm.hpp>
 
 SWIGINTERN Teuchos::Comm< int > *new_Teuchos_Comm_Sl_int_Sg___SWIG_0(MPI_Comm rawMpiComm){
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
       return new Teuchos::MpiComm<int>(rawMpiComm);
 #else
       throw std::runtime_error("MPI based constructor cannot be called when MPI is not enabled.");
@@ -477,14 +480,14 @@ SWIGINTERN Teuchos::Comm< int > *new_Teuchos_Comm_Sl_int_Sg___SWIG_0(MPI_Comm ra
 #define SWIG_NO_NULL_DELETER_SWIG_POINTER_OWN
 
 SWIGINTERN Teuchos::Comm< int > *new_Teuchos_Comm_Sl_int_Sg___SWIG_1(){
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
       return new Teuchos::MpiComm<int>(MPI_COMM_WORLD);
 #else
       return new Teuchos::SerialComm<int>();
 #endif
     }
 SWIGINTERN MPI_Comm Teuchos_Comm_Sl_int_Sg__getRawMpiComm(Teuchos::Comm< int > *self){
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
       Teuchos::MpiComm<int>& comm = dynamic_cast<Teuchos::MpiComm<int>&>(*self);
       return *comm.getRawMpiComm();
 #else
@@ -492,10 +495,10 @@ SWIGINTERN MPI_Comm Teuchos_Comm_Sl_int_Sg__getRawMpiComm(Teuchos::Comm< int > *
 #endif
     }
 
-#include "Teuchos_ParameterList.hpp"
+#include <Teuchos_ParameterList.hpp>
 
 
-#include "Teuchos_XMLParameterListCoreHelpers.hpp"
+#include <Teuchos_XMLParameterListCoreHelpers.hpp>
 
 
 void load_from_xml(const Teuchos::RCP<Teuchos::ParameterList>& plist,
@@ -965,7 +968,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TeuchosComm__SWIG_0(int const *farg1) {
   MPI_Comm arg1 ;
   Teuchos::Comm< int > *result = 0 ;
   
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
   arg1 = MPI_Comm_f2c(static_cast< MPI_Fint >(*farg1));
 #else
   arg1 = *farg1;
@@ -1063,7 +1066,7 @@ SWIGEXPORT int _wrap_TeuchosComm_getRawMpiComm(SwigClassWrapper const *farg1) {
       SWIG_exception_impl("Teuchos::Comm< int >::getRawMpiComm()", SWIG_UnknownError, "An unknown exception occurred", return 0);
     }
   }
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
   fresult = static_cast< int >(MPI_Comm_c2f(result));
 #else
   fresult = result;

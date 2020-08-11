@@ -6,10 +6,9 @@
  */
 %module forbelos
 
-%include <copyright.i>
-%include <extern_forerror.i>
-%import <forerror.i>
-// TODO?: %import <forteuchos.i>
+%include "fortrilinos_copyright.i"
+%include "forerror/extern_forerror.i"
+// TODO?: %import "forteuchos/forteuchos.i"
 %include <std_string.i>
 
 // Configuration
