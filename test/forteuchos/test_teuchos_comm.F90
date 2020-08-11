@@ -4,7 +4,7 @@
 !License-Filename: LICENSE
 program test_TeuchosComm
 #include "FortranTestUtilities.h"
-#include "ForTrilinosTeuchos_config.hpp"
+#include "ForTrilinos_config.h"
   use iso_fortran_env
   use, intrinsic :: iso_c_binding
 #ifdef HAVE_MPI

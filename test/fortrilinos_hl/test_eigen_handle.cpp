@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
  */
+#include "fortrilinos_hl/eigen_handle.hpp"
+
 #include <Teuchos_DefaultComm.hpp>
 #include <Teuchos_XMLParameterListHelpers.hpp>
 #include <Teuchos_StandardCatchMacros.hpp>
@@ -13,7 +15,7 @@
 
 #include <iostream>
 
-#include "eigen_handle.hpp"
+#include "fortrilinos_hl/eigen_handle.hpp"
 #include "ForTrilinos_DefaultNodeType.hpp"
 
 int main(int argc, char *argv[]) {

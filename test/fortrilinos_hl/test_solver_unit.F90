@@ -7,7 +7,7 @@ program test_TrilinosSolver
   use iso_fortran_env
   use, intrinsic :: iso_c_binding
   use forteuchos
-  use fortrilinos
+  use fortrilinos_hl
   use fortpetra
   use test_tpetra_crsmatrix_helper
 

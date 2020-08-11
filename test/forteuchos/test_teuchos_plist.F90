@@ -3,7 +3,7 @@
 !SPDX-License-Identifier: BSD-3-Clause
 !License-Filename: LICENSE
 program test_TeuchosPList
-#include "ForTrilinosTeuchos_config.hpp"
+#include "ForTrilinos_config.h"
 #include "FortranTestUtilities.h"
   use iso_fortran_env
   use, intrinsic :: iso_c_binding

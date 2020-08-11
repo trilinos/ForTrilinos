@@ -15,7 +15,7 @@ program main
 #endif
 
 #include "ForTrilinos.h"
-  use fortrilinos
+  use fortrilinos_hl
   use forteuchos
   use fortpetra
   use fortest

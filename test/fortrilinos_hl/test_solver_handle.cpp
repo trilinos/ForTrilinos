@@ -4,6 +4,10 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * License-Filename: LICENSE
  */
+#include "fortrilinos_hl/solver_handle.hpp"
+
+#include <iostream>
+
 #include <Teuchos_DefaultComm.hpp>
 #include <Teuchos_XMLParameterListHelpers.hpp>
 #include <Teuchos_StandardCatchMacros.hpp>
@@ -12,9 +16,6 @@
 #include <Tpetra_CrsMatrix.hpp>
 #include <Tpetra_MultiVector.hpp>
 
-#include <iostream>
-
-#include "solver_handle.hpp"
 #include "ForTrilinos_DefaultNodeType.hpp"
 
 int main(int argc, char *argv[]) {

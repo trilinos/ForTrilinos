@@ -1,4 +1,4 @@
-#include "ForTrilinosTpetra_config.hpp"
+#include "ForTrilinos_config.h"
 module test_Tpetra_multivector_helper
   use iso_fortran_env
   use, intrinsic :: iso_c_binding

@@ -10,7 +10,7 @@ program main
 #include "ForTrilinos.h"
   use ISO_FORTRAN_ENV
   use, intrinsic :: ISO_C_BINDING
-  use fortrilinos
+  use fortrilinos_hl
   use forteuchos
 #ifdef HAVE_MPI
   use mpi
@@ -54,7 +54,7 @@ contains
   subroutine main2(comm, params, ierr)
     ! ------------------------------------------------------------------------ !
     use fortpetra
-    use fortrilinos
+    use fortrilinos_hl
     use TpetraModelEvaluator1DFEM_module
     implicit none
     integer :: ierr

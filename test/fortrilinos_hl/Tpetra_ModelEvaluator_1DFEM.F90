@@ -14,7 +14,7 @@
 module TpetraModelEvaluator1DFEM_module
   use forteuchos
   use fortpetra
-  use fortrilinos
+  use fortrilinos_hl
   implicit none
 
   real(scalar_type), parameter :: zero=0., one=1.

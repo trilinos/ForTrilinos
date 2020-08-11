@@ -15,7 +15,7 @@
 #include <Tpetra_Vector.hpp>
 
 #include "Tpetra_ModelEvaluator_1DFEM.hpp"
-#include "nox_solver.hpp"
+#include "fortrilinos_hl/nox_solver.hpp"
 
 
 // Sets up and runs the nonlinear optimization in NOX
