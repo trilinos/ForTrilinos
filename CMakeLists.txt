@@ -78,16 +78,13 @@ set(ForTrilinos_INSTALL_CMAKECONFIGDIR "${CMAKE_INSTALL_LIBDIR}/cmake/ForTrilino
 # Don't use compiler language extensions
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Direct cmake to generate module files in our particular chosen directory
-set(CMAKE_Fortran_MODULE_DIRECTORY "${ForTrilinos_Fortran_MODULE_DIRECTORY}")
-
 #-----------------------------------------------------------------------------#
 # DEPENDENCIES
 #
 # Derive options from Trilinos configuration where possible.
 #-----------------------------------------------------------------------------#
 
-find_package(Trilinos 12.17 REQUIRED
+find_package(Trilinos 12.17 REQUIRED MODULE
   COMPONENTS
     TeuchosCore TeuchosComm TeuchosNumerics TeuchosParameterList
   OPTIONAL_COMPONENTS
@@ -97,7 +94,7 @@ find_package(Trilinos 12.17 REQUIRED
     # Required for interface package
     Anasazi NOX Stratimikos Thyra ThyraTpetraAdapters
     # Optional for "interface" package
-    Ifpack2 MueLu
+    Amesos2 Ifpack2 MueLu
 )
 
 set(Trilinos_COMPONENTS ${COMPONENTS_LIST})
@@ -120,7 +117,11 @@ set(ForTrilinos_USE_HL "${_fortrilinos_use_hl}" CACHE BOOL
   "High-level ForTrilinos wrappers depend on Trilinos installation" FORCE)
 
 if(ForTrilinos_USE_MPI)
-  find_package(MPI REQUIRED COMPONENTS CXX)
+  if(NOT MPIEXEC_EXECUTABLE)
+    # Hint for MPI
+    set(MPIEXEC_EXECUTABLE "${TeuchosComm_MPI_EXEC}")
+  endif()
+  find_package(MPI REQUIRED COMPONENTS CXX Fortran)
   if(NOT ForTrilinos_MAX_NUMPROCS)
     # Not set or default of zero
     set(ForTrilinos_MAX_NUMPROCS "${MPIEXEC_MAX_NUMPROCS}" CACHE STRING
@@ -131,6 +132,9 @@ if(ForTrilinos_USE_MPI)
       "${ForTrilinos_MAX_NUMPROCS} > ${MPIEXEC_MAX_NUMPROCS}"
     )
   endif()
+else()
+  set(ForTrilinos_MAX_NUMPROCS "1" CACHE INTERNAL
+    "Maximum number of processors to use in tests")
 endif()
 
 if(ForTrilinos_USE_SWIG_Fortran)
@@ -174,7 +178,7 @@ endif()
 # INSTALLATION
 #---------------------------------------------------------------------------##
 
-# include(ForTrilinosConfigSetup)
-# fortrilinos_configure_export()
+include(ForTrilinosConfigSetup)
+fortrilinos_configure_export()
 
 #---------------------------------------------------------------------------##
