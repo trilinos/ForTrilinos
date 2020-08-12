@@ -1,6 +1,7 @@
 #----------------------------------*-CMake-*----------------------------------#
-# Copyright 2020 UT-Battelle, LLC and SCALE developers.
-# See the top-level COPYRIGHT file for details.
+# Copyright 2020 UT-Battelle, LLC and ForTrilinos developers.
+# SPDX-License-Identifier: BSD-3-Clause
+# License-Filename: LICENSE
 #-----------------------------------------------------------------------------#
 
 get_filename_component(ForTrilinos_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" DIRECTORY)
@@ -18,32 +19,20 @@ list(APPEND CMAKE_MODULE_PATH "${ForTrilinos_CMAKE_DIR}")
 
 include(CMakeFindDependencyMacro)
 
-enable_language(C)
+enable_language(CXX Fortran)
 
-find_dependency(HDF5 COMPONENTS C HL)
-find_dependency(PythonInterp)
-if(ForTrilinos_DATA_DIR)
-  find_dependency(SCALEData COMPONENTS SCLIB)
-endif()
+find_dependency(Trilinos ${ForTrilinos_Trilinos_VERSION} REQUIRED MODULE)
 
 if(ForTrilinos_USE_MPI)
-  find_dependency(MPI COMPONENTS C)
-endif()
-
-if(ForTrilinos_USE_Trilinos)
-  find_dependency(Trilinos ${ForTrilinos_Trilinos_VERSION})
-endif()
-
-if(ForTrilinos_USE_Fortran)
-  find_dependency(Flibcpp)
+  find_dependency(MPI COMPONENTS CXX Fortran)
 endif()
 
 #-----------------------------------------------------------------------------#
 # Targets
 #-----------------------------------------------------------------------------#
 
-if(NOT TARGET @ForTrilinos_NAMESPACE@Nemesis)
-  include("${ForTrilinos_CMAKE_DIR}/SCALETargets.cmake")
+if(NOT TARGET @ForTrilinos_NAMESPACE@ForTrilinos)
+  include("${ForTrilinos_CMAKE_DIR}/ForTrilinosTargets.cmake")
 endif()
 
 #-----------------------------------------------------------------------------#

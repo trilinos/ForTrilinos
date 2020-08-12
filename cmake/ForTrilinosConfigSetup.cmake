@@ -7,23 +7,9 @@
 ForTrilinosConfigSetup
 ----------------------
 
-Set up
+.. command:: fortrilinos_configure_export
 
-.. command:: my_command_name
-
-  Pass the given compiler-dependent warning flags to a library target::
-
-    my_command_name(<target>
-                    <INTERFACE|PUBLIC|PRIVATE>
-                    LANGUAGE <lang> [<lang>...]
-                    [CACHE_VARIABLE <name>])
-
-  ``target``
-    Name of the library target.
-
-  ``scope``
-    One of ``INTERFACE``, ``PUBLIC``, or ``PRIVATE``. ...
-
+  Generate the configure file.
 
 #]=======================================================================]
 
@@ -62,12 +48,12 @@ macro(fortrilinos_configure_export)
   endforeach()
 
   # Add other cache variables, prefixed with ForTrilinos_
-  foreach(_key BUILD_SHARED_LIBS Trilinos_VERSION INSTALL_GTEST)
+  foreach(_key BUILD_SHARED_LIBS Trilinos_VERSION)
     list(APPEND ForTrilinos_EXPORT_VARIABLES "set(ForTrilinos_${_key} \"${${_key}}\")")
   endforeach()
 
   # Add hints for TPLs
-  foreach(_key MPI_ROOT Trilinos_DIR HDF5_DIR)
+  foreach(_key MPIEXEC_EXECUTABLE Trilinos_DIR)
     set(_val "${${_key}}")
     if(_val)
       list(APPEND ForTrilinos_EXPORT_VARIABLES "set(${_key} \"${_val}\")")
