@@ -47,6 +47,11 @@ program main
     write(*,*) "End Result: TEST PASSED"
   endif
 
+#if FORTRILINOS_USE_MPI
+  ! Finalize MPI must be called after releasing all handles
+  call MPI_FINALIZE(ierr)
+#endif
+
 contains
 
   ! -------------------------------------------------------------------------- !
