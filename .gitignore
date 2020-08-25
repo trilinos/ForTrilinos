@@ -1,4 +1,5 @@
-build*
+/build*
+/install*
 *_autogen.f90
 *~
 .*.swp
