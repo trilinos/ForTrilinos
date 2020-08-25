@@ -9,6 +9,7 @@
 #----------------------------------------------------------------------------#
 
 set(_SOURCES fortest.F90)
+set(_TEST_DEPLIBS)
 if(TARGET fortpetra)
   list(APPEND _SOURCES
     fortpetra/test_tpetra_crsgraph_helper.F90
@@ -53,7 +54,7 @@ function(fortrilinos_add_test source)
   cmake_parse_arguments(_FTAT
     "DISABLE"
     ""
-    "NUMPROCS;SOURCES"
+    "NUMPROCS;SOURCES;LINK_LIBRARIES"
     ${ARGN}
   )
 
@@ -65,7 +66,7 @@ function(fortrilinos_add_test source)
   endif()
   string(REGEX REPLACE "[^a-zA-Z0-9_]+" "_" _TARGET "${_DIRNAME}/${_BASENAME}")
   add_executable("${_TARGET}" "${source}" ${_FTAT_SOURCES})
-  target_link_libraries("${_TARGET}" ForTrilinosTests)
+  target_link_libraries("${_TARGET}" ForTrilinosTests ${_FTAT_LINK_LIBRARIES})
   set(_EXE_NAME "$<TARGET_FILE:${_TARGET}>")
 
   # Set number of processors
@@ -131,16 +132,30 @@ if(ForTrilinos_USE_HL)
     # or (EPETRA and AMESOS)"
     set(_needs_anasazi DISABLE)
   endif()
-  fortrilinos_add_test(fortrilinos_hl/test_eigen_handle.cpp ${_needs_anasazi})
+
+  # The C++ tests indirectly use Trilinos headers and thus require directly
+  # linking to Trilinos
+  set(_link LINK_LIBRARIES
+    Trilinos::Anasazi
+    Trilinos::Ifpack2
+    Trilinos::NOX
+    Trilinos::Stratimikos
+    Trilinos::Thyra
+    Trilinos::ThyraTpetraAdapters
+  )
+
+  fortrilinos_add_test(fortrilinos_hl/test_eigen_handle.cpp
+    ${_needs_anasazi} ${_link})
   fortrilinos_add_test(fortrilinos_hl/test_eigen_handle_preset.cpp
-    ${_needs_anasazi})
+    ${_needs_anasazi} ${_link})
+  fortrilinos_add_test(fortrilinos_hl/test_nox.cpp
+    ${_link})
+  fortrilinos_add_test(fortrilinos_hl/test_solver_handle.cpp
+    ${_link})
+
   fortrilinos_add_test(fortrilinos_hl/test_eigen_handle.F90 ${_needs_anasazi})
   fortrilinos_add_test(fortrilinos_hl/test_eigen_unit.F90 ${_needs_anasazi})
-
-  fortrilinos_add_test(fortrilinos_hl/test_nox.cpp)
   fortrilinos_add_test(fortrilinos_hl/test_nox.F90)
-
-  fortrilinos_add_test(fortrilinos_hl/test_solver_handle.cpp)
   fortrilinos_add_test(fortrilinos_hl/test_futility_reproducer.F90)
   fortrilinos_add_test(fortrilinos_hl/test_solver_handle.F90)
   fortrilinos_add_test(fortrilinos_hl/test_solver_unit.F90)
