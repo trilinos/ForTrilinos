@@ -3,8 +3,8 @@ services:
   fortrilinos_dev:
     image: aprokop/fortrilinos-stack:latest
     volumes:
-      - ..:/scratch/source/trilinos/release/ForTrilinos:rw,z
-    working_dir: /scratch/source/trilinos/release/ForTrilinos
+      - ..:/scratch/source/ForTrilinos:rw,z
+    working_dir: /scratch/source/ForTrilinos
     environment:
       - TERM=xterm
     command: tail -f /dev/null
