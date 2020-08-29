@@ -135,6 +135,7 @@ program main
   call plist%release(); FORTRILINOS_CHECK_IERR()
   call X%release(); FORTRILINOS_CHECK_IERR()
   call A%release(); FORTRILINOS_CHECK_IERR()
+  call B%release(); FORTRILINOS_CHECK_IERR() 
   call map%release(); FORTRILINOS_CHECK_IERR()
   call comm%release(); FORTRILINOS_CHECK_IERR()
   deallocate(eindex)
