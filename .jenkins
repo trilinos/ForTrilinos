@@ -44,6 +44,20 @@ pipeline {
                             sh 'ccache --show-stats'
                             xunit reduceLog: false, tools:[CTest(deleteOutputFiles: true, failIfNotNew: true, pattern: 'build/Testing/**/Test.xml', skipNoTestFiles: false, stopProcessingIfError: true)]
                         }
+                        success {
+                            sh 'cd build && make install'
+                            sh 'rm -rf test_install && mkdir -p test_install'
+                            dir('test_install') {
+                                sh 'cp -r ../example/test-installation .'
+                                sh '''
+                                    cmake \
+                                        -D CMAKE_PREFIX_PATH=$FORTRILINOS_DIR \
+                                    test-installation
+                                '''
+                                sh 'make VERBOSE=1'
+                                sh 'make test'
+                            }
+                        }
                     }
                 }
             }
