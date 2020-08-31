@@ -3,12 +3,15 @@ pipeline {
         issueCommentTrigger('.*test this please.*')
     }
     agent none
-
     environment {
         CCACHE_DIR = '/tmp/ccache'
         CCACHE_MAXSIZE = '10G'
         FORTRILINOS_DIR = '/opt/fortrilinos'
         CTEST_OPTIONS = '--timeout 180 --no-compress-output -T Test --test-output-size-passed=65536 --test-output-size-failed=1048576'
+
+        // Run MPI as root
+        OMPI_ALLOW_RUN_AS_ROOT = '1'
+        OMPI_ALLOW_RUN_AS_ROOT_CONFIRM = '1'
     }
     stages {
         stage('Build') {
@@ -31,7 +34,6 @@ pipeline {
                                   -D CMAKE_INSTALL_PREFIX=$FORTRILINOS_DIR \
                                   -D CMAKE_BUILD_TYPE=Debug \
                                   -D CMAKE_CXX_COMPILER_LAUNCHER=ccache \
-                                  -D MPIEXEC_PREFLAGS="--allow-run-as-root" \
                                   -D MPIEXEC_MAX_NUMPROCS=4 \
                                 ..
                             '''

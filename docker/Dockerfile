@@ -21,7 +21,6 @@ RUN apt-get update && apt-get install -y \
         lcov \
         libatlas-base-dev \
         libbz2-dev \
-        libopenmpi-dev \
         python2.7-dev \
         tmux \
         unzip \
@@ -31,11 +30,6 @@ RUN apt-get update && apt-get install -y \
         && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-# append the option flag --allow-run-as-root to mpiexec
-RUN echo '#!/usr/bin/env bash' > /usr/local/bin/mpiexec && \
-    echo '/usr/bin/mpiexec --allow-run-as-root "$@"' >> /usr/local/bin/mpiexec && \
-    chmod +x /usr/local/bin/mpiexec
 
 # Install CMake
 ENV CMAKE_DIR=/opt/cmake
