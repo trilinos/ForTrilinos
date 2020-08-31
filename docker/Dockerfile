@@ -65,9 +65,9 @@ RUN OPENMPI_VERSION=4.0.3 && \
     rm -rf ${SCRATCH_DIR}
 ENV PATH=${OPENMPI_DIR}/bin:$PATH
 
-# Install Trilinos
+# Install Trilinos (12.18.1)
 ENV TRILINOS_DIR=/opt/trilinos
-RUN export TRILINOS_HASH=8a82b322ba70274299d0ffd3a2daf2c652dbeea7 && \
+RUN export TRILINOS_HASH=55a75997332636a28afc9db1aee4ae46fe8d93e7 && \
     export TRILINOS_URL=https://github.com/trilinos/Trilinos/archive/${TRILINOS_HASH}.tar.gz && \
     export TRILINOS_ARCHIVE=trilinos-${TRILINOS_HASH}.tar.gz && \
     SCRATCH_DIR=/scratch && mkdir -p ${SCRATCH_DIR} && cd ${SCRATCH_DIR} && \
