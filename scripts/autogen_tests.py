@@ -47,7 +47,7 @@ program test_{0}
 
   SETUP_TEST()
 
-#ifdef HAVE_MPI
+#if FORTRILINOS_USE_MPI
   call comm%create(MPI_COMM_WORLD); FORTRILINOS_CHECK_IERR()
 #else
   call comm%create()

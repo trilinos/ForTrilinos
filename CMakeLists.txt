@@ -1,91 +1,184 @@
-## Copyright 2017-2018, UT-Battelle, LLC
-##
-## SPDX-License-Identifier: BSD-3-Clause
-## License-Filename: LICENSE
+#---------------------------------*-CMake-*----------------------------------#
+# Copyright 2020 UT-Battelle, LLC
+# License-Filename: LICENSE
+# SPDX-License-Identifier: BSD-3-Clause
+#----------------------------------------------------------------------------#
 
-##---------------------------------------------------------------------------##
-## Define the package
-##---------------------------------------------------------------------------##
+cmake_minimum_required(VERSION 3.12)
+project(ForTrilinos VERSION 2.0.0 LANGUAGES Fortran CXX)
+cmake_policy(VERSION 3.12...3.18)
 
-TRIBITS_PACKAGE_DECL(ForTrilinos)
-
-##---------------------------------------------------------------------------##
-## Set up package-specific options
-##---------------------------------------------------------------------------##
-
-TRIBITS_ADD_DEBUG_OPTION()
-TRIBITS_ADD_SHOW_DEPRECATED_WARNINGS_OPTION()
-
-# Pick a default node to compile for in order of Cuda -> OpenMP -> Serial
-# For now we just build for this one node which is selected based on the config.
-# This is an intermediate step and expected to change later for supporting
-# all nodes simultaneously.
-IF (KOKKOS_ENABLE_CUDA)
-  SET(Kokkos_NODE_TYPE "KokkosCudaWrapperNode")
-ELSEIF (KOKKOS_ENABLE_OPENMP)
-  SET(Kokkos_NODE_TYPE "KokkosOpenMPWrapperNode")
-ELSE ()
-  SET(Kokkos_NODE_TYPE "KokkosSerialWrapperNode")
-ENDIF()
-MESSAGE(STATUS "ForTrilinos default node type: ${Kokkos_NODE_TYPE}")
-
-# Enable unlimited-length lines
-if (CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
-  SET(CMAKE_Fortran_FLAGS "-ffree-line-length-none ${CMAKE_Fortran_FLAGS}")
+list(APPEND CMAKE_MODULE_PATH
+  "${CMAKE_CURRENT_LIST_DIR}/cmake"
+)
+if(CMAKE_VERSION VERSION_LESS 3.18)
+  list(APPEND CMAKE_MODULE_PATH
+    "${CMAKE_CURRENT_LIST_DIR}/cmake/backport/3.18"
+  )
 endif()
 
-IF (${PACKAGE_NAME}_ENABLE_DeveloperMode)
-    # SWIG setup
-    FIND_PACKAGE(SWIG REQUIRED)
-    # SWIG is requested and available; make sure it's the Fortran fork.
-    INCLUDE(CheckSWIGFortran)
-    IF (CMAKE_VERSION VERSION_LESS 3.10)
-      # TODO: Old version of cmake modules
-      include(SwigModulesOld)
-    ELSE()
-      include(SwigModules)
-    ENDIF()
+include(GNUInstallDirs)
 
-    # Ignore some SWIG warnings:
-    #   401: "Nothing known about base class"
-    LIST(APPEND CMAKE_SWIG_FLAGS "-w401" "-fext" "F90")
-    set(SWIG_FORTRAN_EXTRA_FILE_EXTENSIONS ".F90")
+#-----------------------------------------------------------------------------#
+# Component options
+#-----------------------------------------------------------------------------#
 
-    IF (NOT TPL_ENABLE_MPI)
-        # Warn if MPI is disabled since not all wrapper functions will be
-        # generated. Later this might be extended to other optional packages.
-        MESSAGE(WARNING "DeveloperMode is being used without MPI: "
-          "the newly generated wrappers will NOT be generated in the source "
-          "directory, since they will not contain MPI-related classes.")
-    ELSE()
-        # Export the newly generated wrappers to the source directory.
-        SET(ForTrilinos_EXPORT_SWIG TRUE CACHE BOOL
-          "Build SWIG wrapper files in the source directory")
-    ENDIF()
-ENDIF()
+# Only enable SWIG fortran when Fortran is enabled
+option(ForTrilinos_USE_SWIG_Fortran
+  "Regenerate Fortran bindings with SWIG" OFF)
 
-##---------------------------------------------------------------------------##
-## Add the libraries, tests, and examples
-##---------------------------------------------------------------------------##
+#-----------------------------------------------------------------------------#
+# Deployment options
+#-----------------------------------------------------------------------------#
 
-# TRIBITS_ADD_EXAMPLE_DIRECTORIES(example)
-# TRIBITS_ADD_TEST_DIRECTORIES(test)
+option(BUILD_SHARED_LIBS "Default to building shared libraries" ON)
 
-##---------------------------------------------------------------------------##
-## Generate the Doxygen documentation
-##---------------------------------------------------------------------------##
-# There does not currently exist Doxygen documentation
-#IF(ForTrilinos_ENABLE_Doxygen)
-#    ADD_SUBDIRECTORY(docs/doxygen)
-#ENDIF()
+if(NOT DEFINED CMAKE_INSTALL_RPATH_USE_LINK_PATH)
+  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ON CACHE STRING
+    "Inform installed binaries of external library rpaths")
+endif()
+if(BUILD_SHARED_LIBS)
+  set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_FULL_LIBDIR}" CACHE STRING
+    "Inform installed binaries of internal library rpaths")
+endif()
+if(APPLE)
+  option(CMAKE_MACOSX_RPATH "Support @rpath in install targets" ON)
+endif()
 
-##---------------------------------------------------------------------------##
-## Build the documentation published on http://fortrilinos.readthedocs.org
-##---------------------------------------------------------------------------##
-IF(ForTrilinos_ENABLE_ReadTheDocs)
-    ADD_SUBDIRECTORY(docs)
-ENDIF()
+#-----------------------------------------------------------------------------#
+# Test options
+#-----------------------------------------------------------------------------#
 
-TRIBITS_PROCESS_SUBPACKAGES()
-TRIBITS_PACKAGE_DEF()
-TRIBITS_PACKAGE_POSTPROCESS()
+option(ForTrilinos_TESTING "Build ForTrilinos unit tests" OFF)
+option(ForTrilinos_EXAMPLES "Build ForTrilinos examples" OFF)
+set(ForTrilinos_MAX_NUMPROCS "0" CACHE STRING
+  "Maximum number of processors to use in tests")
+
+#-----------------------------------------------------------------------------#
+# Internal variables
+#-----------------------------------------------------------------------------#
+
+# Prefix for exported ForTrilinos targets
+set(ForTrilinos_NAMESPACE "ForTrilinos::")
+
+# Destination for configured header files (config.h) during build
+set(ForTrilinos_HEADER_CONFIG_DIRECTORY "${PROJECT_BINARY_DIR}/include")
+# Where to configure cmake files
+set(ForTrilinos_CMAKE_CONFIG_DIRECTORY "${PROJECT_BINARY_DIR}/share")
+# Where to build .mod files
+set(ForTrilinos_Fortran_MODULE_DIRECTORY "${PROJECT_BINARY_DIR}/fortran")
+
+# Where to install cmake config files
+set(ForTrilinos_INSTALL_CMAKECONFIGDIR "${CMAKE_INSTALL_LIBDIR}/cmake/ForTrilinos")
+
+#-----------------------------------------------------------------------------#
+# LANGUAGE SUPPORT
+#-----------------------------------------------------------------------------#
+
+# Don't use compiler language extensions
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+#-----------------------------------------------------------------------------#
+# DEPENDENCIES
+#
+# Derive options from Trilinos configuration where possible.
+#-----------------------------------------------------------------------------#
+
+find_package(Trilinos 12.17 REQUIRED MODULE
+  COMPONENTS
+    TeuchosCore TeuchosComm TeuchosNumerics TeuchosParameterList
+  OPTIONAL_COMPONENTS
+    # Optional
+    Belos
+    Tpetra
+    # Required for fortrilinos_hl
+    Anasazi NOX Stratimikos Thyra ThyraTpetraAdapters
+    # Optional for fortrilinos_hl
+    Amesos2 Ifpack2 MueLu
+)
+
+set(Trilinos_COMPONENTS ${COMPONENTS_LIST})
+if("MPI" IN_LIST Trilinos_TPL_LIST)
+  set(Trilinos_USE_MPI ON)
+endif()
+
+set(ForTrilinos_USE_MPI "${Trilinos_USE_MPI}" CACHE BOOL
+  "MPI status depends on the Trilinos installation in use" FORCE)
+
+set(_fortrilinos_use_hl OFF)
+if(Trilinos_Anasazi_FOUND
+    AND Trilinos_NOX_FOUND
+    AND Trilinos_Stratimikos_FOUND
+    AND Trilinos_Thyra_FOUND
+    AND Trilinos_ThyraTpetraAdapters_FOUND)
+  set(_fortrilinos_use_hl ON)
+endif()
+set(ForTrilinos_USE_HL "${_fortrilinos_use_hl}" CACHE BOOL
+  "High-level ForTrilinos wrappers depend on Trilinos installation" FORCE)
+
+if(ForTrilinos_USE_MPI)
+  if(NOT MPIEXEC_EXECUTABLE)
+    # Hint for MPI
+    set(MPIEXEC_EXECUTABLE "${TeuchosComm_MPI_EXEC}")
+  endif()
+  find_package(MPI REQUIRED COMPONENTS CXX Fortran)
+  if(NOT ForTrilinos_MAX_NUMPROCS)
+    # Not set or default of zero
+    set(ForTrilinos_MAX_NUMPROCS "${MPIEXEC_MAX_NUMPROCS}" CACHE STRING
+      "Maximum number of processors to use in tests" FORCE)
+  elseif(ForTrilinos_MAX_NUMPROCS GREATER MPIEXEC_MAX_NUMPROCS)
+    message(WARNING "Maximim number of processors in MPI "
+      "tests exceeds the system-detected processor count: "
+      "${ForTrilinos_MAX_NUMPROCS} > ${MPIEXEC_MAX_NUMPROCS}"
+    )
+  endif()
+else()
+  set(ForTrilinos_MAX_NUMPROCS "1" CACHE INTERNAL
+    "Maximum number of processors to use in tests")
+endif()
+
+if(ForTrilinos_USE_SWIG_Fortran)
+  find_package(SWIG REQUIRED COMPONENTS fortran)
+  include(UseSWIG)
+
+  if(NOT ForTrilinos_USE_MPI)
+    message(WARNING "DeveloperMode is being used without MPI: "
+      "the newly generated wrappers will NOT be generated in the source "
+      "directory, since they will not contain MPI-related classes.")
+  endif()
+endif()
+
+if(ForTrilinos_TESTING OR ForTrilinos_EXAMPLES)
+  include(CTest)
+endif()
+
+#---------------------------------------------------------------------------##
+# LIBRARY
+#---------------------------------------------------------------------------##
+
+add_subdirectory(src)
+
+#---------------------------------------------------------------------------##
+# TESTS
+#---------------------------------------------------------------------------##
+
+if(ForTrilinos_TESTING)
+  add_subdirectory(test)
+endif()
+
+#---------------------------------------------------------------------------##
+# EXAMPLES
+#---------------------------------------------------------------------------##
+
+if(ForTrilinos_EXAMPLES)
+  add_subdirectory(example)
+endif()
+
+#---------------------------------------------------------------------------##
+# INSTALLATION
+#---------------------------------------------------------------------------##
+
+include(ForTrilinosConfigSetup)
+fortrilinos_configure_export()
+
+#---------------------------------------------------------------------------##

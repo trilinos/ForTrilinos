@@ -1,0 +1,38 @@
+#----------------------------------*-CMake-*----------------------------------#
+# Copyright 2020 UT-Battelle, LLC and ForTrilinos developers.
+# SPDX-License-Identifier: BSD-3-Clause
+# License-Filename: LICENSE
+#-----------------------------------------------------------------------------#
+
+get_filename_component(ForTrilinos_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" DIRECTORY)
+list(APPEND CMAKE_MODULE_PATH "${ForTrilinos_CMAKE_DIR}")
+
+#-----------------------------------------------------------------------------#
+# Variables
+#-----------------------------------------------------------------------------#
+
+@ForTrilinos_EXPORT_VARIABLES@
+
+#-----------------------------------------------------------------------------#
+# Dependencies
+#-----------------------------------------------------------------------------#
+
+include(CMakeFindDependencyMacro)
+
+enable_language(CXX Fortran)
+
+find_dependency(Trilinos ${ForTrilinos_Trilinos_VERSION} REQUIRED MODULE)
+
+if(ForTrilinos_USE_MPI)
+  find_dependency(MPI COMPONENTS CXX Fortran)
+endif()
+
+#-----------------------------------------------------------------------------#
+# Targets
+#-----------------------------------------------------------------------------#
+
+if(NOT TARGET @ForTrilinos_NAMESPACE@ForTrilinos)
+  include("${ForTrilinos_CMAKE_DIR}/ForTrilinosTargets.cmake")
+endif()
+
+#-----------------------------------------------------------------------------#
