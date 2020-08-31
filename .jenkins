@@ -35,6 +35,8 @@ pipeline {
                                   -D CMAKE_BUILD_TYPE=Debug \
                                   -D CMAKE_CXX_COMPILER_LAUNCHER=ccache \
                                   -D MPIEXEC_MAX_NUMPROCS=4 \
+                                  -D ForTrilinos_TESTING=ON \
+                                  -D ForTrilinos_EXAMPLES=ON \
                                 ..
                             '''
                             sh 'make -j8 VERBOSE=1'

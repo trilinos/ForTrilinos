@@ -49,8 +49,8 @@ endif()
 # Test options
 #-----------------------------------------------------------------------------#
 
-option(ForTrilinos_TESTING "Build ForTrilinos unit tests" ON)
-option(ForTrilinos_EXAMPLES "Build ForTrilinos examples" ON)
+option(ForTrilinos_TESTING "Build ForTrilinos unit tests" OFF)
+option(ForTrilinos_EXAMPLES "Build ForTrilinos examples" OFF)
 set(ForTrilinos_MAX_NUMPROCS "0" CACHE STRING
   "Maximum number of processors to use in tests")
 
@@ -91,9 +91,9 @@ find_package(Trilinos 12.17 REQUIRED MODULE
     # Optional
     Belos
     Tpetra
-    # Required for interface package
+    # Required for fortrilinos_hl
     Anasazi NOX Stratimikos Thyra ThyraTpetraAdapters
-    # Optional for "interface" package
+    # Optional for fortrilinos_hl
     Amesos2 Ifpack2 MueLu
 )
 
