@@ -72,7 +72,7 @@ pipeline {
             node('docker') {
                 recordIssues(
                     enabledForFailure: true,
-                    tools: [cmake(), gcc()],
+                    tools: [gcc()],
                     qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]],
                 )
             }
