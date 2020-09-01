@@ -16,16 +16,6 @@ module forteuchos
  private
 
  ! DECLARATION CONSTRUCTS
- integer(C_INT), parameter, public :: FORTRILINOS_USE_MPI = 1_C_INT
- integer(C_INT), parameter, public :: FORTRILINOS_USE_BELOS = 1_C_INT
- integer(C_INT), parameter, public :: FORTRILINOS_USE_TPETRA = 1_C_INT
- integer(C_INT), parameter, public :: FORTRILINOS_USE_ANASAZI = 1_C_INT
- integer(C_INT), parameter, public :: FORTRILINOS_USE_NOX = 1_C_INT
- integer(C_INT), parameter, public :: FORTRILINOS_USE_STRATIMIKOS = 1_C_INT
- integer(C_INT), parameter, public :: FORTRILINOS_USE_THYRA = 1_C_INT
- integer(C_INT), parameter, public :: FORTRILINOS_USE_THYRATPETRA = 0_C_INT
- integer(C_INT), parameter, public :: FORTRILINOS_USE_IFPACK2 = 1_C_INT
- integer(C_INT), parameter, public :: FORTRILINOS_USE_MUELU = 1_C_INT
  ! enum Teuchos::ESide
  enum, bind(c)
   enumerator :: TeuchosLEFT_SIDE
