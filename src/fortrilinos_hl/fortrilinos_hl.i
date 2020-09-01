@@ -12,8 +12,6 @@
 %import "forteuchos/forteuchos.i"
 %import "fortpetra/fortpetra.i"
 
-%include "ForTrilinos_config.h"
-
 %{
 #include <Kokkos_DefaultNode.hpp>
 #include "fortpetra/ForTrilinos_DefaultNodeType.hpp"

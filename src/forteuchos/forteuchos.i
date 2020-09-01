@@ -22,7 +22,6 @@
 %{
 #include "ForTrilinos_config.h"
 %}
-%include "ForTrilinos_config.h"
 
 // Typedefs
 typedef int Teuchos_Ordinal;
