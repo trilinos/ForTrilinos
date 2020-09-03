@@ -4,10 +4,10 @@ layout: fortrilinos
 
 # [](#header-1)Published documents
 
-- [Automated Fortran–C++ Bindings for Large-Scale Scientific Applications](https://ieeexplore.ieee.org/abstract/document/8745480/)
-- [Documenting automated Fortran-C++ bindings with SWIG](https://www.osti.gov/biblio/1557490)
-- [Existing Fortran interfaces to Trilinos in preparation for exascale ForTrilinos development](files/ForTrilinos_Existing_Interfaces.pdf)
-- [ForTrilinos design document](files/ForTrilinos_Design_Document.pdf)
+- [Automated Fortran–C++ Bindings for Large-Scale Scientific Applications (2020)](https://ieeexplore.ieee.org/abstract/document/8745480/)
+- [Documenting automated Fortran-C++ bindings with SWIG (2019)](https://www.osti.gov/biblio/1557490)
+- [Existing Fortran interfaces to Trilinos in preparation for exascale ForTrilinos development (2017)](files/ForTrilinos_Existing_Interfaces.pdf)
+- [ForTrilinos design document (2017)](files/ForTrilinos_Design_Document.pdf)
 
 # [](#header-2)ForTrilinos installation
 
