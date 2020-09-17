@@ -5,7 +5,14 @@
 #----------------------------------------------------------------------------#
 
 cmake_minimum_required(VERSION 3.12)
-project(ForTrilinos VERSION 2.0.0 LANGUAGES Fortran CXX)
+
+# Determine version number from git metadata
+include("${CMAKE_CURRENT_LIST_DIR}/cmake/ForTrilinosVersion.cmake")
+fortrilinos_find_version(ForTrilinos
+  "${CMAKE_CURRENT_LIST_DIR}/cmake/git-version.txt"
+)
+
+project(ForTrilinos VERSION "${ForTrilinos_VERSION}" LANGUAGES CXX Fortran)
 cmake_policy(VERSION 3.12...3.18)
 
 list(APPEND CMAKE_MODULE_PATH

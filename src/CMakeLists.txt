@@ -23,6 +23,11 @@ set(FORTRILINOS_USE_MUELU               ${Trilinos_MueLu_FOUND})
 configure_file("ForTrilinos_config.h.in"
   "${ForTrilinos_HEADER_CONFIG_DIRECTORY}/ForTrilinos_config.h" @ONLY)
 
+# Configure version information and generate primary flibcpp module
+set(FORTRILINOS_VERSION_CPP "${CMAKE_CURRENT_BINARY_DIR}/fortrilinos_version.cpp.cpp")
+configure_file("${CMAKE_CURRENT_LIST_DIR}/fortrilinos_version.cpp.in"
+  "${FORTRILINOS_VERSION_CPP}" @ONLY)
+
 #----------------------------------------------------------------------------#
 # Modules and fortrilinos library
 #----------------------------------------------------------------------------#
@@ -113,7 +118,8 @@ function(_add_module module)
   set(_DEPS "${_DEPS};${module}" PARENT_SCOPE)
 endfunction()
 
-_add_module(forerror)
+_add_module(forerror
+  ${FORTRILINOS_VERSION_CPP})
 _add_module(forteuchos)
 target_link_libraries(forteuchos
   PRIVATE Trilinos::TeuchosComm

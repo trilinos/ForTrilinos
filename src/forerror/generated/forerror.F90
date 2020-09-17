@@ -23,6 +23,13 @@ module forerror
   integer(C_SIZE_T), public :: size = 0
  end type
  public :: fortrilinos_get_serr
+ public :: get_fortrilinos_version
+ integer(C_INT), protected, public, &
+   bind(C, name="fortrilinos_version_major") :: fortrilinos_version_major
+ integer(C_INT), protected, public, &
+   bind(C, name="fortrilinos_version_minor") :: fortrilinos_version_minor
+ integer(C_INT), protected, public, &
+   bind(C, name="fortrilinos_version_patch") :: fortrilinos_version_patch
 
 ! WRAPPER DECLARATIONS
 interface
@@ -33,6 +40,14 @@ interface
 end subroutine
 function swigc_fortrilinos_get_serr() &
 bind(C, name="_wrap_fortrilinos_get_serr") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigarraywrapper
+type(SwigArrayWrapper) :: fresult
+end function
+
+function swigc_fortrilinos_version_get() &
+bind(C, name="_wrap_fortrilinos_version_get") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigarraywrapper
@@ -65,6 +80,17 @@ character(kind=C_CHAR, len=:), allocatable :: swig_result
 type(SwigArrayWrapper) :: fresult 
 
 fresult = swigc_fortrilinos_get_serr()
+call SWIG_chararray_to_string(fresult, swig_result)
+if (.false.) call SWIG_free(fresult%data)
+end function
+
+function get_fortrilinos_version() &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+character(kind=C_CHAR, len=:), allocatable :: swig_result
+type(SwigArrayWrapper) :: fresult 
+
+fresult = swigc_fortrilinos_version_get()
 call SWIG_chararray_to_string(fresult, swig_result)
 if (.false.) call SWIG_free(fresult%data)
 end function

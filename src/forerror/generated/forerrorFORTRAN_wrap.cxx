@@ -311,12 +311,31 @@ SWIGEXPORT void SWIG_store_exception(const char *decl,
 }
 }
 
+
+extern "C" {
+extern const char fortrilinos_version[];
+extern const int fortrilinos_version_major;
+extern const int fortrilinos_version_minor;
+extern const int fortrilinos_version_patch;
+}
+
 extern "C" {
 SWIGEXPORT SwigArrayWrapper _wrap_fortrilinos_get_serr() {
   SwigArrayWrapper fresult ;
   char *result = 0 ;
   
   result = (char *)fortrilinos_get_serr();
+  fresult.size = strlen(reinterpret_cast< const char* >(result));
+  fresult.data = const_cast< char * >(result);
+  return fresult;
+}
+
+
+SWIGEXPORT SwigArrayWrapper _wrap_fortrilinos_version_get() {
+  SwigArrayWrapper fresult ;
+  char *result = 0 ;
+  
+  result = (char *)(char *)fortrilinos_version;
   fresult.size = strlen(reinterpret_cast< const char* >(result));
   fresult.data = const_cast< char * >(result);
   return fresult;
