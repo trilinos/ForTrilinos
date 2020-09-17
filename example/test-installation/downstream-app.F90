@@ -12,6 +12,7 @@ program downstream_app
 use iso_fortran_env
 use, intrinsic :: iso_c_binding
 
+use forerror, only : get_fortrilinos_version
 use forteuchos
 use fortpetra
 
@@ -43,7 +44,11 @@ comm = TeuchosComm()
 #endif
 
 my_rank = comm%getRank()
-write(*,*) "Hello from  rank", my_rank
+write(*,*) "Hello from rank", my_rank
+
+if (my_rank == 0) then
+  write(*,*) "Using ForTrilinos version: ", get_fortrilinos_version()
+endif
 
 #if FORTRILINOS_USE_MPI
 ! Finalize MPI must be called after releasing all handles

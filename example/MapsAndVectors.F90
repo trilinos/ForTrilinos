@@ -9,6 +9,7 @@ program main
 
 use iso_fortran_env
 use, intrinsic :: iso_c_binding
+use forerror, only : get_fortrilinos_version
 use forteuchos
 use fortpetra
 
@@ -54,6 +55,10 @@ comm = TeuchosComm()
 
 my_rank = comm%getRank()
 num_procs = comm%getSize()
+
+if (my_rank == 0) then
+  write(error_unit, '(A,A)') "ForTrilinos version ", get_fortrilinos_version()
+endif
 
 ! Tpetra objects are templated on several parameters.  ForTrilinos
 ! provides concrete specializations of Tpetra objects and exposes them to
@@ -211,7 +216,7 @@ the_norm = norms(1)
 
 ! Print the norm of y on Proc 0.
 if (my_rank == 0) then
-    write(*, '(A,f8.3)') 'Norm of y:', the_norm
+    write(*, '(A,f8.3)') 'Norm of y: ', the_norm
 end if
 
 ! Release objects created and no longer in use
