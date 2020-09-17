@@ -121,21 +121,8 @@ todo_include_todos = False
 
 # -- Options for HTML output ----------------------------------------------
 
-try:
-    import sphinx_rtd_theme
-except ImportError:
-    print("Can't import sphinx_rtd_theme: docs will not look as good")
-    print("Download and install using `pip install sphinx_rtd_theme`")
-    html_theme = 'sphinxdoc'
-    html_theme_options = {}
-else:
-    html_theme = 'sphinx_rtd_theme'
-    html_theme_options = {'collapse_navigation' : False}
-
-# Theme options are theme-specific and customize the look and feel of a theme
-# further.  For a list of options available for each theme, see the
-# documentation.
-# html_theme_options = {}
+html_theme = 'alabaster'
+html_theme_options = {}
 
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
