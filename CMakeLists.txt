@@ -56,6 +56,7 @@ endif()
 # Test options
 #-----------------------------------------------------------------------------#
 
+option(ForTrilinos_DOCS "Build ForTrilinos Sphinx docmentation" OFF)
 option(ForTrilinos_TESTING "Build ForTrilinos unit tests" OFF)
 option(ForTrilinos_EXAMPLES "Build ForTrilinos examples" OFF)
 set(ForTrilinos_MAX_NUMPROCS "0" CACHE STRING
@@ -179,6 +180,14 @@ endif()
 
 if(ForTrilinos_EXAMPLES)
   add_subdirectory(example)
+endif()
+
+#---------------------------------------------------------------------------##
+# DOCUMENTATION
+#---------------------------------------------------------------------------##
+
+if(ForTrilinos_DOCS)
+  add_subdirectory(doc)
 endif()
 
 #---------------------------------------------------------------------------##
