@@ -35,7 +35,7 @@ vectors
 .. only:: builder_html
 
    The source code can be downloaded from
-   :download:`here <../../../../../src/tpetra/tutorials/MapsAndVectors.F90>`
+   :download:`here <../../../example/MapsAndVectors.F90>`
 
-.. literalinclude:: ../../../../../src/tpetra/tutorials/MapsAndVectors.F90
+.. literalinclude:: ../../../example/MapsAndVectors.F90
    :language: fortran
