@@ -18,4 +18,9 @@
 %rename("Belos%s", %$isenumitem) "";
 %rename("Belos%s", %$isenum)     "";
 
+// Use link-time wrappers for enums with C-only values
+%nofortranconst Belos::MsgType;
+%nofortranconst Belos::StatusType;
+%nofortranconst Belos::ResetType;
+
 %include "Belos_Types.i"

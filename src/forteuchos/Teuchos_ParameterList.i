@@ -21,6 +21,20 @@
 %rename(is_parameter) Teuchos::ParameterList::isParameter;
 %rename(is_type) Teuchos::ParameterList::isType;
 
+// Use native Fortran arrays instead of teuchos arrays for plist input/output
+%define %teuchos_plist_array_views(TYPE)
+%apply Teuchos::Array<TYPE>& view { const Teuchos::Array<TYPE>& value };
+%apply Teuchos::Array<TYPE>& view { const Teuchos::Array<TYPE>& get<Teuchos::Array<TYPE> >};
+%enddef
+%define %teuchos_plist_clear_array_views(TYPE)
+%clear const Teuchos::Array<TYPE>& value;
+%clear Teuchos::Array<TYPE>& get<Teuchos::Array<TYPE> >;
+%enddef
+
+%teuchos_plist_array_views(int)
+%teuchos_plist_array_views(double)
+%teuchos_plist_array_views(long long)
+
 namespace Teuchos
 {
 
@@ -71,3 +85,8 @@ class ParameterList
 }; // end class
 
 } // end namespace Teuchos
+
+%teuchos_plist_clear_array_views(int)
+%teuchos_plist_clear_array_views(double)
+%teuchos_plist_clear_array_views(long long)
+

@@ -53,23 +53,19 @@ class ArrayView
     $input->data = (void*)tmpview$argnum.getRawPtr();
     $input->size = tmpview$argnum.size();
   }
-
 };
 }
 
-// Instantiate typemaps only
-%template() Teuchos::ArrayView<int>;
-%template() Teuchos::ArrayView<double>;
-%template() Teuchos::ArrayView<long long>;
+// Instantiate typemaps for both TYPE and const TYPE
+%define %teuchos_instantiate_arrayview_typemaps(TYPE)
+%template() Teuchos::ArrayView<TYPE>;
+%template() Teuchos::ArrayView<const TYPE>;
+%enddef
 
-%template() Teuchos::ArrayView<unsigned int>;
-%template() Teuchos::ArrayView<unsigned long>;
-%template() Teuchos::ArrayView<unsigned long long>;
 
-%template() Teuchos::ArrayView<const int>;
-%template() Teuchos::ArrayView<const double>;
-%template() Teuchos::ArrayView<const long long>;
-
-%template() Teuchos::ArrayView<const unsigned int>;
-%template() Teuchos::ArrayView<const unsigned long>;
-%template() Teuchos::ArrayView<const unsigned long long>;
+%teuchos_instantiate_arrayview_typemaps(int);
+%teuchos_instantiate_arrayview_typemaps(double);
+%teuchos_instantiate_arrayview_typemaps(long long);
+%teuchos_instantiate_arrayview_typemaps(unsigned int);
+%teuchos_instantiate_arrayview_typemaps(unsigned long);
+%teuchos_instantiate_arrayview_typemaps(unsigned long long);

@@ -7,6 +7,9 @@
 #define SWIG_FORTRAN_ERROR_STR fortrilinos_get_serr
 %include <exception.i>
 
+/* By default, wrap all constants as native fortran PARAMETERs */
+%fortranconst;
+
 /* -------------------------------------------------------------------------
  * Version information
  * ------------------------------------------------------------------------- */

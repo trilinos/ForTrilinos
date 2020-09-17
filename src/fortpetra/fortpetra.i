@@ -23,7 +23,7 @@
 
 %ignore ForTrilinos::DefaultNodeType;
 namespace ForTrilinos {
-struct DefaultNodeType { 
+struct DefaultNodeType {
   static const bool classic = false;
 };
 }
@@ -151,3 +151,5 @@ public :: norm_type
 
 %include "Tpetra_InOut.i"
 %include "Tpetra_MatrixMatrix.i"
+
+%nofortranonlywrapped;
