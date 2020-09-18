@@ -1514,7 +1514,7 @@ contains
 
     call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
 
-    TEST_NOTHROW(call Graph%computeGlobalConstants(.true.))
+    TEST_NOTHROW(call Graph%computeGlobalConstants())
 
     call Graph%release(); TEST_IERR()
 
