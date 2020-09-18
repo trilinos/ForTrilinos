@@ -90,17 +90,17 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
              const_cast<ForModelEvaluator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
       self.cptr = &tempthis;
-      self.cmemflags = SWIG_MEM_CONST; // since this function is const
+      self.cmemflags = 0;
 
       /* convert x -> class wrapper */
       SwigClassWrapper farg1;
       farg1.cptr = const_cast<Teuchos::RCP<const multivector_type>*>(&x);
-      farg1.cmemflags = SWIG_MEM_CONST; // x is const
+      farg1.cmemflags = 0;
 
       /* convert f -> class wrapper */
       SwigClassWrapper farg2;
       farg2.cptr = &f;
-      farg2.cmemflags = 0; // f is mutable
+      farg2.cmemflags = 0;
 
       swigd_ForModelEvaluator_evaluate_residual(&self, &farg1, &farg2);
     }
@@ -112,17 +112,17 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
              const_cast<ForModelEvaluator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
       self.cptr = &tempthis;
-      self.cmemflags = SWIG_MEM_CONST; // since this function is const
+      self.cmemflags = 0;
 
       /* convert x -> class wrapper */
       SwigClassWrapper farg1;
       farg1.cptr = const_cast<Teuchos::RCP<const multivector_type>*>(&x);
-      farg1.cmemflags = SWIG_MEM_CONST; // x is const
+      farg1.cmemflags = 0;
 
       /* convert J -> class wrapper */
       SwigClassWrapper farg2;
       farg2.cptr = &J;
-      farg2.cmemflags = 0; // f is mutable
+      farg2.cmemflags = 0;
 
       swigd_ForModelEvaluator_evaluate_jacobian(&self, &farg1, &farg2);
     }
@@ -134,17 +134,17 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
              const_cast<ForModelEvaluator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
       self.cptr = &tempthis;
-      self.cmemflags = SWIG_MEM_CONST; // since this function is const
+      self.cmemflags = 0;
 
       /* convert x -> class wrapper */
       SwigClassWrapper farg1;
       farg1.cptr = const_cast<Teuchos::RCP<const multivector_type>*>(&x);
-      farg1.cmemflags = SWIG_MEM_CONST; // x is const
+      farg1.cmemflags = 0;
 
       /* convert M -> class wrapper */
       SwigClassWrapper farg2;
       farg2.cptr = &M;
-      farg2.cmemflags = 0; // f is mutable
+      farg2.cmemflags = 0;
 
       swigd_ForModelEvaluator_evaluate_preconditioner(&self, &farg1, &farg2);
     }
@@ -155,7 +155,7 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
              const_cast<ForModelEvaluator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
       self.cptr = &tempthis;
-      self.cmemflags = SWIG_MEM_CONST; // since this function is const
+      self.cmemflags = 0;
 
       SwigClassWrapper fresult = swigd_ForModelEvaluator_get_x_map(&self);
 
@@ -169,7 +169,7 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
              const_cast<ForModelEvaluator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
       self.cptr = &tempthis;
-      self.cmemflags = SWIG_MEM_CONST; // since this function is const
+      self.cmemflags = 0;
 
       SwigClassWrapper fresult = swigd_ForModelEvaluator_get_f_map(&self);
 
@@ -183,7 +183,7 @@ SwigClassWrapper swigd_ForModelEvaluator_create_operator(
              const_cast<ForModelEvaluator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
       self.cptr = &tempthis;
-      self.cmemflags = SWIG_MEM_CONST; // since this function is const
+      self.cmemflags = 0;
 
       SwigClassWrapper fresult = swigd_ForModelEvaluator_create_operator(&self);
 

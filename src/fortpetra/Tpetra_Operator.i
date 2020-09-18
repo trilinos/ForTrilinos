@@ -87,7 +87,7 @@ SwigClassWrapper swigd_ForTpetraOperator_getRangeMap(
              const_cast<ForTpetraOperator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
       self.cptr = &tempthis;
-      self.cmemflags = SWIG_MEM_CONST;
+      self.cmemflags = 0;
 
       SwigClassWrapper fresult = swigd_ForTpetraOperator_getDomainMap(&self);
 
@@ -101,7 +101,7 @@ SwigClassWrapper swigd_ForTpetraOperator_getRangeMap(
              const_cast<ForTpetraOperator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
       self.cptr = &tempthis;
-      self.cmemflags = SWIG_MEM_CONST;
+      self.cmemflags = 0;
 
       SwigClassWrapper fresult = swigd_ForTpetraOperator_getRangeMap(&self);
 
@@ -117,14 +117,14 @@ SwigClassWrapper swigd_ForTpetraOperator_getRangeMap(
              const_cast<ForTpetraOperator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
       self.cptr = &tempthis;
-      self.cmemflags = SWIG_MEM_CONST;
+      self.cmemflags = 0;
 
       /* convert X -> class wrapper */
       Teuchos::RCP<const Tpetra::MultiVector<SC,LO,GO,NO> > temprcp1(&X SWIG_NO_NULL_DELETER_0);
 
       SwigClassWrapper farg1;
       farg1.cptr = &temprcp1;
-      farg1.cmemflags = SWIG_MEM_CONST;
+      farg1.cmemflags = 0;
 
       Teuchos::RCP< Tpetra::MultiVector<SC,LO,GO,NO> > temprcp2(&Y SWIG_NO_NULL_DELETER_0);
 

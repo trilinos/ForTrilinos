@@ -31,6 +31,7 @@
 // Don't warn about ignored overloads
 %warnfilter(SWIGWARN_LANG_OVERLOAD_IGNORED) Tpetra::CrsMatrix::sumIntoGlobalValues;
 %warnfilter(SWIGWARN_LANG_OVERLOAD_IGNORED) Tpetra::CrsMatrix::sumIntoLocalValues;
+%warnfilter(SWIGWARN_LANG_OVERLOAD_IGNORED) Tpetra::CrsMatrix::CrsMatrix;
 
 // =======================================================================
 // Postpone temporarily
