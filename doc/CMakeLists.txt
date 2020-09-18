@@ -4,14 +4,19 @@
 ## License-Filename: LICENSE
 find_package(Sphinx REQUIRED)
 
-add_custom_target(docs ALL
-    ${SPHINX_EXECUTABLE}
-        -q -b html
-        "${CMAKE_CURRENT_SOURCE_DIR}/source"
-        "${CMAKE_CURRENT_BINARY_DIR}/html"
-    COMMENT "Building HTML documentation with Sphinx"
-)
+add_custom_target(doc)
+add_custom_command(TARGET doc
+  COMMAND "${SPHINX_EXECUTABLE}" -q
+    -d "${CMAKE_CURRENT_BINARY_DIR}/doctrees"
+    -b html
+    "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${CMAKE_CURRENT_BINARY_DIR}/html"
+  WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+  COMMENT "Building HTML documentation with Sphinx"
+  BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/html/index.html"
+  )
 
-install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/html"
-    DESTINATION "${CMAKE_INSTALL_PREFIX}/docs"
+
+install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/html/"
+  DESTINATION "${CMAKE_INSTALL_DOCDIR}"
 )

@@ -5,28 +5,31 @@ Overview
 --------
 
 `ForTrilinos <https://github.com/trilinos/ForTrilinos>`_ is an
-open-source software library providing object-oriented Fortran interfaces to `Trilinos <https://trilinos.org>`_ C++
+open-source software library providing object-oriented Fortran interfaces to
+`Trilinos <https://trilinos.org>`_ C++
 packages.
 
-The original implementation of the ForTrilinos was developed prior to 2012. That code is no longer developed and
-maintained, and is available in the `master` branch.
+The original implementation of the ForTrilinos was developed prior to 2012.
+That code is no longer developed and maintained, and is available using the
+``trilinos-release-12-8-1`` tag and the corresponding Trilinos 12.8.1 version.
 
-The new implementation using SWIG code generation started in late 2016 and is currently under active development. At the
-moment, it is not fully ready for public consumption as the code and interfaces may change rapidly and backwards
-compatibility is not guaranteed. However, interested parties could check it out in the `develop` branch.
+The new implementation using SWIG code generation started in late 2016 and is
+currently under active development. As of version 2.0.0, the documented
+ForTrilinos module interfaces are stable and available for downstream
+consumption.
 
 ForTrilinos Development Team
 ----------------------------
 
 ForTrilinos is developed and maintained by:
 
+* `Seth Johnson <johnsonsr@ornl.gov>`_
+
 * `Andrey Prokopenko <prokopenkoav@ornl.gov>`_
 
-* `Seth Johnson <sethrj@ornl.gov>`_
+Former developers include:
 
 * `Tim Fuller <tjfulle@sandia.gov>`_
-
-Former developers include:
 
 * `Karla Morris <knmorri@sandia.gov>`_
 
