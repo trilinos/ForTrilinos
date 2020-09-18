@@ -92,7 +92,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Derive options from Trilinos configuration where possible.
 #-----------------------------------------------------------------------------#
 
-find_package(Trilinos 12.17 REQUIRED MODULE
+find_package(Trilinos 13.0 REQUIRED MODULE
   COMPONENTS
     TeuchosCore TeuchosComm TeuchosNumerics TeuchosParameterList
   OPTIONAL_COMPONENTS
@@ -146,7 +146,7 @@ else()
 endif()
 
 if(ForTrilinos_USE_SWIG_Fortran)
-  find_package(SWIG REQUIRED COMPONENTS fortran)
+  find_package(SWIG 4.0.2 REQUIRED COMPONENTS fortran)
   include(UseSWIG)
 
   if(NOT ForTrilinos_USE_MPI)

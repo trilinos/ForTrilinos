@@ -6,17 +6,12 @@ Overview
 
 `ForTrilinos <https://github.com/trilinos/ForTrilinos>`_ is an
 open-source software library providing object-oriented Fortran interfaces to
-`Trilinos <https://trilinos.org>`_ C++
-packages.
-
-The original implementation of the ForTrilinos was developed prior to 2012.
-That code is no longer developed and maintained, and is available using the
-``trilinos-release-12-8-1`` tag and the corresponding Trilinos 12.8.1 version.
+`Trilinos <https://trilinos.org>`_ C++ packages.
 
 The new implementation using SWIG code generation started in late 2016 and is
 currently under active development. As of version 2.0.0, the documented
 ForTrilinos module interfaces are stable and available for downstream
-consumption.
+consumption. See :ref:`version` for details on Trilinos version compatibility.
 
 ForTrilinos Development Team
 ----------------------------
