@@ -955,11 +955,11 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_2(long const *farg1, int c
 }
 
 
-SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_4(long const *farg1, SwigArrayWrapper *farg2, SwigClassWrapper const *farg4) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_5(long const *farg1, SwigArrayWrapper *farg2, SwigClassWrapper const *farg4) {
   SwigClassWrapper fresult ;
   Tpetra::global_size_t arg1 ;
-  Teuchos::ArrayView< long long const > *arg2 = 0 ;
-  long long arg3 ;
+  Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > *arg2 = 0 ;
+  Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type arg3 ;
   Teuchos::RCP< Teuchos::Comm< int > const > *arg4 = 0 ;
   Teuchos::ArrayView< long long const > tmpview2 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull4 ;
@@ -974,25 +974,25 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_4(long const *farg1, SwigA
   arg4 = farg4->cptr ? static_cast<Teuchos::RCP< Teuchos::Comm< int > const > * >(farg4->cptr) : &tempnull4;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::Map(Tpetra::global_size_t const,Teuchos::ArrayView< long long const > const &,long long const,Teuchos::RCP< Teuchos::Comm< int > const > const &)");;
+    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::Map(Tpetra::global_size_t const,Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > const &,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const,Teuchos::RCP< Teuchos::Comm< int > const > const &)");;
     try
     {
       // Attempt the wrapped function call
-      result = (Tpetra::Map< LO,GO,NO > *)new Tpetra::Map< LO,GO,NO >(arg1,(Teuchos::ArrayView< long long const > const &)*arg2,arg3,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg4);
+      result = (Tpetra::Map< LO,GO,NO > *)new Tpetra::Map< LO,GO,NO >(arg1,(Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > const &)*arg2,arg3,(Teuchos::RCP< Teuchos::Comm< int > const > const &)*arg4);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::Map(Tpetra::global_size_t const,Teuchos::ArrayView< long long const > const &,long long const,Teuchos::RCP< Teuchos::Comm< int > const > const &)", -4, e.what(), return SwigClassWrapper_uninitialized());
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::Map(Tpetra::global_size_t const,Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > const &,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const,Teuchos::RCP< Teuchos::Comm< int > const > const &)", -4, e.what(), return SwigClassWrapper_uninitialized());
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::Map(Tpetra::global_size_t const,Teuchos::ArrayView< long long const > const &,long long const,Teuchos::RCP< Teuchos::Comm< int > const > const &)", -3, e.what(), return SwigClassWrapper_uninitialized());
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::Map(Tpetra::global_size_t const,Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > const &,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const,Teuchos::RCP< Teuchos::Comm< int > const > const &)", -3, e.what(), return SwigClassWrapper_uninitialized());
     }
     catch (...)
     {
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::Map(Tpetra::global_size_t const,Teuchos::ArrayView< long long const > const &,long long const,Teuchos::RCP< Teuchos::Comm< int > const > const &)", -1, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::Map(Tpetra::global_size_t const,Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > const &,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const,Teuchos::RCP< Teuchos::Comm< int > const > const &)", -1, "An unknown exception occurred", return SwigClassWrapper_uninitialized());
     }
   }
   fresult.cptr = result ? new Teuchos::RCP< Tpetra::Map<LO,GO,NO> >(result SWIG_NO_NULL_DELETER_1) : NULL;
@@ -1001,7 +1001,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_4(long const *farg1, SwigA
 }
 
 
-SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_5() {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_6() {
   SwigClassWrapper fresult ;
   Tpetra::Map< LO,GO,NO > *result = 0 ;
   
@@ -1034,7 +1034,7 @@ SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_5() {
 }
 
 
-SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_6(SwigClassWrapper *farg1) {
+SWIGEXPORT SwigClassWrapper _wrap_new_TpetraMap__SWIG_7(SwigClassWrapper *farg1) {
   SwigClassWrapper fresult ;
   Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::node_type > *arg1 = 0 ;
   Tpetra::Map< LO,GO,NO > *result = 0 ;
@@ -1192,7 +1192,7 @@ SWIGEXPORT int _wrap_TpetraMap_getMinLocalIndex(SwigClassWrapper *farg1) {
   int fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
-  int result;
+  Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*)(farg1->cptr);
   arg1 = smartarg1 ? (Tpetra::Map<LO,GO,NO>*)(smartarg1->get()) : NULL;
@@ -1202,7 +1202,7 @@ SWIGEXPORT int _wrap_TpetraMap_getMinLocalIndex(SwigClassWrapper *farg1) {
     try
     {
       // Attempt the wrapped function call
-      result = (int)((Tpetra::Map< LO,GO,NO > const *)arg1)->getMinLocalIndex();
+      result = (Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type)((Tpetra::Map< LO,GO,NO > const *)arg1)->getMinLocalIndex();
     }
     catch (const std::range_error& e)
     {
@@ -1228,7 +1228,7 @@ SWIGEXPORT int _wrap_TpetraMap_getMaxLocalIndex(SwigClassWrapper *farg1) {
   int fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
-  int result;
+  Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*)(farg1->cptr);
   arg1 = smartarg1 ? (Tpetra::Map<LO,GO,NO>*)(smartarg1->get()) : NULL;
@@ -1238,7 +1238,7 @@ SWIGEXPORT int _wrap_TpetraMap_getMaxLocalIndex(SwigClassWrapper *farg1) {
     try
     {
       // Attempt the wrapped function call
-      result = (int)((Tpetra::Map< LO,GO,NO > const *)arg1)->getMaxLocalIndex();
+      result = (Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type)((Tpetra::Map< LO,GO,NO > const *)arg1)->getMaxLocalIndex();
     }
     catch (const std::range_error& e)
     {
@@ -1264,7 +1264,7 @@ SWIGEXPORT long long _wrap_TpetraMap_getMinGlobalIndex(SwigClassWrapper *farg1) 
   long long fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
-  long long result;
+  Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*)(farg1->cptr);
   arg1 = smartarg1 ? (Tpetra::Map<LO,GO,NO>*)(smartarg1->get()) : NULL;
@@ -1274,7 +1274,7 @@ SWIGEXPORT long long _wrap_TpetraMap_getMinGlobalIndex(SwigClassWrapper *farg1) 
     try
     {
       // Attempt the wrapped function call
-      result = (long long)((Tpetra::Map< LO,GO,NO > const *)arg1)->getMinGlobalIndex();
+      result = (Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type)((Tpetra::Map< LO,GO,NO > const *)arg1)->getMinGlobalIndex();
     }
     catch (const std::range_error& e)
     {
@@ -1291,7 +1291,7 @@ SWIGEXPORT long long _wrap_TpetraMap_getMinGlobalIndex(SwigClassWrapper *farg1) 
       SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getMinGlobalIndex() const", -1, "An unknown exception occurred", return 0);
     }
   }
-  fresult = (long long)(result);
+  fresult = (Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type)(result);
   return fresult;
 }
 
@@ -1300,7 +1300,7 @@ SWIGEXPORT long long _wrap_TpetraMap_getMaxGlobalIndex(SwigClassWrapper *farg1) 
   long long fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
-  long long result;
+  Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*)(farg1->cptr);
   arg1 = smartarg1 ? (Tpetra::Map<LO,GO,NO>*)(smartarg1->get()) : NULL;
@@ -1310,7 +1310,7 @@ SWIGEXPORT long long _wrap_TpetraMap_getMaxGlobalIndex(SwigClassWrapper *farg1) 
     try
     {
       // Attempt the wrapped function call
-      result = (long long)((Tpetra::Map< LO,GO,NO > const *)arg1)->getMaxGlobalIndex();
+      result = (Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type)((Tpetra::Map< LO,GO,NO > const *)arg1)->getMaxGlobalIndex();
     }
     catch (const std::range_error& e)
     {
@@ -1327,7 +1327,7 @@ SWIGEXPORT long long _wrap_TpetraMap_getMaxGlobalIndex(SwigClassWrapper *farg1) 
       SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getMaxGlobalIndex() const", -1, "An unknown exception occurred", return 0);
     }
   }
-  fresult = (long long)(result);
+  fresult = (Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type)(result);
   return fresult;
 }
 
@@ -1336,7 +1336,7 @@ SWIGEXPORT long long _wrap_TpetraMap_getMinAllGlobalIndex(SwigClassWrapper *farg
   long long fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
-  long long result;
+  Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*)(farg1->cptr);
   arg1 = smartarg1 ? (Tpetra::Map<LO,GO,NO>*)(smartarg1->get()) : NULL;
@@ -1346,7 +1346,7 @@ SWIGEXPORT long long _wrap_TpetraMap_getMinAllGlobalIndex(SwigClassWrapper *farg
     try
     {
       // Attempt the wrapped function call
-      result = (long long)((Tpetra::Map< LO,GO,NO > const *)arg1)->getMinAllGlobalIndex();
+      result = (Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type)((Tpetra::Map< LO,GO,NO > const *)arg1)->getMinAllGlobalIndex();
     }
     catch (const std::range_error& e)
     {
@@ -1363,7 +1363,7 @@ SWIGEXPORT long long _wrap_TpetraMap_getMinAllGlobalIndex(SwigClassWrapper *farg
       SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getMinAllGlobalIndex() const", -1, "An unknown exception occurred", return 0);
     }
   }
-  fresult = (long long)(result);
+  fresult = (Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type)(result);
   return fresult;
 }
 
@@ -1372,7 +1372,7 @@ SWIGEXPORT long long _wrap_TpetraMap_getMaxAllGlobalIndex(SwigClassWrapper *farg
   long long fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
-  long long result;
+  Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*)(farg1->cptr);
   arg1 = smartarg1 ? (Tpetra::Map<LO,GO,NO>*)(smartarg1->get()) : NULL;
@@ -1382,7 +1382,7 @@ SWIGEXPORT long long _wrap_TpetraMap_getMaxAllGlobalIndex(SwigClassWrapper *farg
     try
     {
       // Attempt the wrapped function call
-      result = (long long)((Tpetra::Map< LO,GO,NO > const *)arg1)->getMaxAllGlobalIndex();
+      result = (Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type)((Tpetra::Map< LO,GO,NO > const *)arg1)->getMaxAllGlobalIndex();
     }
     catch (const std::range_error& e)
     {
@@ -1399,7 +1399,7 @@ SWIGEXPORT long long _wrap_TpetraMap_getMaxAllGlobalIndex(SwigClassWrapper *farg
       SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getMaxAllGlobalIndex() const", -1, "An unknown exception occurred", return 0);
     }
   }
-  fresult = (long long)(result);
+  fresult = (Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type)(result);
   return fresult;
 }
 
@@ -1407,34 +1407,34 @@ SWIGEXPORT long long _wrap_TpetraMap_getMaxAllGlobalIndex(SwigClassWrapper *farg
 SWIGEXPORT int _wrap_TpetraMap_getLocalElement(SwigClassWrapper *farg1, long long const *farg2) {
   int fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  long long arg2 ;
+  Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type arg2 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
-  int result;
+  Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*)(farg1->cptr);
   arg1 = smartarg1 ? (Tpetra::Map<LO,GO,NO>*)(smartarg1->get()) : NULL;
-  arg2 = (long long)(*farg2);
+  arg2 = (Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type)(*farg2);
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::getLocalElement(long long) const");;
+    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::getLocalElement(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type) const");;
     try
     {
       // Attempt the wrapped function call
-      result = (int)((Tpetra::Map< LO,GO,NO > const *)arg1)->getLocalElement(arg2);
+      result = (Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type)((Tpetra::Map< LO,GO,NO > const *)arg1)->getLocalElement(arg2);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getLocalElement(long long) const", -4, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getLocalElement(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type) const", -4, e.what(), return 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getLocalElement(long long) const", -3, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getLocalElement(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type) const", -3, e.what(), return 0);
     }
     catch (...)
     {
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getLocalElement(long long) const", -1, "An unknown exception occurred", return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getLocalElement(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type) const", -1, "An unknown exception occurred", return 0);
     }
   }
   fresult = result + 1;
@@ -1445,37 +1445,37 @@ SWIGEXPORT int _wrap_TpetraMap_getLocalElement(SwigClassWrapper *farg1, long lon
 SWIGEXPORT long long _wrap_TpetraMap_getGlobalElement(SwigClassWrapper *farg1, int const *farg2) {
   long long fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  int arg2 ;
+  Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type arg2 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
-  long long result;
+  Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*)(farg1->cptr);
   arg1 = smartarg1 ? (Tpetra::Map<LO,GO,NO>*)(smartarg1->get()) : NULL;
   arg2 = *farg2 - 1;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::getGlobalElement(int) const");;
+    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::getGlobalElement(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type) const");;
     try
     {
       // Attempt the wrapped function call
-      result = (long long)((Tpetra::Map< LO,GO,NO > const *)arg1)->getGlobalElement(arg2);
+      result = (Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type)((Tpetra::Map< LO,GO,NO > const *)arg1)->getGlobalElement(arg2);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getGlobalElement(int) const", -4, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getGlobalElement(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type) const", -4, e.what(), return 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getGlobalElement(int) const", -3, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getGlobalElement(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type) const", -3, e.what(), return 0);
     }
     catch (...)
     {
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getGlobalElement(int) const", -1, "An unknown exception occurred", return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getGlobalElement(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type) const", -1, "An unknown exception occurred", return 0);
     }
   }
-  fresult = (long long)(result);
+  fresult = (Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type)(result);
   return fresult;
 }
 
@@ -1483,9 +1483,9 @@ SWIGEXPORT long long _wrap_TpetraMap_getGlobalElement(SwigClassWrapper *farg1, i
 SWIGEXPORT int _wrap_TpetraMap_getRemoteIndexList__SWIG_0(SwigClassWrapper *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
   int fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Teuchos::ArrayView< long long const > *arg2 = 0 ;
+  Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > *arg2 = 0 ;
   Teuchos::ArrayView< int > *arg3 = 0 ;
-  Teuchos::ArrayView< int > *arg4 = 0 ;
+  Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type > *arg4 = 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
   Teuchos::ArrayView< long long const > tmpview2 ;
   Teuchos::ArrayView< int > tmpview3 ;
@@ -1502,25 +1502,25 @@ SWIGEXPORT int _wrap_TpetraMap_getRemoteIndexList__SWIG_0(SwigClassWrapper *farg
   arg4 = &tmpview4;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::getRemoteIndexList(Teuchos::ArrayView< long long const > const &,Teuchos::ArrayView< int > const &,Teuchos::ArrayView< int > const &) const");;
+    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::getRemoteIndexList(Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > const &,Teuchos::ArrayView< int > const &,Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type > const &) const");;
     try
     {
       // Attempt the wrapped function call
-      result = (Tpetra::LookupStatus)((Tpetra::Map< LO,GO,NO > const *)arg1)->getRemoteIndexList((Teuchos::ArrayView< long long const > const &)*arg2,(Teuchos::ArrayView< int > const &)*arg3,(Teuchos::ArrayView< int > const &)*arg4);
+      result = (Tpetra::LookupStatus)((Tpetra::Map< LO,GO,NO > const *)arg1)->getRemoteIndexList((Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > const &)*arg2,(Teuchos::ArrayView< int > const &)*arg3,(Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type > const &)*arg4);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getRemoteIndexList(Teuchos::ArrayView< long long const > const &,Teuchos::ArrayView< int > const &,Teuchos::ArrayView< int > const &) const", -4, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getRemoteIndexList(Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > const &,Teuchos::ArrayView< int > const &,Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type > const &) const", -4, e.what(), return 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getRemoteIndexList(Teuchos::ArrayView< long long const > const &,Teuchos::ArrayView< int > const &,Teuchos::ArrayView< int > const &) const", -3, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getRemoteIndexList(Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > const &,Teuchos::ArrayView< int > const &,Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type > const &) const", -3, e.what(), return 0);
     }
     catch (...)
     {
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getRemoteIndexList(Teuchos::ArrayView< long long const > const &,Teuchos::ArrayView< int > const &,Teuchos::ArrayView< int > const &) const", -1, "An unknown exception occurred", return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getRemoteIndexList(Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > const &,Teuchos::ArrayView< int > const &,Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type > const &) const", -1, "An unknown exception occurred", return 0);
     }
   }
   fresult = (int)(result);
@@ -1535,7 +1535,7 @@ SWIGEXPORT int _wrap_TpetraMap_getRemoteIndexList__SWIG_0(SwigClassWrapper *farg
 SWIGEXPORT int _wrap_TpetraMap_getRemoteIndexList__SWIG_1(SwigClassWrapper *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3) {
   int fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Teuchos::ArrayView< long long const > *arg2 = 0 ;
+  Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > *arg2 = 0 ;
   Teuchos::ArrayView< int > *arg3 = 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
   Teuchos::ArrayView< long long const > tmpview2 ;
@@ -1550,25 +1550,25 @@ SWIGEXPORT int _wrap_TpetraMap_getRemoteIndexList__SWIG_1(SwigClassWrapper *farg
   arg3 = &tmpview3;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::getRemoteIndexList(Teuchos::ArrayView< long long const > const &,Teuchos::ArrayView< int > const &) const");;
+    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::getRemoteIndexList(Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > const &,Teuchos::ArrayView< int > const &) const");;
     try
     {
       // Attempt the wrapped function call
-      result = (Tpetra::LookupStatus)((Tpetra::Map< LO,GO,NO > const *)arg1)->getRemoteIndexList((Teuchos::ArrayView< long long const > const &)*arg2,(Teuchos::ArrayView< int > const &)*arg3);
+      result = (Tpetra::LookupStatus)((Tpetra::Map< LO,GO,NO > const *)arg1)->getRemoteIndexList((Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > const &)*arg2,(Teuchos::ArrayView< int > const &)*arg3);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getRemoteIndexList(Teuchos::ArrayView< long long const > const &,Teuchos::ArrayView< int > const &) const", -4, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getRemoteIndexList(Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > const &,Teuchos::ArrayView< int > const &) const", -4, e.what(), return 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getRemoteIndexList(Teuchos::ArrayView< long long const > const &,Teuchos::ArrayView< int > const &) const", -3, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getRemoteIndexList(Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > const &,Teuchos::ArrayView< int > const &) const", -3, e.what(), return 0);
     }
     catch (...)
     {
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getRemoteIndexList(Teuchos::ArrayView< long long const > const &,Teuchos::ArrayView< int > const &) const", -1, "An unknown exception occurred", return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::getRemoteIndexList(Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > const &,Teuchos::ArrayView< int > const &) const", -1, "An unknown exception occurred", return 0);
     }
   }
   fresult = (int)(result);
@@ -1582,7 +1582,7 @@ SWIGEXPORT SwigArrayWrapper _wrap_TpetraMap_getNodeElementList(SwigClassWrapper 
   SwigArrayWrapper fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
-  Teuchos::ArrayView< long long const > result;
+  Teuchos::ArrayView< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type const > result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*)(farg1->cptr);
   arg1 = smartarg1 ? (Tpetra::Map<LO,GO,NO>*)(smartarg1->get()) : NULL;
@@ -1618,7 +1618,7 @@ SWIGEXPORT SwigArrayWrapper _wrap_TpetraMap_getNodeElementList(SwigClassWrapper 
 SWIGEXPORT int _wrap_TpetraMap_isNodeLocalElement(SwigClassWrapper *farg1, int const *farg2) {
   int fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  int arg2 ;
+  Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type arg2 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
   bool result;
   
@@ -1627,7 +1627,7 @@ SWIGEXPORT int _wrap_TpetraMap_isNodeLocalElement(SwigClassWrapper *farg1, int c
   arg2 = *farg2 - 1;
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::isNodeLocalElement(int) const");;
+    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::isNodeLocalElement(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type) const");;
     try
     {
       // Attempt the wrapped function call
@@ -1636,16 +1636,16 @@ SWIGEXPORT int _wrap_TpetraMap_isNodeLocalElement(SwigClassWrapper *farg1, int c
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isNodeLocalElement(int) const", -4, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isNodeLocalElement(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type) const", -4, e.what(), return 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isNodeLocalElement(int) const", -3, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isNodeLocalElement(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type) const", -3, e.what(), return 0);
     }
     catch (...)
     {
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isNodeLocalElement(int) const", -1, "An unknown exception occurred", return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isNodeLocalElement(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type) const", -1, "An unknown exception occurred", return 0);
     }
   }
   fresult = (result ? 1 : 0);
@@ -1656,16 +1656,16 @@ SWIGEXPORT int _wrap_TpetraMap_isNodeLocalElement(SwigClassWrapper *farg1, int c
 SWIGEXPORT int _wrap_TpetraMap_isNodeGlobalElement(SwigClassWrapper *farg1, long long const *farg2) {
   int fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  long long arg2 ;
+  Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type arg2 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
   bool result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*)(farg1->cptr);
   arg1 = smartarg1 ? (Tpetra::Map<LO,GO,NO>*)(smartarg1->get()) : NULL;
-  arg2 = (long long)(*farg2);
+  arg2 = (Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type)(*farg2);
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::isNodeGlobalElement(long long) const");;
+    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::isNodeGlobalElement(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type) const");;
     try
     {
       // Attempt the wrapped function call
@@ -1674,16 +1674,16 @@ SWIGEXPORT int _wrap_TpetraMap_isNodeGlobalElement(SwigClassWrapper *farg1, long
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isNodeGlobalElement(long long) const", -4, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isNodeGlobalElement(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type) const", -4, e.what(), return 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isNodeGlobalElement(long long) const", -3, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isNodeGlobalElement(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type) const", -3, e.what(), return 0);
     }
     catch (...)
     {
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isNodeGlobalElement(long long) const", -1, "An unknown exception occurred", return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isNodeGlobalElement(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type) const", -1, "An unknown exception occurred", return 0);
     }
   }
   fresult = (result ? 1 : 0);
@@ -1802,35 +1802,35 @@ SWIGEXPORT int _wrap_TpetraMap_isDistributed(SwigClassWrapper *farg1) {
 SWIGEXPORT int _wrap_TpetraMap_isCompatible(SwigClassWrapper *farg1, SwigClassWrapper *farg2) {
   int fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > *arg2 = 0 ;
+  Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
   bool result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*)(farg1->cptr);
   arg1 = smartarg1 ? (Tpetra::Map<LO,GO,NO>*)(smartarg1->get()) : NULL;
-  SWIG_check_sp_nonnull(farg2->cptr, "Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > *", "TpetraMap", "Tpetra::Map< LO,GO,NO >::isCompatible(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const &) const", return 0)
+  SWIG_check_sp_nonnull(farg2->cptr, "Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > *", "TpetraMap", "Tpetra::Map< LO,GO,NO >::isCompatible(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const &) const", return 0)
   arg2 = (Tpetra::Map<LO,GO,NO>*)static_cast<Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*>(farg2->cptr)->get();
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::isCompatible(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const &) const");;
+    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::isCompatible(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const &) const");;
     try
     {
       // Attempt the wrapped function call
-      result = (bool)((Tpetra::Map< LO,GO,NO > const *)arg1)->isCompatible((Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const &)*arg2);
+      result = (bool)((Tpetra::Map< LO,GO,NO > const *)arg1)->isCompatible((Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const &)*arg2);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isCompatible(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const &) const", -4, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isCompatible(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const &) const", -4, e.what(), return 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isCompatible(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const &) const", -3, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isCompatible(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const &) const", -3, e.what(), return 0);
     }
     catch (...)
     {
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isCompatible(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const &) const", -1, "An unknown exception occurred", return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isCompatible(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const &) const", -1, "An unknown exception occurred", return 0);
     }
   }
   fresult = (result ? 1 : 0);
@@ -1841,35 +1841,35 @@ SWIGEXPORT int _wrap_TpetraMap_isCompatible(SwigClassWrapper *farg1, SwigClassWr
 SWIGEXPORT int _wrap_TpetraMap_isSameAs(SwigClassWrapper *farg1, SwigClassWrapper *farg2) {
   int fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > *arg2 = 0 ;
+  Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
   bool result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*)(farg1->cptr);
   arg1 = smartarg1 ? (Tpetra::Map<LO,GO,NO>*)(smartarg1->get()) : NULL;
-  SWIG_check_sp_nonnull(farg2->cptr, "Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > *", "TpetraMap", "Tpetra::Map< LO,GO,NO >::isSameAs(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const &) const", return 0)
+  SWIG_check_sp_nonnull(farg2->cptr, "Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > *", "TpetraMap", "Tpetra::Map< LO,GO,NO >::isSameAs(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const &) const", return 0)
   arg2 = (Tpetra::Map<LO,GO,NO>*)static_cast<Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*>(farg2->cptr)->get();
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::isSameAs(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const &) const");;
+    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::isSameAs(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const &) const");;
     try
     {
       // Attempt the wrapped function call
-      result = (bool)((Tpetra::Map< LO,GO,NO > const *)arg1)->isSameAs((Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const &)*arg2);
+      result = (bool)((Tpetra::Map< LO,GO,NO > const *)arg1)->isSameAs((Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const &)*arg2);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isSameAs(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const &) const", -4, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isSameAs(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const &) const", -4, e.what(), return 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isSameAs(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const &) const", -3, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isSameAs(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const &) const", -3, e.what(), return 0);
     }
     catch (...)
     {
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isSameAs(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const &) const", -1, "An unknown exception occurred", return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isSameAs(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const &) const", -1, "An unknown exception occurred", return 0);
     }
   }
   fresult = (result ? 1 : 0);
@@ -1880,35 +1880,35 @@ SWIGEXPORT int _wrap_TpetraMap_isSameAs(SwigClassWrapper *farg1, SwigClassWrappe
 SWIGEXPORT int _wrap_TpetraMap_locallySameAs(SwigClassWrapper *farg1, SwigClassWrapper *farg2) {
   int fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Tpetra::Map< int,long long,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::node_type > *arg2 = 0 ;
+  Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::node_type > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
   bool result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*)(farg1->cptr);
   arg1 = smartarg1 ? (Tpetra::Map<LO,GO,NO>*)(smartarg1->get()) : NULL;
-  SWIG_check_sp_nonnull(farg2->cptr, "Tpetra::Map< int,long long,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::node_type > *", "TpetraMap", "Tpetra::Map< LO,GO,NO >::locallySameAs(Tpetra::Map< int,long long,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::node_type > const &) const", return 0)
+  SWIG_check_sp_nonnull(farg2->cptr, "Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::node_type > *", "TpetraMap", "Tpetra::Map< LO,GO,NO >::locallySameAs(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::node_type > const &) const", return 0)
   arg2 = (Tpetra::Map<LO,GO,NO>*)static_cast<Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*>(farg2->cptr)->get();
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::locallySameAs(Tpetra::Map< int,long long,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::node_type > const &) const");;
+    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::locallySameAs(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::node_type > const &) const");;
     try
     {
       // Attempt the wrapped function call
-      result = (bool)((Tpetra::Map< LO,GO,NO > const *)arg1)->locallySameAs((Tpetra::Map< int,long long,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::node_type > const &)*arg2);
+      result = (bool)((Tpetra::Map< LO,GO,NO > const *)arg1)->locallySameAs((Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::node_type > const &)*arg2);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::locallySameAs(Tpetra::Map< int,long long,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::node_type > const &) const", -4, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::locallySameAs(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::node_type > const &) const", -4, e.what(), return 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::locallySameAs(Tpetra::Map< int,long long,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::node_type > const &) const", -3, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::locallySameAs(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::node_type > const &) const", -3, e.what(), return 0);
     }
     catch (...)
     {
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::locallySameAs(Tpetra::Map< int,long long,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::node_type > const &) const", -1, "An unknown exception occurred", return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::locallySameAs(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::node_type > const &) const", -1, "An unknown exception occurred", return 0);
     }
   }
   fresult = (result ? 1 : 0);
@@ -1919,35 +1919,35 @@ SWIGEXPORT int _wrap_TpetraMap_locallySameAs(SwigClassWrapper *farg1, SwigClassW
 SWIGEXPORT int _wrap_TpetraMap_isLocallyFitted(SwigClassWrapper *farg1, SwigClassWrapper *farg2) {
   int fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
-  Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > *arg2 = 0 ;
+  Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
   bool result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*)(farg1->cptr);
   arg1 = smartarg1 ? (Tpetra::Map<LO,GO,NO>*)(smartarg1->get()) : NULL;
-  SWIG_check_sp_nonnull(farg2->cptr, "Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > *", "TpetraMap", "Tpetra::Map< LO,GO,NO >::isLocallyFitted(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const &) const", return 0)
+  SWIG_check_sp_nonnull(farg2->cptr, "Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > *", "TpetraMap", "Tpetra::Map< LO,GO,NO >::isLocallyFitted(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const &) const", return 0)
   arg2 = (Tpetra::Map<LO,GO,NO>*)static_cast<Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*>(farg2->cptr)->get();
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::isLocallyFitted(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const &) const");;
+    SWIG_check_unhandled_exception_impl("Tpetra::Map< LO,GO,NO >::isLocallyFitted(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const &) const");;
     try
     {
       // Attempt the wrapped function call
-      result = (bool)((Tpetra::Map< LO,GO,NO > const *)arg1)->isLocallyFitted((Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const &)*arg2);
+      result = (bool)((Tpetra::Map< LO,GO,NO > const *)arg1)->isLocallyFitted((Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const &)*arg2);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isLocallyFitted(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const &) const", -4, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isLocallyFitted(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const &) const", -4, e.what(), return 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isLocallyFitted(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const &) const", -3, e.what(), return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isLocallyFitted(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const &) const", -3, e.what(), return 0);
     }
     catch (...)
     {
-      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isLocallyFitted(Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const &) const", -1, "An unknown exception occurred", return 0);
+      SWIG_exception_impl("Tpetra::Map< LO,GO,NO >::isLocallyFitted(Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const &) const", -1, "An unknown exception occurred", return 0);
     }
   }
   fresult = (result ? 1 : 0);
@@ -2038,7 +2038,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraMap_removeEmptyProcesses(SwigClassWrappe
   SwigClassWrapper fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
-  Teuchos::RCP< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const > result;
+  Teuchos::RCP< Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const > result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*)(farg1->cptr);
   arg1 = smartarg1 ? (Tpetra::Map<LO,GO,NO>*)(smartarg1->get()) : NULL;
@@ -2077,7 +2077,7 @@ SWIGEXPORT SwigClassWrapper _wrap_TpetraMap_replaceCommWithSubset(SwigClassWrapp
   Teuchos::RCP< Teuchos::Comm< int > const > *arg2 = 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
   Teuchos::RCP< Teuchos::Comm< int > const > tempnull2 ;
-  Teuchos::RCP< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType > const > result;
+  Teuchos::RCP< Tpetra::Map< Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::local_ordinal_type,Tpetra::Map< int,long long,ForTrilinos::DefaultNodeType >::global_ordinal_type,ForTrilinos::DefaultNodeType > const > result;
   
   smartarg1 = (Teuchos::RCP<const Tpetra::Map<LO,GO,NO> >*)(farg1->cptr);
   arg1 = smartarg1 ? (Tpetra::Map<LO,GO,NO>*)(smartarg1->get()) : NULL;
@@ -8834,35 +8834,33 @@ SWIGEXPORT int _wrap_TpetraCrsGraph_haveGlobalConstants(SwigClassWrapper *farg1)
 }
 
 
-SWIGEXPORT void _wrap_TpetraCrsGraph_computeGlobalConstants(SwigClassWrapper *farg1, int const *farg2) {
+SWIGEXPORT void _wrap_TpetraCrsGraph_computeGlobalConstants(SwigClassWrapper *farg1) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
-  bool arg2 ;
   Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > > *smartarg1 ;
   
   smartarg1 = (Teuchos::RCP< Tpetra::CrsGraph<LO,GO,NO> >*)(farg1->cptr);
   arg1 = smartarg1 ? (Tpetra::CrsGraph<LO,GO,NO>*)(smartarg1->get()) : NULL;
-  arg2 = (*farg2 ? true : false);
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::computeGlobalConstants(bool const)");;
+    SWIG_check_unhandled_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::computeGlobalConstants()");;
     try
     {
       // Attempt the wrapped function call
-      (arg1)->computeGlobalConstants(arg2);
+      (arg1)->computeGlobalConstants();
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::computeGlobalConstants(bool const)", -4, e.what(), return );
+      SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::computeGlobalConstants()", -4, e.what(), return );
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::computeGlobalConstants(bool const)", -3, e.what(), return );
+      SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::computeGlobalConstants()", -3, e.what(), return );
     }
     catch (...)
     {
-      SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::computeGlobalConstants(bool const)", -1, "An unknown exception occurred", return );
+      SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::computeGlobalConstants()", -1, "An unknown exception occurred", return );
     }
   }
 }
@@ -10001,7 +9999,7 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_insertLocalValues(SwigClassWrapper *farg1,
 }
 
 
-SWIGEXPORT int _wrap_TpetraCrsMatrix_replaceGlobalValues(SwigClassWrapper *farg1, long long const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
+SWIGEXPORT int _wrap_TpetraCrsMatrix_replaceGlobalValues__SWIG_1(SwigClassWrapper *farg1, long long const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
   int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   long long arg2 ;
@@ -10149,7 +10147,7 @@ SWIGEXPORT int _wrap_TpetraCrsMatrix_sumIntoGlobalValues__SWIG_0(SwigClassWrappe
 }
 
 
-SWIGEXPORT int _wrap_TpetraCrsMatrix_sumIntoLocalValues__SWIG_0(SwigClassWrapper *farg1, int const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
+SWIGEXPORT int _wrap_TpetraCrsMatrix_sumIntoLocalValues__SWIG_2(SwigClassWrapper *farg1, int const *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
   int fresult ;
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   int arg2 ;

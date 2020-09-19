@@ -9,7 +9,8 @@ ForTrilinos
 
 This is the new effort to provide Fortran interfaces to Trilinos through
 automatic code generation using SWIG. The previous effort (ca. 2008-2012) can
-be obtained by downloading Trilinos releases prior to 12.12.
+be obtained by downloading Trilinos releases prior to 12.12. See [the
+documentation](https://fortrilinos.readthedocs.io/en/latest/install.html#version-compatibility) for details on version compatibility.
 
 Provided functionality
 ----------------------
@@ -22,9 +23,9 @@ ForTrilinos provides Fortran interfaces for the following capabilities:
 Documentation
 -------------
 
-* [Website](https://trilinos.github.io/ForTrilinos/)
+* [Documentation](https://fortrilinos.readthedocs.org)
 
-* [Documentation](http://fortrilinos.readthedocs.org)
+* [Summary](https://trilinos.github.io/ForTrilinos/)
 
 Installing ForTrilinos
 ----------------------
