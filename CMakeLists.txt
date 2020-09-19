@@ -92,6 +92,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Derive options from Trilinos configuration where possible.
 #-----------------------------------------------------------------------------#
 
+set(Kokkos_FIND_QUIETLY ON)
 find_package(Trilinos 13.0 REQUIRED MODULE
   COMPONENTS
     TeuchosCore TeuchosComm TeuchosNumerics TeuchosParameterList
