@@ -27,17 +27,11 @@
 
 namespace ForTrilinos {
 
-  void TrilinosEigenSolver::init() {
-    TEUCHOS_ASSERT(status_ == NOT_INITIALIZED);
-    comm_ = Teuchos::DefaultComm<int>::getComm();
-    status_ = INITIALIZED;
-  }
+TrilinosEigenSolver::TrilinosEigenSolver()
+    : comm_(Teuchos::DefaultComm<int>::getComm()), status_(INITIALIZED) {}
 
-  void TrilinosEigenSolver::init(const Teuchos::RCP<const Teuchos::Comm<int>>& comm) {
-    TEUCHOS_ASSERT(status_ == NOT_INITIALIZED);
-    comm_ = comm;
-    status_ = INITIALIZED;
-  }
+TrilinosEigenSolver::TrilinosEigenSolver(const Teuchos::RCP<const Teuchos::Comm<int>>& comm)
+    : comm_(comm), status_(INITIALIZED) {}
 
   void TrilinosEigenSolver::setup_matrix(const Teuchos::RCP<Matrix>& A) {
     TEUCHOS_ASSERT(status_ == INITIALIZED);
@@ -165,16 +159,4 @@ namespace ForTrilinos {
 
     return eValues.size();
   }
-
-  void TrilinosEigenSolver::finalize() {
-    // No need to check the status_, we can finalize() at any moment.
-    comm_          = Teuchos::null;
-    A_             = Teuchos::null;
-    M_             = Teuchos::null;
-    solver_        = Teuchos::null;
-    paramList_     = Teuchos::null;
-
-    status_ = NOT_INITIALIZED;
-  }
-
 }

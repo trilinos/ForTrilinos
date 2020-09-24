@@ -30,7 +30,6 @@ program test_TrilinosEigenSolver
   ADD_SUBTEST_AND_RUN(TrilinosEigenSolver_setup_matrix)
   ADD_SUBTEST_AND_RUN(TrilinosEigenSolver_setup_matrix_rhs)
   ADD_SUBTEST_AND_RUN(TrilinosEigenSolver_setup_solver)
-  ADD_SUBTEST_AND_RUN(TrilinosEigenSolver_finalize)
   ADD_SUBTEST_AND_RUN(TrilinosEigenSolver_solve)
 
   ! No need to test at this level
@@ -51,12 +50,10 @@ contains
     OUT0("Starting TrilinosEigenSolver_setup_matrix!")
 
     call Tpetra_CrsMatrix_CreateIdentity(comm, a)
-    eig = TrilinosEigenSolver(); TEST_IERR()
-    call eig%init(comm); TEST_IERR()
+    eig = TrilinosEigenSolver(comm); TEST_IERR()
     TEST_NOTHROW(call eig%setup_matrix(a))
 
     call a%release(); TEST_IERR()
-    call eig%finalize(); TEST_IERR()
     call eig%release(); TEST_IERR()
 
     OUT0("Finished TrilinosEigenSolver_setup_matrix!")
@@ -70,12 +67,10 @@ contains
     OUT0("Starting TrilinosEigenSolver_setup_matrix_rhs!")
 
     call Tpetra_CrsMatrix_CreateIdentity(comm, a)
-    eig = TrilinosEigenSolver(); TEST_IERR()
-    call eig%init(comm); TEST_IERR()
+    eig = TrilinosEigenSolver(comm); TEST_IERR()
     TEST_NOTHROW(call eig%setup_matrix_rhs(a))
 
     call a%release(); TEST_IERR()
-    call eig%finalize(); TEST_IERR()
     call eig%release(); TEST_IERR()
 
     OUT0("Finished TrilinosEigenSolver_setup_matrix_rhs!")
@@ -93,13 +88,11 @@ contains
     map = TpetraMap(TPETRA_GLOBAL_INVALID, 5, comm)
     a = TpetraOperator(); TEST_IERR()
     !call a%fillComplete()
-    eig = TrilinosEigenSolver(); TEST_IERR()
-    call eig%init(comm); TEST_IERR()
+    eig = TrilinosEigenSolver(comm); TEST_IERR()
     TEST_NOTHROW(call eig%setup_operator(a))
 
     call a%release(); TEST_IERR()
     call map%release(); TEST_IERR()
-    call eig%finalize(); TEST_IERR()
     call eig%release(); TEST_IERR()
 
     OUT0("Finished TrilinosEigenSolver_setup_operator!")
@@ -116,13 +109,11 @@ contains
     map = TpetraMap(TPETRA_GLOBAL_INVALID, 5, comm)
     a = TpetraOperator(); TEST_IERR()
     !call a%fillComplete()
-    eig = TrilinosEigenSolver(); TEST_IERR()
-    call eig%init(comm); TEST_IERR()
+    eig = TrilinosEigenSolver(comm); TEST_IERR()
     TEST_NOTHROW(call eig%setup_operator_rhs(a))
 
     call a%release(); TEST_IERR()
     call map%release(); TEST_IERR()
-    call eig%finalize(); TEST_IERR()
     call eig%release(); TEST_IERR()
 
     OUT0("Finished TrilinosEigenSolver_setup_operator_rhs!")
@@ -142,8 +133,7 @@ contains
     TEST_NOTHROW(call load_from_xml(plist, 'davidson.xml'))
 
     call plist%set('NumEV', num_eigen); FORTRILINOS_CHECK_IERR()
-    eig = TrilinosEigenSolver(); TEST_IERR()
-    call eig%init(comm); TEST_IERR()
+    eig = TrilinosEigenSolver(comm); TEST_IERR()
     call  Tpetra_CrsMatrix_CreateTestMatrix_A(comm,A)
     call A%fillComplete(); FORTRILINOS_CHECK_IERR()
     call eig%setup_matrix(A); TEST_IERR()
@@ -152,7 +142,6 @@ contains
 
     call plist%release(); TEST_IERR()
     call A%release(); TEST_IERR()
-    call eig%finalize(); TEST_IERR()
     call eig%release(); TEST_IERR()
 
     OUT0("Finished TrilinosEigenSolver_setup_solver!")
@@ -192,9 +181,7 @@ contains
     allocate(evalues(2*num_eigen))
     allocate(eindex(2*num_eigen))
 
-    eigensolver = TrilinosEigenSolver(); TEST_IERR()
-
-    call eigensolver%init(comm); TEST_IERR()
+    eigensolver = TrilinosEigenSolver(comm); TEST_IERR()
     call eigensolver%setup_matrix(A); TEST_IERR()
     call eigensolver%setup_solver(plist); TEST_IERR()
     num_found_eigen = eigensolver%solve(evalues, X, eindex)
@@ -214,8 +201,6 @@ contains
        stop 1
     endif
 
-    call eigensolver%finalize(); TEST_IERR()
-
     call eigensolver%release(); TEST_IERR()
     call plist%release(); TEST_IERR()
     call dlist%release(); TEST_IERR()
@@ -226,19 +211,4 @@ contains
     OUT0("Finished TrilinosEigenSolver_solve!")
 
   END_FORTRILINOS_UNIT_TEST(TrilinosEigenSolver_solve)
-  ! ---------------------------------finalize--------------------------------- !
-  FORTRILINOS_UNIT_TEST(TrilinosEigenSolver_finalize)
-    type(TrilinosEigenSolver) :: eig
-    OUT0("Starting TrilinosEigenSolver_finalize!")
-
-    eig = TrilinosEigenSolver(); TEST_IERR()
-    call eig%init(comm); TEST_IERR()
-    TEST_NOTHROW(call eig%finalize())
-
-    call eig%release(); TEST_IERR()
-
-    OUT0("Finished TrilinosEigenSolver_finalize!")
-
-  END_FORTRILINOS_UNIT_TEST(TrilinosEigenSolver_finalize)
-
 end program test_TrilinosEigenSolver

@@ -276,17 +276,14 @@ program main
 
   allocate(norms(1))
 
-  ! Step 0: create a handle
-  solver_handle = TrilinosSolver(); FORTRILINOS_CHECK_IERR()
+  ! Step 1: create a handle
+  solver_handle = TrilinosSolver(comm); FORTRILINOS_CHECK_IERR()
 
   ! ------------------------------------------------------------------
   ! Explicit setup and solve
   ! ------------------------------------------------------------------
 
   ! Use case 1: setup and solve the problem
-
-  ! Step 1: initialize a handle
-  call solver_handle%init(comm); FORTRILINOS_CHECK_IERR()
 
   ! Step 2: setup the problem
   call solver_handle%setup_matrix(A); FORTRILINOS_CHECK_IERR()
@@ -345,7 +342,7 @@ program main
   end if
 
   ! Step 5: clean up
-  call solver_handle%finalize(); FORTRILINOS_CHECK_IERR()
+  call solver_handle%release(); FORTRILINOS_CHECK_IERR()
 
 
   ! Change values back for implicit comparison
@@ -370,7 +367,7 @@ program main
   call init_ForTpetraOperator(op); FORTRILINOS_CHECK_IERR()
 
   ! Step 1: initialize a handle
-  call solver_handle%init(comm); FORTRILINOS_CHECK_IERR()
+  solver_handle = TrilinosSolver(comm); FORTRILINOS_CHECK_IERR()
 
   ! Step 2: setup the problem
   ! Implicit (inversion-of-control) setup
@@ -399,9 +396,6 @@ program main
     write(error_unit, '(A)') 'The solver did not converge to the specified residual!'
     stop 666
   end if
-
-  ! Step 5: clean up
-  call solver_handle%finalize(); FORTRILINOS_CHECK_IERR()
 
   call krylov_list%release; FORTRILINOS_CHECK_IERR()
   call solver_list%release; FORTRILINOS_CHECK_IERR()

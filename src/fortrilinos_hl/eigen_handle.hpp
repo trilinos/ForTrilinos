@@ -44,14 +44,8 @@ namespace ForTrilinos {
   public:
 
     // Constructors
-    TrilinosEigenSolver() : status_(NOT_INITIALIZED) { }
-
-    TrilinosEigenSolver(const TrilinosEigenSolver&) = delete;
-    void operator=(const TrilinosEigenSolver&) = delete;
-
-    // Initialize
-    void init();
-    void init(const Teuchos::RCP<const Teuchos::Comm<int>>& comm);
+    TrilinosEigenSolver();
+    explicit TrilinosEigenSolver(const Teuchos::RCP<const Teuchos::Comm<int>>& comm);
 
     // Setup matrices by construction
     void setup_matrix    (const Teuchos::RCP<Matrix>& A);
@@ -69,9 +63,6 @@ namespace ForTrilinos {
               Teuchos::RCP<MultiVector>& eigenVectors,
               Teuchos::ArrayView<int> eigenIndex) const;
 
-    // Free all data
-    void finalize();
-
   private:
 
     Teuchos::RCP<const Teuchos::Comm<int>> comm_;
@@ -81,10 +72,10 @@ namespace ForTrilinos {
     int                              numEigenvalues_;
 
     enum Status {
-      NOT_INITIALIZED,
       INITIALIZED,
       MATRIX_SETUP,
       SOLVER_SETUP,
+      SOLVED,
     } status_;
   };
 

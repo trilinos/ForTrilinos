@@ -105,14 +105,12 @@ program main
   allocate(evalues(2*num_eigen))
   allocate(eindex(2*num_eigen))
 
-  ! Step 0: crate a handle
-  eigen_handle = TrilinosEigenSolver(); FORTRILINOS_CHECK_IERR()
+  ! Step 1: crate a handle
+  eigen_handle = TrilinosEigenSolver(comm); FORTRILINOS_CHECK_IERR()
 
   ! ------------------------------------------------------------------
   ! Explicit setup and solve
   ! ------------------------------------------------------------------
-  ! Step 1: initialize a handle
-  call eigen_handle%init(comm); FORTRILINOS_CHECK_IERR()
 
   ! Step 2: setup the problem
   call eigen_handle%setup_matrix(A); FORTRILINOS_CHECK_IERR()
@@ -125,13 +123,10 @@ program main
 
   ! FIXME: Check the solution
   if (num_found_eigen < num_eigen) then
-    write(error_unit, '(A)') 'The number of returned eigenvalues does not match!'
-    stop 1
+    write(error_unit, *) 'Warning: the number of returned eigenvalues ', &
+        num_found_eigen, 'is less than the expected', num_eigen
   end if
-  write(*,*) "Computed eigenvalues: ", evalues(1)
-
-  ! Step 5: clean up
-  call eigen_handle%finalize(); FORTRILINOS_CHECK_IERR()
+  write(*,*) "Computed eigenvalues: ", evalues(:num_eigen)
 
   call eigen_handle%release(); FORTRILINOS_CHECK_IERR()
   call plist%release(); FORTRILINOS_CHECK_IERR()

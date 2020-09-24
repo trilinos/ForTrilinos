@@ -24,27 +24,18 @@
 
 namespace ForTrilinos {
 
-  void TrilinosSolver::init() {
-    TEUCHOS_ASSERT(status_ == NOT_INITIALIZED);
-    comm_ = Teuchos::DefaultComm<int>::getComm();
-    status_ = INITIALIZED;
-  }
+TrilinosSolver::TrilinosSolver()
+    : comm_(Teuchos::DefaultComm<int>::getComm()), status_(INITIALIZED) {}
 
-  void TrilinosSolver::init(const Teuchos::RCP<const Teuchos::Comm<int>>& comm) {
-    TEUCHOS_ASSERT(status_ == NOT_INITIALIZED);
-    comm_ = comm;
-    status_ = INITIALIZED;
-  }
+TrilinosSolver::TrilinosSolver(const Teuchos::RCP<const Teuchos::Comm<int>>& comm) : comm_(comm), status_(INITIALIZED) {}
 
   void TrilinosSolver::setup_matrix(const Teuchos::RCP<Matrix>& A) {
-    TEUCHOS_ASSERT(status_ >= INITIALIZED);
     A_ = Teuchos::rcp_dynamic_cast<Operator>(A);
     if (status_ < MATRIX_SETUP)
       status_ = MATRIX_SETUP;
   }
 
   void TrilinosSolver::setup_operator(const Teuchos::RCP<Operator>& A) {
-    TEUCHOS_ASSERT(status_ >= INITIALIZED);
     A_ = A;
     if (status_ < MATRIX_SETUP)
       status_ = MATRIX_SETUP;
@@ -104,18 +95,7 @@ namespace ForTrilinos {
     auto status = Thyra::solve<SC>(*thyraInverseA_, Thyra::NOTRANS, *thyraB, thyraX.ptr());
 
     // FIXME
-    if (!map->getComm()->getRank())
-      std::cout << status << std::endl;
+    if (map->getComm()->getRank() == 0)
+      std::cout << "solve result:" <<  status << std::endl;
   }
-
-  void TrilinosSolver::finalize() {
-    // No need to check the status_, we can finalize() at any moment.
-    comm_          = Teuchos::null;
-    A_             = Teuchos::null;
-    paramList_     = Teuchos::null;
-    thyraInverseA_ = Teuchos::null;
-
-    status_ = NOT_INITIALIZED;
-  }
-
 }
