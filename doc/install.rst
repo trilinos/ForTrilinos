@@ -28,7 +28,7 @@ wrappers.)
    ===========  ============== ======================
    ForTrilinos  Trilinos       SWIG
    ===========  ============== ======================
-   2.0.0        13.0           4.0.2+fortran
+   2.0.0        13             4.0.2+fortran
    2.0.0-dev3   12.18.1        4.0.2+fortran
    2.0.0-dev2   12.18.1        4.0.0+fortran+15e6ed59
    2.0.0-dev1   12.17+8a82b322 4.0.0+fortran+15e6ed59
@@ -46,12 +46,12 @@ That code is no longer developed and maintained, and is available using the
 Spack
 -----
 
-To install ForTrilinos version ``2.0.0-dev2`` through an existing Spack
+To install ForTrilinos version ``2.0.0`` through an existing Spack
 installation (v0.16 or higher, or the ``develop`` branch):
 
 .. code:: console
 
-   $ spack install fortrilinos@2.0.0-dev2 ^trilinos@12.18.1+nox+stratimikos
+   $ spack install fortrilinos@2.0.0 ^trilinos+nox+stratimikos
 
 Manual
 ------
