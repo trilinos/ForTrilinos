@@ -149,7 +149,7 @@ contains
   END_FORTRILINOS_UNIT_TEST(TrilinosEigenSolver_setup_solver)
   ! ----------------------------------solve----------------------------------- !
   FORTRILINOS_UNIT_TEST(TrilinosEigenSolver_solve)
-    integer:: n
+    integer :: n, comm_size
     integer :: num_eigen = 1, num_found_eigen, sub_dim, restart_dim
     type(ParameterList) :: plist, dlist
     type(TrilinosEigenSolver) :: eigensolver
@@ -157,6 +157,8 @@ contains
     type(TpetraMultiVector) :: X
     real(scalar_type), dimension(:), allocatable :: evalues
     integer(int_type), dimension(:), allocatable :: eindex
+
+    comm_size = comm%getSize()
 
     ! Literally copy-paste from fat test, all previous functions required
     ! for this to make any sense
@@ -184,20 +186,29 @@ contains
     eigensolver = TrilinosEigenSolver(comm); TEST_IERR()
     call eigensolver%setup_matrix(A); TEST_IERR()
     call eigensolver%setup_solver(plist); TEST_IERR()
+    TEST_EQUALITY(num_eigen, eigensolver%max_eigenvalues())
     num_found_eigen = eigensolver%solve(evalues, X, eindex)
+    TEST_ASSERT(eigensolver%converged())
+    if (comm_size == 1) then
+      TEST_EQUALITY(6, eigensolver%num_iters())
+    elseif (comm_size == 4) then
+      TEST_EQUALITY(23, eigensolver%num_iters())
+    elseif (comm%getRank() == 0) then
+      write(error_unit,*) "converged in iters:", eigensolver%num_iters()
+    endif
 
     TEST_EQUALITY(num_found_eigen, num_eigen)
     ! This matrix has lambda=3:
     ! See src/tpetra/test/test_tpetra_crsmatrix_helper.F90
-    ! Why this this isn't working:
-    !TEST_FLOATING_EQUALITY(real(3.,mag_type), real(evalues(1),mag_type), epsilon(real(3, mag_type)))
-    if (abs(real(3.,mag_type)- evalues(1)) >  epsilon(3.)) then
-       write(*,*) "Eigenvalue solver failed"
+    ! (solver tolerance is 1e-7)
+    write(*,*) "evalues:", evalues
+    if (abs(3.0_mag_type - evalues(1)) > 1.d-7) then
+       write(error_unit,*) "Eigenvalue solver failed"
        stop 1
     endif
     ! Check to make sure the second eigenvalue is 0
-    if (abs(real(0.,mag_type)- evalues(2)) >  epsilon(3.)) then
-       write(*,*) "Eigenvalue solver failed"
+    if (abs(0.0_mag_type - evalues(2)) > 1.d-7) then
+       write(error_unit,*) "Eigenvalue solver failed"
        stop 1
     endif
 

@@ -1146,6 +1146,41 @@ SWIGEXPORT void _wrap_TrilinosEigenSolver_setup_solver(SwigClassWrapper *farg1, 
 }
 
 
+SWIGEXPORT int _wrap_TrilinosEigenSolver_max_eigenvalues(SwigClassWrapper *farg1) {
+  int fresult ;
+  ForTrilinos::TrilinosEigenSolver *arg1 = (ForTrilinos::TrilinosEigenSolver *) 0 ;
+  int result;
+  
+  SWIG_check_nonnull(farg1->cptr, "ForTrilinos::TrilinosEigenSolver const *", "TrilinosEigenSolver", "ForTrilinos::TrilinosEigenSolver::max_eigenvalues() const", return 0);
+  arg1 = (ForTrilinos::TrilinosEigenSolver *)farg1->cptr;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosEigenSolver::max_eigenvalues() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (int)((ForTrilinos::TrilinosEigenSolver const *)arg1)->max_eigenvalues();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTrilinos::TrilinosEigenSolver::max_eigenvalues() const", -4, e.what(), return 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTrilinos::TrilinosEigenSolver::max_eigenvalues() const", -3, e.what(), return 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("ForTrilinos::TrilinosEigenSolver::max_eigenvalues() const", -1, "An unknown exception occurred", return 0);
+    }
+  }
+  fresult = (int)(result);
+  return fresult;
+}
+
+
 SWIGEXPORT int _wrap_TrilinosEigenSolver_solve(SwigClassWrapper *farg1, SwigArrayWrapper *farg2, SwigClassWrapper const *farg3, SwigArrayWrapper *farg4) {
   int fresult ;
   ForTrilinos::TrilinosEigenSolver *arg1 = (ForTrilinos::TrilinosEigenSolver *) 0 ;
@@ -1155,32 +1190,102 @@ SWIGEXPORT int _wrap_TrilinosEigenSolver_solve(SwigClassWrapper *farg1, SwigArra
   Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::MultiVector > tempnull3 ;
   int result;
   
-  SWIG_check_nonnull(farg1->cptr, "ForTrilinos::TrilinosEigenSolver const *", "TrilinosEigenSolver", "ForTrilinos::TrilinosEigenSolver::solve(Teuchos::ArrayView< ForTrilinos::TrilinosEigenSolver::SC >,Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::MultiVector > &,Teuchos::ArrayView< int >) const", return 0);
+  SWIG_check_nonnull(farg1->cptr, "ForTrilinos::TrilinosEigenSolver *", "TrilinosEigenSolver", "ForTrilinos::TrilinosEigenSolver::solve(Teuchos::ArrayView< ForTrilinos::TrilinosEigenSolver::SC >,Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::MultiVector > &,Teuchos::ArrayView< int >)", return 0);
   arg1 = (ForTrilinos::TrilinosEigenSolver *)farg1->cptr;
   arg2 = Teuchos::ArrayView<double>(static_cast<double*>(farg2->data), farg2->size);
   arg3 = farg3->cptr ? static_cast<Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::MultiVector > * >(farg3->cptr) : &tempnull3;
   arg4 = Teuchos::ArrayView<int>(static_cast<int*>(farg4->data), farg4->size);
   {
     // Make sure no unhandled exceptions exist before performing a new action
-    SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosEigenSolver::solve(Teuchos::ArrayView< ForTrilinos::TrilinosEigenSolver::SC >,Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::MultiVector > &,Teuchos::ArrayView< int >) const");;
+    SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosEigenSolver::solve(Teuchos::ArrayView< ForTrilinos::TrilinosEigenSolver::SC >,Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::MultiVector > &,Teuchos::ArrayView< int >)");;
     try
     {
       // Attempt the wrapped function call
-      result = (int)((ForTrilinos::TrilinosEigenSolver const *)arg1)->solve(arg2,*arg3,arg4);
+      result = (int)(arg1)->solve(arg2,*arg3,arg4);
     }
     catch (const std::range_error& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("ForTrilinos::TrilinosEigenSolver::solve(Teuchos::ArrayView< ForTrilinos::TrilinosEigenSolver::SC >,Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::MultiVector > &,Teuchos::ArrayView< int >) const", -4, e.what(), return 0);
+      SWIG_exception_impl("ForTrilinos::TrilinosEigenSolver::solve(Teuchos::ArrayView< ForTrilinos::TrilinosEigenSolver::SC >,Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::MultiVector > &,Teuchos::ArrayView< int >)", -4, e.what(), return 0);
     }
     catch (const std::exception& e)
     {
       // Store a C++ exception
-      SWIG_exception_impl("ForTrilinos::TrilinosEigenSolver::solve(Teuchos::ArrayView< ForTrilinos::TrilinosEigenSolver::SC >,Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::MultiVector > &,Teuchos::ArrayView< int >) const", -3, e.what(), return 0);
+      SWIG_exception_impl("ForTrilinos::TrilinosEigenSolver::solve(Teuchos::ArrayView< ForTrilinos::TrilinosEigenSolver::SC >,Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::MultiVector > &,Teuchos::ArrayView< int >)", -3, e.what(), return 0);
     }
     catch (...)
     {
-      SWIG_exception_impl("ForTrilinos::TrilinosEigenSolver::solve(Teuchos::ArrayView< ForTrilinos::TrilinosEigenSolver::SC >,Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::MultiVector > &,Teuchos::ArrayView< int >) const", -1, "An unknown exception occurred", return 0);
+      SWIG_exception_impl("ForTrilinos::TrilinosEigenSolver::solve(Teuchos::ArrayView< ForTrilinos::TrilinosEigenSolver::SC >,Teuchos::RCP< ForTrilinos::TrilinosEigenSolver::MultiVector > &,Teuchos::ArrayView< int >)", -1, "An unknown exception occurred", return 0);
+    }
+  }
+  fresult = (int)(result);
+  return fresult;
+}
+
+
+SWIGEXPORT int _wrap_TrilinosEigenSolver_converged(SwigClassWrapper *farg1) {
+  int fresult ;
+  ForTrilinos::TrilinosEigenSolver *arg1 = (ForTrilinos::TrilinosEigenSolver *) 0 ;
+  bool result;
+  
+  SWIG_check_nonnull(farg1->cptr, "ForTrilinos::TrilinosEigenSolver const *", "TrilinosEigenSolver", "ForTrilinos::TrilinosEigenSolver::converged() const", return 0);
+  arg1 = (ForTrilinos::TrilinosEigenSolver *)farg1->cptr;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosEigenSolver::converged() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (bool)((ForTrilinos::TrilinosEigenSolver const *)arg1)->converged();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTrilinos::TrilinosEigenSolver::converged() const", -4, e.what(), return 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTrilinos::TrilinosEigenSolver::converged() const", -3, e.what(), return 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("ForTrilinos::TrilinosEigenSolver::converged() const", -1, "An unknown exception occurred", return 0);
+    }
+  }
+  fresult = (result ? 1 : 0);
+  return fresult;
+}
+
+
+SWIGEXPORT int _wrap_TrilinosEigenSolver_num_iters(SwigClassWrapper *farg1) {
+  int fresult ;
+  ForTrilinos::TrilinosEigenSolver *arg1 = (ForTrilinos::TrilinosEigenSolver *) 0 ;
+  int result;
+  
+  SWIG_check_nonnull(farg1->cptr, "ForTrilinos::TrilinosEigenSolver const *", "TrilinosEigenSolver", "ForTrilinos::TrilinosEigenSolver::num_iters() const", return 0);
+  arg1 = (ForTrilinos::TrilinosEigenSolver *)farg1->cptr;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("ForTrilinos::TrilinosEigenSolver::num_iters() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (int)((ForTrilinos::TrilinosEigenSolver const *)arg1)->num_iters();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTrilinos::TrilinosEigenSolver::num_iters() const", -4, e.what(), return 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("ForTrilinos::TrilinosEigenSolver::num_iters() const", -3, e.what(), return 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("ForTrilinos::TrilinosEigenSolver::num_iters() const", -1, "An unknown exception occurred", return 0);
     }
   }
   fresult = (int)(result);

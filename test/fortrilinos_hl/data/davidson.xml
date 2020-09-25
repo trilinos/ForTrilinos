@@ -6,9 +6,11 @@
     <Parameter name="Maximum Subspace Dimension" type="int" value="25"/>
     <Parameter name="Restart Dimension" type="int" value="5"/>
     <Parameter name="Maximum Restarts" type="int" value="20"/>
+    <Parameter name="Verbosity" type="int" value="9"/>
   </ParameterList>
   <Parameter name="Preconditioner Type" type="string" value="MueLu"/>
   <ParameterList name="MueLu">
-    <Parameter name="verbosity" type="string" value="none"/>
+    <Parameter name="verbosity" type="string" value="high"/>
+    <Parameter name="debug: graph level" type="int" value="4"/>
   </ParameterList>
 </ParameterList>

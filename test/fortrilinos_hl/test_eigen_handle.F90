@@ -120,13 +120,19 @@ program main
 
   ! Step 4: solve the system
   num_found_eigen = eigen_handle%solve(evalues, X, eindex); FORTRILINOS_CHECK_IERR()
+  if (comm%getRank() == 0) then
+    write(error_unit,*) "solver took", eigen_handle%num_iters(), "iters"
+    if (.not. eigen_handle%converged()) then
+      write(error_unit,*) "DID NOT CONVERGE"
+    endif
+  endif
 
   ! FIXME: Check the solution
   if (num_found_eigen < num_eigen) then
     write(error_unit, *) 'Warning: the number of returned eigenvalues ', &
         num_found_eigen, 'is less than the expected', num_eigen
   end if
-  write(*,*) "Computed eigenvalues: ", evalues(:num_eigen)
+  write(error_unit,*) "Computed eigenvalues: ", evalues(1:num_found_eigen)
 
   call eigen_handle%release(); FORTRILINOS_CHECK_IERR()
   call plist%release(); FORTRILINOS_CHECK_IERR()

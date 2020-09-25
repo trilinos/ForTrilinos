@@ -120,24 +120,35 @@ TrilinosEigenSolver::TrilinosEigenSolver(const Teuchos::RCP<const Teuchos::Comm<
     solver_ = Anasazi::Factory::create(solverName, problem, paramList->sublist(solverName));
 
     status_ = SOLVER_SETUP;
+    paramList_ = paramList;
+  }
+
+  int TrilinosEigenSolver::max_eigenvalues() const {
+    TEUCHOS_ASSERT(status_ >= SOLVER_SETUP);
+    return numEigenvalues_;
   }
 
   int TrilinosEigenSolver::solve(Teuchos::ArrayView<SC> eigenValues,
                                  Teuchos::RCP<MultiVector>& eigenVectors,
-                                 Teuchos::ArrayView<int> eigenIndex) const {
+                                 Teuchos::ArrayView<int> eigenIndex) {
     using Teuchos::RCP;
     using Teuchos::ArrayRCP;
 
-    TEUCHOS_ASSERT(status_ == SOLVER_SETUP);
+    TEUCHOS_ASSERT(status_ >= SOLVER_SETUP);
 
     Anasazi::ReturnType r = solver_->solve();
-    TEUCHOS_ASSERT(r == 0);
+    status_ = SOLVED;
+    converged_ = (r == Anasazi::Converged);
+    numIters_ = solver_->getNumIters();
+    if (!converged_ && comm_->getRank() == 0) {
+      std::cout << "fortrilinos: warning: anasazi solver failed to converge after "
+          << numIters_ << " iterations" << std::endl;
+    }
 
     // Extract solution
     Anasazi::Eigensolution<SC,MultiVector> solution = solver_->getProblem().getSolution();
 
     int eNum = solution.numVecs;
-    TEUCHOS_ASSERT(eNum > 0);
     std::vector<Anasazi::Value<SC>>& eValues = solution.Evals;
     std::vector<int>&                eIndex  = solution.index;
 
@@ -157,6 +168,16 @@ TrilinosEigenSolver::TrilinosEigenSolver(const Teuchos::RCP<const Teuchos::Comm<
 
     eigenVectors = solution.Evecs;
 
-    return eValues.size();
+    return numConverged;
+  }
+
+  bool TrilinosEigenSolver::converged() const {
+    TEUCHOS_ASSERT(status_ >= SOLVED);
+    return converged_;
+  }
+
+  int TrilinosEigenSolver::num_iters() const {
+    TEUCHOS_ASSERT(status_ >= SOLVED);
+    return numIters_;
   }
 }

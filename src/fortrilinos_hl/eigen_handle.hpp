@@ -48,20 +48,26 @@ namespace ForTrilinos {
     explicit TrilinosEigenSolver(const Teuchos::RCP<const Teuchos::Comm<int>>& comm);
 
     // Setup matrices by construction
-    void setup_matrix    (const Teuchos::RCP<Matrix>& A);
+    void setup_matrix(const Teuchos::RCP<Matrix>& A);
     void setup_matrix_rhs(const Teuchos::RCP<Matrix>& M);
 
     // Setup operators
-    void setup_operator    (const Teuchos::RCP<Operator>& A);
+    void setup_operator(const Teuchos::RCP<Operator>& A);
     void setup_operator_rhs(const Teuchos::RCP<Operator>& M);
 
     // Setup solver based on the parameter list
     void setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList);
+    // Maximum number of eigenvalues to solve for
+    int max_eigenvalues() const;
 
     // Solve eigen system given rhs
     int solve(Teuchos::ArrayView<SC> eigenValues,
               Teuchos::RCP<MultiVector>& eigenVectors,
-              Teuchos::ArrayView<int> eigenIndex) const;
+              Teuchos::ArrayView<int> eigenIndex);
+    // Whether the solver converged
+    bool converged() const;
+    // Number of iterations used to solve
+    int num_iters() const;
 
   private:
 
@@ -70,6 +76,8 @@ namespace ForTrilinos {
     Teuchos::RCP<SolverManager>      solver_;
     Teuchos::RCP<ParameterList>      paramList_;
     int                              numEigenvalues_;
+    int                              numIters_;
+    bool                             converged_;
 
     enum Status {
       INITIALIZED,

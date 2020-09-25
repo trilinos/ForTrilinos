@@ -90,8 +90,11 @@ int main(int argc, char *argv[]) {
     handle.setup_solver(Teuchos::rcpFromRef(paramList));
 
     // Step 4: solve the system
-    int converged = handle.solve(Teuchos::arrayViewFromVector(evalues), X,
+    int found_eigen = handle.solve(Teuchos::arrayViewFromVector(evalues), X,
                                  Teuchos::arrayViewFromVector(eindex));
+    if (comm->getRank() == 0) {
+      std::cout << "found " << found_eigen << " eigenvalues";
+    }
 
     // TODO: Check the solution
 

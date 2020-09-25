@@ -163,17 +163,6 @@ if(ForTrilinos_USE_HL)
   fortrilinos_add_test(fortrilinos_hl/test_futility_reproducer.F90)
   fortrilinos_add_test(fortrilinos_hl/test_solver_handle.F90)
   fortrilinos_add_test(fortrilinos_hl/test_solver_unit.F90)
-
-  # XXX Currently the eigensolver returns an untraceable error result when run
-  # in parallel.
-  if(ForTrilinos_USE_MPI)
-    set_tests_properties(
-      fortrilinos_hl/test_eigen_handle/cpp/4
-      fortrilinos_hl/test_eigen_handle/4
-      PROPERTIES
-      DISABLED True
-    )
-  endif()
 endif()
 
 #---------------------------------------------------------------------------##

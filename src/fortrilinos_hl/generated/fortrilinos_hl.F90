@@ -50,7 +50,10 @@ module fortrilinos_hl
   procedure :: setup_operator => swigf_TrilinosEigenSolver_setup_operator
   procedure :: setup_operator_rhs => swigf_TrilinosEigenSolver_setup_operator_rhs
   procedure :: setup_solver => swigf_TrilinosEigenSolver_setup_solver
+  procedure :: max_eigenvalues => swigf_TrilinosEigenSolver_max_eigenvalues
   procedure :: solve => swigf_TrilinosEigenSolver_solve
+  procedure :: converged => swigf_TrilinosEigenSolver_converged
+  procedure :: num_iters => swigf_TrilinosEigenSolver_num_iters
   procedure :: release => swigf_TrilinosEigenSolver_release
   procedure, private :: swigf_TrilinosEigenSolver_op_assign__
   generic :: assignment(=) => swigf_TrilinosEigenSolver_op_assign__
@@ -258,6 +261,15 @@ type(SwigClassWrapper), intent(in) :: farg1
 type(SwigClassWrapper), intent(in) :: farg2
 end subroutine
 
+function swigc_TrilinosEigenSolver_max_eigenvalues(farg1) &
+bind(C, name="_wrap_TrilinosEigenSolver_max_eigenvalues") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper), intent(in) :: farg1
+integer(C_INT) :: fresult
+end function
+
 function swigc_TrilinosEigenSolver_solve(farg1, farg2, farg3, farg4) &
 bind(C, name="_wrap_TrilinosEigenSolver_solve") &
 result(fresult)
@@ -268,6 +280,24 @@ type(SwigClassWrapper), intent(in) :: farg1
 type(SwigArrayWrapper) :: farg2
 type(SwigClassWrapper), intent(in) :: farg3
 type(SwigArrayWrapper) :: farg4
+integer(C_INT) :: fresult
+end function
+
+function swigc_TrilinosEigenSolver_converged(farg1) &
+bind(C, name="_wrap_TrilinosEigenSolver_converged") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper), intent(in) :: farg1
+integer(C_INT) :: fresult
+end function
+
+function swigc_TrilinosEigenSolver_num_iters(farg1) &
+bind(C, name="_wrap_TrilinosEigenSolver_num_iters") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper), intent(in) :: farg1
 integer(C_INT) :: fresult
 end function
 
@@ -695,6 +725,19 @@ farg2 = paramlist%swigdata
 call swigc_TrilinosEigenSolver_setup_solver(farg1, farg2)
 end subroutine
 
+function swigf_TrilinosEigenSolver_max_eigenvalues(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer :: swig_result
+class(TrilinosEigenSolver), intent(in) :: self
+integer(C_INT) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc_TrilinosEigenSolver_max_eigenvalues(farg1)
+swig_result = int(fresult)
+end function
+
 subroutine SWIGTM_fin_double_Sb__SB_(finp, iminp)
   use, intrinsic :: ISO_C_BINDING
   real(C_DOUBLE), dimension(:), intent(in), target :: finp
@@ -746,6 +789,40 @@ call SWIGTM_fin_double_Sb__SB_(eigenvalues, farg2)
 farg3 = eigenvectors%swigdata
 call SWIGTM_fin_int_Sb__SB_(eigenindex, farg4)
 fresult = swigc_TrilinosEigenSolver_solve(farg1, farg2, farg3, farg4)
+swig_result = int(fresult)
+end function
+
+
+subroutine SWIGTM_fout_bool(imout, fout)
+  use, intrinsic :: ISO_C_BINDING
+  integer(kind=C_INT), intent(in) :: imout
+  logical, intent(out) :: fout
+  fout = (imout /= 0)
+end subroutine
+
+function swigf_TrilinosEigenSolver_converged(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+logical :: swig_result
+class(TrilinosEigenSolver), intent(in) :: self
+integer(C_INT) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc_TrilinosEigenSolver_converged(farg1)
+call SWIGTM_fout_bool(fresult, swig_result)
+end function
+
+function swigf_TrilinosEigenSolver_num_iters(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer :: swig_result
+class(TrilinosEigenSolver), intent(in) :: self
+integer(C_INT) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc_TrilinosEigenSolver_num_iters(farg1)
 swig_result = int(fresult)
 end function
 
