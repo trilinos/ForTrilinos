@@ -189,13 +189,11 @@ contains
     TEST_EQUALITY(num_eigen, eigensolver%max_eigenvalues())
     num_found_eigen = eigensolver%solve(evalues, X, eindex)
     TEST_ASSERT(eigensolver%converged())
-    if (comm_size == 1) then
-      TEST_EQUALITY(6, eigensolver%num_iters())
-    elseif (comm_size == 4) then
-      TEST_EQUALITY(23, eigensolver%num_iters())
-    elseif (comm%getRank() == 0) then
-      write(error_unit,*) "converged in iters:", eigensolver%num_iters()
-    endif
+    ! This converges in 5 iterations in serial on the docker ci image, 6 on
+    ! apple clang with essentially the same installation and options, and 23
+    ! iterations when running on 4 processors.
+    TEST_ASSERT(eigensolver%num_iters() .gt. 1)
+    write(error_unit,*) "converged in iters:", eigensolver%num_iters()
 
     TEST_EQUALITY(num_found_eigen, num_eigen)
     ! This matrix has lambda=3:
