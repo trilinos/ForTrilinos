@@ -11,6 +11,5 @@
   <Parameter name="Preconditioner Type" type="string" value="MueLu"/>
   <ParameterList name="MueLu">
     <Parameter name="verbosity" type="string" value="high"/>
-    <Parameter name="debug: graph level" type="int" value="4"/>
   </ParameterList>
 </ParameterList>

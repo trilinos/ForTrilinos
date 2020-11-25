@@ -19,8 +19,6 @@ cmake -G Ninja \
   -DForTrilinos_EXAMPLES:BOOL=ON \
   -DForTrilinos_TESTING:BOOL=ON \
   -DForTrilinos_USE_SWIG_Fortran:BOOL=ON \
-  -DSWIG_EXECUTABLE:FILENAME=/rnsdhpc/code/swig-old/swig \
-  -DSWIG_DIR:FILENAME=/rnsdhpc/code/swig-old/Lib \
   ..
 ninja -v
 ctest --output-on-failure

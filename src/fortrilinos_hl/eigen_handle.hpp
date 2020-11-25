@@ -74,7 +74,6 @@ namespace ForTrilinos {
     Teuchos::RCP<const Teuchos::Comm<int>> comm_;
     Teuchos::RCP<Operator>           A_, M_;
     Teuchos::RCP<SolverManager>      solver_;
-    Teuchos::RCP<ParameterList>      paramList_;
     int                              numEigenvalues_;
     int                              numIters_;
     bool                             converged_;
