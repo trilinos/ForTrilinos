@@ -180,14 +180,16 @@ type(SwigClassWrapper), intent(in) :: farg1
 type(SwigClassWrapper), intent(in) :: farg2
 end subroutine
 
-subroutine swigc_TrilinosSolver_solve(farg1, farg2, farg3) &
-bind(C, name="_wrap_TrilinosSolver_solve")
+function swigc_TrilinosSolver_solve(farg1, farg2, farg3) &
+bind(C, name="_wrap_TrilinosSolver_solve") &
+result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper), intent(in) :: farg1
 type(SwigClassWrapper), intent(in) :: farg2
 type(SwigClassWrapper), intent(in) :: farg3
-end subroutine
+real(C_DOUBLE) :: fresult
+end function
 
 subroutine swigc_delete_TrilinosSolver(farg1) &
 bind(C, name="_wrap_delete_TrilinosSolver")
@@ -600,11 +602,13 @@ farg2 = paramlist%swigdata
 call swigc_TrilinosSolver_setup_solver(farg1, farg2)
 end subroutine
 
-subroutine swigf_TrilinosSolver_solve(self, rhs, lhs)
+subroutine swigf_TrilinosSolver_solve(self, rhs, lhs, swig_result)
 use, intrinsic :: ISO_C_BINDING
 class(TrilinosSolver), intent(in) :: self
 class(TpetraMultiVector), intent(in) :: rhs
 class(TpetraMultiVector), intent(in) :: lhs
+real(C_DOUBLE), intent(out), optional :: swig_result
+real(C_DOUBLE) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
@@ -612,7 +616,11 @@ type(SwigClassWrapper) :: farg3
 farg1 = self%swigdata
 farg2 = rhs%swigdata
 farg3 = lhs%swigdata
-call swigc_TrilinosSolver_solve(farg1, farg2, farg3)
+fresult = swigc_TrilinosSolver_solve(farg1, farg2, farg3)
+if (present(swig_result)) then
+swig_result = fresult
+endif
+
 end subroutine
 
 subroutine swigf_TrilinosSolver_release(self)

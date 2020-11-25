@@ -81,7 +81,7 @@ TrilinosSolver::TrilinosSolver(const Teuchos::RCP<const Teuchos::Comm<int>>& com
     status_ = SOLVER_SETUP;
   }
 
-  void TrilinosSolver::solve(const Teuchos::RCP<const MultiVector>& B, Teuchos::RCP<MultiVector>& X) const {
+  double TrilinosSolver::solve(const Teuchos::RCP<const MultiVector>& B, Teuchos::RCP<MultiVector>& X) const {
     TEUCHOS_ASSERT(status_ == SOLVER_SETUP);
 
     TEUCHOS_ASSERT(X->getMap()->isSameAs(*A_->getDomainMap()));
@@ -93,9 +93,6 @@ TrilinosSolver::TrilinosSolver(const Teuchos::RCP<const Teuchos::Comm<int>>& com
     auto thyraB = Thyra::createConstMultiVector(B);
 
     auto status = Thyra::solve<SC>(*thyraInverseA_, Thyra::NOTRANS, *thyraB, thyraX.ptr());
-
-    // FIXME
-    if (map->getComm()->getRank() == 0)
-      std::cout << "solve result:" <<  status << std::endl;
+    return status.achievedTol;
   }
 }

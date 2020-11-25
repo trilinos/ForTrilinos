@@ -189,7 +189,7 @@ program main
   real(norm_type), dimension(:), allocatable :: norms
   integer(global_ordinal_type), dimension(:), allocatable :: cols
   real(scalar_type), dimension(:), allocatable :: vals
-  real(scalar_type) :: r0, sone = 1., szero = 0., tol
+  real(scalar_type) :: r0, sone = 1., szero = 0., tol, achieved_tol
 
   n = 10
 
@@ -386,7 +386,13 @@ program main
   call residual%update(sone, B, -sone); FORTRILINOS_CHECK_IERR()
   call residual%norm2(norms); FORTRILINOS_CHECK_IERR()
   r0 = norms(1)
-  call solver_handle%solve(B, X); FORTRILINOS_CHECK_IERR()
+  call solver_handle%solve(B, X, achieved_tol); FORTRILINOS_CHECK_IERR()
+  if (achieved_tol> tol) then
+    write(error_unit, *) 'Achieved tolerance', achieved_tol, &
+        'exceeds requested tolerance', tol
+    stop 1
+  end if
+
 
   ! Check the solution
   call A%apply(X, residual, TeuchosNO_TRANS, sone, szero); FORTRILINOS_CHECK_IERR()
@@ -394,7 +400,7 @@ program main
   call residual%norm2(norms); FORTRILINOS_CHECK_IERR()
   if (norms(1)/r0 > tol) then
     write(error_unit, '(A)') 'The solver did not converge to the specified residual!'
-    stop 666
+    stop 1
   end if
 
   call krylov_list%release; FORTRILINOS_CHECK_IERR()

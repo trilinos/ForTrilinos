@@ -30,6 +30,7 @@ typedef char                                    Packet;
 #include "fortrilinos_hl/eigen_handle.hpp"
 %}
 
+%fortransubroutine ForTrilinos::TrilinosSolver::solve;
 %include "solver_handle.hpp"
 %include "eigen_handle.hpp"
 
