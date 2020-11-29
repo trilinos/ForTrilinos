@@ -851,14 +851,14 @@ SWIGEXPORT void _wrap_TrilinosSolver_setup_solver(SwigClassWrapper *farg1, SwigC
 }
 
 
-SWIGEXPORT double _wrap_TrilinosSolver_solve(SwigClassWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
-  double fresult ;
+SWIGEXPORT int _wrap_TrilinosSolver_solve(SwigClassWrapper *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
+  int fresult ;
   ForTrilinos::TrilinosSolver *arg1 = (ForTrilinos::TrilinosSolver *) 0 ;
   Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector const > *arg2 = 0 ;
   Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector > *arg3 = 0 ;
   Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector const > tempnull2 ;
   Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector > tempnull3 ;
-  double result;
+  bool result;
   
   SWIG_check_nonnull(farg1->cptr, "ForTrilinos::TrilinosSolver const *", "TrilinosSolver", "ForTrilinos::TrilinosSolver::solve(Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector const > const &,Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector > &) const", return 0);
   arg1 = (ForTrilinos::TrilinosSolver *)farg1->cptr;
@@ -870,7 +870,7 @@ SWIGEXPORT double _wrap_TrilinosSolver_solve(SwigClassWrapper *farg1, SwigClassW
     try
     {
       // Attempt the wrapped function call
-      result = (double)((ForTrilinos::TrilinosSolver const *)arg1)->solve((Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector const > const &)*arg2,*arg3);
+      result = (bool)((ForTrilinos::TrilinosSolver const *)arg1)->solve((Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector const > const &)*arg2,*arg3);
     }
     catch (const std::range_error& e)
     {
@@ -887,7 +887,7 @@ SWIGEXPORT double _wrap_TrilinosSolver_solve(SwigClassWrapper *farg1, SwigClassW
       SWIG_exception_impl("ForTrilinos::TrilinosSolver::solve(Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector const > const &,Teuchos::RCP< ForTrilinos::TrilinosSolver::MultiVector > &) const", -1, "An unknown exception occurred", return 0);
     }
   }
-  fresult = (double)(result);
+  fresult = (result ? 1 : 0);
   return fresult;
 }
 

@@ -8,7 +8,7 @@ mkdir build 2>/dev/null || true
 cd build
 
 module purge
-SPACK_VIEW=/usr/local/spack/var/spack/environments/fortrilinos/.spack-env/view
+SPACK_VIEW=$SPACK_ROOT/var/spack/environments/fortrilinos/.spack-env/view
 export CMAKE_PREFIX_PATH=$SPACK_VIEW:$CMAKE_PREFIX_PATH
 export PATH=$SPACK_VIEW/bin:$PATH
 

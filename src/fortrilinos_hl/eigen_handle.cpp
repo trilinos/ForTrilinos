@@ -151,7 +151,7 @@ TrilinosEigenSolver::TrilinosEigenSolver(const Teuchos::RCP<const Teuchos::Comm<
     TEUCHOS_TEST_FOR_EXCEPTION(2 * eigenValues.size() < numConverged, std::runtime_error,
       "Insufficient space to store eigenvalues. Please provide at least two times the desired number of eigenvalues.");
     TEUCHOS_TEST_FOR_EXCEPTION(eigenIndex.size() < numConverged, std::runtime_error,
-      "Insufficient space to store index. Please provide at least two times the desired number of eigenvalues.");
+      "Insufficient space to store index. Please provide at least the desired number of eigenvalues.");
 
     for (size_t i = 0; i < eValues.size(); i++) {
       eigenValues[2*i+0] = eValues[i].realpart;

@@ -188,7 +188,7 @@ import :: swigclasswrapper
 type(SwigClassWrapper), intent(in) :: farg1
 type(SwigClassWrapper), intent(in) :: farg2
 type(SwigClassWrapper), intent(in) :: farg3
-real(C_DOUBLE) :: fresult
+integer(C_INT) :: fresult
 end function
 
 subroutine swigc_delete_TrilinosSolver(farg1) &
@@ -602,13 +602,21 @@ farg2 = paramlist%swigdata
 call swigc_TrilinosSolver_setup_solver(farg1, farg2)
 end subroutine
 
+
+subroutine SWIGTM_fout_bool(imout, fout)
+  use, intrinsic :: ISO_C_BINDING
+  integer(kind=C_INT), intent(in) :: imout
+  logical, intent(out) :: fout
+  fout = (imout /= 0)
+end subroutine
+
 subroutine swigf_TrilinosSolver_solve(self, rhs, lhs, swig_result)
 use, intrinsic :: ISO_C_BINDING
 class(TrilinosSolver), intent(in) :: self
 class(TpetraMultiVector), intent(in) :: rhs
 class(TpetraMultiVector), intent(in) :: lhs
-real(C_DOUBLE), intent(out), optional :: swig_result
-real(C_DOUBLE) :: fresult 
+logical, intent(out), optional :: swig_result
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 type(SwigClassWrapper) :: farg2 
 type(SwigClassWrapper) :: farg3 
@@ -618,7 +626,7 @@ farg2 = rhs%swigdata
 farg3 = lhs%swigdata
 fresult = swigc_TrilinosSolver_solve(farg1, farg2, farg3)
 if (present(swig_result)) then
-swig_result = fresult
+call SWIGTM_fout_bool(fresult, swig_result)
 endif
 
 end subroutine
@@ -799,14 +807,6 @@ call SWIGTM_fin_int_Sb__SB_(eigenindex, farg4)
 fresult = swigc_TrilinosEigenSolver_solve(farg1, farg2, farg3, farg4)
 swig_result = int(fresult)
 end function
-
-
-subroutine SWIGTM_fout_bool(imout, fout)
-  use, intrinsic :: ISO_C_BINDING
-  integer(kind=C_INT), intent(in) :: imout
-  logical, intent(out) :: fout
-  fout = (imout /= 0)
-end subroutine
 
 function swigf_TrilinosEigenSolver_converged(self) &
 result(swig_result)

@@ -189,7 +189,8 @@ program main
   real(norm_type), dimension(:), allocatable :: norms
   integer(global_ordinal_type), dimension(:), allocatable :: cols
   real(scalar_type), dimension(:), allocatable :: vals
-  real(scalar_type) :: r0, sone = 1., szero = 0., tol, achieved_tol
+  real(scalar_type) :: r0, sone = 1., szero = 0., tol
+  logical :: success
 
   n = 10
 
@@ -386,10 +387,9 @@ program main
   call residual%update(sone, B, -sone); FORTRILINOS_CHECK_IERR()
   call residual%norm2(norms); FORTRILINOS_CHECK_IERR()
   r0 = norms(1)
-  call solver_handle%solve(B, X, achieved_tol); FORTRILINOS_CHECK_IERR()
-  if (achieved_tol> tol) then
-    write(error_unit, *) 'Achieved tolerance', achieved_tol, &
-        'exceeds requested tolerance', tol
+  call solver_handle%solve(B, X, success); FORTRILINOS_CHECK_IERR()
+  if (.not. success) then
+    write(error_unit, *) 'Solver failed to converge'
     stop 1
   end if
 

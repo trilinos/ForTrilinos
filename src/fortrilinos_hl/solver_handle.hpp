@@ -55,8 +55,8 @@ namespace ForTrilinos {
     // Setup solver based on the parameter list
     void setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList);
 
-    // Solve linear system given rhs; return solved tolerance
-    double solve(const Teuchos::RCP<const MultiVector>& rhs, Teuchos::RCP<MultiVector>& lhs) const;
+    // Solve linear system given rhs; return whether it converged
+    bool solve(const Teuchos::RCP<const MultiVector>& rhs, Teuchos::RCP<MultiVector>& lhs) const;
 
   private:
     Teuchos::RCP<const Teuchos::Comm<int>>  comm_;
