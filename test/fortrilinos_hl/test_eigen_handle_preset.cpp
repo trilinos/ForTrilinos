@@ -49,8 +49,7 @@ int main(int argc, char *argv[]) {
     Teuchos::RCP<MultiVector> X = Teuchos::rcp(new MultiVector(A->getRowMap(), 1));
 
     // Step 1: initialize a handle
-    ForTrilinos::TrilinosEigenSolver handle;
-    handle.init(comm);
+    ForTrilinos::TrilinosEigenSolver handle(comm);
 
     // Step 2: setup the problem
     handle.setup_matrix(A);
@@ -63,9 +62,6 @@ int main(int argc, char *argv[]) {
     handle.solve(Teuchos::arrayViewFromVector(evalues), X, Teuchos::arrayViewFromVector(eindex));
 
     // TODO: Check the solution
-
-    // Step 5: clean up
-    handle.finalize();
 
     success = true;
   }

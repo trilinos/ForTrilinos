@@ -44,47 +44,45 @@ namespace ForTrilinos {
   public:
 
     // Constructors
-    TrilinosEigenSolver() : status_(NOT_INITIALIZED) { }
-
-    TrilinosEigenSolver(const TrilinosEigenSolver&) = delete;
-    void operator=(const TrilinosEigenSolver&) = delete;
-
-    // Initialize
-    void init();
-    void init(const Teuchos::RCP<const Teuchos::Comm<int>>& comm);
+    TrilinosEigenSolver();
+    explicit TrilinosEigenSolver(const Teuchos::RCP<const Teuchos::Comm<int>>& comm);
 
     // Setup matrices by construction
-    void setup_matrix    (const Teuchos::RCP<Matrix>& A);
+    void setup_matrix(const Teuchos::RCP<Matrix>& A);
     void setup_matrix_rhs(const Teuchos::RCP<Matrix>& M);
 
     // Setup operators
-    void setup_operator    (const Teuchos::RCP<Operator>& A);
+    void setup_operator(const Teuchos::RCP<Operator>& A);
     void setup_operator_rhs(const Teuchos::RCP<Operator>& M);
 
     // Setup solver based on the parameter list
     void setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList);
+    // Maximum number of eigenvalues to solve for
+    int max_eigenvalues() const;
 
     // Solve eigen system given rhs
     int solve(Teuchos::ArrayView<SC> eigenValues,
               Teuchos::RCP<MultiVector>& eigenVectors,
-              Teuchos::ArrayView<int> eigenIndex) const;
-
-    // Free all data
-    void finalize();
+              Teuchos::ArrayView<int> eigenIndex);
+    // Whether the solver converged
+    bool converged() const;
+    // Number of iterations used to solve
+    int num_iters() const;
 
   private:
 
     Teuchos::RCP<const Teuchos::Comm<int>> comm_;
     Teuchos::RCP<Operator>           A_, M_;
     Teuchos::RCP<SolverManager>      solver_;
-    Teuchos::RCP<ParameterList>      paramList_;
     int                              numEigenvalues_;
+    int                              numIters_;
+    bool                             converged_;
 
     enum Status {
-      NOT_INITIALIZED,
       INITIALIZED,
       MATRIX_SETUP,
       SOLVER_SETUP,
+      SOLVED,
     } status_;
   };
 

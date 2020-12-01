@@ -8,7 +8,7 @@ mkdir build 2>/dev/null || true
 cd build
 
 module purge
-SPACK_VIEW=/usr/local/spack/var/spack/environments/fortrilinos/.spack-env/view
+SPACK_VIEW=$SPACK_ROOT/var/spack/environments/fortrilinos/.spack-env/view
 export CMAKE_PREFIX_PATH=$SPACK_VIEW:$CMAKE_PREFIX_PATH
 export PATH=$SPACK_VIEW/bin:$PATH
 
@@ -19,8 +19,6 @@ cmake -G Ninja \
   -DForTrilinos_EXAMPLES:BOOL=ON \
   -DForTrilinos_TESTING:BOOL=ON \
   -DForTrilinos_USE_SWIG_Fortran:BOOL=ON \
-  -DSWIG_EXECUTABLE:FILENAME=/rnsdhpc/code/swig-old/swig \
-  -DSWIG_DIR:FILENAME=/rnsdhpc/code/swig-old/Lib \
   ..
 ninja -v
 ctest --output-on-failure

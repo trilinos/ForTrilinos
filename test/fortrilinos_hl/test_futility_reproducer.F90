@@ -103,14 +103,12 @@ program main
 
   X = TpetraMultiVector(map, num_eigen)
 
-  ! Step 0: crate a handle
-  eigen_handle = TrilinosEigenSolver(); FORTRILINOS_CHECK_IERR()
+  ! Step 1: crate a handle
+  eigen_handle = TrilinosEigenSolver(comm); FORTRILINOS_CHECK_IERR()
 
   ! ------------------------------------------------------------------
   ! Explicit setup and solve
   ! ------------------------------------------------------------------
-  ! Step 1: initialize a handle
-  call eigen_handle%init(comm); FORTRILINOS_CHECK_IERR()
 
   ! Step 2: setup the problem
   call eigen_handle%setup_matrix(A); FORTRILINOS_CHECK_IERR()
@@ -127,9 +125,6 @@ program main
     stop 1
   end if
   write(*,*) "Computed eigenvalues: ", evalues(1)
-
-  ! Step 5: clean up
-  call eigen_handle%finalize(); FORTRILINOS_CHECK_IERR()
 
   call eigen_handle%release(); FORTRILINOS_CHECK_IERR()
   call plist%release(); FORTRILINOS_CHECK_IERR()

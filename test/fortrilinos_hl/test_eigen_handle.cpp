@@ -44,7 +44,6 @@ int main(int argc, char *argv[]) {
     // Read in the parameter list
     ParameterList paramList;
     Teuchos::updateParametersFromXmlFileAndBroadcast("davidson.xml", Teuchos::Ptr<ParameterList>(&paramList), *comm);
-
     paramList.set("NumEV", 1);
 
     // Set parameters
@@ -82,8 +81,7 @@ int main(int argc, char *argv[]) {
     Teuchos::RCP<MultiVector> X = Teuchos::rcp(new MultiVector(rowMap, 1));
 
     // Step 1: initialize a handle
-    ForTrilinos::TrilinosEigenSolver handle;
-    handle.init(comm);
+    ForTrilinos::TrilinosEigenSolver handle(comm);
 
     // Step 2: setup the problem
     handle.setup_matrix(A);
@@ -92,12 +90,13 @@ int main(int argc, char *argv[]) {
     handle.setup_solver(Teuchos::rcpFromRef(paramList));
 
     // Step 4: solve the system
-    handle.solve(Teuchos::arrayViewFromVector(evalues), X, Teuchos::arrayViewFromVector(eindex));
+    int found_eigen = handle.solve(Teuchos::arrayViewFromVector(evalues), X,
+                                 Teuchos::arrayViewFromVector(eindex));
+    if (comm->getRank() == 0) {
+      std::cout << "found " << found_eigen << " eigenvalues";
+    }
 
     // TODO: Check the solution
-
-    // Step 5: clean up
-    handle.finalize();
 
     success = true;
   }

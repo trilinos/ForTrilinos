@@ -110,8 +110,7 @@ int main(int argc, char *argv[]) {
     // =======================================
 
     // Step 1: initialize a handle
-    ForTrilinos::TrilinosSolver handle;
-    handle.init(comm);
+    ForTrilinos::TrilinosSolver handle(comm);
 
     // Step 2: setup the problem
     handle.setup_matrix(A);
@@ -157,10 +156,6 @@ int main(int argc, char *argv[]) {
     residual->norm2(norms);
 
     TEUCHOS_ASSERT(norms[0]/r0 < tol);
-
-
-    // Step 5: clean up
-    handle.finalize();
 
     success = true;
   }

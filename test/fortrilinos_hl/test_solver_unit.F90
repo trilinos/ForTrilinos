@@ -30,7 +30,6 @@ program test_TrilinosSolver
 
   ADD_SUBTEST_AND_RUN(TrilinosSolver_setup_matrix)
   ADD_SUBTEST_AND_RUN(TrilinosSolver_setup_solver)
-  ADD_SUBTEST_AND_RUN(TrilinosSolver_finalize)
 
   ! Abstract class - -  no need to test
   !ADD_SUBTEST_AND_RUN(TrilinosSolver_setup_operator)
@@ -51,12 +50,10 @@ contains
     OUT0("Starting TrilinosSolver_setup_matrix!")
 
     call Tpetra_CrsMatrix_CreateIdentity(comm, a)
-    eig = TrilinosSolver(); TEST_IERR()
-    call eig%init(comm); TEST_IERR()
+    eig = TrilinosSolver(comm); TEST_IERR()
     TEST_NOTHROW(call eig%setup_matrix(a))
 
     call a%release(); TEST_IERR()
-    call eig%finalize(); TEST_IERR()
     call eig%release(); TEST_IERR()
 
     OUT0("Finished TrilinosSolver_setup_matrix!")
@@ -77,15 +74,13 @@ contains
     plist = ParameterList("Stratimikos"); FORTRILINOS_CHECK_IERR()
     call load_from_xml(plist, 'stratimikos.xml')
 
-    eig = TrilinosSolver(); TEST_IERR()
-    call eig%init(comm); TEST_IERR()
+    eig = TrilinosSolver(comm); TEST_IERR()
     call eig%setup_matrix(A); TEST_IERR()
 
     TEST_NOTHROW(call eig%setup_solver(plist))
 
     call plist%release(); TEST_IERR()
     call A%release(); TEST_IERR()
-    call eig%finalize(); TEST_IERR()
     call eig%release(); TEST_IERR()
 
     OUT0("Finished TrilinosSolver_setup_solver!")
@@ -130,9 +125,7 @@ contains
 
     allocate(norms(1))
 
-    solver = TrilinosSolver(); FORTRILINOS_CHECK_IERR()
-
-    call solver%init(comm); FORTRILINOS_CHECK_IERR()
+    solver = TrilinosSolver(comm); FORTRILINOS_CHECK_IERR()
 
     call solver%setup_matrix(A); FORTRILINOS_CHECK_IERR()
 
@@ -159,7 +152,6 @@ contains
       stop 1
     end if
 
-   call solver%finalize(); FORTRILINOS_CHECK_IERR()
 
     call map%release(); FORTRILINOS_CHECK_IERR()
     call A%release(); FORTRILINOS_CHECK_IERR()
@@ -173,19 +165,4 @@ contains
     OUT0("Finished TrilinosSolver_solve!")
 
   END_FORTRILINOS_UNIT_TEST(TrilinosSolver_solve)
- ! ---------------------------------finalize--------------------------------- !
-  FORTRILINOS_UNIT_TEST(TrilinosSolver_finalize)
-    type(TrilinosSolver) :: eig
-    OUT0("Starting TrilinosSolver_finalize!")
-
-    eig = TrilinosSolver(); TEST_IERR()
-    call eig%init(comm); TEST_IERR()
-    TEST_NOTHROW(call eig%finalize())
-
-    call eig%release(); TEST_IERR()
-
-    OUT0("Finished TrilinosSolver_finalize!")
-
-  END_FORTRILINOS_UNIT_TEST(TrilinosSolver_finalize)
-
 end program test_TrilinosSolver

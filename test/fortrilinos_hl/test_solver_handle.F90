@@ -190,6 +190,7 @@ program main
   integer(global_ordinal_type), dimension(:), allocatable :: cols
   real(scalar_type), dimension(:), allocatable :: vals
   real(scalar_type) :: r0, sone = 1., szero = 0., tol
+  logical :: success
 
   n = 10
 
@@ -276,17 +277,14 @@ program main
 
   allocate(norms(1))
 
-  ! Step 0: create a handle
-  solver_handle = TrilinosSolver(); FORTRILINOS_CHECK_IERR()
+  ! Step 1: create a handle
+  solver_handle = TrilinosSolver(comm); FORTRILINOS_CHECK_IERR()
 
   ! ------------------------------------------------------------------
   ! Explicit setup and solve
   ! ------------------------------------------------------------------
 
   ! Use case 1: setup and solve the problem
-
-  ! Step 1: initialize a handle
-  call solver_handle%init(comm); FORTRILINOS_CHECK_IERR()
 
   ! Step 2: setup the problem
   call solver_handle%setup_matrix(A); FORTRILINOS_CHECK_IERR()
@@ -345,7 +343,7 @@ program main
   end if
 
   ! Step 5: clean up
-  call solver_handle%finalize(); FORTRILINOS_CHECK_IERR()
+  call solver_handle%release(); FORTRILINOS_CHECK_IERR()
 
 
   ! Change values back for implicit comparison
@@ -370,7 +368,7 @@ program main
   call init_ForTpetraOperator(op); FORTRILINOS_CHECK_IERR()
 
   ! Step 1: initialize a handle
-  call solver_handle%init(comm); FORTRILINOS_CHECK_IERR()
+  solver_handle = TrilinosSolver(comm); FORTRILINOS_CHECK_IERR()
 
   ! Step 2: setup the problem
   ! Implicit (inversion-of-control) setup
@@ -389,7 +387,12 @@ program main
   call residual%update(sone, B, -sone); FORTRILINOS_CHECK_IERR()
   call residual%norm2(norms); FORTRILINOS_CHECK_IERR()
   r0 = norms(1)
-  call solver_handle%solve(B, X); FORTRILINOS_CHECK_IERR()
+  call solver_handle%solve(B, X, success); FORTRILINOS_CHECK_IERR()
+  if (.not. success) then
+    write(error_unit, *) 'Solver failed to converge'
+    stop 1
+  end if
+
 
   ! Check the solution
   call A%apply(X, residual, TeuchosNO_TRANS, sone, szero); FORTRILINOS_CHECK_IERR()
@@ -397,11 +400,8 @@ program main
   call residual%norm2(norms); FORTRILINOS_CHECK_IERR()
   if (norms(1)/r0 > tol) then
     write(error_unit, '(A)') 'The solver did not converge to the specified residual!'
-    stop 666
+    stop 1
   end if
-
-  ! Step 5: clean up
-  call solver_handle%finalize(); FORTRILINOS_CHECK_IERR()
 
   call krylov_list%release; FORTRILINOS_CHECK_IERR()
   call solver_list%release; FORTRILINOS_CHECK_IERR()

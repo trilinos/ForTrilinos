@@ -43,14 +43,8 @@ namespace ForTrilinos {
   public:
 
     // Constructors
-    TrilinosSolver() : status_(NOT_INITIALIZED) { }
-
-    TrilinosSolver(const TrilinosSolver&) = delete;
-    void operator=(const TrilinosSolver&) = delete;
-
-    // Initialize
-    void init();
-    void init(const Teuchos::RCP<const Teuchos::Comm<int>>& comm);
+    TrilinosSolver();
+    explicit TrilinosSolver(const Teuchos::RCP<const Teuchos::Comm<int>>& comm);
 
     // Setup matrix
     void setup_matrix(const Teuchos::RCP<Matrix>& A);
@@ -61,11 +55,8 @@ namespace ForTrilinos {
     // Setup solver based on the parameter list
     void setup_solver(const Teuchos::RCP<Teuchos::ParameterList>& paramList);
 
-    // Solve linear system given rhs
-    void solve(const Teuchos::RCP<const MultiVector>& rhs, Teuchos::RCP<MultiVector>& lhs) const;
-
-    // Free all data
-    void finalize();
+    // Solve linear system given rhs; return whether it converged
+    bool solve(const Teuchos::RCP<const MultiVector>& rhs, Teuchos::RCP<MultiVector>& lhs) const;
 
   private:
     Teuchos::RCP<const Teuchos::Comm<int>>  comm_;
@@ -74,10 +65,9 @@ namespace ForTrilinos {
     Teuchos::RCP<LOWS>                      thyraInverseA_;
 
     enum Status {
-      NOT_INITIALIZED = 0,
-      INITIALIZED = 1,
-      MATRIX_SETUP = 2,
-      SOLVER_SETUP = 3,
+      INITIALIZED,
+      MATRIX_SETUP,
+      SOLVER_SETUP
     } status_;
   };
 

@@ -27,17 +27,11 @@
 
 namespace ForTrilinos {
 
-  void TrilinosEigenSolver::init() {
-    TEUCHOS_ASSERT(status_ == NOT_INITIALIZED);
-    comm_ = Teuchos::DefaultComm<int>::getComm();
-    status_ = INITIALIZED;
-  }
+TrilinosEigenSolver::TrilinosEigenSolver()
+    : comm_(Teuchos::DefaultComm<int>::getComm()), status_(INITIALIZED) {}
 
-  void TrilinosEigenSolver::init(const Teuchos::RCP<const Teuchos::Comm<int>>& comm) {
-    TEUCHOS_ASSERT(status_ == NOT_INITIALIZED);
-    comm_ = comm;
-    status_ = INITIALIZED;
-  }
+TrilinosEigenSolver::TrilinosEigenSolver(const Teuchos::RCP<const Teuchos::Comm<int>>& comm)
+    : comm_(comm), status_(INITIALIZED) {}
 
   void TrilinosEigenSolver::setup_matrix(const Teuchos::RCP<Matrix>& A) {
     TEUCHOS_ASSERT(status_ == INITIALIZED);
@@ -128,22 +122,28 @@ namespace ForTrilinos {
     status_ = SOLVER_SETUP;
   }
 
+  int TrilinosEigenSolver::max_eigenvalues() const {
+    TEUCHOS_ASSERT(status_ >= SOLVER_SETUP);
+    return numEigenvalues_;
+  }
+
   int TrilinosEigenSolver::solve(Teuchos::ArrayView<SC> eigenValues,
                                  Teuchos::RCP<MultiVector>& eigenVectors,
-                                 Teuchos::ArrayView<int> eigenIndex) const {
+                                 Teuchos::ArrayView<int> eigenIndex) {
     using Teuchos::RCP;
     using Teuchos::ArrayRCP;
 
-    TEUCHOS_ASSERT(status_ == SOLVER_SETUP);
+    TEUCHOS_ASSERT(status_ >= SOLVER_SETUP);
 
     Anasazi::ReturnType r = solver_->solve();
-    TEUCHOS_ASSERT(r == 0);
+    status_ = SOLVED;
+    converged_ = (r == Anasazi::Converged);
+    numIters_ = solver_->getNumIters();
 
     // Extract solution
     Anasazi::Eigensolution<SC,MultiVector> solution = solver_->getProblem().getSolution();
 
     int eNum = solution.numVecs;
-    TEUCHOS_ASSERT(eNum > 0);
     std::vector<Anasazi::Value<SC>>& eValues = solution.Evals;
     std::vector<int>&                eIndex  = solution.index;
 
@@ -151,7 +151,7 @@ namespace ForTrilinos {
     TEUCHOS_TEST_FOR_EXCEPTION(2 * eigenValues.size() < numConverged, std::runtime_error,
       "Insufficient space to store eigenvalues. Please provide at least two times the desired number of eigenvalues.");
     TEUCHOS_TEST_FOR_EXCEPTION(eigenIndex.size() < numConverged, std::runtime_error,
-      "Insufficient space to store index. Please provide at least two times the desired number of eigenvalues.");
+      "Insufficient space to store index. Please provide at least the desired number of eigenvalues.");
 
     for (size_t i = 0; i < eValues.size(); i++) {
       eigenValues[2*i+0] = eValues[i].realpart;
@@ -166,15 +166,13 @@ namespace ForTrilinos {
     return eValues.size();
   }
 
-  void TrilinosEigenSolver::finalize() {
-    // No need to check the status_, we can finalize() at any moment.
-    comm_          = Teuchos::null;
-    A_             = Teuchos::null;
-    M_             = Teuchos::null;
-    solver_        = Teuchos::null;
-    paramList_     = Teuchos::null;
-
-    status_ = NOT_INITIALIZED;
+  bool TrilinosEigenSolver::converged() const {
+    TEUCHOS_ASSERT(status_ >= SOLVED);
+    return converged_;
   }
 
+  int TrilinosEigenSolver::num_iters() const {
+    TEUCHOS_ASSERT(status_ >= SOLVED);
+    return numIters_;
+  }
 }
