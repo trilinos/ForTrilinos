@@ -1,33 +1,62 @@
-##---------------------------------------------------------------------------##
-## File  : fortrilinos/cmake/ForTrilinosVersion.cmake
+#---------------------------------*-CMake-*----------------------------------#
+# SPDX-License-Identifier: Apache-2.0
+#
+# https://github.com/sethrj/cmake-git-version
+#
+#  Copyright 2021 UT-Battelle, LLC and Seth R Johnson
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
 #[=======================================================================[.rst:
 
-ForTrilinosVersion
-------------------
+CgvFindVersion
+--------------
 
-.. command:: fortrilinos_find_version
+.. command:: cgv_find_version
 
   Get the project version using Git descriptions to ensure the version numbers
   are always synchronized between Git and CMake::
 
-    fortrilinos_find_version(<projname> <git-version-file>)
-
+    cgv_find_version([<projname>])
 
   ``<projname>``
     Name of the project.
 
   This command sets the following variables in the parent package::
 
-    ${PROJNAME}_VERSION
-    ${PROJNAME}_VERSION_STRING
+    ${projname}_VERSION
+    ${projname}_VERSION_STRING
 
-  The project version string uses PEP-440 semantic versioning, and will look
-  like v0.1.2 if the version is actually a tagged release, or v0.1.3+abcdef if
+  It takes the project name and version file path as optional arguments to
+  support using it before the CMake ``project`` command.
+
+  The project version string uses an approximation to SemVer strings, appearing
+  as v0.1.2 if the version is actually a tagged release, or v0.1.3+abcdef if
   it's not.
 
   If a non-tagged version is exported, or an untagged shallow git clone is used,
   it's impossible to determine the version from the tag, so a warning will be
   issued and the version will be set to 0.0.0.
+
+  The exact regex used to match the version tag is::
+
+    v([0-9.]+)(-dev[0-9.]+)?
+
+
+  .. note:: In order for this script to work properly with archived git
+    repositories (generated with ``git-archive`` or GitHub's release tarball
+    feature), it's necessary to add to your ``.gitattributes`` file::
+
+      CgvFindVersion.cmake export-subst
 
 #]=======================================================================]
 
@@ -35,18 +64,32 @@ if(CMAKE_SCRIPT_MODE_FILE)
   cmake_minimum_required(VERSION 3.8)
 endif()
 
-function(fortrilinos_find_version PROJNAME GIT_VERSION_FILE)
+function(cgv_find_version)
+  set(projname "${ARGV0}")
+  if(NOT projname)
+    set(projname "${CMAKE_PROJECT_NAME}")
+    if(NOT projname)
+      message(FATAL_ERROR "Project name is not defined")
+    endif()
+  endif()
+
   # Get a possible Git version generated using git-archive (see the
   # .gitattributes file)
-  file(STRINGS "${GIT_VERSION_FILE}" _TEXTFILE)
+  set(_ARCHIVE_TAG "$Format:%D$")
+  set(_ARCHIVE_HASH "$Format:%h$")
 
-  if(_TEXTFILE MATCHES "\\$Format:")
+  set(_TAG_REGEX "v([0-9.]+)(-dev[0-9.]+)?")
+  set(_HASH_REGEX "([0-9a-f]+)")
+
+  if(_ARCHIVE_HASH MATCHES "%h")
     # Not a "git archive": use live git information
-    set(_CACHE_VAR "${PROJNAME}_GIT_DESCRIBE")
+    set(_CACHE_VAR "${projname}_GIT_DESCRIBE")
     set(_CACHED_VERSION "${${_CACHE_VAR}}")
     if(NOT _CACHED_VERSION)
       # Building from a git checkout rather than a distribution
-      find_package(Git QUIET REQUIRED)
+      if(NOT GIT_EXECUTABLE)
+        find_package(Git QUIET REQUIRED)
+      endif()
       execute_process(
         COMMAND "${GIT_EXECUTABLE}" "describe" "--tags" "--match" "v*"
         WORKING_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}"
@@ -56,15 +99,15 @@ function(fortrilinos_find_version PROJNAME GIT_VERSION_FILE)
         OUTPUT_STRIP_TRAILING_WHITESPACE
       )
       if(_GIT_RESULT)
-        message(WARNING "Failed to get ${PROJNAME} version from git: "
+        message(AUTHOR_WARNING "No git tags in ${projname} matched 'v*': "
           "${_GIT_ERR}")
       elseif(NOT _VERSION_STRING)
-        message(WARNING "Failed to get ${PROJNAME} version from git: "
+        message(WARNING "Failed to get ${projname} version from git: "
           "git describe returned an empty string")
       else()
         # Process description tag: e.g. v0.4.0-2-gc4af497 or v0.4.0
         # or v2.0.0-dev2
-        string(REGEX MATCH "^v([0-9.]+)(-dev[0-9.]+)?(-[0-9]+-g([0-9a-f]+))?" _MATCH
+        string(REGEX MATCH "^${_TAG_REGEX}(-[0-9]+-g${_HASH_REGEX})?" _MATCH
           "${_VERSION_STRING}"
         )
         if(_MATCH)
@@ -86,22 +129,21 @@ function(fortrilinos_find_version PROJNAME GIT_VERSION_FILE)
       endif()
       set(_CACHED_VERSION "${_VERSION_STRING}" "${_VERSION_STRING_SUFFIX}" "${_VERSION_HASH}")
       set("${_CACHE_VAR}" "${_CACHED_VERSION}" CACHE INTERNAL
-        "Version string and hash for ${PROJNAME}")
+        "Version string and hash for ${projname}")
     endif()
     list(GET _CACHED_VERSION 0 _VERSION_STRING)
     list(GET _CACHED_VERSION 1 _VERSION_STRING_SUFFIX)
     list(GET _CACHED_VERSION 2 _VERSION_HASH)
   else()
-    # First line are decorators, second is hash.
-    list(GET _TEXTFILE 0 _TAG)
-    string(REGEX MATCH "tag: *v([0-9.]+)(-dev[0-9.]+)?" _MATCH "${_TAG}")
+    string(REGEX MATCH "tag: *${_TAG_REGEX}" _MATCH "${_ARCHIVE_TAG}")
     if(_MATCH)
       set(_VERSION_STRING "${CMAKE_MATCH_1}")
       set(_VERSION_STRING_SUFFIX "${CMAKE_MATCH_2}")
     else()
-      # *not* a tagged release
-      list(GET _TEXTFILE 1 _HASH)
-      string(REGEX MATCH " *([0-9a-f]+)" _MATCH "${_HASH}")
+      message(AUTHOR_WARNING "Could not match a version tag for "
+        "git description '${_ARCHIVE_TAG}': perhaps this archive was not "
+        "exported from a tagged commit?")
+      string(REGEX MATCH " *${_HASH_REGEX}" _MATCH "${_ARCHIVE_HASH}")
       if(_MATCH)
         set(_VERSION_HASH "${CMAKE_MATCH_1}")
       endif()
@@ -109,8 +151,6 @@ function(fortrilinos_find_version PROJNAME GIT_VERSION_FILE)
   endif()
 
   if(NOT _VERSION_STRING)
-    message(WARNING "Could not determine version number for ${PROJNAME}: "
-      "perhaps a non-release archive?")
     set(_VERSION_STRING "0.0.0")
   endif()
 
@@ -120,21 +160,12 @@ function(fortrilinos_find_version PROJNAME GIT_VERSION_FILE)
     set(_FULL_VERSION_STRING "v${_VERSION_STRING}${_VERSION_STRING_SUFFIX}")
   endif()
 
-  set(${PROJNAME}_VERSION "${_VERSION_STRING}" PARENT_SCOPE)
-  set(${PROJNAME}_VERSION_STRING "${_FULL_VERSION_STRING}" PARENT_SCOPE)
+  set(${projname}_VERSION "${_VERSION_STRING}" PARENT_SCOPE)
+  set(${projname}_VERSION_STRING "${_FULL_VERSION_STRING}" PARENT_SCOPE)
 endfunction()
 
 if(CMAKE_SCRIPT_MODE_FILE)
-  # This script is being run from the command line. Useful for debugging.
-  if(NOT DEFINED GIT_VERSION_FILE)
-    message(FATAL_ERROR "Run this script with "
-      "cmake -D GIT_VERSION_FILE=git-version.txt -P ForTrilinosVersion.cmake")
-  endif()
-  fortrilinos_find_version(TEMP ${GIT_VERSION_FILE})
-  message(STATUS "${TEMP_VERSION}")
-  message(STATUS "${TEMP_VERSION_STRING}")
+  cgv_find_version(TEMP)
+  message("VERSION=\"${TEMP_VERSION}\"")
+  message("VERSION_STRING=\"${TEMP_VERSION_STRING}\"")
 endif()
-
-##---------------------------------------------------------------------------##
-## end of fortrilinos/cmake/ForTrilinosVersion.cmake
-##---------------------------------------------------------------------------##
