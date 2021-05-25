@@ -17,5 +17,6 @@ find_program(SPHINX_EXECUTABLE
 # this will also set SPHINX_FOUND to true if SPHINX_EXECUTABLE exists
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(Sphinx
-                                  "Failed to locate sphinx-build executable"
-                                  SPHINX_EXECUTABLE)
+  "Failed to locate sphinx-build executable"
+  SPHINX_EXECUTABLE
+)

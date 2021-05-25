@@ -148,6 +148,10 @@ if(ForTrilinos_TESTING OR ForTrilinos_EXAMPLES)
   include(CTest)
 endif()
 
+if(ForTrilinos_DOCS)
+  find_package(Sphinx REQUIRED)
+endif()
+
 #---------------------------------------------------------------------------##
 # LIBRARY
 #---------------------------------------------------------------------------##
