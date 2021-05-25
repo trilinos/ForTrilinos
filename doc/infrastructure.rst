@@ -1,3 +1,10 @@
+**************
+Infrastructure
+**************
+
+This section is intended for system administrators and users who need to
+install their own copy of ForTrilinos.
+
 .. _install_fortrilinos:
 
 Installation
@@ -16,10 +23,10 @@ Version compatibility
 
 ForTrilinos wrappers are tightly coupled to the Trilinos API, so upstream
 changes require new releases of ForTrilinos. Since the wrapper generation is
-dependent on SWIG-Fortran capabilities, changes there will also affect the
-ability to rebuild ForTrilinos wrappers. (Note that SWIG is always optional;
+dependent on SWIG-Fortran capabilities, changes to SWIG may also affect the
+ability to rebuild ForTrilinos wrappers. Note that SWIG is always optional;
 the version here simply denotes the version used to generate the included
-wrappers.)
+wrappers.
 
 .. _version_table:
 
@@ -41,7 +48,15 @@ SWIG indicates `the SWIG-Fortran fork <https://github.com/swig-fortran/swig>`.
 
 The original implementation of the ForTrilinos was developed prior to 2012.
 That code is no longer developed and maintained, and is available using the
-``trilinos-release-12-8-1`` tag and the corresponding Trilinos 12.8.1 version.
+``trilinos-release-12-8-1`` tag in the ForTrilinos repository and the
+corresponding Trilinos 12.8.1 version.
+
+E4S
+---
+
+As of this writing, ForTrilinos is distributed as part of the `E4S Project
+<https://e4s-project.github.io/index.html>` and should be available as a
+pre-built binary.
 
 Spack
 -----
@@ -83,3 +98,48 @@ run:
     $ make doc
 
 then open ``$BUILD/doc/html/index.html``.
+
+App infrastructure setup
+========================
+
+The ForTrilinos installation is optimized for use with the CMake build
+system CMake_. To use ForTrilinos as part of your CMake-based Fortran
+app, add
+
+.. code:: cmake
+
+   find_package(ForTrilinos)
+
+to the top level of your ``CMakeLists.txt`` file. To ensure that CMake can find
+the ForTrilinos installation, append its install prefix to the standard
+``CMAKE_PREFIX_PATH`` or ``ForTrilinos_ROOT`` environment variables, or define
+the ``ForTrilinos_ROOT`` CMake variable when configuring your script.
+
+.. code:: console
+
+   $ cmake -DForTrilinos_ROOT=/usr/local/fortrilinos ForTrilinosInstallTest
+
+An example application that uses ForTrilinos and MPI-provided Fortran
+bindings might look like:
+
+.. code:: cmake
+
+   cmake_minimum_required(VERSION 3.12)
+   project(ForTrilinosInstallTest VERSION 0.0.1 LANGUAGES Fortran)
+
+   find_package(ForTrilinos)
+
+   add_executable(downstream-app downstream-app.F90)
+   target_link_libraries(downstream-app
+      ForTrilinos::ForTrilinos MPI::MPI_Fortran
+   )
+
+where the ``downstream-app.F90`` app will simply need to include the ForTrilinos
+modules:
+
+.. code:: fortran
+
+   use forteuchos
+   use fortpetra
+
+.. _CMake : https://cmake.org
