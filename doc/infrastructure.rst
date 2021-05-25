@@ -122,7 +122,7 @@ App infrastructure setup
 ========================
 
 The ForTrilinos installation is optimized for use with the CMake build
-system :ref:`CMake`. To use ForTrilinos as part of your CMake-based Fortran
+system CMake_. To use ForTrilinos as part of your CMake-based Fortran
 app, add
 
 .. code:: cmake
@@ -160,3 +160,5 @@ modules:
 
    use forteuchos
    use fortpetra
+
+.. _CMake : https://cmake.org

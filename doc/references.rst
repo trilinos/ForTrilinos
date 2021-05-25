@@ -1,5 +1,5 @@
 References
 ==========
 
-.. bibliography:: _static/refs.bib
+.. bibliography:: _static/references.bib
    :all:
