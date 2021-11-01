@@ -4,18 +4,18 @@ spack:
   - ninja
   - openmpi
   - swig@4.0.2-fortran
-  - trilinos +amesos2 +anasazi +belos +teuchos +kokkos +ifpack2 +muelu +nox +tpetra
+  - trilinos +amesos2 +anasazi +belos +kokkos +ifpack2 +muelu +nox +tpetra
     +stratimikos +mpi gotype=long_long
   view: true
   concretization: together
   packages:
     trilinos:
-      variants: ~adios2 ~alloptpkgs ~boost ~cgns ~chaco ~complex ~debug ~dtk ~exodus
-        +explicit_template_instantiation ~float +fortran ~glm ~gtest ~hypre  ~intrepid2
-        ~isorropia ~matio ~mesquite ~metis ~minitensor ~mumps ~netcdf ~openmp ~phalanx
-        ~piro ~pnetcdf ~python ~rol ~rythmos +shared ~shylu ~stk ~suite-sparse ~superlu
-        ~superlu-dist ~teko ~tempus ~x11 ~xsdkflags ~zlib ~zoltan ~zoltan2 ~epetra
-        ~amesos ~epetraext ~ifpack ~aztec
+      variants: ~adios2 ~boost ~chaco ~complex ~debug ~dtk ~exodus
+        +explicit_template_instantiation ~float +fortran ~gtest ~hypre  ~intrepid2
+        ~isorropia ~mesquite ~metis ~minitensor ~mumps ~openmp ~phalanx
+        ~piro ~python ~rol ~rythmos +shared ~shylu ~stk ~stokhos ~suite-sparse ~superlu
+        ~superlu-dist ~teko ~tempus ~trilinoscouplings ~wrapper ~x11 ~zoltan ~zoltan2
+        ~amesos ~epetra ~epetraext ~ifpack ~aztec ~ml
     all:
       providers:
         blas: [openblas]
