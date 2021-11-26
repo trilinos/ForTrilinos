@@ -1,3 +1,7 @@
+.. raw:: latex
+
+   \setcounter{secnumdepth}{0}
+
 Acknowledgments
 ===============
 
@@ -10,3 +14,8 @@ to support the nation’s exascale computing imperative.
 This research used resources of the Oak Ridge Leadership Computing Facility,
 which is a DOE Office of Science User Facility supported under Contract
 DE-AC05-00OR22725.
+
+
+.. raw:: latex
+
+   \setcounter{secnumdepth}{2}

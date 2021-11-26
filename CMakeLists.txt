@@ -150,6 +150,10 @@ endif()
 
 if(ForTrilinos_DOCS)
   find_package(Sphinx REQUIRED)
+  include(ExternalProject) # for pdf header
+  set(ForTrilinos_PYTHONPATH "$ENV{PYTHONPATH}" CACHE STRING
+    "Python path used for generating documentation"
+  )
 endif()
 
 #---------------------------------------------------------------------------##
