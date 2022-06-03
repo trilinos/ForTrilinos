@@ -24,7 +24,7 @@ configure_file("ForTrilinos_config.h.in"
   "${ForTrilinos_HEADER_CONFIG_DIRECTORY}/ForTrilinos_config.h" @ONLY)
 
 # Configure version information and generate primary flibcpp module
-set(FORTRILINOS_VERSION_CPP "${CMAKE_CURRENT_BINARY_DIR}/fortrilinos_version.cpp.cpp")
+set(FORTRILINOS_VERSION_CPP "${CMAKE_CURRENT_BINARY_DIR}/fortrilinos_version.cpp")
 configure_file("${CMAKE_CURRENT_LIST_DIR}/fortrilinos_version.cpp.in"
   "${FORTRILINOS_VERSION_CPP}" @ONLY)
 
@@ -123,9 +123,10 @@ _add_module(forerror
 _add_module(forteuchos)
 target_link_libraries(forteuchos
   PRIVATE Trilinos::TeuchosComm
-   Trilinos::TeuchosParameterList)
+   Trilinos::TeuchosParameterList
+  PUBLIC forerror)
 if(ForTrilinos_USE_MPI)
-  target_link_libraries(forteuchos PUBLIC forerror MPI::MPI_CXX)
+  target_link_libraries(forteuchos PUBLIC MPI::MPI_CXX)
 endif()
 
 if(Trilinos_Tpetra_FOUND)

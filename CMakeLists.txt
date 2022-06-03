@@ -11,7 +11,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/cmake/CgvFindVersion.cmake")
 cgv_find_version(ForTrilinos)
 
 project(ForTrilinos VERSION "${ForTrilinos_VERSION}" LANGUAGES CXX Fortran)
-cmake_policy(VERSION 3.12...3.18)
+cmake_policy(VERSION 3.12...3.22)
 
 list(APPEND CMAKE_MODULE_PATH
   "${CMAKE_CURRENT_LIST_DIR}/cmake"
@@ -39,15 +39,10 @@ option(ForTrilinos_USE_SWIG_Fortran
 option(BUILD_SHARED_LIBS "Default to building shared libraries" ON)
 
 if(NOT DEFINED CMAKE_INSTALL_RPATH_USE_LINK_PATH)
-  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ON CACHE STRING
-    "Inform installed binaries of external library rpaths")
+  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ON)
 endif()
 if(BUILD_SHARED_LIBS)
-  set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_FULL_LIBDIR}" CACHE STRING
-    "Inform installed binaries of internal library rpaths")
-endif()
-if(APPLE)
-  option(CMAKE_MACOSX_RPATH "Support @rpath in install targets" ON)
+  set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_FULL_LIBDIR}")
 endif()
 
 #-----------------------------------------------------------------------------#
@@ -147,12 +142,6 @@ endif()
 if(ForTrilinos_USE_SWIG_Fortran)
   find_package(SWIG 4.0.2 REQUIRED COMPONENTS fortran)
   include(UseSWIG)
-
-  if(NOT ForTrilinos_USE_MPI)
-    message(WARNING "DeveloperMode is being used without MPI: "
-      "the newly generated wrappers will NOT be generated in the source "
-      "directory, since they will not contain MPI-related classes.")
-  endif()
 endif()
 
 if(ForTrilinos_TESTING OR ForTrilinos_EXAMPLES)
