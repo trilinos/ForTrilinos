@@ -69,3 +69,4 @@ class ArrayView
 %teuchos_instantiate_arrayview_typemaps(unsigned int);
 %teuchos_instantiate_arrayview_typemaps(unsigned long);
 %teuchos_instantiate_arrayview_typemaps(unsigned long long);
+%teuchos_instantiate_arrayview_typemaps(size_t);

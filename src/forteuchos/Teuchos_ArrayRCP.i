@@ -49,6 +49,7 @@ class ArrayRCP
 %template() Teuchos::ArrayRCP<unsigned int>;
 %template() Teuchos::ArrayRCP<unsigned long>;
 %template() Teuchos::ArrayRCP<unsigned long long>;
+%template() Teuchos::ArrayRCP<size_t>;
 
 %template() Teuchos::ArrayRCP<const int>;
 %template() Teuchos::ArrayRCP<const double>;
@@ -57,4 +58,4 @@ class ArrayRCP
 %template() Teuchos::ArrayRCP<const unsigned int>;
 %template() Teuchos::ArrayRCP<const unsigned long>;
 %template() Teuchos::ArrayRCP<const unsigned long long>;
-
+%template() Teuchos::ArrayRCP<const size_t>;
