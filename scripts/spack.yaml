@@ -3,7 +3,7 @@ spack:
   - cmake
   - ninja
   - openmpi
-  - swig@4.0.2-fortran
+  - swig@4.1.0-fortran
   - trilinos +amesos2 +anasazi +belos +teuchos +kokkos +ifpack2 +muelu +nox +tpetra
     +stratimikos +mpi gotype=long_long
   view: true

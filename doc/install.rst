@@ -28,7 +28,8 @@ wrappers.)
    ===========  ============== ======================
    ForTrilinos  Trilinos       SWIG
    ===========  ============== ======================
-   2.0.0        13             4.0.2+fortran
+   2.0.1        13.0:13.1      4.1.0+fortran
+   2.0.0        13.0:13.1      4.0.2+fortran
    2.0.0-dev3   12.18.1        4.0.2+fortran
    2.0.0-dev2   12.18.1        4.0.0+fortran+15e6ed59
    2.0.0-dev1   12.17+8a82b322 4.0.0+fortran+15e6ed59
@@ -38,6 +39,17 @@ wrappers.)
 In :ref:`the version table above <version_table>`, the ``+fortran`` suffix for
 SWIG indicates `the SWIG-Fortran fork <https://github.com/swig-fortran/swig>`.
 ``+sha`` refers to a specific Git commit that comes after the given version.
+
+The versioning scheme is based on `SemVer 2.0`_:
+
+- Major version numbers with Trilinos and minor versions of SWIG-Fortran can
+  result in major version number changes for ForTrilinos.
+- New features in Trilinos, and new support by ForTrilinos, can result in minor
+  version number changes.
+- Minor changes to the SWIG-Fortran implementation (which don't affect the
+  interface in the .F90 files) result in a patch version.
+
+Basically, the versioning will be driven by what the Fortran-only users see in the committed version of the generated wrappers.
 
 The original implementation of the ForTrilinos was developed prior to 2012.
 That code is no longer developed and maintained, and is available using the
