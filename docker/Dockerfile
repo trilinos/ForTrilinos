@@ -1,14 +1,16 @@
 # Build command:
 #   $ docker build -t aprokop/fortrilinos-stack:latest -f Dockerfile  .
-ARG BASE=nvidia/cuda:10.2-devel
+ARG BASE=nvidia/cuda:11.0.3-devel-ubuntu18.04
 FROM $BASE
 
 ARG NPROC=8
 
+RUN if test ${NV_CUDA_LIB_VERSION}; then apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub; fi
+
 # Avoid tzdata dialog
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -yq \
         autoconf \
         bc \
         build-essential \
@@ -64,6 +66,9 @@ RUN OPENMPI_VERSION=4.0.3 && \
     make -j${NPROCS} install && \
     rm -rf ${SCRATCH_DIR}
 ENV PATH=${OPENMPI_DIR}/bin:$PATH
+
+# Workaround for Kokkos to find libcudart
+ENV LD_LIBRARY_PATH=/usr/local/cuda/targets/x86_64-linux/lib:${LD_LIBRARY_PATH}
 
 # Install Trilinos (13.0.0)
 ENV TRILINOS_DIR=/opt/trilinos
