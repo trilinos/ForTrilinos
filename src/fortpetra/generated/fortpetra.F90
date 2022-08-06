@@ -450,6 +450,7 @@ public :: init_ForTpetraOperator
   procedure :: isStorageOptimized => swigf_TpetraCrsMatrix_isStorageOptimized
   procedure :: getProfileType => swigf_TpetraCrsMatrix_getProfileType
   procedure :: isStaticGraph => swigf_TpetraCrsMatrix_isStaticGraph
+  procedure :: getFrobeniusNorm => swigf_TpetraCrsMatrix_getFrobeniusNorm
   procedure :: supportsRowViews => swigf_TpetraCrsMatrix_supportsRowViews
   procedure, private :: swigf_TpetraCrsMatrix_localApply__SWIG_0
   procedure, private :: swigf_TpetraCrsMatrix_localApply__SWIG_1
@@ -3546,6 +3547,15 @@ use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper), intent(in) :: farg1
 integer(C_INT) :: fresult
+end function
+
+function swigc_TpetraCrsMatrix_getFrobeniusNorm(farg1) &
+bind(C, name="_wrap_TpetraCrsMatrix_getFrobeniusNorm") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper), intent(in) :: farg1
+real(C_DOUBLE) :: fresult
 end function
 
 function swigc_TpetraCrsMatrix_supportsRowViews(farg1) &
@@ -9084,6 +9094,19 @@ type(SwigClassWrapper) :: farg1
 farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_isStaticGraph(farg1)
 call SWIGTM_fout_bool(fresult, swig_result)
+end function
+
+function swigf_TpetraCrsMatrix_getFrobeniusNorm(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE) :: swig_result
+class(TpetraCrsMatrix), intent(in) :: self
+real(C_DOUBLE) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc_TpetraCrsMatrix_getFrobeniusNorm(farg1)
+swig_result = fresult
 end function
 
 function swigf_TpetraCrsMatrix_supportsRowViews(self) &

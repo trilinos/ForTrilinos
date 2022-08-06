@@ -323,6 +323,7 @@ enum AssignmentType {
 #define SWIGPOLICY_Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg_ swig::ASSIGNMENT_SMARTPTR
 #define SWIGPOLICY_Teuchos_RCP_Sl_Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__Sg_ swig::ASSIGNMENT_DEFAULT
 #define SWIGPOLICY_Teuchos_RCP_Sl_Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg_const_Sg_ swig::ASSIGNMENT_DEFAULT
+#define SWIGPOLICY_Tpetra_RowMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg_ swig::ASSIGNMENT_DEFAULT
 #define SWIGPOLICY_Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg_ swig::ASSIGNMENT_SMARTPTR
 #define SWIGPOLICY_Teuchos_RCP_Sl_Tpetra_MatrixMarket_Reader_Sl_Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__Sg__Sg_ swig::ASSIGNMENT_DEFAULT
 #define SWIGPOLICY_Teuchos_RCP_Sl_Tpetra_MatrixMarket_Reader_Sl_Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__Sg_const_Sg_ swig::ASSIGNMENT_DEFAULT
@@ -12051,6 +12052,42 @@ SWIGEXPORT int _wrap_TpetraCrsMatrix_isStaticGraph(SwigClassWrapper *farg1) {
     }
   }
   fresult = (result ? 1 : 0);
+  return fresult;
+}
+
+
+SWIGEXPORT double _wrap_TpetraCrsMatrix_getFrobeniusNorm(SwigClassWrapper *farg1) {
+  double fresult ;
+  Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
+  Tpetra::CrsMatrix< double,int,long long,ForTrilinos::DefaultNodeType >::mag_type result;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO> >*)(farg1->cptr);
+  arg1 = smartarg1 ? (Tpetra::CrsMatrix<SC,LO,GO,NO>*)(smartarg1->get()) : NULL;
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getFrobeniusNorm() const");;
+    try
+    {
+      // Attempt the wrapped function call
+      result = (Tpetra::CrsMatrix< double,int,long long,ForTrilinos::DefaultNodeType >::mag_type)((Tpetra::CrsMatrix< SC,LO,GO,NO > const *)arg1)->getFrobeniusNorm();
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getFrobeniusNorm() const", -4, e.what(), return 0);
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getFrobeniusNorm() const", -3, e.what(), return 0);
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getFrobeniusNorm() const", -1, "An unknown exception occurred", return 0);
+    }
+  }
+  fresult = (Tpetra::CrsMatrix< double,int,long long,ForTrilinos::DefaultNodeType >::mag_type)(result);
   return fresult;
 }
 
