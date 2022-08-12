@@ -49,7 +49,6 @@ program test_TpetraCrsMatrix
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_getNodeMaxNumRowEntries)
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_getGlobalRowCopy)
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_getLocalRowCopy)
-  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_getGlobalRowView)
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_getProfileType)
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_getFrobeniusNorm)
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_getAllValues)
@@ -979,42 +978,6 @@ contains
     OUT0("Finished TpetraCrsMatrix_getLocalRowCopy!")
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_getLocalRowCopy)
-
-  ! -----------------------------getGlobalRowView----------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_GetGlobalRowView)
-    type(TpetraMap) :: rowMap
-    type(TpetraCrsMatrix) :: Mat
-    integer :: numrow, irow, nnz
-    integer(global_ordinal_type), dimension(:), pointer :: view_cols
-    real(scalar_type), dimension(:), pointer :: view_vals
-    integer(global_ordinal_type) :: gblrow
-    integer(global_ordinal_type), allocatable :: compare_cols(:)
-    real(scalar_type), allocatable :: compare_vals(:)
-
-    OUT0("Starting TpetraCrsMatrix_GetGlobalRowView")
-
-    call TPetra_CrsMatrix_CreateTestMatrix_A(comm,Mat)
-
-    numrow = Mat%getNodeNumRows()
-    rowmap = Mat%getRowMap()
-    do irow=1,numrow
-       gblrow = rowmap%getGlobalElement(irow)
-       TEST_NOTHROW(call Mat%getGlobalRowView(gblrow, view_cols, view_vals))
-
-       ! Check the results row by row
-       call Tpetra_CrsMatrix_GetTestMatrixRow_A(comm, irow, gblrow, compare_cols, compare_vals, nnz)
-       TEST_FLOATING_ARRAY_EQUALITY(view_vals, compare_vals, epsilon(0.d0))
-       TEST_ARRAY_EQUALITY(view_cols, compare_cols)
-       deallocate(compare_cols, compare_vals)
-    enddo
-
-    nullify(view_cols, view_vals)
-    call Mat%release();  TEST_IERR()
-    call rowmap%release();  TEST_IERR()
-
-    OUT0("Finished TpetraCrsMatrix_GetGlobalRowView")
-
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_GetGlobalRowView)
 
   ! ------------------------------getProfileType------------------------------ !
   FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_getProfileType)
