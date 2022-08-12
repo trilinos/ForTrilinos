@@ -68,7 +68,7 @@
     const Teuchos::ArrayView<const LO>& cols,
     Teuchos::ArrayView<const LO> cols}
 
-%apply const Teuchos::ArrayView<int>& INDEX { const Teuchos::ArrayView<LO>& colInds }
+%apply const Teuchos::ArrayView<int>& INDEX { const Teuchos::ArrayView<LO>& colInds, const Teuchos::ArrayView<LO>& colInds }
 
 %apply const Teuchos::ArrayRCP<const int>& INDEX {
     const Teuchos::ArrayRCP<size_t>& rowPointers,
@@ -103,6 +103,26 @@
         columnIndices[i] = columnIndicesArrayRCP[i]+1;
         values       [i] = valuesArrayRCP[i];
       }
+    }
+
+    void
+    getGlobalRowCopy (GO GlobalRow,
+                      const Teuchos::ArrayView<GO>& Indices,
+                      const Teuchos::ArrayView<SC>& Values,
+                      size_t& NumEntries) const {
+        Tpetra::CrsMatrix<SC,LO,GO,NO>::nonconst_global_inds_host_view_type temp_i(Indices.data(), Indices.size());
+        Tpetra::CrsMatrix<SC,LO,GO,NO>::nonconst_values_host_view_type temp_v(Values.data(), Values.size());
+        return $self->getGlobalRowCopy(GlobalRow, temp_i, temp_v, NumEntries);
+    }
+
+    void
+    getLocalRowCopy (LO localRow,
+                     const Teuchos::ArrayView<LO>& colInds,
+                     const Teuchos::ArrayView<SC>& vals,
+                     size_t& numEntries) const {
+        Tpetra::CrsMatrix<SC,LO,GO,NO>::nonconst_local_inds_host_view_type temp_i(colInds.data(), colInds.size());
+        Tpetra::CrsMatrix<SC,LO,GO,NO>::nonconst_values_host_view_type temp_v(vals.data(), vals.size());
+        return $self->getLocalRowCopy(localRow, temp_i, temp_v, numEntries);
     }
 }
 
