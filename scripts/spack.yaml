@@ -4,10 +4,11 @@ spack:
   - ninja
   - openmpi
   - swig@4.1.0-fortran
-  - trilinos +amesos2 +anasazi +belos +teuchos +kokkos +ifpack2 +muelu +nox +tpetra
+  - trilinos@13.0.0:13.1 +amesos2 +anasazi +belos +kokkos +ifpack2 +muelu +nox +tpetra
     +stratimikos +mpi gotype=long_long
   view: true
-  concretization: together
+  concretizer:
+    unify: true
   packages:
     trilinos:
       variants: ~adios2 ~alloptpkgs ~boost ~cgns ~chaco ~complex ~debug ~dtk ~exodus

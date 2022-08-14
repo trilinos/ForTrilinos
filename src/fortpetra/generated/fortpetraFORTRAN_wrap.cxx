@@ -21,30 +21,6 @@
 #define SWIGFORTRAN
 #endif
 
-
-#ifdef __cplusplus
-/* SwigValueWrapper is described in swig.swg */
-template<typename T> class SwigValueWrapper {
-  struct SwigMovePointer {
-    T *ptr;
-    SwigMovePointer(T *p) : ptr(p) { }
-    ~SwigMovePointer() { delete ptr; }
-    SwigMovePointer& operator=(SwigMovePointer& rhs) { T* oldptr = ptr; ptr = 0; delete oldptr; ptr = rhs.ptr; rhs.ptr = 0; return *this; }
-  } pointer;
-  SwigValueWrapper& operator=(const SwigValueWrapper<T>& rhs);
-  SwigValueWrapper(const SwigValueWrapper<T>& rhs);
-public:
-  SwigValueWrapper() : pointer(0) { }
-  SwigValueWrapper& operator=(const T& t) { SwigMovePointer tmp(new T(t)); pointer = tmp; return *this; }
-  operator T&() const { return *pointer.ptr; }
-  T *operator&() { return pointer.ptr; }
-};
-
-template <typename T> T SwigValueInit() {
-  return T();
-}
-#endif
-
 /* -----------------------------------------------------------------------------
  *  This section contains generic SWIG labels for method/variable
  *  declarations/attributes, and other compiler dependent labels.
@@ -170,6 +146,44 @@ template <typename T> T SwigValueInit() {
 #endif
 
 
+#ifdef __cplusplus
+#include <utility>
+/* SwigValueWrapper is described in swig.swg */
+template<typename T> class SwigValueWrapper {
+  struct SwigSmartPointer {
+    T *ptr;
+    SwigSmartPointer(T *p) : ptr(p) { }
+    ~SwigSmartPointer() { delete ptr; }
+    SwigSmartPointer& operator=(SwigSmartPointer& rhs) { T* oldptr = ptr; ptr = 0; delete oldptr; ptr = rhs.ptr; rhs.ptr = 0; return *this; }
+  } pointer;
+  SwigValueWrapper& operator=(const SwigValueWrapper<T>& rhs);
+  SwigValueWrapper(const SwigValueWrapper<T>& rhs);
+public:
+  SwigValueWrapper() : pointer(0) { }
+  SwigValueWrapper& operator=(const T& t) { SwigSmartPointer tmp(new T(t)); pointer = tmp; return *this; }
+#if __cplusplus >=201103L
+  SwigValueWrapper& operator=(T&& t) { SwigSmartPointer tmp(new T(std::move(t))); pointer = tmp; return *this; }
+  operator T&&() const { return std::move(*pointer.ptr); }
+#else
+  operator T&() const { return *pointer.ptr; }
+#endif
+  T *operator&() const { return pointer.ptr; }
+};
+
+template <typename T> T SwigValueInit() {
+  return T();
+}
+
+
+#if __cplusplus >=201103L
+# define SWIG_STD_MOVE(OBJ) std::move(OBJ)
+#else
+# define SWIG_STD_MOVE(OBJ) OBJ
+#endif
+
+#endif
+
+
 #ifndef SWIGEXTERN
 # ifdef __cplusplus
 #   define SWIGEXTERN extern
@@ -197,7 +211,7 @@ SWIGEXPORT void SWIG_store_exception(const char* decl, int errcode, const char *
 #define SWIG_exception_impl(DECL, CODE, MSG, RETURNNULL) \
     SWIG_store_exception(DECL, CODE, MSG); RETURNNULL;
 
-/*  Errors in SWIG */
+/* SWIG Errors applicable to all language modules, values are reserved from -1 to -99 */
 #define  SWIG_UnknownError    	   -1
 #define  SWIG_IOError        	   -2
 #define  SWIG_RuntimeError   	   -3
@@ -211,7 +225,6 @@ SWIGEXPORT void SWIG_store_exception(const char* decl, int errcode, const char *
 #define  SWIG_AttributeError 	   -11
 #define  SWIG_MemoryError    	   -12
 #define  SWIG_NullReferenceError   -13
-
 
 
 
@@ -8884,7 +8897,7 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_getNodeRowPtrs(SwigClassWrapper *farg1, Swi
     try
     {
       // Attempt the wrapped function call
-      Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__getNodeRowPtrs__SWIG((Tpetra::CrsGraph< int,long long,ForTrilinos::DefaultNodeType > const *)arg1,arg2);
+      Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__getNodeRowPtrs__SWIG((Tpetra::CrsGraph< int,long long,ForTrilinos::DefaultNodeType > const *)arg1,SWIG_STD_MOVE(arg2));
     }
     catch (const std::range_error& e)
     {
@@ -8918,7 +8931,7 @@ SWIGEXPORT void _wrap_TpetraCrsGraph_getNodePackedIndices(SwigClassWrapper *farg
     try
     {
       // Attempt the wrapped function call
-      Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__getNodePackedIndices__SWIG((Tpetra::CrsGraph< int,long long,ForTrilinos::DefaultNodeType > const *)arg1,arg2);
+      Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__getNodePackedIndices__SWIG((Tpetra::CrsGraph< int,long long,ForTrilinos::DefaultNodeType > const *)arg1,SWIG_STD_MOVE(arg2));
     }
     catch (const std::range_error& e)
     {
@@ -12899,7 +12912,7 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_getAllValues(SwigClassWrapper *farg1, Swig
     try
     {
       // Attempt the wrapped function call
-      Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getAllValues__SWIG((Tpetra::CrsMatrix< double,int,long long,ForTrilinos::DefaultNodeType > const *)arg1,arg2,arg3,arg4);
+      Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getAllValues__SWIG((Tpetra::CrsMatrix< double,int,long long,ForTrilinos::DefaultNodeType > const *)arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
     }
     catch (const std::range_error& e)
     {
@@ -12944,7 +12957,7 @@ SWIGEXPORT SwigClassWrapper _wrap_operator_to_matrix(SwigClassWrapper const *far
     try
     {
       // Attempt the wrapped function call
-      result = ForTrilinos::SWIGTEMPLATEDISAMBIGUATOR operator_to_matrix< SC,LO,GO,NO >(arg1);
+      result = ForTrilinos::SWIGTEMPLATEDISAMBIGUATOR operator_to_matrix< SC,LO,GO,NO >(SWIG_STD_MOVE(arg1));
     }
     catch (const std::range_error& e)
     {
@@ -12979,7 +12992,7 @@ SWIGEXPORT SwigClassWrapper _wrap_matrix_to_operator(SwigClassWrapper const *far
     try
     {
       // Attempt the wrapped function call
-      result = ForTrilinos::SWIGTEMPLATEDISAMBIGUATOR matrix_to_operator< SC,LO,GO,NO >(arg1);
+      result = ForTrilinos::SWIGTEMPLATEDISAMBIGUATOR matrix_to_operator< SC,LO,GO,NO >(SWIG_STD_MOVE(arg1));
     }
     catch (const std::range_error& e)
     {
@@ -14066,7 +14079,7 @@ SWIGEXPORT void _wrap_TpetraMatrixMatrixAdd__SWIG_1(SwigClassWrapper *farg1, int
     try
     {
       // Attempt the wrapped function call
-      Tpetra::MatrixMatrix::SWIGTEMPLATEDISAMBIGUATOR Add< SC,LO,GO,NO >((Tpetra::CrsMatrix< double,int,long long,ForTrilinos::DefaultNodeType > const &)*arg1,arg2,arg3,(Tpetra::CrsMatrix< double,int,long long,ForTrilinos::DefaultNodeType > const &)*arg4,arg5,arg6,arg7);
+      Tpetra::MatrixMatrix::SWIGTEMPLATEDISAMBIGUATOR Add< SC,LO,GO,NO >((Tpetra::CrsMatrix< double,int,long long,ForTrilinos::DefaultNodeType > const &)*arg1,arg2,arg3,(Tpetra::CrsMatrix< double,int,long long,ForTrilinos::DefaultNodeType > const &)*arg4,arg5,arg6,SWIG_STD_MOVE(arg7));
     }
     catch (const std::range_error& e)
     {
