@@ -27,8 +27,8 @@ The version scheme is based on semantic versioning:
   changes for ForTrilinos.
 
 - New features in Trilinos, and new support by ForTrilinos, can result in minor
-  version number changes. Features removed by a minor version change in
-  Trilinos may also result in a minor version change.
+  version number changes. Features removed or deprecated by a minor version
+  change in Trilinos may also result in a minor version change.
 
 - Minor changes to the SWIG-Fortran implementation (which don't affect the
   interface in the .F90 files) result in a patch version.
@@ -43,6 +43,7 @@ in the committed version of the generated wrappers.
    ===========  ============== ======================
    ForTrilinos  Trilinos       SWIG
    ===========  ============== ======================
+   2.1.0        13.2           4.1.0-dev1+fortran
    2.0.1        13.0:13.1      4.1.0-dev1+fortran
    2.0.0        13.0:13.1      4.0.2+fortran
    2.0.0-dev3   12.18.1        4.0.2+fortran
@@ -72,8 +73,8 @@ pre-built binary on a variety of user and HPC systems.
 Spack
 -----
 
-To install ForTrilinos version ``2.0.1`` through an existing Spack
-installation (v0.18 or higher, or the ``develop`` branch):
+To install ForTrilinos version ``2.1.0`` through an existing Spack
+installation (v0.19 or higher, or the ``develop`` branch):
 
 .. code:: console
 
