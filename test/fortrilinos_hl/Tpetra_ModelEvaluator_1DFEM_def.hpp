@@ -149,17 +149,12 @@ update_solution_vector(const Teuchos::RCP<const MultiVector>& xp) const
   // Create ghosted objects
   if (is_null(u_ptr_))
     u_ptr_ = Teuchos::rcp(new MultiVector(x_ghosted_map_, 1));
-  u_ptr_->template modify<host_space>();
   u_ptr_->doImport(*xp, *importer_, Tpetra::REPLACE);
 
   if (is_null(x_ptr_)) {
     x_ptr_ = Teuchos::rcp(new MultiVector(x_ghosted_map_, 1));
-    x_ptr_->template modify<host_space>();
     x_ptr_->doImport(*node_coords_, *importer_, Tpetra::INSERT);
   }
-
-  x_ptr_->template sync<host_space>();
-  u_ptr_->template sync<host_space>();
 }
 
 template<class Scalar, class LocalOrdinal, class GlobalOrdinal, class Node>
@@ -174,8 +169,6 @@ evaluate_residual(const Teuchos::RCP<const MultiVector>& xp,
   typedef Kokkos::HostSpace host_space;
 
   f->putScalar(0.0);
-  f->template sync<host_space>();
-  f->template modify<host_space>();
 
   Teuchos::TimeMonitor timer(*resid_timer_);
   const LO invalid = Tpetra::Details::OrdinalTraits<LO>::invalid();
@@ -183,8 +176,8 @@ evaluate_residual(const Teuchos::RCP<const MultiVector>& xp,
   auto num_my_elems = x_ghosted_map_->getNodeNumElements()-1;
 
   // Loop Over # of Finite Elements on Processor
-  auto x = x_ptr_->template getLocalView<Kokkos::HostSpace>();
-  auto u = u_ptr_->template getLocalView<Kokkos::HostSpace>();
+  auto x = x_ptr_->getLocalViewHost();
+  auto u = u_ptr_->getLocalViewHost();
 
   for (LO ne=0; ne<static_cast<LO>(num_my_elems); ne++) {
 
@@ -248,8 +241,8 @@ evaluate_jacobian(const Teuchos::RCP<const MultiVector>& xp,
   auto num_my_elems = x_ghosted_map_->getNodeNumElements()-1;
 
   // Loop Over # of Finite Elements on Processor
-  auto x = x_ptr_->template getLocalView<Kokkos::HostSpace>();
-  auto u = u_ptr_->template getLocalView<Kokkos::HostSpace>();
+  auto x = x_ptr_->getLocalViewHost();
+  auto u = u_ptr_->getLocalViewHost();
 
   for (LO ne=0; ne<static_cast<LO>(num_my_elems); ne++) {
 
@@ -329,8 +322,8 @@ evaluate_preconditioner(const Teuchos::RCP<const MultiVector>& xp,
   Teuchos::TimeMonitor timer(*jac_timer_);
 
   // Loop Over # of Finite Elements on Processor
-  auto x = x_ptr_->template getLocalView<Kokkos::HostSpace>();
-  auto u = u_ptr_->template getLocalView<Kokkos::HostSpace>();
+  auto x = x_ptr_->getLocalViewHost();
+  auto u = u_ptr_->getLocalViewHost();
 
   for (LO ne=0; ne<static_cast<LO>(num_my_elems); ne++) {
 

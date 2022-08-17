@@ -57,16 +57,6 @@ program test_TpetraMultiVector
   ADD_SUBTEST_AND_RUN(TpetraMultiVector_isConstantStride)
   ADD_SUBTEST_AND_RUN(TpetraMultiVector_isSameSize)
 
-  ! These tests are Cuda so will develop them on the new
-  ! multi-node branch and merge it all later.
-  ! ADD_SUBTEST_AND_RUN(TpetraMultiVector_sync_host)
-  ! ADD_SUBTEST_AND_RUN(TpetraMultiVector_sync_device)
-  ! ADD_SUBTEST_AND_RUN(TpetraMultiVector_need_sync_host)
-  ! ADD_SUBTEST_AND_RUN(TpetraMultiVector_need_sync_device)
-  ! ADD_SUBTEST_AND_RUN(TpetraMultiVector_modify_device)
-  ! ADD_SUBTEST_AND_RUN(TpetraMultiVector_modify_host)
-
-
   ! The following methods are deprecated
   !ADD_SUBTEST_AND_RUN(TpetraMultiVector_normWeighted)
 
@@ -902,42 +892,6 @@ contains
 
   END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_get1dViewNonConst)
 
-  ! --------------------------------sync_host--------------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraMultiVector_sync_host)
-    type(TpetraMultiVector) :: Obj
-    OUT0("Starting TpetraMultiVector_sync_host!")
-
-    success = .false.
-
-    !call Obj%create(); TEST_IERR()
-    !call Obj%sync_host(); TEST_IERR()
-
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraMultiVector_sync_host: Test not yet implemented'
-
-    OUT0("Finished TpetraMultiVector_sync_host!")
-
-  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_sync_host)
-
-  ! -------------------------------sync_device-------------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraMultiVector_sync_device)
-    type(TpetraMultiVector) :: Obj
-    OUT0("Starting TpetraMultiVector_sync_device!")
-
-    success = .false.
-
-    !call Obj%create(); TEST_IERR()
-    !call Obj%sync_device(); TEST_IERR()
-
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraMultiVector_sync_device: Test not yet implemented'
-
-    OUT0("Finished TpetraMultiVector_sync_device!")
-
-  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_sync_device)
-
   ! ------------------------------need_sync_host------------------------------ !
   FORTRILINOS_UNIT_TEST(TpetraMultiVector_need_sync_host)
     type(TpetraMultiVector) :: Obj
@@ -973,43 +927,6 @@ contains
 
   END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_need_sync_device)
 
-  ! ------------------------------modify_device------------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraMultiVector_modify_device)
-    type(TpetraMultiVector) :: Obj
-
-    OUT0("Starting TpetraMultiVector_modify_device!")
-
-    success = .false.
-
-    !call Obj%create(); TEST_IERR()
-    !fresult = Obj%modify_device(); TEST_IERR()
-
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraMultiVector_need_sync_device: Test not yet implemented'
-
-    OUT0("Finished TpetraMultiVector_modify_device!")
-
-  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_modify_device)
-
-  ! -------------------------------modify_host-------------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraMultiVector_modify_host)
-    type(TpetraMultiVector) :: Obj
-
-    OUT0("Starting TpetraMultiVector_modify_host!")
-
-    success = .false.
-
-    !call Obj%create(); TEST_IERR()
-    !fresult = Obj%modify_host(); TEST_IERR()
-
-    !call Obj%release(); TEST_IERR()
-
-    write(*,*) 'TpetraMultiVector_need_sync_device: Test not yet implemented'
-
-    OUT0("Finished TpetraMultiVector_modify_host!")
-
-  END_FORTRILINOS_UNIT_TEST(TpetraMultiVector_modify_host)
 
   ! ------------------------------getNumVectors------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraMultiVector_getNumVectors)
