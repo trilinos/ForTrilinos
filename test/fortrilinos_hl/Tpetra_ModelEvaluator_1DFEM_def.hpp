@@ -176,8 +176,8 @@ evaluate_residual(const Teuchos::RCP<const MultiVector>& xp,
   auto num_my_elems = x_ghosted_map_->getNodeNumElements()-1;
 
   // Loop Over # of Finite Elements on Processor
-  auto x = x_ptr_->getLocalViewHost();
-  auto u = u_ptr_->getLocalViewHost();
+  auto x = x_ptr_->getLocalViewHost(Tpetra::Access::ReadOnlyStruct{});
+  auto u = u_ptr_->getLocalViewHost(Tpetra::Access::ReadOnlyStruct{});
 
   for (LO ne=0; ne<static_cast<LO>(num_my_elems); ne++) {
 
@@ -241,8 +241,8 @@ evaluate_jacobian(const Teuchos::RCP<const MultiVector>& xp,
   auto num_my_elems = x_ghosted_map_->getNodeNumElements()-1;
 
   // Loop Over # of Finite Elements on Processor
-  auto x = x_ptr_->getLocalViewHost();
-  auto u = u_ptr_->getLocalViewHost();
+  auto x = x_ptr_->getLocalViewHost(Tpetra::Access::ReadOnlyStruct{});
+  auto u = u_ptr_->getLocalViewHost(Tpetra::Access::ReadOnlyStruct{});
 
   for (LO ne=0; ne<static_cast<LO>(num_my_elems); ne++) {
 
@@ -322,8 +322,8 @@ evaluate_preconditioner(const Teuchos::RCP<const MultiVector>& xp,
   Teuchos::TimeMonitor timer(*jac_timer_);
 
   // Loop Over # of Finite Elements on Processor
-  auto x = x_ptr_->getLocalViewHost();
-  auto u = u_ptr_->getLocalViewHost();
+  auto x = x_ptr_->getLocalViewHost(Tpetra::Access::ReadOnlyStruct{});
+  auto u = u_ptr_->getLocalViewHost(Tpetra::Access::ReadOnlyStruct{});
 
   for (LO ne=0; ne<static_cast<LO>(num_my_elems); ne++) {
 
