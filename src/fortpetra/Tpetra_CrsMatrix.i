@@ -68,7 +68,7 @@
     const Teuchos::ArrayView<const LO>& cols,
     Teuchos::ArrayView<const LO> cols}
 
-%apply const Teuchos::ArrayView<int>& INDEX { const Teuchos::ArrayView<LO>& colInds }
+%apply const Teuchos::ArrayView<int>& INDEX { const Teuchos::ArrayView<LO>& colInds, const Teuchos::ArrayView<LO>& colInds }
 
 %apply const Teuchos::ArrayRCP<const int>& INDEX {
     const Teuchos::ArrayRCP<size_t>& rowPointers,
@@ -104,6 +104,26 @@
         values       [i] = valuesArrayRCP[i];
       }
     }
+
+    void
+    getGlobalRowCopy (GO GlobalRow,
+                      const Teuchos::ArrayView<GO>& Indices,
+                      const Teuchos::ArrayView<SC>& Values,
+                      size_t& NumEntries) const {
+        Tpetra::CrsMatrix<SC,LO,GO,NO>::nonconst_global_inds_host_view_type temp_i(Indices.data(), Indices.size());
+        Tpetra::CrsMatrix<SC,LO,GO,NO>::nonconst_values_host_view_type temp_v(Values.data(), Values.size());
+        return $self->getGlobalRowCopy(GlobalRow, temp_i, temp_v, NumEntries);
+    }
+
+    void
+    getLocalRowCopy (LO localRow,
+                     const Teuchos::ArrayView<LO>& colInds,
+                     const Teuchos::ArrayView<SC>& vals,
+                     size_t& numEntries) const {
+        Tpetra::CrsMatrix<SC,LO,GO,NO>::nonconst_local_inds_host_view_type temp_i(colInds.data(), colInds.size());
+        Tpetra::CrsMatrix<SC,LO,GO,NO>::nonconst_values_host_view_type temp_v(vals.data(), vals.size());
+        return $self->getLocalRowCopy(localRow, temp_i, temp_v, numEntries);
+    }
 }
 
 // Add doImport and doExport
@@ -116,9 +136,59 @@
 %ignore Tpetra::CrsMatrix::sumIntoLocalValues (const LocalOrdinal localRow, const LocalOrdinal numEnt, const Scalar vals[], const LocalOrdinal cols[], const bool atomic=useAtomicUpdatesByDefault);
 
 
+// Define type aliases for Tpetra matrix base class
+namespace Tpetra {
+  template <class Scalar,
+            class LocalOrdinal,
+            class GlobalOrdinal,
+            class Node>
+  class RowMatrix
+{
+public:
+    typedef Scalar        scalar_type;
+    typedef LocalOrdinal  local_ordinal_type;
+    typedef GlobalOrdinal global_ordinal_type;
+    typedef Node          node_type;
+
+    using impl_scalar_type = typename Kokkos::ArithTraits<Scalar>::val_type;
+    using mag_type = typename Kokkos::ArithTraits<Scalar>::mag_type;
+    typedef typename
+        Kokkos::View<impl_scalar_type*, typename Node::device_type>::const_type
+        values_device_view_type;
+    typedef typename values_device_view_type::HostMirror::const_type
+        values_host_view_type;
+    typedef typename values_device_view_type::HostMirror
+        nonconst_values_host_view_type;
+
+    typedef typename
+        Kokkos::View<LocalOrdinal *, typename Node::device_type>::const_type
+        local_inds_device_view_type;
+    typedef typename local_inds_device_view_type::HostMirror::const_type
+        local_inds_host_view_type;
+    typedef typename local_inds_device_view_type::HostMirror
+        nonconst_local_inds_host_view_type;
+
+    typedef typename
+        Kokkos::View<GlobalOrdinal *, typename Node::device_type>::const_type
+        global_inds_device_view_type;
+    typedef typename global_inds_device_view_type::HostMirror::const_type
+        global_inds_host_view_type;
+    typedef typename global_inds_device_view_type::HostMirror
+        nonconst_global_inds_host_view_type;
+
+
+    typedef typename
+        Kokkos::View<const size_t*, typename Node::device_type>::const_type
+        row_ptrs_device_view_type;
+    typedef typename row_ptrs_device_view_type::HostMirror::const_type
+        row_ptrs_host_view_type;
+};
+}
+
 %include "Tpetra_CrsMatrix_decl.hpp"
 
 %teuchos_rcp(Tpetra::CrsMatrix<SC,LO,GO,NO>)
+%template() Tpetra::RowMatrix<SC,LO,GO,NO>;
 %template(TpetraCrsMatrix) Tpetra::CrsMatrix<SC,LO,GO,NO>;
 
 // Operator to Matrix conversion

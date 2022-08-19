@@ -111,6 +111,20 @@
       for (int i = 0; i < nnz; i++)
         columnIndices[i] = columnIndicesArrayRCP[i]+1;
     }
+    void
+    getLocalRowCopy (LO lclRow,
+                     const Teuchos::ArrayView<LO>& lclColInds,
+                     size_t& numColInds) const {
+        Tpetra::CrsGraph<LO,GO,NO>::nonconst_local_inds_host_view_type temp_i(lclColInds.data(), lclColInds.size());
+        return $self->getLocalRowCopy(lclRow, temp_i, numColInds);
+    }
+    void
+    getGlobalRowCopy (GO gblRow,
+                     const Teuchos::ArrayView<GO>& gblColInds,
+                     size_t& numColInds) const {
+        Tpetra::CrsGraph<LO,GO,NO>::nonconst_global_inds_host_view_type temp_i(gblColInds.data(), gblColInds.size());
+        return $self->getGlobalRowCopy(gblRow, temp_i, numColInds);
+    }
 }
 
 // Add doImport and doExport

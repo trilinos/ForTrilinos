@@ -49,7 +49,6 @@ program test_TpetraCrsMatrix
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_getNodeMaxNumRowEntries)
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_getGlobalRowCopy)
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_getLocalRowCopy)
-  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_getGlobalRowView)
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_getProfileType)
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_getFrobeniusNorm)
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_getAllValues)
@@ -75,9 +74,6 @@ program test_TpetraCrsMatrix
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_description)
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_computeGlobalConstants)
   ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_haveGlobalConstants)
-
-  ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_gaussSeidel)
-  !TODO-implement ADD_SUBTEST_AND_RUN(TpetraCrsMatrix_gaussSeidelCopy)
 
   call comm%release();  TEST_IERR()
 
@@ -983,42 +979,6 @@ contains
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_getLocalRowCopy)
 
-  ! -----------------------------getGlobalRowView----------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_GetGlobalRowView)
-    type(TpetraMap) :: rowMap
-    type(TpetraCrsMatrix) :: Mat
-    integer :: numrow, irow, nnz
-    integer(global_ordinal_type), dimension(:), pointer :: view_cols
-    real(scalar_type), dimension(:), pointer :: view_vals
-    integer(global_ordinal_type) :: gblrow
-    integer(global_ordinal_type), allocatable :: compare_cols(:)
-    real(scalar_type), allocatable :: compare_vals(:)
-
-    OUT0("Starting TpetraCrsMatrix_GetGlobalRowView")
-
-    call TPetra_CrsMatrix_CreateTestMatrix_A(comm,Mat)
-
-    numrow = Mat%getNodeNumRows()
-    rowmap = Mat%getRowMap()
-    do irow=1,numrow
-       gblrow = rowmap%getGlobalElement(irow)
-       TEST_NOTHROW(call Mat%getGlobalRowView(gblrow, view_cols, view_vals))
-
-       ! Check the results row by row
-       call Tpetra_CrsMatrix_GetTestMatrixRow_A(comm, irow, gblrow, compare_cols, compare_vals, nnz)
-       TEST_FLOATING_ARRAY_EQUALITY(view_vals, compare_vals, epsilon(0.d0))
-       TEST_ARRAY_EQUALITY(view_cols, compare_cols)
-       deallocate(compare_cols, compare_vals)
-    enddo
-
-    nullify(view_cols, view_vals)
-    call Mat%release();  TEST_IERR()
-    call rowmap%release();  TEST_IERR()
-
-    OUT0("Finished TpetraCrsMatrix_GetGlobalRowView")
-
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_GetGlobalRowView)
-
   ! ------------------------------getProfileType------------------------------ !
   FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_getProfileType)
     type(TpetraCrsMatrix) :: Mat
@@ -1709,107 +1669,5 @@ contains
     OUT0("Finished TpetraCrsMatrix_replaceDomainMapAndImporter")
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_replaceDomainMapAndImporter)
-
-  ! -------------------------------gaussSeidel-------------------------------- !
-  FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_gaussSeidel)
-    type(TpetraMap) :: Map, row_map, tmp_map
-    type(TeuchosComm) :: tcomm
-    type(TpetraCrsMatrix) :: Mat
-    type(TpetraMultiVector) :: b
-    type(TpetraMultiVector) :: x
-    type(TpetraMultiVector) :: d
-    real(scalar_type) :: dampingfactor
-    real(scalar_type), parameter :: one=1.
-    integer(size_type), parameter :: ione=1
-    integer(size_type), parameter :: num_vecs=1
-    real(mag_type) :: vals(1)=[1.], normb(num_vecs), normx(num_vecs)
-    integer(size_type) :: num_images, my_image_id
-    integer :: irow
-    integer(global_ordinal_type) :: base, gblrow, cols(1)
-    integer(kind(TpetraESweepDirection)) :: direction
-    integer(C_INT) :: numsweeps
-
-    OUT0("Starting TpetraCrsMatrix_gaussSeidel")
-
-    my_image_id = comm%getRank()
-
-    ! create a Map
-    Map = TpetraMap(TPETRA_GLOBAL_INVALID, test_matrix_num_local(), comm); TEST_IERR()
-
-    ! create the identity matrix
-    base = test_matrix_num_local() * my_image_id
-    Mat = TpetraCrsMatrix(Map, ione, TpetraStaticProfile)
-    do irow = 1, test_matrix_num_local()
-      gblrow = base + int(irow, kind=global_ordinal_type)
-      cols(1) = gblrow
-      vals(1) = one
-      call Mat%insertGlobalValues(gblrow, cols, vals)
-    end do
-    call mat%fillComplete()
-
-    b = TpetraMultiVector(Map, num_vecs); TEST_IERR()
-    call b%randomize(); TEST_IERR()
-    x = TpetraMultiVector(Map, num_vecs); TEST_IERR()
-    call x%randomize(); TEST_IERR()
-    d = TpetraMultiVector(Map, num_vecs); TEST_IERR()
-    call d%putScalar(-1.0_scalar_type)  ! Inverse diagonal
-    dampingfactor = 0.04
-    direction = 0
-    numsweeps = 4
-
-    call b%norm2(normb)
-    call x%norm2(normx)
-    !write(*,*) 'Before iterating: normx= ', normx,' normb ', normb
-
-    call Mat%gaussSeidel(b, x, d, dampingfactor, direction, numsweeps); TEST_IERR()
-
-    call b%norm2(normb)
-    call x%norm2(normx)
-    !write(*,*) 'After iterating: normx= ', normx,' normb ', normb
-
-    call b%release(); TEST_IERR()
-    call x%release(); TEST_IERR()
-    call d%release(); TEST_IERR()
-    call Mat%release(); TEST_IERR()
-    call Map%release(); TEST_IERR()
-
-    OUT0("Finished TpetraCrsMatrix_gaussSeidel")
-
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_gaussSeidel)
-
-  ! -----------------------------gaussSeidelCopy------------------------------ !
-  FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_gaussSeidelCopy)
-    type(TpetraCrsMatrix) :: Mat
-    type(TpetraMultiVector) :: x
-    type(TpetraMultiVector) :: b
-    type(TpetraMultiVector) :: d
-    real(scalar_type) :: dampingfactor
-    integer(kind(TpetraESweepDirection)) :: direction
-    integer(C_INT) :: numsweeps
-    logical(C_BOOL) :: zeroinitialguess
-    OUT0("Starting TpetraCrsMatrix_gaussSeidelCopy")
-
-    success = .false.
-
-    !x = TpetraMultiVector(); TEST_IERR()
-    !b = TpetraMultiVector(); TEST_IERR()
-    !d = TpetraMultiVector(); TEST_IERR()
-    dampingfactor = 0
-    direction = 0
-    numsweeps = 0
-    zeroinitialguess = .false.
-    !Mat = TpetraCrsMatrix(); TEST_IERR()
-    !call Mat%gaussSeidelCopy(x, b, d, dampingfactor, direction, numsweeps, zeroinitialguess); TEST_IERR()
-
-    !call x%release(); TEST_IERR()
-    !call b%release(); TEST_IERR()
-    !call d%release(); TEST_IERR()
-    !call Mat%release(); TEST_IERR()
-
-    write(*,*) 'TpetraCrsMatrix_gaussSeidelCopy: Test not yet implemented'
-
-    OUT0("Finished TpetraCrsMatrix_gaussSeidelCopy")
-
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_gaussSeidelCopy)
 
 end program test_tpetraCrsMatrix

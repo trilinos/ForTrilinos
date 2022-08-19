@@ -31,6 +31,7 @@ pipeline {
                         dir('build') {
                             sh '''
                                 cmake \
+                                  -GNinja \
                                   -D CMAKE_INSTALL_PREFIX=$FORTRILINOS_DIR \
                                   -D CMAKE_BUILD_TYPE=Debug \
                                   -D CMAKE_CXX_COMPILER_LAUNCHER=ccache \
@@ -39,7 +40,7 @@ pipeline {
                                   -D ForTrilinos_EXAMPLES=ON \
                                 ..
                             '''
-                            sh 'make -j8 VERBOSE=1'
+                            sh 'ninja -v'
                             sh 'ctest $CTEST_OPTIONS'
                         }
                     }
@@ -49,7 +50,7 @@ pipeline {
                             xunit reduceLog: false, tools:[CTest(deleteOutputFiles: true, failIfNotNew: true, pattern: 'build/Testing/**/Test.xml', skipNoTestFiles: false, stopProcessingIfError: true)]
                         }
                         success {
-                            sh 'cd build && make install'
+                            sh 'cd build && ninja install'
                             sh 'rm -rf test_install && mkdir -p test_install'
                             dir('test_install') {
                                 sh 'cp -r ../example/test-installation .'

@@ -4,7 +4,7 @@ spack:
   - ninja
   - openmpi
   - swig@4.1.0-fortran
-  - trilinos@13.0.0:13.1 +amesos2 +anasazi +belos +kokkos +ifpack2 +muelu +nox +tpetra
+  - trilinos@13.2.0:13.2 +amesos2 +anasazi +belos +kokkos +ifpack2 +muelu +nox +tpetra
     +stratimikos +mpi gotype=long_long
   view: true
   concretizer:
