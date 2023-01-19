@@ -132,11 +132,12 @@ public :: norm_type
 %ignore *::getIndexBase;
 %ignore *::getNode;
 
-// Ignore depreceated functions (CrsGraph, CrsMatrix)
+// Ignore deprecated functions (CrsGraph, CrsMatrix)
 %ignore *::getGlobalNumDiags;
 %ignore *::getNodeNumDiags;
 %ignore *::isLowerTriangular;
 %ignore *::isUpperTriangular;
+%ignore *::getNodeRowPtrs;
 
 // Order matters!!!
 %include "Tpetra_Map.i"

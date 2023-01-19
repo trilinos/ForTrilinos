@@ -38,11 +38,12 @@ in the committed version of the generated wrappers.
 
 .. _version_table:
 
-.. table:: Version compatibility table for ForTrilinos.
+.. table:: Guaranteed version compatibility table for ForTrilinos.
 
    ===========  ============== ======================
    ForTrilinos  Trilinos       SWIG
    ===========  ============== ======================
+   2.2.0        13.4           4.1.1+fortran
    2.1.0        13.2           4.1.0-dev1+fortran
    2.0.1        13.0:13.1      4.1.0-dev1+fortran
    2.0.0        13.0:13.1      4.0.2+fortran
