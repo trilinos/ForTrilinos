@@ -109,7 +109,7 @@ contains
 
     ! create the identity matrix
     base = test_matrix_num_local() * my_image_id;
-    Mat = TpetraCrsMatrix(Map, 1_size_type, TpetraStaticProfile)
+    Mat = TpetraCrsMatrix(Map, 1_size_type)
     do irow = 1, test_matrix_num_local()
       gblrow = base + int(irow, kind=global_ordinal_type)
       cols(1) = gblrow
@@ -300,7 +300,7 @@ contains
 
     ! Create the identity matrix, three rows per proc
     base = 3 * my_image_id;
-    Mat = TpetraCrsMatrix(Map, 1_size_type, TpetraStaticProfile); TEST_IERR()
+    Mat = TpetraCrsMatrix(Map, 1_size_type); TEST_IERR()
     do i = 1, 3
       gblrow = base + i
       cols(1) = gblrow
@@ -351,7 +351,7 @@ contains
     ! create Map
     map = TpetraMap(TPETRA_GLOBAL_INVALID, 1, comm); TEST_IERR()
 
-    Mat = TpetraCrsMatrix(map, map, 1_size_type, TpetraStaticProfile); TEST_IERR()
+    Mat = TpetraCrsMatrix(map, map, 1_size_type); TEST_IERR()
     TEST_ASSERT(Mat%isFillActive())
     TEST_ASSERT((.not. Mat%isFillComplete()))
     lclrow = 1
@@ -387,7 +387,7 @@ contains
     call params%release();  TEST_IERR()
     call Mat%release();  TEST_IERR()
 
-    Mat = TpetraCrsMatrix(map, map,10_size_type, TpetraStaticProfile); TEST_IERR()
+    Mat = TpetraCrsMatrix(map, map,10_size_type); TEST_IERR()
     TEST_ASSERT(Mat%isFillActive())
     TEST_ASSERT((.not. Mat%isFillComplete()))
     lclrow = 1
@@ -436,7 +436,7 @@ contains
     ! create Map
     map = TpetraMap(TPETRA_GLOBAL_INVALID, 1, comm); TEST_IERR()
 
-    Mat = TpetraCrsMatrix(map, map, 1_size_type, TpetraStaticProfile); TEST_IERR()
+    Mat = TpetraCrsMatrix(map, map, 1_size_type); TEST_IERR()
     TEST_ASSERT(Mat%isFillActive())
     TEST_ASSERT((.not. Mat%isFillComplete()))
     row = 1; cols(1) = 1; vals(1) = 0.
@@ -469,7 +469,7 @@ contains
     call params%release();  TEST_IERR()
     call Mat%release();  TEST_IERR()
 
-    Mat = TpetraCrsMatrix(map, map, 1, TpetraStaticProfile); TEST_IERR()
+    Mat = TpetraCrsMatrix(map, map, 1); TEST_IERR()
     TEST_ASSERT(Mat%isFillActive())
     TEST_ASSERT((.not. Mat%isFillComplete()))
     row = 1; cols(1) = 1; vals(1) = 0.d0;
@@ -538,7 +538,7 @@ contains
 
     ! create a Map
     Map = TpetraMap(TPETRA_GLOBAL_INVALID, lnum_local, comm); TEST_IERR()
-    Mat = TpetraCrsMatrix(Map, 1_size_type, TpetraStaticProfile)
+    Mat = TpetraCrsMatrix(Map, 1_size_type)
 
     tmpmap = Mat%getRowMap()
     TEST_EQUALITY(tmpmap%getNodeNumElements(), Map%getNodeNumElements())
@@ -562,7 +562,7 @@ contains
 
     ! create a Map
     Map = TpetraMap(TPETRA_GLOBAL_INVALID, lnum_local, comm); TEST_IERR()
-    Mat = TpetraCrsMatrix(Map, Map, 1_size_type, TpetraStaticProfile)
+    Mat = TpetraCrsMatrix(Map, Map, 1_size_type)
     TEST_NOTHROW(call Mat%fillComplete())
 
     tmpmap = Mat%getColMap()
@@ -586,7 +586,7 @@ contains
 
     ! create a Map
     Map = TpetraMap(TPETRA_GLOBAL_INVALID, lnum_local, comm); TEST_IERR()
-    Mat = TpetraCrsMatrix(Map, Map, 1_size_type, TpetraStaticProfile)
+    Mat = TpetraCrsMatrix(Map, Map, 1_size_type)
     TEST_NOTHROW(call Mat%fillComplete())
 
     tmpmap = Mat%getDomainMap(); TEST_IERR()
@@ -610,7 +610,7 @@ contains
 
     ! create a Map
     Map = TpetraMap(TPETRA_GLOBAL_INVALID, lnum_local, comm); TEST_IERR()
-    Mat = TpetraCrsMatrix(Map, Map, 1_size_type, TpetraStaticProfile)
+    Mat = TpetraCrsMatrix(Map, Map, 1_size_type)
     TEST_NOTHROW(call Mat%fillComplete())
 
     tmpmap = Mat%getRangeMap(); TEST_IERR()
@@ -656,7 +656,7 @@ contains
     ! create a Map
     Map = TpetraMap(TPETRA_GLOBAL_INVALID, lnum_local, comm); TEST_IERR()
     num_ent_per_row = 2
-    Mat = TpetraCrsMatrix(Map, Map, num_ent_per_row, TpetraStaticProfile)
+    Mat = TpetraCrsMatrix(Map, Map, num_ent_per_row)
     call mat%fillComplete()
 
     commsize = comm%getSize()
@@ -934,7 +934,7 @@ contains
 
     ! Leave room for three locally owned entries per row.
     ! We will only fill in two entries per row.
-    Mat = TpetraCrsMatrix(rowMap, colMap, ithree, TpetraStaticProfile)
+    Mat = TpetraCrsMatrix(rowMap, colMap, ithree)
 
     allocate(lclColInds(2))
     allocate(vals(2))
@@ -978,25 +978,6 @@ contains
     OUT0("Finished TpetraCrsMatrix_getLocalRowCopy!")
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_getLocalRowCopy)
-
-  ! ------------------------------getProfileType------------------------------ !
-  FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_getProfileType)
-    type(TpetraCrsMatrix) :: Mat
-
-    OUT0("Starting TpetraCrsMatrix_getProfileType!")
-
-    call TPetra_CrsMatrix_CreateIdentity(comm, Mat)
-
-    ! This test fails if fillComplete is called
-    !call Mat%fillComplete()
-
-    TEST_ASSERT(Mat%getProfileType() == TpetraStaticProfile)
-
-    call Mat%release();  TEST_IERR()
-
-    OUT0("Finished TpetraCrsMatrix_getProfileType!")
-
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_getProfileType)
 
   ! -----------------------------getFrobeniusNorm----------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsMatrix_getFrobeniusNorm)
@@ -1080,7 +1061,7 @@ contains
     OUT0("Starting TpetraCrsMatrix_setAllValues!")
 
     map = TpetraMap(TPETRA_GLOBAL_INVALID, test_matrix_num_row(), comm)
-    Mat = TpetraCrsMatrix(map, map, test_matrix_max_entries_per_row(), TpetraStaticProfile)
+    Mat = TpetraCrsMatrix(map, map, test_matrix_max_entries_per_row())
 
     ! Like getAllValues use the TestMatrix.
     call TPetra_CrsMatrix_CreateTestMatrix_A(comm, mat_compare)
@@ -1140,7 +1121,7 @@ contains
     ! create a Map and matrix
     map = TpetraMap(TPETRA_GLOBAL_INVALID, numrow, comm)
 
-    Mat = TpetraCrsMatrix(map, test_matrix_max_entries_per_row(), TpetraStaticProfile)
+    Mat = TpetraCrsMatrix(map, test_matrix_max_entries_per_row())
 
     ! The test setup TPetra_CrsMatrix_CreateTestMatrix is essentially
     ! a test of insertGlobalValues but we'd like to have it appear
@@ -1224,7 +1205,7 @@ contains
 
     ! Leave room for three locally owned entries per row.
     ! We will only fill in two entries per row.
-    Mat = TpetraCrsMatrix(rowMap, colMap, test_matrix_max_entries_per_row(), TpetraStaticProfile)
+    Mat = TpetraCrsMatrix(rowMap, colMap, test_matrix_max_entries_per_row())
 
     allocate(lclColInds(2))
     allocate(vals(2))
@@ -1382,7 +1363,7 @@ contains
     OUT0("Starting TpetraCrsMatrix_replaceColMap")
 
     map = TpetraMap(TPETRA_GLOBAL_INVALID, test_matrix_num_local(), comm); TEST_IERR()
-    mat = TpetraCrsMatrix(map, ione, TpetraStaticProfile)
+    mat = TpetraCrsMatrix(map, ione)
 
     newcolmap = TpetraMap(TPETRA_GLOBAL_INVALID, test_matrix_num_local()-1, comm); TEST_IERR()
 
@@ -1406,7 +1387,7 @@ contains
     OUT0("Starting TpetraCrsMatrix_removeEmptyProcessesInPlace")
 
     map = TpetraMap(TPETRA_GLOBAL_INVALID, lnum_local, comm); TEST_IERR()
-    mat = TpetraCrsMatrix(map, ione, TpetraStaticProfile)
+    mat = TpetraCrsMatrix(map, ione)
 
     call mat%removeEmptyProcessesInPlace(map); TEST_IERR()
 
@@ -1527,7 +1508,7 @@ contains
     OUT0("Starting TpetraCrsMatrix_isStaticGraph")
 
     map = TpetraMap(TPETRA_GLOBAL_INVALID, test_matrix_num_local(), comm); TEST_IERR()
-    graph = TpetraCrsGraph(Map, Map, ione, TpetraStaticProfile)
+    graph = TpetraCrsGraph(Map, Map, ione)
     call graph%fillComplete()
     mat = TpetraCrsMatrix(graph)
 

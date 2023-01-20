@@ -101,7 +101,7 @@ contains
     Map = TpetraMap(TPETRA_GLOBAL_INVALID, 1, comm); TEST_IERR()
 
     params = ParameterList("ANONYMOUS")
-    Graph = TpetraCrsGraph(Map, Map, 1_size_type, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(Map, Map, 1_size_type)
     TEST_ASSERT(Graph%isFillActive())
     TEST_ASSERT((.not. Graph%isFillComplete()))
 
@@ -155,7 +155,7 @@ contains
     cmap = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
     ! must allocate enough for all submitted indices.
     num_ent_per_row = 2
-    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row)
     TEST_ASSERT(Graph%hasColMap())
     lclrow = 1
     myrowind = rmap%getGlobalElement(lclrow);
@@ -375,7 +375,7 @@ contains
 
     ! create static-profile graph, fill-complete without inserting
     ! (and therefore, without allocating)
-    Graph = TpetraCrsGraph(map, 1_size_type, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(map, 1_size_type)
     call Graph%fillComplete()
     call Graph%release(); TEST_IERR()
 
@@ -405,7 +405,7 @@ contains
     cmap = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
     ! must allocate enough for all submitted indices.
     num_ent_per_row = 2
-    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row)
     TEST_ASSERT(Graph%hasColMap())
     lclrow = 1
     myrowind = rmap%getGlobalElement(lclrow);
@@ -468,8 +468,8 @@ contains
     ! create Map and Graph
     num_global = 4*comm%getSize()
     Map = TpetraMap(num_global, comm); TEST_IERR()
-    Graph1 = TpetraCrsGraph(Map, Map, ione, TpetraStaticProfile)
-    Graph2 = TpetraCrsGraph(Map, Map, ione, TpetraStaticProfile)
+    Graph1 = TpetraCrsGraph(Map, Map, ione)
+    Graph2 = TpetraCrsGraph(Map, Map, ione)
 
     call Graph1%fillComplete()
     call Graph2%fillComplete()
@@ -504,7 +504,7 @@ contains
     rowMap = TpetraMap(gblNumRows, lclNumRows, comm)
     lclNumCols = lclNumRows
     colMap = rowMap
-    Graph = TpetraCrsGraph(rowMap, colMap, max_entries_per_row, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rowMap, colMap, max_entries_per_row)
 
     allocate(lclColInds(2))
 
@@ -551,7 +551,7 @@ contains
     ! Duplicate Tpetra_CrsGraph_CreateTestGraph_A here because
     ! we want insertGlobalIndices to appear explicitly.
     rmap = TpetraMap(Tpetra_GLOBAL_INVALID, test_graph_num_row(), comm)
-    Graph = TpetraCrsGraph(rmap, test_graph_max_entries_per_row(), TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rmap, test_graph_max_entries_per_row())
 
     do irow=1,test_graph_num_row()
       call Tpetra_CrsGraph_GetTestGraphRow_A(comm, irow, gblrow, cols_expected, nnz)
@@ -599,7 +599,7 @@ contains
     rowMap = TpetraMap(gblNumRows, lclNumRows, comm)
     lclNumCols = lclNumRows
     colMap = rowMap
-    Graph = TpetraCrsGraph(rowMap, colMap, max_entries_per_row, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rowMap, colMap, max_entries_per_row)
 
     allocate(lclColInds(2))
 
@@ -849,7 +849,7 @@ contains
     cmap = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
     ! must allocate enough for all submitted indices.
     num_ent_per_row = 2
-    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row)
 
     commsize = comm%getSize()
     ires = Graph%getGlobalNumRows()
@@ -1177,7 +1177,7 @@ contains
     rowMap = TpetraMap(gblNumRows, lclNumRows, comm)
     lclNumCols = lclNumRows
     colMap = rowMap
-    Graph = TpetraCrsGraph(rowMap, colMap, max_entries_per_row, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rowMap, colMap, max_entries_per_row)
 
     allocate(lclColInds(2))
 
@@ -1417,7 +1417,7 @@ contains
 
     num_global = 4*comm%getSize()
     Map = TpetraMap(num_global, comm); TEST_IERR()
-    Graph = TpetraCrsGraph(Map, Map, 1_size_type, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(Map, Map, 1_size_type)
 
     ! Make a new colmap
     newcolmap = TpetraMap(num_global, comm); TEST_IERR()
@@ -1445,7 +1445,7 @@ contains
 
     num_global = 4*comm%getSize()
     Map = TpetraMap(num_global, comm); TEST_IERR()
-    Graph = TpetraCrsGraph(Map, Map, izero, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(Map, Map, izero)
     call Graph%fillComplete()     ! Needed for gloStaticstants
 
     ! Make a new colmap
@@ -1478,7 +1478,7 @@ contains
     ! create Map and Graph
     num_global = 4*comm%getSize()
     Map = TpetraMap(num_global, comm); TEST_IERR()
-    Graph = TpetraCrsGraph(Map, Map, izero, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(Map, Map, izero)
 
     TEST_NOTHROW(call Graph%removeEmptyProcessesInPlace(Map))
 

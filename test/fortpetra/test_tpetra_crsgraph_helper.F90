@@ -41,7 +41,7 @@ contains
 
     ! create a Map
     Map = TpetraMap(TPETRA_GLOBAL_INVALID, test_graph_num_local(), comm)
-    Graph = TpetraCrsGraph(Map, Map, int(test_graph_num_local(),size_type), TpetraStaticProfile)
+    Graph = TpetraCrsGraph(Map, Map, int(test_graph_num_local(),size_type))
 
     call map%release()
     return
@@ -62,7 +62,7 @@ contains
 
     ! must allocate enough for all submitted indices.
     num_ent_per_row = 2
-    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row)
 
     lclrow = 1
     myrowind = rmap%getGlobalElement(lclrow);
@@ -142,7 +142,7 @@ contains
     integer(global_ordinal_type) :: gblrow
 
     rmap = TpetraMap(Tpetra_GLOBAL_INVALID, test_graph_num_row(), comm)
-    Graph = TpetraCrsGraph(rmap, test_graph_max_entries_per_row(), TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rmap, test_graph_max_entries_per_row())
 
     do irow=1,test_graph_num_row()
       call Tpetra_CrsGraph_GetTestGraphRow_A(comm, irow, gblrow, cols, nnz)

@@ -47,7 +47,7 @@ contains
 
     ! create the identity matrix
     base = test_matrix_num_local() * comm%getRank()
-    Mat = TpetraCrsMatrix(map, map, 1_size_type, TpetraStaticProfile)
+    Mat = TpetraCrsMatrix(map, map, 1_size_type)
     do irow = 1, test_matrix_num_local()
       gblrow = base + int(irow, kind=global_ordinal_type)
       cols(1) = gblrow
@@ -87,8 +87,8 @@ contains
     !rowmap = TpetraMap(TPETRA_GLOBAL_INVALID, test_matrix_num_row(), comm)
     !nnz=test_matrix_num_row()()*test_matrix_max_entries_per_row()
     !colmap = TpetraMap(TPETRA_GLOBAL_INVALID, nnz, comm)
-    !Mat = TpetraCrsMatrix(rowmap, colmap, test_matrix_max_entries_per_row(), TpetraStaticProfile)
-    Mat = TpetraCrsMatrix(map, test_matrix_max_entries_per_row(), TpetraStaticProfile)
+    !Mat = TpetraCrsMatrix(rowmap, colmap, test_matrix_max_entries_per_row())
+    Mat = TpetraCrsMatrix(map, test_matrix_max_entries_per_row())
 
     do irow=1,test_matrix_num_row()
       call Tpetra_CrsMatrix_GetTestMatrixRow_A(comm, irow, gblrow, cols, vals, nnz)
@@ -202,7 +202,7 @@ contains
 
     ! Leave room for three locally owned entries per row.
     ! We will only fill in two entries per row.
-    Mat = TpetraCrsMatrix(rowMap, ithree, TpetraStaticProfile)
+    Mat = TpetraCrsMatrix(rowMap, ithree)
     gblNumCols = gblNumRows
 
     allocate(gblColInds(2),vals(2))
