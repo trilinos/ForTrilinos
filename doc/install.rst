@@ -45,8 +45,8 @@ in the committed version of the generated wrappers.
    ===========  ============== ======================
    2.2.0        13.4           4.1.1+fortran
    2.1.0        13.2           4.1.0-dev1+fortran
-   2.0.1        13.0:13.1      4.1.0-dev1+fortran
-   2.0.0        13.0:13.1      4.0.2+fortran
+   2.0.1        13.0:13.2      4.1.0-dev1+fortran
+   2.0.0        13.0:13.2      4.0.2+fortran
    2.0.0-dev3   12.18.1        4.0.2+fortran
    2.0.0-dev2   12.18.1        4.0.0+fortran+15e6ed59
    2.0.0-dev1   12.17+8a82b322 4.0.0+fortran+15e6ed59
