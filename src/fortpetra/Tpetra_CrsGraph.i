@@ -96,6 +96,13 @@
 // Make interface more Fortran friendly
 // =======================================================================
 %extend Tpetra::CrsGraph<LO,GO,NO> {
+    void getLocalPackedIndices(Teuchos::ArrayView<size_t> columnIndices) const {
+      auto columnIndicesArrayRCP = $self->getLocalRowPtrsHost();
+      TEUCHOS_TEST_FOR_EXCEPTION(columnIndicesArrayRCP.size() != columnIndices.size(), std::runtime_error, "Wrong columnIndices size");
+      auto nnz = columnIndices.size();
+      for (int i = 0; i < nnz; i++)
+        columnIndices[i] = columnIndicesArrayRCP[i]+1;
+    }
     void
     getLocalRowCopy (LO lclRow,
                      const Teuchos::ArrayView<LO>& lclColInds,
@@ -115,7 +122,6 @@
 // Add doImport and doExport
 %tpetra_extend_with_import_export(Tpetra::CrsGraph<LO,GO,NO>)
 
-%ignore Tpetra::CrsGraph::getNodePackedIndices() const;
 %ignore Tpetra::CrsGraph::getLocalDiagOffsets;
 %ignore Tpetra::CrsGraph::setAllIndices (const typename local_graph_type::row_map_type &rowPointers, const typename local_graph_type::entries_type::non_const_type &columnIndices);
 

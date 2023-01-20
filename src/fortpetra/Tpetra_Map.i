@@ -32,7 +32,7 @@
 // =======================================================================
 
 // Function signatures for local quantities are incorrectly declared as size_t
-%apply LO { size_t getNodeNumElements,
+%apply LO { size_t getLocalNumElements,
             size_t numLocalElements };
 
 // Convert from C to/from Fortran indices

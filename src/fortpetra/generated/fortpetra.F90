@@ -365,6 +365,7 @@ public :: init_ForTpetraOperator
   procedure :: haveGlobalConstants => swigf_TpetraCrsGraph_haveGlobalConstants
   procedure :: computeGlobalConstants => swigf_TpetraCrsGraph_computeGlobalConstants
   procedure :: haveLocalOffRankOffsets => swigf_TpetraCrsGraph_haveLocalOffRankOffsets
+  procedure :: getLocalPackedIndices => swigf_TpetraCrsGraph_getLocalPackedIndices
   procedure, private :: swigf_TpetraCrsGraph_getLocalRowCopy__SWIG_1
   procedure, private :: swigf_TpetraCrsGraph_getGlobalRowCopy__SWIG_1
   procedure, private :: swigf_TpetraCrsGraph_doImport__SWIG_0
@@ -468,6 +469,7 @@ public :: init_ForTpetraOperator
   procedure, private :: swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_3
   procedure, private :: swigf_TpetraCrsMatrix_exportAndFillComplete__SWIG_4
   procedure :: haveGlobalConstants => swigf_TpetraCrsMatrix_haveGlobalConstants
+  procedure :: getAllValues => swigf_TpetraCrsMatrix_getAllValues
   procedure, private :: swigf_TpetraCrsMatrix_getGlobalRowCopy__SWIG_1
   procedure, private :: swigf_TpetraCrsMatrix_getLocalRowCopy__SWIG_1
   procedure, private :: swigf_TpetraCrsMatrix_op_assign__
@@ -708,7 +710,7 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper), intent(in) :: farg1
-integer(C_SIZE_T) :: fresult
+integer(C_INT) :: fresult
 end function
 
 function swigc_TpetraMap_getMinLocalIndex(farg1) &
@@ -2730,6 +2732,15 @@ type(SwigClassWrapper), intent(in) :: farg1
 integer(C_INT) :: fresult
 end function
 
+subroutine swigc_TpetraCrsGraph_getLocalPackedIndices(farg1, farg2) &
+bind(C, name="_wrap_TpetraCrsGraph_getLocalPackedIndices")
+use, intrinsic :: ISO_C_BINDING
+import :: swigarraywrapper
+import :: swigclasswrapper
+type(SwigClassWrapper), intent(in) :: farg1
+type(SwigArrayWrapper) :: farg2
+end subroutine
+
 subroutine swigc_TpetraCrsGraph_getLocalRowCopy__SWIG_1(farg1, farg2, farg3, farg4) &
 bind(C, name="_wrap_TpetraCrsGraph_getLocalRowCopy__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
@@ -3678,6 +3689,17 @@ type(SwigClassWrapper), intent(in) :: farg1
 integer(C_INT) :: fresult
 end function
 
+subroutine swigc_TpetraCrsMatrix_getAllValues(farg1, farg2, farg3, farg4) &
+bind(C, name="_wrap_TpetraCrsMatrix_getAllValues")
+use, intrinsic :: ISO_C_BINDING
+import :: swigarraywrapper
+import :: swigclasswrapper
+type(SwigClassWrapper), intent(in) :: farg1
+type(SwigArrayWrapper) :: farg2
+type(SwigArrayWrapper) :: farg3
+type(SwigArrayWrapper) :: farg4
+end subroutine
+
 subroutine swigc_TpetraCrsMatrix_getGlobalRowCopy__SWIG_1(farg1, farg2, farg3, farg4, farg5) &
 bind(C, name="_wrap_TpetraCrsMatrix_getGlobalRowCopy__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
@@ -4274,14 +4296,14 @@ end function
 function swigf_TpetraMap_getLocalNumElements(self) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
-integer(C_SIZE_T) :: swig_result
+integer :: swig_result
 class(TpetraMap), intent(in) :: self
-integer(C_SIZE_T) :: fresult 
+integer(C_INT) :: fresult 
 type(SwigClassWrapper) :: farg1 
 
 farg1 = self%swigdata
 fresult = swigc_TpetraMap_getLocalNumElements(farg1)
-swig_result = fresult
+swig_result = int(fresult)
 end function
 
 function swigf_TpetraMap_getMinLocalIndex(self) &
@@ -7672,6 +7694,18 @@ fresult = swigc_TpetraCrsGraph_haveLocalOffRankOffsets(farg1)
 call SWIGTM_fout_bool(fresult, swig_result)
 end function
 
+subroutine swigf_TpetraCrsGraph_getLocalPackedIndices(self, columnindices)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsGraph), intent(in) :: self
+integer(C_SIZE_T), dimension(:), target :: columnindices
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
+
+farg1 = self%swigdata
+call SWIGTM_fin_size_t_Sb__SB_(columnindices, farg2)
+call swigc_TpetraCrsGraph_getLocalPackedIndices(farg1, farg2)
+end subroutine
+
 subroutine swigf_TpetraCrsGraph_getLocalRowCopy__SWIG_1(self, lclrow, lclcolinds, numcolinds)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsGraph), intent(in) :: self
@@ -9237,6 +9271,24 @@ farg1 = self%swigdata
 fresult = swigc_TpetraCrsMatrix_haveGlobalConstants(farg1)
 call SWIGTM_fout_bool(fresult, swig_result)
 end function
+
+subroutine swigf_TpetraCrsMatrix_getAllValues(self, rowpointers, columnindices, values)
+use, intrinsic :: ISO_C_BINDING
+class(TpetraCrsMatrix), intent(in) :: self
+integer(C_SIZE_T), dimension(:), target :: rowpointers
+integer(C_INT), dimension(:), target :: columnindices
+real(C_DOUBLE), dimension(:), target :: values
+type(SwigClassWrapper) :: farg1 
+type(SwigArrayWrapper) :: farg2 
+type(SwigArrayWrapper) :: farg3 
+type(SwigArrayWrapper) :: farg4 
+
+farg1 = self%swigdata
+call SWIGTM_fin_size_t_Sb__SB_(rowpointers, farg2)
+call SWIGTM_fin_int_Sb__SB_(columnindices, farg3)
+call SWIGTM_fin_double_Sb__SB_(values, farg4)
+call swigc_TpetraCrsMatrix_getAllValues(farg1, farg2, farg3, farg4)
+end subroutine
 
 subroutine swigf_TpetraCrsMatrix_getGlobalRowCopy__SWIG_1(self, globalrow, indices, values, numentries)
 use, intrinsic :: ISO_C_BINDING

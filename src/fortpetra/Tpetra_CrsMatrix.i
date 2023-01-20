@@ -86,6 +86,23 @@
 // Make interface more Fortran friendly
 // =======================================================================
 %extend Tpetra::CrsMatrix<SC,LO,GO,NO> {
+    void getAllValues(Teuchos::ArrayView<size_t> rowPointers, Teuchos::ArrayView<LO> columnIndices, Teuchos::ArrayView<SC> values) const {
+        auto rowptr = $self->getLocalRowPtrsHost();
+        auto colidx = $self->getLocalIndicesHost();
+        auto val = $self->getLocalValuesHost(Tpetra::Access::ReadOnly);
+
+        TEUCHOS_TEST_FOR_EXCEPTION(rowptr.size() != rowPointers.size(),   std::runtime_error, "Wrong rowPointers size");
+        TEUCHOS_TEST_FOR_EXCEPTION(colidx.size() != columnIndices.size(), std::runtime_error, "Wrong columnIndices size");
+        TEUCHOS_TEST_FOR_EXCEPTION(val.size()    != values.size(),        std::runtime_error, "Wrong values size");
+        auto n = rowPointers.size();
+        for (int i = 0; i < n; i++)
+            rowPointers[i] = rowptr[i]+1;
+        auto nnz = columnIndices.size();
+        for (int i = 0; i < nnz; i++) {
+            columnIndices[i] = colidx[i]+1;
+            values       [i] = val[i];
+        }
+    }
     // NOTE: This is semantically different function from Tpetra. Here, we *require* that user already allocated the arrays to store the data
     void
     getGlobalRowCopy (GO GlobalRow,

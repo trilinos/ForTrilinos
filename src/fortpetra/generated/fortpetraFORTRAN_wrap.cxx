@@ -696,6 +696,13 @@ SwigClassWrapper swigd_ForTpetraOperator_getRangeMap(
 
 #include <Tpetra_CrsGraph.hpp>
 
+SWIGINTERN void Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__getLocalPackedIndices(Tpetra::CrsGraph< LO,GO,NO > const *self,Teuchos::ArrayView< size_t > columnIndices){
+      auto columnIndicesArrayRCP = self->getLocalRowPtrsHost();
+      TEUCHOS_TEST_FOR_EXCEPTION(columnIndicesArrayRCP.size() != columnIndices.size(), std::runtime_error, "Wrong columnIndices size");
+      auto nnz = columnIndices.size();
+      for (int i = 0; i < nnz; i++)
+        columnIndices[i] = columnIndicesArrayRCP[i]+1;
+    }
 SWIGINTERN void Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__getLocalRowCopy__SWIG_1(Tpetra::CrsGraph< LO,GO,NO > const *self,LO lclRow,Teuchos::ArrayView< LO > const &lclColInds,size_t &numColInds){
         Tpetra::CrsGraph<LO,GO,NO>::nonconst_local_inds_host_view_type temp_i(lclColInds.data(), lclColInds.size());
         return self->getLocalRowCopy(lclRow, temp_i, numColInds);
@@ -719,6 +726,23 @@ SWIGINTERN void Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__doExport__SWIG_1(Tpetra::C
 
 #include <Tpetra_CrsMatrix.hpp>
 
+SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getAllValues(Tpetra::CrsMatrix< SC,LO,GO,NO > const *self,Teuchos::ArrayView< size_t > rowPointers,Teuchos::ArrayView< LO > columnIndices,Teuchos::ArrayView< SC > values){
+        auto rowptr = self->getLocalRowPtrsHost();
+        auto colidx = self->getLocalIndicesHost();
+        auto val = self->getLocalValuesHost(Tpetra::Access::ReadOnly);
+
+        TEUCHOS_TEST_FOR_EXCEPTION(rowptr.size() != rowPointers.size(),   std::runtime_error, "Wrong rowPointers size");
+        TEUCHOS_TEST_FOR_EXCEPTION(colidx.size() != columnIndices.size(), std::runtime_error, "Wrong columnIndices size");
+        TEUCHOS_TEST_FOR_EXCEPTION(val.size()    != values.size(),        std::runtime_error, "Wrong values size");
+        auto n = rowPointers.size();
+        for (int i = 0; i < n; i++)
+            rowPointers[i] = rowptr[i]+1;
+        auto nnz = columnIndices.size();
+        for (int i = 0; i < nnz; i++) {
+            columnIndices[i] = colidx[i]+1;
+            values       [i] = val[i];
+        }
+    }
 SWIGINTERN void Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getGlobalRowCopy__SWIG_1(Tpetra::CrsMatrix< SC,LO,GO,NO > const *self,GO GlobalRow,Teuchos::ArrayView< GO > const &Indices,Teuchos::ArrayView< SC > const &Values,size_t &NumEntries){
         Tpetra::CrsMatrix<SC,LO,GO,NO>::nonconst_global_inds_host_view_type temp_i(Indices.data(), Indices.size());
         Tpetra::CrsMatrix<SC,LO,GO,NO>::nonconst_values_host_view_type temp_v(Values.data(), Values.size());
@@ -1159,8 +1183,8 @@ SWIGEXPORT size_t _wrap_TpetraMap_getGlobalNumElements(SwigClassWrapper *farg1) 
 }
 
 
-SWIGEXPORT size_t _wrap_TpetraMap_getLocalNumElements(SwigClassWrapper *farg1) {
-  size_t fresult ;
+SWIGEXPORT int _wrap_TpetraMap_getLocalNumElements(SwigClassWrapper *farg1) {
+  int fresult ;
   Tpetra::Map< LO,GO,NO > *arg1 = (Tpetra::Map< LO,GO,NO > *) 0 ;
   Teuchos::RCP< Tpetra::Map< LO,GO,NO > const > *smartarg1 ;
   size_t result;
@@ -8854,6 +8878,40 @@ SWIGEXPORT int _wrap_TpetraCrsGraph_haveLocalOffRankOffsets(SwigClassWrapper *fa
 }
 
 
+SWIGEXPORT void _wrap_TpetraCrsGraph_getLocalPackedIndices(SwigClassWrapper *farg1, SwigArrayWrapper *farg2) {
+  Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
+  Teuchos::ArrayView< size_t > arg2 ;
+  Teuchos::RCP< Tpetra::CrsGraph< LO,GO,NO > const > *smartarg1 ;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsGraph<LO,GO,NO> >*)(farg1->cptr);
+  arg1 = smartarg1 ? (Tpetra::CrsGraph<LO,GO,NO>*)(smartarg1->get()) : NULL;
+  arg2 = Teuchos::ArrayView<size_t>(static_cast<size_t*>(farg2->data), farg2->size);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::getLocalPackedIndices(Teuchos::ArrayView< size_t >) const");;
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_CrsGraph_Sl_LO_Sc_GO_Sc_NO_Sg__getLocalPackedIndices((Tpetra::CrsGraph< int,long long,ForTrilinos::DefaultNodeType > const *)arg1,SWIG_STD_MOVE(arg2));
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::getLocalPackedIndices(Teuchos::ArrayView< size_t >) const", -4, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::getLocalPackedIndices(Teuchos::ArrayView< size_t >) const", -3, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::CrsGraph< LO,GO,NO >::getLocalPackedIndices(Teuchos::ArrayView< size_t >) const", -1, "An unknown exception occurred", return );
+    }
+  }
+}
+
+
 SWIGEXPORT void _wrap_TpetraCrsGraph_getLocalRowCopy__SWIG_1(SwigClassWrapper *farg1, int const *farg2, SwigArrayWrapper *farg3, size_t *farg4) {
   Tpetra::CrsGraph< LO,GO,NO > *arg1 = (Tpetra::CrsGraph< LO,GO,NO > *) 0 ;
   LO arg2 ;
@@ -12633,6 +12691,44 @@ SWIGEXPORT int _wrap_TpetraCrsMatrix_haveGlobalConstants(SwigClassWrapper *farg1
   }
   fresult = (result ? 1 : 0);
   return fresult;
+}
+
+
+SWIGEXPORT void _wrap_TpetraCrsMatrix_getAllValues(SwigClassWrapper *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
+  Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
+  Teuchos::ArrayView< size_t > arg2 ;
+  Teuchos::ArrayView< LO > arg3 ;
+  Teuchos::ArrayView< SC > arg4 ;
+  Teuchos::RCP< Tpetra::CrsMatrix< SC,LO,GO,NO > const > *smartarg1 ;
+  
+  smartarg1 = (Teuchos::RCP<const Tpetra::CrsMatrix<SC,LO,GO,NO> >*)(farg1->cptr);
+  arg1 = smartarg1 ? (Tpetra::CrsMatrix<SC,LO,GO,NO>*)(smartarg1->get()) : NULL;
+  arg2 = Teuchos::ArrayView<size_t>(static_cast<size_t*>(farg2->data), farg2->size);
+  arg3 = Teuchos::ArrayView<int>(static_cast<int*>(farg3->data), farg3->size);
+  arg4 = Teuchos::ArrayView<double>(static_cast<double*>(farg4->data), farg4->size);
+  {
+    // Make sure no unhandled exceptions exist before performing a new action
+    SWIG_check_unhandled_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getAllValues(Teuchos::ArrayView< size_t >,Teuchos::ArrayView< LO >,Teuchos::ArrayView< SC >) const");;
+    try
+    {
+      // Attempt the wrapped function call
+      Tpetra_CrsMatrix_Sl_SC_Sc_LO_Sc_GO_Sc_NO_Sg__getAllValues((Tpetra::CrsMatrix< double,int,long long,ForTrilinos::DefaultNodeType > const *)arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+    }
+    catch (const std::range_error& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getAllValues(Teuchos::ArrayView< size_t >,Teuchos::ArrayView< LO >,Teuchos::ArrayView< SC >) const", -4, e.what(), return );
+    }
+    catch (const std::exception& e)
+    {
+      // Store a C++ exception
+      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getAllValues(Teuchos::ArrayView< size_t >,Teuchos::ArrayView< LO >,Teuchos::ArrayView< SC >) const", -3, e.what(), return );
+    }
+    catch (...)
+    {
+      SWIG_exception_impl("Tpetra::CrsMatrix< SC,LO,GO,NO >::getAllValues(Teuchos::ArrayView< size_t >,Teuchos::ArrayView< LO >,Teuchos::ArrayView< SC >) const", -1, "An unknown exception occurred", return );
+    }
+  }
 }
 
 
