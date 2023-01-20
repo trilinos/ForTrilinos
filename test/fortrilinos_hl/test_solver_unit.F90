@@ -116,7 +116,7 @@ contains
 
     call  Tpetra_CrsMatrix_CreateTestMatrix_A(comm,A)
     call A%fillComplete(); FORTRILINOS_CHECK_IERR()
-    n = A%getNodeNumRows()
+    n = A%getLocalNumRows()
     map = A%getRowMap()
 
     B = TpetraMultiVector(map, num_vecs); FORTRILINOS_CHECK_IERR()

@@ -153,7 +153,7 @@ contains
     if (comm%getSize() == 1) then
       self%x_ghosted_map = self%x_owned_map
     else
-      num_overlap_nodes = self%x_owned_map%getNodeNumElements() + 2
+      num_overlap_nodes = self%x_owned_map%getLocalNumElements() + 2
       if ((comm%getRank() == 0) .or. (comm%getRank() == (comm%getSize() - 1))) &
         num_overlap_nodes = num_overlap_nodes - 1
       if (comm%getRank() == 0) then
@@ -210,7 +210,7 @@ contains
     graph = TpetraCrsGraph(owned_map, ghosted_map, num_ent_per_row)
 
     ! Declare required variables
-    num_my_overlap_nodes = ghosted_map%getNodeNumElements()
+    num_my_overlap_nodes = ghosted_map%getLocalNumElements()
 
     ! Loop Over # of Finite Elements on Processor
     do ne=1, num_my_overlap_nodes-1
@@ -252,7 +252,7 @@ contains
     real(scalar_type) :: dz
     ! ------------------------------------------------------------------------ !
 
-    num_local_nodes = owned_map%getNodeNumElements()
+    num_local_nodes = owned_map%getLocalNumElements()
     min_GID = owned_map%getMinGlobalIndex()
     dz = (z_max - z_min) / num_elems
     coords = TpetraMultiVector(owned_map, num_vecs)
@@ -297,7 +297,7 @@ contains
     call f%putScalar(zero)
 
     my_rank = self%comm%getRank()
-    num_my_elems = self%x_ghosted_map%getNodeNumElements()-1
+    num_my_elems = self%x_ghosted_map%getLocalNumElements()-1
 
     ! Loop Over # of Finite Elements on Processor
     xdata => self%x%getData(ione)
@@ -374,7 +374,7 @@ contains
     call Jmat%setAllToScalar(zero)
 
     my_rank = self%comm%getRank()
-    num_my_elems = self%x_ghosted_map%getNodeNumElements()-1
+    num_my_elems = self%x_ghosted_map%getLocalNumElements()-1
 
     ! Loop Over # of Finite Elements on Processor
     xdata => self%x%getData(ione)
@@ -467,7 +467,7 @@ contains
     ! call self%J_diagonal%putScalar(zero)
 
     my_rank = self%comm%getRank()
-    num_my_elems = self%x_ghosted_map%getNodeNumElements()-1
+    num_my_elems = self%x_ghosted_map%getLocalNumElements()-1
     row_map = Mmat%getRowMap()
     col_map = Mmat%getColMap()
 

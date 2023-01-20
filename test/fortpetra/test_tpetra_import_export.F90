@@ -69,7 +69,7 @@ contains
     permute = importer%getNumPermuteIDs()
     remote = importer%getNumRemoteIDs()
     the_sum = same + permute + remote
-    expected_sum = tgt%getNodeNumElements()
+    expected_sum = tgt%getLocalNumElements()
     TEST_EQUALITY(the_sum, expected_sum)
 
     ! Create Export and perform similar examination
@@ -82,7 +82,7 @@ contains
     permute = exporter%getNumPermuteIDs()
     remote = exporter%getNumRemoteIDs()
     the_sum = same + permute + remote
-    expected_sum = tgt%getNodeNumElements()
+    expected_sum = tgt%getLocalNumElements()
     TEST_EQUALITY(the_sum, expected_sum)
 
     call tgt%release(); TEST_IERR()
@@ -333,7 +333,7 @@ contains
     numSame = imp%getNumSameIDs()
     numRemote = imp%getNumRemoteIDs()
     numPermute = imp%getNumPermuteIDs()
-    numNodes = tgt%getNodeNumElements()
+    numNodes = tgt%getLocalNumElements()
     TEST_EQUALITY(numSame, numNodes - numPermute - numRemote)
 
     ! Export test
@@ -343,7 +343,7 @@ contains
     numSame = exp%getNumSameIDs()
     numRemote =	exp%getNumRemoteIDs()
     numPermute = exp%getNumPermuteIDs()
-    numNodes = tgt%getNodeNumElements()
+    numNodes = tgt%getLocalNumElements()
     TEST_EQUALITY(numSame, numNodes - numPermute - numRemote)
 
     call imp%release(); TEST_IERR()
@@ -370,7 +370,7 @@ contains
     numSame = imp%getNumSameIDs()
     numRemote = imp%getNumRemoteIDs()
     numPermute = imp%getNumPermuteIDs()
-    numNodes = tgt%getNodeNumElements()
+    numNodes = tgt%getLocalNumElements()
     TEST_EQUALITY(numRemote, numNodes - numPermute - numSame)
 
     ! Export test
@@ -380,7 +380,7 @@ contains
     numRemote = exp%getNumRemoteIDs()
     numPermute = exp%getNumPermuteIDs()
     tgt = exp%getTargetMap()
-    numNodes = tgt%getNodeNumElements()
+    numNodes = tgt%getLocalNumElements()
     TEST_EQUALITY(numRemote, numNodes - numPermute - numSame)
 
     call imp%release(); TEST_IERR()
@@ -407,7 +407,7 @@ contains
     numSame = imp%getNumSameIDs()
     numRemote = imp%getNumRemoteIDs()
     numPermute = imp%getNumPermuteIDs()
-    numNodes = tgt%getNodeNumElements()
+    numNodes = tgt%getLocalNumElements()
     TEST_EQUALITY(numPermute, numNodes - numSame - numRemote)
 
     ! Export test
@@ -417,7 +417,7 @@ contains
     numRemote = exp%getNumRemoteIDs()
     numPermute = exp%getNumPermuteIDs()
     tgt = exp%getTargetMap()
-    numNodes = tgt%getNodeNumElements()
+    numNodes = tgt%getLocalNumElements()
     TEST_EQUALITY(numPermute, numNodes - numSame - numRemote)
 
     call imp%release(); TEST_IERR()

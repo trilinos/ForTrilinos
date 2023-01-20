@@ -89,7 +89,7 @@ A = TpetraCrsMatrix(map, max_entries_per_row)
 ! Fill the sparse matrix, one row at a time.
 allocate(vals(3))
 allocate(cols(3))
-num_my_elements = int(map%getNodeNumElements(), kind=kind(num_my_elements))
+num_my_elements = int(map%getLocalNumElements(), kind=kind(num_my_elements))
 fill: do lcl_row = 1, num_my_elements
   gbl_row = map%getGlobalElement(lcl_row)
   if (gbl_row == 1) then

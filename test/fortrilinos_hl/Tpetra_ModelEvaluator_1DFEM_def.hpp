@@ -37,7 +37,7 @@ TpetraModelEvaluator1DFEM(const Teuchos::RCP<const Teuchos::Comm<int>>& comm,
   }
   else {
     GO min_overlap_GID;
-    size_t num_overlap_nodes = x_owned_map_->getNodeNumElements() + 2;
+    size_t num_overlap_nodes = x_owned_map_->getLocalNumElements() + 2;
     if ((comm_->getRank() == 0) || (comm_->getRank() == (comm_->getSize() - 1)))
       --num_overlap_nodes;
 
@@ -87,7 +87,7 @@ create_graph(const Teuchos::RCP<const Map>& owned_map,
 
   // Declare required variables
   GO row, column;
-  size_t num_my_overlap_nodes = ghosted_map->getNodeNumElements();
+  size_t num_my_overlap_nodes = ghosted_map->getLocalNumElements();
 
   // Loop Over # of Finite Elements on Processor
   for (LO ne=0; ne<static_cast<LO>(num_my_overlap_nodes-1); ne++) {
@@ -120,7 +120,7 @@ create_mesh(const Teuchos::RCP<const Map>& owned_map,
             const SC z_min, const SC z_max,
             const Tpetra::global_size_t num_elems)
 {
-  size_t num_local_nodes = owned_map->getNodeNumElements();
+  size_t num_local_nodes = owned_map->getLocalNumElements();
   GO min_GID = owned_map->getMinGlobalIndex();
   SC dz = (z_max - z_min)/static_cast<SC>(num_elems);
 
@@ -173,7 +173,7 @@ evaluate_residual(const Teuchos::RCP<const MultiVector>& xp,
   Teuchos::TimeMonitor timer(*resid_timer_);
   const LO invalid = Tpetra::Details::OrdinalTraits<LO>::invalid();
   int my_rank = comm_->getRank();
-  auto num_my_elems = x_ghosted_map_->getNodeNumElements()-1;
+  auto num_my_elems = x_ghosted_map_->getLocalNumElements()-1;
 
   // Loop Over # of Finite Elements on Processor
   auto x = x_ptr_->getLocalViewHost(Tpetra::Access::ReadOnlyStruct{});
@@ -238,7 +238,7 @@ evaluate_jacobian(const Teuchos::RCP<const MultiVector>& xp,
 
   const LO invalid = Tpetra::Details::OrdinalTraits<LO>::invalid();
   int my_rank = comm_->getRank();
-  auto num_my_elems = x_ghosted_map_->getNodeNumElements()-1;
+  auto num_my_elems = x_ghosted_map_->getLocalNumElements()-1;
 
   // Loop Over # of Finite Elements on Processor
   auto x = x_ptr_->getLocalViewHost(Tpetra::Access::ReadOnlyStruct{});
@@ -310,7 +310,7 @@ evaluate_preconditioner(const Teuchos::RCP<const MultiVector>& xp,
 
   const LO invalid = Tpetra::Details::OrdinalTraits<LO>::invalid();
   int my_rank = comm_->getRank();
-  auto num_my_elems = x_ghosted_map_->getNodeNumElements()-1;
+  auto num_my_elems = x_ghosted_map_->getLocalNumElements()-1;
   auto row_map = M_inv->getRowMap();
   auto col_map = M_inv->getColMap();
 

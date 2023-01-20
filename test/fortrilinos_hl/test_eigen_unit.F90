@@ -166,7 +166,7 @@ contains
 
     call  Tpetra_CrsMatrix_CreateTestMatrix_A(comm,A)
     call A%fillComplete(); FORTRILINOS_CHECK_IERR()
-    n = A%getNodeNumRows()
+    n = A%getLocalNumRows()
     num_eigen = 1
 
     ! This xml file was for another matrix, and we are repurposing but then
