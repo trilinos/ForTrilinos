@@ -363,11 +363,8 @@ contains
 
     numvalid = 0
 
-    ! It's forbidden to call any of the *LocalValues methods if the
-    ! matrix is fill complete (not fill active).
-
     ! FIXME: This fails with segfault. Not sure what's going on.
-    ! TEST_THROW(call Mat%insertGlobalValues(row, cols, vals))
+    ! call Mat%insertGlobalValues(row, cols, vals)
 
     numvalid = Mat%replaceGlobalValues(row, cols, vals); TEST_IERR()
     TEST_ASSERT(numvalid==TPETRA_GLOBAL_INVALID)
@@ -375,8 +372,8 @@ contains
     numvalid = Mat%sumIntoGlobalValues(row, cols, vals); TEST_IERR()
     TEST_ASSERT(numvalid==TPETRA_GLOBAL_INVALID)
 
-    !TEST_THROW(call Mat%setAllToScalar(0.d0)) ! No longer fails
-    !TEST_THROW(call Mat%scale(0.d0))
+    call Mat%setAllToScalar(0.d0)
+    call Mat%scale(0.d0)
     TEST_THROW(call Mat%globalAssemble())
     TEST_THROW(call Mat%fillComplete())
 
