@@ -96,16 +96,8 @@
 // Make interface more Fortran friendly
 // =======================================================================
 %extend Tpetra::CrsGraph<LO,GO,NO> {
-    // NOTE: This is semantically different function from Tpetra. Here, we *require* that user already allocated the arrays to store the data
-    void getNodeRowPtrs(Teuchos::ArrayView<size_t> rowPointers) const {
-      auto rowPointersArrayRCP = $self->getNodeRowPtrs();
-      TEUCHOS_TEST_FOR_EXCEPTION(rowPointersArrayRCP.size() != rowPointers.size(), std::runtime_error, "Wrong rowPointers size");
-      auto n = rowPointers.size();
-      for (int i = 0; i < n; i++)
-        rowPointers[i] = rowPointersArrayRCP[i]+1;
-    }
-    void getNodePackedIndices(Teuchos::ArrayView<size_t> columnIndices) const {
-      auto columnIndicesArrayRCP = $self->getNodeRowPtrs();
+    void getLocalPackedIndices(Teuchos::ArrayView<size_t> columnIndices) const {
+      auto columnIndicesArrayRCP = $self->getLocalRowPtrsHost();
       TEUCHOS_TEST_FOR_EXCEPTION(columnIndicesArrayRCP.size() != columnIndices.size(), std::runtime_error, "Wrong columnIndices size");
       auto nnz = columnIndices.size();
       for (int i = 0; i < nnz; i++)
@@ -130,8 +122,6 @@
 // Add doImport and doExport
 %tpetra_extend_with_import_export(Tpetra::CrsGraph<LO,GO,NO>)
 
-%ignore Tpetra::CrsGraph::getNodeRowPtrs() const;
-%ignore Tpetra::CrsGraph::getNodePackedIndices() const;
 %ignore Tpetra::CrsGraph::getLocalDiagOffsets;
 %ignore Tpetra::CrsGraph::setAllIndices (const typename local_graph_type::row_map_type &rowPointers, const typename local_graph_type::entries_type::non_const_type &columnIndices);
 

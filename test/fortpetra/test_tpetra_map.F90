@@ -88,7 +88,7 @@ contains
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
     Obj = TpetraMap(num_global, comm); TEST_IERR()
-    TEST_EQUALITY(Obj%getNodeNumElements(), 4)
+    TEST_EQUALITY(Obj%getLocalNumElements(), 4)
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getNodeNumElements)
 
@@ -195,7 +195,7 @@ contains
     integer(global_ordinal_type) :: num_global
     num_global = 4*comm%getSize()
     Obj = TpetraMap(num_global, comm); TEST_IERR()
-    element_list => Obj%getNodeElementList()
+    element_list => Obj%getLocalElementList()
     call Obj%release(); TEST_IERR()
   END_FORTRILINOS_UNIT_TEST(TpetraMap_getNodeElementList)
 

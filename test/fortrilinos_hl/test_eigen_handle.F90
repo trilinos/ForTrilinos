@@ -76,7 +76,7 @@ program main
   map = TpetraMap(n_global, n, comm); FORTRILINOS_CHECK_IERR()
 
   max_entries_per_row = 3
-  A = TpetraCrsMatrix(map, max_entries_per_row, TpetraStaticProfile)
+  A = TpetraCrsMatrix(map, max_entries_per_row)
 
   allocate(cols(max_entries_per_row))
   allocate(vals(max_entries_per_row))

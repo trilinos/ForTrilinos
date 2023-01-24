@@ -47,7 +47,7 @@ ENV PATH=${CMAKE_DIR}/bin:$PATH
 
 # Install Trilinos
 ENV TRILINOS_DIR=/opt/trilinos
-RUN TRILINOS_VERSION=13-2-0 && \
+RUN TRILINOS_VERSION=13-4-1 && \
     TRILINOS_URL=https://github.com/trilinos/Trilinos/archive/refs/tags/trilinos-release-${TRILINOS_VERSION}.tar.gz && \
     TRILINOS_ARCHIVE=trilinos-${TRILINOS_VERSION}.tar.gz && \
     SCRATCH_DIR=/scratch && mkdir -p ${SCRATCH_DIR} && cd ${SCRATCH_DIR} && \

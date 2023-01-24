@@ -56,10 +56,8 @@ program test_TpetraCrsGraph
   ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getNodeAllocationSize)
   ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getNumAllocatedEntriesInGlobalRow)
   ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getNumAllocatedEntriesInLocalRow)
-  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getProfileType)
   ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getGlobalRowCopy)
   ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getLocalRowCopy)
-  ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getNodeRowPtrs)
   ADD_SUBTEST_AND_RUN(TpetraCrsGraph_getNodePackedIndices)
   ADD_SUBTEST_AND_RUN(TpetraCrsGraph_hasColMap)
   ADD_SUBTEST_AND_RUN(TpetraCrsGraph_isGloballyIndexed)
@@ -101,7 +99,7 @@ contains
     Map = TpetraMap(TPETRA_GLOBAL_INVALID, 1, comm); TEST_IERR()
 
     params = ParameterList("ANONYMOUS")
-    Graph = TpetraCrsGraph(Map, Map, 1_size_type, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(Map, Map, 1_size_type)
     TEST_ASSERT(Graph%isFillActive())
     TEST_ASSERT((.not. Graph%isFillComplete()))
 
@@ -121,7 +119,6 @@ contains
     call Graph%resumeFill()
     TEST_ASSERT(graph%isFillActive())
     TEST_ASSERT((.not. graph%isFillComplete()))
-    TEST_ASSERT(graph%getProfileType() == TpetraStaticProfile)
     TEST_NOTHROW(call graph%insertLocalIndices(row, indices))
 
     TEST_NOTHROW(call graph%fillComplete())
@@ -155,7 +152,7 @@ contains
     cmap = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
     ! must allocate enough for all submitted indices.
     num_ent_per_row = 2
-    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row)
     TEST_ASSERT(Graph%hasColMap())
     lclrow = 1
     myrowind = rmap%getGlobalElement(lclrow);
@@ -179,9 +176,9 @@ contains
 
     tmpmap = TpetraMap()
     tmpmap = Graph%getRowMap()
-    TEST_EQUALITY(tmpmap%getNodeNumElements(), rmap%getNodeNumElements())
+    TEST_EQUALITY(tmpmap%getLocalNumElements(), rmap%getLocalNumElements())
     tmpmap = Graph%getColMap()
-    TEST_EQUALITY(tmpmap%getNodeNumElements(), cmap%getNodeNumElements())
+    TEST_EQUALITY(tmpmap%getLocalNumElements(), cmap%getLocalNumElements())
     TEST_EQUALITY(Graph%getNumEntriesInGlobalRow(myrowind), 1_size_type)
 
     call tmpmap%release(); TEST_IERR()
@@ -222,10 +219,10 @@ contains
 
     tmpmap = TpetraMap()
     tmpmap = Graph%getRowMap()
-    TEST_EQUALITY(tmpmap%getNodeNumElements(), rmap%getNodeNumElements())
+    TEST_EQUALITY(tmpmap%getLocalNumElements(), rmap%getLocalNumElements())
 
     tmpmap = Graph%getColMap()
-    TEST_EQUALITY(tmpmap%getNodeNumElements(), rmap%getNodeNumElements())
+    TEST_EQUALITY(tmpmap%getLocalNumElements(), rmap%getLocalNumElements())
 
     deallocate(rowptr, colind)
     call tmpmap%release(); TEST_IERR()
@@ -375,7 +372,7 @@ contains
 
     ! create static-profile graph, fill-complete without inserting
     ! (and therefore, without allocating)
-    Graph = TpetraCrsGraph(map, 1_size_type, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(map, 1_size_type)
     call Graph%fillComplete()
     call Graph%release(); TEST_IERR()
 
@@ -405,7 +402,7 @@ contains
     cmap = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
     ! must allocate enough for all submitted indices.
     num_ent_per_row = 2
-    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row)
     TEST_ASSERT(Graph%hasColMap())
     lclrow = 1
     myrowind = rmap%getGlobalElement(lclrow);
@@ -428,15 +425,15 @@ contains
     TEST_NOTHROW(call Graph%fillComplete())
 
     commsize = comm%getSize()
-    i_LO = Graph%getNodeNumRows()
+    i_LO = Graph%getLocalNumRows()
     TEST_EQUALITY(i_LO, 1_size_type)
-    i_LO = Graph%getNodeNumCols()
+    i_LO = Graph%getLocalNumCols()
     TEST_EQUALITY(i_LO, 1_size_type)
     i_LO = Graph%getGlobalNumEntries()
     TEST_EQUALITY(i_LO, int(commsize, kind=size_type))
-    i_LO = Graph%getNodeNumEntries()
+    i_LO = Graph%getLocalNumEntries()
     TEST_EQUALITY(i_LO, 1_size_type)
-    i_LO = Graph%getNodeAllocationSize()
+    i_LO = Graph%getLocalAllocationSize()
     TEST_EQUALITY(i_LO, 1_size_type)
     i_LO = Graph%getNumAllocatedEntriesInGlobalRow(myrowind)
     TEST_EQUALITY(i_LO, 1_size_type)
@@ -444,7 +441,7 @@ contains
     TEST_EQUALITY(i_LO, 1_size_type)
     i_LO = Graph%getGlobalMaxNumRowEntries()
     TEST_EQUALITY(i_LO, 1_size_type)
-    i_LO = Graph%getNodeMaxNumRowEntries()
+    i_LO = Graph%getLocalMaxNumRowEntries()
     TEST_EQUALITY(i_LO, 1_size_type)
 
     call Graph%release(); TEST_IERR()
@@ -468,8 +465,8 @@ contains
     ! create Map and Graph
     num_global = 4*comm%getSize()
     Map = TpetraMap(num_global, comm); TEST_IERR()
-    Graph1 = TpetraCrsGraph(Map, Map, ione, TpetraStaticProfile)
-    Graph2 = TpetraCrsGraph(Map, Map, ione, TpetraStaticProfile)
+    Graph1 = TpetraCrsGraph(Map, Map, ione)
+    Graph2 = TpetraCrsGraph(Map, Map, ione)
 
     call Graph1%fillComplete()
     call Graph2%fillComplete()
@@ -504,7 +501,7 @@ contains
     rowMap = TpetraMap(gblNumRows, lclNumRows, comm)
     lclNumCols = lclNumRows
     colMap = rowMap
-    Graph = TpetraCrsGraph(rowMap, colMap, max_entries_per_row, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rowMap, colMap, max_entries_per_row)
 
     allocate(lclColInds(2))
 
@@ -551,7 +548,7 @@ contains
     ! Duplicate Tpetra_CrsGraph_CreateTestGraph_A here because
     ! we want insertGlobalIndices to appear explicitly.
     rmap = TpetraMap(Tpetra_GLOBAL_INVALID, test_graph_num_row(), comm)
-    Graph = TpetraCrsGraph(rmap, test_graph_max_entries_per_row(), TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rmap, test_graph_max_entries_per_row())
 
     do irow=1,test_graph_num_row()
       call Tpetra_CrsGraph_GetTestGraphRow_A(comm, irow, gblrow, cols_expected, nnz)
@@ -599,7 +596,7 @@ contains
     rowMap = TpetraMap(gblNumRows, lclNumRows, comm)
     lclNumCols = lclNumRows
     colMap = rowMap
-    Graph = TpetraCrsGraph(rowMap, colMap, max_entries_per_row, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rowMap, colMap, max_entries_per_row)
 
     allocate(lclColInds(2))
 
@@ -680,7 +677,7 @@ contains
 
     tmpmap = Graph%getRowMap()
 
-    TEST_EQUALITY(tmpmap%getNodeNumElements(), rmap%getNodeNumElements())
+    TEST_EQUALITY(tmpmap%getLocalNumElements(), rmap%getLocalNumElements())
     TEST_ASSERT(tmpmap%isSameAs(rmap))
 
     call tmpmap%release(); TEST_IERR()
@@ -705,7 +702,7 @@ contains
     call Graph%fillComplete()
     tmpmap = Graph%getColMap()
 
-    TEST_EQUALITY(tmpmap%getNodeNumElements(), cmap%getNodeNumElements())
+    TEST_EQUALITY(tmpmap%getLocalNumElements(), cmap%getLocalNumElements())
     TEST_ASSERT(tmpmap%isSameAs(cmap))
 
     call tmpmap%release(); TEST_IERR()
@@ -849,7 +846,7 @@ contains
     cmap = TpetraMap(TPETRA_GLOBAL_INVALID, num_local, comm); TEST_IERR()
     ! must allocate enough for all submitted indices.
     num_ent_per_row = 2
-    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rmap, cmap, num_ent_per_row)
 
     commsize = comm%getSize()
     ires = Graph%getGlobalNumRows()
@@ -933,7 +930,7 @@ contains
     call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
     call Graph%fillComplete()
 
-    ires = Graph%getNodeNumRows()
+    ires = Graph%getLocalNumRows()
     TEST_EQUALITY(ires, int(test_graph_num_local(), size_type))
 
     call Graph%release(); TEST_IERR()
@@ -952,7 +949,7 @@ contains
     call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
     call Graph%fillComplete()
 
-    ires = Graph%getNodeNumCols()
+    ires = Graph%getLocalNumCols()
     TEST_EQUALITY(ires, int(test_graph_num_local(), size_type))
 
     call Graph%release(); TEST_IERR()
@@ -971,7 +968,7 @@ contains
     call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
     call Graph%fillComplete()
 
-    ires = Graph%getNodeNumEntries()
+    ires = Graph%getLocalNumEntries()
     TEST_EQUALITY(ires, int(2,size_type))
 
     call Graph%release(); TEST_IERR()
@@ -990,7 +987,7 @@ contains
     call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
     call Graph%fillComplete()
 
-    ires = Graph%getNodeMaxNumRowEntries()
+    ires = Graph%getLocalMaxNumRowEntries()
     TEST_EQUALITY(ires, int(2,size_type))
 
     call Graph%release(); TEST_IERR()
@@ -1056,7 +1053,7 @@ contains
     call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
     call Graph%fillComplete()
 
-    ires = Graph%getNodeAllocationSize()
+    ires = Graph%getLocalAllocationSize()
     ! match num_ent_per_row in CreateTestGraph
     TEST_EQUALITY(ires, int(2,size_type))
 
@@ -1113,22 +1110,6 @@ contains
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNumAllocatedEntriesInLocalRow)
 
-  ! ------------------------------getProfileType------------------------------ !
-  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getProfileType)
-    type(TpetraCrsGraph) :: Graph
-
-    OUT0("Starting TpetraCrsGraph_getProfileType!")
-
-    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
-
-    TEST_ASSERT(graph%getProfileType() == TpetraStaticProfile)
-
-    call Graph%release(); TEST_IERR()
-
-    OUT0("Finished TpetraCrsGraph_getProfileType!")
-
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getProfileType)
-
   ! -----------------------------getGlobalRowCopy----------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getGlobalRowCopy)
     type(TpetraCrsGraph) :: Graph
@@ -1177,7 +1158,7 @@ contains
     rowMap = TpetraMap(gblNumRows, lclNumRows, comm)
     lclNumCols = lclNumRows
     colMap = rowMap
-    Graph = TpetraCrsGraph(rowMap, colMap, max_entries_per_row, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(rowMap, colMap, max_entries_per_row)
 
     allocate(lclColInds(2))
 
@@ -1209,25 +1190,6 @@ contains
 
   END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getLocalRowCopy)
 
-  ! ------------------------------getNodeRowPtrs------------------------------ !
-  FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNodeRowPtrs)
-    type(TpetraCrsGraph) :: Graph
-    integer(size_type), allocatable :: rowpointers(:)
-
-    OUT0("Starting TpetraCrsGraph_getNodeRowPtrs!")
-
-    call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
-
-    allocate(rowpointers(1))
-    TEST_THROW(call Graph%getNodeRowPtrs(rowpointers(:)))
-
-    deallocate(rowpointers)
-    call Graph%release(); TEST_IERR()
-
-    OUT0("Finished TpetraCrsGraph_getNodeRowPtrs!")
-
-  END_FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNodeRowPtrs)
-
   ! ---------------------------getNodePackedIndices--------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraCrsGraph_getNodePackedIndices)
     type(TpetraCrsGraph) :: Graph
@@ -1238,7 +1200,7 @@ contains
     call Tpetra_CrsGraph_CreateTestGraph_B(comm, Graph)
 
     allocate(columnindices(1))
-    TEST_THROW(call Graph%getNodePackedIndices(columnindices(:)))
+    TEST_THROW(call Graph%getLocalPackedIndices(columnindices(:)))
 
     deallocate(columnindices)
     call Graph%release(); TEST_IERR()
@@ -1417,7 +1379,7 @@ contains
 
     num_global = 4*comm%getSize()
     Map = TpetraMap(num_global, comm); TEST_IERR()
-    Graph = TpetraCrsGraph(Map, Map, 1_size_type, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(Map, Map, 1_size_type)
 
     ! Make a new colmap
     newcolmap = TpetraMap(num_global, comm); TEST_IERR()
@@ -1445,7 +1407,7 @@ contains
 
     num_global = 4*comm%getSize()
     Map = TpetraMap(num_global, comm); TEST_IERR()
-    Graph = TpetraCrsGraph(Map, Map, izero, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(Map, Map, izero)
     call Graph%fillComplete()     ! Needed for gloStaticstants
 
     ! Make a new colmap
@@ -1478,7 +1440,7 @@ contains
     ! create Map and Graph
     num_global = 4*comm%getSize()
     Map = TpetraMap(num_global, comm); TEST_IERR()
-    Graph = TpetraCrsGraph(Map, Map, izero, TpetraStaticProfile)
+    Graph = TpetraCrsGraph(Map, Map, izero)
 
     TEST_NOTHROW(call Graph%removeEmptyProcessesInPlace(Map))
 
