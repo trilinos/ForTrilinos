@@ -354,7 +354,7 @@ template <typename T> T SwigValueInit() {
 #define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
 
 
-#include <Kokkos_DefaultNode.hpp>
+#include <KokkosCompat_ClassicNodeAPI_Wrapper.hpp>
 #include "fortpetra/ForTrilinos_DefaultNodeType.hpp"
 
 
@@ -10288,7 +10288,7 @@ SWIGEXPORT void _wrap_TpetraCrsMatrix_scale(SwigClassWrapper *farg1, double cons
 }
 
 
-SWIGEXPORT void _wrap_TpetraCrsMatrix_setAllValues__SWIG_1(SwigClassWrapper *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
+SWIGEXPORT void _wrap_TpetraCrsMatrix_setAllValues__SWIG_2(SwigClassWrapper *farg1, SwigArrayWrapper *farg2, SwigArrayWrapper *farg3, SwigArrayWrapper *farg4) {
   Tpetra::CrsMatrix< SC,LO,GO,NO > *arg1 = (Tpetra::CrsMatrix< SC,LO,GO,NO > *) 0 ;
   Teuchos::ArrayRCP< size_t > *arg2 = 0 ;
   Teuchos::ArrayRCP< int > *arg3 = 0 ;

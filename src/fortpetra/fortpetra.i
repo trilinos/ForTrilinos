@@ -29,7 +29,6 @@ struct DefaultNodeType {
 }
 
 %{
-#include <Kokkos_DefaultNode.hpp>
 #include "fortpetra/ForTrilinos_DefaultNodeType.hpp"
 %}
 %inline %{
