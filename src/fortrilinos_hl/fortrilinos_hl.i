@@ -13,7 +13,7 @@
 %import "fortpetra/fortpetra.i"
 
 %{
-#include <Kokkos_DefaultNode.hpp>
+#include <KokkosClassic_DefaultNode_config.h>
 #include "fortpetra/ForTrilinos_DefaultNodeType.hpp"
 %}
 %inline %{
