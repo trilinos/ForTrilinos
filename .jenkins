@@ -22,6 +22,7 @@ pipeline {
                             filename "Dockerfile"
                             dir "docker"
                             args '-v /tmp/ccache:/tmp/ccache'
+                            additionalBuildArgs '--build-arg NPROC=4'
                             label 'docker'
                         }
                     }
