@@ -43,6 +43,7 @@ in the committed version of the generated wrappers.
    ===========  ============== ======================
    ForTrilinos  Trilinos       SWIG
    ===========  ============== ======================
+   2.3.0        14.0           4.1.1+fortran
    2.2.0        13.4           4.1.1+fortran
    2.1.0        13.2           4.1.0-dev1+fortran
    2.0.1        13.0:13.2      4.1.0-dev1+fortran
