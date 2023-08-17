@@ -47,7 +47,7 @@ ENV PATH=${CMAKE_DIR}/bin:$PATH
 
 # Install Trilinos
 ENV TRILINOS_DIR=/opt/trilinos
-RUN TRILINOS_VERSION=13-4-1 && \
+RUN TRILINOS_VERSION=14-0-0 && \
     TRILINOS_URL=https://github.com/trilinos/Trilinos/archive/refs/tags/trilinos-release-${TRILINOS_VERSION}.tar.gz && \
     TRILINOS_ARCHIVE=trilinos-${TRILINOS_VERSION}.tar.gz && \
     SCRATCH_DIR=/scratch && mkdir -p ${SCRATCH_DIR} && cd ${SCRATCH_DIR} && \
@@ -83,11 +83,11 @@ RUN TRILINOS_VERSION=13-4-1 && \
         -D Trilinos_ENABLE_Epetra=OFF \
         -D Trilinos_ENABLE_Ifpack2=ON \
         -D Trilinos_ENABLE_Kokkos=ON \
-            -D Kokkos_ENABLE_Serial=ON \
-            -D Kokkos_ENABLE_OpenMP=OFF \
-            -D Kokkos_ENABLE_Cuda=OFF \
-            -D Kokkos_ENABLE_Cuda_UVM=ON \
-            -D Kokkos_ENABLE_Cuda_Lambda=ON \
+            -D Kokkos_ENABLE_SERIAL=ON \
+            -D Kokkos_ENABLE_OPENMP=OFF \
+            -D Kokkos_ENABLE_CUDA=OFF \
+            -D Kokkos_ENABLE_CUDA_UVM=ON \
+            -D Kokkos_ENABLE_CUDA_LAMBDA=ON \
             -D Kokkos_ARCH_VOLTA70=ON \
         -D Trilinos_ENABLE_MueLu=ON \
         -D Trilinos_ENABLE_NOX=ON \

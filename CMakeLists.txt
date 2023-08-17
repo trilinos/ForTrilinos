@@ -86,7 +86,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 #-----------------------------------------------------------------------------#
 
 set(Kokkos_FIND_QUIETLY ON)
-find_package(Trilinos 13.0 REQUIRED MODULE
+find_package(Trilinos 14 REQUIRED MODULE
   COMPONENTS
     TeuchosCore TeuchosComm TeuchosNumerics TeuchosParameterList
   OPTIONAL_COMPONENTS
@@ -98,11 +98,6 @@ find_package(Trilinos 13.0 REQUIRED MODULE
     # Optional for fortrilinos_hl
     Amesos2 Ifpack2 MueLu
 )
-
-set(Trilinos_COMPONENTS ${COMPONENTS_LIST})
-if("MPI" IN_LIST Trilinos_TPL_LIST)
-  set(Trilinos_USE_MPI ON)
-endif()
 
 set(ForTrilinos_USE_MPI "${Trilinos_USE_MPI}" CACHE BOOL
   "MPI status depends on the Trilinos installation in use" FORCE)

@@ -42,7 +42,6 @@ public :: int_type
 public :: mag_type
 public :: norm_type
 
- integer(C_INT), parameter, public :: TPETRA_THROWS_EFFICIENCY_WARNINGS = 0_C_INT
  integer(C_INT), parameter, public :: TPETRA_PRINTS_EFFICIENCY_WARNINGS = 0_C_INT
  integer(C_INT), parameter, public :: TPETRA_THROWS_ABUSE_WARNINGS = 0_C_INT
  integer(C_INT), parameter, public :: TPETRA_PRINTS_ABUSE_WARNINGS = 0_C_INT
@@ -75,7 +74,6 @@ public :: norm_type
  end enum
  integer, parameter, public :: TpetraESweepDirection = kind(TpetraForward)
  public :: TpetraForward, TpetraBackward, TpetraSymmetric
- integer(C_INT), parameter, public :: TPETRA_USE_KOKKOS_DISTOBJECT = 0_C_INT
  ! enum Tpetra::CombineMode
  enum, bind(c)
   enumerator :: TpetraADD
@@ -407,7 +405,7 @@ public :: init_ForTpetraOperator
   procedure, private :: swigf_TpetraCrsMatrix_sumIntoLocalValues__SWIG_2
   procedure :: setAllToScalar => swigf_TpetraCrsMatrix_setAllToScalar
   procedure :: scale => swigf_TpetraCrsMatrix_scale
-  procedure, private :: swigf_TpetraCrsMatrix_setAllValues__SWIG_1
+  procedure, private :: swigf_TpetraCrsMatrix_setAllValues__SWIG_2
   procedure :: globalAssemble => swigf_TpetraCrsMatrix_globalAssemble
   procedure, private :: swigf_TpetraCrsMatrix_resumeFill__SWIG_0
   procedure, private :: swigf_TpetraCrsMatrix_resumeFill__SWIG_1
@@ -473,7 +471,7 @@ public :: init_ForTpetraOperator
   procedure, private :: swigf_TpetraCrsMatrix_getGlobalRowCopy__SWIG_1
   procedure, private :: swigf_TpetraCrsMatrix_getLocalRowCopy__SWIG_1
   procedure, private :: swigf_TpetraCrsMatrix_op_assign__
-  generic :: setAllValues => swigf_TpetraCrsMatrix_setAllValues__SWIG_1
+  generic :: setAllValues => swigf_TpetraCrsMatrix_setAllValues__SWIG_2
   generic :: replaceLocalValues => swigf_TpetraCrsMatrix_replaceLocalValues__SWIG_1
   generic :: localApply => swigf_TpetraCrsMatrix_localApply__SWIG_0, swigf_TpetraCrsMatrix_localApply__SWIG_1, &
     swigf_TpetraCrsMatrix_localApply__SWIG_2, swigf_TpetraCrsMatrix_localApply__SWIG_3
@@ -3100,8 +3098,8 @@ type(SwigClassWrapper), intent(in) :: farg1
 real(C_DOUBLE), intent(in) :: farg2
 end subroutine
 
-subroutine swigc_TpetraCrsMatrix_setAllValues__SWIG_1(farg1, farg2, farg3, farg4) &
-bind(C, name="_wrap_TpetraCrsMatrix_setAllValues__SWIG_1")
+subroutine swigc_TpetraCrsMatrix_setAllValues__SWIG_2(farg1, farg2, farg3, farg4) &
+bind(C, name="_wrap_TpetraCrsMatrix_setAllValues__SWIG_2")
 use, intrinsic :: ISO_C_BINDING
 import :: swigarraywrapper
 import :: swigclasswrapper
@@ -8308,7 +8306,7 @@ farg2 = alpha
 call swigc_TpetraCrsMatrix_scale(farg1, farg2)
 end subroutine
 
-subroutine swigf_TpetraCrsMatrix_setAllValues__SWIG_1(self, ptr, ind, val)
+subroutine swigf_TpetraCrsMatrix_setAllValues__SWIG_2(self, ptr, ind, val)
 use, intrinsic :: ISO_C_BINDING
 class(TpetraCrsMatrix), intent(in) :: self
 integer(C_SIZE_T), dimension(:), target :: ptr
@@ -8323,7 +8321,7 @@ farg1 = self%swigdata
 call SWIGTM_fin_size_t_Sb__SB_(ptr, farg2)
 call SWIGTM_fin_int_Sb__SB_(ind, farg3)
 call SWIGTM_fin_double_Sb__SB_(val, farg4)
-call swigc_TpetraCrsMatrix_setAllValues__SWIG_1(farg1, farg2, farg3, farg4)
+call swigc_TpetraCrsMatrix_setAllValues__SWIG_2(farg1, farg2, farg3, farg4)
 end subroutine
 
 subroutine swigf_TpetraCrsMatrix_globalAssemble(self)

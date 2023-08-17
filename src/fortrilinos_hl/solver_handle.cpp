@@ -67,7 +67,7 @@ TrilinosSolver::TrilinosSolver(const Teuchos::RCP<const Teuchos::Comm<int>>& com
     }
 #endif
 #if FORTRILINOS_USE_MUELU
-    Stratimikos::enableMueLu<LO,GO,NO>(linearSolverBuilder);
+    Stratimikos::enableMueLu<SC,LO,GO,NO>(linearSolverBuilder);
 #endif
 
     linearSolverBuilder.setParameterList(paramList);

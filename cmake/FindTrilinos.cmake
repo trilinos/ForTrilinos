@@ -82,9 +82,24 @@ if(Trilinos_Tpetra_FOUND AND PROJECT_NAME STREQUAL "ForTrilinos")
   endif()
 endif()
 
+if(Trilinos_FOUND)
+  set(Trilinos_COMPONENTS ${COMPONENTS_LIST})
+  set(Trilinos_USE_MPI OFF)
+  if(Trilinos_VERSION VERSION_GREATER_EQUAL 14.0)
+    # Trilinos_TPL_LIST no longer gets exported :(
+    if(Teuchos_MPI_EXEC)
+      set(Trilinos_USE_MPI ON)
+    endif()
+  else()
+    if("MPI" IN_LIST Trilinos_TPL_LIST)
+      set(Trilinos_USE_MPI ON)
+    endif()
+  endif()
+endif()
+
 find_package_handle_standard_args(
   Trilinos HANDLE_COMPONENTS
-  REQUIRED_VARS Trilinos_INCLUDE_DIRS Trilinos_LIBRARY_DIRS Trilinos_LIBRARIES
+  REQUIRED_VARS Trilinos_INCLUDE_DIRS Trilinos_LIBRARIES
     ${_require_tpetra_inst}
   VERSION_VAR Trilinos_VERSION
 )

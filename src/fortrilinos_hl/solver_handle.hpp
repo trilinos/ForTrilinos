@@ -9,7 +9,6 @@
 
 #include "ForTrilinos_config.h"
 
-#include <Kokkos_DefaultNode.hpp>
 #include "fortpetra/ForTrilinos_DefaultNodeType.hpp"
 
 #include <Teuchos_Comm.hpp>
