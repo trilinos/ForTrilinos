@@ -22,6 +22,7 @@ the version here simply denotes the version used to generate the included
 wrappers.)
 
 The version scheme is based on semantic versioning:
+
 - Major version numbers with Trilinos and minor versions of SWIG-Fortran (since
   it's still not officially upstreamed) can result in major version number
   changes for ForTrilinos.
@@ -55,7 +56,7 @@ in the committed version of the generated wrappers.
    ===========  ============== ======================
 
 In :ref:`the version table above <version_table>`, the ``+fortran`` suffix for
-SWIG indicates `the SWIG-Fortran fork <https://github.com/swig-fortran/swig>`.
+SWIG indicates the `SWIG-Fortran fork <https://github.com/swig-fortran/swig>`_.
 ``+sha`` refers to a specific Git commit that comes after the given version.
 
 Basically, the versioning will be driven by what the Fortran-only users see in the committed version of the generated wrappers.
@@ -69,7 +70,7 @@ E4S
 ---
 
 As of this writing, ForTrilinos is distributed as part of the `E4S Project
-<https://e4s-project.github.io/index.html>` and should be available as a
+<https://e4s-project.github.io/index.html>`_ and should be available as a
 pre-built binary on a variety of user and HPC systems.
 
 Spack
