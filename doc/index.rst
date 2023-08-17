@@ -2,6 +2,11 @@
 ForTrilinos
 ===========
 
+.. only:: html
+
+   :Release: |release|
+   :Date: |today|
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents
