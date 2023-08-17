@@ -3,7 +3,7 @@
 ARG BASE=nvidia/cuda:11.2.2-devel-ubuntu20.04
 FROM $BASE
 
-ARG NPROC=1
+ARG NPROC=8
 
 # Avoid tzdata dialog
 ARG DEBIAN_FRONTEND=noninteractive
