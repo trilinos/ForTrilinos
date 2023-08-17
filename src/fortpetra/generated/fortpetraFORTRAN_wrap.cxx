@@ -354,7 +354,6 @@ template <typename T> T SwigValueInit() {
 #define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
 
 
-#include <KokkosCompat_ClassicNodeAPI_Wrapper.hpp>
 #include "fortpetra/ForTrilinos_DefaultNodeType.hpp"
 
 
